@@ -2,14 +2,14 @@
 
 Merci de penser à vouloir nous aider ! Sur quoi souhaiteriez-vous travailler ?
 
-- [Avant de démarrer]()
-- [Outils de travail recommandés]()
-- [Je veux améliorer la documentation pour développeurs]()
-- [Je veux proposer une nouvelle fonctionnalité]()
-- [Je veux aider au développement de fonctionnalités]()
-- [Je veux corriger un problème]()
-- [Je ne sais pas comment aider]()
-- [J'ai fini mes modifications, je voudrais les proposer]()
+- [Avant de démarrer](#avant-de-démarrer)
+- [Outils de travail recommandés](#outils-de-travail-recommandés)
+- [Je veux améliorer la documentation pour développeurs](#je-veux-améliorer-la-documentation-pour-développeurs)
+- [Je veux proposer une nouvelle fonctionnalité](#je-veux-proposer-une-nouvelle-fonctionnalité)
+- [Je veux aider au développement de fonctionnalités](#je-veux-aider-au-développement-de-fonctionnalités)
+- [Je veux corriger un problème](#je-veux-corriger-un-problème)
+- [Je ne sais pas comment aider](#je-ne-sais-pas-comment-aider)
+- [J'ai fini mes modifications, je voudrais les proposer](#jai-fini-mes-modifications-je-voudrais-les-proposer)
 
 ## Avant de démarrer
 
