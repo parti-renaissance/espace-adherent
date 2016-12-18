@@ -1,0 +1,82 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: assets_version.yml }
+
+parameters:
+    locale: fr
+
+framework:
+    secret:          "%env(SECRET)%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        assets_hash:  "%assets_hash%"
+        sentry_dsn:   "%env(SENTRY_DSN)%"
+
+doctrine:
+    dbal:
+        driver:      pdo_mysql
+        charset:     UTF8
+        host:        "%env(DATABASE_HOST)%"
+        port:        "%env(DATABASE_PORT)%"
+        dbname:      "%env(DATABASE_NAME)%"
+        user:        "%env(DATABASE_USER)%"
+        password:    "%env(DATABASE_PASSWORD)%"
+        unix_socket: "%env(DATABASE_SOCKET)%"
+
+        types:
+            uuid:    Ramsey\Uuid\Doctrine\UuidType
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+
+swiftmailer:
+    transport: smtp
+    host:      "%env(MAILER_HOST)%"
+    username:  "%env(MAILER_PORT)%"
+    password:  "%env(MAILER_USER)%"
+    port:      "%env(MAILER_PASSWORD)%"
+    spool:     { type: memory }
+
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/migrations"
+    namespace: Migrations
+    table_name: migrations
+    name: En Marche migrations
+
+stof_doctrine_extensions:
+    default_locale: fr_FR
+    orm:
+        default:
+            sluggable: true
+            softdeleteable: true
+            timestampable: true

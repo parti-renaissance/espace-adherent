@@ -1,0 +1,18 @@
+version: "2"
+
+services:
+    mysql:
+        image: mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: enmarche
+            MYSQL_DATABASE: enmarche
+            MYSQL_USER: enmarche
+            MYSQL_PASSWORD: enmarche
+        ports:
+            - "3306:3306"
+
+    mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+            - "9025:1025"
+            - "9080:1080"

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
+        <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" /><![endif]-->
+        <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('apple-icon-57x57.png') }}" />
+        <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('apple-icon-60x60.png') }}" />
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('apple-icon-72x72.png') }}" />
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('apple-icon-76x76.png') }}" />
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('apple-icon-114x114.png') }}" />
+        <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('apple-icon-120x120.png') }}" />
+        <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('apple-icon-144x144.png') }}" />
+        <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('apple-icon-152x152.png') }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-icon-180x180.png') }}" />
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('android-icon-192x192.png') }}" />
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}" />
+        <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}" />
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}" />
+        <meta name="msapplication-TileImage" content="{{ asset('ms-icon-144x144.png') }}" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="manifest" href="{{ asset('manifest.json') }}" />
+
+        <title>{% block title %}En Marche !{% endblock %}</title>
+
+        <meta name="description" content="{% block meta_description %}{% endblock %}" />
+        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />
+
+        <meta property="og:site_name" content="En Marche !" />
+        <meta property="og:type" content="{% block open_graph_type %}website{% endblock %}" />
+        <meta property="og:url" content="{% block open_graph_url %}{{ url('homepage')|trim('/') }}{% endblock %}" />
+        <meta property="og:title" content="{% block open_graph_title %}{{ block('title') }}{% endblock %}" />
+        <meta property="og:description" content="{% block open_graph_description %}{{ block('meta_description') }}{% endblock %}" />
+        <meta property="og:image" content="{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}" />
+        <meta property="og:image:width" content="628" />
+        <meta property="og:image:height" content="288" />
+        {% block open_graph %}{% endblock %}
+
+        <meta property="fb:pages" content="543099962534877" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="{{ block('open_graph_title') }}" />
+        <meta name="twitter:description" content="{{ block('open_graph_description') }}" />
+        <meta name="twitter:image:src" content="{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}" />
+
+        <style>
+            @font-face {
+                font-family: 'gillsans_light';
+                src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}');
+                src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}?#iefix') format('embedded-opentype'),
+                    url('{{ asset('fonts/gillsans-light-webfont.woff2') }}') format('woff2'),
+                    url('{{ asset('fonts/gillsans-light-webfont.woff') }}') format('woff'),
+                    url('{{ asset('fonts/gillsans-light-webfont.ttf') }}') format('truetype'),
+                    url('{{ asset('fonts/gillsans-light-webfont.svg') }}#gillsans_lightregular') format('svg');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
+        <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
+        {% block stylesheets %}{% endblock %}
+
+        <script type="application/ld+json">
+            {% block json_ld %}
+            {
+              "@context": "http:\/\/schema.org",
+              "@type": "WebSite",
+              "url": "https:\/\/en-marche.fr\/",
+              "name": "En Marche !"
+            }
+            {% endblock %}
+        </script>
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+
+        {% block javascripts %}{% endblock %}
+
+        <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
+        <script type="text/javascript">
+            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? '\''~sentry_dsn~'\'' : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
+        </script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+parameters:
+    env(DATABASE_HOST):         127.0.0.1
+    env(DATABASE_PORT):         3306
+    env(DATABASE_SOCKET):       ~
+    env(DATABASE_NAME):         enmarche
+    env(DATABASE_USER):         enmarche
+    env(DATABASE_PASSWORD):     enmarche
+
+    env(MAILER_HOST):           127.0.0.1
+    env(MAILER_PORT):           9025
+    env(MAILER_USER):           ~
+    env(MAILER_PASSWORD):       ~
+
+    env(SENTRY_DSN):            ~
+
+    env(SECRET):                ThisTokenIsNotSoSecretChangeIt
