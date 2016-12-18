@@ -1,7 +1,8 @@
 {
   "name": "enmarche_fr",
   "scripts": {
-    "build": "node_modules/.bin/webpack --config webpack.config.prod.js",
+    "build-prod": "node_modules/.bin/webpack --config webpack.config.prod.js",
+    "build-dev": "node_modules/.bin/webpack --config webpack.config.dev.js",
     "watch": "node_modules/.bin/webpack --config webpack.config.dev.js --progress --colors --watch",
     "test": "node_modules/.bin/mocha-webpack --webpack-config webpack.config.dev.js --recursive front/tests"
   },
