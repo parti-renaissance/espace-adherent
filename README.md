@@ -1,9 +1,7 @@
-En Marche !
-===========
-
 ![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/web/logo/small_bg_white.jpg)
 
-Ce repository est l'application [Symfony](http://symfony.com) propulsant la plateforme [en-marche.fr](https://en-marche.fr).
+Ce repository est l'application [Symfony](http://symfony.com) qui propulsera la nouvelle plateforme
+[en-marche.fr](https://en-marche.fr).
 
 Le site internet en-marche.fr est une plateforme permettant la communication en ligne et l'organisation du mouvement
 *En Marche !*. Ses objectifs sont les suivants :
