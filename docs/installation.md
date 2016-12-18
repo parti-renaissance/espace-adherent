@@ -15,7 +15,7 @@ n'hésitez pas à nous poser la question [sur Slack](https://slack.en-marche.fr)
 
 ## 1. Services et outils requis pour développer
 
-Les services/outils suivants sont nécessaire pour développer :
+Les services/outils suivants sont nécessaires pour développer :
  
 - MariaDB 5.5+
 - PHP 7.0+
@@ -24,14 +24,15 @@ Les services/outils suivants sont nécessaire pour développer :
 
 ### a. MariaDB
 
-Un serveur de base de donnée MariaDB est nécessaire pour travailler sur le projet.
+Un serveur de base de donnée MariaDB est requis pour travailler sur le projet.
 Deux méthodes de mise en place sont disponibles : en utilisant Docker ou à la main.
 
 #### Docker et docker-compose
 
-Si vous utilisez Docker et docker-compose, il est aisé de démarrer le serveur MariaDB : lancez simplement
-à la racine du projet `docker-compose up -d`. Cela créera un serveur MariaDB accessible sur le port 3306 (si vous
-êtes sous Mac OS ou Windows, vous aurez besoin de travailler avec l'IP de votre machine virtuelle).
+Si vous utilisez Docker et docker-compose, il est aisé de démarrer un serveur MariaDB : lancez simplement
+à la racine du projet la commande `docker-compose up -d`. Cela créera un serveur MariaDB accessible sur
+le port 3306 de votre machine (si vous êtes sous Mac OS ou Windows, vous aurez besoin de travailler
+avec l'IP de votre machine virtuelle).
 
 Si vous utilisez Docker, la base de donnée sera configurée automatiquement.
 
@@ -56,36 +57,36 @@ Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies
 Certaines extensions PHP sont de plus requises par Symfony pour fonctionner correctement. Pour vérifier que votre
 système est correctement configuré pour Symfony, allez dans le dossier du projet et lancez `php bin/symfony_requirements`.
 Cela vous donnera quelque chose comme :
-
-```
-Symfony Requirements Checker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-> PHP is using the following php.ini file:
-  /etc/php/7.0/cli/php.ini
-
-> Checking Symfony requirements:
-  ................................W........
-
-                                              
- [OK]                                         
- Your system is ready to run Symfony projects 
-                                              
-
-Optional recommendations to improve your setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- * intl ICU version installed on your system is outdated (55.1) and
-   does not match the ICU data bundled with Symfony (57.1)
-   > To get the latest internationalization data upgrade the ICU
-   > system package and the intl PHP extension.
-
-
-Note  The command console could use a different php.ini file
-~~~~  than the one used with your web server. To be on the
-      safe side, please check the requirements from your web
-      server using the web/config.php script.
-```
+    
+    ```
+    Symfony Requirements Checker
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    > PHP is using the following php.ini file:
+      /etc/php/7.0/cli/php.ini
+    
+    > Checking Symfony requirements:
+      ................................W........
+    
+                                                  
+     [OK]                                         
+     Your system is ready to run Symfony projects 
+                                                  
+    
+    Optional recommendations to improve your setup
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+     * intl ICU version installed on your system is outdated (55.1) and
+       does not match the ICU data bundled with Symfony (57.1)
+       > To get the latest internationalization data upgrade the ICU
+       > system package and the intl PHP extension.
+    
+    
+    Note  The command console could use a different php.ini file
+    ~~~~  than the one used with your web server. To be on the
+          safe side, please check the requirements from your web
+          server using the web/config.php script.
+    ```
 
 Notez bien que les recommandations optionnelles ne vous empêcheront pas de travailler sur le projet.
 
@@ -137,7 +138,7 @@ $ yarn --version
 
 ## 2. Lancer le projet en local
 
-Une fois que vous avez PHP, MySQL ou MariaDB et Composer installés, vous pouvez commencer à configurer le projet.
+Une fois que vous avez PHP, MySQL/MariaDB, Composer et nodeJS/yarn installés, vous pouvez commencer à configurer le projet.
 
 ### a. Installer les dépendances PHP du projet
 
@@ -155,7 +156,7 @@ valeurs de configuration lors de l'étape d'installation, vous pouvez appuyer su
 Composer.
 
 Un mailer n'est pas requis pour faire fonctionner la plateforme, cependant si vous utilisez le fichier
-docker-compose.yml du projet, vous aurez un mailer de test disponible à l'URL [http://localhost:9080](http://localhost:9080).
+`docker-compose.yml` du projet, vous aurez un mailer de test disponible à l'URL [http://localhost:9080](http://localhost:9080).
 
 ### b. Installer les dépendances Javascript du projet
 
