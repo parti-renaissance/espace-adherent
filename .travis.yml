@@ -28,3 +28,6 @@ install:
 script:
     - if [[ $TEST_TYPE = php ]]; then phpunit; fi
     - if [[ $TEST_TYPE = js ]]; then npm test; fi
+
+notifications:
+    email: false
