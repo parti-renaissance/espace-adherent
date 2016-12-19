@@ -13,4 +13,4 @@ parameters:
 
     env(SENTRY_DSN):            ~
 
-    env(SECRET):                ThisTokenIsNotSoSecretChangeIt
+    env(SECRET):                ab2f3477e2b72055492b75f12490b172

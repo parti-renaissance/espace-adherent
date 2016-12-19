@@ -1,6 +1,7 @@
 {
-    "name": "tgalopin/en.marche.fr",
-    "license": "proprietary",
+    "name": "enmarche/en-marche.fr",
+    "description": "La plateforme citoyenne d'En Marche ! (https://en-marche.fr)",
+    "license": "MIT",
     "type": "project",
     "autoload": {
         "psr-4": {
