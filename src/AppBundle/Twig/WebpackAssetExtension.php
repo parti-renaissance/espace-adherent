@@ -20,7 +20,7 @@ class WebpackAssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('webpack_asset', [ $this, 'webpackAsset' ]),
+            new \Twig_SimpleFunction('webpack_asset', [$this, 'webpackAsset']),
         );
     }
 

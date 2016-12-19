@@ -22,6 +22,7 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
+        name:        enmarche
         handler_id:  session.handler.native_file
         save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~

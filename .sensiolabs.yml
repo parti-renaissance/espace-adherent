@@ -1,0 +1,8 @@
+php_version: 7
+
+ignore_branches:
+    - gh-pages
+
+commit_failure_conditions:
+    - "project.severity.critical > 0"
+    - "project.severity.major > 0"

@@ -66,7 +66,7 @@ module.exports = {
 
         function() {
             this.plugin('done', function(stats) {
-                fs.writeFile(path.join(__dirname, 'app/config', 'assets_version.yml'), "parameters:\n    assets_hash: "+stats.hash);
+                fs.writeFile(path.join(__dirname, 'app/config', 'assets_version.yml'), "parameters:\n    assets_hash: "+stats.hash+"\n");
             });
         }
     ]
