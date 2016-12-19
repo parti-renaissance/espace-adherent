@@ -1,5 +1,8 @@
 ![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/web/logo/small_bg_white.jpg)
 
+[![Build Status](https://travis-ci.org/EnMarche/en-marche.fr.svg?branch=master)](https://travis-ci.org/EnMarche/en-marche.fr)
+[![StyleCI](https://styleci.io/repos/76485630/shield?branch=master)](https://styleci.io/repos/76485630)
+
 Ce repository est l'application [Symfony](http://symfony.com) qui propulsera la nouvelle plateforme
 [en-marche.fr](https://en-marche.fr).
 
