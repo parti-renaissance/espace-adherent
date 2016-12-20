@@ -13,7 +13,7 @@ Le site internet en-marche.fr est une plateforme permettant la communication en 
   les nouveautés à propos du mouvement.
 - Permettre à toute personne intéressée par les idées d'Emmanuel Macron d'exprimer son soutien à *En Marche !* au travers
   d'un don financier et/ou d'une adhésion en ligne au mouvement.
-- Organiser les strctures nationales, régionales et locales du mouvement pour fédérer le mouvement à travers la France.
+- Organiser les structures nationales, régionales et locales du mouvement pour fédérer le mouvement à travers la France.
 
 ## Comment puis-je aider ?
 
