@@ -5,8 +5,8 @@ La plateforme en-marche.fr est basée sur les outils open-source suivants :
 - [Symfony](http://symfony.com/), framework PHP développé par la société française [SensioLabs](https://sensiolabs.com/fr)
 - [React](https://facebook.github.io/react/), framework Javascript développé par Facebook
 - [SASS](http://sass-lang.com/), language étendant les possibilités de CSS
-- [Webpack](https://webpack.github.io/docs/), l'aggrégateur de modules Javascript
-- [MariaDB](https://mariadb.org/), le moteur de base de donnée dérivé de MariaDB
+- [Webpack](https://webpack.github.io/docs/), aggrégateur de modules Javascript
+- [MariaDB](https://mariadb.org/), moteur de base de donnée dérivé de MySQL
 
 Pour développer en local sur le projet, il vous faudra donc installer et configurer certaines dépendances.
 
