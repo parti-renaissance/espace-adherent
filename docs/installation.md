@@ -205,12 +205,13 @@ Si vous accédez à l'URL [http://127.0.0.1:8000](http://127.0.0.1:8000), vous d
 ### e. Compilation continuelle du CSS et du Javascript
 
 D'autre part, si vous faites des modifications sur le front-end, vous voudrez 
-surement que vos changements soient pris en compte en temps réel. Cela vous 
+sûrement que vos changements soient pris en compte en temps réel. Cela vous 
 permettra de ne pas avoir à relancer la compilation du CSS et du Javascript 
-àpres chaque modification de code.
+après chaque modification de code.
 
 ```
 $ cd /chemin/vers/le/projet
 $ npm run watch
 ```
+
 A lancer en parallèle du server de développement.
