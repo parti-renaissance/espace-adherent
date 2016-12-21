@@ -20,7 +20,7 @@ rendez-vous sur [le site officiel (en anglais)](https://git-scm.com).
 
 2. Récupérez le code de votre fork.
 
-3. Installez ensuite le projet en suivant [les instructions d'installation](docs/installation.md).
+3. Installez ensuite le projet en suivant [les instructions d'installation](docs/1. Installer le projet en local.md).
 
 4. Lorsque nous travaillons avec Git, nous utilisons un processus de développement basé sur "une branche par fonctionnalité/bug".
    La première chose à faire une fois que votre projet est installé est donc de créer une branche pour votre travail.
@@ -126,7 +126,7 @@ Dès que vous avez commencé à écrire du code, n'hésitez pas à rapidement cr
 [pull request](https://help.github.com/articles/about-pull-requests/). Faire ainsi transférera la tâche que vous avez
 choisie dans la colonne *En cours* et permettra à quiconque de commenter votre modification.
 
-N'hésitez pas à lire la [documentation pour développeurs](docs/index.md) qui vous aidera à comprendre l'organisation
+N'hésitez pas à lire la [documentation pour développeurs](docs) qui vous aidera à comprendre l'organisation
 technique du projet.
 
 
@@ -144,7 +144,7 @@ Si vous n'avez pas trouvé de signalement de votre problème, vous pouvez alors 
 
 Si vous êtes un développeur et que vous souhaitez travailler sur le problème, n'hésitez pas à créer une
 une [pull request](https://help.github.com/articles/about-pull-requests/) pour démarrer votre travail et à
-lire la [documentation pour développeurs](docs/index.md) qui vous aidera à comprendre l'organisation technique du projet.
+lire la [documentation pour développeurs](docs) qui vous aidera à comprendre l'organisation technique du projet.
 
 
 ## Je ne sais pas comment aider
@@ -154,7 +154,7 @@ nous les marquons "easy pick", ce qui signifie que cette tâche est accessible a
 [liste des issues](https://github.com/EnMarche/en-marche.fr/issues) et explorer ce que vous pourriez faire. N'hésitez pas
 à bien lire toute l'issue pour vérifier que personne ne travaille déjà sur la tâche.
 
-La [documentation pour développeurs](docs/index.md) est aussi un bon moyen de commencer à apréhender le code et le projet.
+La [documentation pour développeurs](docs) est aussi un bon moyen de commencer à apréhender le code et le projet.
 N'hésitez pas non plus à [nous rejoindre sur Slack](https://slack.en-marche.fr) pour discuter de ce que vous pourriez faire.
 
 
