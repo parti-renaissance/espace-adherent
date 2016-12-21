@@ -19,3 +19,4 @@
 !web/built/.gitkeep
 /node_modules/
 /.tmp
+.DS_Store
