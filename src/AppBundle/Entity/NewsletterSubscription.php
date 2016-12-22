@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * NewsletterSubscription
  *
- * @UniqueEntity(fields={"email"}, message="Cet email est déjà enregistré")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà enregistré !")
  * @ORM\Table(name="newsletter_subscription")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
  */
