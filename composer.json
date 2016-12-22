@@ -34,11 +34,14 @@
         "sentry/sentry-symfony": "^0.6.0",
         "ramsey/uuid-doctrine": "^1.2",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "league/flysystem": "^1.0",
+        "superbalist/flysystem-google-storage": "^3.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "phpunit/phpunit": "^5.7"
     },
     "scripts": {
         "symfony-scripts": [
