@@ -23,7 +23,7 @@ n'existe que par ses membres. Nous serions donc bien évidemment ravis que vous 
 Pour commencer à contribuer, la meilleure manière est de suivre [le guide de contribution](CONTRIBUTING.md).
 
 Pour installer le projet en local et comprendre son organisation technique, suivez 
-[la documentation pour développeurs](docs/index.md).
+[la documentation pour développeurs](docs).
 
 Si vous avez besoin d'aide, nous sommes disponibles [sur Slack](https://slack.en-marche.fr) ou 
 [sur Twitter](https://twitter.com/enmarchetech) pour vous accompagner.
