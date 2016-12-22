@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * NewsletterSubscription
  *
- * @UniqueEntity(fields={"email"}, message="Cet email est déjà utilisé")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà enregistré")
  * @ORM\Table(name="newsletter_subscription")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
  */
@@ -49,7 +49,8 @@ class NewsletterSubscription
     /**
     * @param string $email
     */
-    public function setIdFromEmail($email) {
+    public function setIdFromEmail($email)
+    {
         $this->id = Uuid::uuid5(Uuid::NAMESPACE_URL, $email);
     }
 
@@ -65,7 +66,8 @@ class NewsletterSubscription
     *
     * @param string $email
     */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 }

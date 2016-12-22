@@ -26,7 +26,7 @@ class NewsletterController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($newsletter);
             $em->flush();
-            $request->getSession()->getFlashBag()->add('info', 'Email bien enregistrée');
+            $request->getSession()->getFlashBag()->add('info', 'Email bien enregistré');
         }
 
         return $this->render('newsletter/newsletter.html.twig' ,array(
