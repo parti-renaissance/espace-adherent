@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * NewsletterSubscription
+ * NewsletterSubscription.
  *
  * @UniqueEntity(fields={"email"}, message="Cet email est déjà enregistré !")
  * @ORM\Table(name="newsletter_subscription")
@@ -17,17 +17,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class NewsletterSubscription
 {
-
     /**
-    * @var UuidInterface
-    *
-    * @ORM\Id
-    * @ORM\Column(type="uuid")
-    */
+     * @var UuidInterface
+     *
+     * @ORM\Id
+     * @ORM\Column(type="uuid")
+     */
     private $id;
 
     /**
-     * @var string $email
+     * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      * @Assert\NotBlank()
@@ -47,8 +46,8 @@ class NewsletterSubscription
     }
 
     /**
-    * @param string $email
-    */
+     * @param string
+     */
     public function setIdFromEmail($email)
     {
         $this->id = Uuid::uuid5(Uuid::NAMESPACE_URL, $email);
@@ -63,9 +62,9 @@ class NewsletterSubscription
     }
 
     /**
-    *
-    * @param string $email
-    */
+     *
+     * @param string $email
+     */
     public function setEmail($email)
     {
         $this->email = $email;

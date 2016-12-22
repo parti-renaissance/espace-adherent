@@ -27,6 +27,6 @@ class NewsletterSubscriptionType extends AbstractType
 
     public function getName()
     {
-      return 'appbundle_newsletter_subscription';
+        return 'appbundle_newsletter_subscription';
     }
 }
