@@ -5,21 +5,24 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * NewsletterSubscription
  *
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà utilisé")
  * @ORM\Table(name="newsletter_subscription")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
  */
 class NewsletterSubscription
 {
+
     /**
     * @var UuidInterface
     *
-    * @Id
-    * @Column(type="uuid")
-    * @GeneratedValue(strategy="NONE")
+    * @ORM\Id
+    * @ORM\Column(type="uuid")
     */
     private $id;
 
@@ -27,18 +30,13 @@ class NewsletterSubscription
      * @var string $email
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      * @Assert\Email(
-     *      message = "The email '{{ value }}' is not a valid email.",
+     *      message = "L'email '{{ value }}' n'est pas valide.",
      *      checkMX = true
      *)
      */
     private $email;
-
-    public function __construct($email)
-    {
-       $this->id = Uuid::uuid5(Uuid::NAMESPACE_URL, $email);
-       $this->email = $email;
-    }
 
     /**
      * @return int
@@ -49,10 +47,25 @@ class NewsletterSubscription
     }
 
     /**
+    * @param string $email
+    */
+    public function setIdFromEmail($email) {
+        $this->id = Uuid::uuid5(Uuid::NAMESPACE_URL, $email);
+    }
+
+    /**
      * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+    *
+    * @param string $email
+    */
+    public function setEmail($email) {
+        $this->email = $email;
     }
 }
