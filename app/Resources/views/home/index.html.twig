@@ -2,6 +2,30 @@
 
 {% block content %}
     <p>
-        Hello world!
+        Articles
     </p>
+
+    <ul>
+        {% for article in articles %}
+            <li>
+                <a href="{{ article.link }}">{{ article.title }}</a>
+                <br />
+                {{ article.subtitle }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p>
+        Live links
+    </p>
+
+    <ul>
+        {% for live_link in live_links %}
+            <li>
+                <a href="{{ live_link.link }}">
+                    {{ live_link.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
