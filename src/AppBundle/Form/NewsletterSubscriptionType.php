@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Form;
 
 use AppBundle\Entity\NewsletterSubscription;

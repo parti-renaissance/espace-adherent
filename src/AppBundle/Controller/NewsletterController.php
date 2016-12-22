@@ -26,6 +26,7 @@ class NewsletterController extends Controller
             $em->flush();
             $request->getSession()->getFlashBag()->add('info', 'Email bien enregistré !');
         }
+
         return $this->render('newsletter/newsletter.html.twig', array(
             'form' => $form->createView(),
         ));
