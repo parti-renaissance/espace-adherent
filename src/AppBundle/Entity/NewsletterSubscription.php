@@ -62,7 +62,6 @@ class NewsletterSubscription
     }
 
     /**
-     *
      * @param string $email
      */
     public function setEmail($email)
