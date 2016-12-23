@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% for message in app.session.flashbag.get('info') %}
+        <p>Message: {{ message }}</p>
+    {% endfor %}
+    <div class="well">
+        <h3>Inscription à la newsletter</h3>
+        {{ form(form) }}
+    </div>
+{% endblock %}
