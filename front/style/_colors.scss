@@ -1,0 +1,40 @@
+// Colors
+$pink: #FF3680;
+$pink-hover: #E53072;
+$green: #55F0B8;
+$green-hover: #4CD7A5;
+$blue: #01B2FB;
+$blue-hover: #009FE1;
+
+// Grays
+$gray--dark: #666;
+$gray: #BCBCBC;
+$gray-light: #E5E5E5;
+$gray-lighter: #F2F2F2;
+
+// Hovers
+@mixin hover($color) {
+    color: rgba($color, 0.4);
+    border-color: rgba($color, 0.4);
+    fill: rgba($color, 0.4);
+}
+
+@mixin hover--stroke($color) {
+    stroke: rgba($color, 0.4);
+}
+
+.background--primary {
+    background: $pink;
+}
+
+.background--light {
+    background: $gray-light;
+}
+
+.background--lighter {
+    background: $gray-lighter;
+}
+
+.background--blue {
+    background: $blue;
+}
