@@ -4,6 +4,9 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    debug: true,
+    noInfo: false,
+    target:'web',
     context: path.join(__dirname, './front'),
     entry: {
         kernel: ['kernel'],
