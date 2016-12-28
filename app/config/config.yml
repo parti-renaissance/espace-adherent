@@ -2,7 +2,8 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: assets_version.yml }
-    - { resource: services.xml }
+    - { resource: services/twig.xml }
+    - { resource: services/content.xml }
 
 parameters:
     locale: fr
@@ -83,3 +84,12 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
+
+lexik_paybox:
+    parameters:
+        production:  false
+        site:        '1999888'
+        rank:        '32'
+        login:       '3'
+        hmac:
+            key: '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'
