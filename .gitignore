@@ -20,4 +20,3 @@
 /node_modules/
 /.tmp
 .DS_Store
-/gcloud-service-key.json
