@@ -1,8 +1,8 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: services.yml }
     - { resource: assets_version.yml }
+    - { resource: services.xml }
 
 parameters:
     locale: fr

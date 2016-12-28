@@ -1,0 +1,32 @@
+#
+# Liste des articles
+# Pour chaque article:
+#   type: "article" pour un lien simple, "video" pour afficher une icone de vidéo
+#   title: nom affiché
+#   subtitle: description très brève de l'article (utilisée seulement dans la bannière principale sur ordinateur)
+#   image: image de fond du bloc de l'article
+#   link: URL cible au clic sur le bloc de l'article
+#
+articles:
+    banner:
+        type: "article"
+        title: "Signez l’appel « Elles Marchent »"
+        subtitle: "Nous constatons qu’au-delà des droits formels que les femmes ont obtenus, nous devons passer aux droits réels."
+        image: "https://en-marche.fr/wp-content/uploads/2016/12/Ellesmarchent_site_2.jpg"
+        link: "https://en-marche.fr/signez-lappel-marchent/"
+
+    row1_col1:
+        type: "video"
+        title: "Tribune de Richard Ferrand"
+        image: "https://pbs.twimg.com/profile_images/664015046633238528/KlAMkY_B.jpg"
+        link: "http://www.richardferrand.fr/2016/12/quand-le-ministre-eckert-fait-expres-ou-pas-de-ne-pas-comprendre/"
+
+#
+# Liste des liens "En Direct"
+# Pour chaque lien:
+#   title: nom affiché
+#   link: URL cible au clic sur le nom du lien
+#
+live_links:
+    - { title: "Guadeloupe", link: "https://en-marche.fr/outre-mer-lun-piliers-de-richesse-culturelle/" }
+    - { title: "Quand le ministre Eckert", link: "http://www.richardferrand.fr/2016/12/quand-le-ministre-eckert-fait-expres-ou-pas-de-ne-pas-comprendre/" }
