@@ -4,9 +4,9 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Table(name="donations")
@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
 class Donation
 {
     /**
-     * @var Uuid
+     * @var UuidInterface
      *
      * @ORM\Column(type="uuid")
      * @ORM\Id
@@ -137,6 +137,13 @@ class Donation
     private $payboxPayload;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $finished;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -154,14 +161,18 @@ class Donation
     {
         $this->donatedAt = new \DateTime();
         $this->country = 'FR';
+        $this->finished = false;
+
+        $this->phone = new PhoneNumber();
+        $this->phone->setCountryCode(33);
     }
 
-    public function getId(): Uuid
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): Donation
+    public function setId(UuidInterface $id): Donation
     {
         $this->id = $id;
         return $this;
@@ -365,6 +376,17 @@ class Donation
     public function setPayboxPayload(string $payboxPayload): Donation
     {
         $this->payboxPayload = $payboxPayload;
+        return $this;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(bool $finished): Donation
+    {
+        $this->finished = $finished;
         return $this;
     }
 

@@ -4,18 +4,17 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Webpack extension for Twig -->
-        <service id="app.twig.webpack_asset_extension" class="AppBundle\Twig\WebpackAssetExtension" public="false">
-            <argument type="service" id="twig.extension.assets" />
-            <argument>%kernel.environment%</argument>
-            <argument>%assets_hash%</argument>
-
-            <tag name="twig.extension" />
-        </service>
-
         <!-- Filesystem -->
         <service id="app.filesystem" class="League\Flysystem\Filesystem" public="false">
-            <argument type="service" id="app.filesystem.adapter" />
+            <argument type="service">
+                <service class="League\Flysystem\Adapter\AdapterInterface">
+                    <factory class="AppBundle\Content\FilesystemAdapterFactory" method="createAdapter" />
+                    <argument>%kernel.environment%</argument>
+                    <argument>%kernel.root_dir%/data</argument>
+                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
+                    <argument>%env(GCLOUD_BUCKET)%</argument>
+                </service>
+            </argument>
         </service>
 
         <!-- Markdown parser -->
