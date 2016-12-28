@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @Route("/je-donne")
+ * @Route("/don")
  */
 class DonationController extends Controller
 {
@@ -59,30 +59,30 @@ class DonationController extends Controller
 
         $paybox = $this->get('lexik_paybox.request_handler');
         $paybox->setParameters([
-            'PBX_CMD'          => 'CMD'.time(),
-            'PBX_DEVISE'       => '978',
-            'PBX_RETOUR'       => 'Mt:M;Ref:R;Auto:A;Erreur:E',
+            'PBX_CMD' => 'CMD'.time(),
+            'PBX_DEVISE' => '978',
+            'PBX_RETOUR' => 'Mt:M;Ref:R;Auto:A;Erreur:E',
             'PBX_TYPEPAIEMENT' => 'CARTE',
-            'PBX_TYPECARTE'    => 'CB',
-            'PBX_RUF1'         => 'POST',
-            'PBX_PORTEUR'      => $donation->getEmail(),
-            'PBX_TOTAL'        => $donation->getAmount(),
-            'PBX_EFFECTUE'     => $this->generateUrl(
+            'PBX_TYPECARTE' => 'CB',
+            'PBX_RUF1' => 'POST',
+            'PBX_PORTEUR' => $donation->getEmail(),
+            'PBX_TOTAL' => $donation->getAmount(),
+            'PBX_EFFECTUE' => $this->generateUrl(
                 'donation_result',
                 ['status' => 'success', 'id' => $donation->getId()->toString()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ),
-            'PBX_REFUSE'       => $this->generateUrl(
+            'PBX_REFUSE' => $this->generateUrl(
                 'donation_result',
                 ['status' => 'denied', 'id' => $donation->getId()->toString()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ),
-            'PBX_ANNULE'       => $this->generateUrl(
+            'PBX_ANNULE' => $this->generateUrl(
                 'donation_result',
                 ['status' => 'canceled', 'id' => $donation->getId()->toString()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ),
-            'PBX_REPONDRE_A'   => $this->generateUrl(
+            'PBX_REPONDRE_A' => $this->generateUrl(
                 'lexik_paybox_ipn',
                 ['time' => time()],
                 UrlGeneratorInterface::ABSOLUTE_URL
@@ -90,7 +90,7 @@ class DonationController extends Controller
         ]);
 
         return $this->render('donation/call.html.twig', [
-            'url'  => $paybox->getUrl(),
+            'url' => $paybox->getUrl(),
             'form' => $paybox->getForm()->createView(),
         ]);
     }

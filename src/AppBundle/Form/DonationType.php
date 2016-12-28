@@ -42,7 +42,7 @@ class DonationType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ]);
     }
-    
+
     /**
      * {@inheritdoc}
      */
