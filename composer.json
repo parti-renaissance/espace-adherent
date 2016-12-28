@@ -40,7 +40,8 @@
         "league/flysystem": "^1.0",
         "superbalist/flysystem-google-storage": "^3.0",
         "league/flysystem-cached-adapter": "^1.0",
-        "league/flysystem-memory": "^1.0"
+        "league/flysystem-memory": "^1.0",
+        "misd/phone-number-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

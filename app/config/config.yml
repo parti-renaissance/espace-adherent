@@ -8,6 +8,7 @@ parameters:
     locale: fr
 
 framework:
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%env(SECRET)%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -48,7 +49,8 @@ doctrine:
         unix_socket: "%env(DATABASE_SOCKET)%"
 
         types:
-            uuid:    Ramsey\Uuid\Doctrine\UuidType
+            uuid:           Ramsey\Uuid\Doctrine\UuidType
+            phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
