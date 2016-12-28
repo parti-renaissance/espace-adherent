@@ -38,7 +38,9 @@ class DonationType extends AbstractType
             ->add('postalCode', TextType::class)
             ->add('city', ChoiceType::class)
             ->add('address', TextType::class)
-            ->add('phone', PhoneNumberType::class);
+            ->add('phone', PhoneNumberType::class, [
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+            ]);
     }
     
     /**

@@ -1,6 +1,5 @@
 imports:
     - { resource: config.yml }
-    - { resource: services_prod.xml }
 
 #doctrine:
 #    orm:
