@@ -10,6 +10,7 @@ class UnitedNationsBundle
      * Returns the list of the United Nations member states translated in a given locale.
      *
      * @param string $locale
+     *
      * @return array
      */
     public static function getCountries($locale = 'fr'): array

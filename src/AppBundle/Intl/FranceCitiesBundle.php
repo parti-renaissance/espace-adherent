@@ -48685,7 +48685,7 @@ class FranceCitiesBundle
             '97221' => 'Rivière-Salée',
         ],
         '97216' => [
-            '97201' => 'L\' Ajoupa-Bouillon',
+            '97201' => 'L\'Ajoupa-Bouillon',
         ],
         '97217' => [
             '97202' => 'Les Anses-d\'Arlet',
@@ -48895,6 +48895,10 @@ class FranceCitiesBundle
         ],
         '97480' => [
             '97412' => 'Saint-Joseph',
+        ],
+        '97500' => [
+            '97501' => 'Miquelon-Langlade',
+            '97502' => 'Saint-Pierre',
         ],
         '97600' => [
             '97610' => 'Koungou',

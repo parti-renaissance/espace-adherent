@@ -22,4 +22,13 @@ class HomeControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('html:contains("Guadeloupe")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
+
+    public function testArticle()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/article/2016-12-22-outre-mer-lun-piliers-de-richesse-culturelle');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('html:contains("Emmanuel Macron était l’invité de Guadeloupe 1ère le 17 décembre.")')->count());
+    }
 }
