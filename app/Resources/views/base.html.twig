@@ -87,6 +87,12 @@
         </script>
     </head>
     <body>
+        {% for message in app.session.flashbag.get('info') %}
+            <p>
+                {{ message }}
+            </p>
+        {% endfor %}
+
         {% block content %}{% endblock %}
 
         {% block javascripts %}{% endblock %}
