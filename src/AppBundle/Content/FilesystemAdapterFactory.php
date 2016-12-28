@@ -12,12 +12,12 @@ class FilesystemAdapterFactory
 {
     public static function createAdapter(string $environment, string $localPath, $gcloudId, $gcloudBucket)
     {
-        if ($environment === 'dev') {
+        if ($environment !== 'prod') {
             return new Local($localPath);
         }
 
         $storage = new StorageClient([
-            'projectId' => $gcloudId
+            'projectId' => $gcloudId,
         ]);
 
         return new CachedAdapter(

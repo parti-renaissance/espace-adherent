@@ -24,7 +24,7 @@ class Donation
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      *
@@ -175,6 +175,7 @@ class Donation
     public function setId(UuidInterface $id): Donation
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -189,6 +190,7 @@ class Donation
     public function setAmount(int $amount): Donation
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -203,6 +205,7 @@ class Donation
     public function setGender(string $gender): Donation
     {
         $this->gender = $gender;
+
         return $this;
     }
 
@@ -217,6 +220,7 @@ class Donation
     public function setLastName(string $lastName): Donation
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -231,6 +235,7 @@ class Donation
     public function setFirstName(string $firstName): Donation
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -245,6 +250,7 @@ class Donation
     public function setEmail(string $email): Donation
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -258,11 +264,13 @@ class Donation
 
     /**
      * @param string|null $address
+     *
      * @return Donation
      */
     public function setAddress($address): Donation
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -277,6 +285,7 @@ class Donation
     public function setPostalCode(string $postalCode): Donation
     {
         $this->postalCode = $postalCode;
+
         return $this;
     }
 
@@ -291,6 +300,7 @@ class Donation
     public function setCity(string $city): Donation
     {
         $this->city = $city;
+
         return $this;
     }
 
@@ -302,6 +312,7 @@ class Donation
     public function setCountry(string $country): Donation
     {
         $this->country = $country;
+
         return $this;
     }
 
@@ -315,11 +326,13 @@ class Donation
 
     /**
      * @param PhoneNumber|null $phone
+     *
      * @return Donation
      */
     public function setPhone($phone): Donation
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -334,6 +347,7 @@ class Donation
     public function setPayboxRcode(string $payboxRcode): Donation
     {
         $this->payboxRcode = $payboxRcode;
+
         return $this;
     }
 
@@ -348,6 +362,7 @@ class Donation
     public function setPayboxAuth(string $payboxAuth): Donation
     {
         $this->payboxAuth = $payboxAuth;
+
         return $this;
     }
 
@@ -362,6 +377,7 @@ class Donation
     public function setPayboxPaid(string $payboxPaid): Donation
     {
         $this->payboxPaid = $payboxPaid;
+
         return $this;
     }
 
@@ -376,6 +392,7 @@ class Donation
     public function setPayboxPayload(string $payboxPayload): Donation
     {
         $this->payboxPayload = $payboxPayload;
+
         return $this;
     }
 
@@ -387,6 +404,7 @@ class Donation
     public function setFinished(bool $finished): Donation
     {
         $this->finished = $finished;
+
         return $this;
     }
 
@@ -401,6 +419,7 @@ class Donation
     public function setClientIp(string $clientIp): Donation
     {
         $this->clientIp = $clientIp;
+
         return $this;
     }
 
@@ -412,6 +431,7 @@ class Donation
     public function setDonatedAt(\DateTime $donatedAt): Donation
     {
         $this->donatedAt = $donatedAt;
+
         return $this;
     }
 }
