@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Webpack extension for Twig -->
+        <service id="app.twig.webpack_asset_extension" class="AppBundle\Twig\WebpackAssetExtension" public="false">
+            <argument type="service" id="twig.extension.assets" />
+            <argument>%kernel.environment%%</argument>
+            <argument>%assets_hash%</argument>
+
+            <tag name="twig.extension" />
+        </service>
+
+        <!-- Filesystem -->
+        <service id="app.filesystem" class="League\Flysystem\Filesystem" public="false">
+            <argument type="service" id="app.filesystem.adapter" />
+        </service>
+
+        <!-- Markdown parser -->
+        <service id="app.markdown" class="League\CommonMark\CommonMarkConverter" public="false" />
+
+        <!-- Home configuration repository -->
+        <service id="app.filesystem.article_repository" class="AppBundle\Content\ArticleRepository">
+            <argument type="service" id="app.filesystem" />
+            <argument type="service" id="app.markdown" />
+            <argument type="service" id="logger" />
+        </service>
+
+    </services>
+</container>

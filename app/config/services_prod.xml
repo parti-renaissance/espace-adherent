@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Google Cloud Storage filesystem in production -->
+        <service id="app.google_cloud_storage" class="Google\Cloud\Storage\StorageClient" public="false">
+            <argument type="collection">
+                <argument key="projectId">%env(GCLOUD_PROJECT_ID)%</argument>
+            </argument>
+        </service>
+
+        <service id="app.filesystem.adapter" class="League\Flysystem\Cached\CachedAdapter">
+            <argument type="service">
+                <service class="Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter">
+                    <argument type="service" id="app.google_cloud_storage" />
+                    <argument type="service">
+                        <service class="Google\Cloud\Storage\Bucket">
+                            <factory service="app.google_cloud_storage" method="bucket" />
+                            <argument>%env(GCLOUD_BUCKET)%</argument>
+                        </service>
+                    </argument>
+                </service>
+            </argument>
+            <argument type="service">
+                <service class="League\Flysystem\Cached\Storage\Memory" />
+            </argument>
+        </service>
+
+    </services>
+</container>

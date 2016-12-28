@@ -14,3 +14,6 @@ parameters:
     env(SENTRY_DSN):            ~
 
     env(SECRET):                ab2f3477e2b72055492b75f12490b172
+
+    env(GCLOUD_PROJECT_ID):     ~
+    env(GCLOUD_BUCKET):         ~
