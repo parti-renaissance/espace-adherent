@@ -19,7 +19,7 @@ class Donation
      *
      * @ORM\Column(type="uuid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
@@ -38,7 +38,7 @@ class Donation
      *
      * @ORM\Column(type="string", length=10)
      *
-     * @Assert\Choice(choices={"male", "female"}, message="donation.gender.invalid_choice")
+     * @Assert\Choice(choices={"male", "female"}, message="donation.gender.invalid_choice", strict=true)
      */
     private $gender;
 
@@ -70,7 +70,7 @@ class Donation
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      *
@@ -79,14 +79,14 @@ class Donation
     private $address;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $postalCode;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=20, nullable=true)
      */
@@ -109,30 +109,23 @@ class Donation
     private $phone;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $payboxRcode;
+    private $payboxResultCode;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $payboxAuth;
+    private $payboxAuthorizationCode;
 
     /**
-     * @var string
+     * @var array|null
      *
-     * @ORM\Column(type="string", length=100)
-     */
-    private $payboxPaid;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="json_array", nullable=true)
      */
     private $payboxPayload;
 
@@ -144,22 +137,29 @@ class Donation
     private $finished;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $clientIp;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $donatedAt;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
-    private $donatedAt;
+    private $createdAt;
 
     public function __construct()
     {
-        $this->donatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->country = 'FR';
         $this->finished = false;
 
@@ -339,14 +339,14 @@ class Donation
     /**
      * @return string|null
      */
-    public function getPayboxRcode()
+    public function getPayboxResultCode()
     {
-        return $this->payboxRcode;
+        return $this->payboxResultCode;
     }
 
-    public function setPayboxRcode(string $payboxRcode): Donation
+    public function setPayboxResultCode(string $payboxResultCode)
     {
-        $this->payboxRcode = $payboxRcode;
+        $this->payboxResultCode = $payboxResultCode;
 
         return $this;
     }
@@ -354,42 +354,27 @@ class Donation
     /**
      * @return string|null
      */
-    public function getPayboxAuth()
+    public function getPayboxAuthorizationCode()
     {
-        return $this->payboxAuth;
+        return $this->payboxAuthorizationCode;
     }
 
-    public function setPayboxAuth(string $payboxAuth): Donation
+    public function setPayboxAuthorizationCode(string $payboxAuthorizationCode)
     {
-        $this->payboxAuth = $payboxAuth;
+        $this->payboxAuthorizationCode = $payboxAuthorizationCode;
 
         return $this;
     }
 
     /**
-     * @return string|null
-     */
-    public function getPayboxPaid()
-    {
-        return $this->payboxPaid;
-    }
-
-    public function setPayboxPaid(string $payboxPaid): Donation
-    {
-        $this->payboxPaid = $payboxPaid;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
+     * @return array|null
      */
     public function getPayboxPayload()
     {
         return $this->payboxPayload;
     }
 
-    public function setPayboxPayload(string $payboxPayload): Donation
+    public function setPayboxPayload(array $payboxPayload): Donation
     {
         $this->payboxPayload = $payboxPayload;
 
@@ -423,7 +408,10 @@ class Donation
         return $this;
     }
 
-    public function getDonatedAt(): \DateTime
+    /**
+     * @return \DateTime|null
+     */
+    public function getDonatedAt()
     {
         return $this->donatedAt;
     }
@@ -433,5 +421,10 @@ class Donation
         $this->donatedAt = $donatedAt;
 
         return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
     }
 }

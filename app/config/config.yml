@@ -2,8 +2,9 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: assets_version.yml }
-    - { resource: services/twig.xml }
     - { resource: services/content.xml }
+    - { resource: services/donation.xml }
+    - { resource: services/twig.xml }
 
 parameters:
     locale: fr
@@ -88,8 +89,8 @@ stof_doctrine_extensions:
 lexik_paybox:
     parameters:
         production:  false
-        site:        '1999888'
-        rank:        '32'
-        login:       '3'
+        site:        "%env(PAYBOX_SITE)%"
+        rank:        "%env(PAYBOX_RANK)%"
+        login:       "%env(PAYBOX_IDENTIFIER)%"
         hmac:
-            key: '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'
+            key:     "%env(PAYBOX_KEY)%"

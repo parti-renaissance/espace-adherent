@@ -18,3 +18,8 @@ parameters:
 
     env(GCLOUD_PROJECT_ID):     ~
     env(GCLOUD_BUCKET):         ~
+
+    env(PAYBOX_SITE):           ~
+    env(PAYBOX_RANK):           ~
+    env(PAYBOX_IDENTIFIER):     ~
+    env(PAYBOX_KEY):            ~
