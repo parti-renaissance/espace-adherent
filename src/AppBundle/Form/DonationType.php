@@ -36,7 +36,7 @@ class DonationType extends AbstractType
                 'choices' => array_flip(UnitedNationsBundle::getCountries($options['locale'] ?? 'fr')),
             ])
             ->add('postalCode', TextType::class)
-            ->add('city', ChoiceType::class)
+            ->add('city', TextType::class)
             ->add('address', TextType::class)
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
@@ -49,6 +49,7 @@ class DonationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'locale' => 'fr',
             'data_class' => 'AppBundle\Entity\Donation',
         ]);
     }

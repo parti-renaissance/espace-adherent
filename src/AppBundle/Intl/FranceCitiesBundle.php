@@ -14,6 +14,16 @@ class FranceCitiesBundle
         return self::$cities[$postalCode] ?? [];
     }
 
+    /**
+     * Returns the city for the given postal code and INSEE code or null if the city was not found.
+     *
+     * @return string|null
+     */
+    public static function getCity(string $postalCode, string $inseeCode)
+    {
+        return self::$cities[$postalCode][$inseeCode] ?? null;
+    }
+
     private static $cities = [
         '01000' => [
             '1053' => 'Bourg-en-Bresse',
