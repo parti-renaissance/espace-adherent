@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.donation.form_factory" class="AppBundle\Donation\FormFactory">
+            <argument>%kernel.environment%</argument>
+            <argument type="service" id="lexik_paybox.request_handler" />
+            <argument type="service" id="router" />
+        </service>
+
+        <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+
+            <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
+        </service>
+
+        <service id="app.donation.result_code_handler" class="AppBundle\Donation\ResultCodeHandler">
+            <argument type="service" id="router" />
+        </service>
+
+    </services>
+</container>
