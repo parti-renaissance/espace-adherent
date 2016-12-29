@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/don")
@@ -25,7 +24,7 @@ class DonationController extends Controller
     {
         $donation = new Donation();
 
-        $form = $this->createForm(DonationType::class, $donation);
+        $form = $this->createForm(DonationType::class, $donation, ['locale' => $request->getLocale()]);
         $form->add('submit', SubmitType::class);
 
         $form->handleRequest($request);
@@ -48,46 +47,16 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/paiement/{id}", name="donation_pay")
+     * @Route("/{id}/paiement", name="donation_pay", requirements={"id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
      * @Method("GET")
      */
-    public function callAction(Donation $donation)
+    public function payAction(Donation $donation)
     {
         if ($donation->isFinished()) {
-            throw $this->createNotFoundException();
+            return $this->redirectToRoute('donation_index');
         }
 
-        $paybox = $this->get('lexik_paybox.request_handler');
-        $paybox->setParameters([
-            'PBX_CMD' => 'CMD'.time(),
-            'PBX_DEVISE' => '978',
-            'PBX_RETOUR' => 'Mt:M;Ref:R;Auto:A;Erreur:E',
-            'PBX_TYPEPAIEMENT' => 'CARTE',
-            'PBX_TYPECARTE' => 'CB',
-            'PBX_RUF1' => 'POST',
-            'PBX_PORTEUR' => $donation->getEmail(),
-            'PBX_TOTAL' => $donation->getAmount(),
-            'PBX_EFFECTUE' => $this->generateUrl(
-                'donation_result',
-                ['status' => 'success', 'id' => $donation->getId()->toString()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'PBX_REFUSE' => $this->generateUrl(
-                'donation_result',
-                ['status' => 'denied', 'id' => $donation->getId()->toString()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'PBX_ANNULE' => $this->generateUrl(
-                'donation_result',
-                ['status' => 'canceled', 'id' => $donation->getId()->toString()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'PBX_REPONDRE_A' => $this->generateUrl(
-                'lexik_paybox_ipn',
-                ['time' => time()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-        ]);
+        $paybox = $this->get('app.donation.form_factory')->createPayboxFormForDonation($donation);
 
         return $this->render('donation/call.html.twig', [
             'url' => $paybox->getUrl(),
@@ -96,12 +65,31 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/resultat/{id}/{status}", name="donation_result")
-     * @Method({"GET", "POST"})
+     * @Route("/callback", name="donation_callback")
+     * @Method("GET")
      */
-    public function returnAction(Donation $donation, $status)
+    public function callbackAction(Request $request)
     {
-        dump($donation, $status);
+        $id = $request->query->get('id');
+
+        if (!$id || !Uuid::isValid($id)) {
+            return $this->redirectToRoute('donation_index');
+        }
+
+        $donation = $this->getDoctrine()->getManager()->find('AppBundle:Donation', $id);
+
+        return $this->get('app.donation.result_code_handler')->createRedirectResponseForDonation($donation);
+    }
+
+    /**
+     * @Route("/{id}/{status}", name="donation_result", requirements={"id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
+     * @Method("GET")
+     */
+    public function resultAction(Donation $donation, $status)
+    {
+        // TODO
+
+        dump($status, $donation);
         exit;
     }
 }
