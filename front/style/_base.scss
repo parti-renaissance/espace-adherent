@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    font-size: 16px;
+    font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    border-bottom: 1px solid black;
+    color: black;
+    
+    &:hover {
+        @include hover(black);
+        
+        path {
+            @include hover(black);
+            
+            &.stroke {
+                @include hover--stroke(black);
+            }
+        }
+    }    
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
