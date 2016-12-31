@@ -64,11 +64,13 @@
 <main>
     <section class="l__wrapper">
         <div class="l__row l__row--v-stretch b__nudge--bottom">
-            <a href="#" class="card card--large l__col--bottom" style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('http://i.imgur.com/71lCqaw.jpg') no-repeat; background-size: cover;">
-                <h2>«Je viens échanger, comprendre et construire.»</h2>
-                <p>Emmanuel Macron a sillonné la Guadeloupe, la Martinique et la Guyane pendant 5 jours.</p>
-                <div class="btn btn--no-border btn--inline">Lire</div>
-            </a>
+            {% for article in articles|slice(0,1) %}
+                <a href="{{ article.link }}" class="card card--large l__col--bottom" style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                    <h2>{{ article.title }}</h2>
+                    <p>{{ article.subtitle }}</p>
+                    <div class="btn btn--no-border btn--inline">Lire</div>
+                </a>
+            {% endfor %}
             <div class="comite l__col l__col--bottom space--30">
                 <h2 class="text--normal text--white">Déjà plus de 2900 comités «En Marche !»</h2>
                 <p class="text--white">Partout sur le territoire et à l’étranger, faites vivre le mouvement et portez ses valeurs.</p>
@@ -116,43 +118,35 @@
     </section>
     
     <section class="l__wrapper">
-        <!--  J'image que ce sont les news? Je les mets la en attendant. -->
-        <ul>
-            {% for article in articles %}
-                <li>
-                    <a href="{{ article.link }}">{{ article.title }}</a>
-                    <br />
-                    {{ article.subtitle }}
-                </li>
+        <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch">
+            {% for article in articles|slice(1,6) %}
+                <a href="{{ article.link }}" class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom"
+                   style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), 
+                                      url('{{ article.image }}') no-repeat;
+                                      background-size: cover;
+                                      background-position: center;">
+                    <li>
+                        <div class="card--{{ loop.index }}__image card--{{ loop.index }}--{{ article.type }}__image" style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                            <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Play icon</title>
+                                <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
+                                <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="headline">
+                            <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>Play icon</title>
+                                <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
+                                <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
+                            </svg>
+                            <h2>{{ article.title }}</h2>
+                        </div>
+                        <div class="card__share card--{{ loop.index }}__share">
+                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                        </div>
+                    </li>
+                </a>
             {% endfor %}
-        </ul>
-        <ul class="l__row l__row--h-stretch l__row--top space--20-0">
-            <li class="card--small">
-                <img src="https://unsplash.it/236/160">
-                <p class="text--medium">Richard Ferrand répond au ministre Christian Eckert</p>
-            </li>
-            <li class="card--small">
-                <img src="https://unsplash.it/236/160">
-                <p class="text--medium">Vous avez jusqu'au 31 décembre pour vous inscire !</p>
-            </li>
-            <li class="card--medium">
-                <img src="https://unsplash.it/482/300">
-                <p class="text--medium text--bold text--italic">Revivez le grand rassemblement du 10 décembre !</p>
-            </li>
-        </ul>
-        <ul class="l__row l__row--h-stretch l__row--top space--20-0">
-            <li class="card--medium">
-                <img src="https://unsplash.it/482/300">
-                <p class="text--medium text--bold text--italic">60 évènements ce week-end près de chez vous !</p>
-            </li>
-            <li class="card--small">
-                <img src="https://unsplash.it/236/160">
-                <p class="text--medium">Ils nous disent pourquoi ils sont En Marche !</p>
-            </li>
-            <li class="card--small">
-                <img src="https://unsplash.it/236/160">
-                <p class="text--medium">Découvrez les premières pages de «Révolution»</p>
-            </li>
         </ul>
         <div class="l__row l__row--center b__nudge--bottom-large">
             <a class="btn">Plus D'actualités</a>
