@@ -93,7 +93,7 @@
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
         <script type="text/javascript">
-            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? '\''~sentry_dsn~'\'' : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
+            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
         </script>
     </body>
 </html>
