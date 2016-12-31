@@ -81,10 +81,3 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
-
-sentry:
-    dsn: "%env(SENTRY_DSN)%"
-    app_path: "/app"
-    environment: "%kernel.environment%"
-    skip_capture:
-        - "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException"
