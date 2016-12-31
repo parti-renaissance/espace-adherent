@@ -46,7 +46,8 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories 
     && cd /app \
     && rm -rf docker \
     && SYMFONY_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev \
-    && chown -R nobody:nobody var
+    && chown -R nobody:nobody var \
+    && chmod 0444 gcloud-service-key.json
 
 COPY docker/php.ini /etc/php7/conf.d/50-setting.ini
 COPY docker/www.conf /etc/php7/php-fpm.d/www.conf
