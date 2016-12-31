@@ -18,7 +18,7 @@ class FilesystemAdapterFactory
 
         $storage = new StorageClient([
             'projectId' => $gcloudId,
-            'keyFilePath' => $gcloudKeyFilePath
+            'keyFilePath' => $gcloudKeyFilePath,
         ]);
 
         return new CachedAdapter(
