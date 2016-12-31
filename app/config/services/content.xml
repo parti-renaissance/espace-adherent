@@ -12,6 +12,7 @@
                     <argument>%kernel.environment%</argument>
                     <argument>%kernel.root_dir%/data</argument>
                     <argument>%env(GCLOUD_PROJECT_ID)%</argument>
+                    <argument>%kernel.root_dir%/../gcloud-service-key.json</argument>
                     <argument>%env(GCLOUD_BUCKET)%</argument>
                 </service>
             </argument>
