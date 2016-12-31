@@ -10,7 +10,7 @@ use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter;
 
 class FilesystemAdapterFactory
 {
-    public static function createAdapter(string $environment, string $localPath, $gcloudId, $gcloudBucket)
+    public static function createAdapter(string $environment, string $localPath, $gcloudId, $gcloudKeyFilePath, $gcloudBucket)
     {
         if ($environment !== 'prod') {
             return new Local($localPath);
@@ -18,7 +18,7 @@ class FilesystemAdapterFactory
 
         $storage = new StorageClient([
             'projectId' => $gcloudId,
-            'keyFilePath' => '/app/gcloud-service-key.json'
+            'keyFilePath' => $gcloudKeyFilePath
         ]);
 
         return new CachedAdapter(
