@@ -85,7 +85,7 @@ class DonationControllerTest extends WebTestCase
         $form = $crawler->filter('form[name=form_pay]')->form();
         $form['NUMERO_CARTE'] = '1111222233334444';
         $form['MOIS_VALIDITE'] = '12';
-        $form['AN_VALIDITE'] = '16';
+        $form['AN_VALIDITE'] = '32';
         $form['CVVX'] = '123';
 
         $crawler = $externalClient->submit($form);
