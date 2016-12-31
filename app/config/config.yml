@@ -34,7 +34,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         assets_hash:  "%assets_hash%"
-        sentry_dsn:   "%env(SENTRY_DSN)%"
+        sentry_dsn:   "%env(SENTRY_PUBLIC_DSN)%"
 
 doctrine:
     dbal:
