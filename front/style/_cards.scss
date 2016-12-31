@@ -1,39 +1,140 @@
 a.card, .card {
     display: flex;
-    padding: 30px;
     flex-direction: column;
+    margin: 0 0 30px 0;
 
     text-decoration: none;
-    color: white;
     border: none;
     
-    h2 {
-        text-decoration: none;
-        font-size: $text--size-large;
-        font-style: italic;
-        width: 50%;
-        letter-spacing: .9px;
-        line-height: 1;
+    svg {
+        display: none;
     }
     
-    p {
-        font-family: 'Roboto', sans-serif;
-        width: 40%;
-        letter-spacing: .3px;
-        line-height: 1.3;
+    &:hover {
+        color: #999;
+        
+        h2 {
+            color: #999;
+        }
+        
+        .outer {
+            stroke: #999;
+            fill: rgba(0,0,0,0);            
+        }
+        
+        .inner {
+            fill: #999;
+        }
+    }
+    
+    &__share {
+        font-family: 'Roboto';
+        text-transform: uppercase;
+        padding: 0 10px;
+        font-size: $text--size-small;
+        color: $gray;
+        
+        .fa {
+            font-size: $text--size-medium-small;
+            margin-left: 5px;
+        }
     }
     
     &--large {
         flex-basis: auto;
         flex-grow: 2;
+        color: white;
+        padding: 30px;
+        margin: 0;
+        
+        h2 {
+            text-decoration: none;
+            font-size: $text--size-large;
+            font-style: italic;
+            width: 50%;
+            letter-spacing: .9px;
+            line-height: 1;
+        }
+        
+        p {
+            font-family: 'Roboto', sans-serif;
+            width: 40%;
+            letter-spacing: .3px;
+            line-height: 1.3;
+        }
     }
     
-    &--medium {
+    &--medium,
+    &--3,
+    &--4 {
         width: 482px;
+        height: 300px;
+        padding: 22px;
+        box-sizing: border-box;
+        
+        h2 {
+            font-size: $text--size-large;
+            font-style: italic;
+            color: white;
+        }
+        
+        &--video {
+            h2 {
+                font-size: $text--size-medium;
+            }
+            
+            svg {
+                display: block;
+                margin-right: 20px;
+                width: 150px;
+            }
+            
+            .headline {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+          
+        &__image {
+            display: none !important;
+        }
+        
+        &__share {
+            padding: 15px 0 0 0;
+            color: white;
+        }
     }
     
-    &--small {
+    &--small,
+    &--1,
+    &--2,
+    &--5,
+    &--6  {
         width: 236px;
+        background: none !important;
+        
+        &__image {
+            height: 160px;
+        }
+        
+        h2 {
+            font-size: $text--size-medium;
+            font-weight: normal;
+            padding: 10px;
+        }
+
+        &--video {
+            &__image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                svg {
+                    display: block !important;
+                }                
+            }
+        }
     }    
 }
 

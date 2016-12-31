@@ -17,6 +17,10 @@
         flex-direction: row;
         align-items: center;
         
+        &--wrap {
+            flex-wrap: wrap;
+        }
+        
         &--h-stretch {
             justify-content: space-between;
         }
