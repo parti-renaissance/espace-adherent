@@ -7,7 +7,7 @@
         <!-- Webpack extension for Twig -->
         <service id="app.twig.webpack_asset_extension" class="AppBundle\Twig\WebpackAssetExtension" public="false">
             <argument type="service" id="twig.extension.assets" />
-            <argument>%kernel.environment%%</argument>
+            <argument>%kernel.environment%</argument>
             <argument>%assets_hash%</argument>
 
             <tag name="twig.extension" />
