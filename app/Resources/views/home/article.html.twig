@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h2>
-        {{ article.title }}
-    </h2>
 
-    {{ article.content|raw }}
+<section class="l__wrapper--slim">
+    
+    <div class="space--60-0">
+        <h1 class="text--large b__nudge--bottom-small">
+            {{ article.title }}
+        </h1>
+        <div class="text--summary text--gray">{{ article.description }}</div>
+    </div>
+
+    <article class="text--summary">
+        {{ article.content|raw }}
+    </article>
+</section>
+
 {% endblock %}

@@ -1,6 +1,6 @@
 imports:
     - { resource: config.yml }
-    - { resource: services_prod.xml }
+    - { resource: services/sentry.xml }
 
 #doctrine:
 #    orm:
@@ -11,19 +11,22 @@ imports:
 monolog:
     handlers:
         main:
-            type:         fingers_crossed
-            action_level: error
-            handler:      nested
+            type:                   fingers_crossed
+            action_level:           error
+            activation_strategy:    app.logging.activation_strategy
+            handler:                nested
         nested:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
-        console:
-            type:  console
+            type:                   group
+            members:                [file, buffer]
+        file:
+            type:                   stream
+            path:                   "%kernel.logs_dir%/%kernel.environment%.log"
+        buffer:
+            type:                   buffer
+            handler:                sentry
+        sentry:
+            type:                   service
+            id:                     app.logging.sentry_handler
 
-sentry:
-    dsn: "%env(SENTRY_DSN)%"
-    environment: "%kernel.environment%"
-    app_path: "/app"
-    skip_capture:
-        - "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException"
+        console:
+            type:                   console

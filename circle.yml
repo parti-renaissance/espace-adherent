@@ -1,0 +1,57 @@
+machine:
+    php:
+        version: 7.0.7
+    environment:
+        YARN_VERSION: 0.18.1
+        PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+    services:
+        - docker
+
+dependencies:
+    cache_directories:
+        - ~/.yarn
+        - ~/.cache/yarn
+        - ~/.composer/cache/files
+    pre:
+        - |
+            if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
+              curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+            fi
+    override:
+        - yarn install
+        - composer install --no-interaction
+
+test:
+    override:
+        - yarn test
+        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+
+deployment:
+    staging:
+        branch: master
+        owner: EnMarche
+        commands:
+            # Check packages security
+            - bin/console security:check
+
+            # Google Cloud authentication
+            - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json && cp ${HOME}/gcloud-service-key.json gcloud-service-key.json
+            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+            - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+            - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+
+            # Build the image
+            - yarn run build-prod
+            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 .
+
+            # Test the image
+            - docker run -d -p 8000:80 eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1; sleep 1
+            - curl --retry 2 --retry-delay 2 -v http://127.0.0.1:8000/health
+
+            # Push the image to Google Cloud
+            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+
+            # Deploy to staging
+            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
+            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-c
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl rolling-update enmarche-rc-v4 --image=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 --container=enmarche

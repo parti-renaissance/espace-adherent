@@ -2,12 +2,15 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: assets_version.yml }
-    - { resource: services.xml }
+    - { resource: services/content.xml }
+    - { resource: services/donation.xml }
+    - { resource: services/twig.xml }
 
 parameters:
     locale: fr
 
 framework:
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%env(SECRET)%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -28,13 +31,15 @@ framework:
     fragments:       ~
     http_method_override: true
     assets: ~
+    php_errors:
+        log: true
 
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
         assets_hash:  "%assets_hash%"
-        sentry_dsn:   "%env(SENTRY_DSN)%"
+        sentry_dsn:   "%env(SENTRY_PUBLIC_DSN)%"
 
 doctrine:
     dbal:
@@ -48,7 +53,8 @@ doctrine:
         unix_socket: "%env(DATABASE_SOCKET)%"
 
         types:
-            uuid:    Ramsey\Uuid\Doctrine\UuidType
+            uuid:           Ramsey\Uuid\Doctrine\UuidType
+            phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -81,3 +87,12 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
+
+lexik_paybox:
+    parameters:
+        production:  false
+        site:        "%env(PAYBOX_SITE)%"
+        rank:        "%env(PAYBOX_RANK)%"
+        login:       "%env(PAYBOX_IDENTIFIER)%"
+        hmac:
+            key:     "%env(PAYBOX_KEY)%"

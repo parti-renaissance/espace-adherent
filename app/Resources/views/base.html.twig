@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--  
+ ______         __  __                _            _ 
+|  ____|       |  \/  |              | |          | |
+| |__   _ __   | \  / | __ _ _ __ ___| |__   ___  | |
+|  __| | '_ \  | |\/| |/ _` | '__/ __| '_ \ / _ \ | |
+| |____| | | | | |  | | (_| | | | (__| | | |  __/ |_|
+|______|_| |_| |_|  |_|\__,_|_|  \___|_| |_|\___| (_)
+
+-->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -51,17 +60,18 @@
 
         <style>
             @font-face {
-                font-family: 'gillsans_light';
+                font-family: 'Gillsans Light';
                 src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}');
                 src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}?#iefix') format('embedded-opentype'),
                     url('{{ asset('fonts/gillsans-light-webfont.woff2') }}') format('woff2'),
                     url('{{ asset('fonts/gillsans-light-webfont.woff') }}') format('woff'),
                     url('{{ asset('fonts/gillsans-light-webfont.ttf') }}') format('truetype'),
                     url('{{ asset('fonts/gillsans-light-webfont.svg') }}#gillsans_lightregular') format('svg');
-                font-weight: normal;
+                font-weight: 300;
                 font-style: normal;
             }
         </style>
+        <link rel="stylesheet" href="css/font-awesome.min.css" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets %}{% endblock %}
 
@@ -77,13 +87,19 @@
         </script>
     </head>
     <body>
+        {% for message in app.session.flashbag.get('info') %}
+            <p>
+                {{ message }}
+            </p>
+        {% endfor %}
+
         {% block content %}{% endblock %}
 
         {% block javascripts %}{% endblock %}
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
         <script type="text/javascript">
-            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? '\''~sentry_dsn~'\'' : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
+            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
         </script>
     </body>
 </html>

@@ -1,3 +1,7 @@
+lexik_paybox:
+    resource: "@LexikPayboxBundle/Resources/config/routing.yml"
+    prefix:   "/don"
+
 app:
     resource: "@AppBundle/Controller/"
-    type:     annotation
+    type:     "annotation"

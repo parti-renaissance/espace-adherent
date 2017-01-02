@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\AppBundle\Content;
 
 use AppBundle\Content\ArticleRepository;
 use AppBundle\Content\Model\HomeArticle;

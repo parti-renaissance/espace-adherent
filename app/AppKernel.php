@@ -19,6 +19,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
+            new Lexik\Bundle\PayboxBundle\LexikPayboxBundle(),
 
             new AppBundle\AppBundle(),
         ];
