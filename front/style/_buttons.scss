@@ -6,9 +6,9 @@
     border: 1px solid black;
     color: black;
     text-transform: uppercase;
-    font-size: $text--size-default;
+    font-size: $text--size-small;
     letter-spacing: 1.5px;
-    
+
     &:hover {
         background: black;
         border-color: black;
@@ -34,20 +34,20 @@
         font-size: $text--size-large;
         letter-spacing: 3.5px;
     }
-    
+
     &--no-border {
         border-color: white;
-        
+
         &:hover {
             border-color: black;
-        }        
+        }
     }
-    
+
     &--full {
         margin: 0;
         width: 100%;
     }
-    
+
     &--inline {
         display: inline-table;
     }
@@ -56,49 +56,72 @@
         color: white;
         background-color: $pink;
         border-color: $pink;
-        
+
         &:hover {
             background-color: $pink-hover;
             border-color: $pink-hover;
         }
     }
-    
+
     &--green {
         background: $green;
         border-color: $green;
-        
+
         &:hover {
             color: black;
             background: $green-hover;
             border-color: $green-hover;
         }
     }
-    
+
     &--blue {
         color: white;
         background: $blue;
         border-color: $blue;
-        
+
         &:hover {
             background-color: $blue-hover;
             border-color: $blue-hover;
         }
     }
-    
+
+    &--social {
+        font-size: $text--size-smallest;
+        font-family: 'Roboto';
+    }
+
+    &--facebook {
+        background: $facebook;
+        border-color: $facebook;
+        color: white;
+    }
+
+    &--twitter {
+        background: $twitter;
+        border-color: $twitter;
+        color: white;
+    }
+
+    &--email {
+        background: $gray;
+        border-color: $gray;
+        color: white;
+    }
+
     &__icon {
         border: none;
-        
+
         &:hover {
             path {
-                stroke: rgba(0,0,0,.4);               
+                stroke: rgba(0,0,0,.4);
             }
         }
-        
+
         &--dark {
             &:hover {
                 path {
-                    stroke: white;                
-                }    
+                    stroke: white;
+                }
             }
         }
     }
