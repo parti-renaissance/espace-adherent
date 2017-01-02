@@ -117,6 +117,7 @@ $text--size-extra-large: 48px;
     
     &__links--col {
         flex-direction: column;
+        margin-bottom: 15px;
         
         li {
             padding-bottom: 4px;
@@ -156,6 +157,11 @@ $text--size-extra-large: 48px;
                 font-style: italic;
                 line-height: 0.9em;
                 margin-right: 10px;
+                
+                @media (max-width: $tablet) {
+                    font-size: $text--size-medium;
+                    color: red !important;
+                }
             }     
               
             .icon-search {

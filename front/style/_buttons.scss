@@ -85,22 +85,20 @@
         }
     }
     
-    &--icon {
+    &__icon {
         border: none;
         
         &:hover {
-            svg path {
-                stroke: white;                
+            path {
+                stroke: rgba(0,0,0,.4);               
             }
         }
-    }
-
-    &--icon-text {
-        &:hover {
-            color: $pink;
-            
-            svg path {
-                fill: $pink;
+        
+        &--dark {
+            &:hover {
+                path {
+                    stroke: white;                
+                }    
             }
         }
     }
