@@ -3,7 +3,7 @@
 ## La typographie
 
 ### Tailles:
-- `.text--default` (12px)
+- `.text--small` (12px)
 - `.text--medium-small` (18px)
 - `.text--medium` (24px)
 - `.text--large` (34px)

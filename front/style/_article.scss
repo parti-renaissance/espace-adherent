@@ -1,0 +1,38 @@
+.article {
+    margin-bottom: 60px;
+
+    h2, p {
+        font-family: 'Roboto';
+        letter-spacing: .3px;
+        font-size: $text--size-default;
+        font-weight: normal;
+    }
+
+    &__social {
+        display: flex;
+        align-items: center;
+
+        .btn {
+            display: flex;
+            align-items: center;
+            margin-right: 5px;
+        }
+
+        .fa {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+    }
+}
+
+article {
+    h3 {
+        font-family: 'Gillsans';
+        font-size: $text--size-medium--large;
+        margin-top: 30px;
+    }
+
+    p {
+        font-family: 'Roboto';
+    }
+}

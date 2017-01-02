@@ -2,18 +2,30 @@
 
 {% block content %}
 
-<section class="l__wrapper--slim">
-    
+<section class="article l__wrapper--slim">
+
     <div class="space--60-0">
         <h1 class="text--large b__nudge--bottom-small">
             {{ article.title }}
         </h1>
-        <div class="text--summary text--gray">{{ article.description }}</div>
+        <h2 class="text--gray b__nudge--bottom">{{ article.description }}</h2>
+        <ul class="article__social">
+            <li><a href="#" class="btn btn--social btn--facebook"><i class="fa fa-facebook-square"></i> Partagez</a></li>
+            <li><a href="#" class="btn btn--social btn--twitter"><i class="fa fa-twitter"></i> Tweetez</a></li>
+            <li><a href="#" class="btn btn--social btn--email"><i class="fa fa-envelope-o"></i> Envoyez</a></li>
+        </ul>
     </div>
 
     <article class="text--summary">
         {{ article.content|raw }}
     </article>
+
+    <ul class="article__social space--60-0">
+        <li><a href="#" class="btn btn--social btn--facebook"><i class="fa fa-facebook-square"></i> Partagez</a></li>
+        <li><a href="#" class="btn btn--social btn--twitter"><i class="fa fa-twitter"></i> Tweetez</a></li>
+        <li><a href="#" class="btn btn--social btn--email"><i class="fa fa-envelope-o"></i> Envoyez</a></li>
+    </ul>
+
 </section>
 
 {% endblock %}

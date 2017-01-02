@@ -1,6 +1,6 @@
 .form {
     font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
-        
+
     &__field {
         padding-left: 12px;
         padding-right: 12px;
@@ -8,18 +8,18 @@
         height: 38px;
         box-sizing: border-box;
         margin-right: 10px;
-        font-size: $text--size-default; 
-        font-family: 'Roboto', sans-serif;      
+        font-size: $text--size-small; 
+        font-family: 'Roboto', sans-serif;
     }
-    
+
     &__email-field {
         width: 290px;
     }
-    
+
     &__zipcode {
         width: 110px;
     }
-    
+
     &--full {
         width: 100%;
     }

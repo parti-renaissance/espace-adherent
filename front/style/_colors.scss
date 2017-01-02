@@ -13,6 +13,10 @@ $gray: #BCBCBC;
 $gray-light: #E5E5E5;
 $gray-lighter: #F2F2F2;
 
+// Social Media
+$facebook: #3b5998;
+$twitter: #1da1f2;
+
 // Hovers
 @mixin hover($color) {
     color: rgba($color, 0.4);
