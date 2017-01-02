@@ -8,3 +8,9 @@ donation.gender.invalid_choice: Ce gentilé n'est pas valide.
 donation.firstName.length_max: Votre prénom ne peut pas dépasser 50 caractères.
 donation.lastName.length_max: Votre nom ne peut pas dépasser 50 caractères.
 donation.email.invalid: Ceci n'est pas une adresse e-mail valide.
+
+#
+# Newsletter
+#
+newsletter.email.not_unique: Cette adresse e-mail est déjà enregistrée.
+newsletter.email.invalid: Ceci n'est pas une adresse e-mail valide.

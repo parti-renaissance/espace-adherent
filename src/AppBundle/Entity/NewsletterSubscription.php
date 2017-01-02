@@ -9,11 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * NewsletterSubscription.
- *
- * @UniqueEntity(fields={"email"}, message="Cet email est déjà enregistré !")
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="newsletter_subscription")
+ * @UniqueEntity(fields={"email"}, message="newsletter.email.not_unique")
+ * @ORM\Table(name="newsletter_subscriptions")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
  */
 class NewsletterSubscription
@@ -23,41 +20,92 @@ class NewsletterSubscription
      *
      * @ORM\Id
      * @ORM\Column(type="uuid")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Email(
-     *      message = "L'email '{{ value }}' n'est pas valide.",
-     *      checkMX = true
-     *)
+     * @ORM\Column(type="string", length=100)
+     *
+     * @Assert\Email(message="newsletter.email.invalid")
      */
-    private $email = '';
+    private $email;
 
     /**
-     * @ORM\PrePersist
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
-    public function setIdFromEmail()
+    private $postalCode;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $clientIp;
+
+    /**
+     * @return string|null
+     */
+    public function getClientIp()
     {
-        $this->id = Uuid::uuid5(Uuid::NAMESPACE_URL, $this->email);
+        return $this->clientIp;
     }
 
-    public function getId(): int
+    public function setClientIp(string $clientIp): NewsletterSubscription
+    {
+        $this->clientIp = $clientIp;
+
+        return $this;
+    }
+
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function setId(UuidInterface $id): NewsletterSubscription
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(string $postalCode): NewsletterSubscription
+    {
+        $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail()
     {
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(string $email): NewsletterSubscription
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public static function createUuid(string $email): UuidInterface
+    {
+        return Uuid::uuid5(Uuid::NAMESPACE_URL, $email);
     }
 }
