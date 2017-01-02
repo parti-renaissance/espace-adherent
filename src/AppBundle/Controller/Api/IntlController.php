@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Cloudflare\Cloudflare;
 use AppBundle\Intl\FranceCitiesBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,6 +20,9 @@ class IntlController extends Controller
      */
     public function indexAction($postalCode)
     {
-        return new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode));
+        return Cloudflare::cacheIndefinitely(
+            new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode)),
+            ['api-postal-codes', 'api-postal-code-'.$postalCode]
+        );
     }
 }
