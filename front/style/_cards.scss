@@ -5,49 +5,49 @@ a.card, .card {
 
     text-decoration: none;
     border: none;
-    
+
     svg,
     .image {
         display: none;
     }
-    
+
     &:hover {
         color: #999;
-        
+
         h2 {
             color: #999;
         }
-        
+
         .outer {
             stroke: #999;
-            fill: rgba(0,0,0,0);            
+            fill: rgba(0,0,0,0);
         }
-        
+
         .inner {
             fill: #999;
         }
     }
-    
+
     &__share {
         font-family: 'Roboto';
         text-transform: uppercase;
         padding: 0 10px;
         font-size: $text--size-smallest;
         color: $gray;
-        
+
         .fa {
             font-size: $text--size-medium-small;
             margin-left: 5px;
         }
     }
-    
+
     &--large {
         flex-basis: auto;
         flex-grow: 2;
         color: white;
         padding: 30px;
         margin: 0;
-        
+
         h2 {
             text-decoration: none;
             font-size: $text--size-large;
@@ -56,102 +56,99 @@ a.card, .card {
             letter-spacing: .9px;
             line-height: 1;
         }
-        
+
         p {
-            font-family: 'Roboto', sans-serif;
             width: 40%;
-            letter-spacing: .3px;
-            line-height: 1.3;
         }
-        
+
         @media (max-width: $tablet) {
             color: black;
             background: none !important;
             padding: 0;
             margin-bottom: 20px;
-            
+
             h2 {
                 width: 100%;
                 font-size: $text--size-medium--large;
                 letter-spacing: -0.6px;
             }
-            
+
             p {
                 width: 100%;
             }
-            
+
             .btn {
                 display: none;
             }
-            
+
             .image {
                 display: block;
                 height: 500px;
                 margin-bottom: 15px;
             }
         }
-        
+
         @media (max-width: $mobile) {
             .image {
                 height: 200px;
-            }            
+            }
         }
     }
-    
+
     &--medium,
     &--3,
     &--4 {
-        width: 482px;
-        height: 300px;
+        width: 49%;
+        height: 350px;
         padding: 22px;
         box-sizing: border-box;
-        
+
         h2 {
             font-size: $text--size-large;
             font-style: italic;
             color: white;
         }
-        
+
         &--video {
             h2 {
                 font-size: $text--size-medium;
             }
-            
+
             svg {
                 display: block;
                 margin-right: 20px;
-                width: 150px;
+                width: 118px;
             }
-            
+
             .headline {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
             }
         }
-          
+
         &__image {
             display: none !important;
         }
-        
+
         &__share {
             padding: 15px 0 0 0;
             color: white;
         }
     }
-    
+
     &--small,
     &--1,
     &--2,
     &--5,
     &--6  {
-        width: 236px;
+        width: 24%;
         background: none !important;
-        
+
         &__image {
-            height: 160px;
+            height: 200px;
         }
-        
+
         h2 {
             font-size: $text--size-medium;
             font-weight: normal;
@@ -163,13 +160,125 @@ a.card, .card {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                
+
                 svg {
                     display: block !important;
-                }                
+                }
             }
         }
-    }    
+    }
+
+    @media (max-width: $tablet) {
+        &--1,
+        &--2,
+        &--3,
+        &--4,
+        &--5,
+        &--6 {
+            min-width: 236px;
+            width: 32%;
+            flex-wrap: wrap;
+            height: auto;
+            padding: 0 0 30px 0;
+            margin-bottom: 0;
+            background: none !important;
+
+            &__image {
+                display: block !important;
+                height: 160px;
+            }
+
+            h2 {
+                font-size: $text--size-medium;
+                font-weight: normal;
+                font-style: normal;
+                color: black;
+                padding: 10px;
+            }
+
+            svg {
+                display: none;
+            }
+
+            &--video {
+                &__image {
+                    display: flex !important;
+                    align-items: center;
+                    justify-content: center;
+
+                    svg {
+                        display: block !important;
+                    }
+                }
+            }
+
+            &__share {
+                padding: 0 10px;
+                color: $gray;
+            }
+        }
+    }
+
+    @media (max-width: $tablet - 180px) {
+        &--1,
+        &--2,
+        &--3,
+        &--4,
+        &--5,
+        &--6 {
+            width: 48.5%;
+
+            &__image {
+                height: 230px;
+            }
+        }
+    }
+
+    @media (max-width: $mobile) {
+        &--1,
+        &--2,
+        &--3,
+        &--4,
+        &--5,
+        &--6 {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            h2 {
+                font-size: $text--size-default;
+                font-family: 'Roboto';
+                padding: 0;
+            }
+
+            &__image {
+                width: 30%;
+                height: 100px;
+                min-width: 110px;
+            }
+
+            li {
+                display: flex;
+                flex-direction: row;
+                border-bottom: 1px solid $gray-light;
+                align-items: center;
+                padding: 20px 0;
+
+                .headline {
+                    width: 65%;
+                    margin-left: 3%;
+                }
+            }
+
+            &--video svg {
+                margin: 0;
+            }
+
+            &__share {
+                display: none;
+            }
+        }
+    }
 }
 
 .box {
