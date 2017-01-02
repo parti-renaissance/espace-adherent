@@ -21,6 +21,9 @@ class HomeControllerTest extends WebTestCase
         // Live links
         $this->assertEquals(1, $crawler->filter('html:contains("Guadeloupe")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
+
+        // Assert Cloudflare will store this page in cache
+        $this->assertContains('public, s-maxage=', $client->getResponse()->headers->get('cache-control'));
     }
 
     public function testArticle()
@@ -30,5 +33,19 @@ class HomeControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1, $crawler->filter('html:contains("Emmanuel Macron était l’invité de Guadeloupe 1ère le 17 décembre.")')->count());
+
+        // Assert Cloudflare will store this page in cache
+        $this->assertContains('public, s-maxage=', $client->getResponse()->headers->get('cache-control'));
+    }
+
+    public function testHealth()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/health');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        // Assert Cloudflare will store this page in cache
+        $this->assertContains('public, s-maxage=', $client->getResponse()->headers->get('cache-control'));
     }
 }
