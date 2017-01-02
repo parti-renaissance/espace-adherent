@@ -17,12 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 class DonationController extends Controller
 {
     /**
-     * @Route("", name="donation_index")
+     * @Route("", name="donation_index", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function indexAction(Request $request)
     {
         $donation = new Donation();
+
+        if ($amount = $request->query->getInt('montant')) {
+            $donation->setAmount($amount);
+        }
 
         $form = $this->createForm(DonationType::class, $donation, ['locale' => $request->getLocale()]);
         $form->add('submit', SubmitType::class);
@@ -30,7 +34,8 @@ class DonationController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $donation->setId(Uuid::uuid4());
+            $donation->setId(Donation::creatUuid());
+            $donation->setClientIp($request->getClientIp());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($donation);
@@ -50,7 +55,7 @@ class DonationController extends Controller
      * @Route("/{id}/paiement", name="donation_pay", requirements={"id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
      * @Method("GET")
      */
-    public function payAction(Donation $donation)
+    public function payboxAction(Donation $donation)
     {
         if ($donation->isFinished()) {
             return $this->redirectToRoute('donation_index');
@@ -58,7 +63,7 @@ class DonationController extends Controller
 
         $paybox = $this->get('app.donation.form_factory')->createPayboxFormForDonation($donation);
 
-        return $this->render('donation/call.html.twig', [
+        return $this->render('donation/paybox.html.twig', [
             'url' => $paybox->getUrl(),
             'form' => $paybox->getForm()->createView(),
         ]);
@@ -76,20 +81,18 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        $donation = $this->getDoctrine()->getManager()->find('AppBundle:Donation', $id);
-
-        return $this->get('app.donation.result_code_handler')->createRedirectResponseForDonation($donation);
+        return $this->get('app.donation.transaction_callback_handler')->handle($id, $request);
     }
 
     /**
-     * @Route("/{id}/{status}", name="donation_result", requirements={"id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
+     * @Route("/{id}/{status}", name="donation_result", requirements={"status"="effectue|erreur", "id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
      * @Method("GET")
      */
-    public function resultAction(Donation $donation, $status)
+    public function resultAction(Request $request, Donation $donation)
     {
-        // TODO
-
-        dump($status, $donation);
-        exit;
+        return $this->render('donation/result.html.twig', [
+            'successful' => $donation->isSuccessful(),
+            'error_code' => $request->query->get('code'),
+        ]);
     }
 }

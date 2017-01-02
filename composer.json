@@ -41,7 +41,8 @@
         "league/flysystem-cached-adapter": "^1.0",
         "league/flysystem-memory": "^1.0",
         "misd/phone-number-bundle": "^1.2",
-        "lexik/paybox-bundle": "^2.1"
+        "lexik/paybox-bundle": "^2.1",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -80,15 +80,18 @@
             </p>
         {% endfor %}
 
-        <div class="background--primary l__hide--on-tablet">
+        {% block banner %}
+        <div class="background--primary l__hide--on-tablet" id="header-banner">
             <div class="l__wrapper l__row l__row--h-stretch space--30-0">
                 <div class="text--large text--bold text--limited">
                     La démocratie n’a pas de prix, mais
                     <span class="text--on-white">elle a un coût !</span>
                 </div>
                 <div class="l__row">
-                    <div class="btn btn--large btn--no-border b__nudge--right-big">Donnez</div>
-                    <a href="#" class="btn__icon btn__icon--dark">
+                    <a href="{{ path('donation_index') }}" class="btn btn--large btn--no-border b__nudge--right-big">
+                        Donnez
+                    </a>
+                    <a href="javascript:void(0)" class="btn__icon btn__icon--dark" id="header-banner-close-btn">
                         <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g stroke="#000000">
                                 <path d="M0.6,0.6 L23.4,23.4"></path>
@@ -99,6 +102,8 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
+
         <header>
             <!--  Header / Navigation desktop -->
             <nav class="l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-tablet">
@@ -116,7 +121,9 @@
                 </ul>
                 <div class="l__row">
                     <a href="#" class="btn b__nudge--right-nano">J'adhère</a>
-                    <a href="#" class="btn btn--primary b__nudge--right">Je donne</a>
+                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">
+                        Je donne
+                    </a>
                     <a href="#" class="icon--with-text text--medium-small">
                         <svg width="28px" height="27px" viewBox="503 375 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <path
@@ -207,7 +214,7 @@
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="#" class="text--bold text--medium-small">S’engager</a></h4></li>
                         <li><a href="#">Adhérer</a></li>
-                        <li><a href="#">Donner</a></li>
+                        <li><a href="{{ path('donation_index') }}">Donner</a></li>
                         <li><a href="#">Rejoindre un comité</a></li>
                         <li><a href="#">S’inscrire à un évènement</a></li>
                         <li><a href="#">FAQ</a></li>
@@ -232,11 +239,17 @@
             </div>
         </footer>
 
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript">
+                function controller() {}
+            </script>
+        {% endblock %}
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         <script type="text/javascript">
-            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, {% block kernel_js_callback %}function(){}{% endblock %});
+            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, controller);
         </script>
     </body>
 </html>

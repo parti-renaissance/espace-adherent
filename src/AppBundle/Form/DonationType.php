@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,25 +21,42 @@ class DonationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount', NumberType::class)
+            ->add('amount', NumberType::class, [
+                'required' => true,
+            ])
             ->add('gender', ChoiceType::class, [
+                'required' => true,
                 'expanded' => true,
                 'choices' => [
                     'donation.gender.mister' => 'male',
                     'donation.gender.miss' => 'female',
                 ],
             ])
-            ->add('lastName', TextType::class)
-            ->add('firstName', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('lastName', TextType::class, [
+                'required' => true,
+            ])
+            ->add('firstName', TextType::class, [
+                'required' => true,
+            ])
+            ->add('email', EmailType::class, [
+                'required' => true,
+            ])
             ->add('country', ChoiceType::class, [
+                'required' => true,
                 'choice_translation_domain' => false,
                 'choices' => array_flip(UnitedNationsBundle::getCountries($options['locale'] ?? 'fr')),
             ])
-            ->add('postalCode', TextType::class)
-            ->add('city', TextType::class)
-            ->add('address', TextType::class)
+            ->add('postalCode', TextType::class, [
+                'required' => false,
+            ])
+            ->add('city', TextType::class, [
+                'required' => false,
+            ])
+            ->add('address', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('phone', PhoneNumberType::class, [
+                'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ]);
     }

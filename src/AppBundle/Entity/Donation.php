@@ -4,9 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use AppBundle\Validator\FrenchPostalCode as AssertFrenchPostalCode;
+use AppBundle\Validator\FrenchCity as AssertFrenchCity;
 
 /**
  * @ORM\Table(name="donations")
@@ -28,6 +32,7 @@ class Donation
      *
      * @ORM\Column(type="integer")
      *
+     * @Assert\NotBlank(message="donation.amount.not_blank")
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
      * @Assert\LessThanOrEqual(value=7500, message="donation.amount.less_than_7500")
      */
@@ -45,8 +50,19 @@ class Donation
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=100)
+     *
+     * @Assert\NotBlank(message="donation.firstName.not_blank")
+     * @Assert\Length(max=50, maxMessage="donation.firstName.length_max")
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=50)
      *
+     * @Assert\NotBlank(message="donation.lastName.not_blank")
      * @Assert\Length(max=50, maxMessage="donation.lastName.length_max")
      */
     private $lastName;
@@ -56,32 +72,27 @@ class Donation
      *
      * @ORM\Column(type="string", length=100)
      *
-     * @Assert\Length(max=50, maxMessage="donation.firstName.length_max")
-     */
-    private $firstName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100)
-     *
+     * @Assert\NotBlank(message="donation.email.not_blank")
      * @Assert\Email(message="donation.email.invalid")
      */
     private $email;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=10)
      *
-     * @Assert\Length(max=255)
+     * @Assert\NotBlank(message="donation.country.not_blank")
+     * @AssertUnitedNationsCountry(message="donation.country.invalid")
      */
-    private $address;
+    private $country;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=11, nullable=true)
+     *
+     * @AssertFrenchPostalCode(message="donation.postalCode.invalid")
      */
     private $postalCode;
 
@@ -89,15 +100,19 @@ class Donation
      * @var string|null
      *
      * @ORM\Column(type="string", length=20, nullable=true)
+     *
+     * @AssertFrenchCity(message="donation.city.invalid")
      */
     private $city;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=150, nullable=true)
+     *
+     * @Assert\Length(max=150, maxMessage="donation.address.length_max")
      */
-    private $country;
+    private $address;
 
     /**
      * @var PhoneNumber
@@ -165,6 +180,16 @@ class Donation
 
         $this->phone = new PhoneNumber();
         $this->phone->setCountryCode(33);
+    }
+
+    public function isSuccessful(): bool
+    {
+        return $this->finished && $this->donatedAt instanceof \DateTime;
+    }
+
+    public static function creatUuid(): UuidInterface
+    {
+        return Uuid::uuid4();
     }
 
     public function getId(): UuidInterface

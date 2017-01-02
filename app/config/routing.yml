@@ -2,6 +2,9 @@ lexik_paybox:
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 app:
     resource: "@AppBundle/Controller/"
     type:     "annotation"

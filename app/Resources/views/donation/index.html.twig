@@ -1,5 +1,39 @@
 {% extends 'base.html.twig' %}
 
+{% block banner '' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.donationIndex();
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
-    {{ form(form) }}
+
+    <section class="l__wrapper--slim">
+        <form method="post" name="app_donation">
+            {{ form_errors(form) }}
+
+            <div id="donation-amount">
+                {{ form_row(form.amount) }}
+            </div>
+
+            {{ form_row(form.gender) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.email) }}
+
+            {{ form_row(form.country) }}
+            {{ form_row(form.postalCode) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.address) }}
+
+            {{ form_row(form.phone) }}
+
+            {{ form_rest(form) }}
+        </form>
+    </section>
+
 {% endblock %}

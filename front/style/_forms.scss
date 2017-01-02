@@ -69,6 +69,10 @@
         }
     }
 
+    &__nojs {
+        width: 300px;
+    }
+
     &__amounts {
         display: flex;
         flex-direction: row;

@@ -16,8 +16,9 @@
             <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
         </service>
 
-        <service id="app.donation.result_code_handler" class="AppBundle\Donation\ResultCodeHandler">
+        <service id="app.donation.transaction_callback_handler" class="AppBundle\Donation\TransactionCallbackHandler">
             <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
     </services>

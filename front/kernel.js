@@ -12,6 +12,7 @@ export default class Kernel {
     static _import(callback) {
         let callCallbackIfReady = () => {
             if (Kernel.app && Kernel.vendor) {
+                Kernel.app.global();
                 callback(Kernel.app, Kernel.vendor);
             }
         };
@@ -22,7 +23,9 @@ export default class Kernel {
         });
 
         System.import('app').catch(Kernel._handleError).then((module) => {
-            Kernel.app = module.default;
+            let App = module.default;
+
+            Kernel.app = new App();
             callCallbackIfReady();
         });
     }
