@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Cloudflare\Cloudflare;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,10 +18,13 @@ class HomeController extends Controller
     {
         $repository = $this->get('app.filesystem.article_repository');
 
-        return $this->render('home/index.html.twig', [
-            'articles' => $repository->getHomeArticles(),
-            'live_links' => $repository->getHomeLiveLinks(),
-        ]);
+        return Cloudflare::cacheIndefinitely(
+            $this->render('home/index.html.twig', [
+                'articles' => $repository->getHomeArticles(),
+                'live_links' => $repository->getHomeLiveLinks(),
+            ]),
+            ['home']
+        );
     }
 
     /**
@@ -35,9 +39,10 @@ class HomeController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->render('home/article.html.twig', [
-            'article' => $article,
-        ]);
+        return Cloudflare::cacheIndefinitely(
+            $this->render('home/article.html.twig', ['article' => $article]),
+            ['articles', 'article-'.$slug]
+        );
     }
 
     /**
@@ -46,6 +51,6 @@ class HomeController extends Controller
      */
     public function healthAction()
     {
-        return new Response('Healthy');
+        return Cloudflare::cacheIndefinitely(new Response('Healthy'), ['health']);
     }
 }
