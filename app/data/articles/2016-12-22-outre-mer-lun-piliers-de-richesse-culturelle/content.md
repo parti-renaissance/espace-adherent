@@ -1,5 +1,3 @@
-Emmanuel Macron s’est rendu du 17 au 21 décembre 2016 en Guadeloupe, Martinique et Guyane.
-
 ### « Je viens aux Antilles et en Guyane pour construire quelque chose de différent. »
 
 Il s’est exprimé sur sa vision des Outre-mer en amont de sa visite aux Antilles du 16 au 20 décembre 2016

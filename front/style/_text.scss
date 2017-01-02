@@ -74,6 +74,10 @@ $text--size-extra-large: 48px;
     &--white {
         color: white;
     }
+
+    &--gray {
+        color: $black--half;
+    }
     
     &--summary {
         font-family: 'Roboto', sans-serif;
