@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Cloudflare\Cloudflare;
+use AppBundle\Form\NewsletterSubscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,6 +23,7 @@ class HomeController extends Controller
             $this->render('home/index.html.twig', [
                 'articles' => $repository->getHomeArticles(),
                 'live_links' => $repository->getHomeLiveLinks(),
+                'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
             ]),
             ['home']
         );
