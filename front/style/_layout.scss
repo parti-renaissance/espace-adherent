@@ -7,9 +7,15 @@
         margin: 0 auto;        
     }
     
-    &__wrapper--slim {
+    &__wrapper--medium {
         width: 95%;
         max-width: 975px;
+        margin: 0 auto;                
+    }
+
+    &__wrapper--slim {
+        width: 95%;
+        max-width: 725px;
         margin: 0 auto;                
     }
     
