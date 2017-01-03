@@ -8,3 +8,13 @@ donation.gender.invalid_choice: Ce gentilé n'est pas valide.
 donation.firstName.length_max: Votre prénom ne peut pas dépasser 50 caractères.
 donation.lastName.length_max: Votre nom ne peut pas dépasser 50 caractères.
 donation.email.invalid: Ceci n'est pas une adresse e-mail valide.
+
+#
+# Neswletter
+#
+neswletter.already_registered: Vous êtes déjà inscrit à la newsletter d'En Marche.
+
+neswletter.email.not_blank: Cette valeur est requise.
+neswletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
+
+neswletter.postalCode.invalid: Ce code postal n'est pas valide.
