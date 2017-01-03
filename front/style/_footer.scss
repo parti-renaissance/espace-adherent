@@ -1,0 +1,16 @@
+footer {
+    .list__links--col li {
+        width: 180px;
+    }
+
+    @media (max-width: $tablet) {
+        .donate-mail {
+            border-top: 1px solid $gray;
+            border-bottom: 1px solid $gray;
+            padding: 20px 0;
+            margin-bottom: 25px;
+            text-align: center;
+            align-items: stretch;
+        }
+    }
+}
