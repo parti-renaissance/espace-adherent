@@ -30,7 +30,6 @@
     "style-loader": "^0.13.1",
     "webpack": "^2.1.0-beta.4",
     "webpack-md5-hash": "^0.0.5",
-    "toastr": "2.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -40,7 +39,9 @@
     "colors": "^1.1.2",
     "enzyme": "^2.7.0",
     "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "eslint-watch": "^2.1.14",
     "eventsource-polyfill": "^0.9.6",
