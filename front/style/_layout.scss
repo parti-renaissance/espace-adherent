@@ -4,21 +4,21 @@
     &__wrapper {
         width: 95%;
         max-width: 1200px;
-        margin: 0 auto;        
+        margin: 0 auto;
     }
-    
+
     &__wrapper--medium {
         width: 95%;
-        max-width: 975px;
-        margin: 0 auto;                
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
     &__wrapper--slim {
         width: 95%;
         max-width: 725px;
-        margin: 0 auto;                
+        margin: 0 auto;
     }
-    
+
     &__wrapper-500 {
         width: 500px;
         margin: 0 auto;
@@ -28,11 +28,11 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        
+
         &--wrap {
             flex-wrap: wrap;
         }
-        
+
         &--h-stretch {
             justify-content: space-between;
         }
@@ -40,7 +40,7 @@
         &--h-stretch-around {
             justify-content: space-around;
         }
-        
+
         &--v-stretch {
             align-items: stretch;
         }
@@ -48,70 +48,85 @@
         &--center {
             justify-content: center;
         }
-        
+
         &--top {
             align-items: flex-start;
         }
-        
+
         &--middle {
             align-items: center;
         }
-        
+
         &--bottom {
             align-items: flex-end;
-        }        
+        }
     }
-    
+
     &__col {
         display: flex;
-        flex-direction: column;  
-        justify-content: center;  
-        
+        flex-direction: column;
+        justify-content: center;
+
         &--center {
-            align-items: center;            
+            align-items: center;
         }
-           
+
         &--top {
-            justify-content: flex-start;    
-        }        
+            justify-content: flex-start;
+        }
 
         &--middle {
-            justify-content: center;    
-        }        
+            justify-content: center;
+        }
 
         &--bottom {
-            justify-content: flex-end;    
-        }        
+            justify-content: flex-end;
+        }
     }
-    
+
     &__tablet {
         @media (max-width: $tablet) {
             &--col {
                 display: flex;
-                flex-direction: column;  
+                flex-direction: column;
+                align-items: stretch;
+
+                &-center {
+                    align-items: center;
+                }
             }
         }
     }
-    
+
+    &__mobile {
+        @media (max-width: $mobile) {
+            &--col {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    }
+
     &__hide {
         &--on-mobile {
             @media (max-width: $mobile) {
                 display: none;
-            }            
+            }
         }
 
         &--on-tablet {
             @media (max-width: $tablet) {
                 display: none;
-            }            
+            }
         }
-        
+
         &--on-desktop {
             @media (min-width: $tablet + 1) {
                 display: none;
-            }            
+            }
         }
-    } 
+    }
 }
 
 // Blocks
@@ -120,15 +135,15 @@
     &--60-0 {
         padding: 60px 0;
     }
-    
+
     &--45-5 {
         padding: 45px 5px;
     }
-    
+
     &--30 {
         padding: 30px;
     }
-    
+
     &--30-0 {
         padding: 30px 0;
     }
@@ -140,23 +155,27 @@
     &--20-30 {
         padding: 20px 30px;
     }
+
+    &--10-0 {
+        padding: 10px 0;
+    }
 }
 
-.b {    
+.b {
     &__nudge {
 
         &--bottom-nano {
             margin-bottom: 5px;
         }
-                
+
         &--bottom-small {
             margin-bottom: 10px;
         }
-        
+
         &--bottom {
             margin-bottom: 20px;
         }
-        
+
         &--bottom-large {
             margin-bottom: 30px;
         }
@@ -164,17 +183,21 @@
         &--bottom-larger {
             margin-bottom: 60px;
         }
-        
+
         &--right-nano {
             margin-right: 5px;
         }
-        
-        &--right {
-            margin-right: 20px;        
+
+        &--right-small {
+            margin-right: 10px;
         }
-        
+
+        &--right {
+            margin-right: 20px;
+        }
+
         &--right-big {
-            margin-right: 30px;    
+            margin-right: 30px;
         }
     }
 }
@@ -191,8 +214,9 @@
 }
 
 .proteger {
-    background: url('/images/proteger-la-france@3x.jpg');
-    height: 300px;
+    background: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
+                url('/images/proteger-la-france@3x.jpg');
+    height: 350px;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -201,8 +225,8 @@
     background: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
                 url('/images/je-marche@3x.jpg');
     background-repeat: no-repeat;
-    background-size: cover; 
-    
+    background-size: cover;
+
     .text {
         width: 300px;
     }
