@@ -13,18 +13,18 @@ a {
     text-decoration: none;
     border-bottom: 1px solid black;
     color: black;
-    
+
     &:hover {
         @include hover(black);
-        
+
         path {
             @include hover(black);
-            
+
             &.stroke {
                 @include hover--stroke(black);
             }
         }
-    }    
+    }
 }
 
 h1, h2, h3, h4 {
