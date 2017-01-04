@@ -103,7 +103,6 @@
             &--col {
                 display: flex;
                 flex-direction: column;
-                align-items: stretch;
             }
         }
     }
@@ -164,6 +163,14 @@
 .b {
     &__nudge {
 
+        &--top {
+            margin-top: 20px;
+        }
+
+        &--top-large {
+            margin-top: 30px;
+        }
+
         &--bottom-nano {
             margin-bottom: 5px;
         }
@@ -219,15 +226,4 @@
     height: 350px;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-.donate {
-    background: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
-                url('/images/je-marche@3x.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    .text {
-        width: 300px;
-    }
 }
