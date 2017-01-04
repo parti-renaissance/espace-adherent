@@ -40,10 +40,6 @@ $text--size-extra-large: 48px;
         font-weight: normal;
     }
 
-    &--semi {
-        font-weight: 600;
-    }
-
     &--bold {
         @include text--bold;
     }

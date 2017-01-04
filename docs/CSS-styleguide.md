@@ -11,7 +11,6 @@
 
 ### Poids:
 - `.text--normal` (400)
-- `.text--semi`(600)
 - `.text--bold` (700)
 
 ### Styles:
@@ -43,7 +42,7 @@ Exemple d'un SVG à gauche d'un ou deux mots:
 
 #### Un exemple "column"
 
-Il faudra bien utiliser la classe `.list__links--col`. 
+Il faudra bien utiliser la classe `.list__links--col`.
 
 ```
 <ul class="list__links list__links--col list__links--no-decor">
@@ -58,7 +57,7 @@ Il faudra bien utiliser la classe `.list__links--col`.
 
 #### Un exemple "row"
 
-Il faudra bien utiliser la classe `.list__links--row`. 
+Il faudra bien utiliser la classe `.list__links--row`.
 
 ```
 <ul class="list__links list__links--row list__links--no-decor">
@@ -71,11 +70,11 @@ Il faudra bien utiliser la classe `.list__links--row`.
 
 ### Un exemple avec des SVGs
 
-Il faudra bien utiliser la classe `.list__links--svgs`. 
+Il faudra bien utiliser la classe `.list__links--svgs`.
 
 ```
 <ul class="list__links list__links--row list__links--no-decor list__links--svgs">
-    <li class="head">Suivez En Marche !</li> 
+    <li class="head">Suivez En Marche !</li>
     <li><a href="https://www.facebook.com/EnMarche/"><i class="fa fa-facebook-square"></i></a></li>
     <li><a href="https://twitter.com/enmarchefr"><i class="fa fa-twitter"></i></a></li>
     <li><a href="https://www.instagram.com/enmarchefr/"><i class="fa fa-instagram"></i></a></li>
