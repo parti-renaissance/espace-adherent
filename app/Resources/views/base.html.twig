@@ -58,19 +58,6 @@
         <meta name="twitter:description" content="{{ block('open_graph_description') }}" />
         <meta name="twitter:image:src" content="{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}" />
 
-        <style>
-            @font-face {
-                font-family: 'Gillsans Light';
-                src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}');
-                src: url('{{ asset('fonts/gillsans-light-webfont.eot') }}?#iefix') format('embedded-opentype'),
-                    url('{{ asset('fonts/gillsans-light-webfont.woff2') }}') format('woff2'),
-                    url('{{ asset('fonts/gillsans-light-webfont.woff') }}') format('woff'),
-                    url('{{ asset('fonts/gillsans-light-webfont.ttf') }}') format('truetype'),
-                    url('{{ asset('fonts/gillsans-light-webfont.svg') }}#gillsans_lightregular') format('svg');
-                font-weight: 300;
-                font-style: normal;
-            }
-        </style>
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets %}{% endblock %}
@@ -233,7 +220,7 @@
                     </ul>
                 </div>
                 <div class="l__row l__row--h-stretch l__tablet--col">
-                    <div class="donate-mail">Vous pouvez envoyer vos dons en <a href="#" class="text--semi">téléchargeant ce bulletin</a>.</div>
+                    <div class="donate-mail">Vous pouvez envoyer vos dons en <a href="#" class="text--bold">téléchargeant ce bulletin</a>.</div>
                     <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
                         <li><a href="#">Écrivez-nous</a></li>
                         <li><a href="#">Presse</a></li>
