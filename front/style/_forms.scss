@@ -5,13 +5,17 @@
         padding-left: 12px;
         padding-right: 12px;
         border: 1px solid $gray;
-        height: 38px;
+        height: 41px;
         box-sizing: border-box;
         margin-right: 10px;
         font-size: $text--size-small;
         font-family: 'Roboto', sans-serif;
         @media (max-width: $tablet) {
             margin: 5px 10px 5px 0;
+        }
+
+        &--no-border {
+            border: none;
         }
     }
 
@@ -60,7 +64,8 @@
         width: 400px;
 
         @media (max-width: $mobile) {
-            width: 450px;
+            max-width: 450px;
+            width: 100%;
         }
     }
 
