@@ -25,6 +25,10 @@ a {
             }
         }
     }
+
+    &.link--no-decor {
+        border: none;
+    }
 }
 
 h1, h2, h3, h4 {
@@ -37,7 +41,9 @@ ul, li {
     list-style: none;
 }
 
-input[type="text"], input[type="submit"]  {
+input[type="text"],
+input[type="submit"],
+input[type="email"] {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
     border-radius: 0;

@@ -179,6 +179,10 @@
             margin-bottom: 10px;
         }
 
+        &--bottom-medium {
+            margin-bottom: 15px;
+        }
+
         &--bottom {
             margin-bottom: 20px;
         }
@@ -226,4 +230,5 @@
     height: 350px;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
 }
