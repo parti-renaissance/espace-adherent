@@ -21,30 +21,26 @@
             </div>
         </div>
 
-        <div class="newsletter l__row l__row--h-stretch background--light space--20-30 b__nudge--bottom l__row--wrap">
-            <div class="text--small text--all-caps space--10-0 b__nudge--right-small">Recevez la newsletter</div>
-            <div class="l__row">
-                <form method="post" action="{{ path('newsletter_subscription') }}">
-                    {{ form_widget(newsletter_form.email, {
+        <div class="newsletter l__row l__row--h-stretch background--light space--20-30 b__nudge--bottom l__row--wrap l__tablet--col">
+            <div class="text--small text--all-caps space--10-0">Recevez la newsletter du mouvement</div>
+            <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap">
+                {{ form_widget(newsletter_form.email, {
+                    'attr': {
+                        'title': 'Adresse email',
+                        'placeholder': 'Adresse email',
+                        'class': 'form form__field form__email'
+                    }
+                }) }}
+                {{ form_widget(newsletter_form.postalCode, {
                         'attr': {
-                            'title': 'Adresse email',
-                            'placeholder': 'Adresse email',
-                            'class': 'form form__field form__email-field'
+                            'title': 'Code postal',
+                            'placeholder': 'Code postal',
+                            'class': 'form form__field form__zipcode'
                         }
                     }) }}
-                    <div>
-                        {{ form_widget(newsletter_form.postalCode, {
-                            'attr': {
-                                'title': 'Code postal',
-                                'placeholder': 'Code postal',
-                                'class': 'form form__field form__zipcode-field'
-                            }
-                        }) }}
 
-                        <button type="submit" class="form btn btn--green">Je m'inscris</button>
-                    </div>
-                </form>
-            </div>
+                <button type="submit" class="form btn btn--green">Je m'inscris</button>
+            </form>
         </div>
 
         <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-mobile">

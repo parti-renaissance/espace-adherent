@@ -1,3 +1,9 @@
+form {
+    @media (max-width: $tablet) {
+        width: 100%;
+    }
+}
+
 .form {
     font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
 
@@ -12,16 +18,29 @@
         font-family: 'Roboto', sans-serif;
 
         @media (max-width: $tablet) {
-            margin: 10px 10px 10px 0;
+            margin: 5px 10px 5px 0;
         }
     }
 
-    &__email-field {
+    &__email {
         width: 290px;
+
+        @media (max-width: $tablet) {
+            flex-grow: 2;
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            margin-right: 0;
+        }
     }
 
     &__zipcode {
         width: 110px;
+
+        @media (max-width: $tablet) {
+            flex-grow: 1;
+        }
     }
 
     &--full {
@@ -30,30 +49,9 @@
 }
 
 .newsletter {
-    @media (max-width: 877px) {
-        &.l__row--h-stretch {
-            justify-content: center;
-        }
-    }
-
-    @media (max-width: 665px) {
-        &.l__row {
-            flex-direction: column;
-        }
-
-        .l__row {
-            flex-direction: column;
-            width: 90%;
-        }
-
-        .form__email-field {
-            width: 290px;
-            margin: 10px 0;
-        }
-
-        .form__zipcode {
-            width: 147px;
-            margin-left: 0;
+    @media (max-width: $tablet) {
+        .text--all-caps {
+            text-align: center;
         }
     }
 }
