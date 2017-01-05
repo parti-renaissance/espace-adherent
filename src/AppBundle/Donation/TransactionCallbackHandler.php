@@ -45,6 +45,9 @@ class TransactionCallbackHandler
         if (!$donation->isFinished()) {
             $this->populateDonationWithRequestData($donation, $request);
             $donation->setFinished(true);
+
+            $this->entityManager->persist($donation);
+            $this->entityManager->flush();
         }
 
         return $this->createRedirectResponseForDonation($donation);
@@ -55,8 +58,15 @@ class TransactionCallbackHandler
         $data = $this->extractRequestData($request);
 
         $donation->setPayboxResultCode($data['result']);
-        $donation->setPayboxAuthorizationCode($data['authorization']);
         $donation->setPayboxPayload($data);
+
+        if (isset($data['authorization'])) {
+            $donation->setPayboxAuthorizationCode($data['authorization']);
+        }
+
+        if ($donation->getPayboxResultCode() === '00000') {
+            $donation->setDonatedAt(new \DateTime());
+        }
     }
 
     private function extractRequestData(Request $request): array
