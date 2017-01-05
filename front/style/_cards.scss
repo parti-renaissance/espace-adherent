@@ -298,15 +298,32 @@ a.card, .card {
     }
 }
 
-.box {
-    border-radius: 4px;
-    background: white;
-    padding: 20px;
-    margin: 0 10px;
-    width: 265px;
-    height: 265px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: baseline;
+.boxes {
+    width: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 20px 0;
+
+    @media (max-width: $tablet) {
+        justify-content: flex-start !important;
+    }
+
+    .box {
+        border-radius: 4px;
+        background: white;
+        padding: 20px;
+        margin: 0 10px;
+        width: 265px;
+        min-width: 265px;
+        height: 265px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: baseline;
+
+        h2, p {
+            white-space: normal;
+        }
+    }
 }
