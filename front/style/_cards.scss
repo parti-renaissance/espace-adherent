@@ -49,12 +49,10 @@ a.card, .card {
         margin: 0;
 
         h2 {
+            @include text--large;
             text-decoration: none;
-            font-size: $text--size-large;
             font-style: italic;
-            width: 50%;
-            letter-spacing: .9px;
-            line-height: 1;
+            width: 55%;
         }
 
         p {
@@ -83,16 +81,35 @@ a.card, .card {
 
             .image {
                 display: block;
-                height: 500px;
+                height: 450px;
                 margin-bottom: 15px;
             }
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: $tablet - 200px) {
+            .image {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: $mobile + 100px) {
+            .image {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: $mobile - 100) {
+            .image {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: $mobile - 200) {
             .image {
                 height: 200px;
             }
         }
+
     }
 
     &--medium,
@@ -104,14 +121,14 @@ a.card, .card {
         box-sizing: border-box;
 
         h2 {
-            font-size: $text--size-large;
+            @include text--large;
             font-style: italic;
             color: white;
         }
 
         &--video {
             h2 {
-                font-size: $text--size-medium;
+                @include text--medium;
             }
 
             svg {
@@ -150,7 +167,7 @@ a.card, .card {
         }
 
         h2 {
-            font-size: $text--size-medium;
+            @include text--medium;
             font-weight: normal;
             padding: 10px;
         }

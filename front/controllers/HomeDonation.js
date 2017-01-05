@@ -31,7 +31,7 @@ export default class HomeDonation extends React.Component
                 />
 
                 <a href={Routing.generate('donation_index', { montant: this.state.amount })} title="Je donne"
-                   className="form btn btn--primary btn--medium-small text--center btn--full">
+                   className="btn btn--primary btn--medium-small">
                     Je donne
                     <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1">
                         <title>Right arrow</title>
