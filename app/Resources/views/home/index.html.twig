@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.home();
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
 
 <main>
@@ -151,37 +159,20 @@
                 <h2 class="text--large">Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span></h2>
                 <p class="text--body b__nudge--top-large">En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.</p>
             </div>
-            <form name="home_donation" method="post">
-                <div class="donate__amounts">
-                    <input type="radio" id="home_donation_amount_10" name="home_donation[amount]" value="€10" />
-                    <label for="home_donation_amount_10" class="amount">€10</label>
-                    <input type="radio" id="home_donation_amount_20" name="home_donation[amount]" value="€20" />
-                    <label for="home_donation_amount_20" class="amount">€20</label>
-                    <input type="radio" id="home_donation_amount_30" name="home_donation[amount]" value="€30" />
-                    <label for="home_donation_amount_30" class="amount">€30</label>
-                    <input type="radio" id="home_donation_amount_100" name="home_donation[amount]" value="€100" />
-                    <label for="home_donation_amount_100" class="amount">€100</label>
-                    <input type="radio" id="home_donation_amount_150" name="home_donation[amount]" value="€150" />
-                    <label for="home_donation_amount_150" class="amount">€150</label>
 
-                    <div class="other-amount">
-                        <input type="text" id="home_donation_amount" name="home_donation[amount]" placeholder="Autre montant" />
-                        <label for="home_donation_amount" class="label">
-                            <span>Entrez un autre montant</span>
-                            €
-                        </label>
-                    </div>
+            {# React component HomeDonation replace the following div when JS is available #}
+            <div id="home-donation">
+                <div class="donate__nojs">
+                    <a href="{{ path('donation_index') }}" title="Je donne" class="form btn btn--primary btn--medium-small text--center btn--full">
+                        Je donne
+                        <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>Right arrow</title>
+                            <polyline id="right-arrow" stroke="#FFFFFF" stroke-width="1" fill="none" points="2 6 10.14 12.9223586 2 19.8436338"></polyline>
+                        </svg>
+                    </a>
                 </div>
+            </div>
 
-                <button type="submit" class="form btn btn--primary btn--medium-small text--center btn--full" value="Je donne">
-                    Je donne
-                    <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <title>Right arrow</title>
-                        <polyline id="right-arrow" stroke="#FFFFFF" stroke-width="1" fill="none" points="2 6 10.14 12.9223586 2 19.8436338"></polyline>
-                    </svg>
-                </button>
-
-            </form>
         </div>
     </section>
 </main>

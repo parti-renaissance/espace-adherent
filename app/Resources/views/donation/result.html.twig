@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+
+{% block content %}
+
+    <section class="l__wrapper">
+        {% if successful %}
+            <p>
+                Merci de votre don !
+            </p>
+        {% else %}
+
+            {% if error_code == 'paybox' %}
+                <p>
+                    Problème avec la plateforme de paiement.
+                </p>
+            {% elseif error_code == 'invalid-card' or error_code == 'invalid-card' %}
+                <p>
+                    Votre carte est invalide.
+                </p>
+            {% elseif error_code == '00030' %}
+                <p>
+                    Vous avez mis trop de temps à payer. Veuillez réessayer.
+                </p>
+            {% else %}
+                <p>
+                    Une erreur inconnue s'est produite. Veuillez nous contacter à support@en-marche.fr.
+                </p>
+            {% endif %}
+
+        {% endif %}
+    </section>
+
+{% endblock %}

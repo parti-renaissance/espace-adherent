@@ -40,8 +40,11 @@ class TransactionSuccessListener
         $donation->setPayboxResultCode($data['result']);
         $donation->setPayboxAuthorizationCode($data['authorization']);
         $donation->setPayboxPayload($data);
-        $donation->setDonatedAt(new \DateTime());
         $donation->setFinished(true);
+
+        if ($data['result'] === '00000') {
+            $donation->setDonatedAt(new \DateTime());
+        }
 
         $this->manager->persist($donation);
         $this->manager->flush();

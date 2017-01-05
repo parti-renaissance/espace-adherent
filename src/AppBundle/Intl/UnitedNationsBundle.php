@@ -2,6 +2,7 @@
 
 namespace AppBundle\Intl;
 
+use Collator;
 use Symfony\Component\Intl\Intl;
 
 class UnitedNationsBundle
@@ -22,7 +23,23 @@ class UnitedNationsBundle
             $names[$code] = $intlCountries[$code];
         }
 
+        // Sort by name
+        $collator = new Collator($locale);
+        $collator->asort($names);
+
         return $names;
+    }
+
+    /**
+     * Returns whether the given code is a valid United Nations country.
+     *
+     * @param string $code
+     *
+     * @return bool
+     */
+    public static function isCountryCode(string $code): bool
+    {
+        return in_array($code, self::$unitedNationsCodes);
     }
 
     private static $unitedNationsCodes = [

@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new Lexik\Bundle\PayboxBundle\LexikPayboxBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             new AppBundle\AppBundle(),
         ];
