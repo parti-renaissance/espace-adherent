@@ -10,6 +10,17 @@ $text--size-extra-large: 48px;
     font-weight: 700;
 }
 
+@mixin text--medium {
+    font-size: $text--size-medium;
+    line-height: 1.2em;
+}
+
+@mixin text--large {
+    font-size: $text--size-large;
+    letter-spacing: -0.5px;
+    line-height: 38px;
+}
+
 .text {
     &--small {
         font-size: $text--size-small;
@@ -20,12 +31,11 @@ $text--size-extra-large: 48px;
     }
 
     &--medium {
-        font-size: $text--size-medium;
+        @include text--medium;
     }
 
     &--large {
-        font-size: $text--size-large;
-        letter-spacing: -0.5px;
+        @include text--large;
     }
 
     &--extra-large {
@@ -57,8 +67,11 @@ $text--size-extra-large: 48px;
     }
 
     &--limited {
-        max-width: 550px;
-        width: 100%;
+        max-width: 500px;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
     }
 
     &--all-caps {

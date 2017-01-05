@@ -60,6 +60,12 @@
     background-repeat: no-repeat;
     background-size: cover;
 
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .text {
         width: 400px;
 
