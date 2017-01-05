@@ -20,7 +20,8 @@
     }
 
     &__wrapper-500 {
-        width: 500px;
+        width: 95%;
+        max-width: 500px;
         margin: 0 auto;
     }
 
@@ -192,7 +193,7 @@
         }
 
         &--bottom-larger {
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         &--right-nano {
