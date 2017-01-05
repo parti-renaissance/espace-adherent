@@ -1,0 +1,123 @@
+.donate {
+    background: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
+                url('/images/je-marche@3x.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text {
+        width: 400px;
+
+        @media (max-width: $mobile) {
+            max-width: 450px;
+            width: 100%;
+        }
+    }
+
+    &__nojs {
+        width: 300px;
+    }
+
+    &__amounts {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 450px;
+
+        input[type="radio"] {
+            position: absolute!important;
+            left: -9999px;
+            text-indent: -9999px;
+
+            &:checked + label {
+                background-color: $pink;
+                color: white;
+            }
+        }
+
+        label.amount,
+        .other-amount input {
+            cursor: pointer;
+            width: 140px;
+            height: 43px;
+            padding: 11px 0;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+
+            font-size: $text--size-medium-small;
+            text-align: center;
+            letter-spacing: 1.9px;
+            background: white;
+
+            &:hover {
+                background: $gray-lighter;
+            }
+
+            @media (max-width: 850px) {
+                width: 120px;
+            }
+
+            @media (max-width: 775px) {
+                width: 155px;
+            }
+
+            @media (max-width: 650px) {
+                width: 140px;
+            }
+        }
+
+        .other-amount {
+            position: relative;
+            float: left;
+
+            label {
+                position: absolute;
+                top: 11px;
+                right: 20px;
+                font-size: $text--size-medium-small;
+
+                span {
+                    display: none;
+                }
+            }
+
+            input {
+                font-family: 'Roboto';
+                font-size: $text--size-smallest;
+                letter-spacing: 0.2px;
+                border: none;
+                cursor: text;
+                text-align: left;
+                padding: 0 38px 0 18px;
+            }
+        }
+    }
+}
+
+.donation {
+    text-align: center;
+    padding-top: 150px;
+
+    &__loader {
+        display: none;
+
+        &__text {
+            margin-top: 50px;
+        }
+    }
+}
+
+.donation-result {
+    text-align: center;
+    padding: 100px 0;
+
+    &__support {
+        margin-top: 50px;
+    }
+}

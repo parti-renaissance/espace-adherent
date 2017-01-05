@@ -3,33 +3,66 @@
 {% block banner '' %}
 
 {% block content %}
-
-    <section class="l__wrapper">
-        {% if successful %}
+<section class="l__wrapper--slim donation-result">
+    {% if successful %}
+        <p>
+            Merci de votre don !
+        </p>
+    {% else %}
+        {% if error_code == 'paybox' %}
             <p>
-                Merci de votre don !
+                Un problème s'est produit avec la plateforme de paiement.
+            </p>
+            <p>
+                Pouvez-vous s'il vous plait réessayer ?
+            </p>
+            <p>
+                <a href="{{ retry_url }}" class="form btn btn--primary text--center">
+                    Réessayer
+                </a>
+            </p>
+        {% elseif error_code == 'invalid-card' %}
+            <p>
+                Notre banque nous a indiqué que votre carte est invalide.
+            </p>
+            <p>
+                Pouvez-vous s'il vous plait réessayer en vérifiant les informations de votre carte ?
+            </p>
+            <p>
+                <a href="{{ retry_url }}" class="form btn btn--primary text--center">
+                    Réessayer
+                </a>
+            </p>
+        {% elseif error_code == '00030' %}
+            <p>
+                Vous avez mis trop de temps à payer, votre session a expirée.
+            </p>
+            <p>
+                Pouvez-vous s'il vous plait réessayer ?
+            </p>
+            <p>
+                <a href="{{ retry_url }}" class="form btn btn--primary text--center">
+                    Réessayer
+                </a>
             </p>
         {% else %}
-
-            {% if error_code == 'paybox' %}
-                <p>
-                    Problème avec la plateforme de paiement.
-                </p>
-            {% elseif error_code == 'invalid-card' or error_code == 'invalid-card' %}
-                <p>
-                    Votre carte est invalide.
-                </p>
-            {% elseif error_code == '00030' %}
-                <p>
-                    Vous avez mis trop de temps à payer. Veuillez réessayer.
-                </p>
-            {% else %}
-                <p>
-                    Une erreur inconnue s'est produite. Veuillez nous contacter à support@en-marche.fr.
-                </p>
-            {% endif %}
-
+            <p>
+                Une erreur inconnue s'est produite.
+            </p>
+            <p>
+                Pouvez-vous s'il vous plait réessayer ?
+            </p>
+            <p>
+                <a href="{{ retry_url }}" class="form btn btn--primary text--center">
+                    Réessayer
+                </a>
+            </p>
         {% endif %}
-    </section>
 
+        <p class="donation-result__support">
+            Si le problème se reproduit et que vous ne le comprenez pas, n'hésitez pas à contacter le
+            <a href="mailto:support@en-marche.fr">support En Marche</a>.
+        </p>
+    {% endif %}
+</section>
 {% endblock %}
