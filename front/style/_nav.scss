@@ -1,0 +1,55 @@
+.nav__mobile {
+    position: relative;
+    top: -35px;
+
+    input[type=checkbox] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        opacity: 0;
+    }
+
+    label {
+      position: relative;
+      display: block;
+      float: right;
+      cursor: pointer;
+      height: 28px;
+      width: 28px;
+      content: url("data:image/svg+xml;utf8,<svg width='25px' height='18px' viewBox='0 0 25 18' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M1.42592593,16.5 L23.6395045,16.5' id='Line' stroke='#000000' stroke-width='1' fill='none'></path><path d='M1.42592593,8.5 L23.6395045,8.5' id='Line' stroke='#000000' stroke-width='1' fill='none'></path><path d='M1.42592593,0.5 L23.6395045,0.5' id='Line' stroke='#000000' stroke-width='1' fill='none'></path></svg>");
+
+      &:hover {
+          content: url("data:image/svg+xml;utf8,<svg width='25px' height='18px' viewBox='0 0 25 18' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M1.42592593,16.5 L23.6395045,16.5' id='Line' stroke='#999' stroke-width='1' fill='none'></path><path d='M1.42592593,8.5 L23.6395045,8.5' id='Line' stroke='#999' stroke-width='1' fill='none'></path><path d='M1.42592593,0.5 L23.6395045,0.5' id='Line' stroke='#999' stroke-width='1' fill='none'></path></svg>");
+      }
+    }
+
+    input[type=checkbox]:checked ~ label {
+        height: 23px;
+        width: 23px;
+        content: url("data:image/svg+xml;utf8,<svg width='10px' height='10px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M0.5,0.5 L19.5,19.5' id='Line' stroke='#000000' stroke-width='1' fill='none'></path><path d='M0.5,0.5 L19.5,19.5' id='Line' stroke='#000000' stroke-width='1' fill='none' transform='translate(10.000000, 10.000000) scale(-1, 1) translate(-10.000000, -10.000000) '></path></svg>");
+        right: 3px;
+        top: 2px;
+
+        &:hover {
+        content: url("data:image/svg+xml;utf8,<svg width='10px' height='10px' viewBox='0 0 20 20' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M0.5,0.5 L19.5,19.5' id='Line' stroke='#999' stroke-width='1' fill='none'></path><path d='M0.5,0.5 L19.5,19.5' id='Line' stroke='#999' stroke-width='1' fill='none' transform='translate(10.000000, 10.000000) scale(-1, 1) translate(-10.000000, -10.000000) '></path></svg>");
+        }
+    }
+
+    input[type=checkbox]:checked ~ &--menu {
+        max-height: 500px;
+        margin-top: 40px;
+        opacity: 1;
+    }
+
+    &--menu {
+        clear: both;
+        max-height: 0;
+        overflow: hidden;
+        float: left;
+        width: 100%;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+}
