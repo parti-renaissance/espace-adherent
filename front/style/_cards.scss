@@ -1,4 +1,4 @@
-a.card, .card {
+.card {
     display: flex;
     flex-direction: column;
     margin: 0 0 20px 0;
@@ -6,12 +6,8 @@ a.card, .card {
     text-decoration: none;
     border: none;
 
-    svg,
-    .image {
-        display: none;
-    }
-
     &:hover {
+        // We can't use $black--half because we need solid colors
         color: #999;
 
         h2 {
@@ -19,13 +15,17 @@ a.card, .card {
         }
 
         .outer {
-            stroke: #999;
+            stroke: #fff;
             fill: rgba(0,0,0,0);
         }
 
         .inner {
-            fill: #999;
+            fill: #fff;
         }
+    }
+
+    .image, svg {
+        display: none;
     }
 
     &__share {
@@ -116,14 +116,74 @@ a.card, .card {
     &--3,
     &--4 {
         width: 49%;
-        height: 350px;
-        padding: 22px;
+        height: 385px;
         box-sizing: border-box;
 
         h2 {
             @include text--large;
             font-style: italic;
             color: white;
+            z-index: 1;
+        }
+
+        &:hover {
+            h2 {
+                color: white;
+            }
+        }
+
+        .headline {
+            padding: 0 22px;
+            position: relative;
+            bottom: 100px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &__share {
+            padding: 0 22px;
+            color: white;
+            position: relative;
+            bottom: 50px;
+        }
+
+        &__image {
+            border: none;
+
+            .background-container {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                display: block;
+                position: relative;
+
+                &:after {
+                    content: "gradient mask for news image";
+                    overflow: hidden;
+                    position: absolute;
+                    text-indent: -9999rem;
+                    font-size: 0;
+                    line-height: 0;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
+                }
+
+                &:hover {
+                    &:after {
+                        background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                    }
+                }
+            }
+
+            .background {
+                height: 350px;
+            }
         }
 
         &--video {
@@ -134,23 +194,9 @@ a.card, .card {
             svg {
                 display: block;
                 margin-right: 20px;
-                width: 118px;
+                width: 96px;
+                z-index: 1;
             }
-
-            .headline {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-        }
-
-        &__image {
-            display: none !important;
-        }
-
-        &__share {
-            padding: 15px 0 0 0;
-            color: white;
         }
     }
 
@@ -163,7 +209,40 @@ a.card, .card {
         background: none !important;
 
         &__image {
-            height: 200px;
+            border: none;
+
+            .background-container {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                display: block;
+                position: relative;
+
+                &:after {
+                    content: "gradient mask for news image";
+                    overflow: hidden;
+                    position: absolute;
+                    text-indent: -9999rem;
+                    font-size: 0;
+                    line-height: 0;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                }
+
+                &:hover {
+                    &:after {
+                        background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                    }
+                }
+            }
+
+            .background {
+                height: 200px;
+            }
         }
 
         h2 {
@@ -172,11 +251,33 @@ a.card, .card {
             padding: 10px;
         }
 
+        .headline svg {
+            display: none;
+        }
+
         &--video {
             &__image {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                .background-container {
+                    &:after {
+                        background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
+
+                    &:hover {
+                        &:after {
+                            background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                            background-repeat: no-repeat;
+                            background-position: center;
+                        }
+                    }
+                }
+
+                .background {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
 
                 svg {
                     display: block !important;
@@ -200,13 +301,58 @@ a.card, .card {
             margin-bottom: 0;
             background: none !important;
 
+            &:hover {
+                h2 {
+                    color: $black--half;
+                }
+            }
+
+            .headline {
+                top: 0;
+                padding: 0;
+            }
+
             &__image {
                 display: block !important;
-                height: 160px;
+                border: none;
+
+                .background-container {
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 0;
+                    display: block;
+                    position: relative;
+
+                    &:after {
+                        content: "gradient mask for news image";
+                        overflow: hidden;
+                        position: absolute;
+                        text-indent: -9999rem;
+                        font-size: 0;
+                        line-height: 0;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background: none;
+                    }
+
+                    &:hover {
+                        &:after {
+                            background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                        }
+                    }
+                }
+
+                .background {
+                    height: 160px;
+                }
             }
 
             h2 {
-                font-size: $text--size-medium;
+                @include text--medium;
                 font-weight: normal;
                 font-style: normal;
                 color: black;
@@ -219,12 +365,22 @@ a.card, .card {
 
             &--video {
                 &__image {
-                    display: flex !important;
-                    align-items: center;
-                    justify-content: center;
+                    display: block !important;
 
-                    svg {
-                        display: block !important;
+                    .background-container {
+                        &:after {
+                            background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
+                            background-repeat: no-repeat;
+                            background-position: center;
+                        }
+
+                        &:hover {
+                            &:after {
+                                background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
+                        }
                     }
                 }
             }
@@ -232,6 +388,7 @@ a.card, .card {
             &__share {
                 padding: 0 10px;
                 color: $gray;
+                top: 0;
             }
         }
     }
@@ -246,7 +403,9 @@ a.card, .card {
             width: 48.5%;
 
             &__image {
-                height: 230px;
+                .background {
+                    height: 230px;
+                }
             }
         }
     }
@@ -260,30 +419,52 @@ a.card, .card {
         &--6 {
             width: 100%;
             margin: 0;
-            padding: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start !important;
+            align-items: center;
+            border-bottom: 1px solid $gray-light;
 
             h2 {
-                font-size: $text--size-default;
+                @include text--default;
                 font-family: 'Roboto';
                 padding: 0;
             }
 
             &__image {
                 width: 30%;
-                height: 100px;
-                min-width: 110px;
+
+                .background {
+                    height: 70px;
+                    width: 100%;
+                }
             }
 
-            li {
-                display: flex;
-                flex-direction: row;
-                border-bottom: 1px solid $gray-light;
-                align-items: center;
-                padding: 20px 0;
+            .headline {
+                margin-left: 3%;
+                width: 67%;
+            }
 
-                .headline {
-                    width: 65%;
-                    margin-left: 3%;
+            &--video {
+                svg {
+                    margin: 0;
+                }
+
+                .background-container {
+                    &:after {
+                        background: url("data:image/svg+xml;utf8,<svg width='50px' height='50px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
+
+                    &:hover {
+                        &:after {
+                            background: url("data:image/svg+xml;utf8,<svg width='50px' height='50px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
+                            background-repeat: no-repeat;
+                            background-position: center;
+                        }
+                    }
                 }
             }
 

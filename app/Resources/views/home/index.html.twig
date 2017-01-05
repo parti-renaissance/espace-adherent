@@ -83,32 +83,25 @@
     <section class="l__wrapper b__nudge--bottom-larger">
         <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
             {% for article in articles|slice(1,6) %}
-                <a href="{{ article.link }}" class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom"
-                   style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
-                                      url('{{ article.image }}') no-repeat;
-                                      background-size: cover;
-                                      background-position: center;">
-                    <li>
-                        <div class="card--{{ loop.index }}__image card--{{ loop.index }}--{{ article.type }}__image" style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
-                            <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>Play icon</title>
-                                <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
-                                <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
-                            </svg>
+               <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom">
+                    <a href="{{ article.link }}" class="card--{{ loop.index }}__image card--{{ loop.index }}--{{ article.type }}__image">
+                        <div class="background-container">
+                            <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                            </div>
                         </div>
-                        <div class="headline">
-                            <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>Play icon</title>
-                                <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
-                                <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
-                            </svg>
-                            <h2>{{ article.title }}</h2>
-                        </div>
-                        <div class="card__share card--{{ loop.index }}__share">
-                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
-                        </div>
-                    </li>
-                </a>
+                    </a>
+                    <a href="{{ article.link }}" class="headline link--no-decor">
+                        <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>Play icon</title>
+                            <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
+                            <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
+                        </svg>
+                        <h2>{{ article.title }}</h2>
+                    </a>
+                    <div class="card__share card--{{ loop.index }}__share">
+                        Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
         <div class="l__row l__row--center b__nudge--bottom-large">

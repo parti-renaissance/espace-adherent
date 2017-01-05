@@ -10,6 +10,11 @@ $text--size-extra-large: 48px;
     font-weight: 700;
 }
 
+@mixin text--default {
+    font-size: $text--size-default;
+    line-height: 24px;
+}
+
 @mixin text--medium {
     font-size: $text--size-medium;
     line-height: 1.2em;
