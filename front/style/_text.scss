@@ -8,6 +8,7 @@ $text--size-large: 34px;
 $text--size-extra-large: 48px;
 @mixin text--bold {
     font-weight: 700;
+    font-family: 'Gill Sans W01 Heavy';
 }
 
 @mixin text--default {
