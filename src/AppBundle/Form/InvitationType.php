@@ -27,7 +27,7 @@ class InvitationType extends AbstractType
                 'required' => true,
             ])
             ->add('message', TextareaType::class, [
-                'required' => false,
+                'required' => true,
             ]);
     }
 

@@ -22,14 +22,10 @@ class InviteController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Vous êtes invité à adhérer à en marche !')
-                ->setTo($form->get('email')->getData())
-                ->setBody(
-                $this->renderView(
-                    'email/invitation.html.twig', $form->getData()), 'text/html'
-                );
-            $this->get('mailer')->send($message);
+            $data = $form->getData();
+            $fullName = $data['firstName'].' '.$data['lastName'];
+            $this->get('app.mailer')->sendInvitationMail($data['email'], $fullName, $data['message']);
+
             return $this->redirectToRoute('invitation_confirmation');
         }
 
@@ -42,7 +38,7 @@ class InviteController extends Controller
      * @Route("/invitation/invitation-reussie", name="invitation_confirmation")
      * @Method({"GET"})
      */
-    public function confirmationAction(Request $request)
+    public function confirmationAction()
     {
         return $this->render('invite/confirmation.html.twig');
     }
