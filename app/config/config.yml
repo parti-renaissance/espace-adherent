@@ -69,9 +69,9 @@ doctrine:
 swiftmailer:
     transport: smtp
     host:      "%env(MAILER_HOST)%"
-    username:  "%env(MAILER_PORT)%"
-    password:  "%env(MAILER_USER)%"
-    port:      "%env(MAILER_PASSWORD)%"
+    username:  "%env(MAILER_USER)%"
+    password:  "%env(MAILER_PASSWORD)%"
+    port:      "%env(MAILER_PORT)%"
     spool:     { type: memory }
 
 doctrine_migrations:
