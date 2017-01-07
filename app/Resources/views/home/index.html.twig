@@ -105,7 +105,13 @@
                             <h2>{{ article.title }}</h2>
                         </a>
                         <div class="share">
-                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                            Partagez
+                            <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                                <i class="fa fa-facebook-square"></i>
+                            </span>
+                            <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                                <i class="fa fa-twitter"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="csv card--small card--small__video">
@@ -118,7 +124,13 @@
                             <h2>{{ article.title }}</h2>
                         </a>
                         <div class="share">
-                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                            Partagez
+                            <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                                <i class="fa fa-facebook-square"></i>
+                            </span>
+                            <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                                <i class="fa fa-twitter"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="cm card--medium">
@@ -144,7 +156,13 @@
                                         </h2>
                                     </div>
                                     <div class="share">
-                                        Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                                        Partagez
+                                        <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                                            <i class="fa fa-facebook-square"></i>
+                                        </span>
+                                        <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                                            <i class="fa fa-twitter"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

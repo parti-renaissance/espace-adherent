@@ -300,5 +300,17 @@
         <script type="text/javascript">
             Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, controller);
         </script>
+        <script type="text/javascript">
+        function popitup(url, w, h) {
+            wLeft = window.screenLeft ? window.screenLeft : window.screenX;
+            wTop = window.screenTop ? window.screenTop : window.screenY;
+            var left = wLeft + (window.innerWidth / 2) - (w / 2);
+            var top = wTop + (window.innerHeight / 2) - (h / 2);
+
+            newwindow = window.open(url,'name','width = ' + w + ', height = ' + h + ', top=' + top + ', left=' + left +' ');
+            if (window.focus) {newwindow.focus()}
+            return false;
+        }
+        </script>
     </body>
 </html>
