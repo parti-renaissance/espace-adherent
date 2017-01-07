@@ -14,12 +14,24 @@
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
             {% for article in articles|slice(0,1) %}
-                <a href="{{ article.link }}" class="card card--large l__col--bottom l__hide--bg-on-mobile" style="background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
-                    <div class="image" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;"></div>
-                    <h2>{{ article.title }}</h2>
-                    <p class="text--summary">{{ article.subtitle }}</p>
-                    <div class="btn btn--no-border btn--inline">Lire</div>
+                <a href="{{ article.link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                    <div class="background">
+                        <div class="content">
+                            <h2>{{ article.title }}</h2>
+                            <p class="text--summary">{{ article.subtitle }}</p>
+                            <div class="btn btn--no-border">Lire</div>
+                        </div>
+                    </div>
                 </a>
+                <div class="card card--large card--large__tablet l__hide--on-desktop">
+                    <a href="{{ article.link }}" class="background-container">
+                        <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;"></div>
+                    </a>
+                    <a class="content" href="{{ article.link }}">
+                        <h2>{{ article.title }}</h2>
+                        <p class="text--summary">{{ article.subtitle }}</p>
+                    </a>
+                </div>
             {% endfor %}
             <div class="comite l__col l__col--bottom space--30">
                 <h2 class="text--normal text--white">Déjà plus de 2900 comités «En Marche !»</h2>
@@ -83,23 +95,60 @@
     <section class="l__wrapper b__nudge--bottom-larger">
         <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
             {% for article in articles|slice(1,6) %}
-               <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom">
-                    <a href="{{ article.link }}" class="card--{{ loop.index }}__image card--{{ loop.index }}--{{ article.type }}__image">
-                        <div class="background-container">
+                <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom">
+                    <div class="cs card--small">
+                        <a href="{{ article.link }}" class="background-container">
                             <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
                             </div>
+                        </a>
+                        <a href="{{ article.link }}" class="headline link--no-decor">
+                            <h2>{{ article.title }}</h2>
+                        </a>
+                        <div class="share">
+                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
                         </div>
-                    </a>
-                    <a href="{{ article.link }}" class="headline link--no-decor">
-                        <svg width="86px" height="86px" viewBox="8 4 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>Play icon</title>
-                            <path d="M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z" class="outer" stroke="#FFFFFF" stroke-width="1" fill="none"></path>
-                            <path d="M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156" class="inner" stroke="none" fill="#FFFFFF" fill-rule="evenodd"></path>
-                        </svg>
-                        <h2>{{ article.title }}</h2>
-                    </a>
-                    <div class="card__share card--{{ loop.index }}__share">
-                        Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                    </div>
+                    <div class="csv card--small card--small__video">
+                        <a href="{{ article.link }}" class="background-container">
+                            <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                                <i class="play-icon"></i>
+                            </div>
+                        </a>
+                        <a href="{{ article.link }}" class="headline link--no-decor">
+                            <h2>{{ article.title }}</h2>
+                        </a>
+                        <div class="share">
+                            Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                        </div>
+                    </div>
+                    <div class="cm card--medium">
+                        <a href="{{ article.link }}" class="background-container" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                            <div class="background">
+                                <div class="content">
+                                    <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                        {{ article.title }}
+                                    </h2>
+                                    <div class="btn btn--no-border">En savoir plus</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="cmv card--medium card--medium__video">
+                        <a href="{{ article.link }}" class="background-container" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                            <div class="background">
+                                <div class="content">
+                                    <div class="headline-row">
+                                        <i class="play"></i>
+                                        <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                            {{ article.title }}
+                                        </h2>
+                                    </div>
+                                    <div class="share">
+                                        Partagez <i class="fa fa-facebook-square"></i> <i class="fa fa-twitter"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </li>
             {% endfor %}

@@ -20,6 +20,12 @@ $text--size-extra-large: 48px;
     line-height: 1.2em;
 }
 
+@mixin text--medium-large {
+    font-size: $text--size-medium--large;
+    letter-spacing: -0.6px;
+    line-height: 32px;
+}
+
 @mixin text--large {
     font-size: $text--size-large;
     letter-spacing: -0.5px;
@@ -37,6 +43,10 @@ $text--size-extra-large: 48px;
 
     &--medium {
         @include text--medium;
+    }
+
+    &--medium-large {
+        @include text--medium-large;
     }
 
     &--large {

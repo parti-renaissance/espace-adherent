@@ -8,6 +8,7 @@
     text-transform: uppercase;
     font-size: $text--size-small;
     letter-spacing: 1.5px;
+    transition: all 0.45s;
 
     &:hover {
         background: black;
