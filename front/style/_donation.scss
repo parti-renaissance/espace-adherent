@@ -14,7 +14,6 @@
         width: 400px;
 
         @media (max-width: $mobile) {
-            max-width: 450px;
             width: 100%;
         }
     }
@@ -23,12 +22,22 @@
         width: 300px;
     }
 
+    #home-donation {
+        margin-left: 15px;
+        width: 450px;
+
+        @media (max-width: $mobile) {
+            margin-left: 0;
+            margin-top: 15px;
+            width: 100%;
+        }
+    }
+
     &__amounts {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        max-width: 450px;
 
         input[type="radio"] {
             position: absolute!important;
@@ -42,39 +51,44 @@
         }
 
         label.amount,
+        .other-amount,
         .other-amount input {
             cursor: pointer;
-            width: 140px;
+            width: 31%;
             height: 43px;
             padding: 11px 0;
             margin-bottom: 15px;
             box-sizing: border-box;
-
-            font-size: $text--size-medium-small;
-            text-align: center;
-            letter-spacing: 1.9px;
             background: white;
 
             &:hover {
                 background: $gray-lighter;
             }
 
-            @media (max-width: 850px) {
-                width: 120px;
-            }
+            font-size: $text--size-medium-small;
+            text-align: center;
+            letter-spacing: 1.9px;
 
-            @media (max-width: 775px) {
-                width: 155px;
+            @media (max-width: 450px) {
+                width: 47%;
             }
+        }
 
-            @media (max-width: 650px) {
-                width: 140px;
+        .other-amount input {
+            width: 100%;
+            background: transparent;
+            top: -10px;
+            position: relative;
+
+            &:hover {
+                background: transparent;
             }
         }
 
         .other-amount {
             position: relative;
             float: left;
+            background: white;
 
             label {
                 position: absolute;
