@@ -31,6 +31,15 @@
         .fa {
             font-size: $text--size-medium-small;
             margin-left: 5px;
+            cursor: pointer;
+
+            &-facebook-square:hover {
+                color: $facebook;
+            }
+
+            &-twitter:hover {
+                color: $twitter;
+            }
         }
     }
 
