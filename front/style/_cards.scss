@@ -1,22 +1,19 @@
 .card {
+    border: 0;
     display: flex;
     flex-direction: column;
-    margin: 0 0 20px 0;
-
+    margin: 0 0 20px;
     text-decoration: none;
-    border: none;
+
 
     &:hover {
-        // We can't use $black--half because we need solid colors
-        color: #999;
-
         h2 {
-            color: #999;
+            color: $black--half;
         }
 
         .outer {
+            fill: rgba(0, 0, 0, 0);
             stroke: #fff;
-            fill: rgba(0,0,0,0);
         }
 
         .inner {
@@ -24,16 +21,12 @@
         }
     }
 
-    .image, svg {
-        display: none;
-    }
-
-    &__share {
-        font-family: 'Roboto';
-        text-transform: uppercase;
-        padding: 0 10px;
-        font-size: $text--size-smallest;
+    .share {
         color: $gray;
+        font-family: 'Roboto';
+        font-size: $text--size-smallest;
+        padding: 0 10px;
+        text-transform: uppercase;
 
         .fa {
             font-size: $text--size-medium-small;
@@ -42,353 +35,478 @@
     }
 
     &--large {
+        color: white;
         flex-basis: auto;
         flex-grow: 2;
-        color: white;
-        padding: 30px;
         margin: 0;
+        padding: 30px;
+        top: 0;
+        left: 0;
+        position: relative;
+
+        &:hover {
+            color: white;
+
+            h2 {
+                color: white;
+            }
+        }
 
         h2 {
             @include text--large;
-            text-decoration: none;
             font-style: italic;
-            width: 55%;
+            text-decoration: none;
+            width: 50%;
         }
 
         p {
             width: 40%;
         }
 
+        .background {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+
+            .content {
+                z-index: 1;
+            }
+        }
+
+        &:before {
+            content: "gradient mask";
+            overflow: hidden;
+            position: absolute;
+            text-indent: -9999rem;
+            font-size: 0;
+            line-height: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: $gradient;
+            transition: opacity 0.45s;
+            opacity: 1;
+        }
+
+        &:after {
+            content: "gradient mask";
+            overflow: hidden;
+            position: absolute;
+            text-indent: -9999rem;
+            font-size: 0;
+            line-height: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: $gradient-hover;
+            transition: opacity 0.45s;
+            opacity: 0;
+        }
+
+        &:hover {
+            &:before {
+                opacity: 0;
+            }
+            &:after {
+                opacity: 1;
+            }
+        }
+
         @media (max-width: $tablet) {
             color: black;
-            background: none !important;
-            padding: 0;
             margin-bottom: 20px;
+            padding: 0;
 
-            h2 {
-                width: 100%;
-                font-size: $text--size-medium--large;
-                letter-spacing: -0.6px;
+            &:hover {
+                color: $black--half;
+
+                h2,
+                p {
+                    color: $black--half
+                }
             }
 
-            p {
-                width: 100%;
+            .content {
+                border: none;
+                padding-top: 15px;
+
+                h2 {
+                    width: 100%;
+                    @include text--medium-large;
+                }
+
+                p {
+                    width: 100%;
+                }
             }
 
-            .btn {
+            &:before,
+            &:after {
                 display: none;
             }
 
-            .image {
-                display: block;
+            .background {
                 height: 450px;
-                margin-bottom: 15px;
+            }
+
+            .background-container {
+                border: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                display: block;
+                position: relative;
+
+                &:before {
+                    content: "gradient mask";
+                    overflow: hidden;
+                    position: absolute;
+                    text-indent: -9999rem;
+                    font-size: 0;
+                    line-height: 0;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: $gradient;
+                    transition: opacity 0.45s;
+                    opacity: 1;
+                }
+
+                &:after {
+                    content: "gradient mask";
+                    overflow: hidden;
+                    position: absolute;
+                    text-indent: -9999rem;
+                    font-size: 0;
+                    line-height: 0;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: $gradient-hover;
+                    transition: opacity 0.45s;
+                    opacity: 0;
+                }
+
+                &:hover {
+                    &:before {
+                        opacity: 0;
+                    }
+                    &:after {
+                        opacity: 1;
+                    }
+                }
             }
         }
 
         @media (max-width: $tablet - 200px) {
-            .image {
+            .background {
                 height: 350px;
             }
         }
 
         @media (max-width: $mobile + 100px) {
-            .image {
+            .background {
                 height: 300px;
             }
         }
 
         @media (max-width: $mobile - 100) {
-            .image {
+            .background {
                 height: 250px;
             }
         }
 
         @media (max-width: $mobile - 200) {
-            .image {
+            .background {
                 height: 200px;
             }
         }
-
     }
 
-    &--medium,
-    &--3,
-    &--4 {
-        width: 49%;
-        height: 385px;
-        box-sizing: border-box;
+    &--1,
+    &--2,
+    &--5,
+    &--6 {
+        width: 24%;
 
-        h2 {
-            @include text--large;
-            font-style: italic;
-            color: white;
-            z-index: 1;
-        }
-
-        &:hover {
-            h2 {
-                color: white;
-            }
-        }
-
-        .headline {
-            padding: 0 22px;
-            position: relative;
-            bottom: 100px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        &__share {
-            padding: 0 22px;
-            color: white;
-            position: relative;
-            bottom: 50px;
-        }
-
-        &__image {
-            border: none;
-
-            .background-container {
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 0;
-                display: block;
-                position: relative;
-
-                &:after {
-                    content: "gradient mask for news image";
-                    overflow: hidden;
-                    position: absolute;
-                    text-indent: -9999rem;
-                    font-size: 0;
-                    line-height: 0;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    background: linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
-                }
-
-                &:hover {
-                    &:after {
-                        background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                    }
-                }
-            }
-
-            .background {
-                height: 350px;
+        &--article {
+            .csv,
+            .cm,
+            .cmv {
+                display: none;
             }
         }
 
         &--video {
-            h2 {
-                @include text--medium;
-            }
-
-            svg {
-                display: block;
-                margin-right: 20px;
-                width: 96px;
-                z-index: 1;
+            .cs,
+            .cm,
+            .cmv {
+                display: none;
             }
         }
     }
 
-    &--small,
-    &--1,
-    &--2,
-    &--5,
-    &--6  {
-        width: 24%;
-        background: none !important;
+    &--3,
+    &--4 {
+        width: 49%;
 
-        &__image {
-            border: none;
-
-            .background-container {
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 0;
-                display: block;
-                position: relative;
-
-                &:after {
-                    content: "gradient mask for news image";
-                    overflow: hidden;
-                    position: absolute;
-                    text-indent: -9999rem;
-                    font-size: 0;
-                    line-height: 0;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                }
-
-                &:hover {
-                    &:after {
-                        background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                    }
-                }
-            }
-
-            .background {
-                height: 200px;
+        &--article {
+            .cs,
+            .csv,
+            .cmv {
+                display: none;
             }
         }
 
+        &--video {
+            .cs,
+            .csv,
+            .cm {
+                display: none;
+            }
+        }
+    }
+
+    .card--small {
         h2 {
             @include text--medium;
             font-weight: normal;
             padding: 10px;
         }
 
-        .headline svg {
-            display: none;
+        &:hover {
+            .background-container {
+                &:after {
+                    opacity: 1;
+                }
+            }
         }
 
-        &--video {
-            &__image {
+        .background-container {
+            border: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: block;
+            position: relative;
+
+            &:after {
+                content: "gradient mask: hover";
+                overflow: hidden;
+                position: absolute;
+                text-indent: -9999rem;
+                font-size: 0;
+                line-height: 0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-image: $gradient--light;
+                opacity: 0;
+                transition: opacity 0.45s;
+            }
+
+            .background {
+                height: 200px;
+                display: flex;
+                justify-content: center;
+
+                .play-icon {
+                    content: $play-icon;
+                    z-index: 1;
+                }
+            }
+        }
+
+        &__video {
+            &:hover {
                 .background-container {
+                    &:before {
+                        opacity: 0;
+                    }
+
                     &:after {
-                        background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
-                        background-repeat: no-repeat;
-                        background-position: center;
-                    }
-
-                    &:hover {
-                        &:after {
-                            background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        }
+                        opacity: 1;
                     }
                 }
+            }
 
-                .background {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+            .background-container {
+                &:before {
+                    content: "gradient mask";
+                    overflow: hidden;
+                    position: absolute;
+                    text-indent: -9999rem;
+                    font-size: 0;
+                    line-height: 0;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    transition: opacity 0.45s;
+                    background: $gradient;
+                    opacity: 1;
+                    background-repeat: no-repeat;
+                    background-position: center;
                 }
 
-                svg {
-                    display: block !important;
+                &:after {
+                    background: $gradient-hover;
+                    opacity: 0;
+                    background-repeat: no-repeat;
+                    background-position: center;
                 }
             }
         }
     }
 
+    .card--medium {
+        h2 {
+            @include text--large;
+            font-style: italic;
+            color: white;
+        }
+
+        .background-container {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: relative;
+
+            .background {
+                height: 350px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-end;
+
+                .content {
+                    z-index: 1;
+                    padding: 22px 20px;
+                }
+            }
+
+            &:before {
+                content: "gradient mask";
+                overflow: hidden;
+                position: absolute;
+                text-indent: -9999rem;
+                font-size: 0;
+                line-height: 0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: $gradient;
+                transition: opacity 0.45s;
+                opacity: 1;
+            }
+
+            &:after {
+                content: "gradient mask";
+                overflow: hidden;
+                position: absolute;
+                text-indent: -9999rem;
+                font-size: 0;
+                line-height: 0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: $gradient-hover;
+                transition: opacity 0.45s;
+                opacity: 0;
+            }
+
+            &:hover {
+                &:before {
+                    opacity: 0;
+                }
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &__video {
+            .share {
+                color: white;
+            }
+
+            .headline-row {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+
+                .headline {
+                    margin: 0;
+                }
+
+                .play {
+                    margin-right: 20px;
+                    content: $play-icon;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $tablet + 100px) {
+        .card--small {
+            .background-container
+            .background {
+                height: 160px;
+            }
+        }
+
+        .card--medium {
+            .background-container
+            .background {
+                height: 280px;
+            }
+        }
+    }
+
     @media (max-width: $tablet) {
+
         &--1,
         &--2,
         &--3,
         &--4,
         &--5,
         &--6 {
-            min-width: 236px;
             width: 32%;
-            flex-wrap: wrap;
-            height: auto;
-            padding: 0 0 30px 0;
-            margin-bottom: 0;
-            background: none !important;
 
-            &:hover {
-                h2 {
-                    color: $black--half;
-                }
-            }
-
-            .headline {
-                top: 0;
-                padding: 0;
-            }
-
-            &__image {
-                display: block !important;
-                border: none;
-
-                .background-container {
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 0;
+            &--article {
+                .cs {
                     display: block;
-                    position: relative;
-
-                    &:after {
-                        content: "gradient mask for news image";
-                        overflow: hidden;
-                        position: absolute;
-                        text-indent: -9999rem;
-                        font-size: 0;
-                        line-height: 0;
-                        top: 0;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        background: none;
-                    }
-
-                    &:hover {
-                        &:after {
-                            background: linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                        }
-                    }
                 }
 
-                .background {
-                    height: 160px;
+                .csv,
+                .cm,
+                .cmv {
+                    display: none;
                 }
-            }
-
-            h2 {
-                @include text--medium;
-                font-weight: normal;
-                font-style: normal;
-                color: black;
-                padding: 10px;
-            }
-
-            svg {
-                display: none;
             }
 
             &--video {
-                &__image {
-                    display: block !important;
-
-                    .background-container {
-                        &:after {
-                            background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        }
-
-                        &:hover {
-                            &:after {
-                                background: url("data:image/svg+xml;utf8,<svg width='86px' height='86px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                                background-repeat: no-repeat;
-                                background-position: center;
-                            }
-                        }
-                    }
+                .csv {
+                    display: block;
                 }
-            }
 
-            &__share {
-                padding: 0 10px;
-                color: $gray;
-                top: 0;
+                .cs,
+                .cm,
+                .cmv {
+                    display: none;
+                }
             }
         }
     }
@@ -401,12 +519,6 @@
         &--5,
         &--6 {
             width: 48.5%;
-
-            &__image {
-                .background {
-                    height: 230px;
-                }
-            }
         }
     }
 
@@ -421,59 +533,73 @@
             margin: 0;
             padding: 20px 0;
             display: flex;
-            flex-direction: row;
-            justify-content: flex-start !important;
-            align-items: center;
             border-bottom: 1px solid $gray-light;
 
-            h2 {
-                @include text--default;
-                font-family: 'Roboto';
-                padding: 0;
+            &:first-child {
+                padding: 0 0 20px;
             }
 
-            &__image {
+            &--article {
+                .cs {
+                    display: flex;
+                }
+            }
+
+            &--video {
+                .csv {
+                    display: flex;
+                }
+            }
+        }
+
+        .card--small {
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            .background-container {
                 width: 30%;
 
                 .background {
-                    height: 70px;
-                    width: 100%;
+                    height: 80px;
+
+                    .play-icon {
+                        content: $play-icon--small;
+                    }
                 }
             }
 
             .headline {
                 margin-left: 3%;
                 width: 67%;
+
+                h2 {
+                    @include text--default;
+                    font-family: 'Roboto';
+                    padding: 0;
+                }
             }
 
-            &--video {
-                svg {
-                    margin: 0;
+            .share {
+                display: none;
+            }
+
+            &__video {
+                &:hover {
+                    .background-container:after {
+                        background: $gradient-hover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                   }
                 }
 
                 .background-container {
                     &:after {
-                        background: url("data:image/svg+xml;utf8,<svg width='50px' height='50px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='#FFFFFF' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='#FFFFFF' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg ,rgba(0,0,0,.8), rgba(0,0,0,0));
+                        background: $gradient;
                         background-repeat: no-repeat;
                         background-position: center;
                     }
-
-                    &:hover {
-                        &:after {
-                            background: url("data:image/svg+xml;utf8,<svg width='50px' height='50px' viewBox='8 4 86 86' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><path d='M92.8999,47.1999 C92.8999,70.2299 74.2299,88.8999 51.1999,88.8999 C28.1699,88.8999 9.4999,70.2299 9.4999,47.1999 C9.4999,24.1699 28.1699,5.4999 51.1999,5.4999 C74.2299,5.4999 92.8999,24.1699 92.8999,47.1999 Z' class='outer' stroke='rgba(255,255,255,.9)' stroke-width='1' fill='none'></path><path d='M43.2027,30.7156 L68.4057,44.8236 C70.2627,45.8636 70.2627,48.5366 68.4057,49.5756 L43.2027,63.6846 C41.3877,64.7006 39.1497,63.3886 39.1497,61.3086 L39.1497,33.0916 C39.1497,31.0116 41.3877,29.6996 43.2027,30.7156' class='inner' stroke='none' fill='rgba(255,255,255,.9)' fill-rule='evenodd'></path></svg>"), linear-gradient(20deg,rgba($green,.6) 0,rgba($blue,.6));
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        }
-                    }
                 }
-            }
-
-            &--video svg {
-                margin: 0;
-            }
-
-            &__share {
-                display: none;
             }
         }
     }
@@ -485,25 +611,25 @@
     overflow-y: hidden;
     white-space: nowrap;
     padding: 20px 0;
-
     @media (max-width: $tablet) {
         justify-content: flex-start !important;
     }
 
     .box {
-        border-radius: 4px;
+        align-items: baseline;
         background: white;
-        padding: 20px;
-        margin: 0 10px;
-        width: 265px;
-        min-width: 265px;
-        height: 265px;
+        border-radius: 4px;
         display: flex;
         flex-direction: column;
+        height: 265px;
         justify-content: space-between;
-        align-items: baseline;
+        margin: 0 10px;
+        min-width: 265px;
+        padding: 20px;
+        width: 265px;
 
-        h2, p {
+        h2,
+        p {
             white-space: normal;
         }
     }

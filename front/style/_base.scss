@@ -9,10 +9,15 @@ body {
     font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
 }
 
+svg path {
+    transition: all 0.45s;
+}
+
 a {
     text-decoration: none;
     border-bottom: 1px solid black;
     color: black;
+    transition: all 0.45s;
 
     &:hover {
         @include hover(black);
