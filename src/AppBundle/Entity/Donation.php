@@ -11,10 +11,13 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use AppBundle\Validator\FrenchPostalCode as AssertFrenchPostalCode;
 use AppBundle\Validator\FrenchCity as AssertFrenchCity;
+use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
 
 /**
  * @ORM\Table(name="donations")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
+ *
+ * @AssertCityAssociatedToPostalCode(postalCodeField="postalCode", cityField="city", message="donation.city_not_associated_to_postal_code")
  */
 class Donation
 {
@@ -50,7 +53,7 @@ class Donation
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=50)
      *
      * @Assert\NotBlank(message="donation.firstName.not_blank")
      * @Assert\Length(max=50, maxMessage="donation.firstName.length_max")
@@ -212,7 +215,7 @@ class Donation
         return $this->amount;
     }
 
-    public function setAmount(int $amount): Donation
+    public function setAmount($amount): Donation
     {
         $this->amount = $amount;
 
@@ -227,7 +230,12 @@ class Donation
         return $this->gender;
     }
 
-    public function setGender(string $gender): Donation
+    /**
+     * @param string|null $gender
+     *
+     * @return Donation
+     */
+    public function setGender($gender): Donation
     {
         $this->gender = $gender;
 
@@ -242,7 +250,12 @@ class Donation
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): Donation
+    /**
+     * @param string|null $lastName
+     *
+     * @return Donation
+     */
+    public function setLastName($lastName): Donation
     {
         $this->lastName = $lastName;
 
@@ -257,7 +270,12 @@ class Donation
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): Donation
+    /**
+     * @param string|null $firstName
+     *
+     * @return Donation
+     */
+    public function setFirstName($firstName): Donation
     {
         $this->firstName = $firstName;
 
@@ -272,7 +290,12 @@ class Donation
         return $this->email;
     }
 
-    public function setEmail(string $email): Donation
+    /**
+     * @param string|null $email
+     *
+     * @return Donation
+     */
+    public function setEmail($email): Donation
     {
         $this->email = $email;
 
@@ -307,7 +330,12 @@ class Donation
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): Donation
+    /**
+     * @param string|null $postalCode
+     *
+     * @return Donation
+     */
+    public function setPostalCode($postalCode): Donation
     {
         $this->postalCode = $postalCode;
 
@@ -322,19 +350,29 @@ class Donation
         return $this->city;
     }
 
-    public function setCity(string $city): Donation
+    /**
+     * @param string|null $city
+     *
+     * @return Donation
+     */
+    public function setCity($city): Donation
     {
         $this->city = $city;
 
         return $this;
     }
 
-    public function getCountry(): string
+    public function getCountry()
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): Donation
+    /**
+     * @param string|null $country
+     *
+     * @return Donation
+     */
+    public function setCountry($country): Donation
     {
         $this->country = $country;
 

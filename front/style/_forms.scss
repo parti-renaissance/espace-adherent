@@ -37,6 +37,14 @@
         }
     }
 
+    &__row {
+        margin-bottom: 15px;
+    }
+
+    &__error {
+        color: #c80303;
+    }
+
     &--full {
         width: 100%;
     }

@@ -1,7 +1,4 @@
-"use strict";
-
 import React from 'react';
-
 import DonationAmountChooser from '../components/DonationAmountChooser';
 
 export default class HomeDonation extends React.Component
@@ -14,12 +11,15 @@ export default class HomeDonation extends React.Component
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
+        this.handleAmountSubmit = this.handleAmountSubmit.bind(this);
     }
 
     handleAmountChange(amount) {
-        this.setState({
-            amount: amount
-        });
+        this.setState({ amount: amount });
+    }
+
+    handleAmountSubmit() {
+        window.location = Routing.generate('donation_index', { montant: this.state.amount });
     }
 
     render() {
@@ -27,6 +27,7 @@ export default class HomeDonation extends React.Component
             <div>
                 <DonationAmountChooser
                     onAmountChange={this.handleAmountChange}
+                    onOtherAmountSubmit={this.handleAmountSubmit}
                     currentAmount={this.state.amount}
                 />
 
