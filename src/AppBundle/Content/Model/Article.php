@@ -7,13 +7,15 @@ class Article
     private $title;
     private $description;
     private $date;
+    private $image;
     private $content;
 
-    public function __construct(string $title, string $description, string $date, string $content)
+    public function __construct(string $title, string $description, string $date, string $image, string $content)
     {
         $this->title = $title;
         $this->description = $description;
         $this->date = $date;
+        $this->image = $image;
         $this->content = $content;
     }
 
@@ -30,6 +32,11 @@ class Article
     public function getDate(): string
     {
         return $this->date;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
     }
 
     public function getContent(): string
