@@ -9,9 +9,17 @@
             </h1>
             <h2 class="text--gray b__nudge--bottom">{{ article.description }}</h2>
             <ul class="article__social">
-                <li role="button" arial-label="Partagez sur Facebook"><a href="#" class="btn btn--social btn--facebook"><i class="fa fa-facebook-square"></i> Partagez</a></li>
-                <li role="button" aria-label="Partagez sur Twitter"><a href="#" class="btn btn--social btn--twitter"><i class="fa fa-twitter"></i> Tweetez</a></li>
-                <li role="button" arial-label="Partagez via email"><a href="#" class="btn btn--social btn--email"><i class="fa fa-envelope-o"></i> Envoyez</a></li>
+                <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
+                    onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
+                    <i class="fa fa-facebook-square"></i> Partagez
+                </li>
+                <li class="btn btn--social btn--twitter"
+                    onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
+                    <i class="fa fa-twitter"></i> Tweetez
+                </li>
+                <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
+                    <i class="fa fa-envelope-o"></i> Envoyez
+                </li>
             </ul>
         </header>
 
@@ -23,12 +31,19 @@
             {{ article.content|raw }}
         </article>
 
-        <ul class="article__social space--60-0 l__wrapper-slim">
-            <li role="button" arial-label="Partagez sur Facebook"><a href="#" class="btn btn--social btn--facebook"><i class="fa fa-facebook-square"></i> Partagez</a></li>
-            <li role="button" aria-label="Partagez sur Twitter"><a href="#" class="btn btn--social btn--twitter"><i class="fa fa-twitter"></i> Tweetez</a></li>
-            <li role="button" arial-label="Partagez via email"><a href="#" class="btn btn--social btn--email"><i class="fa fa-envelope-o"></i> Envoyez</a></li>
+        <ul class="article__social space--60-0 l__wrapper--slim">
+            <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
+                onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
+                <i class="fa fa-facebook-square"></i> Partagez
+            </li>
+            <li class="btn btn--social btn--twitter"
+                onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
+                <i class="fa fa-twitter"></i> Tweetez
+            </li>
+            <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
+                <i class="fa fa-envelope-o"></i> Envoyez
+            </li>
         </ul>
-
     </section>
 </main>
 {% endblock %}
