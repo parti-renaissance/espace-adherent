@@ -13,6 +13,12 @@
         margin: 0 auto;
     }
 
+    &__wrapper--narrow {
+        width: 95%;
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
     &__wrapper--slim {
         width: 95%;
         max-width: 725px;
@@ -184,10 +190,6 @@
             margin-top: 30px;
         }
 
-        &--bottom-nano {
-            margin-bottom: 5px;
-        }
-
         &--bottom-small {
             margin-bottom: 10px;
         }
@@ -208,24 +210,24 @@
             margin-bottom: 40px;
         }
 
-        &--right-nano {
-            margin-right: 5px;
+        &--bottom-huge {
+            margin-bottom: 80px;
         }
 
-        &--right-small {
-            margin-right: 10px;
+        &--right-nano {
+            margin-right: 5px;
         }
 
         &--right {
             margin-right: 20px;
         }
 
-        &--right-big {
+        &--right-large {
             margin-right: 30px;
         }
 
-        &--right-bigger {
-            margin-right: 45px;
+        &--right-larger {
+            margin-right: 40px;
         }
     }
 }

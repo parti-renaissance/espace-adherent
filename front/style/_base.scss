@@ -50,8 +50,8 @@ hr {
     border: none;
     height: 1px;
     margin: 15px 0;
-    color: $gray-light; /* old IE */
-    background-color: $gray-light; /* Modern Browsers */
+    color: $gray--light; /* old IE */
+    background-color: $gray--light; /* Modern Browsers */
 }
 
 input[type="text"],

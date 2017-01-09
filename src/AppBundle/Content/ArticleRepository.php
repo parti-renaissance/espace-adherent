@@ -138,6 +138,7 @@ class ArticleRepository
             isset($metadataRaw['title']) ? $metadataRaw['title'] : '',
             isset($metadataRaw['description']) ? $metadataRaw['description'] : '',
             isset($metadataRaw['date']) ? $metadataRaw['date'] : '',
+            isset($metadataRaw['image']) ? $metadataRaw['image'] : '',
             $this->commonMarkConverter->convertToHtml($contentRaw)
         );
     }

@@ -108,10 +108,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                            <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                            <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -127,10 +127,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                            <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                            <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -159,10 +159,10 @@
                                     </div>
                                     <div class="share">
                                         Partagez
-                                        <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                                        <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                             <i class="fa fa-facebook-square"></i>
                                         </span>
-                                        <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                                        <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
                                             <i class="fa fa-twitter"></i>
                                         </span>
                                     </div>
@@ -217,7 +217,7 @@
         </div>
     </section>
 
-    <section class="donate">
+    <section class="donate donate--home">
         <div class="donate__inner l__wrapper space--45-5 l__row l__row--h-stretch l__mobile--col">
             <div class="text text--white">
                 <h2 class="text--large">Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span></h2>
@@ -236,7 +236,6 @@
                     </a>
                 </div>
             </div>
-
         </div>
     </section>
 </main>

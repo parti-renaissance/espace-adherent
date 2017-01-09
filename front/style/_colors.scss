@@ -10,8 +10,8 @@ $blue-hover: #009FE1;
 $gray--dark: #666;
 $black--half: rgba(0, 0, 0, .5);
 $gray: #BCBCBC;
-$gray-light: #E5E5E5;
-$gray-lighter: #F2F2F2;
+$gray--light: #E5E5E5;
+$gray--lighter: #F2F2F2;
 
 // Social Media
 $facebook: #3b5998;
@@ -64,13 +64,17 @@ $gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, .2), rgba(0, 0, 0, .4));
 }
 
 .background--light {
-    background: $gray-light;
+    background: $gray--light;
 }
 
 .background--lighter {
-    background: $gray-lighter;
+    background: $gray--lighter;
 }
 
 .background--blue {
     background: $blue;
+}
+
+.background--green {
+    background: $green;
 }
