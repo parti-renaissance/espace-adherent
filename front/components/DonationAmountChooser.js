@@ -21,6 +21,7 @@ const DonationAmountChooser = (props) => {
 
         defaultAmountsView.push(
             <label htmlFor={"donation_amount_"+amount}
+                   role="button"
                    key={"label_donation_amount_"+amount}
                    className="amount">
                 {amount} €

@@ -36,8 +36,8 @@
             <div class="comite l__col l__col--bottom space--30">
                 <h2 class="text--normal text--white">Déjà plus de 2900 comités «En Marche !»</h2>
                 <p class="text--white text--summary">Partout sur le territoire et à l’étranger, faites vivre le mouvement et portez ses valeurs.</p>
-                <input type="text" pattern="[0-9]{4}" class="form form__field form form__field--no-border b__nudge--bottom-medium form--full" title="Code postal" placeholder="Code postal" />
-                <input type="submit" class="form btn btn--blue text--center btn--full" value="Je rejoins un comité">
+                <input type="text" pattern="[0-9]{4}" class="form form__field form form__field--no-border b__nudge--bottom-medium form--full" title="Code postal" aria-label="Entrez votre code postal" placeholder="Code postal" />
+                <input title="Je rejoins un comité" type="submit" class="form btn btn--blue text--center btn--full" value="Je rejoins un comité">
             </div>
         </div>
 
@@ -46,6 +46,7 @@
             <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap">
                 {{ form_widget(newsletter_form.email, {
                     'attr': {
+                        'aria-label': 'Entrez votre adresse email',
                         'title': 'Adresse email',
                         'placeholder': 'Adresse email',
                         'class': 'form form__field form__email'
@@ -53,13 +54,14 @@
                 }) }}
                 {{ form_widget(newsletter_form.postalCode, {
                         'attr': {
+                            'aria-label': 'Entrez votre code postal',
                             'title': 'Code postal',
                             'placeholder': 'Code postal',
                             'class': 'form form__field form__zipcode'
                         }
                     }) }}
 
-                <button type="submit" class="form btn btn--green">Je m'inscris</button>
+                <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
             </form>
         </div>
 
@@ -106,10 +108,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                            <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                            <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -125,10 +127,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                            <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                            <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -157,10 +159,10 @@
                                     </div>
                                     <div class="share">
                                         Partagez
-                                        <span onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
+                                        <span role="button" onclick="return popitup('https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href={{ article.link }}', 555, 450)">
                                             <i class="fa fa-facebook-square"></i>
                                         </span>
-                                        <span onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
+                                        <span role="button" onclick="return popitup('https://twitter.com/share?url={{ article.link }}&text={{ article.title }}&via=enmarchefr&', 600, 450)">
                                             <i class="fa fa-twitter"></i>
                                         </span>
                                     </div>
@@ -172,7 +174,7 @@
             {% endfor %}
         </ul>
         <div class="l__row l__row--center b__nudge--bottom-large">
-            <a class="btn">Plus D'actualités</a>
+            <a href="#" class="btn">Plus D'actualités</a>
         </div>
     </section>
 
