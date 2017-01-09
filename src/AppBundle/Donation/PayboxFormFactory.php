@@ -7,7 +7,7 @@ use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FormFactory
+class PayboxFormFactory
 {
     private $environment;
     private $requestHandler;

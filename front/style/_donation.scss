@@ -115,8 +115,36 @@
 }
 
 .donation {
-    text-align: center;
-    padding-top: 150px;
+    margin: 20px 0 100px 0;
+
+    &__form {
+        width: 55%;
+
+        &__amount {
+            margin-bottom: 40px;
+        }
+
+        &__reductions {
+            font-size: $text--size-medium-small;
+        }
+
+        &__phone {
+            max-width: 200px;
+        }
+
+        &__city {
+            width: 200px;
+        }
+    }
+
+    &__form-explainations {
+        width: 40%;
+        color: #737373;
+
+        &__taxes, &__usages, &__reasons {
+            margin: 25px 0 50px 0;
+        }
+    }
 
     &__loader {
         display: none;

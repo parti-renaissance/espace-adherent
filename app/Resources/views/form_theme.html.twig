@@ -1,0 +1,44 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block form_widget_simple -%}
+    {% if type is not defined or type not in ['file', 'hidden'] %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) -%}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock form_widget_simple %}
+
+{% block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) %}
+    {{- parent() -}}
+{%- endblock textarea_widget %}
+
+{% block button_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('btn--primary') ~ ' form btn')|trim}) %}
+    {{- parent() -}}
+{%- endblock %}
+
+{% block choice_widget_collapsed -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) %}
+    {{- parent() -}}
+{%- endblock %}
+
+{# Labels #}
+
+{% block form_label -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form form__label')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_label %}
+
+{# Errors #}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+    <ul class="form form__errors">
+        {%- for error in errors -%}
+            <li class="form__error">
+                {{- error.message -}}
+            </li>
+        {%- endfor -%}
+    </ul>
+    {%- endif %}
+{%- endblock form_errors %}

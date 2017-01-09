@@ -21,9 +21,8 @@ donation.country.not_blank: Cette valeur ne doit pas être vide.
 donation.country.invalid: Ce pays n'est pas valide.
 
 donation.postalCode.invalid: Cette valeur n'est pas un code postal français valide.
-
 donation.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
-
+donation.city_not_associated_to_postal_code: Cette ville et ce code postal ne sont pas liés.
 donation.address.length_max: Votre adresse ne peut pas dépasser 150 caractères.
 
 #

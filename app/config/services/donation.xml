@@ -4,7 +4,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.donation.form_factory" class="AppBundle\Donation\FormFactory">
+        <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
+
+        <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">
             <argument>%kernel.environment%</argument>
             <argument type="service" id="lexik_paybox.request_handler" />
             <argument type="service" id="router" />

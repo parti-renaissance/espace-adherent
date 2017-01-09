@@ -7,8 +7,8 @@ use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,10 +49,10 @@ class DonationType extends AbstractType
             ->add('postalCode', TextType::class, [
                 'required' => false,
             ])
-            ->add('city', TextType::class, [
+            ->add('city', HiddenType::class, [
                 'required' => false,
             ])
-            ->add('address', TextareaType::class, [
+            ->add('address', TextType::class, [
                 'required' => false,
             ])
             ->add('phone', PhoneNumberType::class, [

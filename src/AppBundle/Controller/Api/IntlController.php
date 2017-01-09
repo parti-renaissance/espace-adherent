@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class IntlController extends Controller
 {
     /**
-     * @Route("/postal-code/{postalCode}", name="api_cities_postal_code")
+     * @Route("/postal-code/{postalCode}", name="api_postal_code", options={"expose"="true"})
      * @Method("GET")
      */
     public function indexAction($postalCode)

@@ -4,6 +4,7 @@ imports:
     - { resource: assets_version.yml }
     - { resource: services/content.xml }
     - { resource: services/donation.xml }
+    - { resource: services/intl.xml }
     - { resource: services/twig.xml }
 
 parameters:
@@ -40,6 +41,8 @@ twig:
     globals:
         assets_hash:  "%assets_hash%"
         sentry_dsn:   "%env(SENTRY_PUBLIC_DSN)%"
+    form_themes:
+        - 'form_theme.html.twig'
 
 doctrine:
     dbal:
