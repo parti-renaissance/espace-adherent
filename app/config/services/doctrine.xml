@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.repository.adherent" class="AppBundle\Repository\AdherentRepository" public="false">
+            <argument>AppBundle\Entity\Adherent</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+    </services>
+</container>

@@ -1,3 +1,44 @@
+#
+# Common
+#
+common.gender.invalid_choice: Ce gentilé n'est pas valide.
+
+common.first_name.not_blank: Cette valeur ne doit pas être vide.
+common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
+common.first_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+
+common.last_name.not_blank: Cette valeur ne doit pas être vide.
+common.last_name.min_length: Votre prénom doit comporter au moins 2 caractères.
+common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+
+common.email.not_blank: Cette valeur ne doit pas être vide.
+common.email.invalid: Ceci n'est pas une adresse e-mail valide.
+
+common.country.not_blank: Cette valeur ne doit pas être vide.
+common.country.invalid: Ce pays n'est pas valide.
+
+common.postal_code.invalid: Cette valeur n'est pas un code postal français valide.
+common.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
+common.city.invalid_postal_code: Cette ville et ce code postal ne sont pas liés.
+common.address.max_length: Votre adresse ne peut pas dépasser 150 caractères.
+
+common.phone_number.invalid: Ce numéro de téléphone est invalide.
+
+common.conditions.not_accepted: Vous devez accepter la charte.
+
+common.recaptcha.invalid_message: La réponse au contrôle anti-spamm est incorrecte.
+
+#
+# Adherent
+#
+adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
+
+adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
+
+adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8 caractères.
+
+adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valide.
 
 #
 # Donation
@@ -5,25 +46,6 @@
 donation.amount.not_blank: Cette valeur ne doit pas être vide.
 donation.amount.greater_than_0: La valeur minimale d'un don est de 0 €.
 donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
-
-donation.gender.invalid_choice: Ce gentilé n'est pas valide.
-
-donation.firstName.not_blank: Cette valeur ne doit pas être vide.
-donation.firstName.length_max: Votre prénom ne peut pas dépasser 50 caractères.
-
-donation.lastName.not_blank: Cette valeur ne doit pas être vide.
-donation.lastName.length_max: Votre nom ne peut pas dépasser 50 caractères.
-
-donation.email.not_blank: Cette valeur ne doit pas être vide.
-donation.email.invalid: Ceci n'est pas une adresse e-mail valide.
-
-donation.country.not_blank: Cette valeur ne doit pas être vide.
-donation.country.invalid: Ce pays n'est pas valide.
-
-donation.postalCode.invalid: Cette valeur n'est pas un code postal français valide.
-donation.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
-donation.city_not_associated_to_postal_code: Cette ville et ce code postal ne sont pas liés.
-donation.address.length_max: Votre adresse ne peut pas dépasser 150 caractères.
 
 #
 # Neswletter

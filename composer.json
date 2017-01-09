@@ -42,13 +42,15 @@
         "league/flysystem-memory": "^1.0",
         "misd/phone-number-bundle": "^1.2",
         "lexik/paybox-bundle": "^2.1",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "csa/guzzle-bundle": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "^5.7",
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "^3.2",
+        "liip/functional-test-bundle": "^1.6"
     },
     "scripts": {
         "symfony-scripts": [

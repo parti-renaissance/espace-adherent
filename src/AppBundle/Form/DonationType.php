@@ -2,10 +2,8 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Intl\UnitedNationsBundle;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -21,34 +19,13 @@ class DonationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount', NumberType::class, [
-                'required' => true,
-            ])
-            ->add('gender', ChoiceType::class, [
-                'required' => true,
-                'expanded' => true,
-                'choices' => [
-                    'donation.gender.mister' => 'male',
-                    'donation.gender.miss' => 'female',
-                ],
-            ])
-            ->add('lastName', TextType::class, [
-                'required' => true,
-            ])
-            ->add('firstName', TextType::class, [
-                'required' => true,
-            ])
-            ->add('email', EmailType::class, [
-                'required' => true,
-            ])
-            ->add('country', ChoiceType::class, [
-                'required' => true,
-                'choice_translation_domain' => false,
-                'choices' => array_flip(UnitedNationsBundle::getCountries($options['locale'] ?? 'fr')),
-            ])
-            ->add('postalCode', TextType::class, [
-                'required' => false,
-            ])
+            ->add('amount', NumberType::class)
+            ->add('gender', GenderType::class)
+            ->add('lastName', TextType::class)
+            ->add('firstName', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('country', UnitedNationsCountryType::class)
+            ->add('postalCode', TextType::class)
             ->add('city', HiddenType::class, [
                 'required' => false,
             ])
