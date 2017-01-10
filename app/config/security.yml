@@ -2,10 +2,13 @@
 # http://symfony.com/doc/current/security.html
 security:
 
+    encoders:
+        AppBundle\Entity\Adherent: bcrypt
+
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        users:
+            entity: { class: 'AppBundle\Entity\Adherent', property: 'emailAddress' }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs

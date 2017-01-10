@@ -17,7 +17,7 @@ use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPost
  * @ORM\Table(name="donations")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
  *
- * @AssertCityAssociatedToPostalCode(postalCodeField="postalCode", cityField="city", message="donation.city_not_associated_to_postal_code")
+ * @AssertCityAssociatedToPostalCode(postalCodeField="postalCode", cityField="city", message="common.city.invalid_postal_code")
  */
 class Donation
 {
@@ -44,76 +44,90 @@ class Donation
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(length=10)
      *
-     * @Assert\Choice(choices={"male", "female"}, message="donation.gender.invalid_choice", strict=true)
+     * @Assert\Choice(
+     *   callback = {"AppBundle\ValueObject\Genders", "all"},
+     *   message="common.gender.invalid_choice",
+     *   strict=true
+     * )
      */
     private $gender;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="donation.firstName.not_blank")
-     * @Assert\Length(max=50, maxMessage="donation.firstName.length_max")
+     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\Length(
+     *   min=2,
+     *   max=50,
+     *   minMessage="common.first_name.min_length",
+     *   maxMessage="common.first_name.max_length"
+     * )
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="donation.lastName.not_blank")
-     * @Assert\Length(max=50, maxMessage="donation.lastName.length_max")
+     * @Assert\NotBlank(message="common.last_name.not_blank")
+     * @Assert\Length(
+     *   min=2,
+     *   max=50,
+     *   minMessage="common.last_name.min_length",
+     *   maxMessage="common.last_name.max_length"
+     * )
      */
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="donation.email.not_blank")
-     * @Assert\Email(message="donation.email.invalid")
+     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(length=10)
      *
-     * @Assert\NotBlank(message="donation.country.not_blank")
-     * @AssertUnitedNationsCountry(message="donation.country.invalid")
+     * @Assert\NotBlank(message="common.country.not_blank")
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $country;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=11, nullable=true)
+     * @ORM\Column(length=11, nullable=true)
      *
-     * @AssertFrenchPostalCode(message="donation.postalCode.invalid")
+     * @AssertFrenchPostalCode(message="common.postal_code.invalid")
      */
     private $postalCode;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(length=20, nullable=true)
      *
-     * @AssertFrenchCity(message="donation.city.invalid")
+     * @AssertFrenchCity(message="common.city.invalid")
      */
     private $city;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=150, nullable=true)
+     * @ORM\Column(length=150, nullable=true)
      *
-     * @Assert\Length(max=150, maxMessage="donation.address.length_max")
+     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     private $address;
 
@@ -122,21 +136,21 @@ class Donation
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber(defaultRegion="FR", message="common.phone_number.invalid")
      */
     private $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(length=100, nullable=true)
      */
     private $payboxResultCode;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(length=100, nullable=true)
      */
     private $payboxAuthorizationCode;
 
@@ -157,7 +171,7 @@ class Donation
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(length=50, nullable=true)
      */
     private $clientIp;
 

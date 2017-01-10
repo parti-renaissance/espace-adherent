@@ -1,11 +1,19 @@
 imports:
     - { resource: config_dev.yml }
 
+services:
+    app.recaptcha.api_client:
+        class: AppBundle\Recaptcha\DummyRecaptchaApiClient
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"
     env(PAYBOX_IDENTIFIER): "107904482"
     env(PAYBOX_KEY): "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+
+liip_functional_test:
+    cache_sqlite_db: true
 
 doctrine:
     dbal:

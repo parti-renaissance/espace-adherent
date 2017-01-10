@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
+            <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
+            <argument type="collection">
+                <argument key="timeout">2.0</argument>
+                <argument key="environment">%kernel.environment%</argument>
+            </argument>
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="app.validator.recaptcha" class="AppBundle\Validator\RecaptchaValidator">
+            <argument type="service" id="app.recaptcha.api_client"/>
+            <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
+        </service>
+
+    </services>
+</container>

@@ -23,3 +23,6 @@ parameters:
     env(PAYBOX_RANK):           ~
     env(PAYBOX_IDENTIFIER):     ~
     env(PAYBOX_KEY):            ~
+
+    env(RECAPTCHA_PUBLIC_KEY):  ~
+    env(RECAPTCHA_PRIVATE_KEY): ~

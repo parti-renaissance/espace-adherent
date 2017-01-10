@@ -3,8 +3,11 @@ imports:
     - { resource: security.yml }
     - { resource: assets_version.yml }
     - { resource: services/content.xml }
+    - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
     - { resource: services/intl.xml }
+    - { resource: services/membership.xml }
+    - { resource: services/recaptcha.xml }
     - { resource: services/twig.xml }
 
 parameters:
@@ -39,8 +42,9 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        assets_hash:  "%assets_hash%"
-        sentry_dsn:   "%env(SENTRY_PUBLIC_DSN)%"
+        assets_hash:          "%assets_hash%"
+        sentry_dsn:           "%env(SENTRY_PUBLIC_DSN)%"
+        recaptcha_public_key: "%env(RECAPTCHA_PUBLIC_KEY)%"
     form_themes:
         - 'form_theme.html.twig'
 
@@ -104,3 +108,7 @@ fos_js_routing:
     cache_control:
         public: true
         smaxage: 31536000   # 1 year, to be purged using Cloudflare
+
+csa_guzzle:
+    profiler: '%kernel.debug%'
+    logger: true

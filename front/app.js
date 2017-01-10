@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import HomeDonation from './controllers/HomeDonation';
 import DonationIndexAmoutChooser from './controllers/DonationIndexAmoutChooser';
 import DonationIndexAddress from './controllers/DonationIndexAddress';
+import MembershipIndexAddress from './controllers/MembershipIndexAddress';
 
 import './style/app.scss';
 
@@ -27,5 +28,9 @@ export default class App {
     donationIndex(donation, countries) {
         render(<DonationIndexAmoutChooser defaultAmount={donation.amount} />, document.getElementById('donation-amount'));
         render(<DonationIndexAddress countries={countries} defaultAddress={donation} />, document.getElementById('donation-address'));
+    }
+
+    membershipIndex(membership, countries) {
+        render(<MembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
     }
 }

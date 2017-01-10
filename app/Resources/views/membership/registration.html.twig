@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Adhérer au mouvement En Marche !' %}
+
+{% block banner '' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.membershipIndex(
+                {
+                    country: '{{ membership.country }}',
+                    postalCode: '{{ membership.postalCode }}',
+                    city: '{{ membership.city }}',
+                    address: '{{ membership.address }}',
+                    errors: {
+                        country: '{{ form_errors(form.country) }}',
+                        postalCode: '{{ form_errors(form.postalCode) }}',
+                        city: '{{ form_errors(form.city) }}',
+                        address: '{{ form_errors(form.address) }}'
+                    }
+                },
+                {{ countries|json_encode|raw }}
+            );
+        }
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="l__wrapper--medium">
+        <div class="donation">
+            <h2>J'adhère au mouvement En Marche !</h2>
+
+            <div class="l__row l__row--top l__row--h-stretch">
+                <div class="donation__form">
+                    <form method="post" id="app-membership" class="form">
+                        {{ form_errors(form) }}
+
+                        <div class="form__row">
+                            {{ form_errors(form.gender) }}
+                            {{ form_widget(form.gender) }}
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.firstName, 'Prénom') }}
+                            {{ form_errors(form.firstName) }}
+                            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.lastName, 'Nom') }}
+                            {{ form_errors(form.lastName) }}
+                            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+                        </div>
+
+                        <div class="form__row" id="field-email-address">
+                            {{ form_label(form.emailAddress, 'Adresse e-mail') }}
+                            {{ form_errors(form.emailAddress) }}
+                            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse e-mail' } }) }}
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.password.first, 'Mot de passe') }}
+                            {{ form_errors(form.password.first) }}
+                            {{ form_widget(form.password.first, { 'attr': { 'class': 'form--full', 'placeholder': 'Mot de passe' } }) }}
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.password.second, 'Confirmation') }}
+                            {{ form_errors(form.password.second) }}
+                            {{ form_widget(form.password.second, { 'attr': { 'class': 'form--full', 'placeholder': 'Confirmation' } }) }}
+                        </div>
+
+                        <div id="membership-address">
+                            <div class="form__row" id="field-address">
+                                {{ form_label(form.address, 'Adresse postale') }}
+                                {{ form_errors(form.address) }}
+                                {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
+                            </div>
+
+                            <div class="form__row" id="field-postal-code-city">
+                                {{ form_label(form.postalCode, 'Code postal') }}
+                                {{ form_errors(form.postalCode) }}
+                                <div>{{ form_widget(form.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
+                                {{ form_widget(form.city) }}
+                            </div>
+
+                            <div class="form__row" id="field-country">
+                                {{ form_label(form.country, 'Pays') }}
+                                {{ form_errors(form.country) }}
+                                {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                            </div>
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.phone, 'Numéro de téléphone') }}
+                            {{ form_errors(form.phone) }}
+                            <div>
+                                {{ form_widget(form.phone.country, { 'attr': { 'class': 'membership_request__form__phone'} }) }}
+                                {{ form_widget(form.phone.number) }}
+                            </div>
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_label(form.position, 'Profession') }}
+                            {{ form_errors(form.position) }}
+                            {{ form_widget(form.position, { 'attr': { 'class': 'form--full' } }) }}
+                        </div>
+
+                        <div class="form__row" id="field-birthdate">
+                            {{ form_label(form.birthdate, 'Date de naissance') }}
+                            {{ form_errors(form.birthdate) }}
+                            {{ form_widget(form.birthdate, { 'attr': { 'class': 'form--full', 'placeholder': 'JJ/MM/AAAA' } }) }}
+                        </div>
+
+                        <div class="form__row" id="field-conditions">
+                            {{ form_label(form.conditions) }}
+                            {{ form_errors(form.conditions) }}
+                            {{ form_widget(form.conditions) }}
+                        </div>
+
+                        {% if 'test' != app.environment %}
+                            <div class="form__row" id="field-recaptcha">
+                                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
+                            </div>
+                        {% endif %}
+
+                        <div>
+                            <button type="submit" id="become-adherent">J'adhère</button>
+                        </div>
+
+                        {{ form_rest(form) }}
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
