@@ -14,11 +14,20 @@ security:
             security: false
 
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            # No pattern means every path is behind this firewall
+            anonymous:
+                secret: '%env(SECRET)%'
+            form_login:
+                login_path: adherent_login
+                check_path: adherent_login_check
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+                default_target_path: events_index
+                always_use_default_target_path: true
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+                username_parameter: _adherent_email
+                password_parameter: _adherent_password
+                csrf_parameter: _adherent_csrf
+                csrf_token_id: authenticate_adherent
+
+    access_control:
+        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }

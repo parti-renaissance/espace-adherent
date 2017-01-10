@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Connexion
+{% endblock %}
+
+{% block banner '' %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper">
+            <div class="login l__col background--light space--20-30 l__tablet--col b__nudge--bottom-large">
+                <h2 class="text--center">Accédez à votre espace adhérent</h2>
+                <div class="login--box l__col space--20-30">
+                    <p class="text--center">Connectez-vous à votre espace adhérent</p>
+
+                    {{ form_start(form, { class: 'l__row l__row--wrap' }) }}
+                        {{ form_widget(form._adherent_email, { attr: {
+                            placeholder: 'Votre e-mail',
+                            'aria-label': 'Votre e-mail',
+                            class: 'form__row form--full'
+                        } }) }}
+                        {{ form_widget(form._adherent_password, { attr: {
+                            placeholder: 'Mot de passe',
+                            'aria-label': 'Mot de passe',
+                            class: 'form__row form--full'
+                        } }) }}
+
+                        {% if error %}
+                            <div class="login--box--error text--center form__error b__nudge--bottom-small">Identifiants invalides.</div>
+                        {% endif %}
+
+                        <button type="submit" class="form form__field form--full btn btn--green" title="Me connecter" >Me connecter</button>
+
+                    {{ form_end(form) }}
+
+                    <p class="text--center b__nudge--bottom-large"><a href="#">Mot de passe oublié</a></p>
+
+                    <div class="login--box--separator"><div class="login--box--separator--text text--center">ou</div></div>
+
+                    <a href="" title="Adhérez à En Marche !" class="form btn btn--green text--center">Adhérez à En Marche !</a>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

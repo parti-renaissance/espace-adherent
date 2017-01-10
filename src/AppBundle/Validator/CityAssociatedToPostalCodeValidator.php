@@ -23,7 +23,7 @@ class CityAssociatedToPostalCodeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (null === $value) {
+        if (null === $value || !$constraint instanceof CityAssociatedToPostalCode) {
             return;
         }
 
