@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Événements
+{% endblock %}
+
+{% block content %}
+
+<main>
+    <section class="l__wrapper">
+        <h2>Événements</h2>
+
+        <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-mobile space--35-15">
+            <li class="head">Suivez Emmanuel Macron !</li>
+            <li><a href="https://www.facebook.com/EnMarche/"><i class="fa fa-facebook-square"></i></a></li>
+            <li><a href="https://twitter.com/enmarchefr"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="https://www.instagram.com/enmarchefr/"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg"><i class="fa fa-youtube-square"></i></a></li>
+            <li><a href="https://medium.com/@enmarchefr"><i class="fa fa-medium"></i></a></li>
+            <li><a href="https://www.linkedin.com/company/en-marche"><i class="fa fa-linkedin-square"></i></a></li>
+            <li><a href="#"><i class="fa fa-snapchat-ghost"></i></a></li>
+        </ul>
+
+        <div class="l__wrapper space--5-20 l__row l__row--center l__hide--on-tablet">
+            <div class="icon--with-text text--all-caps text--bold b__nudge--right">
+                <svg width="16px" height="27px" viewBox="0 0 16 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g transform="translate(0.000000, -3.000000)" fill="#000000" fill-opacity="0.2">
+                        <polygon points="10.5954467 2.9997 0 18.8437 5.49478963 18.8437 5.33131988 29.7147 15.8595735 13.8437 10.491147 13.8437"></polygon>
+                    </g>
+                </svg>
+                En Direct
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
