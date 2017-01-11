@@ -18,13 +18,13 @@ class AdherentFactory
     public function createFromMembershipRequest(MembershipRequest $request): Adherent
     {
         return new Adherent(
-            Adherent::createUuid($request->emailAddress),
-            $request->emailAddress,
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
             $this->encodePassword($request->password),
             $request->gender,
             $request->firstName,
             $request->lastName,
-            $request->getBirthdate(),
+            clone $request->getBirthdate(),
             $request->position,
             $request->country,
             $request->address,

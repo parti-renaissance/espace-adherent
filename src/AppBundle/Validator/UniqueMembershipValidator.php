@@ -28,13 +28,13 @@ class UniqueMembershipValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, MembershipRequest::class);
         }
 
-        $adherent = $this->repository->findByEmail($value->emailAddress);
+        $adherent = $this->repository->findByEmail($value->getEmailAddress());
 
         if ($adherent instanceof Adherent) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ email }}', $value->emailAddress)
+                ->setParameter('{{ email }}', $value->getEmailAddress())
                 ->atPath('emailAddress')
                 ->addViolation()
             ;

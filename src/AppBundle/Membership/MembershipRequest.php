@@ -54,7 +54,7 @@ class MembershipRequest
      * @Assert\NotBlank(message="common.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      */
-    public $emailAddress;
+    private $emailAddress;
 
     /**
      * @AssertPhoneNumber(defaultRegion="FR")
@@ -120,12 +120,22 @@ class MembershipRequest
         $this->conditions = false;
     }
 
-    public static function createWithCaptcha(string $recaptchaAnswer = null)
+    public static function createWithCaptcha(string $recaptchaAnswer = null): self
     {
         $dto = new self();
         $dto->recaptcha = $recaptchaAnswer;
 
         return $dto;
+    }
+
+    public function setEmailAddress(string $emailAddress)
+    {
+        $this->emailAddress = mb_strtolower($emailAddress);
+    }
+
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
     }
 
     public function setPhone(PhoneNumber $phone = null)
