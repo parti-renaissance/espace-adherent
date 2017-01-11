@@ -176,4 +176,54 @@ class Adherent implements UserInterface
     public function eraseCredentials()
     {
     }
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
 }
