@@ -3,31 +3,37 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Donation;
-use Goutte\Client;
+use AppBundle\Repository\DonationRepository;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Goutte\Client as PayboxClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\TestHelperTrait;
 
 class DonationControllerTest extends WebTestCase
 {
+    use TestHelperTrait;
+
+    /* @var Client */
+    private $appClient;
+
+    /* @var PayboxClient */
+    private $payboxClient;
+
+    /* @var DonationRepository */
+    private $donationRepository;
+
     public function testFullProcess()
     {
-        $symfonyClient = static::createClient();
-        $externalClient = new Client();
-
-        $entityManager = $symfonyClient->getContainer()->get('doctrine.orm.entity_manager');
-        $donationRepository = $entityManager->getRepository('AppBundle:Donation');
-
         // There should not be any donation for the moment
-        $this->assertEmpty($donationRepository->findAll());
+        $this->assertCount(0, $this->donationRepository->findAll());
 
         /*
          * Initial questions page
          */
-        $crawler = $symfonyClient->request(Request::METHOD_GET, '/don');
-        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
+        $crawler = $this->appClient->request('GET', '/don');
+        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
 
-        $form = $crawler->filter('form[name=app_donation]')->form([
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation[amount]' => '30',
             'app_donation[gender]' => 'male',
             'app_donation[lastName]' => 'Doe',
@@ -39,62 +45,55 @@ class DonationControllerTest extends WebTestCase
             'app_donation[address]' => '12 Rue Marie Curie',
             'app_donation[phone][country]' => 'FR',
             'app_donation[phone][number]' => '606060606',
-        ]);
-
-        $symfonyClient->submit($form);
+        ]));
 
         // Donation should have been saved
-        $donations = $donationRepository->findAll();
-        $this->assertCount(1, $donations);
-
-        /** @var Donation $donation */
-        $donation = $donations[0];
-
+        $this->assertCount(1, $donations = $this->donationRepository->findAll());
+        $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
         $this->assertEquals(30, $donation->getAmount());
-        $this->assertEquals('male', $donation->getGender());
-        $this->assertEquals('Doe', $donation->getLastName());
-        $this->assertEquals('John', $donation->getFirstName());
-        $this->assertEquals('test@paybox.com', $donation->getEmail());
-        $this->assertEquals('FR', $donation->getCountry());
-        $this->assertEquals('10000', $donation->getPostalCode());
-        $this->assertEquals('10000-10387', $donation->getCity());
-        $this->assertEquals('12 Rue Marie Curie', $donation->getAddress());
-        $this->assertEquals(33, $donation->getPhone()->getCountryCode());
-        $this->assertEquals('606060606', $donation->getPhone()->getNationalNumber());
+        $this->assertSame('male', $donation->getGender());
+        $this->assertSame('Doe', $donation->getLastName());
+        $this->assertSame('John', $donation->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getEmail());
+        $this->assertSame('FR', $donation->getCountry());
+        $this->assertSame('10000', $donation->getPostalCode());
+        $this->assertSame('10000-10387', $donation->getCity());
+        $this->assertSame('12 Rue Marie Curie', $donation->getAddress());
+        $this->assertSame(33, $donation->getPhone()->getCountryCode());
+        $this->assertSame('606060606', $donation->getPhone()->getNationalNumber());
 
         // We should be redirected to payment
-        $this->assertEquals(Response::HTTP_FOUND, $symfonyClient->getResponse()->getStatusCode());
+        $this->assertEquals(302, $this->appClient->getResponse()->getStatusCode());
 
-        $crawler = $symfonyClient->followRedirect();
-        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
+        $this->appClient->followRedirect();
+        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
 
         /*
          * En-Marche payment page (verification and form to Paybox)
          */
-        $formNode = $crawler->filter('form[name=app_donation_payment]');
-        $this->assertEquals('https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi', $formNode->attr('action'));
+        $formNode = $this->appClient->getCrawler()->filter('form[name=app_donation_payment]');
+        $this->assertSame('https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi', $formNode->attr('action'));
 
         $formTime = time();
-        $form = $formNode->form();
-        $crawler = $externalClient->submit($form);
+        $crawler = $this->payboxClient->submit($formNode->form());
 
         /*
          * Paybox redirection and payment form
          */
-        $crawler = $externalClient->submit($crawler->filter('form[name=PAYBOX]')->form());
+        $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
 
         // Pay using a testing account
-        $form = $crawler->filter('form[name=form_pay]')->form();
-        $form['NUMERO_CARTE'] = '1111222233334444';
-        $form['MOIS_VALIDITE'] = '12';
-        $form['AN_VALIDITE'] = '32';
-        $form['CVVX'] = '123';
+        $crawler = $this->payboxClient->submit($crawler->filter('form[name=form_pay]')->form([
+            'NUMERO_CARTE' => '1111222233334444',
+            'MOIS_VALIDITE' => '12',
+            'AN_VALIDITE' => '32',
+            'CVVX' => '123',
+        ]));
 
-        $crawler = $externalClient->submit($form);
-        $content = $externalClient->getInternalResponse()->getContent();
+        $content = $this->payboxClient->getInternalResponse()->getContent();
 
         // Check payment was successful
-        $this->assertEquals(1, $crawler->filter('td:contains("30.00 EUR")')->count());
+        $this->assertSame(1, $crawler->filter('td:contains("30.00 EUR")')->count());
         $this->assertContains('Paiement r&eacute;alis&eacute; avec succ&egrave;s', $content);
 
         /*
@@ -103,15 +102,43 @@ class DonationControllerTest extends WebTestCase
         $mockUrl = $crawler->filter('a')->first()->attr('href');
         $ipnUrl = str_replace('https://httpbin.org/status/200', '/don/payment-ipn/'.$formTime, $mockUrl);
 
-        $symfonyClient->request(Request::METHOD_GET, $ipnUrl);
-        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
+        $this->appClient->request('GET', $ipnUrl);
+        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
 
         // Donation should have been completed
-        $entityManager->refresh($donation);
+        $this->getEntityManager(Donation::class)->refresh($donation);
 
         $this->assertTrue($donation->isFinished());
         $this->assertNotNull($donation->getDonatedAt());
-        $this->assertEquals('00000', $donation->getPayboxResultCode());
-        $this->assertEquals('XXXXXX', $donation->getPayboxAuthorizationCode());
+        $this->assertSame('00000', $donation->getPayboxResultCode());
+        $this->assertSame('XXXXXX', $donation->getPayboxAuthorizationCode());
+
+        /*
+         * Check callback redirect to success page
+         */
+        $callbackUrl = str_replace('https://httpbin.org/status/200', '/don/callback', $mockUrl);
+
+        // $symfonyClient->request('GET', $callbackUrl);
+        // $this->assertEquals(302, $symfonyClient->getResponse()->getStatusCode());
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->appClient = static::createClient();
+        $this->payboxClient = new PayboxClient();
+        $this->container = $this->appClient->getContainer();
+        $this->donationRepository = $this->getDonationRepository();
+    }
+
+    protected function tearDown()
+    {
+        $this->payboxClient = new PayboxClient();
+        $this->donationRepository = null;
+        $this->container = null;
+        $this->appClient = null;
+
+        parent::tearDown();
     }
 }

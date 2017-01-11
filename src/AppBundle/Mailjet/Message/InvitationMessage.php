@@ -9,6 +9,7 @@ final class InvitationMessage extends MailjetMessage
     public static function createFromInvite(Invite $invite): self
     {
         $message = new static(
+            $invite->getUuid(),
             '61613',
             $invite->getEmail(),
             null,

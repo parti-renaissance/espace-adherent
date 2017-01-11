@@ -13,7 +13,7 @@ class IntlControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request(Request::METHOD_GET, '/api/postal-code/35420');
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertJson($client->getResponse()->getContent());
         $this->assertEquals([
             35018 => 'La Bazouge-du-Désert',

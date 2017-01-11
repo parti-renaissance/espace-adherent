@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Exception\ActivationKeyException;
+use AppBundle\Exception\AdherentAlreadyEnabledException;
+use AppBundle\Exception\AdherentException;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
@@ -18,6 +21,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class Adherent implements UserInterface
 {
+    const ENABLED = 'ENABLED';
+    const DISABLED = 'DISABLED';
+
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
@@ -98,6 +104,11 @@ class Adherent implements UserInterface
     private $position;
 
     /**
+     * @ORM\Column(length=10, options={"default"="DISABLED"})
+     */
+    private $status;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $registeredAt;
@@ -127,11 +138,12 @@ class Adherent implements UserInterface
         string $lastName,
         \DateTime $birthdate,
         string $position,
-        string $country,
+        string $country = 'FR',
         string $address = null,
         string $city = null,
         string $postalCode = null,
-        PhoneNumber $phone = null
+        PhoneNumber $phone = null,
+        string $status = self::DISABLED
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -146,6 +158,7 @@ class Adherent implements UserInterface
         $this->postalCode = $postalCode;
         $this->city = $city;
         $this->phone = $phone;
+        $this->status = $status;
         $this->registeredAt = new \DateTime();
     }
 
@@ -175,6 +188,16 @@ class Adherent implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
+
+    public function getFullName()
+    {
+        return $this->firstName.' '.$this->getLastName();
     }
 
     public function getPhone()
@@ -225,5 +248,46 @@ class Adherent implements UserInterface
     public function getPostalCode()
     {
         return $this->postalCode;
+    }
+
+    public function isEnabled()
+    {
+        return self::ENABLED === $this->status;
+    }
+
+    /**
+     * Returns the activation date.
+     *
+     * @return \DateTimeImmutable|null
+     */
+    public function getActivatedAt()
+    {
+        if ($this->activatedAt instanceof \DateTime) {
+            $this->activatedAt = new \DateTimeImmutable($this->activatedAt->format('U'));
+        }
+
+        return $this->activatedAt;
+    }
+
+    /**
+     * Activates the Adherent account with the provided activation key.
+     *
+     * @param ActivationKey $key
+     *
+     * @throws AdherentException
+     * @throws ActivationKeyException
+     */
+    public function activate(ActivationKey $key)
+    {
+        $uuid = $this->getUuid();
+
+        if (self::ENABLED === $this->status) {
+            throw new AdherentAlreadyEnabledException($uuid);
+        }
+
+        $key->activate($uuid);
+
+        $this->status = self::ENABLED;
+        $this->activatedAt = new \DateTimeImmutable('now');
     }
 }

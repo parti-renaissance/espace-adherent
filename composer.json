@@ -27,7 +27,7 @@
         "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
+        "sensio/framework-extra-bundle": "4.0.x-dev",
         "incenteev/composer-parameter-handler": "^2.0",
         "fzaninotto/faker": "^1.6",
         "sentry/sentry": "^1.6",
