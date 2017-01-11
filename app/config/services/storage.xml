@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Filesystem -->
+        <service id="app.storage" class="League\Flysystem\Filesystem">
+            <argument type="service">
+                <service class="League\Flysystem\Adapter\AdapterInterface">
+                    <factory class="AppBundle\Storage\FilesystemAdapterFactory" method="createAdapter" />
+                    <argument>%kernel.environment%</argument>
+                    <argument>%kernel.root_dir%/data</argument>
+                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
+                    <argument>%kernel.root_dir%/../gcloud-service-key.json</argument>
+                    <argument>%env(GCLOUD_BUCKET)%</argument>
+                </service>
+            </argument>
+        </service>
+
+        <!-- Clouflare client -->
+        <service id="app.cloudflare" class="AppBundle\Cloudflare\Cloudflare" />
+
+    </services>
+</container>
