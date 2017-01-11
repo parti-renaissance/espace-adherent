@@ -6,6 +6,10 @@
 
         <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
 
+        <service id="app.donation.manager" class="AppBundle\Donation\DonationManager">
+            <argument type="service" id="doctrine" />
+        </service>
+
         <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">
             <argument>%kernel.environment%</argument>
             <argument type="service" id="lexik_paybox.request_handler" />

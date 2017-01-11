@@ -4,13 +4,16 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class NewsletterControllerTest extends AbstractControllerTest
+class NewsletterControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /** @var Client */
     private $client;
 
@@ -24,7 +27,8 @@ class NewsletterControllerTest extends AbstractControllerTest
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
@@ -39,18 +43,19 @@ class NewsletterControllerTest extends AbstractControllerTest
 
         $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
         $this->assertSame('10000', $subscription->getPostalCode());
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '20000',
         ]));
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Subscription should not have been saved
         $this->assertCount(1, $subscriptions = $this->subscriptionsRepository->findAll());
@@ -63,7 +68,8 @@ class NewsletterControllerTest extends AbstractControllerTest
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',

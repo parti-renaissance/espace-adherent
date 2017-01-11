@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Donation;
+use AppBundle\Form\DonationType;
 use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\ActivationKeyExpiredException;
@@ -13,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,10 +37,14 @@ class MembershipController extends Controller
             $this->get('app.membership_request_handler')->handle($membership);
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 
-            return $this->redirectToRoute('app_membership_register');
+            if ($membership->hasAdherent()) {
+                $this->get('app.membership_utils')->createRegisteringDonation($membership->getAdherent());
+            }
+
+            return $this->redirectToRoute('app_membership_donate');
         }
 
-        return $this->render('membership/registration.html.twig', [
+        return $this->render('membership/register.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
@@ -45,7 +52,53 @@ class MembershipController extends Controller
     }
 
     /**
-     * This action enables a guest user to activate his\her newly created
+     * This action enables a new user to donate as a second step of the
+     * registration process, thus he/she may not be logged-in/activated yet.
+     *
+     * @Route("/inscription/don", name="app_membership_donate")
+     * @Method("GET|POST")
+     */
+    public function donateAction(Request $request): Response
+    {
+        $memberShipUtils = $this->get('app.membership_utils');
+
+        if (!$donation = $memberShipUtils->getRegisteringDonation()) {
+            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
+        }
+
+        $form = $this->createForm(DonationType::class, $donation, [
+            'locale' => $request->getLocale(),
+            'submit_label' => 'adherent.submit_donation_label',
+            'sponsor_form' => false,
+        ])
+            // TODO add this field only if anonymous (adherent not activated yet)
+            ->add('pass', SubmitType::class)
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->has('pass') && $form->get('pass')->isClicked()) {
+                return $this->redirectToRoute('app_adherent_pin_interests');
+            }
+
+            if ($form->isValid()) {
+                $memberShipUtils->clearRegisteringDonation();
+                $this->get('app.donation.manager')->persist($donation, $request->getClientIp());
+
+                return $this->redirectToRoute('donation_pay', [
+                    'id' => $donation->getId()->toString(),
+                ]);
+            }
+        }
+
+        return $this->render('membership/donate.html.twig', [
+            'form' => $form->createView(),
+            'donation' => $donation,
+            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
+        ]);
+    }
+
+    /**
+     * This action enables a new user to activate his\her newly created
      * membership account.
      *
      * @Route(

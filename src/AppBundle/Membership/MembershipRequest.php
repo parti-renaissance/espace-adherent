@@ -2,6 +2,7 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
 use AppBundle\Validator\FrenchCity as AssertFrenchCity;
 use AppBundle\Validator\FrenchPostalCode as AssertFrenchPostalCode;
@@ -51,23 +52,6 @@ class MembershipRequest
     public $lastName;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     */
-    private $emailAddress;
-
-    /**
-     * @AssertPhoneNumber(defaultRegion="FR")
-     */
-    private $phone;
-
-    /**
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
-     */
-    private $birthdate;
-
-    /**
      * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     public $address;
@@ -112,12 +96,35 @@ class MembershipRequest
      */
     public $recaptcha;
 
+    /**
+     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
+     */
+    private $emailAddress;
+
+    /**
+     * @AssertPhoneNumber(defaultRegion="FR")
+     */
+    private $phone;
+
+    /**
+     * @var Adherent
+     */
+    private $adherent;
+
+    /**
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank")
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
+     */
+    private $birthdate;
+
     public function __construct()
     {
         $this->country = 'FR';
         $this->gender = Genders::MALE;
         $this->position = ActivityPositions::EMPLOYED;
         $this->conditions = false;
+        $this->emailAddress = '';
     }
 
     public static function createWithCaptcha(string $recaptchaAnswer = null): self
@@ -161,7 +168,7 @@ class MembershipRequest
         return $this->phone;
     }
 
-    public function setBirthdate(\DateTime $birthdate)
+    public function setBirthdate(\DateTime $birthdate = null)
     {
         $this->birthdate = $birthdate;
     }
@@ -169,5 +176,26 @@ class MembershipRequest
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+
+    /**
+     * @return Adherent|null
+     */
+    public function getAdherent()
+    {
+        return $this->adherent;
+    }
+
+    /**
+     * @param Adherent|null $adherent
+     */
+    public function setAdherent(Adherent $adherent)
+    {
+        $this->adherent = $adherent;
+    }
+
+    public function hasAdherent(): bool
+    {
+        return null !== $this->adherent;
     }
 }

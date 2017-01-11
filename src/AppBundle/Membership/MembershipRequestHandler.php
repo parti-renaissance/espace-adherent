@@ -39,6 +39,8 @@ class MembershipRequestHandler
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $activationKey);
         $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
+
+        $membershipRequest->setAdherent($adherent);
     }
 
     private function generateMembershipActivationUrl(Adherent $adherent, ActivationKey $activationKey)

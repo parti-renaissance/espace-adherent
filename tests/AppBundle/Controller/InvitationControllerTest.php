@@ -3,13 +3,16 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Invite;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class InvitationControllerTest extends AbstractControllerTest
+class InvitationControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /** @var Client */
     private $client;
 
@@ -23,7 +26,8 @@ class InvitationControllerTest extends AbstractControllerTest
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_invitation]')->form([
             'app_invitation[lastName]' => 'Galopin',
@@ -39,11 +43,12 @@ class InvitationControllerTest extends AbstractControllerTest
         $this->assertSame('Titouan', $invite->getFirstName());
         $this->assertSame('Galopin', $invite->getLastName());
         $this->assertSame('Je t\'invite à rejoindre En Marche !', $invite->getMessage());
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');
-        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_invitation]')->form([
             'app_invitation[lastName]' => 'Dupond',
@@ -52,7 +57,7 @@ class InvitationControllerTest extends AbstractControllerTest
             'app_invitation[message]' => 'Je t\'invite à rejoindre En Marche !',
         ]));
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Invitation should not have been saved
         $this->assertCount(1, $this->invitationRepository->findAll());

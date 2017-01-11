@@ -21,3 +21,6 @@ adherent.activation.success: Votre compte adhérent est maintenant actif.
 adherent.activation.already_active: Votre compte adhérent est déjà actif.
 adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez contacter les administrateurs du site pour activer votre compte.
 
+
+adherent.submit_donation_label: Je soutiens maintenant
+adherent.pass_donation_label: Je ne soutiens pas financièrement

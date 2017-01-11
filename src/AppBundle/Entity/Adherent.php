@@ -65,7 +65,7 @@ class Adherent implements UserInterface
     /**
      * The address street.
      *
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
      */
@@ -74,7 +74,7 @@ class Adherent implements UserInterface
     /**
      * The address zip code.
      *
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
      */
@@ -83,7 +83,7 @@ class Adherent implements UserInterface
     /**
      * The address city code.
      *
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
      */

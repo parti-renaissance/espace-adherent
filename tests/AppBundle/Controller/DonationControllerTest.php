@@ -7,11 +7,12 @@ use AppBundle\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Goutte\Client as PayboxClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DonationControllerTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /* @var Client */
     private $appClient;
@@ -24,14 +25,16 @@ class DonationControllerTest extends WebTestCase
 
     public function testFullProcess()
     {
+        $appClient = $this->appClient;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
 
         /*
          * Initial questions page
          */
-        $crawler = $this->appClient->request('GET', '/don');
-        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
+        $crawler = $appClient->request(Request::METHOD_GET, '/don');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
         $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation[amount]' => '30',
@@ -50,6 +53,8 @@ class DonationControllerTest extends WebTestCase
         // Donation should have been saved
         $this->assertCount(1, $donations = $this->donationRepository->findAll());
         $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
+
+        /* @var Donation $donation */
         $this->assertEquals(30, $donation->getAmount());
         $this->assertSame('male', $donation->getGender());
         $this->assertSame('Doe', $donation->getLastName());
@@ -63,15 +68,17 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('606060606', $donation->getPhone()->getNationalNumber());
 
         // We should be redirected to payment
-        $this->assertEquals(302, $this->appClient->getResponse()->getStatusCode());
+        $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getId()), $appClient);
 
-        $this->appClient->followRedirect();
-        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
+        $crawler = $appClient->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
         /*
          * En-Marche payment page (verification and form to Paybox)
          */
-        $formNode = $this->appClient->getCrawler()->filter('form[name=app_donation_payment]');
+        $formNode = $crawler->filter('form[name=app_donation_payment]');
+
         $this->assertSame('https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi', $formNode->attr('action'));
 
         $formTime = time();
@@ -102,8 +109,9 @@ class DonationControllerTest extends WebTestCase
         $mockUrl = $crawler->filter('a')->first()->attr('href');
         $ipnUrl = str_replace('https://httpbin.org/status/200', '/don/payment-ipn/'.$formTime, $mockUrl);
 
-        $this->appClient->request('GET', $ipnUrl);
-        $this->assertSame(200, $this->appClient->getResponse()->getStatusCode());
+        $appClient->request(Request::METHOD_GET, $ipnUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
         // Donation should have been completed
         $this->getEntityManager(Donation::class)->refresh($donation);

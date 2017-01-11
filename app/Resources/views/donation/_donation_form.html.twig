@@ -1,0 +1,108 @@
+{% block donation_form_script %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.donationIndex(
+                {
+                    amount: {{ donation.amount ?: 10 }},
+                    country: '{{ donation.country }}',
+                    postalCode: '{{ donation.postalCode }}',
+                    city: '{{ donation.city }}',
+                    address: '{{ donation.address }}'
+                    {%- if form.vars.sponsor_form is defined -%}
+                    ,
+                        errors: {
+                            country: '{{ form_errors(form.country) }}',
+                            postalCode: '{{ form_errors(form.postalCode) }}',
+                            city: '{{ form_errors(form.city) }}',
+                            address: '{{ form_errors(form.address) }}'
+                        }
+                    {%- endif %}
+                },
+                {{ countries|json_encode|raw }}
+            );
+        }
+    </script>
+{% endblock %}
+
+{% block donation_form %}
+    <div class="donation__form">
+        {{ form_start(form, { attr: { class: 'form' } }) }}
+            {{ form_errors(form) }}
+
+            <p>
+                Sélectionnez le montant de votre don :
+            </p>
+
+            {{ form_errors(form.amount) }}
+            <div id="donation-amount" class="form__row">
+                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+
+            {% if form.vars.sponsor_form is defined %}
+
+                <div class="form__row">
+                    {{ form_errors(form.gender) }}
+                    {{ form_widget(form.gender) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form.lastName, 'Nom') }}
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form.firstName, 'Prénom') }}
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form.email, 'Adresse email') }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div id="donation-address">
+                    <div class="form__row">
+                        {{ form_label(form.country, 'Pays') }}
+                        {{ form_errors(form.country) }}
+                        {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.postalCode, 'Code postal') }}
+                        {{ form_errors(form.postalCode) }}
+                        <div>{{ form_widget(form.postalCode) }}</div>
+
+                        {{ form_widget(form.city) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.address, 'Adresse postale') }}
+                        {{ form_errors(form.address) }}
+                        {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form.phone, 'Numéro de téléphone') }}
+                    {{ form_errors(form.phone) }}
+                    <div>
+                        {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone'} }) }}
+                        {{ form_widget(form.phone.number) }}
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if form.pass is defined %}
+                {{ form_widget(form.pass, { label: 'adherent.pass_donation_label' }) }}
+            {% endif %}
+
+            {{ form_widget(form.submit) }}
+
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -2,11 +2,14 @@
 
 namespace Tests\AppBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdherentControllerTest extends AbstractControllerTest
+class AdherentControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testIndexActionIsSecured()
     {
         $client = static::createClient();
@@ -14,6 +17,6 @@ class AdherentControllerTest extends AbstractControllerTest
         $client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client, true);
     }
 }

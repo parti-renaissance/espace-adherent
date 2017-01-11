@@ -2,12 +2,15 @@
 
 namespace Tests\AppBundle\Controller\Security;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\AbstractControllerTest;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
-class AdherentSecurityControllerTest extends AbstractControllerTest
+class AdherentSecurityControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testLoginAction()
     {
         $client = static::createClient();
@@ -26,7 +29,7 @@ class AdherentSecurityControllerTest extends AbstractControllerTest
         $client->request(Request::METHOD_POST, '/espace-adherent/connexion/check', []);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client, true);
 
         $crawler = $client->followRedirect();
 
