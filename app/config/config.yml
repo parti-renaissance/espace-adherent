@@ -46,14 +46,15 @@ twig:
 
 doctrine:
     dbal:
-        driver:      pdo_mysql
-        charset:     UTF8
-        host:        "%env(DATABASE_HOST)%"
-        port:        "%env(DATABASE_PORT)%"
-        dbname:      "%env(DATABASE_NAME)%"
-        user:        "%env(DATABASE_USER)%"
-        password:    "%env(DATABASE_PASSWORD)%"
-        unix_socket: "%env(DATABASE_SOCKET)%"
+        driver:           pdo_mysql
+        charset:          UTF8
+        host:             "%env(DATABASE_HOST)%"
+        port:             "%env(DATABASE_PORT)%"
+        dbname:           "%env(DATABASE_NAME)%"
+        user:             "%env(DATABASE_USER)%"
+        password:         "%env(DATABASE_PASSWORD)%"
+        unix_socket:      "%env(DATABASE_SOCKET)%"
+        server_version:   5.7
 
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
