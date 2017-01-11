@@ -2,9 +2,11 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: assets_version.yml }
+    - { resource: mailer_parameters.yml }
     - { resource: services/content.xml }
     - { resource: services/donation.xml }
     - { resource: services/intl.xml }
+    - { resource: services/mailer.xml }
     - { resource: services/twig.xml }
 
 parameters:

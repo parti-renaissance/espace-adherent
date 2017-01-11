@@ -1,0 +1,3 @@
+parameters:
+    app.invitation.template: "invite/invitation-email.html.twig"
+    app.invitation.from_email: jemarche@enmarche.fr
