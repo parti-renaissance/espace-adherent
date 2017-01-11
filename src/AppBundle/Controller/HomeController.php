@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Cloudflare\Cloudflare;
 use AppBundle\Form\NewsletterSubscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,12 +16,10 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->get('app.filesystem.article_repository');
-
-        return Cloudflare::cacheIndefinitely(
+        return $this->get('app.cloudflare')->cacheIndefinitely(
             $this->render('home/index.html.twig', [
-                'articles' => $repository->getHomeArticles(),
-                'live_links' => $repository->getHomeLiveLinks(),
+                'articles' => [],
+                'live_links' => [],
                 'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
             ]),
             ['home']
@@ -41,7 +38,7 @@ class HomeController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return Cloudflare::cacheIndefinitely(
+        return $this->get('app.cloudflare')->cacheIndefinitely(
             $this->render('home/article.html.twig', ['article' => $article]),
             ['articles', 'article-'.$slug]
         );
@@ -53,6 +50,6 @@ class HomeController extends Controller
      */
     public function healthAction()
     {
-        return Cloudflare::cacheIndefinitely(new Response('Healthy'), ['health']);
+        return $this->get('app.cloudflare')->cacheIndefinitely(new Response('Healthy'), ['health']);
     }
 }

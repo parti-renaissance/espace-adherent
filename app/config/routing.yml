@@ -5,6 +5,15 @@ lexik_paybox:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+admin_dashboard:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /admin
+
+admin_crud:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
 app:
     resource: "@AppBundle/Controller/"
     type:     "annotation"

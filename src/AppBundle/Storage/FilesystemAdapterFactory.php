@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Content;
+namespace AppBundle\Storage;
 
 use Google\Cloud\Storage\StorageClient;
 use League\Flysystem\Adapter\Local;

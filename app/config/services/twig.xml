@@ -4,9 +4,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Webpack extension for Twig -->
-        <service id="app.twig.webpack_asset_extension" class="AppBundle\Twig\WebpackAssetExtension" public="false">
+        <!-- Assets -->
+        <service id="app.twig.media_asset_extension" class="AppBundle\Twig\AssetExtension" public="false">
+            <argument type="service" id="router" />
             <argument type="service" id="twig.extension.assets" />
+            <argument>%kernel.secret%</argument>
             <argument>%kernel.environment%</argument>
             <argument>%assets_hash%</argument>
 
