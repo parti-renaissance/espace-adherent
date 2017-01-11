@@ -1,4 +1,7 @@
 /app/config/parameters.yml
+/app/data/images/*
+!/app/data/images
+!/app/data/images/.gitkeep
 /build/
 /phpunit.xml
 /var/*

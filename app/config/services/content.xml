@@ -4,29 +4,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Filesystem -->
-        <service id="app.filesystem" class="League\Flysystem\Filesystem" public="false">
-            <argument type="service">
-                <service class="League\Flysystem\Adapter\AdapterInterface">
-                    <factory class="AppBundle\Content\FilesystemAdapterFactory" method="createAdapter" />
-                    <argument>%kernel.environment%</argument>
-                    <argument>%kernel.root_dir%/data</argument>
-                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
-                    <argument>%kernel.root_dir%/../gcloud-service-key.json</argument>
-                    <argument>%env(GCLOUD_BUCKET)%</argument>
-                </service>
-            </argument>
-        </service>
-
         <!-- Markdown parser -->
         <service id="app.markdown" class="League\CommonMark\CommonMarkConverter" public="false" />
-
-        <!-- Home configuration repository -->
-        <service id="app.filesystem.article_repository" class="AppBundle\Content\ArticleRepository">
-            <argument type="service" id="app.filesystem" />
-            <argument type="service" id="app.markdown" />
-            <argument type="service" id="logger" />
-        </service>
 
     </services>
 </container>

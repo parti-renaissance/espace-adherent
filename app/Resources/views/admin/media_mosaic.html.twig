@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig' %}
+
+{% block sonata_mosaic_background %}
+    <img src="{{ dynamic_asset(object.path) }}" />
+{% endblock %}
+
+{% block sonata_mosaic_default_view '' %}
+
+{% block sonata_mosaic_hover_view %}
+    <span class="label label-primary pull-right">{{ object.path }}</span>
+{% endblock %}
