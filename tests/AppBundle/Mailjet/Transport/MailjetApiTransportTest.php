@@ -26,6 +26,17 @@ class MailjetApiTransportTest extends \PHPUnit_Framework_TestCase
     {
         $email = $this->createDummyEmail();
 
+        $body = <<<'EOF'
+{
+    "Sent": [
+        {
+            "Email": "john.smith@example.tld",
+            "MessageID": 111111111111111
+        }
+    ]
+}
+EOF;
+
         $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
         $httpClient
             ->expects($this->once())
@@ -34,11 +45,13 @@ class MailjetApiTransportTest extends \PHPUnit_Framework_TestCase
                 'auth' => ['public-key', 'private-key'],
                 'body' => json_encode($email->getBody()),
             ])
-            ->willReturn(new HttpResponse(200))
+            ->willReturn(new HttpResponse(200, [], $body))
         ;
 
         $transport = new MailjetApiTransport($httpClient, 'public-key', 'private-key');
         $transport->sendTemplateEmail($email);
+
+        $this->assertSame($body, $email->getHttpResponsePayload());
     }
 
     private function createDummyEmail()

@@ -4,8 +4,21 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
+            <argument type="service" id="app.membership.adherent_factory"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
         <service id="app.membership.adherent_factory" class="AppBundle\Membership\AdherentFactory">
             <argument type="service" id="security.encoder_factory"/>
+        </service>
+
+        <service id="app.membership.notifications" class="AppBundle\Membership\MembershipEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.mailjet_email"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">

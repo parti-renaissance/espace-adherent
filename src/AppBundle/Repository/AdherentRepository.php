@@ -18,4 +18,16 @@ class AdherentRepository extends EntityRepository
     {
         return $this->findOneBy(['emailAddress' => $email]);
     }
+
+    /**
+     * Finds an Adherent instance by its unique UUID.
+     *
+     * @param string $uuid
+     *
+     * @return Adherent|null
+     */
+    public function findByUuid(string $uuid)
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
 }

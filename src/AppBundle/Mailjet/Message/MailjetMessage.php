@@ -2,16 +2,20 @@
 
 namespace AppBundle\Mailjet\Message;
 
+use Ramsey\Uuid\UuidInterface;
+
 abstract class MailjetMessage
 {
+    private $uuid;
     private $vars;
     private $subject;
     private $template;
     private $recipientEmail;
     private $recipientName;
 
-    final public function __construct($template, $recipientEmail, $recipientName, $subject, array $vars = [])
+    final public function __construct(UuidInterface $uuid, $template, $recipientEmail, $recipientName, $subject, array $vars = [])
     {
+        $this->uuid = $uuid;
         $this->recipientName = $recipientName;
         $this->recipientEmail = $recipientEmail;
         $this->template = $template;
@@ -22,6 +26,11 @@ abstract class MailjetMessage
     protected function setVar(string $key, $value)
     {
         $this->vars[$key] = $value;
+    }
+
+    final public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     final public function getVars(): array

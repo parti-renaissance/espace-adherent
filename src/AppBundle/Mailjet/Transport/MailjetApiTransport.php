@@ -5,6 +5,7 @@ namespace AppBundle\Mailjet\Transport;
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\MailjetTemplateEmail;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Request;
 
 class MailjetApiTransport implements MailjetMessageTransportInterface
 {
@@ -26,11 +27,13 @@ class MailjetApiTransport implements MailjetMessageTransportInterface
     {
         $response = $this->httpClient->request('POST', 'send', [
             'auth' => [$this->publicKey, $this->privateKey],
-            'body' => json_encode($email->getBody()),
+            'body' => $email->getHttpRequestPayload(),
         ]);
 
         if (200 !== $response->getStatusCode()) {
             throw new MailjetException('Unable to send email to recipients.');
         }
+
+        $email->delivered((string) $response->getBody());
     }
 }
