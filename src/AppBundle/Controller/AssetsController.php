@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
@@ -29,9 +30,12 @@ class AssetsController extends Controller
         $glide = $this->get('app.glide');
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
 
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $glide->getImageResponse($path, $request->query->all()),
-            ['medias', 'media-'.md5($path)]
-        );
+        try {
+            $response = $glide->getImageResponse($path, $request->query->all());
+        } catch (FileNotFoundException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->get('app.cloudflare')->cacheIndefinitely($response, ['assets', 'asset-'.md5($path)]);
     }
 }

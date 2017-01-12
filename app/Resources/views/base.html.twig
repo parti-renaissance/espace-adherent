@@ -46,9 +46,9 @@
         <meta property="og:url" content="{% block open_graph_url %}{{ url('homepage')|trim('/') }}{% endblock %}" />
         <meta property="og:title" content="{% block open_graph_title %}{{ block('title') }}{% endblock %}" />
         <meta property="og:description" content="{% block open_graph_description %}{{ block('meta_description') }}{% endblock %}" />
-        <meta property="og:image" content="{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}" />
-        <meta property="og:image:width" content="628" />
-        <meta property="og:image:height" content="288" />
+        <meta property="og:image" content="{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}{% endblock %}" />
+        <meta property="og:image:width" content="{% block open_graph_image_width %}628{% endblock %}" />
+        <meta property="og:image:height" content="{% block open_graph_image_height %}288{% endblock %}" />
         {% block open_graph %}{% endblock %}
 
         <meta property="fb:pages" content="543099962534877" />
@@ -56,7 +56,7 @@
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="{{ block('open_graph_title') }}" />
         <meta name="twitter:description" content="{{ block('open_graph_description') }}" />
-        <meta name="twitter:image:src" content="{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}" />
+        <meta name="twitter:image:src" content="{{ block('open_graph_image') }}" />
 
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />

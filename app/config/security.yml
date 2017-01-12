@@ -1,24 +1,46 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    role_hierarchy:
+        ROLE_WRITER:
+            - ROLE_APP_ADMIN_MEDIA_ALL
+            - ROLE_APP_ADMIN_ARTICLE_ALL
+            - ROLE_APP_ADMIN_LIVE_LINK_ALL
+            - ROLE_APP_ADMIN_HOME_BLOCK_LIST
+            - ROLE_APP_ADMIN_HOME_BLOCK_EDIT
+
+        ROLE_ADMIN:
+            - ROLE_WRITER
+            - ROLE_APP_ADMIN_HOME_BLOCK_ALL
+
+    access_decision_manager:
+        strategy: unanimous
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    "%env(WRITER_LOGIN)%":
+                        password: "%env(WRITER_PASSWORD)%"
+                        roles: 'ROLE_WRITER'
+
+                    "%env(ADMIN_LOGIN)%":
+                        password: "%env(ADMIN_PASSWORD)%"
+                        roles: 'ROLE_ADMIN'
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+            http_basic: ~
+            logout:
+                path:   /admin/logout
+                target: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/admin, roles: ROLE_WRITER }

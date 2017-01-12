@@ -4,6 +4,6 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class MediaRepository extends EntityRepository
+class ArticleRepository extends EntityRepository
 {
 }

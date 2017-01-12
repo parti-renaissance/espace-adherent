@@ -18,8 +18,8 @@ class HomeController extends Controller
     {
         return $this->get('app.cloudflare')->cacheIndefinitely(
             $this->render('home/index.html.twig', [
-                'articles' => [],
-                'live_links' => [],
+                'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
+                'live_links' => $this->getDoctrine()->getRepository('AppBundle:LiveLink')->findHomeLiveLinks(),
                 'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
             ]),
             ['home']
@@ -32,7 +32,9 @@ class HomeController extends Controller
      */
     public function articleAction($slug)
     {
-        $article = $this->get('app.filesystem.article_repository')->getArticle($slug);
+        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBy([
+            'slug' => $slug,
+        ]);
 
         if (!$article) {
             throw $this->createNotFoundException();
