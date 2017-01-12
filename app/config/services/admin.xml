@@ -19,8 +19,47 @@
                     <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
                 </argument>
             </call>
-            
+
             <tag name="sonata.admin" manager-type="orm" label="Médias" group="Gestion du contenu" />
+        </service>
+
+        <!-- Article -->
+        <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Article</argument>
+            <argument />
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Gestion du contenu" />
+        </service>
+
+        <!-- HomeBlock -->
+        <service id="app.admin.home_block" class="AppBundle\Admin\HomeBlockAdmin">
+            <argument />
+            <argument>AppBundle\Entity\HomeBlock</argument>
+            <argument />
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Page d'accueil" group="Gestion du contenu" />
+        </service>
+
+        <!-- LiveLink -->
+        <service id="app.admin.live_link" class="AppBundle\Admin\LiveLinkAdmin">
+            <argument />
+            <argument>AppBundle\Entity\LiveLink</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Liens En direct" group="Gestion du contenu" />
         </service>
 
     </services>
