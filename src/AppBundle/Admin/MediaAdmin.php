@@ -22,17 +22,11 @@ class MediaAdmin extends AbstractAdmin
     /**
      * @param Media $media
      */
-    public function preValidate($media)
-    {
-        try { $this->storage->delete('images/'.$media->getPath()); } catch(\Exception $e) {}
-    }
-
-    /**
-     * @param Media $media
-     */
     public function preRemove($media)
     {
-        try { $this->storage->delete('images/'.$media->getPath()); } catch(\Exception $e) {}
+        try {
+            $this->storage->delete('images/'.$media->getPath());
+        } catch(\Exception $e) {}
     }
 
     /**
@@ -40,7 +34,7 @@ class MediaAdmin extends AbstractAdmin
      */
     public function prePersist($media)
     {
-        $this->storage->write('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
+        $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
     }
 
     /**
@@ -48,7 +42,9 @@ class MediaAdmin extends AbstractAdmin
      */
     public function preUpdate($media)
     {
-        $this->storage->write('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
+        if ($media->getFile()) {
+            $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
+        }
     }
 
     /**
@@ -62,15 +58,19 @@ class MediaAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isCreation = $this->getSubject()->getSize() === null;
+
         $formMapper
-            ->add('name', TextType::class, [
+            ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('path', TextType::class, [
-                'label' => 'URL (ne spécifier que la fin : http://en-marche.fr/assets/images/<votre-valeur>)',
+            ->add('path', null, [
+                'label' => $isCreation ? 'URL (ne spécifier que la fin : http://en-marche.fr/assets/images/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',
+                'disabled' => !$isCreation,
             ])
             ->add('file', FileType::class, [
-                'label' => 'Image'
+                'label' => $isCreation ? 'Image' : 'Image (laisser vide pour ne pas modifier)',
+                'required' => $isCreation,
             ]);
     }
 
@@ -106,6 +106,12 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('height', null, [
                 'label' => 'Hauteur (en pixels)',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Date de création',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Date de dernière mise à jour',
             ])
             ->add('_action', null, [
                 'actions' => [

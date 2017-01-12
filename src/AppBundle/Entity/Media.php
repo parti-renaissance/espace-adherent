@@ -4,10 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -19,11 +17,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Media
 {
     /**
-     * @var UuidInterface
+     * @var int
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -77,6 +75,8 @@ class Media
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
@@ -92,33 +92,18 @@ class Media
     /**
      * @var UploadedFile|null
      *
-     * @Assert\NotBlank
      * @Assert\Image
      */
     private $file;
 
-    public function __construct()
-    {
-        $this->id = Uuid::uuid4();
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
-    }
-
     public function __toString()
     {
-        return $this->getName();
+        return $this->name;
     }
 
-    public function getId(): UuidInterface
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(UuidInterface $id): Media
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -273,6 +258,10 @@ class Media
      */
     public function setFile(UploadedFile $file = null): Media
     {
+        if (!$file) {
+            return $this;
+        }
+
         $infos = getimagesize($file->getPathname());
 
         if (!count($infos)) {

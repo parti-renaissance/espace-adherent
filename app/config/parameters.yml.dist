@@ -24,3 +24,9 @@ parameters:
 
     env(MAILJET_PUBLIC_KEY):    ~
     env(MAILJET_PRIVATE_KEY):   ~
+
+    env(WRITER_LOGIN):          writer
+    env(WRITER_PASSWORD):       writer
+
+    env(ADMIN_LOGIN):           admin
+    env(ADMIN_PASSWORD):        admin

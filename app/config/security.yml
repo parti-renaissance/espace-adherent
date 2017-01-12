@@ -1,36 +1,46 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
 security:
 
-    encoders:
-        AppBundle\Entity\Adherent: bcrypt
+    role_hierarchy:
+        ROLE_WRITER:
+            - ROLE_APP_ADMIN_MEDIA_ALL
+            - ROLE_APP_ADMIN_ARTICLE_ALL
+            - ROLE_APP_ADMIN_LIVE_LINK_ALL
+            - ROLE_APP_ADMIN_HOME_BLOCK_LIST
+            - ROLE_APP_ADMIN_HOME_BLOCK_EDIT
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+        ROLE_ADMIN:
+            - ROLE_WRITER
+            - ROLE_APP_ADMIN_HOME_BLOCK_ALL
+
+    access_decision_manager:
+        strategy: unanimous
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
     providers:
-        users:
-            entity: { class: 'AppBundle\Entity\Adherent', property: 'emailAddress' }
+        in_memory:
+            memory:
+                users:
+                    "%env(WRITER_LOGIN)%":
+                        password: "%env(WRITER_PASSWORD)%"
+                        roles: 'ROLE_WRITER'
+
+                    "%env(ADMIN_LOGIN)%":
+                        password: "%env(ADMIN_PASSWORD)%"
+                        roles: 'ROLE_ADMIN'
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
-            # No pattern means every path is behind this firewall
-            anonymous:
-                secret: '%env(SECRET)%'
-            form_login:
-                login_path: adherent_login
-                check_path: adherent_login_check
-
-                default_target_path: events_index
-                always_use_default_target_path: true
-
-                username_parameter: _adherent_email
-                password_parameter: _adherent_password
-                csrf_parameter: _adherent_csrf
-                csrf_token_id: authenticate_adherent
+            anonymous: ~
+            http_basic: ~
+            logout:
+                path:   /admin/logout
+                target: /
 
     access_control:
-        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
+        - { path: ^/admin, roles: ROLE_WRITER }
