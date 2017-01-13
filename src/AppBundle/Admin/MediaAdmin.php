@@ -10,23 +10,35 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MediaAdmin extends AbstractAdmin
 {
+    use CloudflareSynchronizedAdminTrait;
+
     /**
      * @var Filesystem
      */
     private $storage;
 
     /**
+     * @param Media $object
+     */
+    public function invalidate($object)
+    {
+        $this->getCloudflare()->invalidateTag('asset-'.md5($object->getPath()));
+    }
+
+    /**
      * @param Media $media
      */
     public function preRemove($media)
     {
+        parent::preRemove($media);
+
         try {
             $this->storage->delete('images/'.$media->getPath());
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -34,6 +46,8 @@ class MediaAdmin extends AbstractAdmin
      */
     public function prePersist($media)
     {
+        parent::prePersist($media);
+
         $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
     }
 
@@ -42,6 +56,8 @@ class MediaAdmin extends AbstractAdmin
      */
     public function preUpdate($media)
     {
+        parent::preUpdate($media);
+
         if ($media->getFile()) {
             $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
         }
@@ -49,6 +65,7 @@ class MediaAdmin extends AbstractAdmin
 
     /**
      * @param Media $object
+     *
      * @return Metadata
      */
     public function getObjectMetadata($object)
@@ -120,7 +137,7 @@ class MediaAdmin extends AbstractAdmin
                     ],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
             ]);
     }
 

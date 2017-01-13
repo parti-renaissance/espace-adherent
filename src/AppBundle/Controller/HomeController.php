@@ -32,17 +32,18 @@ class HomeController extends Controller
      */
     public function articleAction($slug)
     {
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBy([
-            'slug' => $slug,
-        ]);
+        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBySlug($slug);
 
         if (!$article) {
             throw $this->createNotFoundException();
         }
 
         return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('home/article.html.twig', ['article' => $article]),
-            ['articles', 'article-'.$slug]
+            $this->render('home/article.html.twig', [
+                'article' => $article,
+                'content' => $this->get('app.markdown')->convertToHtml($article->getContent()),
+            ]),
+            ['articles', 'article-'.$article->getId()]
         );
     }
 

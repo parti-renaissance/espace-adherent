@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Content;
+namespace Tests\AppBundle\Storage;
 
-use AppBundle\Content\FilesystemAdapterFactory;
+use AppBundle\Storage\FilesystemAdapterFactory;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter;
