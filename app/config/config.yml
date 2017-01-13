@@ -5,10 +5,14 @@ imports:
     - { resource: services/content.xml }
     - { resource: services/donation.xml }
     - { resource: services/intl.xml }
+    - { resource: services/invitation.xml }
+    - { resource: services/mailjet.xml }
     - { resource: services/twig.xml }
 
 parameters:
     locale: fr
+    sender_email: 'contact@en-marche.fr'
+    sender_name:  'En Marche !'
 
 framework:
     translator:      { fallbacks: ["%locale%"] }
@@ -70,14 +74,6 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
 
-swiftmailer:
-    transport: smtp
-    host:      "%env(MAILER_HOST)%"
-    username:  "%env(MAILER_USER)%"
-    password:  "%env(MAILER_PASSWORD)%"
-    port:      "%env(MAILER_PORT)%"
-    spool:     { type: memory }
-
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/migrations"
     namespace: Migrations
@@ -105,3 +101,14 @@ fos_js_routing:
     cache_control:
         public: true
         smaxage: 31536000   # 1 year, to be purged using Cloudflare
+
+csa_guzzle:
+    profiler: '%kernel.debug%'
+    logger: true
+    clients:
+        mailjet_api:
+            config:
+                base_uri: 'https://api.mailjet.com/v3/'
+                timeout: 2.0
+                headers:
+                    Content-Type: 'application/json'
