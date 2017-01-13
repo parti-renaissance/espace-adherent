@@ -12,6 +12,11 @@ services:
         arguments: ['@?logger']
         public: false
 
+    app.cloudflare.tag_invalidator:
+        class: 'AppBundle\Cloudflare\CloudflareNullTagInvalidator'
+        arguments: ['@?logger']
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"

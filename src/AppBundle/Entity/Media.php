@@ -116,6 +116,7 @@ class Media
 
     /**
      * @param null|string $name
+     *
      * @return Media
      */
     public function setName($name): Media
@@ -135,6 +136,7 @@ class Media
 
     /**
      * @param null|string $path
+     *
      * @return Media
      */
     public function setPath($path): Media
@@ -154,6 +156,7 @@ class Media
 
     /**
      * @param int|null $width
+     *
      * @return Media
      */
     public function setWidth($width): Media
@@ -173,6 +176,7 @@ class Media
 
     /**
      * @param int|null $height
+     *
      * @return Media
      */
     public function setHeight($height): Media
@@ -192,6 +196,7 @@ class Media
 
     /**
      * @param int|null $size
+     *
      * @return Media
      */
     public function setSize($size): Media
@@ -211,6 +216,7 @@ class Media
 
     /**
      * @param null|string $mimeType
+     *
      * @return Media
      */
     public function setMimeType($mimeType): Media
@@ -254,6 +260,7 @@ class Media
 
     /**
      * @param UploadedFile|null $file
+     *
      * @return Media
      */
     public function setFile(UploadedFile $file = null): Media

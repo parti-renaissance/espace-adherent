@@ -123,6 +123,7 @@ class HomeBlock
 
     /**
      * @param null|string $position
+     *
      * @return HomeBlock
      */
     public function setPosition($position): HomeBlock
@@ -142,6 +143,7 @@ class HomeBlock
 
     /**
      * @param null|string $positionName
+     *
      * @return HomeBlock
      */
     public function setPositionName($positionName): HomeBlock
@@ -161,6 +163,7 @@ class HomeBlock
 
     /**
      * @param null|string $title
+     *
      * @return HomeBlock
      */
     public function setTitle($title): HomeBlock
@@ -180,6 +183,7 @@ class HomeBlock
 
     /**
      * @param null|string $subtitle
+     *
      * @return HomeBlock
      */
     public function setSubtitle($subtitle): HomeBlock
@@ -211,6 +215,7 @@ class HomeBlock
 
     /**
      * @param Media|null $media
+     *
      * @return HomeBlock
      */
     public function setMedia(Media $media = null): HomeBlock
@@ -230,6 +235,7 @@ class HomeBlock
 
     /**
      * @param null|string $link
+     *
      * @return HomeBlock
      */
     public function setLink($link): HomeBlock
@@ -251,4 +257,3 @@ class HomeBlock
         return $this;
     }
 }
-

@@ -12,8 +12,16 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class HomeBlockAdmin extends AbstractAdmin
 {
+    use CloudflareSynchronizedAdminTrait;
+
+    public function invalidate($object)
+    {
+        $this->getCloudflare()->invalidateTag('home');
+    }
+
     /**
      * @param HomeBlock $object
+     *
      * @return Metadata
      */
     public function getObjectMetadata($object)
@@ -76,7 +84,7 @@ class HomeBlockAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
             ]);
     }
 }
