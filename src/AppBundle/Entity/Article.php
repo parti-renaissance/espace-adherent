@@ -108,6 +108,7 @@ class Article
 
     /**
      * @param null|string $title
+     *
      * @return Article
      */
     public function setTitle($title): Article
@@ -127,6 +128,7 @@ class Article
 
     /**
      * @param null|string $slug
+     *
      * @return Article
      */
     public function setSlug($slug): Article
@@ -146,6 +148,7 @@ class Article
 
     /**
      * @param null|string $description
+     *
      * @return Article
      */
     public function setDescription($description): Article
@@ -165,6 +168,7 @@ class Article
 
     /**
      * @param Media|null $media
+     *
      * @return Article
      */
     public function setMedia(Media $media = null): Article
@@ -184,6 +188,7 @@ class Article
 
     /**
      * @param null|string $content
+     *
      * @return Article
      */
     public function setContent($content): Article
@@ -217,4 +222,3 @@ class Article
         return $this;
     }
 }
-

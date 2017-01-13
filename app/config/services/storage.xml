@@ -18,8 +18,5 @@
             </argument>
         </service>
 
-        <!-- Clouflare client -->
-        <service id="app.cloudflare" class="AppBundle\Cloudflare\Cloudflare" />
-
     </services>
 </container>

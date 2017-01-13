@@ -506,9 +506,9 @@ class Donation
     }
 
     /**
-     * Get finished
+     * Get finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function getFinished()
     {
@@ -516,7 +516,7 @@ class Donation
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \DateTime $createdAt
      *

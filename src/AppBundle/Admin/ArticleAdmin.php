@@ -9,12 +9,22 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleAdmin extends AbstractAdmin
 {
+    use CloudflareSynchronizedAdminTrait;
+
     /**
      * @param Article $object
+     */
+    public function invalidate($object)
+    {
+        $this->getCloudflare()->invalidateTag('article-'.$object->getId());
+    }
+
+    /**
+     * @param Article $object
+     *
      * @return Metadata
      */
     public function getObjectMetadata($object)
@@ -74,7 +84,7 @@ class ArticleAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
             ]);
     }
 }

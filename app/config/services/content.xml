@@ -5,7 +5,7 @@
     <services>
 
         <!-- Markdown parser -->
-        <service id="app.markdown" class="League\CommonMark\CommonMarkConverter" public="false" />
+        <service id="app.markdown" class="League\CommonMark\CommonMarkConverter" />
 
     </services>
 </container>
