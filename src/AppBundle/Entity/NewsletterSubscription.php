@@ -3,8 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 
@@ -17,11 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEn
 class NewsletterSubscription
 {
     /**
-     * @var UuidInterface
+     * @var int
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -63,21 +61,9 @@ class NewsletterSubscription
         $this->createdAt = new \DateTime();
     }
 
-    public static function createUuid(string $email): UuidInterface
-    {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
-    }
-
-    public function getId(): UuidInterface
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(UuidInterface $id): NewsletterSubscription
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

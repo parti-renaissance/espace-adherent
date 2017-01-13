@@ -2,8 +2,9 @@ imports:
     - { resource: config_dev.yml }
 
 services:
-    app.recaptcha.api_client:
-        class: AppBundle\Recaptcha\DummyRecaptchaApiClient
+    app.mailjet.transport:
+        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        arguments: ['@?logger']
         public: false
 
 parameters:
@@ -31,6 +32,3 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
-
-swiftmailer:
-    disable_delivery: true

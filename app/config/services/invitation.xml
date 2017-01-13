@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet" />
+        </service>
+
+        <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="property_accessor" />
+
+            <tag name="validator.constraint_validator" />
+        </service>
+
+    </services>
+</container>

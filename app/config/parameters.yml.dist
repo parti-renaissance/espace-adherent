@@ -6,11 +6,6 @@ parameters:
     env(DATABASE_USER):         enmarche
     env(DATABASE_PASSWORD):     enmarche
 
-    env(MAILER_HOST):           127.0.0.1
-    env(MAILER_PORT):           9025
-    env(MAILER_USER):           ~
-    env(MAILER_PASSWORD):       ~
-
     env(SENTRY_DSN):            ~
     env(SENTRY_PUBLIC_DSN):     ~
 
@@ -24,5 +19,5 @@ parameters:
     env(PAYBOX_IDENTIFIER):     ~
     env(PAYBOX_KEY):            ~
 
-    env(RECAPTCHA_PUBLIC_KEY):  ~
-    env(RECAPTCHA_PRIVATE_KEY): ~
+    env(MAILJET_PUBLIC_KEY):    ~
+    env(MAILJET_PRIVATE_KEY):   ~

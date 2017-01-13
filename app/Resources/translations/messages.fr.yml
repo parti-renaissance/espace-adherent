@@ -3,16 +3,3 @@
 #
 common.gender.mister: Monsieur
 common.gender.miss: Madame
-
-#
-# Adherent
-#
-adherent.activity_position.student: Étudiant
-adherent.activity_position.retired: Retraité
-adherent.activity_position.employed: En activité
-adherent.activity_position.unemployed: En recherche d'emploi
-
-adherent.registration.success: |
-    Votre inscription en tant qu'adhérent s'est déroulée avec succès.
-    Un e-mail de confirmation vient de vous être envoyé afin de valider votre
-    adresse e-mail et finaliser votre inscription.
