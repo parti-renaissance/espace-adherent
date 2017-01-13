@@ -6,6 +6,11 @@ services:
         class: AppBundle\Recaptcha\DummyRecaptchaApiClient
         public: false
 
+    app.mailjet.transport:
+        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"
@@ -31,6 +36,3 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
-
-swiftmailer:
-    disable_delivery: true

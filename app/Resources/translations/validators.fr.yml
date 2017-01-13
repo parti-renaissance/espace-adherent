@@ -56,3 +56,9 @@ neswletter.email.not_blank: Cette valeur est requise.
 neswletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
 
 neswletter.postalCode.invalid: Ce code postal n'est pas valide.
+
+#
+# Invitation
+#
+invitation.message.not_blank: Vous devez entrer un message d'invitation.
+invitation.email.was_invited_recently: Cette personne a déjà été invitée récemment, mais merci de votre proposition !
