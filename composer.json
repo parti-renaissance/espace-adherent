@@ -1,7 +1,7 @@
 {
     "name": "enmarche/en-marche.fr",
     "description": "La plateforme citoyenne d'En Marche ! (https://en-marche.fr)",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "type": "project",
     "autoload": {
         "psr-4": {
