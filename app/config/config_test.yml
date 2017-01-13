@@ -7,6 +7,11 @@ services:
         arguments: ['@?logger']
         public: false
 
+    app.mailjet.transport:
+        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"

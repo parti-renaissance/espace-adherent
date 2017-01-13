@@ -6,13 +6,10 @@ imports:
     - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
     - { resource: services/intl.xml }
-<<<<<<< HEAD
+    - { resource: services/mailjet.xml }
     - { resource: services/membership.xml }
     - { resource: services/recaptcha.xml }
-=======
     - { resource: services/invitation.xml }
-    - { resource: services/mailjet.xml }
->>>>>>> Implement Mailjet client, implement Invitation using #69 and synchronize work from master into static-website (#84)
     - { resource: services/twig.xml }
 
 parameters:
@@ -112,8 +109,6 @@ fos_js_routing:
 csa_guzzle:
     profiler: '%kernel.debug%'
     logger: true
-<<<<<<< HEAD
-=======
     clients:
         mailjet_api:
             config:
@@ -121,4 +116,3 @@ csa_guzzle:
                 timeout: 2.0
                 headers:
                     Content-Type: 'application/json'
->>>>>>> Implement Mailjet client, implement Invitation using #69 and synchronize work from master into static-website (#84)

@@ -78,3 +78,22 @@
     margin: 80px 0 100px 0;
     text-align: center;
 }
+
+.login {
+    &--box {
+        margin: 20px auto 0;
+        background-color: white;
+
+        &--separator {
+            border-top: 2px solid black;
+
+            &--text {
+                width: 20%;
+                position: relative;
+                top: -12px;
+                margin: 0 auto;
+                background-color: white;
+            }
+        }
+    }
+}

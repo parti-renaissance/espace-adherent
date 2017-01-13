@@ -10,3 +10,10 @@ services:
             MYSQL_PASSWORD: enmarche
         ports:
             - "3306:3306"
+
+    tools:
+        build: ./docker/tools
+        depends_on:
+            - mysql
+        volumes:
+            - .:/www
