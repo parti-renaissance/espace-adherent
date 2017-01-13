@@ -47,7 +47,7 @@ class Donation
      * @ORM\Column(length=10)
      *
      * @Assert\Choice(
-     *   callback = {"AppBundle\ValueObject\Genders", "all"},
+     *   callback={"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",
      *   strict=true
      * )

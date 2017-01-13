@@ -17,6 +17,10 @@
         &--no-border {
             border: none;
         }
+
+        &--textarea-120 {
+            height: 120px;
+        }
     }
 
     &__email {
@@ -60,6 +64,19 @@
             text-align: center;
         }
     }
+}
+
+.newsletter-page, .invitation-page {
+    margin: 20px 0 100px 0;
+
+    &__form {
+        margin-top: 20px;
+    }
+}
+
+.newsletter-result, .invitation-result {
+    margin: 80px 0 100px 0;
+    text-align: center;
 }
 
 .login {

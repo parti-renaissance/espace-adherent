@@ -2,10 +2,34 @@
 
 {% block content %}
 
-<main>
-    <section class="l__wrapper">
-        {{ form(form) }}
-    </section>
-</main>
+    <main>
+        <section class="l__wrapper-500">
+            <div class="newsletter-page">
+                <h2>Je m'inscris à la newsletter</h2>
+
+                <div class="newsletter-page__form">
+                    {{ form_start(form) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="form__row">
+                        {{ form_label(form.email, 'Adresse email') }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.postalCode, 'Code postal') }}
+                        {{ form_errors(form.postalCode) }}
+                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    {{ form_widget(form.submit, { 'label': 'Je m\'inscris' }) }}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+    </main>
 
 {% endblock %}
