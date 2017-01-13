@@ -2,10 +2,16 @@
 
 {% block content %}
 
-<main>
-    <p>
-        Vous êts bien inscrit à la newsletter d'En Marche !
-    </p>
-</main>
+    <main class="newsletter-result">
+        <h2>Vous êtes désormais inscrit à notre newsletter !</h2>
+
+        <p>
+            Vous serez régulièrement informé toutes les informations concernant le mouvement.
+        </p>
+
+        <p>
+            <a href="{{ path('homepage') }}" class="btn btn--primary">Retourner à l'accueil</a>
+        </p>
+    </main>
 
 {% endblock %}

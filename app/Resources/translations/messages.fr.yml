@@ -1,6 +1,5 @@
-
 #
-# Donation
+# Common
 #
-donation.gender.mister: Monsieur
-donation.gender.miss: Madame
+common.gender.mister: Monsieur
+common.gender.miss: Madame

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Mailjet main service -->
+        <service id="app.mailjet" class="AppBundle\Mailjet\MailjetService" public="false">
+            <argument type="service" id="app.mailjet.transport"/>
+            <argument>%sender_email%</argument>
+            <argument>%sender_name%</argument>
+        </service>
+
+        <!-- Real Mailjet transport layer using their REST API -->
+        <service id="app.mailjet.transport" class="AppBundle\Mailjet\MailjetApiTransport" public="false">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_PRIVATE_KEY)%</argument>
+        </service>
+
+    </services>
+</container>

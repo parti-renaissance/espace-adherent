@@ -1,11 +1,20 @@
 imports:
     - { resource: config_dev.yml }
 
+services:
+    app.mailjet.transport:
+        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"
     env(PAYBOX_IDENTIFIER): "107904482"
     env(PAYBOX_KEY): "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+
+liip_functional_test:
+    cache_sqlite_db: true
 
 doctrine:
     dbal:
@@ -23,6 +32,3 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
-
-swiftmailer:
-    disable_delivery: true
