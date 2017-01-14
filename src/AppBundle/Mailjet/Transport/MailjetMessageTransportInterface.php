@@ -1,6 +1,8 @@
 <?php
 
-namespace AppBundle\Mailjet;
+namespace AppBundle\Mailjet\Transport;
+
+use AppBundle\Mailjet\MailjetTemplateEmail;
 
 interface MailjetMessageTransportInterface
 {

@@ -4,6 +4,7 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
+use AppBundle\Mailjet\Transport\MailjetMessageTransportInterface;
 
 class MailjetService
 {
