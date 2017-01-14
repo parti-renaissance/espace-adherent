@@ -20,6 +20,7 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories 
         php7-curl \
         php7-ctype \
         php7-dom \
+        php7-exif \
         php7-fpm \
         php7-gd \
         php7-iconv \

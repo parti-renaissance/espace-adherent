@@ -1,0 +1,70 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/simplemde.min.css') }}">
+    <style>
+        .editor-toolbar.fullscreen, .CodeMirror-fullscreen {
+            z-index: 1100 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/simplemde.min.js') }}"></script>
+    <script>
+        $(function() {
+            $('.content-editor').each(function(key, item) {
+                var simplemde = new SimpleMDE({
+                    element: item,
+                    spellChecker: false,
+                    renderingConfig: {
+                        singleLineBreaks: false
+                    },
+                    previewConfig: {
+                        useIframe: true,
+                        editorCss: [
+                            '{{ webpack_asset('app.css') }}',
+                            '{{ asset('css/simplemde.inside.css') }}'
+                        ],
+                    }
+                });
+
+                var button = $('<div style="padding-bottom: 20px;"><button class="btn btn-default" type="button">Afficher l\'éditeur en plein écran</button></div>');
+
+                button.click(function() {
+                    simplemde.toggleSideBySide();
+                });
+
+                $(item).before(button);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block sonata_sidebar_search '' %}
+
+{% block side_bar_before_nav %}
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{{ path('sonata_admin_dashboard') }}">
+                <i class="fa fa-home"></i>
+                <span>Tableau de bord</span>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block side_bar_after_nav %}
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{{ path('homepage') }}">
+                <i class="fa fa-sign-out"></i>
+                <span>Retour au site</span>
+            </a>
+        </li>
+    </ul>
+{% endblock %}

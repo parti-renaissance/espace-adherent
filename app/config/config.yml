@@ -2,13 +2,18 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: assets_version.yml }
+    - { resource: services/admin.xml }
     - { resource: services/content.xml }
+    - { resource: services/cloudflare.xml }
     - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
     - { resource: services/intl.xml }
+    - { resource: services/invitation.xml }
     - { resource: services/mailjet.xml }
+    - { resource: services/media.xml }
     - { resource: services/membership.xml }
     - { resource: services/recaptcha.xml }
+    - { resource: services/storage.xml }
     - { resource: services/invitation.xml }
     - { resource: services/twig.xml }
 
@@ -116,3 +121,24 @@ csa_guzzle:
                 timeout: 2.0
                 headers:
                     Content-Type: 'application/json'
+
+        cloudflare_api:
+            config:
+                base_uri: 'https://api.cloudflare.com/client/v4/zones/%env(CLOUDFLARE_ZONE_ID)%'
+                timeout: 2.0
+                headers:
+                    Content-Type: 'application/json'
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+
+sonata_admin:
+    title_logo: logo/small_bg_white.jpg
+    templates:
+        layout:  admin/layout.html.twig
+    security:
+        handler: sonata.admin.security.handler.role
+

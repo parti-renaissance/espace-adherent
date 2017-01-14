@@ -7,7 +7,12 @@ services:
         public: false
 
     app.mailjet.transport:
-        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
+    app.cloudflare.tag_invalidator:
+        class: 'AppBundle\Cloudflare\CloudflareNullTagInvalidator'
         arguments: ['@?logger']
         public: false
 

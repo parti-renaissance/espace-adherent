@@ -22,6 +22,13 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
 
+            // Sonata
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+
             new AppBundle\AppBundle(),
         ];
 

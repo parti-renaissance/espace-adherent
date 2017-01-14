@@ -2,6 +2,7 @@
 
 namespace AppBundle\Mailjet;
 
+use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
 
 final class MailjetTemplateEmail
@@ -21,11 +22,11 @@ final class MailjetTemplateEmail
         $this->recipients = [];
     }
 
-    public static function createWithMailjetMessage(MailjetMessage $message, string $senderEmail, string $sendName = null): self
+    public static function createWithMailjetMessage(MailjetMessage $message, string $senderEmail, string $senderName = null): self
     {
         $recipient = $message->getRecipient();
 
-        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $sendName);
+        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName);
         $email->addRecipient($recipient[0], $recipient[1], $message->getVars());
 
         return $email;
@@ -49,7 +50,7 @@ final class MailjetTemplateEmail
     public function getBody(): array
     {
         if (!count($this->recipients)) {
-            throw new \LogicException('Recipient is missing!');
+            throw new MailjetException('The Mailjet email requires at least one recipient.');
         }
 
         $body['FromEmail'] = $this->senderEmail;

@@ -5,8 +5,6 @@
     }
 
     &--home {
-        background: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)),
-                    url('/images/je-marche@3x.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center top;
@@ -159,6 +157,8 @@
 
     &__loader {
         display: none;
+        text-align: center;
+        margin-top: 60px;
 
         &__text {
             margin-top: 50px;

@@ -6,6 +6,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Cloudflare
 {
+    private $tagInvalidator;
+
+    public function __construct(CloudflareTagInvalidatorInterface $tagInvalidator)
+    {
+        $this->tagInvalidator = $tagInvalidator;
+    }
+
     /**
      * Cache a given response until it's purged from Cloudflare cache using one of the given tags.
      *
@@ -14,7 +21,7 @@ class Cloudflare
      *
      * @return Response
      */
-    public static function cacheIndefinitely(Response $response, array $tags = [])
+    public function cacheIndefinitely(Response $response, array $tags = [])
     {
         $response->setSharedMaxAge(31536000); // 1 year
 
@@ -23,5 +30,18 @@ class Cloudflare
         }
 
         return $response;
+    }
+
+    public function invalidateTag(string $tag)
+    {
+        $this->tagInvalidator->invalidateTags([$tag]);
+    }
+
+    /**
+     * @param string[] $tags
+     */
+    public function invalidateTags(array $tags)
+    {
+        $this->tagInvalidator->invalidateTags($tags);
     }
 }

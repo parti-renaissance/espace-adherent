@@ -504,4 +504,28 @@ class Donation
     {
         return $this->createdAt;
     }
+
+    /**
+     * Get finished.
+     *
+     * @return bool
+     */
+    public function getFinished()
+    {
+        return $this->finished;
+    }
+
+    /**
+     * Set createdAt.
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Donation
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
 }

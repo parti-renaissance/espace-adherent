@@ -13,27 +13,29 @@
 <main>
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
-            {% for article in articles|slice(0,1) %}
-                <a href="{{ article.link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
-                    <div class="background">
-                        <div class="content">
-                            <h2>{{ article.title }}</h2>
-                            <p class="text--summary">{{ article.subtitle }}</p>
-                            <div class="btn btn--no-border">Lire</div>
-                        </div>
+            <a href="{{ blocks[0].link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
+               style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center;">
+                <div class="background">
+                    <div class="content">
+                        <h2>{{ blocks[0].title }}</h2>
+                        <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                        <div class="btn btn--no-border">Lire</div>
                     </div>
-                </a>
-                <div class="card card--large card--large__tablet l__hide--on-desktop">
-                    <a href="{{ article.link }}" class="background-container">
-                        <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;"></div>
-                    </a>
-                    <a class="content" href="{{ article.link }}">
-                        <h2>{{ article.title }}</h2>
-                        <p class="text--summary">{{ article.subtitle }}</p>
-                    </a>
                 </div>
-            {% endfor %}
-            <div class="comite l__col l__col--bottom space--30">
+            </a>
+            <div class="card card--large card--large__tablet l__hide--on-desktop">
+                <a href="{{ blocks[0].link }}" class="background-container">
+                    <div class="background"
+                         style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center;"></div>
+                </a>
+                <a class="content" href="{{ blocks[0].link }}">
+                    <h2>{{ blocks[0].title }}</h2>
+                    <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                </a>
+            </div>
+
+            <div class="comite l__col l__col--bottom space--30"
+                 style="background-image: linear-gradient(0deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ static_asset('carte-france.png', {'w': 380}) }}');">
                 <h2 class="text--normal text--white">Déjà plus de 2900 comités «En Marche !»</h2>
                 <p class="text--white text--summary">Partout sur le territoire et à l’étranger, faites vivre le mouvement et portez ses valeurs.</p>
                 <input type="text" pattern="[0-9]{4}" class="form form__field form form__field--no-border b__nudge--bottom-medium form--full" title="Code postal" aria-label="Entrez votre code postal" placeholder="Code postal" />
@@ -96,51 +98,51 @@
 
     <section class="l__wrapper b__nudge--bottom-larger">
         <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
-            {% for article in articles|slice(1,6) %}
-                <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ article.type }} l__col--bottom">
+            {% for block in blocks|slice(1,6) %}
+                <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ block.type }} l__col--bottom">
                     <div class="cs card--small">
-                        <a href="{{ article.link }}" class="background-container">
-                            <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                        <a href="{{ block.link }}" class="background-container">
+                            <div class="background" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
                             </div>
                         </a>
-                        <a href="{{ article.link }}" class="headline link--no-decor">
-                            <h2>{{ article.title }}</h2>
+                        <a href="{{ block.link }}" class="headline link--no-decor">
+                            <h2>{{ block.title }}</h2>
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
                     </div>
                     <div class="csv card--small card--small__video">
-                        <a href="{{ article.link }}" class="background-container">
-                            <div class="background" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                        <a href="{{ block.link }}" class="background-container">
+                            <div class="background" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
                                 <i class="play-icon"></i>
                             </div>
                         </a>
-                        <a href="{{ article.link }}" class="headline link--no-decor">
-                            <h2>{{ article.title }}</h2>
+                        <a href="{{ block.link }}" class="headline link--no-decor">
+                            <h2>{{ block.title }}</h2>
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
                     </div>
                     <div class="cm card--medium">
-                        <a href="{{ article.link }}" class="background-container" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                        <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
                             <div class="background">
                                 <div class="content">
                                     <h2 class="headline link--no-decor b__nudge--bottom-medium">
-                                        {{ article.title }}
+                                        {{ block.title }}
                                     </h2>
                                     <div class="btn btn--no-border">En savoir plus</div>
                                 </div>
@@ -148,21 +150,21 @@
                         </a>
                     </div>
                     <div class="cmv card--medium card--medium__video">
-                        <a href="{{ article.link }}" class="background-container" style="background: url('{{ article.image }}') no-repeat; background-size: cover; background-position: center;">
+                        <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
                             <div class="background">
                                 <div class="content">
                                     <div class="headline-row">
                                         <i class="play"></i>
                                         <h2 class="headline link--no-decor b__nudge--bottom-medium">
-                                            {{ article.title }}
+                                            {{ block.title }}
                                         </h2>
                                     </div>
                                     <div class="share">
                                         Partagez
-                                        <span role="button" onclick="share('facebook', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                                        <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                             <i class="fa fa-facebook-square"></i>
                                         </span>
-                                        <span role="button" onclick="share('twitter', '{{ article.link }}', '{{ article.title|escape('js') }}')">
+                                        <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                             <i class="fa fa-twitter"></i>
                                         </span>
                                     </div>
@@ -174,12 +176,13 @@
             {% endfor %}
         </ul>
         <div class="l__row l__row--center b__nudge--bottom-large">
-            <a href="#" class="btn">Plus D'actualités</a>
+            <a href="#" class="btn">Plus d'actualités</a>
         </div>
     </section>
 
     <section class="l__wrapper b__nudge--bottom-large">
-        <div class="proteger l__col l__col--center">
+        <div class="proteger l__col l__col--center"
+             style="background-image: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ static_asset('proteger-la-france.jpg', {'w': 1200}) }}');">
             <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">3 boucliers pour protéger la France</h2>
             <a href="#" class="btn btn--no-border">En savoir plus</a>
         </div>
@@ -217,7 +220,8 @@
         </div>
     </section>
 
-    <section class="donate donate--home">
+    <section class="donate donate--home"
+             style="background-image: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ static_asset('je-marche.jpg') }}');">
         <div class="donate__inner l__wrapper space--45-5 l__row l__row--h-stretch l__mobile--col">
             <div class="text text--white">
                 <h2 class="text--large">Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span></h2>

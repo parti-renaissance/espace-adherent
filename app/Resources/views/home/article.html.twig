@@ -32,11 +32,11 @@
         </header>
 
         <figure class="fullscreen">
-            <img src="{{ article.image }}">
+            <img src="{{ dynamic_asset(article.media.path) }}">
         </figure>
 
         <article class="text--summary l__wrapper--slim">
-            {{ article.content|raw }}
+            {{ content|raw }}
         </article>
 
         <ul class="article__social space--60-0 l__wrapper--slim">
