@@ -3,7 +3,7 @@ imports:
 
 services:
     app.mailjet.transport:
-        class: 'AppBundle\Mailjet\MailjetNullTransport'
+        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
         arguments: ['@?logger']
         public: false
 

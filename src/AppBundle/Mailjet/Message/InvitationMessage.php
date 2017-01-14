@@ -12,7 +12,7 @@ final class InvitationMessage extends MailjetMessage
             '61613',
             $invite->getEmail(),
             null,
-            $invite->getFirstName().' '.$invite->getLastName().' vous invite à rejoindre En Marche'
+            sprintf('%s vous invite à rejoindre En Marche.', $invite->getSenderFullName())
         );
 
         $message->setVar('sender_firstname', $invite->getFirstName());

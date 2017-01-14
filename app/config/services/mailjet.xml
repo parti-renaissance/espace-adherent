@@ -12,7 +12,7 @@
         </service>
 
         <!-- Real Mailjet transport layer using their REST API -->
-        <service id="app.mailjet.transport" class="AppBundle\Mailjet\MailjetApiTransport" public="false">
+        <service id="app.mailjet.transport" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_PRIVATE_KEY)%</argument>

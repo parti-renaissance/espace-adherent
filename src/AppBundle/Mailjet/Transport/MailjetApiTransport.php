@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Mailjet;
+namespace AppBundle\Mailjet\Transport;
 
 use AppBundle\Mailjet\Exception\MailjetException;
+use AppBundle\Mailjet\MailjetTemplateEmail;
 use GuzzleHttp\ClientInterface;
 
 class MailjetApiTransport implements MailjetMessageTransportInterface

@@ -95,9 +95,31 @@ class Invite
         $this->createdAt = new \DateTime();
     }
 
+    public static function create(
+        string $firstName,
+        string $lastName,
+        string $email,
+        string $message,
+        string $clientIp
+    ) {
+        $invite = new static();
+        $invite->setFirstName($firstName);
+        $invite->setLastName($lastName);
+        $invite->setEmail($email);
+        $invite->setMessage($message);
+        $invite->setClientIp($clientIp);
+
+        return $invite;
+    }
+
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getSenderFullName()
+    {
+        return $this->firstName.' '.$this->lastName;
     }
 
     /**
