@@ -1,39 +1,90 @@
-### « Je viens aux Antilles et en Guyane pour construire quelque chose de différent. »
+# An exhibit of Markdown
 
-Il s’est exprimé sur sa vision des Outre-mer en amont de sa visite aux Antilles du 16 au 20 décembre 2016
-dans un interview à France Antilles.
+This note demonstrates some of what [Markdown][1] is capable of doing.
 
-[Retrouvez son entretien en cliquant ici.](http://www.martinique.franceantilles.fr/actualite/politique/emmanuel-macron-la-reponse-aux-problemes-de-l-outre-mer-ce-n-est-pas-le-budget-de-l-outre-mer-392729.php)
+## Basic formatting
 
-### En Guadeloupe
+Paragraphs can be written like so. A paragraph is the basic block of Markdown. A paragraph is what text will turn into when there is no reason it should become anything else.
 
-Emmanuel Macron était l’invité de Guadeloupe 1ère le 17 décembre.
+Paragraphs must be separated by a blank line. Basic formatting of *italics* and **bold** is supported. This *can be **nested** like* so.
 
-<div class="video">
-    <iframe width="640" height="360" src="https://www.youtube.com/embed/1zhec435GR8?rel=0&amp;showinfo=0&html5=1" frameborder="0" allowfullscreen=""></iframe>
-</div>
+## Lists
 
-<figure>
-    <blockquote>
-        <span>«Tout commence par la rénovation de l’engagement politique.»</span>
-    </blockquote>
-    <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
-</figure>
+### Ordered list
 
-<figure>
-    <img src="http://s1.lemde.fr/image/2016/01/06/534x0/4842412_7_2601_emmanuel-macron-ministre-de-l-economie-a_afcfb3fd9194bc3763e16b9682dbe111.jpg">
-    <figcaption>Ceci est une légende</figcaption>
-</figure>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
-<figure>
-    <img class="large" src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
-</figure>
+1. Item 1
+2. A second item
+3. Number 3
+4. Ⅳ
+
+*Note: the fourth item uses the Unicode character for [Roman numeral four][2].*
+
+### Unordered list
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+* An item
+* Another item
+* Yet another item
+* And there's more...
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+## Paragraph modifiers
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+### Quote
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+> Here is a quote. What this is should be self explanatory. Quotes are automatically indented when they are used.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+## Headings
+
+There are six levels of headings. They correspond with the six levels of HTML headings. You've probably noticed them already in the page. Each level down uses one more hash character.
+
+### Headings *can* also contain **formatting**
+
+### They can even contain `inline code`
+
+Of course, demonstrating what headings look like messes up the structure of the page.
+
+I don't recommend using more than three or four levels of headings here, because, when you're smallest heading isn't too small, and you're largest heading isn't too big, and you want each size up to look noticeably larger and more important, there there are only so many sizes that you can use.
+
+## URLs
+
+URLs can be made in a handful of ways:
+
+* A named link to [MarkItDown][3]. The easiest way to do these is to select what you want to make a link and hit `Ctrl+L`.
+* Another named link to [MarkItDown](http://www.markitdown.net/)
+* Sometimes you just want a URL like <http://www.markitdown.net/>.
+
+## Horizontal rule
+
+A horizontal rule is a line that goes across the middle of the page.
+
+---
+
+It's sometimes handy for breaking things up.
+
+## Images
+
+Markdown can also contain images. I'll need to add something here sometime.
+
+![macron](http://www.eric-lafond.fr/wp-content/uploads/2016/09/Macron.jpg)
+
+## Finally
+
+There's actually a lot more to Markdown than this. See the official [introduction][4] and [syntax][5] for more information. However, be aware that this is not using the official implementation, and this might work subtly differently in some of the little things.
 
 
-### En Martinique
-
-Emmanuel Macron était l’invité de Martinique 1ère le 19 décembre.
-
-<div class="video">
-    <iframe width="640" height="360" src="https://www.youtube.com/embed/Uk8tO4G0yAQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen=""></iframe>
-</div>
+  [1]: http://daringfireball.net/projects/markdown/
+  [2]: http://www.fileformat.info/info/unicode/char/2163/index.htm
+  [3]: http://www.markitdown.net/
+  [4]: http://daringfireball.net/projects/markdown/basics
+  [5]: http://daringfireball.net/projects/markdown/syntax

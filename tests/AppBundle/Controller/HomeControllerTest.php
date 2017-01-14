@@ -32,7 +32,7 @@ class HomeControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/article/outre-mer');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->filter('html:contains("Emmanuel Macron était l’invité de Guadeloupe 1ère le 17 décembre.")')->count());
+        $this->assertEquals(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
 
         // Assert Cloudflare will store this page in cache
         $this->assertContains('public, s-maxage=', $client->getResponse()->headers->get('cache-control'));
