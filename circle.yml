@@ -29,7 +29,7 @@ test:
 
 deployment:
     staging:
-        branch: static-website
+        branch: master
         owner: EnMarche
         commands:
             # Check packages security
