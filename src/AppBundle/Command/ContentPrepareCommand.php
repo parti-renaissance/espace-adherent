@@ -63,7 +63,7 @@ class ContentPrepareCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $fixturePath = __DIR__.'/../../../tests/Fixtures/medias/'.$homeBlockData['path'];
+            $fixturePath = __DIR__.'/../../../app/data/dist/'.$homeBlockData['path'];
             $this->storage->put('images/'.$homeBlockData['path'], file_get_contents($fixturePath));
 
             $media = new Media();
@@ -136,7 +136,7 @@ class ContentPrepareCommand extends ContainerAwareCommand
 
         $article = new Article();
         $article->setMedia($this->mediasRegistry['macron.jpg']);
-        $article->setContent(file_get_contents(__DIR__.'/../../../tests/Fixtures/article/content.md'));
+        $article->setContent(file_get_contents(__DIR__.'/../../../app/data/dist/content.md'));
         $article->setTitle('« Les outre-mer sont l’un des piliers de notre richesse culturelle. »');
         $article->setSlug('outre-mer');
         $article->setDescription('Emmanuel Macron s’est rendu du 17 au 21 décembre 2016 en Guadeloupe, Martinique et Guyane.');
