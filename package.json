@@ -4,7 +4,9 @@
     "build-prod": "node_modules/.bin/webpack --config webpack.config.prod.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.config.dev.js",
     "watch": "node_modules/.bin/webpack --config webpack.config.dev.js --progress --colors --watch",
-    "test": "node_modules/.bin/mocha-webpack --webpack-config webpack.config.dev.js --recursive front/tests"
+    "test": "node_modules/.bin/mocha-webpack --webpack-config webpack.config.dev.js --recursive front/tests",
+    "lint": "node_modules/.bin/esw webpack.config.* front/**/*",
+    "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
     "babel-core": "^6.18.2",
@@ -29,5 +31,24 @@
     "style-loader": "^0.13.1",
     "webpack": "^2.2.0",
     "webpack-md5-hash": "^0.0.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-react-display-name": "^2.0.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-register": "^6.18.0",
+    "colors": "^1.1.2",
+    "enzyme": "^2.7.0",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "eslint-watch": "^2.1.14",
+    "eventsource-polyfill": "^0.9.6",
+    "expect": "^1.20.2",
+    "jsdom": "^9.9.1",
+    "npm-run-all": "^3.1.2",
+    "react-addons-test-utils": "^15.4.1"
   }
 }
