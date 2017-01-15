@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use AppBundle\Validator\WasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,14 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Invite
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    use EntityIdentityTrait;
 
     /**
      * @var string
@@ -90,8 +85,9 @@ class Invite
      */
     private $createdAt;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?: Uuid::uuid4();
         $this->createdAt = new \DateTime();
     }
 
@@ -102,7 +98,7 @@ class Invite
         string $message,
         string $clientIp
     ) {
-        $invite = new static();
+        $invite = new static(Uuid::uuid4());
         $invite->setFirstName($firstName);
         $invite->setLastName($lastName);
         $invite->setEmail($email);
@@ -110,11 +106,6 @@ class Invite
         $invite->setClientIp($clientIp);
 
         return $invite;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getSenderFullName()

@@ -20,7 +20,7 @@ class AdherentSecurityController extends Controller
     {
         $securityUtils = $this->get('security.authentication_utils');
 
-        $form = $this->createForm(LoginType::class, ['_adherent_email' => $securityUtils->getLastUsername()], [
+        $form = $this->get('form.factory')->createNamed('', LoginType::class, ['_adherent_email' => $securityUtils->getLastUsername()], [
             'username_parameter' => '_adherent_email',
             'password_parameter' => '_adherent_password',
             'csrf_field_name' => '_adherent_csrf',

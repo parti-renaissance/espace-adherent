@@ -16,3 +16,8 @@ adherent.registration.success: |
     Votre inscription en tant qu'adhérent s'est déroulée avec succès.
     Un e-mail de confirmation vient de vous être envoyé afin de valider votre
     adresse e-mail et finaliser votre inscription.
+
+adherent.activation.success: Votre compte adhérent est maintenant actif.
+adherent.activation.already_active: Votre compte adhérent est déjà actif.
+adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez contacter les administrateurs du site pour activer votre compte.
+

@@ -14,11 +14,12 @@ imports:
     - { resource: services/membership.xml }
     - { resource: services/recaptcha.xml }
     - { resource: services/storage.xml }
-    - { resource: services/invitation.xml }
     - { resource: services/twig.xml }
 
 parameters:
     locale: fr
+    pattern_uuid: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
+    pattern_sha1: '[0-9A-Fa-f]{40}'
     sender_email: 'contact@en-marche.fr'
     sender_name:  'En Marche !'
 

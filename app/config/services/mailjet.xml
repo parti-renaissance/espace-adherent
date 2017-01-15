@@ -6,7 +6,12 @@
 
         <!-- Mailjet main service -->
         <service id="app.mailjet" class="AppBundle\Mailjet\MailjetService" public="false">
+            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport"/>
+            <argument type="service" id="app.mailjet.message_factory"/>
+        </service>
+
+        <service id="app.mailjet.message_factory" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
             <argument>%sender_email%</argument>
             <argument>%sender_name%</argument>
         </service>

@@ -75,7 +75,7 @@
     </head>
     <body>
         {% for message in app.session.flashbag.get('info') %}
-            <p>
+            <p id="notice-flashes">
                 {{ message }}
             </p>
         {% endfor %}

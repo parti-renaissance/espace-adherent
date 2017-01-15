@@ -5,13 +5,15 @@ namespace AppBundle\Mailjet;
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
 
-final class MailjetTemplateEmail
+final class MailjetTemplateEmail implements \JsonSerializable
 {
     private $senderEmail;
     private $senderName;
     private $subject;
     private $recipients;
     private $template;
+    private $httpRequestPayload;
+    private $httpResponsePayload;
 
     public function __construct(string $template, string $subject, string $senderEmail, string $sendName = null)
     {
@@ -62,6 +64,38 @@ final class MailjetTemplateEmail
         $body['MJ-TemplateID'] = $this->template;
         $body['MJ-TemplateLanguage'] = true;
         $body['Recipients'] = $this->recipients;
+
+        return $body;
+    }
+
+    public function delivered(string $httpResponsePayload, string $httpRequestPayload = null)
+    {
+        if ($httpRequestPayload) {
+            $this->httpRequestPayload = $httpRequestPayload;
+        }
+
+        $this->httpResponsePayload = $httpResponsePayload;
+    }
+
+    public function getHttpRequestPayload()
+    {
+        if (!$this->httpRequestPayload) {
+            $this->httpRequestPayload = json_encode($this->getBody());
+        }
+
+        return $this->httpRequestPayload;
+    }
+
+    public function getHttpResponsePayload()
+    {
+        return $this->httpResponsePayload;
+    }
+
+    public function jsonSerialize()
+    {
+        $body = $this->getBody();
+
+        $this->httpRequestPayload = json_encode($body);
 
         return $body;
     }
