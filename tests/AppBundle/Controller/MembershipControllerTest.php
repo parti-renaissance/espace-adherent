@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class MembershipControllerTest extends WebTestCase
 {
@@ -19,7 +20,7 @@ class MembershipControllerTest extends WebTestCase
      */
     public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress($emailAddress)
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -46,7 +47,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCannotCreateMembershipAccountIfAdherentIsUnder15YearsOld()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -60,7 +61,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -74,7 +75,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -89,7 +90,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
-        $this->client->request('GET', '/inscription');
+        $this->client->request(Request::METHOD_GET, '/inscription');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), static::createFormData());
@@ -103,7 +104,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCreateMembershipAccountForSwissAdherentIsSuccessful()
     {
-        $this->client->request('GET', '/inscription');
+        $this->client->request(Request::METHOD_GET, '/inscription');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $data = static::createFormData();

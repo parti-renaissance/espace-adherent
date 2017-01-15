@@ -4,6 +4,8 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Invite;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvitationControllerTest extends WebTestCase
 {
@@ -18,8 +20,8 @@ class InvitationControllerTest extends WebTestCase
         $this->assertEmpty($invitesRepository->findAll());
 
         // Initial form
-        $crawler = $client->request('GET', '/invitation');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $client->request(Request::METHOD_GET, '/invitation');
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form[name=app_invitation]')->form([
             'app_invitation[lastName]' => 'Galopin',
@@ -42,11 +44,11 @@ class InvitationControllerTest extends WebTestCase
         $this->assertEquals('Galopin', $invite->getLastName());
         $this->assertEquals('Je t\'invite à rejoindre En Marche !', $invite->getMessage());
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         // Try another time with the same email (should fail)
-        $crawler = $client->request('GET', '/invitation');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $client->request(Request::METHOD_GET, '/invitation');
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form[name=app_invitation]')->form([
             'app_invitation[lastName]' => 'Dupond',
@@ -57,7 +59,7 @@ class InvitationControllerTest extends WebTestCase
 
         $client->submit($form);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         // Invitation should not have been saved
         $this->assertCount(1, $invitesRepository->findAll());

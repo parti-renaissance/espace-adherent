@@ -5,6 +5,8 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\Entity\Donation;
 use Goutte\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DonationControllerTest extends WebTestCase
 {
@@ -22,8 +24,8 @@ class DonationControllerTest extends WebTestCase
         /*
          * Initial questions page
          */
-        $crawler = $symfonyClient->request('GET', '/don');
-        $this->assertEquals(200, $symfonyClient->getResponse()->getStatusCode());
+        $crawler = $symfonyClient->request(Request::METHOD_GET, '/don');
+        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form[name=app_donation]')->form([
             'app_donation[amount]' => '30',
@@ -61,10 +63,10 @@ class DonationControllerTest extends WebTestCase
         $this->assertEquals('606060606', $donation->getPhone()->getNationalNumber());
 
         // We should be redirected to payment
-        $this->assertEquals(302, $symfonyClient->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_FOUND, $symfonyClient->getResponse()->getStatusCode());
 
         $crawler = $symfonyClient->followRedirect();
-        $this->assertEquals(200, $symfonyClient->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
 
         /*
          * En-Marche payment page (verification and form to Paybox)
@@ -101,8 +103,8 @@ class DonationControllerTest extends WebTestCase
         $mockUrl = $crawler->filter('a')->first()->attr('href');
         $ipnUrl = str_replace('https://httpbin.org/status/200', '/don/payment-ipn/'.$formTime, $mockUrl);
 
-        $symfonyClient->request('GET', $ipnUrl);
-        $this->assertEquals(200, $symfonyClient->getResponse()->getStatusCode());
+        $symfonyClient->request(Request::METHOD_GET, $ipnUrl);
+        $this->assertEquals(Response::HTTP_OK, $symfonyClient->getResponse()->getStatusCode());
 
         // Donation should have been completed
         $entityManager->refresh($donation);
@@ -111,13 +113,5 @@ class DonationControllerTest extends WebTestCase
         $this->assertNotNull($donation->getDonatedAt());
         $this->assertEquals('00000', $donation->getPayboxResultCode());
         $this->assertEquals('XXXXXX', $donation->getPayboxAuthorizationCode());
-
-        /*
-         * Check callback redirect to success page
-         */
-        $callbackUrl = str_replace('https://httpbin.org/status/200', '/don/callback', $mockUrl);
-
-        // $symfonyClient->request('GET', $callbackUrl);
-        // $this->assertEquals(302, $symfonyClient->getResponse()->getStatusCode());
     }
 }

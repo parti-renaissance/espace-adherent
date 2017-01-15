@@ -31,9 +31,11 @@
             </ul>
         </header>
 
+        {% if article.media %}
         <figure class="fullscreen">
             <img src="{{ dynamic_asset(article.media.path) }}">
         </figure>
+        {% endif %}
 
         <article class="text--summary l__wrapper--slim">
             {{ content|raw }}

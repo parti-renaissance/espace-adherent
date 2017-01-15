@@ -19,11 +19,11 @@ parameters:
     env(PAYBOX_IDENTIFIER):     ~
     env(PAYBOX_KEY):            ~
 
-    env(RECAPTCHA_PUBLIC_KEY):  ~
-    env(RECAPTCHA_PRIVATE_KEY): ~
+    env(RECAPTCHA_PUBLIC_KEY):  ''
+    env(RECAPTCHA_PRIVATE_KEY): ''
 
-    env(MAILJET_PUBLIC_KEY):    ~
-    env(MAILJET_PRIVATE_KEY):   ~
+    env(MAILJET_PUBLIC_KEY):    ''
+    env(MAILJET_PRIVATE_KEY):   ''
 
     env(CLOUDFLARE_ZONE_ID):    ''
     env(CLOUDFLARE_EMAIL):      ''

@@ -1,7 +1,11 @@
 security:
 
+    encoders:
+        AppBundle\Entity\Adherent: bcrypt
+
     role_hierarchy:
         ROLE_WRITER:
+            - ROLE_ADHERENT
             - ROLE_APP_ADMIN_MEDIA_ALL
             - ROLE_APP_ADMIN_ARTICLE_ALL
             - ROLE_APP_ADMIN_LIVE_LINK_ALL
@@ -15,20 +19,10 @@ security:
     access_decision_manager:
         strategy: unanimous
 
-    encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory:
-                users:
-                    "%env(WRITER_LOGIN)%":
-                        password: "%env(WRITER_PASSWORD)%"
-                        roles: 'ROLE_WRITER'
-
-                    "%env(ADMIN_LOGIN)%":
-                        password: "%env(ADMIN_PASSWORD)%"
-                        roles: 'ROLE_ADMIN'
+        users_db:
+            entity: { class: 'AppBundle\Entity\Adherent', property: 'emailAddress' }
 
     firewalls:
         dev:
@@ -36,11 +30,21 @@ security:
             security: false
 
         main:
-            anonymous: ~
-            http_basic: ~
-            logout:
-                path:   /admin/logout
-                target: /
+            # No pattern means every path is behind this firewall
+            anonymous:
+                secret: '%env(SECRET)%'
+            form_login:
+                login_path: adherent_login
+                check_path: adherent_login_check
+
+                default_target_path: events_index
+                always_use_default_target_path: true
+
+                username_parameter: _adherent_email
+                password_parameter: _adherent_password
+                csrf_parameter: _adherent_csrf
+                csrf_token_id: authenticate_adherent
 
     access_control:
-        - { path: ^/admin, roles: ROLE_WRITER }
+        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
+        - { path: '^/admin', roles: [ROLE_WRITER] }

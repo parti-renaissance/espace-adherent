@@ -3,15 +3,17 @@
 namespace Tests\AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IntlControllerTest extends WebTestCase
 {
     public function testGetPostalCode()
     {
         $client = static::createClient();
-        $client->request('GET', '/api/postal-code/35420');
+        $client->request(Request::METHOD_GET, '/api/postal-code/35420');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertJson($client->getResponse()->getContent());
         $this->assertEquals([
             35018 => 'La Bazouge-du-Désert',
