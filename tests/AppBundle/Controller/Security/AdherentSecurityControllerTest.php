@@ -16,7 +16,7 @@ class AdherentSecurityControllerTest extends AbstractControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
         $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
-        $this->assertCount(0, $crawler->filter('.login--box--error'));
+        $this->assertCount(0, $crawler->filter('.login__error'));
     }
 
     public function testLoginCheckFailsOnInvalidCredentials()
@@ -31,7 +31,7 @@ class AdherentSecurityControllerTest extends AbstractControllerTest
         $crawler = $client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
-        $this->assertCount(1, $error = $crawler->filter('.login--box--error'));
-        $this->assertSame('Identifiants invalides.', $error->text());
+        $this->assertCount(1, $error = $crawler->filter('.login__error'));
+        $this->assertSame('Identifiants invalides.', trim($error->text()));
     }
 }
