@@ -5,7 +5,19 @@
     <services>
 
         <!-- Markdown parser -->
-        <service id="app.markdown" class="League\CommonMark\CommonMarkConverter" />
+        <service id="app.content.markdown_parser" class="League\CommonMark\CommonMarkConverter" />
+
+        <!-- Media factory -->
+        <service id="app.content.media_factory" class="AppBundle\Content\MediaFactory" />
+
+        <!-- Home block factory -->
+        <service id="app.content.home_block_factory" class="AppBundle\Content\HomeBlockFactory" />
+
+        <!-- Live link factory -->
+        <service id="app.content.live_link_factory" class="AppBundle\Content\LiveLinkFactory" />
+
+        <!-- Article factory -->
+        <service id="app.content.article_factory" class="AppBundle\Content\ArticleFactory" />
 
     </services>
 </container>

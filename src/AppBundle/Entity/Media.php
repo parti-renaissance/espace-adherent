@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -259,11 +260,11 @@ class Media
     }
 
     /**
-     * @param UploadedFile|null $file
+     * @param File|null $file
      *
      * @return Media
      */
-    public function setFile(UploadedFile $file = null): Media
+    public function setFile(File $file = null): Media
     {
         if (!$file) {
             return $this;

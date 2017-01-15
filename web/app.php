@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+if (!empty($_SERVER['BASIC_AUTH_USER']) && !empty($_SERVER['BASIC_AUTH_PASSWORD'])) {
+    if (!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_USER'] !== $_SERVER['BASIC_AUTH_USER'] || $_SERVER['PHP_AUTH_PW'] !== $_SERVER['BASIC_AUTH_PASSWORD']) {
+        header('HTTP/1.0 401 Unauthorized');
+        header('WWW-Authenticate: Basic realm="Password required"');
+
+        echo 'Unauthorized';
+        exit;
+    }
+}
+
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */

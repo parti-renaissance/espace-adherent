@@ -3,9 +3,25 @@ security:
     encoders:
         AppBundle\Entity\Adherent: bcrypt
 
+    role_hierarchy:
+        ROLE_WRITER:
+            - ROLE_ADHERENT
+            - ROLE_APP_ADMIN_MEDIA_ALL
+            - ROLE_APP_ADMIN_ARTICLE_ALL
+            - ROLE_APP_ADMIN_LIVE_LINK_ALL
+            - ROLE_APP_ADMIN_HOME_BLOCK_LIST
+            - ROLE_APP_ADMIN_HOME_BLOCK_EDIT
+
+        ROLE_ADMIN:
+            - ROLE_WRITER
+            - ROLE_APP_ADMIN_HOME_BLOCK_ALL
+
+    access_decision_manager:
+        strategy: unanimous
+
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        users:
+        users_db:
             entity: { class: 'AppBundle\Entity\Adherent', property: 'emailAddress' }
 
     firewalls:
@@ -31,3 +47,4 @@ security:
 
     access_control:
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
+        - { path: '^/admin', roles: [ROLE_WRITER] }
