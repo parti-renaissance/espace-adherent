@@ -7,38 +7,57 @@
 {% block banner '' %}
 
 {% block content %}
+
     <main>
-        <section class="l__wrapper">
-            <div class="login l__col background--light space--20-30 l__tablet--col b__nudge--bottom-large">
-                <h2 class="text--center">Accédez à votre espace adhérent</h2>
-                <div class="login--box l__col space--20-30">
-                    <p class="text--center">Connectez-vous à votre espace adhérent</p>
+        <section class="l__wrapper-500">
+            <div class="login">
+                <h2>Espace adhérent</h2>
 
-                    {{ form_start(form, { class: 'l__row l__row--wrap' }) }}
-                        {{ form_widget(form._adherent_email, { attr: {
-                            placeholder: 'Votre e-mail',
-                            'aria-label': 'Votre e-mail',
-                            class: 'form__row form--full'
+                <div class="login__form">
+                    <p class="login__form__title">Connectez-vous à votre espace adhérent</p>
+
+                    {{ form_start(form) }}
+
+                    {{ form_errors(form) }}
+
+                    {% if error %}
+                        <div class="form__error login__error">
+                            Identifiants invalides.
+                        </div>
+                    {% endif %}
+
+                    <div class="form__row">
+                        {{ form_widget(form._adherent_email, { 'attr': {
+                            'placeholder': 'Addresse e-mail',
+                            'aria-label': 'Addresse e-mail',
+                            'class': 'form--full'
                         } }) }}
-                        {{ form_widget(form._adherent_password, { attr: {
-                            placeholder: 'Mot de passe',
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_widget(form._adherent_password, { 'attr': {
+                            'placeholder': 'Mot de passe',
                             'aria-label': 'Mot de passe',
-                            class: 'form__row form--full'
+                            'class': 'form--full'
                         } }) }}
+                    </div>
 
-                        {% if error %}
-                            <div class="login--box--error text--center form__error b__nudge--bottom-small">Identifiants invalides.</div>
-                        {% endif %}
-
-                        <button type="submit" class="form form__field form--full btn btn--green" title="Me connecter" >Me connecter</button>
+                    <button type="submit" title="Je me connecte" class="form form--full btn btn--primary login__button">
+                        Je me connecte
+                    </button>
 
                     {{ form_end(form) }}
+                </div>
 
-                    <p class="text--center b__nudge--bottom-large"><a href="#">Mot de passe oublié</a></p>
+                <div class="login__separator">
+                    <div class="login__separator__text">ou</div>
+                </div>
 
-                    <div class="login--box--separator"><div class="login--box--separator--text text--center">ou</div></div>
-
-                    <a href="" title="Adhérez à En Marche !" class="form btn btn--green text--center">Adhérez à En Marche !</a>
+                <div class="login__subscribe">
+                    <a href="{{ path('app_membership_register') }}" title="J'adhère à En Marche !"
+                       class="btn btn--primary login__button">
+                        J'adhère à En Marche !
+                    </a>
                 </div>
             </div>
         </section>
