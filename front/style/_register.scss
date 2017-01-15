@@ -1,0 +1,93 @@
+.register {
+    margin: 20px 0 100px 0;
+
+    h2 {
+        text-align: center;
+    }
+
+    &--intro {
+        text-align: justify;
+        margin: 30px 20px;
+    }
+
+    &__form {
+        width: 75%;
+        margin: 0 auto;
+
+        &--trunc {
+            width: 97.5%;
+        }
+
+        &__gender {
+            label {
+                font-size: 18px;
+                margin: 0 30px 0 8px;
+            }
+        }
+
+        &__zip_code {
+            width: 20%;
+            margin-top: 18px;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        &__city {
+            width: 40%;
+            margin-top: 18px;
+
+            select {
+                width: 85%;
+                margin-left: 10%;
+            }
+        }
+
+        &__country {
+            width: 40%;
+
+            label {
+                margin-left: 5%;
+            }
+            select {
+                width: 90%;
+                margin-left: 5%;
+            }
+        }
+
+        &__profession {
+            select {
+                width: 95%;
+            }
+        }
+
+        &__conditions {
+            font-size: 18px;
+
+            input {
+                margin-right: 8px;
+            }
+
+            &__text {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+    }
+
+    &--mentions {
+        width: 70%;
+        font-size: 12px;
+        text-align: justify;
+        margin: 30px auto 0;
+        color: #737373;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+    }
+}

@@ -9,16 +9,16 @@ export default class AddressForm extends React.Component
         this.state = {
             loading: false,
             cities: [],
+            address: null,
             country: null,
             postalCode: null,
             city: null,
-            address: null,
         };
 
+        this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleCountryChange = this.handleCountryChange.bind(this);
         this.handlePostalCodeChange = this.handlePostalCodeChange.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
-        this.handleAddressChange = this.handleAddressChange.bind(this);
     }
 
     fetchCities(postalCode) {
@@ -51,10 +51,10 @@ export default class AddressForm extends React.Component
         }
 
         this.props.onAddressChange({
+            address: state.address,
             country: state.country,
             postalCode: state.postalCode,
             city: state.city,
-            address: state.address,
         });
     }
 
@@ -64,11 +64,11 @@ export default class AddressForm extends React.Component
         }
 
         this.setState({
+            loading: this.props.defaultAddress.postalCode.length === 5,
+            address: this.props.defaultAddress.address,
             country: this.props.defaultAddress.country,
             postalCode: this.props.defaultAddress.postalCode,
             city: this.props.defaultAddress.city,
-            address: this.props.defaultAddress.address,
-            loading: this.props.defaultAddress.postalCode.length === 5,
         });
     }
 
@@ -122,88 +122,74 @@ export default class AddressForm extends React.Component
 
         return (
             <div>
-                <div className="form__row">
-                    <label className="form form__label required" htmlFor="membership_request_country">
-                        Pays
-                    </label>
-
-                    {typeof this.props.defaultAddress.errors.country !== 'undefined'
-                        ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.country }} />
+                <div className="form__row register__form--trunc">
+                    {typeof this.props.defaultAddress.errors.address !== 'undefined'
+                        ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.address }} />
                         : ''}
 
-                    <select id="membership_request_country"
-                            className="form--full form form__field"
-                            defaultValue={this.state.country ? this.state.country : this.props.defaultAddress.country}
-                            onChange={this.handleCountryChange}>
-                        {countriesOptions}
-                    </select>
+                    <input type="text"
+                           id="membership_request_address"
+                           placeholder="Adresse postale"
+                           defaultValue={this.props.defaultAddress.address}
+                           onChange={this.handleAddressChange}
+                           className="form form--full form__field" />
                 </div>
 
                 {this.state.country === 'FR' ?
-                    <div>
-                        <div className="l__row">
-                            <div className="form__row">
-                                <label className="form form__label" htmlFor="membership_request_postalCode">
-                                    Code postal
-                                </label>
-
-                                {typeof this.props.defaultAddress.errors.postalCode !== 'undefined'
-                                    ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.postalCode }} />
-                                    : ''}
-
-                                <div>
-                                    <input type="text"
-                                           id="membership_request_postalCode"
-                                           required="required"
-                                           className="form form__field"
-                                           maxLength="5"
-                                           disabled={this.state.loading}
-                                           defaultValue={this.state.postalCode ? this.state.postalCode : this.props.defaultAddress.postalCode}
-                                           onChange={this.handlePostalCodeChange} />
-                                </div>
-                            </div>
-
-                            <div className="form__row">
-                                <label className="form form__label" htmlFor="membership_request_city">
-                                    Ville
-                                </label>
-
-                                {typeof this.props.defaultAddress.errors.city !== 'undefined'
-                                    ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.city }} />
-                                    : ''}
-
-                                <div>
-                                    <select id="membership_request_city"
-                                            defaultValue={this.props.defaultAddress.city}
-                                            onChange={this.handleCityChange}
-                                            className="form form__field membership__form__city">
-                                        {citiesOptions}
-                                    </select>
-                                </div>
-                            </div>
-
-                            {this.state.loading ?
-                                <div className="loader">
-                                    <div className="loader__edge loader__edge--small"></div>
-                                    <div className="loader__edge loader__edge--big"></div>
-                                </div>
+                    <div className="l__row">
+                        <div className="form__row register__form__zip_code">
+                            {typeof this.props.defaultAddress.errors.postalCode !== 'undefined'
+                                ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.postalCode }} />
                                 : ''}
+
+                            <div>
+                                <input type="text"
+                                       id="membership_request_postalCode"
+                                       required="required"
+                                       className="form form__field"
+                                       maxLength="5"
+                                       placeholder="Code postal"
+                                       disabled={this.state.loading}
+                                       defaultValue={this.state.postalCode ? this.state.postalCode : this.props.defaultAddress.postalCode}
+                                       onChange={this.handlePostalCodeChange} />
+                            </div>
                         </div>
 
-                        <div className="form__row">
-                            <label className="form form__label" htmlFor="membership_request_address">
-                                Adresse postale
-                            </label>
-
-                            {typeof this.props.defaultAddress.errors.address !== 'undefined'
-                                ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.address }} />
+                        <div className="form__row register__form__city">
+                            {typeof this.props.defaultAddress.errors.city !== 'undefined'
+                                ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.city }} />
                                 : ''}
 
-                            <input type="text"
-                                   id="membership_request_address"
-                                   defaultValue={this.props.defaultAddress.address}
-                                   onChange={this.handleAddressChange}
-                                   className="form form--full form__field" />
+                            <select id="membership_request_city"
+                                    defaultValue={this.props.defaultAddress.city}
+                                    onChange={this.handleCityChange}
+                                    className="form form__field">
+                                {citiesOptions}
+                            </select>
+                        </div>
+
+                        {this.state.loading ?
+                            <div className="loader">
+                                <div className="loader__edge loader__edge--small"></div>
+                                <div className="loader__edge loader__edge--big"></div>
+                            </div>
+                            : ''}
+
+                        <div className="form__row register__form__country">
+                            <label className="form form__label color--blue" htmlFor="membership_request_country">
+                                Pays
+                            </label>
+
+                            {typeof this.props.defaultAddress.errors.country !== 'undefined'
+                                ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.country }} />
+                                : ''}
+
+                            <select id="membership_request_country"
+                                    className="form--mid form form__field"
+                                    defaultValue={this.state.country ? this.state.country : this.props.defaultAddress.country}
+                                    onChange={this.handleCountryChange}>
+                                {countriesOptions}
+                            </select>
                         </div>
                     </div>
                     : ''}

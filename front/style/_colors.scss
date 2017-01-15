@@ -59,6 +59,10 @@ $gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, .2), rgba(0, 0, 0, .4));
     stroke: rgba($color, 0.4);
 }
 
+.color--blue {
+    color: $blue;
+}
+
 .background--primary {
     background: $pink;
 }
