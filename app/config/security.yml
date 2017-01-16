@@ -22,7 +22,7 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         users_db:
-            entity: { class: 'AppBundle\Entity\Adherent', property: 'emailAddress' }
+            entity: { class: 'AppBundle\Entity\Adherent' }
 
     firewalls:
         dev:
@@ -34,8 +34,8 @@ security:
             anonymous:
                 secret: '%env(SECRET)%'
             form_login:
-                login_path: adherent_login
-                check_path: adherent_login_check
+                login_path: app_adherent_login
+                check_path: app_adherent_login_check
 
                 default_target_path: events_index
                 always_use_default_target_path: true
@@ -44,6 +44,10 @@ security:
                 password_parameter: _adherent_password
                 csrf_parameter: _adherent_csrf
                 csrf_token_id: authenticate_adherent
+            logout:
+                path: app_adherent_logout
+                target: homepage
+
 
     access_control:
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }

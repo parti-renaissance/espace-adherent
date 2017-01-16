@@ -119,8 +119,6 @@ class MembershipController extends Controller
 
         try {
             $adherent->activate($activationKey);
-            //$manager->persist($adherent);
-            //$manager->persist($activationKey);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
@@ -132,6 +130,6 @@ class MembershipController extends Controller
 
         $manager->flush();
 
-        return $this->redirectToRoute('adherent_login');
+        return $this->redirectToRoute('app_adherent_login');
     }
 }

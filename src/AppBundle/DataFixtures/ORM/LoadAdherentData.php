@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\ActivationKey;
 use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -41,6 +42,13 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 0111223344',
         ]);
 
+        $key1 = ActivationKey::generate(clone $adherent1->getUuid());
+        $key2 = ActivationKey::generate(clone $adherent2->getUuid());
+
+        $adherent2->activate($key2);
+
+        $manager->persist($key1);
+        $manager->persist($key2);
         $manager->persist($adherent1);
         $manager->persist($adherent2);
         $manager->flush();

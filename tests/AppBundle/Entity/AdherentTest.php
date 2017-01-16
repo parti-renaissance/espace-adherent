@@ -19,6 +19,7 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getSalt());
+        $this->assertNull($adherent->getLastLoggedAt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('john.smith@example.org', $adherent->getUsername());
@@ -63,6 +64,16 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
             $this->fail('Adherent account cannot be enabled more than once.');
         } catch (AdherentAlreadyEnabledException $exception) {
         }
+    }
+
+    public function testAuthenticateAdherentAccount()
+    {
+        $adherent = $this->createAdherent();
+        $this->assertNull($adherent->getLastLoggedAt());
+
+        $adherent->recordLastLoginTime('2016-01-01 13:30:00');
+        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
+        $this->assertEquals(new \DateTimeImmutable('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
     private function createAdherent()

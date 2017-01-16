@@ -16,7 +16,7 @@
                 <div class="login__form">
                     <p class="login__form__title">Connectez-vous à votre espace adhérent</p>
 
-                    <form action="{{ path('adherent_login_check') }}" name="app_login" method="post">
+                    <form action="{{ path('app_adherent_login_check') }}" name="app_login" method="post">
 
                     {{ form_errors(form) }}
 
@@ -42,11 +42,11 @@
                         } }) }}
                     </div>
 
+                    {{ form_rest(form) }}
+
                     <button type="submit"
                             title="Je me connecte"
                             class="form form--full btn btn--primary login__button">Je me connecte</button>
-
-                    {{ form_rest(form) }}
                     </form>
                 </div>
 
