@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use AppBundle\Membership\MembershipRequest;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
@@ -61,11 +62,12 @@ class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
             'postal_code' => '73100',
             'birthdate' => '1950-07-08',
             'position' => ActivityPositions::RETIRED,
+            'phone' => '33 0102030405',
         ]);
 
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertInstanceOf(UuidInterface::class, $adherent->getUuid());
-        $this->assertNull($adherent->getPhone());
+        $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertNull($adherent->getSalt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertNull($adherent->eraseCredentials());

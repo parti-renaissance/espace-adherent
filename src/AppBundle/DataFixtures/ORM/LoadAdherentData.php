@@ -38,6 +38,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'postal_code' => '73100',
             'birthdate' => '1950-07-08',
             'position' => 'retired',
+            'phone' => '33 0111223344',
         ]);
 
         $manager->persist($adherent1);
