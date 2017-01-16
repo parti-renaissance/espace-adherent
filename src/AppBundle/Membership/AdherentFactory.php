@@ -61,7 +61,7 @@ class AdherentFactory
     /**
      * Returns a PhoneNumber object.
      *
-     * The format must be something like "FR 0102030405"
+     * The format must be something like "33 0102030405"
      *
      * @param string $phoneNumber
      *
