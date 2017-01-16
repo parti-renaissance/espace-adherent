@@ -167,6 +167,11 @@ class Adherent implements UserInterface
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
     }
 
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
+
     public function getRoles(): array
     {
         return ['ROLE_ADHERENT'];
@@ -289,5 +294,32 @@ class Adherent implements UserInterface
 
         $this->status = self::ENABLED;
         $this->activatedAt = new \DateTimeImmutable('now');
+    }
+
+    /**
+     * Records the adherent last login date and time.
+     *
+     * @param string|int $timestamp a valid date representation as a string or integer
+     */
+    public function recordLastLoginTime($timestamp = 'now')
+    {
+        $this->lastLoggedAt = new \DateTimeImmutable($timestamp);
+    }
+
+    /**
+     * Returns the last login date and time of this adherent.
+     *
+     * @return \DateTimeImmutable|null
+     */
+    public function getLastLoggedAt()
+    {
+        if ($this->lastLoggedAt instanceof \DateTime) {
+            $this->lastLoggedAt = new \DateTimeImmutable(
+                $this->lastLoggedAt->format('Y-m-d H:i:s'),
+                $this->lastLoggedAt->getTimezone()
+            );
+        }
+
+        return $this->lastLoggedAt;
     }
 }
