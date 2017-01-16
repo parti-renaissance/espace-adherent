@@ -2,12 +2,14 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
 
-abstract class AbstractControllerTest extends WebTestCase
+/**
+ * @method assertSame($expected, $actual)
+ */
+trait ControllerTestTrait
 {
     use TestHelperTrait;
 
@@ -16,10 +18,10 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertSame($statusCode, $response->getStatusCode());
     }
 
-    public function assertClientIsRedirectedTo(string $path, Client $client)
+    public function assertClientIsRedirectedTo(string $path, Client $client, $withSchemes = false)
     {
         $this->assertSame(
-            $client->getRequest()->getSchemeAndHttpHost().$path,
+            $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
             $client->getResponse()->headers->get('location')
         );
     }

@@ -5,12 +5,15 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeControllerTest extends AbstractControllerTest
+class HomeControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var Client
      */
@@ -20,7 +23,7 @@ class HomeControllerTest extends AbstractControllerTest
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
         // Articles
         $this->assertSame(1, $crawler->filter('html:contains("« Je viens échanger, comprendre et construire. »")')->count());
@@ -31,28 +34,28 @@ class HomeControllerTest extends AbstractControllerTest
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
 
         // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $this->client->getResponse()->headers->get('cache-control'));
+        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     public function testArticle()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/article/outre-mer');
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
 
         // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $this->client->getResponse()->headers->get('cache-control'));
+        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     public function testHealth()
     {
         $this->client->request(Request::METHOD_GET, '/health');
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
         // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $this->client->getResponse()->headers->get('cache-control'));
+        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     protected function setUp()

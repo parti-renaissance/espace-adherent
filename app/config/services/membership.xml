@@ -21,6 +21,11 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
+            <argument type="service" id="app.donation.factory"/>
+            <argument type="service" id="session"/>
+        </service>
+
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
             <argument type="service" id="app.repository.adherent"/>
             <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>

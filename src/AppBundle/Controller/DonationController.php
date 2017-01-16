@@ -9,7 +9,6 @@ use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -18,25 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 class DonationController extends Controller
 {
     /**
-     * @Route("", name="donation_index", options={"expose"=true})
+     * @Route(name="donation_index", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function indexAction(Request $request)
     {
         $donation = $this->get('app.donation.factory')->createDonationFromRequest($request);
-
         $form = $this->createForm(DonationType::class, $donation, ['locale' => $request->getLocale()]);
-        $form->add('submit', SubmitType::class);
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $donation->setId(Donation::creatUuid());
-            $donation->setClientIp($request->getClientIp());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($donation);
-            $em->flush();
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get('app.donation.manager')->persist($donation, $request->getClientIp());
 
             return $this->redirectToRoute('donation_pay', [
                 'id' => $donation->getId()->toString(),

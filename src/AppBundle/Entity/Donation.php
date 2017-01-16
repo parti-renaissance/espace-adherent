@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Exception\InitializedEntityException;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -22,7 +23,7 @@ use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPost
 class Donation
 {
     /**
-     * @var UuidInterface
+     * @var UuidInterface|null
      *
      * @ORM\Column(type="uuid")
      * @ORM\Id
@@ -204,21 +205,12 @@ class Donation
         return $this->finished && $this->donatedAt instanceof \DateTime;
     }
 
-    public static function creatUuid(): UuidInterface
-    {
-        return Uuid::uuid4();
-    }
-
-    public function getId(): UuidInterface
+    /**
+     * @return UuidInterface|null
+     */
+    public function getId()
     {
         return $this->id;
-    }
-
-    public function setId(UuidInterface $id): Donation
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -229,7 +221,7 @@ class Donation
         return $this->amount;
     }
 
-    public function setAmount($amount): Donation
+    public function setAmount($amount): self
     {
         $this->amount = $amount;
 
@@ -247,9 +239,9 @@ class Donation
     /**
      * @param string|null $gender
      *
-     * @return Donation
+     * @return $this
      */
-    public function setGender($gender): Donation
+    public function setGender($gender): self
     {
         $this->gender = $gender;
 
@@ -267,9 +259,9 @@ class Donation
     /**
      * @param string|null $lastName
      *
-     * @return Donation
+     * @return $this
      */
-    public function setLastName($lastName): Donation
+    public function setLastName($lastName): self
     {
         $this->lastName = $lastName;
 
@@ -287,9 +279,9 @@ class Donation
     /**
      * @param string|null $firstName
      *
-     * @return Donation
+     * @return $this
      */
-    public function setFirstName($firstName): Donation
+    public function setFirstName($firstName): self
     {
         $this->firstName = $firstName;
 
@@ -307,9 +299,9 @@ class Donation
     /**
      * @param string|null $email
      *
-     * @return Donation
+     * @return $this
      */
-    public function setEmail($email): Donation
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -327,9 +319,9 @@ class Donation
     /**
      * @param string|null $address
      *
-     * @return Donation
+     * @return $this
      */
-    public function setAddress($address): Donation
+    public function setAddress($address): self
     {
         $this->address = $address;
 
@@ -347,9 +339,9 @@ class Donation
     /**
      * @param string|null $postalCode
      *
-     * @return Donation
+     * @return $this
      */
-    public function setPostalCode($postalCode): Donation
+    public function setPostalCode($postalCode): self
     {
         $this->postalCode = $postalCode;
 
@@ -367,9 +359,9 @@ class Donation
     /**
      * @param string|null $city
      *
-     * @return Donation
+     * @return $this
      */
-    public function setCity($city): Donation
+    public function setCity($city): self
     {
         $this->city = $city;
 
@@ -384,9 +376,9 @@ class Donation
     /**
      * @param string|null $country
      *
-     * @return Donation
+     * @return $this
      */
-    public function setCountry($country): Donation
+    public function setCountry($country): self
     {
         $this->country = $country;
 
@@ -404,9 +396,9 @@ class Donation
     /**
      * @param PhoneNumber|null $phone
      *
-     * @return Donation
+     * @return $this
      */
-    public function setPhone($phone): Donation
+    public function setPhone($phone): self
     {
         $this->phone = $phone;
 
@@ -451,7 +443,7 @@ class Donation
         return $this->payboxPayload;
     }
 
-    public function setPayboxPayload(array $payboxPayload): Donation
+    public function setPayboxPayload(array $payboxPayload): self
     {
         $this->payboxPayload = $payboxPayload;
 
@@ -463,7 +455,7 @@ class Donation
         return $this->finished;
     }
 
-    public function setFinished(bool $finished): Donation
+    public function setFinished(bool $finished): self
     {
         $this->finished = $finished;
 
@@ -478,7 +470,7 @@ class Donation
         return $this->clientIp;
     }
 
-    public function setClientIp(string $clientIp): Donation
+    public function setClientIp(string $clientIp): self
     {
         $this->clientIp = $clientIp;
 
@@ -493,7 +485,7 @@ class Donation
         return $this->donatedAt;
     }
 
-    public function setDonatedAt(\DateTime $donatedAt): Donation
+    public function setDonatedAt(\DateTime $donatedAt): self
     {
         $this->donatedAt = $donatedAt;
 
@@ -506,6 +498,20 @@ class Donation
     }
 
     /**
+     * Set createdAt.
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
      * Get finished.
      *
      * @return bool
@@ -515,17 +521,29 @@ class Donation
         return $this->finished;
     }
 
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Donation
-     */
-    public function setCreatedAt($createdAt)
+    public function init(string $clientIp)
     {
-        $this->createdAt = $createdAt;
+        if (null !== $this->id) {
+            throw new InitializedEntityException($this);
+        }
 
-        return $this;
+        $this->id = Uuid::uuid4();
+        $this->clientIp = $clientIp;
+    }
+
+    public static function createFromAdherent(Adherent $adherent): self
+    {
+        $donation = new self();
+        $donation->gender = $adherent->getGender();
+        $donation->firstName = $adherent->getFirstName();
+        $donation->lastName = $adherent->getFirstName();
+        $donation->lastName = $adherent->getLastName();
+        $donation->email = $adherent->getEmailAddress();
+        $donation->address = $adherent->getAddress();
+        $donation->postalCode = $adherent->getPostalCode();
+        $donation->city = $adherent->getCity();
+        $donation->phone = $adherent->getPhone();
+
+        return $donation;
     }
 }

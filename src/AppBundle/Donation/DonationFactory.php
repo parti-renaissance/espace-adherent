@@ -2,6 +2,7 @@
 
 namespace AppBundle\Donation;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,5 +58,10 @@ class DonationFactory
         }
 
         return $donation;
+    }
+
+    public function createDonationFromAdherent(Adherent $adherent): Donation
+    {
+        return Donation::createFromAdherent($adherent);
     }
 }

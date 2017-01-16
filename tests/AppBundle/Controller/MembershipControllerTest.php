@@ -9,11 +9,17 @@ use AppBundle\Repository\ActivationKeyRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Entity\Donation;
+use AppBundle\Membership\MembershipUtils;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class MembershipControllerTest extends AbstractControllerTest
+class MembershipControllerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var Client
      */
@@ -46,13 +52,13 @@ class MembershipControllerTest extends AbstractControllerTest
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['emailAddress'] = $emailAddress;
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Cette adresse e-mail existe déjà.', $crawler->filter('#field-email-address > .form__errors > li')->text());
     }
 
@@ -73,13 +79,13 @@ class MembershipControllerTest extends AbstractControllerTest
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['birthdate'] = date('d/m/Y');
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Vous devez être âgé d'au moins 15 ans pour adhérer.", $crawler->filter('#field-birthdate > .form__errors > li')->text());
     }
 
@@ -87,13 +93,13 @@ class MembershipControllerTest extends AbstractControllerTest
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['conditions'] = false;
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
     }
 
@@ -101,29 +107,36 @@ class MembershipControllerTest extends AbstractControllerTest
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['postalCode'] = '73100';
         $data['membership_request']['city'] = '73100-73999';
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#app-membership > .form__errors > li')->text());
     }
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->client->request(Request::METHOD_GET, '/inscription');
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), static::createFormData());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+
         $crawler = $this->client->followRedirect();
 
         $this->assertContains(
             "Votre inscription en tant qu'adhérent s'est déroulée avec succès.",
             $crawler->filter('#notice-flashes')->text()
+        );
+        $this->assertInstanceOf(
+            Adherent::class,
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
         );
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
@@ -133,18 +146,22 @@ class MembershipControllerTest extends AbstractControllerTest
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationKey->getToken());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         $crawler = $this->client->followRedirect();
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
 
         // Activate user account twice
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client);
 
         $crawler = $this->client->followRedirect();
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('#notice-flashes')->text());
 
         $this->manager->refresh($adherent);
@@ -156,14 +173,26 @@ class MembershipControllerTest extends AbstractControllerTest
             '_adherent_password' => '#example!12345#',
         ]));
 
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertClientIsRedirectedTo('http://localhost/evenements', $this->client);
+
         $this->client->followRedirect();
+
+        $session = $this->client->getRequest()->getSession();
+
+        $this->assertInstanceOf(Donation::class, $session->get(MembershipUtils::REGISTERING_DONATION));
+        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
     }
 
     public function testCreateMembershipAccountForSwissAdherentIsSuccessful()
     {
+        $client = $this->client;
+        $client->request(Request::METHOD_GET, '/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
         $this->client->request(Request::METHOD_GET, '/inscription');
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['country'] = 'CH';
@@ -172,11 +201,26 @@ class MembershipControllerTest extends AbstractControllerTest
         $data['membership_request']['address'] = '';
 
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), $data);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
 
-        $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
-        $this->assertInstanceOf(ActivationKey::class, $activationKey = $this->activationKeyRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findAll());
+        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertInstanceOf(
+            Adherent::class,
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+        );
+
+        $session = $this->client->getRequest()->getSession();
+
+        $this->assertInstanceOf(Donation::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
+        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
+        $this->assertSame('Dupont', $donation->getLastName(), 'Temporary donation should be hydrated by the adherent data.');
+    }
+
+    public function testDonateWithoutTemporaryDonation()
+    {
+        $client = $this->client;
+        $client->request(Request::METHOD_GET, '/inscription/don');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
 
     private static function createFormData()
@@ -213,7 +257,6 @@ class MembershipControllerTest extends AbstractControllerTest
         $this->loadFixtures([
             LoadAdherentData::class,
         ]);
-
         $this->client = static::createClient();
         $this->container = $this->client->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');

@@ -10,7 +10,7 @@ trait EntityIdentityTrait
     /**
      * The unique auto incremented primary key.
      *
-     * @var int
+     * @var int|null
      *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -30,7 +30,7 @@ trait EntityIdentityTrait
     /**
      * Returns the primary key identifier.
      *
-     * @return int
+     * @return int|null
      */
     public function getId()
     {

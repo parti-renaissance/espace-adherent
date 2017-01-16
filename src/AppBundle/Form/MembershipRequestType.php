@@ -23,7 +23,9 @@ class MembershipRequestType extends AbstractType
             ->add('gender', GenderType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('emailAddress', EmailType::class)
+            ->add('emailAddress', EmailType::class, [
+                'empty_data' => '',
+            ])
             ->add('birthdate', BirthdayType::class, [
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
