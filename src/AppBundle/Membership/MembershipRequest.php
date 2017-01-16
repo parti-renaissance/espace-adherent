@@ -124,8 +124,21 @@ class MembershipRequest
     {
         $dto = new self();
         $dto->recaptcha = $recaptchaAnswer;
+        $dto->phone = static::createPhoneNumber();
 
         return $dto;
+    }
+
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
+    {
+        $phone = new PhoneNumber();
+        $phone->setCountryCode($countryCode);
+
+        if ($number) {
+            $phone->setNationalNumber($number);
+        }
+
+        return $phone;
     }
 
     public function setEmailAddress(string $emailAddress)
