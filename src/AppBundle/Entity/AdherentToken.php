@@ -2,22 +2,20 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Exception\ActivationKeyAlreadyUsedException;
-use AppBundle\Exception\ActivationKeyExpiredException;
-use AppBundle\Exception\ActivationKeyMismatchException;
+use AppBundle\Exception\AdherentTokenAlreadyUsedException;
+use AppBundle\Exception\AdherentTokenExpiredException;
+use AppBundle\Exception\AdherentTokenMismatchException;
 use AppBundle\ValueObject\SHA1;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="adherent_activation_keys", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="key_token_unique", columns="token"),
- *   @ORM\UniqueConstraint(name="key_token_account_unique", columns={"token", "adherent_uuid"})
- * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ActivationKeyRepository")
+ * An abstract temporary token for Adherent.
+ *
+ * @ORM\MappedSuperclass
  */
-final class ActivationKey
+abstract class AdherentToken implements AdherentExpirableTokenInterface
 {
     use EntityIdentityTrait;
 
@@ -31,7 +29,7 @@ final class ActivationKey
      *
      * @ORM\Column(length=40)
      */
-    private $token;
+    private $value;
 
     /**
      * @var \DateTimeImmutable|\DateTime
@@ -59,24 +57,30 @@ final class ActivationKey
         UuidInterface $adherentUuid,
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $expiration,
-        SHA1 $token
+        SHA1 $value
     ) {
         if ($expiration <= new \DateTimeImmutable('now')) {
             throw new \InvalidArgumentException('Expiration date must be in the future.');
         }
 
         $this->uuid = $uuid;
-        $this->token = $token;
+        $this->value = $value;
         $this->adherentUuid = $adherentUuid;
         $this->createdAt = $createdAt;
         $this->expiredAt = $expiration;
     }
 
-    public static function generate(UuidInterface $adherentUuid, $lifetime = '+1 day'): self
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    public static function generate(Adherent $adherent, string $lifetime = '+1 day'): AdherentExpirableTokenInterface
     {
         $timestamp = new \DateTimeImmutable('now');
+        $adherentUuid = clone $adherent->getUuid();
 
-        return new self(
+        return new static(
             static::createUuid((string) $adherentUuid),
             $adherentUuid,
             $timestamp,
@@ -90,30 +94,34 @@ final class ActivationKey
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $adherentUuid);
     }
 
-    public function getToken(): SHA1
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue(): SHA1
     {
-        if (!$this->token instanceof SHA1) {
-            $this->token = SHA1::fromString($this->token);
+        if (!$this->value instanceof SHA1) {
+            $this->value = SHA1::fromString($this->value);
         }
 
-        return $this->token;
+        return $this->value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAdherentUuid(): UuidInterface
     {
         return $this->adherentUuid;
     }
 
-    private function isExpired(): bool
-    {
-        return new \DateTimeImmutable('now') > $this->expiredAt;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getUsageDate()
     {
         if ($this->usedAt instanceof \DateTime) {
             $this->usedAt = new \DateTimeImmutable(
-                $this->usedAt->format('U'),
+                $this->usedAt->format(\DATE_RFC2822),
                 $this->usedAt->getTimezone()
             );
         }
@@ -121,20 +129,25 @@ final class ActivationKey
         return $this->usedAt;
     }
 
-    public function activate(UuidInterface $adherentUuid)
+    public function consume(Adherent $adherent)
     {
         if (null !== $this->usedAt) {
-            throw new ActivationKeyAlreadyUsedException($this);
+            throw new AdherentTokenAlreadyUsedException($this);
         }
 
-        if (!$this->adherentUuid->equals($adherentUuid)) {
-            throw new ActivationKeyMismatchException($this, $adherentUuid);
+        if (!$this->adherentUuid->equals($adherent->getUuid())) {
+            throw new AdherentTokenMismatchException($this, $adherent->getUuid());
         }
 
         if ($this->isExpired()) {
-            throw new ActivationKeyExpiredException($this);
+            throw new AdherentTokenExpiredException($this);
         }
 
         $this->usedAt = new \DateTimeImmutable('now');
+    }
+
+    private function isExpired(): bool
+    {
+        return new \DateTimeImmutable('now') > $this->expiredAt;
     }
 }

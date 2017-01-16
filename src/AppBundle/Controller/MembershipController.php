@@ -2,11 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Donation;
+use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\DonationType;
-use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
-use AppBundle\Exception\ActivationKeyExpiredException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
@@ -102,33 +101,30 @@ class MembershipController extends Controller
      * membership account.
      *
      * @Route(
-     *   path="/inscription/finaliser/{adherent_uuid}/{activation_key}",
+     *   path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
      *   name="app_membership_activate",
      *   requirements={
      *     "adherent_uuid": "%pattern_uuid%",
-     *     "activation_key": "%pattern_sha1%"
+     *     "activation_token": "%pattern_sha1%"
      *   }
      * )
      * @Method("GET")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
-     * @Entity("activationKey", expr="repository.findByToken(activation_key)")
+     * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
-    public function activateAction(Adherent $adherent, ActivationKey $activationKey): Response
+    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
     {
-        $manager = $this->getDoctrine()->getManager();
-
         try {
-            $adherent->activate($activationKey);
+            $adherent->activate($activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
-        } catch (ActivationKeyExpiredException $e) {
+        } catch (AdherentTokenExpiredException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.expired_key'));
         }
 
         // Other exceptions that may be raised will be caught by Symfony.
-
-        $manager->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('app_adherent_login');
     }

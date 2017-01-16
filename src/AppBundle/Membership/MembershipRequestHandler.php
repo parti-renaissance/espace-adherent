@@ -2,8 +2,8 @@
 
 namespace AppBundle\Membership;
 
-use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -31,23 +31,23 @@ class MembershipRequestHandler
     public function handle(MembershipRequest $membershipRequest)
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
-        $activationKey = ActivationKey::generate(clone $adherent->getUuid());
+        $token = AdherentActivationToken::generate($adherent);
 
         $this->manager->persist($adherent);
-        $this->manager->persist($activationKey);
+        $this->manager->persist($token);
         $this->manager->flush();
 
-        $activationUrl = $this->generateMembershipActivationUrl($adherent, $activationKey);
+        $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
         $membershipRequest->setAdherent($adherent);
     }
 
-    private function generateMembershipActivationUrl(Adherent $adherent, ActivationKey $activationKey)
+    private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token)
     {
         $params = [
             'adherent_uuid' => (string) $adherent->getUuid(),
-            'activation_key' => (string) $activationKey->getToken(),
+            'activation_token' => (string) $token->getValue(),
         ];
 
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);

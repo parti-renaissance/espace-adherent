@@ -2,15 +2,18 @@
 
 namespace Tests\AppBundle\Entity;
 
-use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Membership\ActivityPositions;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
+use Tests\AppBundle\TestHelperTrait;
 
 class AdherentTest extends \PHPUnit_Framework_TestCase
 {
+    use TestHelperTrait;
+
     public function testConstruct()
     {
         $adherent = $this->createAdherent();
@@ -40,27 +43,28 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
     public function testActivateAdherentAccount()
     {
         $adherent = $this->createAdherent();
-        $activationKey = ActivationKey::generate(clone $adherent->getUuid());
+        $activationToken = AdherentActivationToken::generate($adherent);
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getActivatedAt());
-        $this->assertNull($activationKey->getUsageDate());
+        $this->assertNull($activationToken->getUsageDate());
 
-        $adherent->activate($activationKey);
+        $adherent->activate($activationToken);
 
         $this->assertTrue($adherent->isEnabled());
         $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getActivatedAt());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $activationKey->getUsageDate());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $activationToken->getUsageDate());
     }
 
     public function testActivateAdherentAccountTwice()
     {
         $adherent = $this->createAdherent();
-        $activationKey = ActivationKey::generate(clone $adherent->getUuid());
-        $adherent->activate($activationKey);
+        $activationToken = AdherentActivationToken::generate($adherent);
+
+        $adherent->activate($activationToken);
 
         try {
-            $adherent->activate($activationKey);
+            $adherent->activate($activationToken);
             $this->fail('Adherent account cannot be enabled more than once.');
         } catch (AdherentAlreadyEnabledException $exception) {
         }

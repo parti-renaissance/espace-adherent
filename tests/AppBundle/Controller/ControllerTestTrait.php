@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
@@ -12,6 +13,16 @@ use Tests\AppBundle\TestHelperTrait;
 trait ControllerTestTrait
 {
     use TestHelperTrait;
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
 
     public function assertResponseStatusCode(int $statusCode, Response $response)
     {
@@ -24,5 +35,19 @@ trait ControllerTestTrait
             $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
             $client->getResponse()->headers->get('location')
         );
+    }
+
+    protected function init()
+    {
+        $this->client = static::createClient();
+        $this->container = $this->client->getContainer();
+        $this->manager = $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    protected function kill()
+    {
+        $this->client = null;
+        $this->container = null;
+        $this->manager = null;
     }
 }
