@@ -29,112 +29,132 @@
 
 {% block content %}
     <section class="l__wrapper--medium">
-        <div class="donation">
+        <div class="register">
             <h2>J'adhère au mouvement En Marche !</h2>
 
-            <div class="l__row l__row--top l__row--h-stretch">
-                <div class="donation__form">
-                    <form method="post" id="app-membership" class="form">
-                        {{ form_errors(form) }}
+            <p>
+                En Marche ! est un collectif citoyen qui part d'une conviction : les Français doivent être au cœur
+                de la vie politique et non son décor. Ce collectif n'est pas l'addition d'individus, mais le rassemblement
+                de personnes engagées qui partagent un socle de valeurs.
+                <a href="#" class="color--blue">Télécharger l'intégralité de la charte et des règles de fonctionnement.</a>
+            </p>
 
-                        <div class="form__row">
-                            {{ form_errors(form.gender) }}
-                            {{ form_widget(form.gender) }}
-                        </div>
+            <div class="register__form">
+                {{ form_start(form) }}
+                    {{ form_errors(form) }}
 
-                        <div class="form__row">
-                            {{ form_label(form.firstName, 'Prénom') }}
+                    <div class="form__row">
+                        {{ form_errors(form.gender) }}
+                        {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                    </div>
+
+                    <div class="form__row l__row">
+                        <div class="l__col form--mid">
                             {{ form_errors(form.firstName) }}
-                            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+                            {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
                         </div>
-
-                        <div class="form__row">
-                            {{ form_label(form.lastName, 'Nom') }}
+                        <div class="l__col form--mid">
                             {{ form_errors(form.lastName) }}
-                            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+                            {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
                         </div>
+                    </div>
 
-                        <div class="form__row" id="field-email-address">
-                            {{ form_label(form.emailAddress, 'Adresse e-mail') }}
-                            {{ form_errors(form.emailAddress) }}
-                            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse e-mail' } }) }}
-                        </div>
+                    <div class="form__row form__blue_row register__form--trunc" id="field-email-address">
+                        {{ form_errors(form.emailAddress) }}
+                        {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse e-mail' } }) }}
+                    </div>
 
-                        <div class="form__row">
-                            {{ form_label(form.password.first, 'Mot de passe') }}
+                    <div class="form__row l__row form__blue_row">
+                        <div class="l__col form--mid">
                             {{ form_errors(form.password.first) }}
-                            {{ form_widget(form.password.first, { 'attr': { 'class': 'form--full', 'placeholder': 'Mot de passe' } }) }}
+                            {{ form_widget(form.password.first, { attr: { placeholder: 'Mot de passe' } }) }}
                         </div>
-
-                        <div class="form__row">
-                            {{ form_label(form.password.second, 'Confirmation') }}
+                        <div class="l__col form--mid">
                             {{ form_errors(form.password.second) }}
-                            {{ form_widget(form.password.second, { 'attr': { 'class': 'form--full', 'placeholder': 'Confirmation' } }) }}
+                            {{ form_widget(form.password.second, { attr: { placeholder: 'Confirmation' } }) }}
+                        </div>
+                    </div>
+
+                    <div id="membership-address">
+                        <div class="form__row register__form--trunc">
+                            {{ form_errors(form.address) }}
+                            {{ form_widget(form.address, { attr: { class: 'form--full', placeholder: 'Adresse postale' } }) }}
                         </div>
 
-                        <div id="membership-address">
-                            <div class="form__row" id="field-address">
-                                {{ form_label(form.address, 'Adresse postale') }}
-                                {{ form_errors(form.address) }}
-                                {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
-                            </div>
-
-                            <div class="form__row" id="field-postal-code-city">
-                                {{ form_label(form.postalCode, 'Code postal') }}
+                        <div class="l__row">
+                            <div class="form__row register__form__zip_code">
                                 {{ form_errors(form.postalCode) }}
-                                <div>{{ form_widget(form.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
-                                {{ form_widget(form.city) }}
+                                {{ form_widget(form.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+
+                            </div>
+                            <div class="form__row register__form__city">
+                                {{ form_widget(form.city, { attr: { class: 'register__form__city'}}) }}
                             </div>
 
-                            <div class="form__row" id="field-country">
-                                {{ form_label(form.country, 'Pays') }}
+                            <div class="form__row register__form__country">
+                                {{ form_label(form.country, 'Pays', { label_attr: { class: 'color--blue' } }) }}
                                 {{ form_errors(form.country) }}
-                                {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                                {{ form_widget(form.country, { attr: { class: 'form--mid' } }) }}
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form__row">
-                            {{ form_label(form.phone, 'Numéro de téléphone') }}
-                            {{ form_errors(form.phone) }}
-                            <div>
-                                {{ form_widget(form.phone.country, { 'attr': { 'class': 'membership_request__form__phone'} }) }}
-                                {{ form_widget(form.phone.number) }}
-                            </div>
-                        </div>
-
-                        <div class="form__row">
-                            {{ form_label(form.position, 'Profession') }}
-                            {{ form_errors(form.position) }}
-                            {{ form_widget(form.position, { 'attr': { 'class': 'form--full' } }) }}
-                        </div>
-
-                        <div class="form__row" id="field-birthdate">
-                            {{ form_label(form.birthdate, 'Date de naissance') }}
-                            {{ form_errors(form.birthdate) }}
-                            {{ form_widget(form.birthdate, { 'attr': { 'class': 'form--full', 'placeholder': 'JJ/MM/AAAA' } }) }}
-                        </div>
-
-                        <div class="form__row" id="field-conditions">
-                            {{ form_label(form.conditions) }}
-                            {{ form_errors(form.conditions) }}
-                            {{ form_widget(form.conditions) }}
-                        </div>
-
-                        {% if 'test' != app.environment %}
-                            <div class="form__row" id="field-recaptcha">
-                                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
-                            </div>
-                        {% endif %}
-
+                    <div class="form__row register__form__phone">
+                        {{ form_errors(form.phone) }}
                         <div>
-                            <button type="submit" id="become-adherent">J'adhère</button>
+                            {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone'} }) }}
+                            {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                        </div>
+                    </div>
+
+                    <div class="l__row">
+                        <div class="l__col form__row form--mid">
+                            {{ form_label(form.position, 'Profession', { label_attr: { class: 'color--blue' } }) }}
+                            {{ form_errors(form.position) }}
+                            {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
                         </div>
 
-                        {{ form_rest(form) }}
-                    </form>
-                </div>
+                        <div class="l__col form__row form--mid" id="field-birthdate">
+                            {{ form_label(form.birthdate, 'Date de naissance', { label_attr: { class: 'color--blue' } }) }}
+                            {{ form_errors(form.birthdate) }}
+                            {{ form_widget(form.birthdate, { attr: { class: 'form--full', placeholder: 'JJ/MM/AAAA' } }) }}
+                        </div>
+                    </div>
 
+                    <div class="form__row register__form__conditions b__nudge--top-large" id="field-conditions">
+                        {{ form_errors(form.conditions) }}
+                        {{ form_widget(form.conditions) }}
+                        Oui,
+                        <span class="register__form__conditions__text color--blue">
+                            j'adhère à la charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !
+                        </span>
+                    </div>
+
+                    {% if 'test' != app.environment %}
+                        <div class="form__row" id="field-recaptcha">
+                            <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
+                        </div>
+                    {% endif %}
+
+                    <div class="form__row text--center b__nudge--top">
+                        <button type="submit" id="become-adherent" class="btn--green form btn">J'adhère</button>
+                    </div>
+
+                {{ form_end(form) }}
             </div>
+
+            <p>
+                Les informations que vous nous communiquez sont nécessaires à la gestion de vos dons et de nos
+                relations. Elles sont exclusivement réservées à l'usage de En Marche et en retournant ce formulaire, vous
+                autorisez celle-ci à utiliser vos données pour des opérations de communication politique et de dons. Vos
+                informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants
+                de En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation
+                de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez
+                des droits d'accès, de rectification, de suppression et d'oppostion aux informations vous concernant. Vous
+                pouvez exercer ces droits en nous écrivant à l'adresse :
+                <a href="mailto:contact@enmarche.fr" class="color--blue">contact@enmarche.fr</a>
+                ou En Marche - BP 80 049 - 94801 Villejuif.
+            </p>
         </div>
     </section>
 

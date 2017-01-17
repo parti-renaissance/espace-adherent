@@ -7,10 +7,10 @@ export default class MembershipIndexAddress extends React.Component
         super();
 
         this.state = {
+            address: null,
             country: null,
             postalCode: null,
             city: null,
-            address: null,
         };
 
         this.handleAddressChange = this.handleAddressChange.bind(this);
@@ -18,10 +18,10 @@ export default class MembershipIndexAddress extends React.Component
 
     componentDidMount() {
         this.setState({
+            address: this.props.defaultAddress.address,
             country: this.props.defaultAddress.country,
             postalCode: this.props.defaultAddress.postalCode,
             city: this.props.defaultAddress.city,
-            address: this.props.defaultAddress.address,
         });
     }
 
@@ -38,10 +38,10 @@ export default class MembershipIndexAddress extends React.Component
                     onAddressChange={this.handleAddressChange}
                 />
 
+                {this.state.country === 'FR' && this.state.address ? <input type="hidden" name="membership_request[address]" value={this.state.address} /> : ''}
                 {this.state.country ? <input type="hidden" name="membership_request[country]" value={this.state.country} /> : ''}
                 {this.state.country === 'FR' && this.state.postalCode ? <input type="hidden" name="membership_request[postalCode]" value={this.state.postalCode} /> : ''}
                 {this.state.country === 'FR' && this.state.city ? <input type="hidden" name="membership_request[city]" value={this.state.city} /> : ''}
-                {this.state.country === 'FR' && this.state.address ? <input type="hidden" name="membership_request[address]" value={this.state.address} /> : ''}
             </div>
         );
     }
