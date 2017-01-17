@@ -13,8 +13,8 @@
             <div class="login">
                 <h2>Espace adhérent</h2>
 
-                <div class="login__form">
-                    <p class="login__form__title">Connectez-vous à votre espace adhérent</p>
+                <div class="security__form">
+                    <p class="security__form__title">Connectez-vous à votre espace adhérent</p>
 
                     <form action="{{ path('app_adherent_login_check') }}" name="app_login" method="post">
 
@@ -50,13 +50,15 @@
                     </form>
                 </div>
 
+                <a href="{{ path('adherent_forgot_password') }}">Mot de passe oublié</a>
+
                 <div class="login__separator">
                     <div class="login__separator__text">ou</div>
                 </div>
 
                 <div class="login__subscribe">
                     <a href="{{ path('app_membership_register') }}" title="J'adhère à En Marche !"
-                       class="btn btn--primary login__button">
+                       class="form form--full btn btn--primary login__button">
                         J'adhère à En Marche !
                     </a>
                 </div>

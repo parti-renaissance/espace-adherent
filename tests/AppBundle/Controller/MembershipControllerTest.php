@@ -3,16 +3,14 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
-use AppBundle\Repository\ActivationKeyRepository;
+use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Donation;
 use AppBundle\Membership\MembershipUtils;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,29 +19,19 @@ class MembershipControllerTest extends WebTestCase
     use ControllerTestTrait;
 
     /**
-     * @var Client
-     */
-    private $client;
-
-    /**
      * @var AdherentRepository
      */
     private $adherentRepository;
 
     /**
-     * @var ActivationKeyRepository
+     * @var AdherentActivationTokenRepository
      */
-    private $activationKeyRepository;
+    private $activationTokenRepository;
 
     /**
      * @var MailjetEmailRepository
      */
     private $emailRepository;
-
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
 
     /**
      * @dataProvider provideEmailAddress
@@ -140,11 +128,11 @@ class MembershipControllerTest extends WebTestCase
         );
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
-        $this->assertInstanceOf(ActivationKey::class, $activationKey = $this->activationKeyRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
+        $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findAll());
 
         // Activate the user account
-        $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationKey->getToken());
+        $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -165,7 +153,7 @@ class MembershipControllerTest extends WebTestCase
         $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('#notice-flashes')->text());
 
         $this->manager->refresh($adherent);
-        $this->manager->refresh($activationKey);
+        $this->manager->refresh($activationToken);
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Je me connecte')->form([
@@ -254,27 +242,23 @@ class MembershipControllerTest extends WebTestCase
     {
         parent::setUp();
 
+        $this->init();
         $this->loadFixtures([
             LoadAdherentData::class,
         ]);
-        $this->client = static::createClient();
-        $this->container = $this->client->getContainer();
-        $this->manager = $this->container->get('doctrine.orm.entity_manager');
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->activationKeyRepository = $this->getActivationKeyRepository();
+        $this->activationTokenRepository = $this->getActivationTokenRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();
     }
 
     protected function tearDown()
     {
+        $this->kill();
         $this->loadFixtures([]);
 
-        $this->manager = null;
         $this->emailRepository = null;
-        $this->activationKeyRepository = null;
+        $this->activationTokenRepository = null;
         $this->adherentRepository = null;
-        $this->container = null;
-        $this->client = null;
 
         parent::tearDown();
     }

@@ -3,22 +3,19 @@
 namespace Tests\AppBundle\Controller\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
 class AdherentSecurityControllerTest extends WebTestCase
 {
-    /* @var Client */
-    private $client;
+    use ControllerTestTrait;
 
     /* @var AdherentRepository */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testAuthenticationIsSuccessful()
     {
@@ -95,26 +92,143 @@ class AdherentSecurityControllerTest extends WebTestCase
         ];
     }
 
+    public function testRetrieveForgotPasswordAction()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
+        $this->assertCount(0, $crawler->filter('.form__error'), 'No error should be displayed on initial display');
+    }
+
+    public function testRetrieveForgotPasswordActionWithEmptyEmail()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), ['form' => ['email' => '']]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
+        $this->assertCount(1, $error = $crawler->filter('.form__error'));
+        $this->assertContains('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
+    }
+
+    public function testRetrieveForgotPasswordActionWithUnknownEmail()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $formData = [
+            'form' => ['email' => 'toto@example.org'],
+        ];
+
+        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
+        $this->assertCount(0, $crawler->filter('.form__error'));
+        $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+
+        $this->assertCount(0, $this->getMailjetEmailRepository()->findAll(), 'No mail should have been sent to unknown account.');
+    }
+
+    public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $formData = [
+            'form' => ['email' => 'michelle.dufour@example.ch'],
+        ];
+
+        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
+        $this->assertCount(0, $crawler->filter('.form__error'));
+        $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findAll(), 'An email should have been sent.');
+    }
+
+    public function testResetPasswordAction()
+    {
+        $client = $this->client = static::createClient();
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $token = $this->getFirstAdherentResetPasswordToken();
+        $oldPassword = $adherent->getPassword();
+
+        $this->assertNull($token->getUsageDate());
+
+        $resetPasswordUrl = sprintf('/espace-adherent/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
+        $crawler = $client->request(Request::METHOD_GET, $resetPasswordUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertCount(1, $crawler->filter('input[name="adherent_reset_password[password][first]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="adherent_reset_password[password][second]"]'));
+
+        $client->submit($crawler->selectButton('adherent_reset_password[submit]')->form(), [
+            'adherent_reset_password' => [
+                'password' => [
+                    'first' => 'new password',
+                    'second' => 'new password',
+                ],
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $client);
+
+        $client->followRedirect();
+
+        // Refresh the adherent
+        $this->getEntityManager(Adherent::class)->refresh($adherent);
+
+        $this->assertNotSame($adherent->getPassword(), $oldPassword);
+
+        // Reset password twice
+        $client->request(Request::METHOD_GET, $resetPasswordUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
+        $this->init();
         $this->loadFixtures([
             LoadAdherentData::class,
         ]);
-
-        $this->client = static::createClient();
-        $this->container = $this->client->getContainer();
         $this->repository = $this->getAdherentRepository();
     }
 
     protected function tearDown()
     {
+        $this->kill();
         $this->loadFixtures([]);
         $this->repository = null;
-        $this->container = null;
-        $this->client = null;
 
         parent::tearDown();
+    }
+
+    private function getFirstAdherentResetPasswordToken()
+    {
+        return current($this->getResetPasswordTokenRepository()->findAll());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Exception\ActivationKeyException;
+use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use Doctrine\ORM\Mapping as ORM;
@@ -275,25 +275,34 @@ class Adherent implements UserInterface
     }
 
     /**
-     * Activates the Adherent account with the provided activation key.
+     * Activates the Adherent account with the provided activation token.
      *
-     * @param ActivationKey $key
+     * @param AdherentActivationToken $token
      *
      * @throws AdherentException
-     * @throws ActivationKeyException
+     * @throws AdherentTokenException
      */
-    public function activate(ActivationKey $key)
+    public function activate(AdherentActivationToken $token)
     {
-        $uuid = $this->getUuid();
-
         if (self::ENABLED === $this->status) {
-            throw new AdherentAlreadyEnabledException($uuid);
+            throw new AdherentAlreadyEnabledException($this->uuid);
         }
 
-        $key->activate($uuid);
+        $token->consume($this);
 
         $this->status = self::ENABLED;
         $this->activatedAt = new \DateTimeImmutable('now');
+    }
+
+    public function resetPassword(AdherentResetPasswordToken $token)
+    {
+        if (!$newPassword = $token->getNewPassword()) {
+            throw new \InvalidArgumentException('Token must have a new password.');
+        }
+
+        $token->consume($this);
+
+        $this->password = $newPassword;
     }
 
     /**

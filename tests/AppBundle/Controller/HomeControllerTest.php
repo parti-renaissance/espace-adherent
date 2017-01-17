@@ -14,11 +14,6 @@ class HomeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @var Client
-     */
-    private $client;
-
     public function testIndex()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');

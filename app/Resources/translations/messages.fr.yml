@@ -21,6 +21,9 @@ adherent.activation.success: Votre compte adhérent est maintenant actif.
 adherent.activation.already_active: Votre compte adhérent est déjà actif.
 adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez contacter les administrateurs du site pour activer votre compte.
 
-
 adherent.submit_donation_label: Je soutiens maintenant
 adherent.pass_donation_label: Je ne soutiens pas financièrement
+
+adherent.reset_password.email_sent: Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.
+adherent.reset_password.success: Votre mot de passe a été réinitialisé.
+adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.

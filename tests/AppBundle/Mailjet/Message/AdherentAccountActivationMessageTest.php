@@ -19,7 +19,7 @@ class AdherentAccountActivationMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(AdherentAccountActivationMessage::class, $message);
         $this->assertSame('54665', $message->getTemplate());
         $this->assertSame(['jerome@example.com', 'Jérôme Pichoud'], $message->getRecipient());
-        $this->assertSame('Finalisez votre inscription au mouvement EnMarche !', $message->getSubject());
+        $this->assertSame('Finalisez votre inscription au mouvement En Marche !', $message->getSubject());
         $this->assertCount(2, $message->getVars());
         $this->assertSame(
             [
