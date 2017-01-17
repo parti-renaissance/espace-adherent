@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Espace d'administration
+{% endblock %}
+
+{% block banner '' %}
+
+{% block content %}
+
+    <main>
+        <section class="l__wrapper-500">
+            <div class="login">
+                <h2>Espace d'administration</h2>
+
+                <div class="login__form">
+                    <p class="login__form__title">Connectez-vous à l'espace d'administration</p>
+
+                    <form action="{{ path('app_admin_login') }}" name="app_login" method="post">
+
+                    {{ form_errors(form) }}
+
+                    {% if error %}
+                        <div class="form__error login__error">
+                            Identifiants invalides.
+                        </div>
+                    {% endif %}
+
+                    <div class="form__row">
+                        {{ form_widget(form._admin_email, { 'attr': {
+                            'placeholder': 'Addresse e-mail',
+                            'aria-label': 'Addresse e-mail',
+                            'class': 'form--full'
+                        } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_widget(form._admin_password, { 'attr': {
+                            'placeholder': 'Mot de passe',
+                            'aria-label': 'Mot de passe',
+                            'class': 'form--full'
+                        } }) }}
+                    </div>
+
+                    {{ form_rest(form) }}
+
+                    <button type="submit"
+                            title="Je me connecte"
+                            class="form form--full btn btn--primary login__button">Je me connecte</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

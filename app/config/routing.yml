@@ -14,9 +14,6 @@ admin_crud:
     type: sonata_admin
     prefix: /admin
 
-admin_logout:
-    path: /admin/logout
-
 app:
     resource: "@AppBundle/Controller/"
     type:     "annotation"

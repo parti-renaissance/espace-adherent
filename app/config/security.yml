@@ -1,6 +1,7 @@
 security:
 
     encoders:
+        AppBundle\Entity\Administrator: bcrypt
         AppBundle\Entity\Adherent: bcrypt
 
     role_hierarchy:
@@ -16,11 +17,17 @@ security:
             - ROLE_WRITER
             - ROLE_APP_ADMIN_HOME_BLOCK_ALL
 
+        ROLE_SUPER_ADMIN:
+            - ROLE_ADMIN
+            - ROLE_APP_ADMIN_ADMINISTRATOR_ALL
+
     access_decision_manager:
         strategy: unanimous
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
+        admins_db:
+            entity: { class: 'AppBundle\Entity\Administrator' }
         users_db:
             entity: { class: 'AppBundle\Entity\Adherent' }
 
@@ -29,8 +36,29 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        admin:
+            pattern: ^/admin
+            provider: admins_db
+            anonymous:
+                secret: '%env(SECRET)%'
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login_check
+
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
+
+                username_parameter: _admin_email
+                password_parameter: _admin_password
+                csrf_parameter: _admin_csrf
+                csrf_token_id: authenticate_admin
+            logout:
+                path: app_admin_logout
+                target: homepage
+
         main:
             # No pattern means every path is behind this firewall
+            provider: users_db
             anonymous:
                 secret: '%env(SECRET)%'
             form_login:
@@ -51,4 +79,5 @@ security:
 
     access_control:
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
+        - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin', roles: [ROLE_WRITER] }
