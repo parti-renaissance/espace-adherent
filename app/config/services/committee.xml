@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory"/>
+
+        <service id="app.committee.committee_creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
+            <argument type="service" id="app.committee_factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet"/>
+        </service>
+
+        <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">
+            <argument type="service" id="app.repository.committee"/>
+            <tag name="validator.constraint_validator" alias="app.validator.unique_committee"/>
+        </service>
+
+        <service id="app.voter.create_committee_voter" class="AppBundle\Committee\Voter\CreateCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <argument type="service" id="app.repository.committee"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.show_committee_voter" class="AppBundle\Committee\Voter\ShowCommitteeVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.follow_committee_voter" class="AppBundle\Committee\Voter\FollowCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+    </services>
+</container>

@@ -55,4 +55,22 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return $query->getOneOrNullResult();
     }
+
+    /**
+     * Returns the total number of active Adherent accounts.
+     *
+     * @return int
+     */
+    public function countActiveAdherents(): int
+    {
+        $query = $this
+            ->createQueryBuilder('a')
+            ->select('COUNT(a.uuid)')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+        ;
+
+        return (int) $query->getSingleScalarResult();
+    }
 }

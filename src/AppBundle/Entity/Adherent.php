@@ -143,7 +143,8 @@ class Adherent implements UserInterface
         string $city = null,
         string $postalCode = null,
         PhoneNumber $phone = null,
-        string $status = self::DISABLED
+        string $status = self::DISABLED,
+        string $registeredAt = 'now'
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -159,7 +160,7 @@ class Adherent implements UserInterface
         $this->city = $city;
         $this->phone = $phone;
         $this->status = $status;
-        $this->registeredAt = new \DateTime();
+        $this->registeredAt = new \DateTimeImmutable($registeredAt);
     }
 
     public static function createUuid(string $email)
@@ -278,11 +279,12 @@ class Adherent implements UserInterface
      * Activates the Adherent account with the provided activation token.
      *
      * @param AdherentActivationToken $token
+     * @param string                  $timestamp
      *
      * @throws AdherentException
      * @throws AdherentTokenException
      */
-    public function activate(AdherentActivationToken $token)
+    public function activate(AdherentActivationToken $token, string $timestamp = 'now')
     {
         if (self::ENABLED === $this->status) {
             throw new AdherentAlreadyEnabledException($this->uuid);
@@ -291,7 +293,7 @@ class Adherent implements UserInterface
         $token->consume($this);
 
         $this->status = self::ENABLED;
-        $this->activatedAt = new \DateTimeImmutable('now');
+        $this->activatedAt = new \DateTimeImmutable($timestamp);
     }
 
     public function resetPassword(AdherentResetPasswordToken $token)
@@ -330,5 +332,34 @@ class Adherent implements UserInterface
         }
 
         return $this->lastLoggedAt;
+    }
+
+    /**
+     * Joins a committee as a HOST priviledged person.
+     *
+     * @param Committee $committee
+     *
+     * @return CommitteeMembership
+     */
+    public function hostCommittee(Committee $committee)
+    {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST);
+    }
+
+    /**
+     * Joins a committee as a simple FOLLOWER priviledged person.
+     *
+     * @param Committee $committee
+     *
+     * @return CommitteeMembership
+     */
+    public function followCommittee(Committee $committee)
+    {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER);
+    }
+
+    private function joinCommittee(Committee $committee, string $privilege): CommitteeMembership
+    {
+        return CommitteeMembership::createForAdherent($this, $committee, $privilege);
     }
 }

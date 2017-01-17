@@ -149,7 +149,7 @@
                     </a>
                     {% if app.user %}
                         {# This list must be designed #}
-                        <ul style="display: none">
+                        <ul>
                             <li><a href="#">Comité A</a></li>
                             <li><a href="#">Comité B</a></li>
                             <li><a href="#">Comité C</a></li>
@@ -159,7 +159,11 @@
                             <li><a href="#">La carte En Marche !</a></li>
                             <li><a href="#">Documents</a></li>
                             <li class="login__separator"></li>
-                            <li><a href="#">Créer un comité</a></li>
+                            {% if is_granted('CREATE_COMMITTEE') %}
+                                <li>
+                                    <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                </li>
+                            {% endif %}
                             <li><a href="#">Profil</a></li>
                             <li><a href="#">Aide</a></li>
                             <li><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>

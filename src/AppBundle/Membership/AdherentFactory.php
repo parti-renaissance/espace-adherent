@@ -4,6 +4,7 @@ namespace AppBundle\Membership;
 
 use AppBundle\Entity\Adherent;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class AdherentFactory
@@ -42,7 +43,7 @@ class AdherentFactory
         }
 
         return new Adherent(
-            isset($data['uuid']) ? $data['uuid'] : Adherent::createUuid($data['email']),
+            isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             $this->encodePassword($data['password']),
             $data['gender'],
@@ -54,7 +55,9 @@ class AdherentFactory
             isset($data['address']) ? $data['address'] : null,
             isset($data['city']) ? $data['city'] : null,
             isset($data['postal_code']) ? $data['postal_code'] : null,
-            $phone
+            $phone,
+            Adherent::DISABLED,
+            isset($data['registered_at']) ? $data['registered_at'] : 'now'
         );
     }
 

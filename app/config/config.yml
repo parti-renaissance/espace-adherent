@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: assets_version.yml }
     - { resource: services/admin.xml }
+    - { resource: services/committee.xml }
     - { resource: services/content.xml }
     - { resource: services/cloudflare.xml }
     - { resource: services/doctrine.xml }

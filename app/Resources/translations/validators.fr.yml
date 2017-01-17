@@ -1,4 +1,13 @@
 #
+# Symfony
+#
+'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractère.|Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractères.'
+
+'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'Cette chaîne est trop courte. Elle doit avoir au minimum {{ limit }} caractère.|Cette chaîne est trop courte. Elle doit avoir au minimum {{ limit }} caractères.'
+
+'This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.': 'Cette chaîne doit avoir exactement {{ limit }} caractère.|Cette chaîne doit avoir exactement {{ limit }} caractères.'
+
+#
 # Common
 #
 common.gender.invalid_choice: Ce gentilé n'est pas valide.
@@ -28,6 +37,8 @@ common.conditions.not_accepted: Vous devez accepter la charte.
 
 common.recaptcha.invalid_message: La réponse au contrôle anti-spamm est incorrecte.
 
+common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
+
 #
 # Adherent
 #
@@ -39,6 +50,15 @@ adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
 adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8 caractères.
 
 adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valide.
+
+#
+# Committee
+#
+committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
+
+committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
+
+committee.must_accept_contacting_terms: Vous devez accepter d'être contacté(e) par la plateforme En Marche !
 
 #
 # Donation

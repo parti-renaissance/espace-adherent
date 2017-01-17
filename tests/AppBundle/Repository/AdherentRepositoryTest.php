@@ -36,6 +36,11 @@ class AdherentRepositoryTest extends WebTestCase
         );
     }
 
+    public function testCountActiveAdherents()
+    {
+        $this->assertSame(5, $this->repository->countActiveAdherents());
+    }
+
     protected function setUp()
     {
         parent::setUp();

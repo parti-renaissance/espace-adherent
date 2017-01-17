@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Je crée mon comité En Marche !' %}
+
+{% block banner '' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.committeeIndex(
+                {
+                    country: '{{ committee.country|e('js') }}',
+                    postalCode: '{{ committee.postalCode|e('js') }}',
+                    city: '{{ committee.city|e('js') }}',
+                    errors: {
+                        country: '{{ form_errors(form.country)|e('js') }}',
+                        postalCode: '{{ form_errors(form.postalCode)|e('js') }}',
+                        city: '{{ form_errors(form.city)|e('js') }}'
+                    }
+                },
+                {{ countries|json_encode|raw }}
+            );
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="l__wrapper--medium">
+        <div class="donation">
+            <h2>Je crée mon comité En Marche !</h2>
+
+            <p class="form-chapo">
+                Vous souhaitez créer votre comité local ?<br/>
+                Complétez les informations ci-dessous.
+            </p>
+
+            <div class="l__row l__row--top l__row--h-stretch">
+                <div class="donation__form">
+                    <form method="post" id="create-committee-form" class="form">
+                        {{ form_errors(form) }}
+
+                        <h3>Renseignez les informations de votre comité local</h3>
+
+                        <div class="form__row" id="field-name">
+                            {{ form_label(form.name, 'Nom du comité') }}
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name, {
+                                'attr': {
+                                    'class': 'form--full',
+                                    'placeholder': 'Nom du comité',
+                                }
+                            }) }}
+                        </div>
+
+                        <div class="form__row" id="field-description">
+                            {{ form_label(form.description, 'Description du comité') }}
+                            {{ form_errors(form.description) }}
+                            {{ form_widget(form.description, {
+                                'attr': {
+                                    'class': 'form--full',
+                                    'placeholder': 'Description du comité',
+                                }
+                            }) }}
+                        </div>
+
+                        <div id="committee-address">
+                            <div class="form__row" id="field-postal-code-city">
+                                {{ form_label(form.postalCode, 'Code postal') }}
+                                {{ form_errors(form.postalCode) }}
+                                <div>{{ form_widget(form.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
+                                {{ form_widget(form.city) }}
+                            </div>
+
+                            <div class="form__row" id="field-country">
+                                {{ form_label(form.country, 'Pays') }}
+                                {{ form_errors(form.country) }}
+                                {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                            </div>
+                        </div>
+
+                        <h3>Renseignez les pages liées de votre comité local sur les réseaux sociaux</h3>
+
+                        <div class="form__row" id="field-facebook-page-url">
+                            {{ form_label(form.facebookPageUrl, 'Page Facebook de votre comité') }}
+                            {{ form_errors(form.facebookPageUrl) }}
+                            {{ form_widget(form.facebookPageUrl, { 'attr': {
+                                'class': 'form--full',
+                                'placeholder': 'Page Facebook de votre comité'
+                            } }) }}
+                        </div>
+
+                        <div class="form__row" id="field-twitter-nickname">
+                            {{ form_label(form.twitterNickname, 'Compte Twitter de votre comité') }}
+                            {{ form_errors(form.twitterNickname) }}
+                            {{ form_widget(form.twitterNickname, { 'attr': {
+                                'class': 'form--full',
+                                'placeholder': 'Compte Twitter de votre comité'
+                            } }) }}
+                        </div>
+
+                        <div class="form__row" id="field-googleplus-page-url">
+                            {{ form_label(form.googlePlusPageUrl, 'Page Google+ de votre comité') }}
+                            {{ form_errors(form.googlePlusPageUrl) }}
+                            {{ form_widget(form.googlePlusPageUrl, { 'attr': {
+                                'class': 'form--full',
+                                'placeholder': 'Page Google+ de votre comité'
+                            } }) }}
+                        </div>
+
+                        <h3>Rappel de vos informations personnelles</h3>
+
+                        <div class="form__row" id="field-personal-information">
+                            <strong>Nom</strong> : {{ adherent.lastName|upper }}<br/>
+                            <strong>Prénom</strong> : {{ adherent.firstName|capitalize }}<br/>
+                            <strong>Adresse e-mail</strong> : {{ adherent.emailAddress }}<br/>
+                        </div>
+
+                        <p class="wrong-personal-infos">
+                            Ces informations ne sont pas justes ?
+                            <a href="#">Éditez-les</a>.
+                        </p>
+
+                        <div class="form__row" id="field-confidentiality-terms">
+                            {{ form_label(form.acceptConfidentialityTerms, "J'ai pris connaissance et j'accèpte les règles de confidentialité en qualité de créateur de comité.") }}
+                            {{ form_errors(form.acceptConfidentialityTerms) }}
+                            {{ form_widget(form.acceptConfidentialityTerms) }}
+                        </div>
+
+                        <div class="form__row" id="field-contacting-terms">
+                            {{ form_label(form.acceptContactingTerms, "J'accèpte d'être contacté(e) depuis la plateforme En Marche !") }}
+                            {{ form_errors(form.acceptContactingTerms) }}
+                            {{ form_widget(form.acceptContactingTerms) }}
+                        </div>
+
+                        <div>
+                            <button type="submit" id="create-my-committee">Créer mon comité</button>
+                        </div>
+
+                        {{ form_rest(form) }}
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
