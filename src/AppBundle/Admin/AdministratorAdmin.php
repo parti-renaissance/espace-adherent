@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Administrator;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,6 +21,21 @@ class AdministratorAdmin extends AbstractAdmin
      * @var EncoderFactoryInterface
      */
     private $encoders;
+
+    /**
+     * @var GoogleAuthenticator
+     */
+    private $googleAuthenticator;
+
+    /**
+     * @param Administrator $admin
+     */
+    public function prePersist($admin)
+    {
+        parent::prePersist($admin);
+
+        $admin->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -61,6 +77,12 @@ class AdministratorAdmin extends AbstractAdmin
                         }
                     ))
             );
+
+        if (!$isCreation) {
+            $formMapper->add('googleAuthenticatorSecret', null, [
+                'label' => 'Clé Google Authenticator',
+            ]);
+        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -83,6 +105,9 @@ class AdministratorAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
+                    'qrcode' => [
+                        'template' => 'admin/admin_qrcode.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
@@ -92,5 +117,10 @@ class AdministratorAdmin extends AbstractAdmin
     public function setEncoders(EncoderFactoryInterface $encoders)
     {
         $this->encoders = $encoders;
+    }
+
+    public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator)
+    {
+        $this->googleAuthenticator = $googleAuthenticator;
     }
 }

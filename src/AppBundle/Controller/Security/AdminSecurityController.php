@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Security;
 
+use AppBundle\Entity\Administrator;
 use AppBundle\Form\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -55,5 +56,16 @@ class AdminSecurityController extends Controller
      */
     public function logoutAction()
     {
+    }
+
+    /**
+     * QR-code generator to be used with Google Authenticator.
+     *
+     * @Route("/qr-code/{id}", name="app_admin_qr_code")
+     * @Method("GET")
+     */
+    public function qrCodeAction(Administrator $administrator): Response
+    {
+        return $this->get('app.security.2fa_qr_code_factory')->createQrCodeResponse($administrator);
     }
 }

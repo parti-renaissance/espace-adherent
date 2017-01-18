@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Lexik\Bundle\PayboxBundle\LexikPayboxBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
+            new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
 
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),

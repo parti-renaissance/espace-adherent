@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity(fields={"emailAddress"})
  */
-class Administrator implements UserInterface
+class Administrator implements UserInterface, TwoFactorInterface
 {
     /**
      * @var int
@@ -42,6 +43,13 @@ class Administrator implements UserInterface
      * @ORM\Column
      */
     private $password;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $googleAuthenticatorSecret;
 
     /**
      * @var string
@@ -126,6 +134,22 @@ class Administrator implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getGoogleAuthenticatorSecret()
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    /**
+     * @param null|string $googleAuthenticatorSecret
+     */
+    public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret)
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
     }
 
     public function getRole(): string
