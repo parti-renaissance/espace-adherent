@@ -41,4 +41,19 @@ final class MembershipUtils
     {
         $this->session->remove(self::REGISTERING_DONATION);
     }
+
+    /**
+     * Returns the id of the new adherent during registration's steps.
+     *
+     * @return int|null
+     */
+    public function getNewAdherentId()
+    {
+        return $this->session->get(self::NEW_ADHERENT_ID);
+    }
+
+    public function clearNewAdherentId()
+    {
+        $this->session->remove(self::NEW_ADHERENT_ID);
+    }
 }

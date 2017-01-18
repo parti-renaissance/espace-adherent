@@ -1,5 +1,7 @@
 {% use "form_div_layout.html.twig" %}
 
+{# Override #}
+
 {% block form_widget_simple -%}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) -%}
@@ -42,3 +44,10 @@
     </ul>
     {%- endif %}
 {%- endblock form_errors %}
+
+{# Custom types #}
+
+{% block _app_adherent_pin_interests_interests_widget %}
+    {# TODO to be integrated #}
+    {{ form_widget(form) }}
+{% endblock %}

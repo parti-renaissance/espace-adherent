@@ -129,6 +129,11 @@ class Adherent implements UserInterface
      */
     private $lastLoggedAt;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $interests;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -332,6 +337,22 @@ class Adherent implements UserInterface
         }
 
         return $this->lastLoggedAt;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getInterests()
+    {
+        return $this->interests;
+    }
+
+    /**
+     * @param array|null $interests
+     */
+    public function setInterests(array $interests = null)
+    {
+        $this->interests = $interests;
     }
 
     /**

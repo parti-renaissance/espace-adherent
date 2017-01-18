@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+
+{% block content %}
+    <section class="l__wrapper--medium">
+        <div class="adherent_pin_interests__form">
+            {{ form_start(form, { attr: { class: 'form' } }) }}
+                {{ form_errors(form) }}
+
+                <p>
+                    Dîtes-nous en plus sur vos centres d'intérêt
+                </p>
+
+                {{ form_widget(form.interests) }}
+
+                {{ form_widget(form.pass, { label: 'Passer cette étape' }) }}
+
+                {{ form_widget(form.submit, { label: 'Enregistrer' }) }}
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}
