@@ -1,4 +1,6 @@
 machine:
+    node:
+        version: 4.5.0
     php:
         version: 7.0.7
     environment:

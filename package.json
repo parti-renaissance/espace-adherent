@@ -15,7 +15,7 @@
     "chai": "^3.5.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.24.0",
-    "extract-text-webpack-plugin": "^2.0.0-beta.3",
+    "extract-text-webpack-plugin": "^2.0.0-beta.5",
     "file-loader": "^0.9.0",
     "mocha": "^3.1.2",
     "mocha-webpack": "^0.7.0",
@@ -27,7 +27,7 @@
     "reqwest": "^2.0.5",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.4",
+    "webpack": "^2.2.0",
     "webpack-md5-hash": "^0.0.5"
   }
 }
