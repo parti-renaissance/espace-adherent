@@ -15,11 +15,10 @@ security:
 
         ROLE_ADMIN:
             - ROLE_WRITER
-            - ROLE_APP_ADMIN_HOME_BLOCK_ALL
+            - ROLE_APP_ADMIN_DONATION_LIST
 
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN
-            - ROLE_APP_ADMIN_ADMINISTRATOR_ALL
 
     access_decision_manager:
         strategy: unanimous
