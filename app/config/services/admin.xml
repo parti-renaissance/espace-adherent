@@ -92,6 +92,10 @@
                 <argument type="service" id="security.encoder_factory" />
             </call>
 
+            <call method="setGoogleAuthenticator">
+                <argument type="service" id="scheb_two_factor.security.google_authenticator" />
+            </call>
+
             <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Accès d'administration" />
         </service>
 

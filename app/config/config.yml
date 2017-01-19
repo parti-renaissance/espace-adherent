@@ -131,6 +131,17 @@ csa_guzzle:
                 headers:
                     Content-Type: 'application/json'
 
+        google_charts_api:
+            config:
+                base_uri: 'https://chart.googleapis.com'
+                timeout: 2.0
+
+scheb_two_factor:
+    google:
+        enabled: true
+        issuer: En Marche !
+        template: security/admin_google_authenticator.html.twig
+
 sonata_block:
     default_contexts: [cms]
     blocks:
