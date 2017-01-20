@@ -24,3 +24,4 @@
 /.tmp
 .DS_Store
 /gcloud-service-key.json
+npm-debug.log
