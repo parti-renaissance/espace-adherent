@@ -30,16 +30,115 @@
                             '{{ webpack_asset('app.css') }}',
                             '{{ asset('css/simplemde.inside.css') }}'
                         ],
-                    }
+                    },
+                    toolbar: [
+                        {
+                            name: "fullscreen",
+                            action: function() {
+                                simplemde.toggleSideBySide();
+                                simplemde.toggleFullScreen();
+                            },
+                            className: "fa fa-eye",
+                            title: "Plein écran avec prévisualisation"
+                        },
+                        "|",
+                        {
+                            name: "bold",
+                            action: SimpleMDE.toggleBold,
+                            className: "fa fa-bold",
+                            title: "Gras"
+                        },
+                        {
+                            name: "italic",
+                            action: SimpleMDE.toggleItalic,
+                            className: "fa fa-italic",
+                            title: "Italique"
+                        },
+                        {
+                            name: "title",
+                            action: SimpleMDE.toggleHeading3,
+                            className: "fa fa-header",
+                            title: "Titre"
+                        },
+                        "|",
+                        {
+                            name: "unordered-list",
+                            action: SimpleMDE.toggleUnorderedList,
+                            className: "fa fa-list-ul",
+                            title: "Liste à puces"
+                        },
+                        {
+                            name: "ordered-list",
+                            action: SimpleMDE.toggleUnorderedList,
+                            className: "fa fa-list-ol",
+                            title: "Liste à chiffres"
+                        },
+                        "|",
+                        {
+                            name: "link",
+                            action: SimpleMDE.drawLink,
+                            className: "fa fa-link",
+                            title: "Lien"
+                        },
+                        {
+                            name: "image",
+                            action: function(editor) {
+                                editor.codemirror.replaceSelection(
+                                    "<figure>\n" +
+                                    "    <img src=\"http://url-de-l-image.com\">\n" +
+                                    "    <figcaption>Légende de l'image</figcaption>\n" +
+                                    "</figure>"
+                                );
+
+                                editor.codemirror.focus();
+                            },
+                            className: "fa fa-image",
+                            title: "Image avec légende"
+                        },
+                        {
+                            name: "video",
+                            action: function(editor) {
+                                editor.codemirror.replaceSelection(
+                                    "<div class=\"video\">\n"+
+                                    "    <iframe src=\"https://url-de-la-video.com\" width=\"560\" height=\"315\"\n" +
+                                    "            frameborder=\"0\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allowFullScreen=\"true\"></iframe>\n"+
+                                    "</div>"
+                                );
+
+                                editor.codemirror.focus();
+                            },
+                            className: "fa fa-film",
+                            title: "Vidéo YouTube/Facebook"
+                        },
+                        {
+                            name: "quote",
+                            action: function(editor) {
+                                editor.codemirror.replaceSelection(
+                                    "<figure>\n" +
+                                    "    <blockquote>\n" +
+                                    "        <span>« Citation »</span>\n" +
+                                    "    </blockquote>\n" +
+                                    "    <figcaption>Emmanuel Macron, le 20 janvier 2017</figcaption>\n" +
+                                    "</figure>"
+                                );
+
+                                editor.codemirror.focus();
+                            },
+                            className: "fa fa-quote-left",
+                            title: "Citation"
+                        },
+                        {
+                            name: "horizontal-rule",
+                            action: SimpleMDE.drawHorizontalRule,
+                            className: "fa fa-minus",
+                            title: "Barre de séparation horizontale"
+                        },
+                        "|",
+                        "guide",
+                        "|",
+                        "side-by-side"
+                    ],
                 });
-
-                var button = $('<div style="padding-bottom: 20px;"><button class="btn btn-default" type="button">Afficher l\'éditeur en plein écran</button></div>');
-
-                button.click(function() {
-                    simplemde.toggleSideBySide();
-                });
-
-                $(item).before(button);
             });
         });
     </script>

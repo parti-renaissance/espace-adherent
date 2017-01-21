@@ -52,6 +52,7 @@ class ArticleAdmin extends AbstractAdmin
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
+                'required' => false,
                 'attr' => ['class' => 'content-editor', 'rows' => 20],
             ]);
     }
