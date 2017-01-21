@@ -147,7 +147,7 @@ class ContentPrepareCommand extends ContainerAwareCommand
 
     private static $homeBlocksData = [
         [
-            'positionName' => 'Bannière',
+            'positionName' => 'Bannière principale',
             'type' => 'article',
             'title' => '« Je viens échanger, comprendre et construire. »',
             'subtitle' => 'Emmanuel Macron a scilloné la Guadeloupe, la Martinique et la Guyane pendant 5 jours.',
@@ -207,6 +207,15 @@ class ContentPrepareCommand extends ContainerAwareCommand
             'subtitle' => null,
             'path' => '10decembre.jpg',
             'pathTitle' => '10 décembre',
+            'link' => 'https://en-marche.fr/rendez-10-decembre-a-paris/',
+        ],
+        [
+            'positionName' => 'Bannière bas de page',
+            'type' => 'article',
+            'title' => '3 boucliers pour protéger la France',
+            'subtitle' => null,
+            'path' => 'proteger-la-france.jpg',
+            'pathTitle' => '3 boucliers pour protéger la France',
             'link' => 'https://en-marche.fr/rendez-10-decembre-a-paris/',
         ],
     ];
