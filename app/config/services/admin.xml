@@ -96,7 +96,31 @@
                 <argument type="service" id="scheb_two_factor.security.google_authenticator" />
             </call>
 
-            <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Accès d'administration" />
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Utilisateurs" />
+        </service>
+
+        <!-- Donation -->
+        <service id="app.admin.donation" class="AppBundle\Admin\DonationAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Donation</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Don et newsletter" />
+        </service>
+
+        <!-- NewsletterSubscription -->
+        <service id="app.admin.newsletter_subscrption" class="AppBundle\Admin\NewsletterSubscriptionAdmin">
+            <argument />
+            <argument>AppBundle\Entity\NewsletterSubscription</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Newsletter" group="Don et newsletter" />
         </service>
 
     </services>

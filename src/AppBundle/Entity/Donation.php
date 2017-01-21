@@ -200,6 +200,11 @@ class Donation
         $this->phone->setCountryCode(33);
     }
 
+    public function __toString()
+    {
+        return $this->lastName.' '.$this->firstName.' ('.$this->amount.' €)';
+    }
+
     public function isSuccessful(): bool
     {
         return $this->finished && $this->donatedAt instanceof \DateTime;
