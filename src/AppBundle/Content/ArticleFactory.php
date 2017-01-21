@@ -13,7 +13,9 @@ class ArticleFactory
         $article->setSlug($data['slug']);
         $article->setDescription($data['description']);
         $article->setMedia($data['media']);
+        $article->setDisplayMedia($data['displayMedia'] ?? false);
         $article->setContent($data['content']);
+        $article->setPublished($data['published'] ?? true);
 
         return $article;
     }

@@ -108,7 +108,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
 
     private static $data = [
         [
-            'positionName' => 'Bannière principale',
+            'positionName' => 'Bannière - Gauche',
             'type' => 'article',
             'title' => '« Je viens échanger, comprendre et construire. »',
             'subtitle' => 'Emmanuel Macron a scilloné la Guadeloupe, la Martinique et la Guyane pendant 5 jours.',
@@ -117,7 +117,16 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => '/article/outre-mer',
         ],
         [
-            'positionName' => 'Bloc 1',
+            'positionName' => 'Bannière - Droite',
+            'type' => 'article',
+            'title' => 'Déjà plus de 2900 comités «En Marche !»',
+            'subtitle' => 'Partout sur le territoire et à l’étranger, faites vivre le mouvement et portez ses valeurs.',
+            'path' => 'carte-france.png',
+            'pathTitle' => 'Carte de France',
+            'link' => 'https://en-marche.fr/espaceperso',
+        ],
+        [
+            'positionName' => 'Grille - Bloc 1',
             'type' => 'article',
             'title' => 'Tribune de Richard Ferrand',
             'subtitle' => null,
@@ -126,7 +135,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'http://www.richardferrand.fr/2016/12/quand-le-ministre-eckert-fait-expres-ou-pas-de-ne-pas-comprendre/',
         ],
         [
-            'positionName' => 'Bloc 2',
+            'positionName' => 'Grille - Bloc 2',
             'type' => 'video',
             'title' => 'Signez l’appel « Elles Marchent »',
             'subtitle' => null,
@@ -135,7 +144,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'https://en-marche.fr/signez-lappel-marchent/',
         ],
         [
-            'positionName' => 'Bloc 3',
+            'positionName' => 'Grille - Bloc 3',
             'type' => 'video',
             'title' => 'Revivez le grand rassemblement du 10 décembre !',
             'subtitle' => null,
@@ -144,7 +153,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'https://en-marche.fr/rendez-10-decembre-a-paris/',
         ],
         [
-            'positionName' => 'Bloc 4',
+            'positionName' => 'Grille - Bloc 4',
             'type' => 'article',
             'title' => 'Tribune de Richard Ferrand',
             'subtitle' => null,
@@ -153,7 +162,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'http://www.richardferrand.fr/2016/12/quand-le-ministre-eckert-fait-expres-ou-pas-de-ne-pas-comprendre/',
         ],
         [
-            'positionName' => 'Bloc 5',
+            'positionName' => 'Grille - Bloc 5',
             'type' => 'video',
             'title' => 'Signez l’appel « Elles Marchent »',
             'subtitle' => null,
@@ -162,7 +171,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'https://en-marche.fr/signez-lappel-marchent/',
         ],
         [
-            'positionName' => 'Bloc 6',
+            'positionName' => 'Grille - Bloc 6',
             'type' => 'video',
             'title' => 'Revivez le grand rassemblement du 10 décembre !',
             'subtitle' => null,

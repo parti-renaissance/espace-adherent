@@ -12,9 +12,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  *
  * @UniqueEntity(fields={"slug"})
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Article
 {
+    use EntityTimestampableTrait;
+    use EntitySoftDeletableTrait;
+    use EntityContentTrait;
+
     /**
      * @var int
      *
@@ -25,199 +30,44 @@ class Article
     private $id;
 
     /**
-     * @var string|null
+     * @var boolean
      *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
+     * @ORM\Column(type="boolean")
      */
-    private $title;
+    private $published = false;
 
     /**
-     * @var string|null
+     * @var boolean
      *
-     * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
+     * @ORM\Column(type="boolean")
      */
-    private $slug;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=255)
-     *
-     * @Assert\Length(min=10, max=255)
-     * @Assert\NotBlank
-     */
-    private $description;
-
-    /**
-     * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
-     *
-     * @Assert\NotBlank
-     */
-    private $media;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     */
-    private $content;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
-
-    public function __toString()
-    {
-        return $this->title;
-    }
+    private $displayMedia = true;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getTitle()
+    public function isPublished(): bool
     {
-        return $this->title;
+        return $this->published;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return Article
-     */
-    public function setTitle($title): Article
+    public function setPublished(bool $published): Article
     {
-        $this->title = $title;
+        $this->published = $published;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSlug()
+    public function displayMedia(): bool
     {
-        return $this->slug;
+        return $this->displayMedia;
     }
 
-    /**
-     * @param null|string $slug
-     *
-     * @return Article
-     */
-    public function setSlug($slug): Article
+    public function setDisplayMedia(bool $displayMedia): self
     {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param null|string $description
-     *
-     * @return Article
-     */
-    public function setDescription($description): Article
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Media|null
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media|null $media
-     *
-     * @return Article
-     */
-    public function setMedia(Media $media = null): Article
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * @param null|string $content
-     *
-     * @return Article
-     */
-    public function setContent($content): Article
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTime $createdAt): Article
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): \DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTime $updatedAt): Article
-    {
-        $this->updatedAt = $updatedAt;
+        $this->displayMedia = $displayMedia;
 
         return $this;
     }

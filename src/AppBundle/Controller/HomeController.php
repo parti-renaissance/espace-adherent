@@ -34,7 +34,7 @@ class HomeController extends Controller
     {
         $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBySlug($slug);
 
-        if (!$article) {
+        if (!$article || !$article->isPublished()) {
             throw $this->createNotFoundException();
         }
 

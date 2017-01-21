@@ -8,10 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class ArticleAdmin extends AbstractAdmin
+class PageAdmin extends AbstractAdmin
 {
     use CloudflareSynchronizedAdminTrait;
 
@@ -35,40 +34,24 @@ class ArticleAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $slugEditable =
-            $this->getSubject()->getTitle() === null // Creation
-            || !$this->getSubject()->isPublished() // Draft
-        ;
-
-        if (!$this->getSubject()->isPublished()) {
-            $formMapper->add('published', CheckboxType::class, [
-                'label' => 'Publier l\'article',
-                'required' => false,
-            ]);
-        }
+        $isCreation = $this->getSubject()->getTitle() === null;
 
         $formMapper
             ->add('title', null, [
                 'label' => 'Titre',
             ])
             ->add('slug', null, [
-                'label' => $slugEditable ? 'URL (ne spécifier que la fin : http://en-marche.fr/article/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',
-                'disabled' => !$slugEditable,
+                'label' => $isCreation ? 'URL (ne spécifier que la fin : http://en-marche.fr/article/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',
+                'disabled' => !$isCreation,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
             ])
             ->add('media', null, [
                 'label' => 'Image principale',
-                'required' => false,
-            ])
-            ->add('displayMedia', CheckboxType::class, [
-                'label' => 'Afficher l\'image principale dans l\'article',
-                'required' => false,
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'required' => false,
                 'attr' => ['class' => 'content-editor', 'rows' => 20],
             ]);
     }
@@ -88,8 +71,8 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
-            ->add('published', null, [
-                'label' => 'Article publié ?',
+            ->add('slug', null, [
+                'label' => 'URL',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
@@ -99,9 +82,6 @@ class ArticleAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
-                    'preview' => [
-                        'template' => 'admin/article_preview.html.twig',
-                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
