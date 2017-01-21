@@ -22,14 +22,16 @@ class CloudflareApiTagInvalidator implements CloudflareTagInvalidatorInterface
      */
     public function invalidateTags(array $tags)
     {
-        $this->client->request('DELETE', '/purge_cache', [
-            'headers' => [
-                'X-Auth-Email' => $this->apiEmail,
-                'X-Auth-Key' => $this->apiKey,
-            ],
-            'body' => \GuzzleHttp\json_encode([
-                'tags' => $tags,
-            ]),
-        ]);
+        if (!empty($this->apiEmail) && !empty($this->apiKey)) {
+            $this->client->request('DELETE', '/purge_cache', [
+                'headers' => [
+                    'X-Auth-Email' => $this->apiEmail,
+                    'X-Auth-Key' => $this->apiKey,
+                ],
+                'body' => \GuzzleHttp\json_encode([
+                    'tags' => $tags,
+                ]),
+            ]);
+        }
     }
 }
