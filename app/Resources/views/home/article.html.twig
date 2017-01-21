@@ -1,5 +1,21 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title article.title %}
+{% block meta_description article.description %}
+
+{% block open_graph_url url('article_view', {'slug': article.slug}) %}
+
+{% block open_graph_image %}{% spaceless %}
+    {% if article.media %}
+        {{ url('homepage')|trim('/')~article.media.path }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endspaceless %}{% endblock %}
+
+{% block open_graph_image_width (article.media ? article.media.width : 628) %}
+{% block open_graph_image_height (article.media ? article.media.height : 288) %}
+
 {% block javascripts %}
     <script type="text/javascript">
         function controller(app) {
@@ -31,7 +47,7 @@
             </ul>
         </header>
 
-        {% if article.media %}
+        {% if article.media and article.displayMedia %}
         <figure class="fullscreen">
             <img src="{{ dynamic_asset(article.media.path) }}">
         </figure>

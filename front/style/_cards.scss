@@ -166,6 +166,52 @@
         }
     }
 
+    &--large-secondary {
+        color: white;
+        flex-basis: auto;
+        flex-grow: 2;
+        margin: 0;
+        padding: 30px;
+        top: 0;
+        left: 0;
+        position: relative;
+
+        &:hover {
+            color: white;
+
+            h2 {
+                color: white;
+            }
+        }
+
+        .background {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+
+            .content {
+                z-index: 1;
+            }
+        }
+
+        &:before {
+            @include animate-gradient($gradient, 1);
+        }
+
+        &:after {
+            @include animate-gradient($gradient-hover, 0);
+        }
+
+        &:hover {
+            &:before {
+                opacity: 0;
+            }
+            &:after {
+                opacity: 1;
+            }
+        }
+    }
+
     &--1,
     &--2,
     &--5,
