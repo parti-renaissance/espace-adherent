@@ -49,6 +49,7 @@ class ArticleAdmin extends AbstractAdmin
             ])
             ->add('media', null, [
                 'label' => 'Image principale',
+                'required' => false,
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',

@@ -33,7 +33,7 @@ trait CloudflareSynchronizedAdminTrait
         $this->invalidate($object);
     }
 
-    public function postRemove($object)
+    public function preRemove($object)
     {
         $this->invalidate($object);
     }
