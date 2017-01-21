@@ -1,46 +1,40 @@
-import React from 'react';
-import { render } from 'react-dom';
-
-import HomeDonation from './controllers/HomeDonation';
-import DonationIndexAmoutChooser from './controllers/DonationIndexAmoutChooser';
-import DonationIndexAddress from './controllers/DonationIndexAddress';
-import MembershipIndexAddress from './controllers/MembershipIndexAddress';
-import UpdateMembershipIndexAddress from './controllers/UpdateMembershipIndexAddress';
-import CommitteeIndexAddress from './controllers/CommitteeIndexAddress';
-
 import './style/app.scss';
 
-export default class App {
-    global() {
-        let banner = document.getElementById('header-banner');
+import Container from './src/Container';
+import ShareDialogFactory from './src/sharer/ShareDialogFactory';
+import Sharer from './src/sharer/Sharer';
 
-        if (banner) {
-            document
-                .getElementById('header-banner-close-btn')
-                .addEventListener('click', () => {
-                    banner.style.display = 'none';
-                });
-        }
+class App {
+    constructor() {
+        this._di = null;
     }
 
-    home() {
-        render(<HomeDonation />, document.getElementById('home-donation'));
+    run(parameters) {
+        let di = new Container(parameters);
+        this._di = di;
+
+        /*
+         * Sharer
+         */
+        di.set('sharer', () => {
+            return new Sharer(di.get('sharer.dialog_factory'));
+        });
+
+        di.set('sharer.dialog_factory', () => {
+            return new ShareDialogFactory();
+        });
+
+        /*
+         * Top banner
+         */
+        $('#header-banner-close-btn').click(() => {
+            $('#header-banner').hide();
+        });
     }
 
-    donationIndex(donation, countries) {
-        render(<DonationIndexAmoutChooser defaultAmount={donation.amount} />, document.getElementById('donation-amount'));
-        render(<DonationIndexAddress countries={countries} defaultAddress={donation} />, document.getElementById('donation-address'));
-    }
-
-    membershipIndex(membership, countries) {
-        render(<MembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
-    }
-
-    updateMembershipIndex(membership, countries) {
-        render(<UpdateMembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
-    }
-
-    committeeIndex(committee, countries) {
-        render(<CommitteeIndexAddress countries={countries} defaultAddress={committee} />, document.getElementById('committee-address'));
+    share(type, url, title) {
+        this._di.get('sharer').share(type, url, title);
     }
 }
+
+window.App = new App();

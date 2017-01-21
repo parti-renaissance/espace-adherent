@@ -1,41 +1,46 @@
-export default class Kernel {
-    static boot(release, sentryDsn, callback) {
-        Kernel._import((app, vendor) => {
-            if (sentryDsn) {
-                vendor.Raven.config(sentryDsn, { release: release }).install();
-            }
+window.Kernel = class {
+    static run() {
+        let sentryDsn = Kernel.sentryDsn;
+        let release = Kernel.release;
 
-            callback(app);
+        if (sentryDsn) {
+            Raven.config(sentryDsn, { release: release }).install();
+        }
+
+        App.run({
+            sentryDsn: sentryDsn,
+            release: release,
         });
     }
 
-    static _import(callback) {
+    static boot(release, sentryDsn, callback) {
+        Kernel.release = release;
+        Kernel.sentryDsn = sentryDsn;
+
+        let app = false,
+            vendor = false;
+
         let callCallbackIfReady = () => {
-            if (Kernel.app && Kernel.vendor) {
-                Kernel.app.global();
-                callback(Kernel.app, Kernel.vendor);
+            if (app && vendor) {
+                callback();
             }
         };
 
-        System.import('vendor').catch(Kernel._handleError).then((module) => {
-            Kernel.vendor = module.default;
+        let handleError = (error) => {
+            throw error;
+        };
+
+        System.import('vendor').catch(handleError).then(() => {
+            vendor = true;
             callCallbackIfReady();
         });
 
-        System.import('app').catch(Kernel._handleError).then((module) => {
-            let App = module.default;
-
-            Kernel.app = new App();
+        System.import('app').catch(handleError).then(() => {
+            app = true;
             callCallbackIfReady();
         });
     }
+};
 
-    static _handleError(err) {
-        throw err;
-    }
-}
-
-Kernel.app = null;
-Kernel.vendor = null;
-
-window.Kernel = Kernel;
+Kernel.release = null;
+Kernel.sentryDsn = null;

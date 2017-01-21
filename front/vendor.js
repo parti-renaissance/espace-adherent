@@ -1,10 +1,7 @@
-import React from 'react';
-import {render} from 'react-dom';
 import Raven from 'raven-js';
-import 'core-js/fn/array/filter';
-import 'core-js/fn/array/map';
-import 'reqwest';
+import jQuery from 'jquery';
+import 'core-js/modules/es6.array.for-each';
+import 'core-js/modules/es6.object.keys';
 
-export default {
-    Raven: Raven
-};
+window.Raven = Raven;
+window.$ = jQuery;
