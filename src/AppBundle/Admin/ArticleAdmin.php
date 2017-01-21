@@ -72,9 +72,6 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
-            ->add('slug', null, [
-                'label' => 'URL',
-            ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
@@ -83,6 +80,9 @@ class ArticleAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
+                    'preview' => [
+                        'template' => 'admin/article_preview.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
