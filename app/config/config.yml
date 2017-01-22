@@ -126,7 +126,7 @@ csa_guzzle:
 
         cloudflare_api:
             config:
-                base_uri: 'https://api.cloudflare.com/client/v4/zones/%env(CLOUDFLARE_ZONE_ID)%'
+                base_uri: 'https://api.cloudflare.com/client/v4'
                 timeout: 2.0
                 headers:
                     Content-Type: 'application/json'
