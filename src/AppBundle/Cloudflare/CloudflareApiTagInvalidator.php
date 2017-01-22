@@ -23,7 +23,7 @@ class CloudflareApiTagInvalidator implements CloudflareTagInvalidatorInterface
     public function invalidateTags(array $tags)
     {
         if (!empty($this->apiEmail) && !empty($this->apiKey)) {
-            $this->client->request('DELETE', '/purge_cache', [
+            $this->client->request('DELETE', 'purge_cache', [
                 'headers' => [
                     'X-Auth-Email' => $this->apiEmail,
                     'X-Auth-Key' => $this->apiKey,
