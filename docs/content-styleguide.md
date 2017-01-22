@@ -4,7 +4,7 @@
 Le titre de l'article sera interpreté en tant que `h1`.
 Le sous-titre de l'article sera interpreté en tant que `h2`.
 
-Donc les titres à l'interieur de l'article devront utiliser le markup de `h3`, soit `###`.
+Donc les titres à l'interieur de l'article devront utiliser le markup de `h3` ou `h4`.
 
 ```
 ### Ceci est un titre à l'interieur d'un article
@@ -60,4 +60,65 @@ Si vous voulez l'attribuer un `figcaption` à l'interieur de la `figure`.
     </blockquote>
     <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
 </figure>
+```
+
+## Listes
+
+Les listes numérotées:
+
+```
+* Item 1
+* A second item
+* Number 3
+```
+
+Les listes à puces:
+```
+1. Item 1
+2. A second item
+3. Number 3
+```
+
+Les listes à gros points bleus:
+
+```
+<ul class="dots">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+```
+
+Les listes à flêches:
+
+```
+<ul class="arrows">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+```
+
+## Les appels à action
+La version classique:
+
+```
+<div class="action">
+    <p>Participez à l'événement du 1er Janvier 2017.</p>
+    <a href="[votre lien]">Je m'inscris</a>
+</div>
+```
+
+Vous avez aussi l'option de changer la couleur du bouton d'action.
+- Bouton fushia, ajoutez la classe `primary`
+- Bouton bleu, ajoutez la classe `blue`
+- Bouton vert, ajoutez la classe `green`
+
+Comme ceci:
+
+```
+<div class="action">
+    <p>Participez à l'événement du 1er Janvier 2017.</p>
+    <a href="[votre lien]" class="blue">Je m'inscris</a>
+</div>
 ```

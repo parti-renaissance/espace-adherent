@@ -1,7 +1,7 @@
 $text--size-smallest: 12px;
 $text--size-small: 14px;
 $text--size-default: 16px;
-$text--size-medium-small: 18px;
+$text--size-medium--small: 18px;
 $text--size-medium: 24px;
 $text--size-medium--large: 28px;
 $text--size-large: 34px;
@@ -53,7 +53,7 @@ $text--size-extra-large: 48px;
     }
 
     &--medium-small {
-        font-size: $text--size-medium-small;
+        font-size: $text--size-medium--small;
     }
 
     &--medium {
@@ -205,7 +205,7 @@ $text--size-extra-large: 48px;
     &__links--nav {
         li {
             font-family: 'Gillsans';
-            font-size: $text--size-medium-small;
+            font-size: $text--size-medium--small;
 
             h1 {
                 @include text--bold;
