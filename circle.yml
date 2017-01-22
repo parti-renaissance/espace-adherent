@@ -56,5 +56,5 @@ deployment:
 
             # Deploy to staging
             - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-c
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl rolling-update enmarche-rc-v6 --image=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 --container=enmarche --update-period=10s
+            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl rolling-update enmarche-rc-v8 --image=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 --container=enmarche --update-period=10s
