@@ -12,6 +12,7 @@
         <!-- Clouflare invalidator -->
         <service id="app.cloudflare.tag_invalidator" class="AppBundle\Cloudflare\CloudflareApiTagInvalidator">
             <argument type="service" id="csa_guzzle.client.cloudflare_api" />
+            <argument>%env(CLOUDFLARE_ZONE_ID)%</argument>
             <argument>%env(CLOUDFLARE_EMAIL)%</argument>
             <argument>%env(CLOUDFLARE_API_KEY)%</argument>
         </service>
