@@ -74,7 +74,7 @@
                 background: $gray--lighter;
             }
 
-            font-size: $text--size-medium-small;
+            font-size: $text--size-medium--small;
             text-align: center;
             letter-spacing: 1.9px;
 
@@ -103,7 +103,7 @@
                 position: absolute;
                 top: 11px;
                 right: 20px;
-                font-size: $text--size-medium-small;
+                font-size: $text--size-medium--small;
 
                 span {
                     display: none;
@@ -134,7 +134,7 @@
         }
 
         &__reductions {
-            font-size: $text--size-medium-small;
+            font-size: $text--size-medium--small;
         }
 
         &__phone {

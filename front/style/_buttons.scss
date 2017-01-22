@@ -17,12 +17,45 @@
     }
 }
 
+@mixin btn--primary {
+    color: white;
+    background-color: $pink;
+    border-color: $pink;
+
+    &:hover {
+        background-color: $pink-hover;
+        border-color: $pink-hover;
+    }
+}
+
+@mixin btn--green {
+    background: $green;
+    border-color: $green;
+
+    &:hover {
+        color: black;
+        background: $green-hover;
+        border-color: $green-hover;
+    }
+}
+
+@mixin btn--blue {
+    color: white;
+    background: $blue;
+    border-color: $blue;
+
+    &:hover {
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+    }
+}
+
 .btn {
     @include btn;
 
     &--medium-small {
         padding: 10px 15px;
-        font-size: $text--size-medium-small;
+        font-size: $text--size-medium--small;
     }
 
     &--medium {
@@ -54,36 +87,15 @@
     }
 
     &--primary {
-        color: white;
-        background-color: $pink;
-        border-color: $pink;
-
-        &:hover {
-            background-color: $pink-hover;
-            border-color: $pink-hover;
-        }
+        @include btn--primary;
     }
 
     &--green {
-        background: $green;
-        border-color: $green;
-
-        &:hover {
-            color: black;
-            background: $green-hover;
-            border-color: $green-hover;
-        }
+        @include btn--green;
     }
 
     &--blue {
-        color: white;
-        background: $blue;
-        border-color: $blue;
-
-        &:hover {
-            background-color: $blue-hover;
-            border-color: $blue-hover;
-        }
+        @include btn--blue;
     }
 
     &--social {
