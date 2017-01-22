@@ -29,6 +29,7 @@ class CloudflareApiTagInvalidator implements CloudflareTagInvalidatorInterface
                 'headers' => [
                     'X-Auth-Email' => $this->apiEmail,
                     'X-Auth-Key' => $this->apiKey,
+                    'Content-Type' => 'application/json',
                 ],
                 'body' => \GuzzleHttp\json_encode([
                     'tags' => $tags,
