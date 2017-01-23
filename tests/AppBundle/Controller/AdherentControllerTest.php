@@ -21,14 +21,43 @@ class AdherentControllerTest extends WebTestCase
     /* @var MailjetEmailRepository */
     private $emailRepository;
 
-    public function testIndexActionIsSecured()
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsSecured($profilePage)
     {
-        $client = static::createClient();
+        $this->client->request(Request::METHOD_GET, $profilePage);
 
-        $client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+    }
 
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client, true);
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsAccessibleForAdherent($profilePage, $title)
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $current = $crawler->filter('.adherent_profile .adherent-profile-menu ul li a.active'));
+        $this->assertSame($profilePage, $current->attr('href'));
+        $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent_profile > h2')->text());
+        $this->assertSame('carl999@example.fr', $crawler->filter('.adherent_profile > p')->text());
+        $this->assertSame($title, $crawler->filter('.adherent_profile h3')->text());
+    }
+
+    public function provideProfilePage()
+    {
+        yield ['/espace-adherent/mon-profil', 'Informations personnelles'];
+
+        yield ['/espace-adherent/mon-profil/centres-d-interet', 'Centres d\'intérêt'];
+
+        yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
+
+        yield ['/espace-adherent/mon-profil/preferences-des-email', 'Préférences des e-mails'];
     }
 
     /**

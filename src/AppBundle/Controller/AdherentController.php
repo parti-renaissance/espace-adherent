@@ -26,15 +26,36 @@ class AdherentController extends Controller
     }
 
     /**
-     * This action enables a new user to pin his/her interests.
+     * This action enables an adherent to pin his/her interests.
      *
-     * @Route("/centres-interets", name="app_adherent_pin_interests")
+     * @Route("/mon-profil/centres-d-interet", name="app_adherent_pin_interests")
+     * @Method("GET|POST")
      */
     public function pinInterestsAction(Request $request): Response
     {
-        // User may not be activated, if so its ID is in the session
-        // see registerAction above.
-        return new Response('TO BE IMPLEMENTED');
+        return $this->render('adherent/pin_interests.html.twig');
+    }
+
+    /**
+     * This action enables an adherent to change his/her current password.
+     *
+     * @Route("/mon-profil/changer-mot-de-passe", name="app_adherent_change_password")
+     * @Method("GET|POST")
+     */
+    public function changePasswordAction(Request $request): Response
+    {
+        return $this->render('adherent/change_password.html.twig');
+    }
+
+    /**
+     * This action enables an adherent to choose his/her email notifications.
+     *
+     * @Route("/mon-profil/preferences-des-email", name="app_adherent_set_email_notifications")
+     * @Method("GET|POST")
+     */
+    public function setEmailNotificationsAction(Request $request): Response
+    {
+        return $this->render('adherent/set_email_notifications.html.twig');
     }
 
     /**

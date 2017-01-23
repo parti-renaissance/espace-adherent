@@ -1,0 +1,13 @@
+<div class="adherent-profile-menu">
+    <ul>
+        {% set route = app.request.attributes.get('_route') %}
+        {% for target, link in {
+            'app_adherent_profile': 'Informations personnelles',
+            'app_adherent_pin_interests': 'Centres d\'intérêt',
+            'app_adherent_change_password': 'Mot de passe',
+            'app_adherent_set_email_notifications': 'Préférences des e-mails',
+        } %}
+            <li><a href="{{ path(target) }}" class="{{ route == target ? 'active' }}">{{ link }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
