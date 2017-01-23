@@ -214,6 +214,80 @@ class MembershipControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
 
+    public function testPinInterestsWithoutNewAdherentId()
+    {
+        $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testPinInterestsWithWrongNewAdherentId()
+    {
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 'wrong id');
+        $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testPinInterests()
+    {
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $checkBoxPattern = '#app_adherent_pin_interests_interests > '.
+                           'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
+
+        $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
+
+        $interests = $this->client->getContainer()->getParameter('adherent_interests');
+        $interestsValues = array_keys($interests);
+        $interestsLabels = array_values($interests);
+
+        foreach ($checkboxes as $i => $checkbox) {
+            $this->assertSame($interestsValues[$i], $checkbox->getAttribute('value'));
+            $this->assertSame($interestsLabels[$i], $crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->text());
+        }
+    }
+
+    public function testPinInterestsPersistsInterestsForNonActivatedAdherent()
+    {
+        /* @var Adherent $adherent */
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+
+        $this->assertFalse($adherent->isEnabled());
+        $this->assertNull($adherent->getInterests());
+
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $interests = $this->client->getContainer()->getParameter('adherent_interests');
+        $interestsValues = array_keys($interests);
+
+        $chosenInterests = [
+            4 => $interestsValues[4],
+            8 => $interestsValues[8],
+        ];
+
+        $this->client->submit($crawler->selectButton('app_adherent_pin_interests[submit]')->form(), [
+            'app_adherent_pin_interests' => [
+                'interests' => $chosenInterests,
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/inscription/choisir-des-comites', $this->client);
+
+        /* @var Adherent $adherent */
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+
+        $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
+    }
+
     private static function createFormData()
     {
         return [

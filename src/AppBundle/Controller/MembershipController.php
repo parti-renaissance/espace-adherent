@@ -2,14 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Form\DonationType;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
+use AppBundle\Exception\AdherentTokenExpiredException;
+use AppBundle\Form\AdherentInterestsFormType;
+use AppBundle\Form\DonationType;
+use AppBundle\Form\MembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
-use AppBundle\Form\MembershipRequestType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -70,13 +71,15 @@ class MembershipController extends Controller
             'submit_label' => 'adherent.submit_donation_label',
             'sponsor_form' => false,
         ])
-            // TODO add this field only if anonymous (adherent not activated yet)
+            // Because here the user is still anonymous
+            // it allows to go to step three, see next action pinInterestsAction()
             ->add('pass', SubmitType::class)
         ;
 
         if ($form->handleRequest($request)->isSubmitted()) {
-            if ($form->has('pass') && $form->get('pass')->isClicked()) {
-                return $this->redirectToRoute('app_adherent_pin_interests');
+            if ($form->get('pass')->isClicked()) {
+                // Ignore this step
+                return $this->redirectToRoute('app_membership_pin_interests');
             }
 
             if ($form->isValid()) {
@@ -94,6 +97,54 @@ class MembershipController extends Controller
             'donation' => $donation,
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
+    }
+
+    /**
+     * This action enables a new user to pin his/here interests as a third step
+     * of the registration process, thus he/she is not logged-in/activated yet.
+     *
+     * @Route("/inscription/centre-interets", name="app_membership_pin_interests")
+     * @Method("GET|POST")
+     */
+    public function pinInterestsAction(Request $request): Response
+    {
+        $membershipUtils = $this->get('app.membership_utils');
+
+        if (!$id = $membershipUtils->getNewAdherentId()) {
+            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+
+        if (!$adherent = $manager->getRepository(Adherent::class)->find($id)) {
+            throw $this->createNotFoundException('New adherent id not found.');
+        }
+
+        $form = $this->createForm(AdherentInterestsFormType::class, $adherent)
+            ->add('pass', SubmitType::class)
+            ->add('submit', SubmitType::class)
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->get('submit')->isClicked() && $form->isValid()) {
+                $manager->flush();
+            }
+
+            return $this->redirectToRoute('app_membership_choose_nearby_committee');
+        }
+
+        return $this->render('membership/pin_interests.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/inscription/choisir-des-comites", name="app_membership_choose_nearby_committee")
+     * @Method("GET|POST")
+     */
+    public function chooseNearByCommitteeAction(): Response
+    {
+        return new Response('TO BE IMPLEMENTED');
     }
 
     /**

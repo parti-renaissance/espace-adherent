@@ -1,0 +1,18 @@
+parameters:
+    adherent_interests:
+        agriculture: Agriculture
+        culture: Culture
+        economie: Économie
+        education: Éducation
+        emploi: Emploi
+        environement: Environement
+        europe: Europe
+        international: International
+        institution: Institution
+        jeunesse: Jeunesse
+        justice: Justice
+        logement: Logement
+        numerique: Numérique
+        sante: Santé
+        securite: Sécurité
+        territoire: Territoire

@@ -39,5 +39,10 @@
             <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
         </service>
 
+        <service id="app.membership.adherent_interests_type" class="AppBundle\Form\AdherentInterestsFormType">
+            <argument type="string">%adherent_interests%</argument>
+            <tag name="form.type" />
+        </service>
+
     </services>
 </container>

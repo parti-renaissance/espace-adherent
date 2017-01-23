@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: adherent.yml }
     - { resource: assets_version.yml }
     - { resource: services/admin.xml }
     - { resource: services/committee.xml }
