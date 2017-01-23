@@ -21,4 +21,19 @@ class MailjetEmailRepository extends EntityRepository
 
         return $this->findOneBy(['uuid' => $uuid->toString()]);
     }
+
+    public function findMessages(string $messageClass, string $recipient)
+    {
+        $query = $this
+            ->createQueryBuilder('e')
+            ->where('e.messageClass = :class')
+            ->andWhere('e.recipient = :recipient')
+            ->orderBy('e.sentAt', 'DESC')
+            ->setParameter('class', $messageClass)
+            ->setParameter('recipient', $recipient)
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
 }

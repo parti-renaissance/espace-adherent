@@ -5,6 +5,8 @@ namespace Tests\AppBundle;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\MailjetEmail;
@@ -13,6 +15,8 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\MailjetEmailRepository;
@@ -63,6 +67,16 @@ trait TestHelperTrait
     public function getAdherentRepository(): AdherentRepository
     {
         return $this->getRepository(Adherent::class);
+    }
+
+    public function getCommitteeRepository(): CommitteeRepository
+    {
+        return $this->getRepository(Committee::class);
+    }
+
+    public function getCommitteeMembershipRepository(): CommitteeMembershipRepository
+    {
+        return $this->getRepository(CommitteeMembership::class);
     }
 
     public function getDonationRepository(): DonationRepository

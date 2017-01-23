@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title committee.name %}
+
+{% block banner '' %}
+
+{% block content %}
+    <section class="l__wrapper--medium">
+        <div class="committee">
+            <h2 id="committee-name">{{ committee.name }}</h2>
+            <h3 id="committee-description">{{ committee.description }}</h3>
+        </div>
+    </section>
+{% endblock %}

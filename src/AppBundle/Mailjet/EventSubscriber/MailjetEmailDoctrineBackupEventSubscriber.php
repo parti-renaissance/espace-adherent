@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace AppBundle\Mailjet\EventSubscriber;
 
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Mailjet\Event\MailjetEvent;
@@ -9,7 +9,7 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MembershipEventSubscriber implements EventSubscriberInterface
+class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterface
 {
     private $manager;
     private $repository;
@@ -36,6 +36,7 @@ class MembershipEventSubscriber implements EventSubscriberInterface
             $event->getMessage(),
             $email->getHttpRequestPayload()
         ));
+
         $this->manager->flush();
     }
 

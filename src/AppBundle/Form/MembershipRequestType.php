@@ -31,8 +31,12 @@ class MembershipRequestType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('position', ActivityPositionType::class)
-            ->add('address', TextType::class)
-            ->add('postalCode', TextType::class)
+            ->add('address', TextType::class, [
+                'required' => false,
+            ])
+            ->add('postalCode', TextType::class, [
+                'required' => false,
+            ])
             ->add('city', HiddenType::class, [
                 'required' => false,
             ])

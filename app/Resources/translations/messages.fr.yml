@@ -27,3 +27,8 @@ adherent.pass_donation_label: Je ne soutiens pas financièrement
 adherent.reset_password.email_sent: Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.
 adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
+
+# 
+# Committee
+#
+committee.creation.success: Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur.

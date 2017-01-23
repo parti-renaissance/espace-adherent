@@ -48,6 +48,11 @@ abstract class MailjetMessage
         return [$this->recipientEmail, $this->recipientName];
     }
 
+    final public function getRecipientEmail(): string
+    {
+        return $this->recipientEmail;
+    }
+
     final public function getTemplate(): string
     {
         return $this->template;

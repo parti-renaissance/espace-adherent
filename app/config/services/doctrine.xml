@@ -9,6 +9,16 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.committee" class="AppBundle\Repository\CommitteeRepository" public="false">
+            <argument>AppBundle\Entity\Committee</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.committee_membership" class="AppBundle\Repository\CommitteeMembershipRepository" public="false">
+            <argument>AppBundle\Entity\CommitteeMembership</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.mailjet_email" class="AppBundle\Repository\MailjetEmailRepository" public="false">
             <argument>AppBundle\Entity\MailjetEmail</argument>
             <factory service="doctrine" method="getRepository"/>

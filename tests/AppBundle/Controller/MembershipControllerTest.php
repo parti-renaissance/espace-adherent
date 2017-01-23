@@ -5,6 +5,8 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
@@ -129,13 +131,14 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findAll());
+        $this->assertCount(1, $this->emailRepository->findMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertCount(1, $this->emailRepository->findMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
 
         $crawler = $this->client->followRedirect();
 

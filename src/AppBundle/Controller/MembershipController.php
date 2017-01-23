@@ -115,7 +115,7 @@ class MembershipController extends Controller
     public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
     {
         try {
-            $adherent->activate($activationToken);
+            $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
@@ -124,7 +124,6 @@ class MembershipController extends Controller
         }
 
         // Other exceptions that may be raised will be caught by Symfony.
-        $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('app_adherent_login');
     }

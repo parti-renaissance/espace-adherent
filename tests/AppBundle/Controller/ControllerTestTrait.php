@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
 
@@ -37,7 +38,23 @@ trait ControllerTestTrait
         );
     }
 
-    protected function init()
+    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
+    {
+        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
+        $client->submit($crawler->selectButton('Je me connecte')->form([
+            '_adherent_email' => $emailAddress,
+            '_adherent_password' => $password,
+        ]));
+
+        $this->assertClientIsRedirectedTo('/evenements', $client, true);
+
+        return $client->followRedirect();
+    }
+
+    protected function init(array $fixtures = [])
     {
         $this->client = static::createClient();
         $this->container = $this->client->getContainer();

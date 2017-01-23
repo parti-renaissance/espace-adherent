@@ -5,6 +5,7 @@ import HomeDonation from './controllers/HomeDonation';
 import DonationIndexAmoutChooser from './controllers/DonationIndexAmoutChooser';
 import DonationIndexAddress from './controllers/DonationIndexAddress';
 import MembershipIndexAddress from './controllers/MembershipIndexAddress';
+import CommitteeIndexAddress from './controllers/CommitteeIndexAddress';
 
 import './style/app.scss';
 
@@ -32,5 +33,9 @@ export default class App {
 
     membershipIndex(membership, countries) {
         render(<MembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
+    }
+
+    committeeIndex(committee, countries) {
+        render(<CommitteeIndexAddress countries={countries} defaultAddress={committee} />, document.getElementById('committee-address'));
     }
 }

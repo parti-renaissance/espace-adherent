@@ -4,7 +4,9 @@ namespace Tests\AppBundle\Controller\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
+use AppBundle\Mailjet\Message\AdherentResetPasswordMessage;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\MailjetEmailRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +17,10 @@ class AdherentSecurityControllerTest extends WebTestCase
     use ControllerTestTrait;
 
     /* @var AdherentRepository */
-    private $repository;
+    private $adherentRepository;
+
+    /* @var MailjetEmailRepository */
+    private $emailRepository;
 
     public function testAuthenticationIsSuccessful()
     {
@@ -30,7 +35,7 @@ class AdherentSecurityControllerTest extends WebTestCase
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $adherent = $this->repository->findByEmail('carl999@example.fr');
+        $adherent = $this->adherentRepository->findByEmail('carl999@example.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
@@ -140,8 +145,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
-
-        $this->assertCount(0, $this->getMailjetEmailRepository()->findAll(), 'No mail should have been sent to unknown account.');
+        $this->assertCount(0, $this->emailRepository->findMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
@@ -164,7 +168,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findAll(), 'An email should have been sent.');
+        $this->assertCount(1, $this->emailRepository->findMessages(AdherentResetPasswordMessage::class, 'michelle.dufour@example.ch'), 'An email should have been sent.');
     }
 
     public function testResetPasswordAction()
@@ -215,14 +219,16 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->loadFixtures([
             LoadAdherentData::class,
         ]);
-        $this->repository = $this->getAdherentRepository();
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->emailRepository = $this->getMailjetEmailRepository();
     }
 
     protected function tearDown()
     {
         $this->kill();
         $this->loadFixtures([]);
-        $this->repository = null;
+        $this->emailRepository = null;
+        $this->adherentRepository = null;
 
         parent::tearDown();
     }
