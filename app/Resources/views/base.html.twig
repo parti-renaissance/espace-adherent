@@ -145,7 +145,7 @@
                                 fill="#000000"
                                 fill-rule="evenodd"></path>
                         </svg>
-                        {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Connexion' }}
+                        {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
                     </a>
                     {% if app.user %}
                         {# This list must be designed #}
@@ -203,7 +203,7 @@
                                         fill="#000000"
                                         fill-rule="evenodd"></path>
                                 </svg>
-                                {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Connexion' }}
+                                {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
                             </a>
                             <a href="#" class="link--no-decor">
                                 <svg class="icon-search" width="23px" height="24px" viewBox="0 0 23 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
