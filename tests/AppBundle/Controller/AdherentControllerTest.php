@@ -132,6 +132,7 @@ class AdherentControllerTest extends WebTestCase
             'committee' => [
                 'name' => 'Lyon est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Lyon',
+                'address' => '6 rue Neyret',
                 'country' => 'FR',
                 'postalCode' => '69001',
                 'city' => '69001-69381',

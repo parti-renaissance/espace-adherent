@@ -34,3 +34,5 @@ parameters:
 
     env(ADMIN_LOGIN):           admin
     env(ADMIN_PASSWORD):        admin
+
+    env(GMAPS_API_KEY):         ''

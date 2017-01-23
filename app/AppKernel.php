@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
