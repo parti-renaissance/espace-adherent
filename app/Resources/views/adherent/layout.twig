@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Mon Profil
+{% endblock %}
+
+{% block banner '' %}
+
+{% block content %}
+
+<main>
+    <section class="l__wrapper adherent_profile">
+        <h2>{{ app.user.fullname }}</h2>
+        <p>{{ app.user.emailaddress }}</p>
+
+        <div class="l__row b__nudge--bottom-large">
+            {% include 'adherent/_profile_menu.html.twig' %}
+
+            <div class="l__col">
+                {% block adherent_profile_form %}{% endblock %}
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
