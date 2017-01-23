@@ -1,4 +1,4 @@
-.article header {
+.content header {
     margin-bottom: 20px;
 
     h2 {
@@ -26,7 +26,7 @@
     }
 }
 
-.article figure {
+.content figure {
     &.fullscreen {
         margin-left: 0;
         margin-right: 0;
@@ -37,7 +37,7 @@
     }
 }
 
-.article article {
+.content article {
     font-family: 'Roboto', sans-serif;
     letter-spacing: 0.3px;
     line-height: 1.62;
