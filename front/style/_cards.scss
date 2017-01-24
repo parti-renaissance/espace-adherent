@@ -137,25 +137,7 @@
             }
 
             .background-container {
-                @include gradient-container;
                 border: 0;
-
-                &:before {
-                    @include animate-gradient($gradient, 1);
-                }
-
-                &:after {
-                    @include animate-gradient($gradient-hover, 0);
-                }
-
-                &:hover {
-                    &:before {
-                        opacity: 0;
-                    }
-                    &:after {
-                        opacity: 1;
-                    }
-                }
             }
         }
 
