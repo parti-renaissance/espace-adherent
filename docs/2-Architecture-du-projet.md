@@ -1,7 +1,7 @@
 # 2. Architecture du projet
 
-[Précédent: 1. Installer le projet en local](1. Installer le projet en local.md) -
-[Suivant: 3. Processus de développement](3. Processus de développement.md)
+[Précédent : 1.3 Utilisation du Makefile](1-3-Utilisation-du-makefile.md) -
+[Suivant : 3. Processus de développement](3-Processus-de-développement.md)
 
 Une fois que vous avez récupéré le projet en local et que vous l'avez installé, vous devriez avoir
 l'architecture de fichiers suivantes dans le dossier du projet :
@@ -20,8 +20,8 @@ l'architecture de fichiers suivantes dans le dossier du projet :
 ```
 
 Cette architecture est classique d'un projet Symfony à deux exceptions près : le dossier `node_modules` est le lieu
-où sont stockées les dépendances Javascript et SASS du projet, et le dossier `front` est là où est stocké le code de
-la partie cliente du projet (SASS/JSX).
+où sont stockées les dépendances JavaScript et Sass du projet, et le dossier `front` est là où est stocké le code de
+la partie cliente du projet (Sass/JSX).
 
 
 ## Travailler sur la partie serveur (Symfony)
@@ -109,7 +109,7 @@ aisément (simple de créer un faux système de fichiers) et de développer en l
 production.
 
 
-## Travailler sur la partie cliente (SASS/React)
+## Travailler sur la partie cliente (Sass/React)
 
 ### Pré-requis
 
@@ -123,33 +123,33 @@ simple.
 Si vous ne connaissez pas React, vous pouvez apprendre grâce à la documentation officielle (en anglais) qui est très bien faite:
 [https://facebook.github.io/react/docs/hello-world.html](https://facebook.github.io/react/docs/hello-world.html).
 
-Le projet utilise React avec ES6 (la dernière version de Javascript, disposant de classes). Certaines notations sont
+Le projet utilise React avec ES6 (la dernière version de JavaScript, disposant de classes). Certaines notations sont
 différentes mais les concepts d'orienté objets utilisés sont très limités.
 
 La partie la plus importante est de comprendre que votre code est compilé grâce à Webpack. Vous devrez donc compiler le
 code que vous écrivez pour l'essayer. Pour vous simplifier la tâche, vous pouvez lancer un outil qui compilera le code
 automatiquement à chacune de vos modifications :
-[lisez la documentation d'installation à ce sujet](https://github.com/EnMarche/en-marche.fr/blob/master/docs/1. Installer le projet en local.md#e-compilation-continuelle-du-css-et-du-javascript).
+[lisez la documentation d'installation à ce sujet](https://github.com/EnMarche/en-marche.fr/blob/master/docs/1.%20Installer%20le%20projet%20en%20local.md#e-compilation-continuelle-du-css-et-du-javascript).
 
 ### Description de l'architecture de dossiers
 
 Pour travailler sur la partie cliente du projet, le dossier important est `front`.
 
-Vous y trouverez les styles en SASS (dossier `style`), les composants React et les tests automatisés.
+Vous y trouverez les styles en Sass (dossier `style`), les composants React et les tests automatisés.
 
 Les trois fichiers à la racine de ce dossier sont les suivantes :
 
 - `app.js` constitue l'application en elle-même : chacune des méthodes de cette classe est une sorte de contrôleur
   (modèle MVC) ayant pour objectif d'appeler vos composants React. Chaque méthode de cette classe doit être très courte
   (pas plus de 3-4 lignes) ;
-- `vendor.js` est un fichier rassemblant toutes les dépendances Javascript du projet. Cette séparation par rapport à
+- `vendor.js` est un fichier rassemblant toutes les dépendances JavaScript du projet. Cette séparation par rapport à
   l'application permet de meilleures performances car le cache HTTP des dépendances devient indépendant du cache HTTP de
   l'application ;
 - `kernel.js` permet de charger l'application et les vendors. Il est très léger pour rapidement charger en asynchrone
-  l'application Javascript ;
+  l'application JavaScript ;
   
 Lorsque vous lancez Webpack (au travers des commandes `npm run build-dev` et `npm run watch`), les fichiers `app.js`,
-`kernel.js`, `vendor.js` et `style/app.scss` seront compilés en CSS et Javascript et stockés dans le dossier `web/built`.
+`kernel.js`, `vendor.js` et `style/app.scss` seront compilés en CSS et JavaScript et stockés dans le dossier `web/built`.
 
-[Précédent: 1. Installer le projet en local](1. Installer le projet en local.md) -
-[Suivant: 3. Processus de développement](3. Processus de développement.md)
+[Précédent : 1.3 Utilisation du Makefile](1-3-Utilisation-du-makefile.md) -
+[Suivant : 3. Processus de développement](3-Processus-de-développement.md)

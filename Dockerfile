@@ -5,7 +5,7 @@ ENV LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     TERM="xterm"
 
-COPY docker/run.sh /usr/local/bin/run.sh
+COPY docker/prod/run.sh /usr/local/bin/run.sh
 COPY . /app
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories && \
@@ -50,9 +50,9 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories 
     && chown -R nobody:nobody var \
     && chmod 0444 gcloud-service-key.json
 
-COPY docker/php.ini /etc/php7/conf.d/50-setting.ini
-COPY docker/www.conf /etc/php7/php-fpm.d/www.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/prod/php.ini /etc/php7/conf.d/50-setting.ini
+COPY docker/prod/pool.conf /etc/php7/php-fpm.d/www.conf
+COPY docker/prod/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 WORKDIR /app

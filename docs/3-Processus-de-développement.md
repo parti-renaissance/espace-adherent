@@ -1,6 +1,6 @@
 # 3. Processus de développement
 
-[Précédent: 2. Architecture du projet](2. Architecture du projet.md)
+[Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)
 
 ## Organisation et conseils
 
@@ -78,7 +78,7 @@ $ git pull git@github.com:EnMarche/en-marche.fr.git
 $ git push
 ```
 
-Une fois synchronisé, vous devez aussi synchroniser les dépendances PHP et Javascript (si jamais elles ont changé
+Une fois synchronisé, vous devez aussi synchroniser les dépendances PHP et JavaScript (si jamais elles ont changé
 par rapport au repository principal) :
 
 ```
@@ -87,4 +87,4 @@ $ composer install
 $ yarn install
 ```
 
-[Précédent: 2. Architecture du projet](2. Architecture du projet.md)
+[Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)

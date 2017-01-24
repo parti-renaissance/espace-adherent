@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+    app:
+        volumes:
+            - "~/.composer:/root/.composer"
+        ports:
+            - "80:80"
+
+    db:
+        ports:
+            - "3306:3306"
+
+    pma:
+        ports:
+            - "8080:80"

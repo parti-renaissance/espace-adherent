@@ -3,9 +3,10 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
-if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR']) || !(in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) || php_sapi_name() === 'cli-server')) {
+// Deny if client address is remote and is not in a container
+if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'], true) && false === getenv('SYMFONY_ALLOW_APPDEV')) {
     header('HTTP/1.0 403 Forbidden');
-    exit('You are not allowed to access this file.');
+    exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
 /** @var \Composer\Autoload\ClassLoader $loader */
