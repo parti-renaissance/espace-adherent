@@ -19,14 +19,14 @@
             <ul class="article__social">
                 <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
                     onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                    <i class="fa fa-facebook-square"></i> Partagez
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
                 <li class="btn btn--social btn--twitter"
                     onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                    <i class="fa fa-twitter"></i> Tweetez
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
                 <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
-                    <i class="fa fa-envelope-o"></i> Envoyez
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                 </li>
             </ul>
         </header>
@@ -44,16 +44,17 @@
         <ul class="article__social space--60-0 l__wrapper--slim">
             <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
                 onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-facebook-square"></i> Partagez
+                <i class="fa fa-facebook-square"></i> <span>Partagez</span>
             </li>
             <li class="btn btn--social btn--twitter"
                 onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-twitter"></i> Tweetez
+                <i class="fa fa-twitter"></i> <span>Tweetez</span>
             </li>
             <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
-                <i class="fa fa-envelope-o"></i> Envoyez
+                <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
             </li>
         </ul>
+
     </section>
 
     <section class="donate l__wrapper--narrow background--green b__nudge--bottom-huge">

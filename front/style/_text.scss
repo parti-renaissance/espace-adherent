@@ -201,6 +201,16 @@ $text--size-extra-large: 48px;
                 font-size: 38px;
             }
         }
+        @media (max-width: $mobile) {
+            li {
+                padding-left: 15px;
+                padding-right: 15px;
+
+                .fa {
+                    margin-bottom: 10px;
+                }
+            }
+        }
     }
 
     &__links--nav {
