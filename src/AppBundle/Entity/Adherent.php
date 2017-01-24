@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
+use AppBundle\Geocoder\GeocodableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
@@ -19,13 +20,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
  */
-class Adherent implements UserInterface
+class Adherent implements UserInterface, GeocodableInterface
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
+    use EntityGeocodingTrait;
 
     /**
      * @ORM\Column
@@ -61,42 +63,6 @@ class Adherent implements UserInterface
      * @ORM\Column(type="date")
      */
     private $birthdate;
-
-    /**
-     * The address street.
-     *
-     * @var string|null
-     *
-     * @ORM\Column(length=150, nullable=true)
-     */
-    private $address;
-
-    /**
-     * The address zip code.
-     *
-     * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
-     */
-    private $postalCode;
-
-    /**
-     * The address city code.
-     *
-     * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
-     */
-    private $city;
-
-    /**
-     * The address country code (ISO2).
-     *
-     * @var string
-     *
-     * @ORM\Column(length=2)
-     */
-    private $country;
 
     /**
      * @ORM\Column(length=20)
@@ -239,26 +205,6 @@ class Adherent implements UserInterface
     public function getPosition()
     {
         return $this->position;
-    }
-
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    public function getPostalCode()
-    {
-        return $this->postalCode;
     }
 
     public function isEnabled()

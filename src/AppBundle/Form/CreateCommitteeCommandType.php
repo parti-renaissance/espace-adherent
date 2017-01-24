@@ -18,6 +18,9 @@ class CreateCommitteeCommandType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('description', TextType::class)
+            ->add('address', TextType::class, [
+                'required' => false,
+            ])
             ->add('postalCode', TextType::class, [
                 'required' => false,
             ])

@@ -64,6 +64,12 @@
                         </div>
 
                         <div id="committee-address">
+                            <div class="form__row" id="field-address">
+                                {{ form_label(form.address, 'Adresse') }}
+                                {{ form_errors(form.address) }}
+                                {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
+                            </div>
+
                             <div class="form__row" id="field-postal-code-city">
                                 {{ form_label(form.postalCode, 'Code postal') }}
                                 {{ form_errors(form.postalCode) }}

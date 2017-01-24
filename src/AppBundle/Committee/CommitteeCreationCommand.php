@@ -37,6 +37,8 @@ class CommitteeCreationCommand
      */
     public $description;
 
+    public $address;
+
     /**
      * @AssertFrenchPostalCode(message="common.postal_code.invalid")
      */
@@ -98,9 +100,13 @@ class CommitteeCreationCommand
 
     public function getCityName(): string
     {
-        $name = FranceCitiesBundle::getCity($this->postalCode, $this->city);
+        $cityName = '';
+        if ($this->postalCode && $this->city) {
+            list(, $inseeCode) = explode('-', $this->city);
+            $cityName = FranceCitiesBundle::getCity($this->postalCode, $inseeCode);
+        }
 
-        return $name ?: '';
+        return $cityName ?: '';
     }
 
     public function getCommittee(): Committee

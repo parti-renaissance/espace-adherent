@@ -28,7 +28,7 @@ class CommitteeFactory
         );
 
         if (!empty($data['postal_code']) && !empty($data['city_code'])) {
-            $committee->setLocation($data['postal_code'], $data['city_code']);
+            $committee->setLocation($data['postal_code'], $data['city_code'], $data['address'] ?? null);
         }
 
         $committee->setSocialNetworks(
@@ -57,7 +57,7 @@ class CommitteeFactory
         );
 
         if ($command->postalCode) {
-            $committee->setLocation($command->postalCode, $command->city);
+            $committee->setLocation($command->postalCode, $command->city, $command->address);
         }
 
         if ($command->facebookPageUrl) {

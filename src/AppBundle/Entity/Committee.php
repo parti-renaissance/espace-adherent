@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
+use AppBundle\Geocoder\GeocodableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -24,7 +25,7 @@ use Ramsey\Uuid\UuidInterface;
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeRepository")
  */
-class Committee
+class Committee implements GeocodableInterface
 {
     const APPROVED = 'APPROVED';
     const PENDING = 'PENDING';
@@ -32,6 +33,7 @@ class Committee
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
+    use EntityGeocodingTrait;
 
     /**
      * The committee name.
@@ -62,33 +64,6 @@ class Committee
      * @ORM\Column(type="text")
      */
     private $description;
-
-    /**
-     * The committee address zip code.
-     *
-     * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
-     */
-    private $postalCode;
-
-    /**
-     * The committee address city code.
-     *
-     * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
-     */
-    private $city;
-
-    /**
-     * The committee address country code (ISO2).
-     *
-     * @var string
-     *
-     * @ORM\Column(length=2)
-     */
-    private $country;
 
     /**
      * The committee Facebook page URL.
@@ -200,8 +175,9 @@ class Committee
         return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
     }
 
-    public function setLocation(string $postalCode, string $cityCode)
+    public function setLocation(string $postalCode, string $cityCode, string $address = null)
     {
+        $this->address = $address;
         $this->postalCode = $postalCode;
         $this->city = $cityCode;
     }
@@ -219,21 +195,6 @@ class Committee
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getCountry(): string
-    {
-        return $this->country;
-    }
-
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    public function getPostalCode()
-    {
-        return $this->postalCode;
     }
 
     public function getFacebookPageUrl()

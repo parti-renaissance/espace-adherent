@@ -16,6 +16,10 @@ services:
         arguments: ['@?logger']
         public: false
 
+    app.geocoder:
+        class: 'AppBundle\Geocoder\DummyGeocoder'
+        public: false
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"

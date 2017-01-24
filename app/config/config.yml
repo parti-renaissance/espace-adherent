@@ -9,6 +9,7 @@ imports:
     - { resource: services/cloudflare.xml }
     - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
+    - { resource: services/geocoder.xml }
     - { resource: services/intl.xml }
     - { resource: services/invitation.xml }
     - { resource: services/mailjet.xml }
@@ -76,7 +77,7 @@ doctrine:
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
-
+            geo_point:      AppBundle\Doctrine\DBAL\Types\GeoPointType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -157,3 +158,9 @@ sonata_admin:
     security:
         handler: sonata.admin.security.handler.role
 
+bazinga_geocoder:
+    providers:
+        google_maps:
+            locale:  '%locale%'
+            use_ssl: true
+            api_key: '%env(GMAPS_API_KEY)%'

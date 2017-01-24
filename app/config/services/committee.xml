@@ -7,6 +7,7 @@
         <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory"/>
 
         <service id="app.committee.committee_creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.committee_factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailjet"/>
