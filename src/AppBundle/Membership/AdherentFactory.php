@@ -2,6 +2,7 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Adherent;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -10,10 +11,14 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class AdherentFactory
 {
     private $encoders;
+    private $addressFactory;
 
-    public function __construct(EncoderFactoryInterface $encoders)
-    {
+    public function __construct(
+        EncoderFactoryInterface $encoders,
+        PostAddressFactory $addressFactory = null
+    ) {
         $this->encoders = $encoders;
+        $this->addressFactory = $addressFactory ?? new PostAddressFactory();
     }
 
     public function createFromMembershipRequest(MembershipRequest $request): Adherent
@@ -27,10 +32,7 @@ class AdherentFactory
             $request->lastName,
             clone $request->getBirthdate(),
             $request->position,
-            $request->country,
-            $request->address,
-            $request->city,
-            $request->postalCode,
+            $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone()
         );
     }
@@ -51,10 +53,7 @@ class AdherentFactory
             $data['last_name'],
             $this->createBirthdate($data['birthdate']),
             isset($data['position']) ? $data['position'] : ActivityPositions::EMPLOYED,
-            $data['country'],
-            isset($data['address']) ? $data['address'] : null,
-            isset($data['city']) ? $data['city'] : null,
-            isset($data['postal_code']) ? $data['postal_code'] : null,
+            $data['address'],
             $phone,
             Adherent::DISABLED,
             isset($data['registered_at']) ? $data['registered_at'] : 'now'

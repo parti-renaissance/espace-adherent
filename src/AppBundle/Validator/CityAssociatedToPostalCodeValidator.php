@@ -5,6 +5,7 @@ namespace AppBundle\Validator;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @Annotation
@@ -23,7 +24,11 @@ class CityAssociatedToPostalCodeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (null === $value || !$constraint instanceof CityAssociatedToPostalCode) {
+        if (!$constraint instanceof CityAssociatedToPostalCode) {
+            throw new UnexpectedTypeException($constraint, CityAssociatedToPostalCode::class);
+        }
+
+        if (null === $value || '' === $value) {
             return;
         }
 
@@ -34,13 +39,17 @@ class CityAssociatedToPostalCodeValidator extends ConstraintValidator
             return;
         }
 
-        $parts = explode('-', $city);
+        list($zipCode) = explode('-', $city);
 
-        if ($parts[0] !== $postalCode) {
-            $this->context->addViolation($constraint->message, [
-                '{{ postal_code }}' => $postalCode,
-                '{{ city }}' => $city,
-            ]);
+        if ($zipCode !== $postalCode) {
+            $this
+                ->context
+                ->buildViolation($constraint->message)
+                ->atPath($constraint->errorPath)
+                ->setParameter('{{ postal_code }}', $postalCode)
+                ->setParameter('{{ city }}', $city)
+                ->addViolation()
+            ;
         }
     }
 }

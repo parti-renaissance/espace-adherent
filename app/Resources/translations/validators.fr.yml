@@ -29,7 +29,8 @@ common.country.invalid: Ce pays n'est pas valide.
 common.postal_code.invalid: Cette valeur n'est pas un code postal français valide.
 common.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
 common.city.invalid_postal_code: Cette ville et ce code postal ne sont pas liés.
-common.address.max_length: Votre adresse ne peut pas dépasser 150 caractères.
+common.address.max_length: L'adresse ne peut pas dépasser 150 caractères.
+common.address.required: L'adresse est obligatoire.
 
 common.phone_number.invalid: Ce numéro de téléphone est invalide.
 

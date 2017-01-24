@@ -52,11 +52,8 @@ class AdherentControllerTest extends WebTestCase
     public function provideProfilePage()
     {
         yield ['/espace-adherent/mon-profil', 'Informations personnelles'];
-
         yield ['/espace-adherent/mon-profil/centres-d-interet', 'Centres d\'intérêt'];
-
         yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
-
         yield ['/espace-adherent/mon-profil/preferences-des-email', 'Préférences des e-mails'];
     }
 
@@ -106,9 +103,11 @@ class AdherentControllerTest extends WebTestCase
             'committee' => [
                 'name' => 'F',
                 'description' => 'F',
-                'country' => 'FR',
-                'postalCode' => '10102',
-                'city' => '10102-45029',
+                'address' => [
+                    'country' => 'FR',
+                    'postalCode' => '99999',
+                    'city' => '10102-45029',
+                ],
                 'facebookPageUrl' => 'yo',
                 'twitterNickname' => '@!!',
                 'googlePlusPageUrl' => 'yo',
@@ -116,11 +115,12 @@ class AdherentControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(9, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#create-committee-form > .form__errors > li')->text());
+        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $crawler->filter('#committee-address > .form__errors > li')->eq(0)->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 5 caractères.', $crawler->filter('#field-description > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas un code postal français valide.", $crawler->filter('#field-postal-code-city > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
@@ -132,10 +132,12 @@ class AdherentControllerTest extends WebTestCase
             'committee' => [
                 'name' => 'Lyon est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Lyon',
-                'address' => '6 rue Neyret',
-                'country' => 'FR',
-                'postalCode' => '69001',
-                'city' => '69001-69381',
+                'address' => [
+                    'country' => 'FR',
+                    'address' => '6 rue Neyret',
+                    'postalCode' => '69001',
+                    'city' => '69001-69381',
+                ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheLyon',
                 'twitterNickname' => '@enmarchelyon',
                 'googlePlusPageUrl' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',

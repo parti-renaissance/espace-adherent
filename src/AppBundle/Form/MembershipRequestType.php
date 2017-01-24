@@ -8,7 +8,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,16 +30,7 @@ class MembershipRequestType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('position', ActivityPositionType::class)
-            ->add('address', TextType::class, [
-                'required' => false,
-            ])
-            ->add('postalCode', TextType::class, [
-                'required' => false,
-            ])
-            ->add('city', HiddenType::class, [
-                'required' => false,
-            ])
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,

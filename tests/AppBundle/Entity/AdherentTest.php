@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\ActivityPositions;
@@ -109,10 +110,7 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositions::STUDENT,
-            'FR',
-            '92 bld du Général Leclerc',
-            '92110-92024',
-            '92110',
+            PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );
     }

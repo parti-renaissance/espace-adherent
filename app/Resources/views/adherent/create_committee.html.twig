@@ -9,13 +9,13 @@
         function controller(app) {
             app.committeeIndex(
                 {
-                    country: '{{ committee.country|e('js') }}',
-                    postalCode: '{{ committee.postalCode|e('js') }}',
-                    city: '{{ committee.city|e('js') }}',
+                    country: '{{ committee.address.country|e('js') }}',
+                    postalCode: '{{ committee.address.postalCode|e('js') }}',
+                    city: '{{ committee.address.city|e('js') }}',
                     errors: {
-                        country: '{{ form_errors(form.country)|e('js') }}',
-                        postalCode: '{{ form_errors(form.postalCode)|e('js') }}',
-                        city: '{{ form_errors(form.city)|e('js') }}'
+                        country: '{{ form_errors(form.address.country)|e('js') }}',
+                        postalCode: '{{ form_errors(form.address.postalCode)|e('js') }}',
+                        city: '{{ form_errors(form.address.city)|e('js') }}'
                     }
                 },
                 {{ countries|json_encode|raw }}
@@ -64,23 +64,25 @@
                         </div>
 
                         <div id="committee-address">
+                            {{ form_errors(form.address) }}
                             <div class="form__row" id="field-address">
-                                {{ form_label(form.address, 'Adresse') }}
-                                {{ form_errors(form.address) }}
-                                {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
+                                {{ form_label(form.address.address, 'Adresse') }}
+                                {{ form_errors(form.address.address) }}
+                                {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full' } }) }}
                             </div>
 
                             <div class="form__row" id="field-postal-code-city">
-                                {{ form_label(form.postalCode, 'Code postal') }}
-                                {{ form_errors(form.postalCode) }}
-                                <div>{{ form_widget(form.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
-                                {{ form_widget(form.city) }}
+                                {{ form_label(form.address.postalCode, 'Code postal') }}
+                                {{ form_errors(form.address.postalCode) }}
+                                <div>{{ form_widget(form.address.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
+                                {{ form_widget(form.address.city) }}
+                                {{ form_widget(form.address.cityName) }}
                             </div>
 
                             <div class="form__row" id="field-country">
-                                {{ form_label(form.country, 'Pays') }}
-                                {{ form_errors(form.country) }}
-                                {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                                {{ form_label(form.address.country, 'Pays') }}
+                                {{ form_errors(form.address.country) }}
+                                {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
                             </div>
                         </div>
 

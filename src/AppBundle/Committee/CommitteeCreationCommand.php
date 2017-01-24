@@ -2,19 +2,14 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
-use AppBundle\Validator\FrenchCity as AssertFrenchCity;
-use AppBundle\Validator\FrenchPostalCode as AssertFrenchPostalCode;
 use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertCityAssociatedToPostalCode(postalCodeField="postalCode", cityField="city", message="common.city.invalid_postal_code")
  * @AssertUniqueCommittee
  */
 class CommitteeCreationCommand
@@ -37,22 +32,14 @@ class CommitteeCreationCommand
      */
     public $description;
 
-    public $address;
-
     /**
-     * @AssertFrenchPostalCode(message="common.postal_code.invalid")
+     * The committee address.
+     *
+     * @var Address
+     *
+     * @Assert\Valid
      */
-    public $postalCode;
-
-    /**
-     * @AssertFrenchCity(message="common.city.invalid")
-     */
-    public $city;
-
-    /**
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
-     */
-    public $country;
+    private $address;
 
     /**
      * @Assert\Url
@@ -80,12 +67,13 @@ class CommitteeCreationCommand
      */
     public $acceptContactingTerms;
 
-    public function __construct(Adherent $adherent)
+    public function __construct(Adherent $adherent, Address $address = null)
     {
         $this->adherent = $adherent;
         $this->country = 'FR';
         $this->acceptConfidentialityTerms = false;
         $this->acceptContactingTerms = false;
+        $this->address = $address ?: new Address();
     }
 
     public function getAdherent(): Adherent
@@ -100,13 +88,7 @@ class CommitteeCreationCommand
 
     public function getCityName(): string
     {
-        $cityName = '';
-        if ($this->postalCode && $this->city) {
-            list(, $inseeCode) = explode('-', $this->city);
-            $cityName = FranceCitiesBundle::getCity($this->postalCode, $inseeCode);
-        }
-
-        return $cityName ?: '';
+        return $this->address->getCityName();
     }
 
     public function getCommittee(): Committee
@@ -122,5 +104,15 @@ class CommitteeCreationCommand
     public function getCommitteeSlug(): string
     {
         return $this->committee->getSlug();
+    }
+
+    public function setAddress(Address $address)
+    {
+        $this->address = $address;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
     }
 }

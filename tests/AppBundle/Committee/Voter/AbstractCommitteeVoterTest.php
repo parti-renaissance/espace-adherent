@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Committee\Voter;
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -56,7 +57,7 @@ abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             'gender' => 'male',
             'first_name' => 'Pablo',
             'last_name' => 'Picasso',
-            'country' => 'ES',
+            'address' => PostAddress::createForeignAddress('ES', '28001', 'Madrid', '50 Calle de Don Ramón de la Cruz'),
             'birthdate' => '1881-10-25',
             'position' => 'retired',
         ]);
@@ -70,7 +71,7 @@ abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             'name' => 'Committee A',
             'description' => 'The Committee A',
             'created_by' => $createdBy->toString(),
-            'country' => 'BE',
+            'address' => PostAddress::createForeignAddress('BE', '1030', 'Bruxelles', '65 Rue des Coteaux'),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Security;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Security\AdherentLoginTimestampRecorder;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -42,7 +43,7 @@ class AdherentLoginTimestampRecorderTest extends \PHPUnit_Framework_TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositions::RETIRED,
-            'CH'
+            PostAddress::createForeignAddress('CH', '8002', 'Zürich', 'Brandschenkestrasse')
         );
     }
 }

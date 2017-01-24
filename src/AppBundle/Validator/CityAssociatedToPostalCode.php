@@ -18,6 +18,7 @@ class CityAssociatedToPostalCode extends Constraint
     );
 
     public $message = 'Cette ville et ce code postal ne sont pas liés.';
+    public $errorPath = 'postalCode';
     public $postalCodeField = 'postalCode';
     public $cityField = 'city';
 
