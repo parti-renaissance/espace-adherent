@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
-use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -25,7 +25,7 @@ use Ramsey\Uuid\UuidInterface;
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeRepository")
  */
-class Committee implements GeocodableInterface
+class Committee implements GeoPointInterface
 {
     const APPROVED = 'APPROVED';
     const PENDING = 'PENDING';

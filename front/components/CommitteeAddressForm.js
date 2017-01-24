@@ -134,6 +134,10 @@ export default class AddressForm extends React.Component
 
         return (
             <div>
+                {typeof this.props.defaultAddress.errors.form !== 'undefined'
+                    ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.form }} />
+                    : ''}
+
                 <div className="form__row committee__form--trunc">
                     {typeof this.props.defaultAddress.errors.address !== 'undefined'
                         ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.address }} />

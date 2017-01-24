@@ -31,6 +31,7 @@ common.city.invalid: Cette valeur n'est pas un identifiant valide de ville fran�
 common.city.invalid_postal_code: Cette ville et ce code postal ne sont pas liés.
 common.address.max_length: L'adresse ne peut pas dépasser 150 caractères.
 common.address.required: L'adresse est obligatoire.
+common.address.not_geocodable: Cette adresse n'est pas géolocalisable.
 
 common.phone_number.invalid: Ce numéro de téléphone est invalide.
 

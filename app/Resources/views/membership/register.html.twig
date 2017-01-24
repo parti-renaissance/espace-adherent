@@ -11,15 +11,16 @@
         function controller(app) {
             app.membershipIndex(
                 {
-                    country: '{{ membership.address.country }}',
-                    postalCode: '{{ membership.address.postalCode }}',
-                    city: '{{ membership.address.city }}',
-                    address: '{{ membership.address.address }}',
+                    country: '{{ membership.address.country|e('js') }}',
+                    postalCode: '{{ membership.address.postalCode|e('js') }}',
+                    city: '{{ membership.address.city|e('js') }}',
+                    address: '{{ membership.address.address|e('js') }}',
                     errors: {
-                        country: '{{ form_errors(form.address.country) }}',
-                        postalCode: '{{ form_errors(form.address.postalCode) }}',
-                        city: '{{ form_errors(form.address.city) }}',
-                        address: '{{ form_errors(form.address.address) }}'
+                        form: '{{ form_errors(form.address)|e('js') }}',
+                        country: '{{ form_errors(form.address.country)|e('js') }}',
+                        postalCode: '{{ form_errors(form.address.postalCode)|e('js') }}',
+                        city: '{{ form_errors(form.address.city)|e('js') }}',
+                        address: '{{ form_errors(form.address.address)|e('js') }}'
                     }
                 },
                 {{ countries|json_encode|raw }}

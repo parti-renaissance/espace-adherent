@@ -2,16 +2,19 @@
 
 namespace AppBundle\Address;
 
-use AppBundle\Entity\Adherent;
+use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
 use AppBundle\Validator\FrenchCity as AssertFrenchCity;
+use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertCityAssociatedToPostalCode(message="common.city.invalid_postal_code")
+ * @AssertGeocodableAddress
  */
-class Address
+class Address implements AddressInterface, GeocodableInterface
 {
     const FRANCE = 'FR';
 
@@ -71,11 +74,28 @@ class Address
 
     public function setCity($city)
     {
+        $parts = explode('-', $city);
+        if (2 !== count($parts)) {
+            throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
+        }
+
+        if (!$this->postalCode) {
+            $this->setPostalCode($parts[0]);
+        }
+
         $this->city = $city;
     }
 
     public function getCityName()
     {
+        if ($this->cityName) {
+            return $this->cityName;
+        }
+
+        if ($this->postalCode && $this->city) {
+            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, static::getInseeCode($this->city));
+        }
+
         return $this->cityName;
     }
 
@@ -99,15 +119,32 @@ class Address
         return 'FR' === $this->country && $this->city;
     }
 
-    public static function createFromPostAddress(Adherent $adherent): self
+    public static function createFromAddress(AddressInterface $other): self
     {
         $address = new self();
-        $address->address = $adherent->getAddress();
-        $address->postalCode = $adherent->getPostalCode();
-        $address->city = $adherent->getCity();
-        $address->cityName = $adherent->getCityName();
-        $address->country = $adherent->getCountry();
+        $address->address = $other->getAddress();
+        $address->postalCode = $other->getPostalCode();
+        $address->city = $other->getCity();
+        $address->cityName = $other->getCityName();
+        $address->country = $other->getCountry();
 
         return $address;
+    }
+
+    public function getGeocodableAddress(): string
+    {
+        return (string) GeocodableAddress::createFromAddress($this);
+    }
+
+    /**
+     * Returns the french national INSEE code from the city code.
+     *
+     * @return string
+     */
+    private static function getInseeCode(string $cityCode): string
+    {
+        list(, $inseeCode) = explode('-', $cityCode);
+
+        return $inseeCode;
     }
 }

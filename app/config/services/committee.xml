@@ -4,7 +4,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory"/>
+        <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory">
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
 
         <service id="app.committee.committee_creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>

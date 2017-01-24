@@ -61,7 +61,7 @@ class AdherentControllerTest extends WebTestCase
         yield ['/espace-adherent/mon-profil/preferences-des-email', 'Préférences des e-mails'];
     }
 
-    public function testEditProfileFillAdherentData()
+    public function testEditAdherentProfile()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
@@ -105,13 +105,14 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(6, $errors->count());
+        $this->assertSame(7, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $errors->eq(2)->text());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(3)->text());
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
-        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text());
+        $this->assertSame("Cette adresse n'est pas géolocalisable.", $errors->eq(3)->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(4)->text());
+        $this->assertSame("L'adresse est obligatoire.", $errors->eq(5)->text());
+        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(6)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -124,6 +125,7 @@ class AdherentControllerTest extends WebTestCase
                     'country' => 'FR',
                     'postalCode' => '06000',
                     'city' => '06000-6088', // Nice
+                    'cityName' => '',
                 ],
                 'phone' => [
                     'country' => 'FR',
@@ -309,9 +311,10 @@ class AdherentControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $crawler->filter('#committee-address > .form__errors > li')->eq(0)->text());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame(11, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
+        $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#committee-address > .form__errors > li')->eq(2)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 5 caractères.', $crawler->filter('#field-description > .form__errors > li')->text());
@@ -331,6 +334,7 @@ class AdherentControllerTest extends WebTestCase
                     'address' => '6 rue Neyret',
                     'postalCode' => '69001',
                     'city' => '69001-69381',
+                    'cityName' => '',
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheLyon',
                 'twitterNickname' => '@enmarchelyon',

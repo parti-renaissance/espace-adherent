@@ -28,6 +28,14 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.901058,
             'lon' => 2.318325,
         ],
+        '9 rue du lycée, 06000 nice, france' => [
+            'lat' => 43.699488,
+            'lon' => 7.274206,
+        ],
+        '36 zeppelinstrasse, 8057 zürich, switzerland' => [
+            'lat' => 47.3952329,
+            'lon' => 8.5381863,
+        ],
     ];
 
     public function geocode(string $address): Coordinates
