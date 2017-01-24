@@ -6,17 +6,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class MouvementController extends Controller
+class ProgrammeController extends Controller
 {
     /**
-     * @Route("/mouvement", name="mouvement")
+     * @Route("/programme", name="programme")
      * @Method("GET")
      */
     public function indexAction()
     {
         return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('mouvement/index.html.twig'),
-            ['mouvement']
+            $this->render('programme/index.html.twig'),
+            ['programme']
         );
     }
 }
