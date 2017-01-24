@@ -8,6 +8,11 @@ imports:
 #        result_cache_driver: apc
 #        query_cache_driver: apc
 
+#framework:
+#    cache:
+#        app: cache.adapter.redis
+#        default_redis_provider: "redis://localhost"
+
 monolog:
     handlers:
         main:

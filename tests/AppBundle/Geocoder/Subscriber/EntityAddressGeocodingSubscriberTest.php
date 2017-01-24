@@ -8,7 +8,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\DummyGeocoder;
-use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentAccountWasActivatedEvent;
@@ -26,7 +26,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $adherent = $this->createAdherent('92 bld Victor Hugo');
 
-        $this->assertInstanceOf(GeocodableInterface::class, $adherent);
+        $this->assertInstanceOf(GeoPointInterface::class, $adherent);
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
 
@@ -44,7 +44,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $adherent = $this->createAdherent('58 rue de Picsou');
 
-        $this->assertInstanceOf(GeocodableInterface::class, $adherent);
+        $this->assertInstanceOf(GeoPointInterface::class, $adherent);
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
 
@@ -62,7 +62,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $committee = $this->createCommittee('6 rue Neyret');
 
-        $this->assertInstanceOf(GeocodableInterface::class, $committee);
+        $this->assertInstanceOf(GeoPointInterface::class, $committee);
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());
 
@@ -77,7 +77,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $committee = $this->createCommittee('12 rue Jean Paul II');
 
-        $this->assertInstanceOf(GeocodableInterface::class, $committee);
+        $this->assertInstanceOf(GeoPointInterface::class, $committee);
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());
 
