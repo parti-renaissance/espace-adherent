@@ -1,15 +1,5 @@
-.article header {
-    margin-bottom: 20px;
-
-    h2 {
-        font-family: 'Roboto';
-        letter-spacing: .3px;
-        font-size: $text--size-default;
-        font-weight: normal;
-        line-height: 1.62;
-    }
-
-    &__social {
+.content {
+    .article__social {
         display: flex;
         align-items: center;
 
@@ -23,10 +13,33 @@
             font-size: 20px;
             margin-right: 10px;
         }
+
+        @media (max-width: $mobile) {
+            .fa {
+                margin: 0;
+            }
+            span {
+                display: none;
+            }
+        }
     }
 }
 
-.article figure {
+.content header {
+    margin-bottom: 20px;
+
+    h2 {
+        font-family: 'Roboto';
+        letter-spacing: .3px;
+        font-size: $text--size-default;
+        font-weight: normal;
+        line-height: 1.62;
+    }
+}
+
+.content figure {
+    margin-bottom: 60px;
+
     &.fullscreen {
         margin-left: 0;
         margin-right: 0;
@@ -37,14 +50,14 @@
     }
 }
 
-.article article {
+.content article {
     font-family: 'Roboto', sans-serif;
     letter-spacing: 0.3px;
     line-height: 1.62;
 
     h1, h2, h3 {
+        @include text--medium-large;
         font-family: 'Gillsans';
-        font-size: $text--size-medium--large;
         margin-top: 30px;
         font-weight: 700;
     }
@@ -181,11 +194,17 @@
         blockquote {
             @include text--large;
             @include text--bold;
+            line-height: 42px; /* Overwrite text--large */
             font-family: "Gillsans";
             font-style: italic;
             text-align: center;
-            margin-top: 55px;
-            margin-bottom: 15px;
+            margin: 55px 70px 15px;
+
+            @media (max-width: $mobile) {
+                @include text--medium;
+                line-height: 32px;
+                margin: 55px 30px 15px;
+            }
 
             span {
                 background: $blue;

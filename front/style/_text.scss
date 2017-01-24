@@ -6,6 +6,7 @@ $text--size-medium: 24px;
 $text--size-medium--large: 28px;
 $text--size-large: 34px;
 $text--size-extra-large: 48px;
+
 @mixin text--bold {
     font-weight: 700;
 }
@@ -198,6 +199,16 @@ $text--size-extra-large: 48px;
 
             .fa {
                 font-size: 38px;
+            }
+        }
+        @media (max-width: $mobile) {
+            li {
+                padding-left: 15px;
+                padding-right: 15px;
+
+                .fa {
+                    margin-bottom: 10px;
+                }
             }
         }
     }
