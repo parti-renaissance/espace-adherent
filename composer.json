@@ -25,6 +25,7 @@
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
@@ -54,7 +55,6 @@
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "^5.7",
         "fabpot/goutte": "^3.2",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "liip/functional-test-bundle": "^1.7"
     },
     "scripts": {

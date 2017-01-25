@@ -5,7 +5,7 @@ services:
         volumes:
             - "~/.composer:/root/.composer"
         ports:
-            - "80:80"
+            - "8000:80"
 
     db:
         ports:

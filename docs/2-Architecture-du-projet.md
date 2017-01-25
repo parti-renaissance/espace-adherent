@@ -1,6 +1,6 @@
 # 2. Architecture du projet
 
-[Précédent : 1.3 Utilisation du Makefile](1-3-Utilisation-du-makefile.md) -
+[Précédent : 1. Installer le projet en local pour développer](1-Installer-le-projet-en-local.md) -
 [Suivant : 3. Processus de développement](3-Processus-de-développement.md)
 
 Une fois que vous avez récupéré le projet en local et que vous l'avez installé, vous devriez avoir
@@ -151,5 +151,5 @@ Les trois fichiers à la racine de ce dossier sont les suivantes :
 Lorsque vous lancez Webpack (au travers des commandes `npm run build-dev` et `npm run watch`), les fichiers `app.js`,
 `kernel.js`, `vendor.js` et `style/app.scss` seront compilés en CSS et JavaScript et stockés dans le dossier `web/built`.
 
-[Précédent : 1.3 Utilisation du Makefile](1-3-Utilisation-du-makefile.md) -
+[Précédent : 1. Installer le projet en local pour développer](1-Installer-le-projet-en-local.md) -
 [Suivant : 3. Processus de développement](3-Processus-de-développement.md)

@@ -1,37 +1,31 @@
-DOCKER:=$(shell docker-compose -v dot 2> /dev/null)
-
-ifdef DOCKER
-    APP=docker-compose exec -T app
-    TOOLS=docker-compose run --rm tools
-endif
-
+APP=docker-compose exec -T app
+TOOLS=docker-compose run --rm tools
 CONSOLE=$(APP) bin/console
 
 .PHONY: clean
 
-all: start dependencies db perm
+help:           ## Show this help
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-dependencies: composer yarn assets perm
+install:        ## [start deps db-create] Setup the project using Docker and docker-compose
+install: start deps db-create perm
 
-stop:
-ifdef DOCKER
-	docker-compose down
-endif
-
-start:
-ifdef DOCKER
+start:          ## Start the Docker containers
 	docker-compose up -d
-else
-	@bash -c "if [ -a vendor/autoload.php ]; then $(CONSOLE) server:run; fi;"
-endif
 
-composer:
+stop:           ## Stop the Docker containers
+	docker-compose down
+
+deps:           ## [composer yarn assets-dev perm] Install the project PHP and JS dependencies
+deps: composer yarn assets-dev perm
+
+composer:       ## Install the project PHP dependencies
 	$(APP) composer install
 
-yarn:
+yarn:           ## Install the project JS dependencies
 	$(TOOLS) yarn install
 
-db:
+db-create:      ## Create the database and load fixtures in it
 	$(APP) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MariaDB
 	$(CONSOLE) doctrine:database:drop --force --if-exists
 	$(CONSOLE) doctrine:database:create --if-not-exists
@@ -39,7 +33,13 @@ db:
 	$(CONSOLE) doctrine:fixtures:load -n
 	$(CONSOLE) app:content:prepare
 
-clean:
+db-update:      ## Update the database structure according to the last changes
+	$(CONSOLE) doctrine:schema:update --force
+
+cache-clear:    ## Clear the application cache in development
+	$(CONSOLE) cache:clear
+
+clean:          ## Deeply clean the application (remove all the cache, the logs, the sessions and the built assets)
 	$(CONSOLE) cache:clear --no-warmup
 	$(CONSOLE) cache:clear --no-warmup --env=prod
 	$(CONSOLE) cache:clear --no-warmup --env=test
@@ -47,14 +47,23 @@ clean:
 	$(APP) rm -rf var/sessions/*
 	$(APP) rm -rf web/built/*
 
-perm:
+perm:           ## Fix the application cache and logs permissions
 	$(APP) chmod 777 -R var
 
-assets:
-	$(TOOLS) npm run build-dev
+assets:         ## Watch the assets and build their development version on change
+	$(TOOLS) yarn watch
 
-watch:
-	$(TOOLS) npm run watch
+assets-dev:     ## Build the development assets
+	$(TOOLS) yarn build-dev
 
-test:
+assets-prod:    ## Build the production assets
+	$(TOOLS) yarn build-prod
+
+test:           ## [test-php test-js] Run the PHP and the Javascript tests
+test: test-php test-js
+
+test-php:       ## Run the PHP tests
 	$(APP) vendor/bin/simple-phpunit
+
+test-js:        ## Run the Javascript tests
+	$(TOOLS) yarn test
