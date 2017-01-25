@@ -50,7 +50,7 @@ Il y a deux groupes de tests automatisés : les tests serveur (Symfony) et les t
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-php vendor/bin/phpunit
+make test-php
 ```
 
 ### Lancer les tests client
@@ -58,7 +58,7 @@ php vendor/bin/phpunit
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-npm test
+make test-js
 ```
 
 
@@ -83,8 +83,7 @@ par rapport au repository principal) :
 
 ```
 $ cd /dossier/du/projet
-$ composer install
-$ yarn install
+$ make deps
 ```
 
 [Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)
