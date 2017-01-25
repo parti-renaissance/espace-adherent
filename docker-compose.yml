@@ -1,19 +1,39 @@
 version: "2"
 
 services:
-    mysql:
+    app:
+        build:
+            context: .
+            dockerfile: dev.dockerfile
+        depends_on:
+            - db
+        volumes:
+            - .:/app
+            - /app/var/cache
+            - /app/var/sessions
+
+    db:
         image: mariadb
         environment:
             MYSQL_ROOT_PASSWORD: enmarche
             MYSQL_DATABASE: enmarche
             MYSQL_USER: enmarche
             MYSQL_PASSWORD: enmarche
-        ports:
-            - "3306:3306"
 
     tools:
-        build: ./docker/tools
+        build:
+            context: .
+            dockerfile: tools.dockerfile
         depends_on:
-            - mysql
-        volumes:
-            - .:/www
+            - db
+        volumes_from:
+            - app
+
+    pma:
+        image: phpmyadmin/phpmyadmin
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
+            PMA_USER: enmarche
+            PMA_PASSWORD: enmarche

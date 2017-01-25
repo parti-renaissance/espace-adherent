@@ -18,7 +18,8 @@
         }
     },
     "require": {
-        "php": "^7.0",
+        "php": ">=7.1",
+        "ext-pdo": "*",
         "symfony/symfony": "3.2.*",
         "twig/twig": "^1.30.0",
         "doctrine/orm": "^2.5",

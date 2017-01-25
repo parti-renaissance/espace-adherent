@@ -6,12 +6,15 @@
 .styleci.yml
 .tmp
 circle.yml
+dev.dockerfile
 docker-compose.yml
 docs
 node_modules
 package.json
 phpunit.xml.dist
+prod.dockerfile
 tests
+var
 vendor
 web/app_dev.php
 webpack.config.dev.js

@@ -1,13 +1,13 @@
-# 1. Installer le projet en local pour développer
+# 1.1 Installer le projet en local pour développer
 
-[Suivant: 2. Architecture du projet](2. Architecture du projet.md)
+[Suivant : 1.2 Utilisateurs de Docker](1-2-Utilisateurs-de-docker.md)
 
 La plateforme en-marche.fr est basée sur les outils open-source suivants :
 
 - [Symfony](http://symfony.com/), framework PHP développé par la société française [SensioLabs](https://sensiolabs.com/fr)
-- [React](https://facebook.github.io/react/), framework Javascript développé par Facebook
-- [SASS](http://sass-lang.com/), language étendant les possibilités de CSS
-- [Webpack](https://webpack.github.io/docs/), aggrégateur de modules Javascript
+- [React](https://facebook.github.io/react/), framework JavaScript développé par Facebook
+- [Sass](http://sass-lang.com/), language étendant les possibilités de CSS
+- [Webpack](https://webpack.github.io/docs/), aggrégateur de modules JavaScript
 - [MariaDB](https://mariadb.org/), moteur de base de donnée dérivé de MySQL
 
 Pour développer en local sur le projet, il vous faudra donc installer et configurer certaines dépendances.
@@ -15,42 +15,28 @@ Pour développer en local sur le projet, il vous faudra donc installer et config
 Si vous avez la moindre question ou le moindre problème pour mettre en place votre environnement de développement,
 n'hésitez pas à nous poser la question [sur Slack](https://slack.en-marche.fr).
 
-## 1. Services et outils requis pour développer
+Si vous souhaitez utiliser Docker, vous pouvez sauter directement au chapitre dédié :
+[1.2 Utilisateurs de Docker](1-2-Utilisateurs-de-docker.md)
+
+## 1.1.1 Services et outils requis pour développer
 
 Les services/outils suivants sont nécessaires pour développer :
- 
+
 - PHP 7.0+
-- MariaDB 5.5+ (ou Docker/Docker compose)
-- Composer (ou Docker/Docker compose)
-- nodeJS/npm/yarn (ou Docker/Docker Compose)
+- MariaDB 5.5+ ou MySQL 5.5+
+- Composer
+- Node.js, npm, Yarn
 
-Si vous avez Docker, installez et lancez le projet simplement avec :
-```bash
-$ cd /chemin/vers/le/projet
-$ make
-
-...
-```
+La présence d'un Makefile peut vous aider dans l'éxecution des tâches courantes, vous pouvez sauter directement au
+chapitre dédié : [1.3 Utilisation du Makefile](1-3-Utilisation-du-makefile.md)
 
 ### a. MariaDB
 
 Un serveur de base de donnée MariaDB est requis pour travailler sur le projet.
-Deux méthodes de mise en place sont disponibles : en utilisant Docker ou à la main.
-
-#### Docker et docker-compose
-
-Si vous utilisez Docker et docker-compose, il est aisé de démarrer un serveur MariaDB :
-lancez simplement ``make boot`` à la racine du projet ou la commande `docker-compose up -d`.
-Cela créera un serveur MariaDB accessible sur le port 3306 de votre machine (si vous êtes sous Mac OS ou Windows,
-vous aurez besoin de travailler avec l'IP de votre machine virtuelle).
-
-Si vous utilisez Docker, la base de donnée sera configurée automatiquement.
-
-#### Manuellement
 
 - Installez MariaDB ou MySQL (cela n'a pas d'importance, les deux fonctionneront) pour votre plateforme.
 - Créez un utilisateur `enmarche` / `enmarche`
-- Créez une base de donnée `enmarche`
+- Créez une base de donnée `enmarche` sur laquelle l'utilisateur `enmarche` dispose des droits complets
 
 #### Initialisation de la base de données
 
@@ -100,8 +86,9 @@ mysql --host=127.0.0.1 -u enmarche -penmarche enmarche -e "INSERT INTO administr
 
 ### b. PHP
 
-PHP 7.0 minimum est requis pour travailler sur le projet. Installez le pour votre plateforme de telle sorte qu'il
-soit accessible globalement en ligne de commande. Si vous tapez `php --version`, vous devez obtenir quelque chose comme:
+PHP 7.0 minimum est requis pour travailler sur le projet. Installez-le pour votre plateforme de telle sorte qu'il
+soit accessible globalement en ligne de commande. Si vous tapez `php --version`, vous devez obtenir quelque chose
+comme :
 
 ```
 PHP 7.0.8-0ubuntu0.16.04.3 (cli)
@@ -115,7 +102,7 @@ Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies
 Composer est le gestionnaire de dépendances de PHP. Il va vous permettre d'installer les dépendances du projet.
 
 Pour l'installer, nous vous conseillons de suivre la documentation : https://getcomposer.org/doc/00-intro.md.
-Choisissez si vous le pouvez d'installer Composer globalement.
+Choisissez, si vous le pouvez, d'installer Composer globalement.
 
 Pour vérifier que Composer fonctionne correctement, lancez `composer --version`. Vous devriez obtenir quelque chose
 comme :
@@ -124,16 +111,14 @@ comme :
 Composer version 1.2.1 2016-09-12 11:27:19
 ```
 
-### d. nodeJS/npm/yarn
+### d. Node.js / npm / Yarn
 
-** Cette étape est optionnelle si vous avez Docker **
+Node.js est requis pour compiler le Sass et le JSX en des fichiers utilisables par la plupart des navigateurs.
 
-nodeJS est requis pour compiler le SASS et le JSX en des fichiers utilisables par la plupart des navigateurs.
-
-Installez nodeJS pour votre plateforme sur https://nodejs.org/en/download/ ou en utilisant votre gestionnaire de
+Installez Node.js pour votre plateforme sur https://nodejs.org/en/download/ ou en utilisant votre gestionnaire de
 paquets préféré.
 
-Pour vérifier que vous avez bien nodejs et npm installés, lancez les commandes suivantes :
+Pour vérifier que vous avez bien Node.js et npm installés, lancez les commandes suivantes :
 
 ```bash
 $ node --version
@@ -143,7 +128,7 @@ $ npm --version
 3.10.8
 ```
 
-Une fois npm disponible, utilisez le pour installer yarn (le gestionnaire de dépendance utilisé par le projet,
+Une fois npm disponible, utilisez-le pour installer Yarn (le gestionnaire de dépendance utilisé par le projet,
 vous aurez peut-être besoin d'exécuter cette commande en root) :
 
 ```bash
@@ -154,30 +139,23 @@ $ yarn --version
 0.16.1
 ```
 
-## 2. Lancer le projet en local
+## 1.1.2 Lancer le projet en local
 
-Une fois que vous avez PHP, MySQL/MariaDB, Composer et nodeJS/yarn installés, vous pouvez commencer à configurer le projet.
+Une fois que vous avez PHP, MySQL ou MariaDB, Composer et Node.js et Yarn installés, vous pouvez commencer à configurer
+le projet.
 
 ### a. Installer les dépendances PHP du projet
 
-Si vous avez Docker, lancez simplement ``make install`` à la racine du projet.
-
-Sinon, allez dans le dossier du projet et lancez Composer comme suis :
+Allez dans le dossier du projet et lancez Composer comme suit :
 
 ```bash
 $ cd /chemin/vers/le/projet
 $ composer install
-
-...
 ```
 
-
-Composer vous demandera des informations sur la base de donnée, le mailer et autre. A moins que vous ayez modifié les
-valeurs de configuration lors de l'étape d'installation, vous pouvez appuyer sur Entrée pour choisir la valeur proposée par
-Composer.
-
-Un mailer n'est pas requis pour faire fonctionner la plateforme, cependant si vous utilisez le fichier
-`docker-compose.yml` du projet, vous aurez un mailer de test disponible à l'URL [http://localhost:9080](http://localhost:9080).
+Composer vous demandera des informations sur la base de donnée, le mailer et autre. Vous pouvez appuyer sur
+<kbd>Entrée</kbd> pour choisir la valeur proposée par Composer ou personnaliser en fonctions de vos paramètres
+(notamment ceux concernant la base de données).
 
 Une fois les dépendances PHP installées, vous pouvez vérifier que votre système est correctement configuré pour Symfony.
 Pour cela, allez dans le dossier du projet et lancez `php bin/symfony_requirements`. Cela vous donnera quelque chose comme :
@@ -219,37 +197,35 @@ installer. Si finalement vous ne parvenez toujours pas à installer les extensio
 venir [sur Slack](https://slack.en-marche.fr) pour nous poser vos questions.
 
 
-### b. Installer les dépendances Javascript du projet
+### b. Installer les dépendances JavaScript du projet
 
-Si vous avez Docker, lancez simplement ``make install`` à la racine du projet.
-
-Sinon, allez dans le dossier du projet et lancez Yarn comme suis :
+Allez dans le dossier du projet et lancez Yarn comme suit :
 
 ```bash
 $ cd /chemin/vers/le/projet
 $ yarn install
 ```
 
-### c. Compiler le CSS et le Javascript de développement
+### c. Compiler le CSS et le JavaScript de développement
 
-Si vous avez Docker, lancez simplement ``make assets`` à la racine du projet.
-
-Allez dans le dossier du projet et lancez le script de build comme suis :
+Allez dans le dossier du projet et lancez le script de build comme suit :
 
 ```bash
 $ cd /chemin/vers/le/projet
 $ npm run build-dev
 ```
 
-Cette commande va créer les versions de développement des fichiers Javascript et CSS nécessaires à l'affichage
+Cette commande va créer les versions de développement des fichiers JavaScript et CSS nécessaires à l'affichage
 de la plateforme dans le dossier `web/built`.
 
 ### d. Créer les entités de base
 
-Allez dans le dossier du projet et lancez le script de build comme suis :
+Allez dans le dossier du projet et lancez le script de build comme suit :
 
-```
+```bash
 $ cd /chemin/vers/le/projet
+$ php bin/console doctrine:schema:create
+$ php bin/console doctrine:fixtures:load
 $ php bin/console app:content:prepare
 ```
 
@@ -278,20 +254,18 @@ Press Ctrl-C to quit.
 
 Si vous accédez à l'URL [http://127.0.0.1:8000](http://127.0.0.1:8000), vous devriez maintenant voir le projet.
 
-### f. Compilation continuelle du CSS et du Javascript
+### f. Compilation continuelle du CSS et du JavaScript
 
 D'autre part, si vous faites des modifications sur le front-end, vous voudrez 
 sûrement que vos changements soient pris en compte en temps réel. Cela vous 
-permettra de ne pas avoir à relancer la compilation du CSS et du Javascript 
+permettra de ne pas avoir à relancer la compilation du CSS et du JavaScript 
 après chaque modification de code.
 
-Si vous avez Docker, lancer simplement ``make watch`` à la racine du projet, sinon :
+Lancez la commande suivante en parallèle du server de développement :
 
 ```bash
 $ cd /chemin/vers/le/projet
 $ npm run watch
 ```
 
-A lancer en parallèle du server de développement.
-
-[Suivant: 2. Architecture du projet](2. Architecture du projet.md)
+[Suivant : 1.2 Utilisateurs de Docker](1-2-Utilisateurs-de-docker.md)
