@@ -100,12 +100,12 @@ class MembershipControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['postalCode'] = '73100';
-        $data['membership_request']['city'] = '73100-73999';
+        $data['membership_request']['address']['postalCode'] = '73100';
+        $data['membership_request']['address']['city'] = '73100-73999';
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('.register__form > form > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#membership-address > .form__errors > li')->text());
     }
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
@@ -186,10 +186,11 @@ class MembershipControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['country'] = 'CH';
-        $data['membership_request']['city'] = '';
-        $data['membership_request']['postalCode'] = '';
-        $data['membership_request']['address'] = '';
+        $data['membership_request']['address']['country'] = 'CH';
+        $data['membership_request']['address']['city'] = '';
+        $data['membership_request']['address']['cityName'] = 'Zürich';
+        $data['membership_request']['address']['postalCode'] = '8057';
+        $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
 
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), $data);
 
@@ -300,10 +301,13 @@ class MembershipControllerTest extends WebTestCase
                     'first' => '#example!12345#',
                     'second' => '#example!12345#',
                 ],
-                'country' => 'FR',
-                'postalCode' => '92110',
-                'city' => '92110-92024',
-                'address' => '92 Bld Victor Hugo',
+                'address' => [
+                    'country' => 'FR',
+                    'postalCode' => '92110',
+                    'city' => '92110-92024',
+                    'cityName' => '',
+                    'address' => '92 Bld Victor Hugo',
+                ],
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0140998080',

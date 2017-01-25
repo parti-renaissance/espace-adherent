@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -37,7 +38,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
-            'country' => 'CH',
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse'),
             'birthdate' => '1972-11-23',
         ]);
 
@@ -48,10 +49,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'country' => 'FR',
-            'address' => '122 rue de Mouxy',
-            'city' => '73100-73182',
-            'postal_code' => '73100',
+            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
             'phone' => '33 0111223344',
@@ -65,10 +63,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Jacques',
             'last_name' => 'Picard',
-            'country' => 'FR',
-            'address' => '36 rue de la Paix',
-            'city' => '75008-75108',
-            'postal_code' => '75008',
+            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108'),
             'birthdate' => '1953-04-03',
             'position' => 'retired',
             'phone' => '33 187264236',
@@ -82,10 +77,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Lucie',
             'last_name' => 'Olivera',
-            'country' => 'FR',
-            'address' => '13 boulevard des Italiens',
-            'city' => '75009-75109',
-            'postal_code' => '75009',
+            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109'),
             'birthdate' => '1989-09-17',
             'position' => 'student',
             'phone' => '33 727363643',
@@ -99,10 +91,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Gisele',
             'last_name' => 'Berthoux',
-            'country' => 'FR',
-            'address' => '47 rue Martre',
-            'city' => '92110-92024',
-            'postal_code' => '92110',
+            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024'),
             'birthdate' => '1983-12-24',
             'position' => 'unemployed',
             'phone' => '33 138764334',
@@ -116,10 +105,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Benjamin',
             'last_name' => 'Duroc',
-            'country' => 'FR',
-            'address' => '39 rue de Crimée',
-            'city' => '13003-13203',
-            'postal_code' => '13003',
+            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203'),
             'birthdate' => '1987-02-08',
             'position' => 'employed',
             'phone' => '33 673643424',
@@ -149,9 +135,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'created_by' => (string) $adherent3->getUuid(),
             'name' => 'En Marche Paris 8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
-            'country' => 'FR',
-            'postal_code' => '75008',
-            'city_code' => '75008-75108',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108'),
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
         ]);
@@ -161,9 +145,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'created_by' => (string) $adherent6->getUuid(),
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
-            'country' => 'FR',
-            'postal_code' => '13003',
-            'city_code' => '13003-13203',
+            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203'),
         ]);
 
         // Make an adherent request a new password

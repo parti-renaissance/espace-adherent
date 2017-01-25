@@ -33,7 +33,7 @@ class Committee implements GeocodableInterface
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
-    use EntityGeocodingTrait;
+    use EntityPostAddressTrait;
 
     /**
      * The committee name.
@@ -119,9 +119,7 @@ class Committee implements GeocodableInterface
         UuidInterface $creator,
         string $name,
         string $description,
-        string $countryCode = 'FR',
-        string $postalCode = null,
-        string $cityCode = null,
+        PostAddress $address,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -140,46 +138,37 @@ class Committee implements GeocodableInterface
         $this->setName($name);
         $this->slug = $slug;
         $this->description = $description;
-        $this->country = $countryCode;
-        $this->postalCode = $postalCode;
-        $this->city = $cityCode;
+        $this->postAddress = $address;
         $this->status = $status;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, string $countryCode): self
+    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address): self
     {
         return new self(
             $uuid,
             Uuid::fromString($creatorUuid),
             $name,
             $description,
-            $countryCode
+            $address
         );
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, string $countryCode): self
+    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address): self
     {
         return new self(
             self::createUuid($name),
             clone $adherent->getUuid(),
             $name,
             $description,
-            $countryCode
+            $address
         );
     }
 
     public static function createUuid(string $name)
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
-    }
-
-    public function setLocation(string $postalCode, string $cityCode, string $address = null)
-    {
-        $this->address = $address;
-        $this->postalCode = $postalCode;
-        $this->city = $cityCode;
     }
 
     public function getName(): string

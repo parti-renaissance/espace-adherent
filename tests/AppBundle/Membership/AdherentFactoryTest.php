@@ -2,7 +2,9 @@
 
 namespace Tests\AppBundle\Membership;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use AppBundle\Membership\MembershipRequest;
@@ -23,7 +25,7 @@ class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
-            'country' => 'CH',
+            'address' => PostAddress::createForeignAddress('CH', '1206', 'Geneva', "39 Rue de l'Athénée"),
             'birthdate' => '1972-11-23',
         ]);
 
@@ -39,9 +41,10 @@ class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Michelle', $adherent->getFirstName());
         $this->assertSame('Dufour', $adherent->getLastName());
         $this->assertSame('CH', $adherent->getCountry());
-        $this->assertNull($adherent->getAddress());
-        $this->assertNull($adherent->getPostalCode());
+        $this->assertSame("39 Rue de l'Athénée", $adherent->getAddress());
+        $this->assertSame('1206', $adherent->getPostalCode());
         $this->assertNull($adherent->getCity());
+        $this->assertSame('Geneva', $adherent->getCityName());
         $this->assertEquals(new \DateTime('1972-11-23'), $adherent->getBirthdate());
         $this->assertSame(ActivityPositions::EMPLOYED, $adherent->getPosition());
     }
@@ -56,10 +59,7 @@ class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
             'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'country' => 'FR',
-            'address' => '122 rue de Mouxy',
-            'city' => '73100-73182',
-            'postal_code' => '73100',
+            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
             'birthdate' => '1950-07-08',
             'position' => ActivityPositions::RETIRED,
             'phone' => '33 0102030405',
@@ -86,15 +86,18 @@ class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateFrenchAdherentFromMembershipRequest()
     {
+        $address = new Address();
+        $address->setAddress('122 rue de Mouxy');
+        $address->setPostalCode('73100');
+        $address->setCountry('FR');
+        $address->setCity('73100-73182');
+
         $request = new MembershipRequest();
         $request->password = 'secret$secret';
         $request->setEmailAddress('carl999@example.fr');
         $request->firstName = 'Carl';
         $request->lastName = 'Mirabeau';
-        $request->country = 'FR';
-        $request->city = '73100-73182';
-        $request->postalCode = '73100';
-        $request->address = '122 rue de Mouxy';
+        $request->setAddress($address);
         $request->position = ActivityPositions::RETIRED;
         $request->setBirthdate(new \DateTime('1950-07-08'));
         $request->gender = 'male';

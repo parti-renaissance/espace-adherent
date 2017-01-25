@@ -2,14 +2,22 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Committee;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeFactory
 {
+    private $addressFactory;
+
+    public function __construct(PostAddressFactory $addressFactory = null)
+    {
+        $this->addressFactory = $addressFactory ?: new PostAddressFactory();
+    }
+
     public function createFromArray(array $data): Committee
     {
-        foreach (['name', 'description', 'created_by', 'country'] as $key) {
+        foreach (['name', 'description', 'created_by', 'address'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
@@ -24,12 +32,8 @@ class CommitteeFactory
             $data['created_by'],
             $data['name'],
             $data['description'],
-            $data['country']
+            $data['address']
         );
-
-        if (!empty($data['postal_code']) && !empty($data['city_code'])) {
-            $committee->setLocation($data['postal_code'], $data['city_code'], $data['address'] ?? null);
-        }
 
         $committee->setSocialNetworks(
             $data['facebook_page_url'] ?? null,
@@ -53,12 +57,8 @@ class CommitteeFactory
             $command->getAdherent(),
             $command->name,
             $command->description,
-            $command->country
+            $this->addressFactory->createFromAddress($command->getAddress())
         );
-
-        if ($command->postalCode) {
-            $committee->setLocation($command->postalCode, $command->city, $command->address);
-        }
 
         if ($command->facebookPageUrl) {
             $committee->setFacebookPageUrl($command->facebookPageUrl);

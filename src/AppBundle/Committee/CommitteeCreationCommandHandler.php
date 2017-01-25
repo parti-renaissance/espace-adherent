@@ -38,7 +38,7 @@ class CommitteeCreationCommandHandler
         $adherent = $command->getAdherent();
         $this->dispatcher->dispatch(CommitteeEvents::CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
 
-        $message = CommitteeCreationConfirmationMessage::create($adherent, $command->getCityName());
+        $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
         $this->mailjet->sendMessage($message);
     }
 }

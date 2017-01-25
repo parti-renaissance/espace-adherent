@@ -3,12 +3,18 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
 
-trait EntityGeocodingTrait
+/**
+ * @ORM\Embeddable
+ */
+class PostAddress implements GeocodableInterface
 {
+    const FRANCE = 'FR';
+
     /**
      * The address street.
      *
@@ -28,13 +34,22 @@ trait EntityGeocodingTrait
     private $postalCode;
 
     /**
-     * The address city code.
+     * The address city code (postal code + INSEE code).
      *
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
+     * @ORM\Column(length=15, nullable=true, name="city_insee")
      */
     private $city;
+
+    /**
+     * The address city name.
+     *
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $cityName;
 
     /**
      * The address country code (ISO2).
@@ -55,6 +70,53 @@ trait EntityGeocodingTrait
      */
     private $longitude;
 
+    private function __construct(string $country, string $postalCode, string $cityName, string $street, float $latitude = null, $longitude = null)
+    {
+        if (empty($cityName)) {
+            throw new \InvalidArgumentException('The city name cannot be empty.');
+        }
+
+        $this->country = $country;
+        $this->address = $street;
+        $this->postalCode = $postalCode;
+        $this->cityName = $cityName;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+    }
+
+    public static function createFrenchAddress(
+        string $street,
+        string $cityCode,
+        float $latitude = null,
+        float $longitude = null
+    ): self {
+        list($postalCode, $inseeCode) = explode('-', $cityCode);
+
+        $address = new self(
+            self::FRANCE,
+            $postalCode,
+            (string) FranceCitiesBundle::getCity($postalCode, $inseeCode),
+            $street,
+            $latitude,
+            $longitude
+        );
+
+        $address->city = sprintf('%s-%s', $postalCode, $inseeCode);
+
+        return $address;
+    }
+
+    public static function createForeignAddress(
+        string $country,
+        string $zipCode,
+        string $cityName,
+        string $street,
+        float $latitude = null,
+        float $longitude = null
+    ): self {
+        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude);
+    }
+
     public function getCountry()
     {
         return $this->country;
@@ -63,6 +125,11 @@ trait EntityGeocodingTrait
     public function getCity()
     {
         return $this->city;
+    }
+
+    public function getCityName()
+    {
+        return $this->cityName;
     }
 
     public function getAddress()

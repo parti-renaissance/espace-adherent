@@ -11,6 +11,7 @@ use AppBundle\Entity\Donation;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -120,10 +121,7 @@ trait TestHelperTrait
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositions::STUDENT,
-            'FR',
-            '92 bld du Général Leclerc',
-            '92110-92024',
-            '92110',
+            PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );
     }

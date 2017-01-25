@@ -27,7 +27,7 @@ class Adherent implements UserInterface, GeocodableInterface
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
-    use EntityGeocodingTrait;
+    use EntityPostAddressTrait;
 
     /**
      * @ORM\Column
@@ -109,10 +109,7 @@ class Adherent implements UserInterface, GeocodableInterface
         string $lastName,
         \DateTime $birthdate,
         string $position,
-        string $country = 'FR',
-        string $address = null,
-        string $city = null,
-        string $postalCode = null,
+        PostAddress $postAddress,
         PhoneNumber $phone = null,
         string $status = self::DISABLED,
         string $registeredAt = 'now'
@@ -125,10 +122,7 @@ class Adherent implements UserInterface, GeocodableInterface
         $this->emailAddress = $emailAddress;
         $this->birthdate = $birthdate;
         $this->position = $position;
-        $this->address = $address;
-        $this->country = $country;
-        $this->postalCode = $postalCode;
-        $this->city = $city;
+        $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->status = $status;
         $this->registeredAt = new \DateTimeImmutable($registeredAt);

@@ -9,14 +9,18 @@ export default class AddressForm extends React.Component
         this.state = {
             loading: false,
             cities: [],
+            address: null,
             country: null,
             postalCode: null,
             city: null,
+            cityName: null,
         };
 
+        this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleCountryChange = this.handleCountryChange.bind(this);
         this.handlePostalCodeChange = this.handlePostalCodeChange.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
+        this.handleCityNameChange = this.handleCityNameChange.bind(this);
     }
 
     fetchCities(postalCode) {
@@ -49,9 +53,11 @@ export default class AddressForm extends React.Component
         }
 
         this.props.onAddressChange({
+            address: state.address,
             country: state.country,
             postalCode: state.postalCode,
             city: state.city,
+            cityName: state.cityName,
         });
     }
 
@@ -61,10 +67,12 @@ export default class AddressForm extends React.Component
         }
 
         this.setState({
+            loading: this.props.defaultAddress.postalCode.length === 5,
+            address: this.props.defaultAddress.address,
             country: this.props.defaultAddress.country,
             postalCode: this.props.defaultAddress.postalCode,
             city: this.props.defaultAddress.city,
-            loading: this.props.defaultAddress.postalCode.length === 5,
+            cityName: this.props.defaultAddress.cityName,
         });
     }
 
@@ -97,6 +105,22 @@ export default class AddressForm extends React.Component
         this.dispatchAddressChange(state);
     }
 
+    handleCityNameChange(event) {
+        let state = this.state;
+        state.cityName = event.target.value;
+
+        this.setState(state);
+        this.dispatchAddressChange(state);
+    }
+
+    handleAddressChange(event) {
+        let state = this.state;
+        state.address = event.target.value;
+
+        this.setState(state);
+        this.dispatchAddressChange(state);
+    }
+
     render() {
         let countriesOptions = [], citiesOptions = [];
 
@@ -110,75 +134,90 @@ export default class AddressForm extends React.Component
 
         return (
             <div>
-                <div className="form__row">
-                    <label className="form form__label required" htmlFor="committee_country">
-                        Pays
-                    </label>
-
-                    {typeof this.props.defaultAddress.errors.country !== 'undefined'
-                        ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.country }} />
+                <div className="form__row committee__form--trunc">
+                    {typeof this.props.defaultAddress.errors.address !== 'undefined'
+                        ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.address }} />
                         : ''}
 
-                    <select id="committee_country"
-                            className="form--full form form__field"
-                            defaultValue={this.state.country ? this.state.country : this.props.defaultAddress.country}
-                            onChange={this.handleCountryChange}>
-                        {countriesOptions}
-                    </select>
+                    <input type="text"
+                           id="committee_address_address"
+                           required="required"
+                           placeholder="Adresse postale"
+                           defaultValue={this.props.defaultAddress.address}
+                           onChange={this.handleAddressChange}
+                           className="form form--full form__field" />
                 </div>
 
-                {this.state.country === 'FR' ?
-                    <div>
-                        <div className="l__row">
-                            <div className="form__row">
-                                <label className="form form__label" htmlFor="committee_postalCode">
-                                    Code postal
-                                </label>
+                <div className="l__row">
+                    <div className="form__row committee__form__zip_code">
+                        {typeof this.props.defaultAddress.errors.postalCode !== 'undefined'
+                            ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.postalCode }} />
+                            : ''}
 
-                                {typeof this.props.defaultAddress.errors.postalCode !== 'undefined'
-                                    ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.postalCode }} />
-                                    : ''}
-
-                                <div>
-                                    <input type="text"
-                                           id="committee_postalCode"
-                                           required="required"
-                                           className="form form__field"
-                                           maxLength="5"
-                                           disabled={this.state.loading}
-                                           defaultValue={this.state.postalCode ? this.state.postalCode : this.props.defaultAddress.postalCode}
-                                           onChange={this.handlePostalCodeChange} />
-                                </div>
-                            </div>
-
-                            <div className="form__row">
-                                <label className="form form__label" htmlFor="committee_city">
-                                    Ville
-                                </label>
-
-                                {typeof this.props.defaultAddress.errors.city !== 'undefined'
-                                    ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.city }} />
-                                    : ''}
-
-                                <div>
-                                    <select id="committee_city"
-                                            defaultValue={this.props.defaultAddress.city}
-                                            onChange={this.handleCityChange}
-                                            className="form form__field committee__form__city">
-                                        {citiesOptions}
-                                    </select>
-                                </div>
-                            </div>
-
-                            {this.state.loading ?
-                                <div className="loader">
-                                    <div className="loader__edge loader__edge--small"></div>
-                                    <div className="loader__edge loader__edge--big"></div>
-                                </div>
-                                : ''}
+                        <div>
+                            <input type="text"
+                                   id="committee_address_postalCode"
+                                   required="required"
+                                   className="form form__field"
+                                   maxLength="5"
+                                   placeholder="Code postal"
+                                   disabled={this.state.loading}
+                                   defaultValue={this.state.postalCode ? this.state.postalCode : this.props.defaultAddress.postalCode}
+                                   onChange={this.handlePostalCodeChange} />
                         </div>
                     </div>
-                    : ''}
+
+                    <div className="form__row committee__form__city">
+                        {typeof this.props.defaultAddress.errors.city !== 'undefined'
+                            ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.city }} />
+                            : ''}
+
+                        {this.state.country === 'FR' ?
+                            <select id="committee_address_city"
+                                    required="required"
+                                    defaultValue={this.props.defaultAddress.city}
+                                    onChange={this.handleCityChange}
+                                    className="form form__field">
+                                {citiesOptions}
+                            </select>
+                            : '' }
+
+                        {this.state.country !== 'FR' ?
+                            <div>
+                                <input id="committee_address_city"
+                                       required="required"
+                                       defaultValue={this.props.defaultAddress.cityName}
+                                       onChange={this.handleCityNameChange}
+                                       className="form form__field"/>
+                            </div>
+                            : '' }
+                    </div>
+
+                    <div className="form__row committee__form__country">
+                        <label className="form form__label color--blue" htmlFor="committee_address_country">
+                            Pays
+                        </label>
+
+                        {typeof this.props.defaultAddress.errors.country !== 'undefined'
+                            ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.country }} />
+                            : ''}
+
+                        <select id="committee_address_country"
+                                required="required"
+                                className="form--mid form form__field"
+                                defaultValue={this.state.country ? this.state.country : this.props.defaultAddress.country}
+                                onChange={this.handleCountryChange}>
+                            {countriesOptions}
+                        </select>
+                    </div>
+
+                    {this.state.loading ?
+                        <div className="loader">
+                            <div className="loader__edge loader__edge--small"></div>
+                            <div className="loader__edge loader__edge--big"></div>
+                        </div>
+                        : ''}
+                </div>
             </div>
         );
     }

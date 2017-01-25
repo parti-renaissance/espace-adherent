@@ -16,6 +16,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 45.7713288,
             'lon' => 4.8288758,
         ],
+        '50 rue de la villette, 69003 lyon 3e arrondissement, france' => [
+            'lat' => 45.7596356,
+            'lon' => 4.8614359,
+        ],
         '92 bld victor hugo, 92110 clichy, france' => [
             'lat' => 48.901058,
             'lon' => 2.318325,

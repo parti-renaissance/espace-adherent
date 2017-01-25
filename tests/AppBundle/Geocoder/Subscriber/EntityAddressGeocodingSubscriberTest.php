@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\DummyGeocoder;
 use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
@@ -92,14 +93,11 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
         $committee = new Committee(
             Uuid::fromString('30619ef2-cc3c-491e-9449-f795ef109898'),
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
-            'En Marche ! - Lyon 1',
+            'En Marche ! - Lyon',
             'Le comité En Marche ! de Lyon village',
-            'FR',
-            '69001',
-            '69001-69381',
-            '69001-en-marche-lyon'
+            PostAddress::createFrenchAddress($address, '69001-69381'),
+            '69001-en-marche-clichy'
         );
-        $committee->setLocation('69001', '69001-69381', $address);
 
         return $committee;
     }
@@ -115,10 +113,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositions::STUDENT,
-            'FR',
-            $address,
-            '92110-92024',
-            '92110'
+            PostAddress::createFrenchAddress($address, '92110-92024')
         );
     }
 

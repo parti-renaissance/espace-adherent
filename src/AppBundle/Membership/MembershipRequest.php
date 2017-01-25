@@ -2,20 +2,16 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
-use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
-use AppBundle\Validator\FrenchCity as AssertFrenchCity;
-use AppBundle\Validator\FrenchPostalCode as AssertFrenchPostalCode;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertCityAssociatedToPostalCode(postalCodeField="postalCode", cityField="city", message="common.city.invalid_postal_code")
  * @AssertUniqueMembership
  */
 class MembershipRequest
@@ -52,24 +48,11 @@ class MembershipRequest
     public $lastName;
 
     /**
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     * @Assert\Valid
+     *
+     * @var Address
      */
-    public $address;
-
-    /**
-     * @AssertFrenchPostalCode(message="common.postal_code.invalid")
-     */
-    public $postalCode;
-
-    /**
-     * @AssertFrenchCity(message="common.city.invalid")
-     */
-    public $city;
-
-    /**
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
-     */
-    public $country;
+    private $address;
 
     /**
      * @Assert\Choice(
@@ -120,11 +103,11 @@ class MembershipRequest
 
     public function __construct()
     {
-        $this->country = 'FR';
         $this->gender = Genders::MALE;
         $this->position = ActivityPositions::EMPLOYED;
         $this->conditions = false;
         $this->emailAddress = '';
+        $this->address = new Address();
     }
 
     public static function createWithCaptcha(string $recaptchaAnswer = null): self
@@ -146,6 +129,26 @@ class MembershipRequest
         }
 
         return $phone;
+    }
+
+    /**
+     * Sets an Address instance.
+     *
+     * @param Address|null $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * Returns an Address instance.
+     *
+     * @return Address|null
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 
     public function setEmailAddress(string $emailAddress)
