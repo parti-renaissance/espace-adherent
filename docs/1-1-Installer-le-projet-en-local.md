@@ -71,7 +71,7 @@ Le résultat contiendra le mot de passe encodé qu'il faudra insérer dans la ta
 Il faut ensuite insérer une ligne dans la base de données, par la commande suivante:
 
 ```
-INSERT INTO administrators VALUES(1,'monemail@mondomaine.com','$2y$13$yzAjwWdVy0o/CPD5y.D4/.xjriZKs9Zj2SIoXzGq.3GPU6MGbvypu','','ROLE_ADMIN');
+INSERT INTO administrators (email_address, password, role) VALUES('monemail@mondomaine.com','$2y$13$yzAjwWdVy0o/CPD5y.D4/.xjriZKs9Zj2SIoXzGq.3GPU6MGbvypu','ROLE_ADMIN');
 ```
 
 ##### Script complet d'initialisation
@@ -81,7 +81,7 @@ php bin/console doctrine:schema:update --force
 php bin/console app:content:prepare
 php bin/console security:encode-password monpassword AppBundle\\Entity\\Adherent | grep password | cut -d ' ' -f 7 > password.txt
 PASSWORD=`cat password.txt`
-mysql --host=127.0.0.1 -u enmarche -penmarche enmarche -e "INSERT INTO administrators VALUES(1,'monemail@mondomaine.com','$PASSWORD','','ROLE_ADMIN');"
+mysql --host=127.0.0.1 -u enmarche -penmarche enmarche -e "INSERT INTO administrators (email_address, password, role) VALUES('monemail@mondomaine.com','$PASSWORD','ROLE_ADMIN');"
 ```
 
 ### b. PHP
