@@ -11,50 +11,39 @@
 {% block content %}
 <main>
     <section class="content">
-        <header class="space--60-0 l__wrapper--slim">
-            <h1 class="text--large b__nudge--bottom-small">
-                {{ article.title }}
+        <header class="l__wrapper--slim space--60-0">
+            <h1 class="text--center text--large">
+                Le Mouvement
             </h1>
-            <h2 class="text--gray b__nudge--bottom">{{ article.description }}</h2>
-            <ul class="article__social">
-                <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                    onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
-                </li>
-                <li class="btn btn--social btn--twitter"
-                    onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
-                </li>
-                <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
-                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
-                </li>
-            </ul>
         </header>
 
-        {% if article.media %}
-        <figure class="fullscreen">
-            <img src="{{ dynamic_asset(article.media.path) }}">
-        </figure>
-        {% endif %}
+        <nav class="l__wrapper--slim text--body">
+            <ul>
+                <li class="active">Nos valeurs</li>
+                <li>Notre organisation</li>
+                <li>Les comités</li>
+                <li>Les évènements</li>
+                <li>Devenez bénévole</li>
+            </ul>
+        </nav>
 
         <article class="l__wrapper--slim">
-            {{ content|raw }}
+            Content goes here. 
         </article>
 
         <ul class="article__social space--60-0 l__wrapper--slim">
             <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                onclick="share('facebook', window.location.href, '')">
+                <i class="fa fa-facebook-square"></i> Partagez
             </li>
             <li class="btn btn--social btn--twitter"
-                onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                onclick="share('twitter', window.location.href, '')">
+                <i class="fa fa-twitter"></i> Tweetez
             </li>
-            <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
-                <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+            <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '')">
+                <i class="fa fa-envelope-o"></i> Envoyez
             </li>
         </ul>
-
     </section>
 
     <section class="donate l__wrapper--narrow background--green b__nudge--bottom-huge">

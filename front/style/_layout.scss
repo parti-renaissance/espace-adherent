@@ -2,31 +2,31 @@
 
 .l {
     &__wrapper {
-        width: 95%;
+        width: 90%;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     &__wrapper--medium {
-        width: 95%;
+        width: 90%;
         max-width: 1000px;
         margin: 0 auto;
     }
 
     &__wrapper--narrow {
-        width: 95%;
+        width: 90%;
         max-width: 850px;
         margin: 0 auto;
     }
 
     &__wrapper--slim {
-        width: 95%;
+        width: 90%;
         max-width: 700px;
         margin: 0 auto;
     }
 
     &__wrapper-500 {
-        width: 95%;
+        width: 90%;
         max-width: 500px;
         margin: 0 auto;
     }
@@ -142,6 +142,10 @@
 // Blocks
 
 .space {
+    &--100-0 {
+        padding: 100px 0;
+    }
+
     &--60-0 {
         padding: 60px 0;
     }

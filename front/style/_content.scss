@@ -1,15 +1,5 @@
-.article header {
-    margin-bottom: 20px;
-
-    h2 {
-        font-family: 'Roboto';
-        letter-spacing: .3px;
-        font-size: $text--size-default;
-        font-weight: normal;
-        line-height: 1.62;
-    }
-
-    &__social {
+.content {
+    .article__social {
         display: flex;
         align-items: center;
 
@@ -23,10 +13,52 @@
             font-size: 20px;
             margin-right: 10px;
         }
+
+        @media (max-width: $mobile) {
+            .fa {
+                margin: 0;
+            }
+            span {
+                display: none;
+            }
+        }
     }
 }
 
-.article figure {
+.content header {
+    margin-bottom: 20px;
+
+    h2 {
+        font-family: 'Roboto';
+        letter-spacing: .3px;
+        font-size: $text--size-default;
+        font-weight: normal;
+        line-height: 1.62;
+    }
+}
+
+.content nav {
+    ul {
+        display: flex;
+        justify-content: space-around;
+        border-top: 1px solid rgba(0, 35, 73, 0.15);
+        padding: 20px 0;
+        margin-bottom: 40px;
+
+        li {
+            list-style: none;
+            display: inline-block;
+
+            &.active {
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+.content figure {
+    margin-bottom: 60px;
+
     &.fullscreen {
         margin-left: 0;
         margin-right: 0;
@@ -37,14 +69,14 @@
     }
 }
 
-.article article {
+.content article {
     font-family: 'Roboto', sans-serif;
     letter-spacing: 0.3px;
     line-height: 1.62;
 
     h1, h2, h3 {
+        @include text--medium-large;
         font-family: 'Gillsans';
-        font-size: $text--size-medium--large;
         margin-top: 30px;
         font-weight: 700;
     }
@@ -181,11 +213,17 @@
         blockquote {
             @include text--large;
             @include text--bold;
+            line-height: 42px; /* Overwrite text--large */
             font-family: "Gillsans";
             font-style: italic;
             text-align: center;
-            margin-top: 55px;
-            margin-bottom: 15px;
+            margin: 55px 70px 15px;
+
+            @media (max-width: $mobile) {
+                @include text--medium;
+                line-height: 32px;
+                margin: 55px 30px 15px;
+            }
 
             span {
                 background: $blue;
@@ -199,5 +237,64 @@
                 text-align: center;
             }
         }
+    }
+}
+.content.programme {
+    padding-bottom: 10px;
+
+    header {
+        background-image: url('/images/programme@3x.jpg');
+        background-size: cover;
+        height: 370px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        box-sizing: border-box;
+
+        h1 {
+            font-size: 44px;
+            line-height: 0.93;
+            letter-spacing: -1.2px;
+            max-width: 550px;
+        }
+    }
+
+    li {
+        border-bottom: 1px solid rgba(0, 35, 73, 0.15);
+        padding: 50px 0 10px;
+
+        h2 {
+            @include text--large;
+        }
+
+        div {
+            @include text--body;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        h2,
+        div {
+            transition: margin-left .2s ease-out;
+        }
+
+        &:hover {
+            h2,
+            div {
+                margin-left: 20px;
+                color: $blue;
+            }
+        }
+    }
+
+    span {
+        @include text--summary;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.3);
+        width: 450px;
+        display: block;
+        margin: 0 auto;
+        text-align: center;
     }
 }
