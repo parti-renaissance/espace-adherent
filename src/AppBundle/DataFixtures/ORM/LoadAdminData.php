@@ -34,6 +34,18 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'role' => 'ROLE_WRITER',
         ]);
 
+        $manager->persist($factory->createFromArray([
+            'email' => 'admin@en-marche-dev.fr',
+            'password' => 'admin',
+            'role' => 'ROLE_SUPER_ADMIN',
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'email' => 'writer@en-marche-dev.fr',
+            'password' => 'writer',
+            'role' => 'ROLE_WRITER',
+        ]));
+
         $manager->persist($superAdmin);
         $manager->persist($admin);
         $manager->persist($writer);

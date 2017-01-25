@@ -123,7 +123,16 @@ Une fois terminé, votre environnement de développement devrait être prêt et 
 [http://127.0.0.1:8000](http://127.0.0.1:8000) (ou si vous êtes sous macOS, sur le port 8000 de la machine virtuelle de
 votre instance Docker).
 
-### 1.1.2.3 Services disponibles
+## 1.1.3 Accéder à l'espace d'administration
+
+Une fois le projet installé, vous pouvez accéder à l'espace d'administration en allant sur
+[http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
+
+Vous pouvez alors y entrer les identifiants suivants :
+- admin@en-marche-dev.fr / admin pour l'accès en mode administrateur
+- writer@en-marche-dev.fr / writer pour l'accès en mode rédacteur
+
+## 1.1.4 Services disponibles
 
 Docker et docker-compose vous ont permis d'initialiser très rapidement le projet. Pour cela, docker-compose a
 créé 4 containers :
