@@ -139,12 +139,14 @@ class MembershipController extends Controller
     }
 
     /**
+     * This action enables a new user to follow some committees.
+     *
      * @Route("/inscription/choisir-des-comites", name="app_membership_choose_nearby_committee")
      * @Method("GET|POST")
      */
     public function chooseNearByCommitteeAction(): Response
     {
-        return new Response('TO BE IMPLEMENTED');
+        return $this->render('membership/choose_nearby_committee.html.twig');
     }
 
     /**
