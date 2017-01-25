@@ -2,13 +2,15 @@ version: "2"
 
 services:
     app:
-        build: ./docker/app
+        build:
+            context: .
+            dockerfile: dev.dockerfile
         depends_on:
             - db
         volumes:
-            - .:/var/www
-            - /var/www/var/cache
-            - /var/www/var/sessions
+            - .:/app
+            - /app/var/cache
+            - /app/var/sessions
 
     db:
         image: mariadb
@@ -19,7 +21,9 @@ services:
             MYSQL_PASSWORD: enmarche
 
     tools:
-        build: ./docker/tools
+        build:
+            context: .
+            dockerfile: tools.dockerfile
         depends_on:
             - db
         volumes_from:

@@ -2,7 +2,7 @@ machine:
     node:
         version: 4.5.0
     php:
-        version: 7.0.7
+        version: 7.1.0
     environment:
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
@@ -45,16 +45,16 @@ deployment:
 
             # Build the image
             - yarn run build-prod
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 .
+            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.dockerfile
 
             # Test the image
             - docker run -d -p 8000:80 eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1; sleep 1
             - curl --retry 2 --retry-delay 2 -v http://127.0.0.1:8000/health
 
             # Push the image to Google Cloud
-            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            # - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
 
             # Deploy to staging
-            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl rolling-update enmarche-rc-v8 --image=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 --container=enmarche --update-period=10s
+            # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
+            # - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
+            # - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl rolling-update enmarche-rc-v9 --image=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 --container=enmarche --update-period=10s

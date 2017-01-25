@@ -11,3 +11,5 @@
 /gcloud-service-key.json
 /npm-debug.log
 /phpunit.xml
+/supervisord.log
+/supervisord.pid
