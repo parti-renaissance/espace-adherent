@@ -45,7 +45,7 @@ deployment:
 
             # Build the image
             - yarn run build-prod
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.dockerfile
+            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.dockerfile .
 
             # Test the image
             - docker run -d -p 8000:80 eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1; sleep 1
