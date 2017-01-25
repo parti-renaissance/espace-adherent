@@ -142,6 +142,10 @@
 // Blocks
 
 .space {
+    &--100-0 {
+        padding: 100px 0;
+    }
+
     &--60-0 {
         padding: 60px 0;
     }
