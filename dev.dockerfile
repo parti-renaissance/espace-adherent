@@ -41,6 +41,7 @@ RUN apt-get update -q && \
         php7.1-mysql \
         php7.1-pdo \
         php7.1-phar \
+        php7.1-sqlite \
         php7.1-xdebug \
         php7.1-xml \
         php7.1-zip \
