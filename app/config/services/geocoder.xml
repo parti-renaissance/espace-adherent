@@ -8,10 +8,19 @@
             <argument type="service" id="geocoder"/>
         </service>
 
+        <service id="app.geocoder.cache_adapter" class="Symfony\Component\Cache\DoctrineProvider">
+            <argument type="service" id="cache.app"/>
+        </service>
+
         <service id="app.geocoder.entity_address_geocoding_subscriber" class="AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
             <argument type="service" id="app.geocoder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.validator.geocodable_address" class="AppBundle\Validator\GeocodableAddressValidator">
+            <argument type="service" id="app.geocoder"/>
+            <tag name="validator.constraint_validator" alias="app.validator.geocodable_address"/>
         </service>
 
     </services>

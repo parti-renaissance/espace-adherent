@@ -127,7 +127,7 @@ class MembershipRequest
         $dto->lastName = $adherent->getLastName();
         $dto->birthdate = $adherent->getBirthdate();
         $dto->position = $adherent->getPosition();
-        $dto->address = Address::createFromPostAddress($adherent);
+        $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
 
         return $dto;

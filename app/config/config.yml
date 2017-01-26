@@ -5,6 +5,7 @@ imports:
     - { resource: assets_version.yml }
     - { resource: services/address.xml }
     - { resource: services/admin.xml }
+    - { resource: services/cache.xml }
     - { resource: services/committee.xml }
     - { resource: services/content.xml }
     - { resource: services/cloudflare.xml }
@@ -161,6 +162,9 @@ sonata_admin:
 
 bazinga_geocoder:
     providers:
+        cache:
+            adapter:  app.geocoder.cache_adapter
+            provider: google_maps
         google_maps:
             locale:  '%locale%'
             use_ssl: true

@@ -13,6 +13,7 @@
                     postalCode: '{{ committee.address.postalCode|e('js') }}',
                     city: '{{ committee.address.city|e('js') }}',
                     errors: {
+                        form: '{{ form_errors(form.address)|e('js') }}',
                         country: '{{ form_errors(form.address.country)|e('js') }}',
                         postalCode: '{{ form_errors(form.address.postalCode)|e('js') }}',
                         city: '{{ form_errors(form.address.city)|e('js') }}'
