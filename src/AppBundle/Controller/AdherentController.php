@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\AdherentChangePasswordType;
+use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
@@ -97,12 +98,25 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to choose his/her email notifications.
      *
-     * @Route("/mon-profil/preferences-des-email", name="app_adherent_set_email_notifications")
+     * @Route("/mon-profil/preferences-des-emails", name="app_adherent_set_email_notifications")
      * @Method("GET|POST")
      */
     public function setEmailNotificationsAction(Request $request): Response
     {
-        return $this->render('adherent/set_email_notifications.html.twig');
+        $form = $this->createForm(AdherentEmailSubscriptionType::class, $this->getUser())
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('info', $this->get('translator')->trans('adherent.set_emails_notifications.success'));
+
+            return $this->redirectToRoute('app_adherent_set_email_notifications');
+        }
+
+        return $this->render('adherent/set_email_notifications.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

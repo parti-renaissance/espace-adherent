@@ -6,6 +6,7 @@ use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -100,6 +101,21 @@ class Adherent implements UserInterface, GeoPointInterface
      * @ORM\Column(type="array", nullable=true)
      */
     private $interests;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $mainEmailsSubscription = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $referentsEmailsSubscription = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $localHostEmailsSubscription = false;
 
     public function __construct(
         UuidInterface $uuid,
@@ -224,6 +240,49 @@ class Adherent implements UserInterface, GeoPointInterface
     public function changePassword(string $newPassword)
     {
         $this->password = $newPassword;
+    }
+
+    /**
+     * @var \Generator
+     */
+    public function getEmailsSubscriptions()
+    {
+        $subscriptions = [];
+        if ($this->mainEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN;
+        }
+
+        if ($this->referentsEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS;
+        }
+
+        if ($this->localHostEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
+        }
+
+        return $subscriptions;
+    }
+
+    public function setEmailsSubscriptions(array $emailsSubscriptions)
+    {
+        $this->mainEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN, $emailsSubscriptions, true);
+        $this->referentsEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS, $emailsSubscriptions, true);
+        $this->localHostEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST, $emailsSubscriptions, true);
+    }
+
+    public function hasSubscribedMainEmails(): bool
+    {
+        return $this->mainEmailsSubscription;
+    }
+
+    public function hasSubscribedReferentsEmails(): bool
+    {
+        return $this->referentsEmailsSubscription;
+    }
+
+    public function hasSubscribedLocalHostEmails(): bool
+    {
+        return $this->localHostEmailsSubscription;
     }
 
     /**
