@@ -29,8 +29,9 @@ adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
 
 adherent.update_profile.success: Vos informations ont été mises à jour avec succès.
+adherent.update_interests.success: Vos centres d'intérêts ont bien été mis à jour.
 
-# 
+#
 # Committee
 #
 committee.creation.success: Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur.
