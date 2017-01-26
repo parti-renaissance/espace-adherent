@@ -65,23 +65,23 @@ class MembershipRequest
 
     /**
      * @Assert\NotBlank(groups="Registration")
-     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length")
+     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
      */
     public $password;
 
     /**
-     * @Assert\IsTrue(message="common.conditions.not_accepted")
+     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Registration"})
      */
     public $conditions;
 
     /**
-     * @AssertRecaptcha
+     * @AssertRecaptcha(groups={"Registration"})
      */
     public $recaptcha;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
+     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration"})
+     * @Assert\Email(message="common.email.invalid", groups={"Registration"})
      */
     private $emailAddress;
 
@@ -115,6 +115,20 @@ class MembershipRequest
         $dto = new self();
         $dto->recaptcha = $recaptchaAnswer;
         $dto->phone = static::createPhoneNumber();
+
+        return $dto;
+    }
+
+    public static function createFromAdherent(Adherent $adherent): self
+    {
+        $dto = new self();
+        $dto->gender = $adherent->getGender();
+        $dto->firstName = $adherent->getFirstName();
+        $dto->lastName = $adherent->getLastName();
+        $dto->birthdate = $adherent->getBirthdate();
+        $dto->position = $adherent->getPosition();
+        $dto->address = Address::createFromPostAddress($adherent);
+        $dto->phone = $adherent->getPhone();
 
         return $dto;
     }

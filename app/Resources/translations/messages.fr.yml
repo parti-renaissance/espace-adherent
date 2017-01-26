@@ -28,6 +28,8 @@ adherent.reset_password.email_sent: Un e-mail vous a été envoyé contenant un 
 adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
 
+adherent.update_profile.success: Vos informations ont été mises à jour avec succès.
+
 # 
 # Committee
 #

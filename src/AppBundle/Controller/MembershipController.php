@@ -30,10 +30,11 @@ class MembershipController extends Controller
     public function registerAction(Request $request): Response
     {
         $membership = MembershipRequest::createWithCaptcha($request->request->get('g-recaptcha-response'));
-        $form = $this->createForm(MembershipRequestType::class, $membership);
-        $form->handleRequest($request);
+        $form = $this->createForm(MembershipRequestType::class, $membership)
+            ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
+        ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get('app.membership_request_handler')->handle($membership);
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 

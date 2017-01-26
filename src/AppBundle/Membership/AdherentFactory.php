@@ -18,7 +18,7 @@ class AdherentFactory
         PostAddressFactory $addressFactory = null
     ) {
         $this->encoders = $encoders;
-        $this->addressFactory = $addressFactory ?? new PostAddressFactory();
+        $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
     public function createFromMembershipRequest(MembershipRequest $request): Adherent

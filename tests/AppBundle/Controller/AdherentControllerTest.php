@@ -52,9 +52,102 @@ class AdherentControllerTest extends WebTestCase
     public function provideProfilePage()
     {
         yield ['/espace-adherent/mon-profil', 'Informations personnelles'];
+
         yield ['/espace-adherent/mon-profil/centres-d-interet', 'Centres d\'intérêt'];
+
         yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
+
         yield ['/espace-adherent/mon-profil/preferences-des-email', 'Préférences des e-mails'];
+    }
+
+    public function testEditProfileFillAdherentData()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
+
+        $inputPattern = 'input[name="update_membership_request[%s]"]';
+        $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
+
+        $this->assertSame('male', $crawler->filter(sprintf($inputPattern, 'gender').'[checked="checked"]')->attr('value'));
+        $this->assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
+        $this->assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
+        $this->assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
+        $this->assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        $this->assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
+        $this->assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
+        $this->assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
+        $this->assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
+        $this->assertSame('08/07/1950', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+
+        // Submit the profile form with invalid data
+        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
+            'update_membership_request' => [
+                'gender' => 'male',
+                'firstName' => '',
+                'lastName' => '',
+                'address' => [
+                    'address' => '',
+                    'country' => 'FR',
+                    'postalCode' => '99999',
+                    'city' => '10102-45029',
+                ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '',
+                ],
+                'position' => 'student',
+                'birthdate' => '!',
+            ],
+        ]));
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(6, $errors->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text(), 'First name should be erroneous.');
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text(), 'Last name should be erroneous.');
+        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $errors->eq(2)->text(), 'Zip code name should be erroneous.');
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(3)->text(), 'City should be erroneous.');
+        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text(), 'Address should be erroneous.');
+        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text(), 'Birth date should be erroneous.');
+
+        // Submit the profile form with valid data
+        $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
+            'update_membership_request' => [
+                'gender' => 'female',
+                'firstName' => 'Jean',
+                'lastName' => 'Dupont',
+                'address' => [
+                    'address' => '9 rue du Lycée',
+                    'country' => 'FR',
+                    'postalCode' => '06000',
+                    'city' => '06000-6088', // Nice
+                ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '04 01 02 03 04',
+                ],
+                'position' => 'student',
+                'birthdate' => '27/10/1985',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame('Vos informations ont été mises à jour avec succès.', trim($crawler->filter('#notice-flashes')->text()));
+
+        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+
+        $this->assertSame('female', $adherent->getGender());
+        $this->assertSame('Jean Dupont', $adherent->getFullName());
+        $this->assertSame('9 rue du Lycée', $adherent->getAddress());
+        $this->assertSame('06000', $adherent->getPostalCode());
+        $this->assertSame('Nice', $adherent->getCityName());
+        $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
+        $this->assertSame('student', $adherent->getPosition());
     }
 
     /**

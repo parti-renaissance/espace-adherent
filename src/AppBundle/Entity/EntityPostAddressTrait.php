@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait EntityPostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="AppBundle\Entity\PostAddress", columnPrefix="address_")
+     * @ORM\Embedded(class="PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
      */

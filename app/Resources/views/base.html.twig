@@ -104,6 +104,8 @@
         </div>
         {% endblock %}
 
+        {% set user_is_adherent = is_granted('ROLE_ADHERENT') %}
+
         <header>
             <!--  Header / Navigation Desktop -->
             <nav class="l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-tablet">
@@ -127,7 +129,7 @@
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">
                         Je donne
                     </a>
-                    <a href="{{ path(is_granted('ROLE_ADHERENT') ? 'app_adherent_logout' : 'app_adherent_login') }}" class="icon--with-text text--medium-small">
+                    <a href="{{ path(user_is_adherent ? 'app_adherent_logout' : 'app_adherent_login') }}" class="icon--with-text text--medium-small">
                         <svg width="28px" height="27px" viewBox="503 375 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <path
                                 d="M517.1737,375 C509.8977,375 503.9997,380.898 503.9997,388.174 C503.9997,395.45 509.8977,401.348 517.1737,401.348 C524.4497,401.348 530.3477,395.45 530.3477,388.174 C530.3477,380.898 524.4497,375 517.1737,375 M517.1737,376 C523.8867,376 529.3477,381.461 529.3477,388.174 C529.3477,394.886 523.8867,400.348 517.1737,400.348 C510.4607,400.348 504.9997,394.886 504.9997,388.174 C504.9997,381.461 510.4607,376 517.1737,376"
@@ -145,9 +147,9 @@
                                 fill="#000000"
                                 fill-rule="evenodd"></path>
                         </svg>
-                        {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
+                        {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
                     </a>
-                    {% if app.user %}
+                    {% if user_is_adherent %}
                         {# This list must be designed #}
                         <ul>
                             <li><a href="#">Comité A</a></li>
@@ -164,7 +166,7 @@
                                     <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
                                 </li>
                             {% endif %}
-                            <li><a href="#">Profil</a></li>
+                            <li><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
                             <li><a href="#">Aide</a></li>
                             <li><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
                         </ul>
@@ -185,7 +187,7 @@
                     <label for="nav-menu">Menu de navigation</label>
                     <div class="nav__mobile--menu">
                         <div class="l__row l__row--h-stretch">
-                            <a href="{{ path(is_granted('ROLE_ADHERENT') ? 'app_adherent_logout' : 'app_adherent_login') }}" class="icon--with-text text--medium-small">
+                            <a href="{{ path(user_is_adherent ? 'app_adherent_logout' : 'app_adherent_login') }}" class="icon--with-text text--medium-small">
                                 <svg width="28px" height="27px" viewBox="503 375 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <path
                                         d="M517.1737,375 C509.8977,375 503.9997,380.898 503.9997,388.174 C503.9997,395.45 509.8977,401.348 517.1737,401.348 C524.4497,401.348 530.3477,395.45 530.3477,388.174 C530.3477,380.898 524.4497,375 517.1737,375 M517.1737,376 C523.8867,376 529.3477,381.461 529.3477,388.174 C529.3477,394.886 523.8867,400.348 517.1737,400.348 C510.4607,400.348 504.9997,394.886 504.9997,388.174 C504.9997,381.461 510.4607,376 517.1737,376"
@@ -203,7 +205,7 @@
                                         fill="#000000"
                                         fill-rule="evenodd"></path>
                                 </svg>
-                                {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
+                                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
                             </a>
                             <a href="#" class="link--no-decor">
                                 <svg class="icon-search" width="23px" height="24px" viewBox="0 0 23 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">

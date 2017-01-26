@@ -1,7 +1,35 @@
 {% extends 'adherent/layout.twig' %}
 
+{% use 'adherent/_membership_form.html.twig' %}
+
+{% block javascripts %}
+    {% set membership_data = form.vars.data %}
+
+    <script type="text/javascript">
+        function controller(app) {
+            app.updateMembershipIndex(
+                {
+                    country: '{{ membership_data.address.country }}',
+                    postalCode: '{{ membership_data.address.postalCode }}',
+                    city: '{{ membership_data.address.city }}',
+                    address: '{{ membership_data.address.address }}',
+                    errors: {
+                        country: '{{ form_errors(form.address.country) }}',
+                        postalCode: '{{ form_errors(form.address.postalCode) }}',
+                        city: '{{ form_errors(form.address.city) }}',
+                        address: '{{ form_errors(form.address.address) }}'
+                    }
+                },
+                    {{ list_united_nations()|json_encode|raw }}
+            );
+        }
+    </script>
+{% endblock %}
+
 {% block adherent_profile_form %}
 
     <h3>Informations personnelles</h3>
+
+    {{ block('adherent_membership_form') }}
 
 {% endblock %}

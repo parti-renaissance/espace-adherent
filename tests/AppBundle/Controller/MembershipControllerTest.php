@@ -46,7 +46,7 @@ class MembershipControllerTest extends WebTestCase
 
         $data = static::createFormData();
         $data['membership_request']['emailAddress'] = $emailAddress;
-        $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
+        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Cette adresse e-mail existe déjà.', $crawler->filter('#field-email-address > .form__errors > li')->text());
@@ -73,7 +73,7 @@ class MembershipControllerTest extends WebTestCase
 
         $data = static::createFormData();
         $data['membership_request']['birthdate'] = date('d/m/Y');
-        $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
+        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Vous devez être âgé d'au moins 15 ans pour adhérer.", $crawler->filter('#field-birthdate > .form__errors > li')->text());
@@ -87,7 +87,7 @@ class MembershipControllerTest extends WebTestCase
 
         $data = static::createFormData();
         $data['membership_request']['conditions'] = false;
-        $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
+        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
@@ -102,7 +102,7 @@ class MembershipControllerTest extends WebTestCase
         $data = static::createFormData();
         $data['membership_request']['address']['postalCode'] = '73100';
         $data['membership_request']['address']['city'] = '73100-73999';
-        $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
+        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#membership-address > .form__errors > li')->text());
@@ -114,7 +114,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), static::createFormData());
+        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), static::createFormData());
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
@@ -192,7 +192,7 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['address']['postalCode'] = '8057';
         $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
         $this->assertInstanceOf(
