@@ -298,3 +298,28 @@
         text-align: center;
     }
 }
+
+.content.emmanuel-macron {
+    header {
+        background-image: url('/images/emmanuel-macron@3x.jpg');
+        background-size: cover;
+        height: 370px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+
+        div {
+            z-index: 1;
+        }
+
+        &:after {
+            @include classic-gradient($gradient-emmanuel);
+        }
+    }
+
+    nav ul {
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+}
