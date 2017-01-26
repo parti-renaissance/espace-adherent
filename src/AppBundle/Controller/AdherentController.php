@@ -4,11 +4,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\MembershipRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,10 +22,27 @@ class AdherentController extends Controller
 {
     /**
      * @Route("/mon-profil", name="app_adherent_profile")
+     * @Method("GET|POST")
      */
-    public function profileAction(): Response
+    public function profileAction(Request $request): Response
     {
-        return $this->render('adherent/profile.html.twig');
+        $adherent = $this->getUser();
+        $membership = MembershipRequest::createFromAdherent($adherent);
+        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get('app.membership_request_handler')->update($adherent, $membership);
+
+            $this->addFlash('info', $this->get('translator')->trans('adherent.update_profile.success'));
+
+            return $this->redirectToRoute('app_adherent_profile');
+        }
+
+        return $this->render('adherent/profile.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

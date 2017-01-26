@@ -49,6 +49,7 @@ class MembershipRequestType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
             'translation_domain' => false,
+            'validation_groups' => ['Default', 'Registration'],
         ]);
     }
 }

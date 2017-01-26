@@ -15,5 +15,10 @@
             <tag name="twig.extension" />
         </service>
 
+        <!-- Intl -->
+        <service id="app.twig.intl_extension" class="AppBundle\Twig\AppIntlExtension" public="false">
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 </container>

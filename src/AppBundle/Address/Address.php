@@ -2,6 +2,7 @@
 
 namespace AppBundle\Address;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
 use AppBundle\Validator\FrenchCity as AssertFrenchCity;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -96,5 +97,17 @@ class Address
     public function isFrenchAddress()
     {
         return 'FR' === $this->country && $this->city;
+    }
+
+    public static function createFromPostAddress(Adherent $adherent): self
+    {
+        $address = new self();
+        $address->address = $adherent->getAddress();
+        $address->postalCode = $adherent->getPostalCode();
+        $address->city = $adherent->getCity();
+        $address->cityName = $adherent->getCityName();
+        $address->country = $adherent->getCountry();
+
+        return $address;
     }
 }

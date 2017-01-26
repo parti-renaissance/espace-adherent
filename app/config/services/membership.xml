@@ -6,6 +6,7 @@
 
         <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
             <argument type="service" id="app.membership.adherent_factory"/>
+            <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailjet"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>

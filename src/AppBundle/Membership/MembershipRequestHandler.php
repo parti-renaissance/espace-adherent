@@ -2,6 +2,7 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailjet\MailjetService;
@@ -12,17 +13,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MembershipRequestHandler
 {
     private $adherentFactory;
+    private $addressFactory;
     private $urlGenerator;
     private $mailjet;
     private $manager;
 
     public function __construct(
         AdherentFactory $adherentFactory,
+        PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
         MailjetService $mailjet,
         ObjectManager $manager
     ) {
         $this->adherentFactory = $adherentFactory;
+        $this->addressFactory = $addressFactory;
         $this->urlGenerator = $urlGenerator;
         $this->mailjet = $mailjet;
         $this->manager = $manager;
@@ -41,6 +45,13 @@ class MembershipRequestHandler
         $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
         $membershipRequest->setAdherent($adherent);
+    }
+
+    public function update(Adherent $adherent, MembershipRequest $membershipRequest)
+    {
+        $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+
+        $this->manager->flush();
     }
 
     private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token)

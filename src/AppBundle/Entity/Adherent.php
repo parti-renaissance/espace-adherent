@@ -6,6 +6,7 @@ use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Membership\MembershipRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
@@ -293,6 +294,17 @@ class Adherent implements UserInterface, GeocodableInterface
     public function setInterests(array $interests = null)
     {
         $this->interests = $interests;
+    }
+
+    public function updateMembership(MembershipRequest $membership, PostAddress $postAddress)
+    {
+        $this->gender = $membership->gender;
+        $this->firstName = $membership->firstName;
+        $this->lastName = $membership->lastName;
+        $this->birthdate = $membership->getBirthdate();
+        $this->position = $membership->position;
+        $this->postAddress = $postAddress;
+        $this->phone = $membership->getPhone();
     }
 
     /**
