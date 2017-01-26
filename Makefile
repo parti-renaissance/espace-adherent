@@ -16,6 +16,9 @@ start:          ## Start the Docker containers
 stop:           ## Stop the Docker containers
 	docker-compose down
 
+bash:           ## Start a bash access to the application container
+	docker-compose exec app bash
+
 deps:           ## [composer yarn assets-dev perm] Install the project PHP and JS dependencies
 deps: composer yarn assets-dev perm
 
