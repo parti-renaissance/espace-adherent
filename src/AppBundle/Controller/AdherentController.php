@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -53,7 +54,20 @@ class AdherentController extends Controller
      */
     public function pinInterestsAction(Request $request): Response
     {
-        return $this->render('adherent/pin_interests.html.twig');
+        $form = $this->createForm(AdherentInterestsFormType::class, $this->getUser())
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('info', $this->get('translator')->trans('adherent.update_interests.success'));
+
+            return $this->redirectToRoute('app_adherent_pin_interests');
+        }
+
+        return $this->render('adherent/pin_interests.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

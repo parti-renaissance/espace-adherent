@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Repository\CommitteeRepository;
@@ -148,6 +149,62 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Nice', $adherent->getCityName());
         $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
         $this->assertSame('student', $adherent->getPosition());
+    }
+
+    public function testEditAdherentInterests()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/centres-d-interet');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $checkBoxPattern = '#app_adherent_pin_interests_interests > '.
+                           'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
+
+        $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
+
+        $interests = $this->client->getContainer()->getParameter('adherent_interests');
+        $interestsValues = array_keys($interests);
+        $interestsLabels = array_values($interests);
+
+        foreach ($checkboxes as $i => $checkbox) {
+            $this->assertSame($interestsValues[$i], $checkbox->getAttribute('value'));
+            $this->assertSame($interestsLabels[$i], $crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->text());
+        }
+
+        $interests = $this->client->getContainer()->getParameter('adherent_interests');
+        $interestsValues = array_keys($interests);
+
+        $chosenInterests = [
+            4 => $interestsValues[4],
+            8 => $interestsValues[8],
+        ];
+
+        $this->client->submit($crawler->selectButton('app_adherent_pin_interests[submit]')->form(), [
+            'app_adherent_pin_interests' => [
+                'interests' => $chosenInterests,
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/centres-d-interet', $this->client);
+
+        /* @var Adherent $adherent */
+        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+
+        $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
+
+        foreach ($checkboxes as $i => $checkbox) {
+            if (isset($chosenInterests[$i])) {
+                $this->assertSame('checked', $checkbox->getAttribute('checked'));
+            } else {
+                $this->assertEmpty($crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->attr('checked'));
+            }
+        }
     }
 
     /**
