@@ -12,6 +12,11 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="security.password_encoder"/>
+        </service>
+
         <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailjet"/>

@@ -30,6 +30,7 @@ adherent.reset_password.expired_key: Votre demande de réinitialisation de mot d
 
 adherent.update_profile.success: Vos informations ont été mises à jour avec succès.
 adherent.update_interests.success: Vos centres d'intérêts ont bien été mis à jour.
+adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 
 #
 # Committee
