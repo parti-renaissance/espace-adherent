@@ -19,16 +19,16 @@
 
             <nav class="l__wrapper--slim text--body b__nudge--bottom-larger">
                 <ul>
-                    {% set currentSlug = app.request.attributes.get('slug') %}
-                    {% for slug, title in {
-                        'nos-valeurs': 'Nos valeurs',
-                        'notre-organisation': 'Notre organisation',
-                        'les-comites': 'Les comités',
-                        'les-evenements': 'Les évènements',
-                        'devenez-benevole': 'Devenez bénévole',
+                    {% set currentRoute = app.request.attributes.get('_route') %}
+                    {% for route, title in {
+                        'page_le_mouvement': 'Nos valeurs',
+                        'page_le_mouvement_notre_organisation': 'Notre organisation',
+                        'page_le_mouvement_les_comites': 'Les comités',
+                        'page_le_mouvement_les_evenements': 'Les évènements',
+                        'page_le_mouvement_devenez_benevole': 'Devenez bénévole',
                     } %}
-                        <li class="{{ slug == currentSlug ? 'active' }}">
-                            <a href="{{ path('page_le_mouvement', {'slug': slug}) }}">
+                        <li class="{{ route == currentRoute ? 'active' }}">
+                            <a href="{{ path(route) }}">
                                 {{ title }}
                             </a>
                         </li>

@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title 'Je donne' %}
+{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
+{% block canonical_url url('donation_index') %}
+
 {% use 'donation/_donation_form.html.twig' %}
 
 {% block banner '' %}
@@ -44,7 +48,8 @@
 
                     <p>
                         Si vous préférez effectuer votre don par chèque, vous pouvez également télécharger un bulletin
-                        de don et le renvoyer par courrier postal à l’adresse indiquée dessus (en cliquant ici)
+                        de don et le renvoyer par courrier postal à l’adresse indiquée dessus
+                        (<a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" target="_blank">en cliquant ici</a>).
                     </p>
                 </div>
             </div>

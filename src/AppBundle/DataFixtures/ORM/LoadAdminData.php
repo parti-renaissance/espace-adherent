@@ -19,7 +19,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
         $superAdmin = $factory->createFromArray([
             'email' => 'titouan.galopin@en-marche.fr',
             'password' => 'secret!12345',
-            'role' => 'ROLE_SUPER_ADMIN',
+            'role' => 'ROLE_ADMIN',
         ]);
 
         $admin = $factory->createFromArray([
@@ -37,6 +37,12 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'email' => 'admin@en-marche-dev.fr',
             'password' => 'admin',
+            'role' => 'ROLE_ADMIN',
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'email' => 'superadmin@en-marche-dev.fr',
+            'password' => 'superadmin',
             'role' => 'ROLE_SUPER_ADMIN',
         ]));
 

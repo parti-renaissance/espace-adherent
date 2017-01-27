@@ -11,7 +11,7 @@
 {% block content %}
     <main>
         <section class="content emmanuel-macron">
-            <header class="filtered-image">
+            <header class="filtered-image" style="background-image: url('{{ static_asset('emmanuel-macron.jpg') }}');">
                 <div class="l__wrapper--slim">
                     <h1 class="text--center text--larger">
                         Emmanuel Macron
@@ -29,15 +29,15 @@
                     </ul>
                     <nav class="text--body">
                         <ul>
-                            {% set currentSlug = app.request.attributes.get('slug') %}
-                            {% for slug, title in {
-                                'ce-que-je-suis': 'Ce que je suis',
-                                'revolution': 'Révolution',
-                                'mes-propositions': 'Mes propositions',
-                                'mon-agenda': 'Mon agenda'
+                            {% set currentRoute = app.request.attributes.get('_route') %}
+                            {% for route, title in {
+                                'page_emmanuel_macron': 'Ce que je suis',
+                                'page_emmanuel_macron_revolution': 'Révolution',
+                                'page_emmanuel_macron_mes_propositions': 'Mes propositions',
+                                'page_emmanuel_macron_mon_agenda': 'Mon agenda'
                             } %}
-                                <li class="{{ slug == currentSlug ? 'active' }}">
-                                    <a href="{{ path('page_emmanuel_macron', {'slug': slug}) }}">
+                                <li class="{{ route == currentRoute ? 'active' }}">
+                                    <a href="{{ path(route) }}">
                                         {{ title }}
                                     </a>
                                 </li>

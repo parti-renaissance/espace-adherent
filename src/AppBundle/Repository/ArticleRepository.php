@@ -15,8 +15,9 @@ class ArticleRepository extends EntityRepository
     public function findOneBySlug(string $slug)
     {
         return $this->createQueryBuilder('a')
-            ->select('a', 'm')
+            ->select('a', 'm', 'c')
             ->leftJoin('a.media', 'm')
+            ->leftJoin('a.category', 'c')
             ->where('a.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()

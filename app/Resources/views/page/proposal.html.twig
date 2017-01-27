@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title article.title %}
-{% block meta_description article.description %}
+{% block page_title proposal.title %}
+{% block meta_description proposal.description %}
 
-{% block canonical_url url('article_view', {'slug': article.slug}) %}
+{% block canonical_url url('page_proposal', {'slug': proposal.slug}) %}
 
 {% block open_graph_image %}{% spaceless %}
-    {% if article.media %}
-        {{ url('homepage')|trim('/')~article.media.path }}
+    {% if proposal.media %}
+        {{ url('homepage')|trim('/')~proposal.media.path }}
     {% else %}
         {{ parent() }}
     {% endif %}
 {% endspaceless %}{% endblock %}
 
-{% block open_graph_image_width (article.media ? article.media.width : 628) %}
-{% block open_graph_image_height (article.media ? article.media.height : 288) %}
+{% block open_graph_image_width (proposal.media ? proposal.media.width : 628) %}
+{% block open_graph_image_height (proposal.media ? proposal.media.height : 288) %}
 
 {% block javascripts %}
     <script type="text/javascript">
@@ -29,27 +29,27 @@
     <section class="content">
         <header class="space--60-0 l__wrapper--slim">
             <h1 class="text--large b__nudge--bottom-small">
-                {{ article.title }}
+                {{ proposal.title }}
             </h1>
-            <h2 class="text--gray b__nudge--bottom bigger">{{ article.description }}</h2>
-            <ul class="article__social">
+            <h2 class="text--gray b__nudge--bottom bigger">{{ proposal.description }}</h2>
+            <ul class="proposal__social">
                 <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                    onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
+                    onclick="share('facebook', window.location.href, '{{ proposal.title|escape('js') }}')">
                     <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
                 <li class="btn btn--social btn--twitter"
-                    onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
+                    onclick="share('twitter', window.location.href, '{{ proposal.title|escape('js') }}')">
                     <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
-                <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
+                <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ proposal.title }}')">
                     <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                 </li>
             </ul>
         </header>
 
-        {% if article.media and article.displayMedia %}
+        {% if proposal.media and proposal.displayMedia %}
         <figure class="fullscreen">
-            <img src="{{ dynamic_asset(article.media.path) }}">
+            <img src="{{ dynamic_asset(proposal.media.path) }}">
         </figure>
         {% endif %}
 
@@ -57,16 +57,16 @@
             {{ content|raw }}
         </article>
 
-        <ul class="article__social space--60-0 l__wrapper--slim">
+        <ul class="proposal__social space--60-0 l__wrapper--slim">
             <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                onclick="share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
+                onclick="share('facebook', window.location.href, '{{ proposal.title|escape('js') }}')">
                 <i class="fa fa-facebook-square"></i> <span>Partagez</span>
             </li>
             <li class="btn btn--social btn--twitter"
-                onclick="share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
+                onclick="share('twitter', window.location.href, '{{ proposal.title|escape('js') }}')">
                 <i class="fa fa-twitter"></i> <span>Tweetez</span>
             </li>
-            <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ article.title }}')">
+            <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '{{ proposal.title }}')">
                 <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
             </li>
         </ul>

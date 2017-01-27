@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Page;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -15,15 +15,15 @@ class PageAdmin extends AbstractAdmin
     use CloudflareSynchronizedAdminTrait;
 
     /**
-     * @param Article $object
+     * @param Page $object
      */
     public function invalidate($object)
     {
-        $this->getCloudflare()->invalidateTag('article-'.$object->getId());
+        $this->getCloudflare()->invalidateTag('page-'.$object->getSlug());
     }
 
     /**
-     * @param Article $object
+     * @param Page $object
      *
      * @return Metadata
      */
@@ -34,15 +34,9 @@ class PageAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $isCreation = $this->getSubject()->getTitle() === null;
-
         $formMapper
             ->add('title', null, [
                 'label' => 'Titre',
-            ])
-            ->add('slug', null, [
-                'label' => $isCreation ? 'URL (ne spécifier que la fin : http://en-marche.fr/article/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',
-                'disabled' => !$isCreation,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',

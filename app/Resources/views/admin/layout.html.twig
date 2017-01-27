@@ -4,6 +4,7 @@
     {{ parent() }}
 
     <link rel="stylesheet" href="{{ asset('css/simplemde.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" />
     <style>
         .editor-toolbar.fullscreen, .CodeMirror-fullscreen {
             z-index: 1100 !important;
@@ -15,6 +16,8 @@
     {{ parent() }}
 
     <script src="{{ asset('js/simplemde.min.js') }}"></script>
+    <script src="{{ asset('bundles/sonatacore/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script src="{{ asset('bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script>
         $(function() {
             $('.content-editor').each(function(key, item) {
