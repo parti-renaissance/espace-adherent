@@ -7,10 +7,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="live_links")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LiveLinkRepository")
+ * @ORM\Table(name="proposals")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProposalRepository")
  */
-class LiveLink
+class Proposal
 {
     /**
      * @var int
@@ -22,7 +22,7 @@ class LiveLink
     private $id;
 
     /**
-     * @var int|null
+     * @var int
      *
      * @ORM\Column(type="smallint")
      *
@@ -31,22 +31,29 @@ class LiveLink
     private $position;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
     private $title;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
     private $link;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array")
+     */
+    private $tags;
 
     /**
      * @var \DateTime
@@ -56,6 +63,11 @@ class LiveLink
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->tags = [];
+    }
 
     public function __toString()
     {
@@ -72,7 +84,7 @@ class LiveLink
         return $this->position;
     }
 
-    public function setPosition($position): LiveLink
+    public function setPosition($position): Proposal
     {
         $this->position = $position;
 
@@ -84,7 +96,7 @@ class LiveLink
         return $this->title;
     }
 
-    public function setTitle($title): LiveLink
+    public function setTitle($title): Proposal
     {
         $this->title = $title;
 
@@ -96,10 +108,21 @@ class LiveLink
         return $this->link;
     }
 
-    public function setLink($link): LiveLink
+    public function setLink($link): Proposal
     {
         $this->link = $link;
 
+        return $this;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    public function setTags(array $tags): Proposal
+    {
+        $this->tags = $tags;
         return $this;
     }
 
@@ -108,10 +131,11 @@ class LiveLink
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): LiveLink
+    public function setUpdatedAt(\DateTime $updatedAt): Proposal
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 }
+

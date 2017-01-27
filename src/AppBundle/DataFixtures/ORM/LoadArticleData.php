@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Article;
 use AppBundle\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -32,6 +33,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
+            'category' => Article::CATEGORY_ACTUALITE,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 
@@ -42,6 +44,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => false,
+            'category' => Article::CATEGORY_ACTUALITE,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 
@@ -52,6 +55,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => false,
             'published' => true,
+            'category' => Article::CATEGORY_DISCOURS,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 

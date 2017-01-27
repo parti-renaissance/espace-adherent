@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ArticleAdmin extends AbstractAdmin
@@ -36,24 +37,32 @@ class ArticleAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $slugEditable =
-            $this->getSubject()->getTitle() === null // Creation
-            || !$this->getSubject()->isPublished() // Draft
+            $this->getSubject()->getTitle() === null   // Creation
+            || !$this->getSubject()->isPublished()     // Draft
         ;
 
-        if (!$this->getSubject()->isPublished()) {
-            $formMapper->add('published', CheckboxType::class, [
+        $formMapper
+            ->add('published', CheckboxType::class, [
                 'label' => 'Publier l\'article',
                 'required' => false,
-            ]);
-        }
-
-        $formMapper
+            ])
             ->add('title', null, [
                 'label' => 'Titre',
             ])
             ->add('slug', null, [
                 'label' => $slugEditable ? 'URL (ne spécifier que la fin : http://en-marche.fr/article/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',
                 'disabled' => !$slugEditable,
+            ])
+            ->add('category', ChoiceType::class, [
+                'label' => 'Catégorie',
+                'choices' => [
+                    'Actualité' => Article::CATEGORY_ACTUALITE,
+                    'Vidéo' => Article::CATEGORY_VIDEO,
+                    'Photos' => Article::CATEGORY_PHOTOS,
+                    'Discours' => Article::CATEGORY_DISCOURS,
+                    'Média' => Article::CATEGORY_MEDIA,
+                    'Communiqué' => Article::CATEGORY_COMMUNIQUE,
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -79,6 +88,10 @@ class ArticleAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
+            ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+                'show_filter' => true,
             ]);
     }
 
@@ -88,8 +101,11 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+            ])
             ->add('published', null, [
-                'label' => 'Article publié ?',
+                'label' => 'Publié ?',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
