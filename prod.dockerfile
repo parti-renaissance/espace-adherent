@@ -14,7 +14,7 @@ RUN apt-get update -q && \
     apt-get install -qy software-properties-common language-pack-en-base && \
     export LC_ALL=en_US.UTF-8 && \
     export LANG=en_US.UTF-8 && \
-    add-apt-repository ppa:ondrej/php && \
+    add-apt-repository -y ppa:ondrej/php && \
     apt-get update -q && \
     apt-get install --no-install-recommends -qy \
         ca-certificates \
