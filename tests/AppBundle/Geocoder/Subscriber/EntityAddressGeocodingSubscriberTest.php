@@ -4,14 +4,13 @@ namespace Tests\AppBundle\Geocoder\Subscriber;
 
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\DummyGeocoder;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\AdherentAccountWasActivatedEvent;
+use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
@@ -22,7 +21,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
     /* @var EntityAddressGeocodingSubscriber */
     private $subscriber;
 
-    public function testOnAdherentAccountActivationCompletedSucceeds()
+    public function testOnAdherentAccountRegistrationCompletedSucceeds()
     {
         $adherent = $this->createAdherent('92 bld Victor Hugo');
 
@@ -31,16 +30,13 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onAdherentAccountActivationCompleted(new AdherentAccountWasActivatedEvent(
-            $adherent,
-            AdherentActivationToken::generate($adherent)
-        ));
+        $this->subscriber->onAdherentAccountRegistrationCompleted(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
     }
 
-    public function testOnAdherentAccountActivationCompletedFails()
+    public function testOnAdherentAccountRegistrationCompletedFails()
     {
         $adherent = $this->createAdherent('58 rue de Picsou');
 
@@ -49,10 +45,7 @@ class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onAdherentAccountActivationCompleted(new AdherentAccountWasActivatedEvent(
-            $adherent,
-            AdherentActivationToken::generate($adherent)
-        ));
+        $this->subscriber->onAdherentAccountRegistrationCompleted(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
