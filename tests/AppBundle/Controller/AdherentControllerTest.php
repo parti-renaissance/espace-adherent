@@ -106,12 +106,12 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(6, $errors->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text(), 'First name should be erroneous.');
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text(), 'Last name should be erroneous.');
-        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $errors->eq(2)->text(), 'Zip code name should be erroneous.');
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(3)->text(), 'City should be erroneous.');
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text(), 'Address should be erroneous.');
-        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text(), 'Birth date should be erroneous.');
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
+        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $errors->eq(2)->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(3)->text());
+        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
+        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -205,6 +205,50 @@ class AdherentControllerTest extends WebTestCase
                 $this->assertEmpty($crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->attr('checked'));
             }
         }
+    }
+
+    public function testAdherentChangePassword()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/changer-mot-de-passe');
+
+        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[old_password]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][first]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][second]"]'));
+
+        // Submit the profile form with invalid data
+        $crawler = $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
+            'adherent_change_password' => [
+                'old_password' => '',
+                'password' => [
+                    'first' => '',
+                    'second' => '',
+                ],
+            ],
+        ]);
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(2, $errors->count());
+        $this->assertSame('Le mot de passe est invalide.', $errors->eq(0)->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
+
+        // Submit the profile form with valid data
+        $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
+            'adherent_change_password' => [
+                'old_password' => 'secret!12345',
+                'password' => [
+                    'first' => 'heaneaheah',
+                    'second' => 'heaneaheah',
+                ],
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/changer-mot-de-passe', $this->client);
+
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'heaneaheah');
     }
 
     /**

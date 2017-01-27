@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Entity\Adherent;
+use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
@@ -78,7 +80,18 @@ class AdherentController extends Controller
      */
     public function changePasswordAction(Request $request): Response
     {
-        return $this->render('adherent/change_password.html.twig');
+        $form = $this->createForm(AdherentChangePasswordType::class);
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get('app.adherent_change_password_handler')->changePassword($this->getUser(), $form->get('password')->getData());
+            $this->addFlash('info', $this->get('translator')->trans('adherent.update_password.success'));
+
+            return $this->redirectToRoute('app_adherent_change_password');
+        }
+
+        return $this->render('adherent/change_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

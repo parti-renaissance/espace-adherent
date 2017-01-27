@@ -221,6 +221,11 @@ class Adherent implements UserInterface, GeocodableInterface
         return $this->activatedAt;
     }
 
+    public function changePassword(string $newPassword)
+    {
+        $this->password = $newPassword;
+    }
+
     /**
      * Activates the Adherent account with the provided activation token.
      *

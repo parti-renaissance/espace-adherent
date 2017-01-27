@@ -52,6 +52,8 @@ adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8
 
 adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valide.
 
+adherent.wrong_password: Le mot de passe est invalide.
+
 #
 # Committee
 #
@@ -69,7 +71,7 @@ donation.amount.greater_than_0: La valeur minimale d'un don est de 0 €.
 donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
 
 #
-# Neswletter
+# Newsletter
 #
 neswletter.already_registered: Vous êtes déjà inscrit à la newsletter d'En Marche.
 
