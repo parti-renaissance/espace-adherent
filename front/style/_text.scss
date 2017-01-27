@@ -5,10 +5,16 @@ $text--size-medium--small: 18px;
 $text--size-medium: 24px;
 $text--size-medium--large: 28px;
 $text--size-large: 34px;
+$text--size-larger: 44px;
 $text--size-extra-large: 48px;
 
 @mixin text--bold {
     font-weight: 700;
+}
+
+@mixin text--small {
+    font-size: $text--size-small;
+    line-height: 23px;
 }
 
 @mixin text--default {
@@ -64,7 +70,7 @@ $text--size-extra-large: 48px;
     }
 
     &--small {
-        font-size: $text--size-small;
+        @include text--small;
     }
 
     &--medium-small {
@@ -81,6 +87,12 @@ $text--size-extra-large: 48px;
 
     &--large {
         @include text--large;
+    }
+
+    &--larger {
+        font-size: $text--size-larger;
+        line-height: 0.93;
+        letter-spacing: -1.2px;
     }
 
     &--extra-large {

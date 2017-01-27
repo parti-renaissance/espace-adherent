@@ -29,11 +29,23 @@
     margin-bottom: 20px;
 
     h2 {
-        font-family: 'Roboto';
-        letter-spacing: .3px;
-        font-size: $text--size-default;
-        font-weight: normal;
-        line-height: 1.62;
+        @include text--summary;
+
+        &.bigger {
+            @include text--default;
+        }
+    }
+
+    &.filtered-image:after {
+        @include classic-gradient($filter);
+    }
+
+    .list__links--svgs {
+        margin-bottom: 65px;
+
+        a {
+            color: white;
+        }
     }
 }
 
@@ -43,7 +55,6 @@
         justify-content: space-around;
         border-top: 1px solid rgba(0, 35, 73, 0.15);
         padding: 20px 0;
-        margin-bottom: 40px;
 
         li {
             list-style: none;
@@ -51,6 +62,10 @@
 
             &.active {
                 font-weight: 700;
+            }
+
+            a {
+                border: none;
             }
         }
     }
@@ -253,9 +268,6 @@
         box-sizing: border-box;
 
         h1 {
-            font-size: 44px;
-            line-height: 0.93;
-            letter-spacing: -1.2px;
             max-width: 550px;
         }
     }
@@ -296,5 +308,30 @@
         display: block;
         margin: 0 auto;
         text-align: center;
+    }
+}
+
+.content.emmanuel-macron {
+    header {
+        background-image: url('/images/emmanuel-macron@3x.jpg');
+        background-size: cover;
+        height: 370px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+
+        div {
+            z-index: 1;
+        }
+    }
+
+    nav ul {
+        border-color: rgba(255, 255, 255, 0.3);
+
+        li a {
+            color: white;
+        }
     }
 }

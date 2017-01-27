@@ -21,6 +21,7 @@ $twitter: #1da1f2;
 $gradient--light: linear-gradient(20deg ,rgba(0, 0, 0, .0), rgba(0, 0, 0, .3));
 $gradient: linear-gradient(20deg ,rgba(0, 0, 0, .8), rgba(0, 0, 0, 0));
 $gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, .2), rgba(0, 0, 0, .4));
+$filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 
 @mixin gradient-container {
     top: 0;
@@ -29,6 +30,20 @@ $gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, .2), rgba(0, 0, 0, .4));
     height: 100%;
     display: block;
     position: relative;
+}
+
+@mixin classic-gradient($gradient-style) {
+    content: "gradient";
+    overflow: hidden;
+    position: absolute;
+    text-indent: -9999rem;
+    font-size: 0;
+    line-height: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $gradient-style;
 }
 
 @mixin animate-gradient($gradient-style, $opacity) {
