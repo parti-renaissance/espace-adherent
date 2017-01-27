@@ -258,7 +258,6 @@
     padding-bottom: 10px;
 
     header {
-        background-image: url('/images/programme@3x.jpg');
         background-size: cover;
         height: 370px;
         color: white;
@@ -272,7 +271,7 @@
         }
     }
 
-    li {
+    .programme-proposal {
         border-bottom: 1px solid rgba(0, 35, 73, 0.15);
         padding: 50px 0 10px;
 
@@ -298,9 +297,14 @@
                 color: $blue;
             }
         }
+
+        span {
+            display: inline-block;
+            padding: 5px;
+        }
     }
 
-    span {
+    .more {
         @include text--summary;
         text-transform: uppercase;
         color: rgba(0, 0, 0, 0.3);
@@ -313,7 +317,6 @@
 
 .content.emmanuel-macron {
     header {
-        background-image: url('/images/emmanuel-macron@3x.jpg');
         background-size: cover;
         height: 370px;
         color: white;

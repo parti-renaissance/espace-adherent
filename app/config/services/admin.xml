@@ -28,26 +28,7 @@
                 </argument>
             </call>
 
-            <tag name="sonata.admin" manager-type="orm" label="Médias" group="Gestion du contenu" />
-        </service>
-
-        <!-- Article -->
-        <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
-            <argument />
-            <argument>AppBundle\Entity\Article</argument>
-            <argument />
-
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
-
-            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Gestion du contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Images" group="Médias" />
         </service>
 
         <!-- HomeBlock -->
@@ -66,7 +47,7 @@
                 </argument>
             </call>
 
-            <tag name="sonata.admin" manager-type="orm" label="Page d'accueil" group="Gestion du contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Blocs d'articles" group="Page d'accueil" />
         </service>
 
         <!-- LiveLink -->
@@ -79,7 +60,63 @@
                 <argument type="service" id="app.cloudflare" />
             </call>
 
-            <tag name="sonata.admin" manager-type="orm" label="Liens En direct" group="Gestion du contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Liens En direct" group="Page d'accueil" />
+        </service>
+
+        <!-- ArticleCategory -->
+        <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
+            <argument />
+            <argument>AppBundle\Entity\ArticleCategory</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'articles" group="Actualités" />
+        </service>
+
+        <!-- Article -->
+        <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Article</argument>
+            <argument />
+
+            <call method="setCloudflare">
+                <argument type="service" id="app.cloudflare" />
+            </call>
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Actualités" />
+        </service>
+
+        <!-- ProposalTheme -->
+        <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
+            <argument />
+            <argument>AppBundle\Entity\ProposalTheme</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Thèmes des propositions" group="Programme" />
+        </service>
+
+        <!-- Proposal -->
+        <service id="app.admin.proposal" class="AppBundle\Admin\ProposalAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Proposal</argument>
+            <argument />
+
+            <call method="setCloudflare">
+                <argument type="service" id="app.cloudflare" />
+            </call>
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Programme" />
         </service>
 
         <!-- Administrator -->
@@ -115,7 +152,7 @@
         </service>
 
         <!-- NewsletterSubscription -->
-        <service id="app.admin.newsletter_subscrption" class="AppBundle\Admin\NewsletterSubscriptionAdmin">
+        <service id="app.admin.newsletter_subscription" class="AppBundle\Admin\NewsletterSubscriptionAdmin">
             <argument />
             <argument>AppBundle\Entity\NewsletterSubscription</argument>
             <argument />

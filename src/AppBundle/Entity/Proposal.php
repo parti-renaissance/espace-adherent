@@ -2,8 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Proposal
 {
+    use EntityTimestampableTrait;
+    use EntitySoftDeletableTrait;
+    use EntityContentTrait;
+
     /**
      * @var int
      *
@@ -31,42 +36,38 @@ class Proposal
     private $position;
 
     /**
-     * @var string
+     * @var ProposalTheme[]|Collection
      *
-     * @ORM\Column
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProposalTheme")
+     */
+    private $themes;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $published = false;
+
+    /**
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
      *
      * @Assert\NotBlank
      */
-    private $title;
+    private $media;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
+     * @ORM\Column(type="boolean")
      */
-    private $link;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(type="simple_array")
-     */
-    private $tags;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
+    private $displayMedia = true;
 
     public function __construct()
     {
-        $this->tags = [];
+        $this->themes = new ArrayCollection();
     }
 
     public function __toString()
@@ -91,51 +92,67 @@ class Proposal
         return $this;
     }
 
-    public function getTitle()
+    public function addTheme(ProposalTheme $theme): Proposal
     {
-        return $this->title;
-    }
-
-    public function setTitle($title): Proposal
-    {
-        $this->title = $title;
+        $this->themes[] = $theme;
 
         return $this;
     }
 
-    public function getLink()
+    public function removeTheme(ProposalTheme $theme)
     {
-        return $this->link;
+        $this->themes->removeElement($theme);
     }
 
-    public function setLink($link): Proposal
+    /**
+     * @return ProposalTheme[]|Collection
+     */
+    public function getThemes()
     {
-        $this->link = $link;
+        return $this->themes;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): Proposal
+    {
+        $this->published = $published;
 
         return $this;
     }
 
-    public function getTags(): array
+    /**
+     * @return Media|null
+     */
+    public function getMedia()
     {
-        return $this->tags;
+        return $this->media;
     }
 
-    public function setTags(array $tags): Proposal
+    /**
+     * @param Media|null $media
+     *
+     * @return Proposal
+     */
+    public function setMedia(Media $media = null): Proposal
     {
-        $this->tags = $tags;
+        $this->media = $media;
+
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function displayMedia(): bool
     {
-        return $this->updatedAt;
+        return $this->displayMedia;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): Proposal
+    public function setDisplayMedia(bool $displayMedia): Proposal
     {
-        $this->updatedAt = $updatedAt;
+        $this->displayMedia = $displayMedia;
 
         return $this;
     }
 }
-

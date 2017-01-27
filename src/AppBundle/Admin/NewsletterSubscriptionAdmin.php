@@ -3,10 +3,22 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('email', null, [
+                'label' => 'Adresse e-mail',
+            ])
+            ->add('postalCode', null, [
+                'label' => 'Code postal',
+            ]);
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

@@ -20,13 +20,6 @@ class Article
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
 
-    const CATEGORY_ACTUALITE = 'actualite';
-    const CATEGORY_VIDEO = 'video';
-    const CATEGORY_PHOTOS = 'photos';
-    const CATEGORY_DISCOURS = 'discours';
-    const CATEGORY_MEDIA = 'media';
-    const CATEGORY_COMMUNIQUE = 'communique';
-
     /**
      * @var int
      *
@@ -37,41 +30,85 @@ class Article
     private $id;
 
     /**
-     * @var string
+     * @var ArticleCategory|null
      *
-     * @ORM\Column(length=30)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
-     * @Assert\Choice({"actualite", "video", "photos", "discours", "media", "communique"})
+     * @Assert\NotBlank
      */
-    private $category = self::CATEGORY_ACTUALITE;
+    private $category;
 
     /**
-     * @var boolean
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotBlank
+     */
+    private $publishedAt;
+
+    /**
+     * @var bool
      *
      * @ORM\Column(type="boolean")
      */
     private $published = false;
 
     /**
-     * @var boolean
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
+     *
+     * @Assert\NotBlank
+     */
+    private $media;
+
+    /**
+     * @var bool
      *
      * @ORM\Column(type="boolean")
      */
     private $displayMedia = true;
+
+    public function __construct()
+    {
+        $this->publishedAt = new \DateTime();
+    }
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCategory(): string
+    /**
+     * @return ArticleCategory|null
+     */
+    public function getCategory()
     {
         return $this->category;
     }
 
-    public function setCategory(string $category): Article
+    /**
+     * @param ArticleCategory|null $category
+     *
+     * @return Article
+     */
+    public function setCategory(ArticleCategory $category = null): Article
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): \DateTime
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(\DateTime $publishedAt): Article
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
@@ -88,12 +125,32 @@ class Article
         return $this;
     }
 
+    /**
+     * @return Media|null
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * @param Media|null $media
+     *
+     * @return Article
+     */
+    public function setMedia(Media $media = null): Article
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
     public function displayMedia(): bool
     {
         return $this->displayMedia;
     }
 
-    public function setDisplayMedia(bool $displayMedia): self
+    public function setDisplayMedia(bool $displayMedia): Article
     {
         $this->displayMedia = $displayMedia;
 

@@ -63,6 +63,8 @@ twig:
         recaptcha_public_key: "%env(RECAPTCHA_PUBLIC_KEY)%"
     form_themes:
         - 'form_theme.html.twig'
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
+        - 'SonataCoreBundle:Form:colorpicker.html.twig'
 
 doctrine:
     dbal:

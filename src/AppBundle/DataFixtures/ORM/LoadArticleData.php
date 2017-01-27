@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,11 +22,24 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $storage = $this->container->get('app.storage');
         $em = $this->container->get('doctrine.orm.entity_manager');
 
+        // Media
         $mediaFile = new File(__DIR__.'/../../../../app/data/dist/guadeloupe.jpg');
         $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Article image', 'article.jpg', $mediaFile);
         $em->persist($media);
 
+        $manager->flush();
+
+        // Categories
+        $manager->persist($newsCategory = new ArticleCategory('Actualités'));
+        $manager->persist(new ArticleCategory('Vidéos'));
+        $manager->persist($speechCategory = new ArticleCategory('Discours'));
+        $manager->persist(new ArticleCategory('Médias'));
+        $manager->persist(new ArticleCategory('Communiqués'));
+
+        $manager->flush();
+
+        // Article
         $manager->persist($factory->createFromArray([
             'title' => '« Les outre-mer sont l’un des piliers de notre richesse culturelle. »',
             'slug' => 'outre-mer',
@@ -33,7 +47,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
-            'category' => Article::CATEGORY_ACTUALITE,
+            'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 
@@ -44,7 +58,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => false,
-            'category' => Article::CATEGORY_ACTUALITE,
+            'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 
@@ -55,7 +69,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => false,
             'published' => true,
-            'category' => Article::CATEGORY_DISCOURS,
+            'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
         ]));
 

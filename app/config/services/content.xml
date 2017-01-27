@@ -19,5 +19,11 @@
         <!-- Article factory -->
         <service id="app.content.article_factory" class="AppBundle\Content\ArticleFactory" />
 
+        <!-- Page factory -->
+        <service id="app.content.page_factory" class="AppBundle\Content\PageFactory" />
+
+        <!-- Proposal factory -->
+        <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
+
     </services>
 </container>

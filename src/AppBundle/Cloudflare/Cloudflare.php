@@ -23,6 +23,7 @@ class Cloudflare
      */
     public function cacheIndefinitely(Response $response, array $tags = [])
     {
+        $response->setMaxAge(0);
         $response->setSharedMaxAge(31536000); // 1 year
 
         if ($tags) {

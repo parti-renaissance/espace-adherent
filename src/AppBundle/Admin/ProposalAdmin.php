@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Proposal;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -11,20 +11,21 @@ use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class ArticleAdmin extends AbstractAdmin
+class ProposalAdmin extends AbstractAdmin
 {
     use CloudflareSynchronizedAdminTrait;
 
     /**
-     * @param Article $object
+     * @param Proposal $object
      */
     public function invalidate($object)
     {
-        $this->getCloudflare()->invalidateTag('article-'.$object->getId());
+        $this->getCloudflare()->invalidateTag('page-programme');
+        $this->getCloudflare()->invalidateTag('proposal-'.$object->getId());
     }
 
     /**
-     * @param Article $object
+     * @param Proposal $object
      *
      * @return Metadata
      */
@@ -53,25 +54,22 @@ class ArticleAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('displayMedia', CheckboxType::class, [
-                    'label' => 'Afficher l\'image principale dans l\'article',
+                    'label' => 'Afficher l\'image principale dans la proposition',
                     'required' => false,
+                ])
+                ->add('themes', null, [
+                    'label' => 'Thèmes',
                 ])
             ->end()
             ->with('Publication', array('class' => 'col-md-4'))
                 ->add('published', CheckboxType::class, [
-                    'label' => 'Publier l\'article',
+                    'label' => 'Publier la proposition',
                     'required' => false,
-                ])
-                ->add('publishedAt', 'sonata_type_date_picker', [
-                    'label' => 'Date de publication',
                 ])
                 ->add('slug', null, [
                     'label' => 'URL de publication',
                     'disabled' => !$slugEditable,
                     'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/article/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
-                ])
-                ->add('category', null, [
-                    'label' => 'Catégorie de publication',
                 ])
             ->end()
             ->with('Contenu', array('class' => 'col-md-12'))
@@ -98,14 +96,8 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
-            ->add('category', null, [
-                'label' => 'Catégorie',
-            ])
             ->add('published', null, [
                 'label' => 'Publié ?',
-            ])
-            ->add('publishedAt', null, [
-                'label' => 'Date de publication',
             ])
             ->add('updatedAt', null, [
                 'label' => 'Dernière mise à jour',
@@ -113,7 +105,7 @@ class ArticleAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'actions' => [
                     'preview' => [
-                        'template' => 'admin/article_preview.html.twig',
+                        'template' => 'admin/proposal_preview.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],

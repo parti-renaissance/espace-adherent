@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityContentTrait
@@ -35,15 +34,6 @@ trait EntityContentTrait
      * @Assert\NotBlank
      */
     private $description;
-
-    /**
-     * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
-     *
-     * @Assert\NotBlank
-     */
-    private $media;
 
     /**
      * @var string|null
@@ -115,26 +105,6 @@ trait EntityContentTrait
     public function setDescription($description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Media|null
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media|null $media
-     *
-     * @return EntityContentTrait
-     */
-    public function setMedia(Media $media = null): self
-    {
-        $this->media = $media;
 
         return $this;
     }
