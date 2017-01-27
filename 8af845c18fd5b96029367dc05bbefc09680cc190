@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by romain-pierre at 2017-01-24T17:07:50Z
+
+Know bug: if the user go-back to this page and submit twice, the SQL query fail (duplicated entry), but this cas was not covered by the user story.
+
+---------------------------------------------------------------------------
+
+by romain-pierre at 2017-01-24T17:32:13Z
+
+Only the tests are missing before review.
+
+---------------------------------------------------------------------------
+
+by hhamon at 2017-01-27T13:29:48Z
+
+CS style to fix ;)
