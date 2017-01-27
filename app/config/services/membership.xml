@@ -5,6 +5,7 @@
     <services>
 
         <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
+            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.membership.adherent_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="router"/>

@@ -125,10 +125,11 @@ class MembershipControllerTest extends WebTestCase
             "Votre inscription en tant qu'adhérent s'est déroulée avec succès.",
             $crawler->filter('#notice-flashes')->text()
         );
-        $this->assertInstanceOf(
-            Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
-        );
+
+        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertNotNull($adherent->getLatitude());
+        $this->assertNotNull($adherent->getLongitude());
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
@@ -196,10 +197,11 @@ class MembershipControllerTest extends WebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
-        $this->assertInstanceOf(
-            Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
-        );
+
+        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertNotNull($adherent->getLatitude());
+        $this->assertNotNull($adherent->getLongitude());
 
         $session = $this->client->getRequest()->getSession();
 
