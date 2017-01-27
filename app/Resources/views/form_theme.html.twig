@@ -51,3 +51,22 @@
     {# TODO to be integrated #}
     {{ form_widget(form) }}
 {% endblock %}
+
+{% block _app_membership_choose_nearby_committee_committees_row %}
+    <div {{ block('widget_container_attributes') }}>
+        {% for name, choice in form %}
+            {% set memberships_data = form.parent.vars.committees_views_data[name] %}
+            <div>
+                <div class="background--light">
+                    <h5>{{ choice.vars.label }}</h5>
+                    <p>Nous sommes {{ memberships_data['memberships'] }} membres</p>
+                    <div><a class="btn btn--green" href="{{ path('app_committee_show', { uuid: choice.vars.value, slug: memberships_data['slug'] }) }}">Découvrir</a></div>
+                </div>
+                <div>
+                  {{ form_label(choice, 'Je veux suivre ce comité') }}
+                  {{ form_widget(choice) }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
