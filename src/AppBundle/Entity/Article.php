@@ -20,6 +20,13 @@ class Article
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
 
+    const CATEGORY_ACTUALITE = 'actualite';
+    const CATEGORY_VIDEO = 'video';
+    const CATEGORY_PHOTOS = 'photos';
+    const CATEGORY_DISCOURS = 'discours';
+    const CATEGORY_MEDIA = 'media';
+    const CATEGORY_COMMUNIQUE = 'communique';
+
     /**
      * @var int
      *
@@ -28,6 +35,15 @@ class Article
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=30)
+     *
+     * @Assert\Choice({"actualite", "video", "photos", "discours", "media", "communique"})
+     */
+    private $category = self::CATEGORY_ACTUALITE;
 
     /**
      * @var boolean
@@ -46,6 +62,18 @@ class Article
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): Article
+    {
+        $this->category = $category;
+
+        return $this;
     }
 
     public function isPublished(): bool

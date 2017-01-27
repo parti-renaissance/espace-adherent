@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.home();
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
 <main>
     <section class="content programme">

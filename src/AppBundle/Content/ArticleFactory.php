@@ -16,6 +16,7 @@ class ArticleFactory
         $article->setDisplayMedia($data['displayMedia'] ?? false);
         $article->setContent($data['content']);
         $article->setPublished($data['published'] ?? true);
+        $article->setCategory($data['category']);
 
         return $article;
     }

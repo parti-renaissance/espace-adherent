@@ -182,7 +182,7 @@
         </div>
     </section>
 
-    {% if blocks|length == 9 %}
+    {% if blocks|length >= 9 %}
     <section class="l__wrapper b__nudge--bottom-large">
         <div class="proteger l__col l__col--center"
              style="background-image: linear-gradient(120deg ,rgba(0,0,0,.35), rgba(0,0,0,.35)), url('{{ dynamic_asset(blocks[8].media.path, {'w': 1200}) }}');">
