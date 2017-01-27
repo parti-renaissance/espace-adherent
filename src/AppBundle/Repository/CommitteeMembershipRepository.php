@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -54,6 +55,27 @@ class CommitteeMembershipRepository extends EntityRepository
     }
 
     /**
+     * Finds all the memberships for an adherent.
+     *
+     * @param string $adherentUuid
+     *
+     * @return CommitteeMembership[]
+     */
+    public function findMemberships(string $adherentUuid)
+    {
+        $adherentUuid = Uuid::fromString($adherentUuid);
+
+        $query = $this
+            ->createQueryBuilder('cm')
+            ->where('cm.adherentUuid = :adherent')
+            ->setParameter('adherent', (string) $adherentUuid)
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
+
+    /**
      * Finds the membership relationship between an adherent and a committee.
      *
      * @param string $adherentUuid
@@ -94,6 +116,28 @@ class CommitteeMembershipRepository extends EntityRepository
         ;
 
         return $qb;
+    }
+
+    /**
+     * Returns the number of members (hosts and followers) for the given committee.
+     *
+     * @param string $committeeUuid
+     *
+     * @return int
+     */
+    public function countMembers(string $committeeUuid): int
+    {
+        $committeeUuid = Uuid::fromString($committeeUuid);
+
+        $query = $this
+            ->createQueryBuilder('cm')
+            ->select('COUNT(cm.uuid)')
+            ->where('cm.committeeUuid = :committee')
+            ->setParameter('committee', (string) $committeeUuid)
+            ->getQuery()
+        ;
+
+        return (int) $query->getSingleScalarResult();
     }
 
     /**

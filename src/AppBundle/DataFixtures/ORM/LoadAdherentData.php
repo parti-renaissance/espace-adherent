@@ -20,9 +20,13 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
     const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
     const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
+    const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
+    const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
+    const COMMITTEE_4_UUID = 'd648d486-fbb3-4394-b4b3-016fac3658af';
+    const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-8674-a43910da6419';
 
     use ContainerAwareTrait;
 
@@ -112,6 +116,20 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'registered_at' => '2017-01-16 18:33:22',
         ]);
 
+        $adherent7 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_7_UUID,
+            'password' => 'Champion20',
+            'email' => 'francis.brioul@yahoo.com',
+            'gender' => 'male',
+            'first_name' => 'Francis',
+            'last_name' => 'Brioul',
+            'address' => PostAddress::createFrenchAddress('39 rue de Melun', '77190-77152'),
+            'birthdate' => '1962-01-07',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -119,6 +137,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $key4 = AdherentActivationToken::generate($adherent4);
         $key5 = AdherentActivationToken::generate($adherent5);
         $key6 = AdherentActivationToken::generate($adherent6);
+        $key7 = AdherentActivationToken::generate($adherent7);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -126,6 +145,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $adherent4->activate($key4, '2017-01-18 13:23:50');
         $adherent5->activate($key5, '2017-01-08 06:42:56');
         $adherent6->activate($key6, '2017-01-17 08:07:45');
+        $adherent7->activate($key7, '2017-01-25 19:34:02');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -148,6 +168,30 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203'),
         ]);
 
+        $committee3 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_3_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'name' => 'En Marche Dammarie-les-Lys',
+            'description' => 'Les jeunes avec En Marche !',
+            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152'),
+        ]);
+
+        $committee4 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_4_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'name' => 'Antenne En Marche de Fontainebleau',
+            'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
+            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186'),
+        ]);
+
+        $committee5 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_5_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'name' => 'En Marche - Comité de Évry',
+            'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
+            'address' => PostAddress::createFrenchAddress("place des Droits de l'Homme et du Citoyen", '91000-91228'),
+        ]);
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -158,6 +202,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent4);
         $manager->persist($adherent5);
         $manager->persist($adherent6);
+        $manager->persist($adherent7);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -170,9 +215,14 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($committee1);
         $manager->persist($committee2);
+        $manager->persist($committee3);
+        $manager->persist($committee4);
+        $manager->persist($committee5);
 
         // Make adherents join committees
         $manager->persist($committee1->approved('2017-01-03 15:18:22'));
+        $manager->persist($committee4->approved('2017-01-03 15:19:10'));
+        $manager->persist($committee5->approved('2017-01-03 15:19:54'));
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
