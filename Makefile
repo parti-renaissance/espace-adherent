@@ -7,8 +7,8 @@ CONSOLE=$(APP) bin/console
 help:           ## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-install:        ## [start deps db-create] Setup the project using Docker and docker-compose
-install: start deps db-create perm
+install:        ## [start deps db-create, db-fixtures] Setup the project using Docker and docker-compose
+install: start deps db-create db-fixtures perm
 
 start:          ## Start the Docker containers
 	docker-compose up -d
@@ -30,6 +30,8 @@ db-create:      ## Create the database and load the fixtures in it
 	$(CONSOLE) doctrine:database:drop --force --if-exists
 	$(CONSOLE) doctrine:database:create --if-not-exists
 	$(CONSOLE) doctrine:schema:create
+
+db-fixtures:    ## Reloads the data fixtures for the dev environment
 	$(CONSOLE) doctrine:fixtures:load -n
 
 db-update:      ## Update the database structure according to the last changes
