@@ -48,7 +48,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'displayMedia' => true,
             'published' => true,
             'category' => $newsCategory,
-            'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
+            'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -59,7 +59,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'displayMedia' => true,
             'published' => false,
             'category' => $newsCategory,
-            'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
+            'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -70,7 +70,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'displayMedia' => false,
             'published' => true,
             'category' => $speechCategory,
-            'content' => file_get_contents(__DIR__.'/../../../../tests/Fixtures/content.md'),
+            'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
 
         $manager->flush();
