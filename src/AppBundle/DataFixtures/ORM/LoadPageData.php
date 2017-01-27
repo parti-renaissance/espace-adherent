@@ -33,7 +33,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'title' => 'Emmanuel Macron - Révolution',
             'slug' => 'emmanuel-macron-revolution',
             'description' => 'Révolution',
-            'content' => 'Révolution',
+            'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
 
         $manager->flush();
