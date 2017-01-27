@@ -2,16 +2,18 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Address\AddressInterface;
+use AppBundle\Address\GeocodableAddress;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Intl;
 
 /**
  * @ORM\Embeddable
  */
-class PostAddress implements GeocodableInterface
+class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
     const FRANCE = 'FR';
 
@@ -155,11 +157,14 @@ class PostAddress implements GeocodableInterface
     /**
      * Returns the french national INSEE code from the city code.
      *
-     * @return string
+     * @return string|null
      */
-    public function getInseeCode(): string
+    public function getInseeCode()
     {
-        list(, $inseeCode) = explode('-', $this->city);
+        $inseeCode = null;
+        if ($this->city && 5 === strpos($this->city, '-')) {
+            list(, $inseeCode) = explode('-', $this->city);
+        }
 
         return $inseeCode;
     }
@@ -172,21 +177,6 @@ class PostAddress implements GeocodableInterface
 
     public function getGeocodableAddress(): string
     {
-        $address = [];
-        if ($this->address) {
-            $address[] = str_replace(',', '', $this->address);
-        }
-
-        if ($this->postalCode && $this->city) {
-            $address[] = sprintf(
-                '%s %s',
-                $this->postalCode,
-                FranceCitiesBundle::getCity($this->postalCode, $this->getInseeCode())
-            );
-        }
-
-        $address[] = Intl::getRegionBundle()->getCountryName($this->country);
-
-        return implode(', ', $address);
+        return (string) GeocodableAddress::createFromAddress($this);
     }
 }

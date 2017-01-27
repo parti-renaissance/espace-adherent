@@ -5,8 +5,8 @@ namespace AppBundle\Geocoder\Subscriber;
 use AppBundle\Committee\CommitteeEvents;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Geocoder\GeocoderInterface;
+use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentAccountWasActivatedEvent;
 use AppBundle\Membership\AdherentEvents;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,7 +33,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($event->getCommittee());
     }
 
-    private function updateGeocodableEntity(GeocodableInterface $geocodable)
+    private function updateGeocodableEntity(GeoPointInterface $geocodable)
     {
         if ($coordinates = $this->geocode($geocodable->getGeocodableAddress())) {
             $geocodable->updateCoordinates($coordinates);

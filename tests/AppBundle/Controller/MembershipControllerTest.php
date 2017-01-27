@@ -105,7 +105,8 @@ class MembershipControllerTest extends WebTestCase
         $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#membership-address > .form__errors > li')->text());
+        $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
+        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
     }
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()

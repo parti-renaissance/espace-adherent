@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
-use AppBundle\Geocoder\GeocodableInterface;
+use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\MembershipRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
  */
-class Adherent implements UserInterface, GeocodableInterface
+class Adherent implements UserInterface, GeoPointInterface
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
@@ -339,5 +339,15 @@ class Adherent implements UserInterface, GeocodableInterface
     private function joinCommittee(Committee $committee, string $privilege): CommitteeMembership
     {
         return CommitteeMembership::createForAdherent($this, $committee, $privilege);
+    }
+
+    /**
+     * Returns the adherent post address.
+     *
+     * @return PostAddress
+     */
+    public function getPostAddress(): PostAddress
+    {
+        return $this->postAddress;
     }
 }
