@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
+use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -58,7 +59,7 @@ class AdherentControllerTest extends WebTestCase
 
         yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
 
-        yield ['/espace-adherent/mon-profil/preferences-des-email', 'Préférences des e-mails'];
+        yield ['/espace-adherent/mon-profil/preferences-des-emails', 'Préférences des e-mails'];
     }
 
     public function testEditAdherentProfile()
@@ -251,6 +252,56 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/changer-mot-de-passe', $this->client);
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'heaneaheah');
+    }
+
+    public function testAdherentSetEmailNotifications()
+    {
+        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasSubscribedMainEmails());
+
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/preferences-des-emails');
+        $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
+
+        $this->assertCount(3, $subscriptions);
+
+        // Submit the emails subscription form with invalid data
+        // We need to use a POST request because the crawler does not
+        // accept any invalid choice, thus cannot submit invalid form
+        $crawler = $this->client->request(Request::METHOD_POST, '/espace-adherent/mon-profil/preferences-des-emails', [
+            'adherent_email_subscription' => [
+                'emails_subscriptions' => ['heah'],
+                '_token' => $crawler->filter('input[name="adherent_email_subscription[_token]"]')->attr('value'),
+            ],
+        ]);
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Cette valeur n\'est pas valide.', $errors->eq(0)->text());
+
+        // Submit the emails subscription form with valid data
+        $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
+            'adherent_email_subscription' => [
+                'emails_subscriptions' => [
+                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
+                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                ],
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/preferences-des-emails', $this->client);
+
+        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
     }
 
     /**
