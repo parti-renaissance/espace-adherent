@@ -57,6 +57,8 @@ class MembershipRequestHandler
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
+        $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
+
         $this->manager->flush();
     }
 

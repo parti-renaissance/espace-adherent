@@ -9,6 +9,7 @@ use AppBundle\Geocoder\GeocoderInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentEvents;
+use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -26,6 +27,15 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     public function onAdherentAccountRegistrationCompleted(AdherentAccountWasCreatedEvent $event)
     {
         $this->updateGeocodableEntity($event->getAdherent());
+    }
+
+    public function onAdherentProfileUpdated(AdherentProfileWasUpdatedEvent $event)
+    {
+        $adherent = $event->getAdherent();
+
+        if (!$adherent->getLatitude()) {
+            $this->updateGeocodableEntity($adherent);
+        }
     }
 
     public function onCommitteeCreated(CommitteeWasCreatedEvent $event)
@@ -55,6 +65,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     {
         return [
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', -256],
+            AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
             CommitteeEvents::CREATED => ['onCommitteeCreated', -256],
         ];
     }

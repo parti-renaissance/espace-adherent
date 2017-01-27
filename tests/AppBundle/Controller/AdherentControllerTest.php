@@ -66,6 +66,10 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
+        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        $oldLatitude = $adherent->getLatitude();
+        $oldLongitude = $adherent->getLongitude();
+
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $inputPattern = 'input[name="update_membership_request[%s]"]';
@@ -143,7 +147,8 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertSame('Vos informations ont été mises à jour avec succès.', trim($crawler->filter('#notice-flashes')->text()));
 
-        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        // We need to reload the manager reference to get the updated data
+        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findByEmail('carl999@example.fr');
 
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('Jean Dupont', $adherent->getFullName());
@@ -152,6 +157,10 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Nice', $adherent->getCityName());
         $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
         $this->assertSame('student', $adherent->getPosition());
+        $this->assertNotNull($newLatitude = $adherent->getLatitude());
+        $this->assertNotNull($newLongitude = $adherent->getLongitude());
+        $this->assertNotSame($oldLatitude, $newLatitude);
+        $this->assertNotSame($oldLongitude, $newLongitude);
     }
 
     public function testEditAdherentInterests()

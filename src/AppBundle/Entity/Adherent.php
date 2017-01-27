@@ -242,10 +242,7 @@ class Adherent implements UserInterface, GeoPointInterface
         $this->password = $newPassword;
     }
 
-    /**
-     * @var \Generator
-     */
-    public function getEmailsSubscriptions()
+    public function getEmailsSubscriptions(): array
     {
         $subscriptions = [];
         if ($this->mainEmailsSubscription) {
@@ -367,8 +364,11 @@ class Adherent implements UserInterface, GeoPointInterface
         $this->lastName = $membership->lastName;
         $this->birthdate = $membership->getBirthdate();
         $this->position = $membership->position;
-        $this->postAddress = $postAddress;
         $this->phone = $membership->getPhone();
+
+        if (!$this->postAddress->equals($postAddress)) {
+            $this->postAddress = $postAddress;
+        }
     }
 
     /**
