@@ -129,8 +129,18 @@ Une fois le projet installé, vous pouvez accéder à l'espace d'administration 
 [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
 Vous pouvez alors y entrer les identifiants suivants :
-- admin@en-marche-dev.fr / admin pour l'accès en mode administrateur
-- writer@en-marche-dev.fr / writer pour l'accès en mode rédacteur
+```
+admin@en-marche-dev.fr / admin        pour l'accès en mode administrateur
+writer@en-marche-dev.fr / writer      pour l'accès en mode rédacteur
+```
+
+## 1.1.3 Accéder à l'espace adhérent
+
+Une fois le projet installé, vous pouvez accéder à l'espace adhérent en cliquant sur "Connexion".
+Vous pouvez alors y entrer l'identifiant suivant :
+```
+jacques.picard@en-marche.fr / changeme1337
+```
 
 ## 1.1.4 Services disponibles
 
