@@ -39,10 +39,7 @@ class HomeController extends Controller
         }
 
         return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('home/article.html.twig', [
-                'article' => $article,
-                'content' => $this->get('app.content.markdown_parser')->convertToHtml($article->getContent()),
-            ]),
+            $this->render('home/article.html.twig', ['article' => $article]),
             ['articles', 'article-'.$article->getId()]
         );
     }
