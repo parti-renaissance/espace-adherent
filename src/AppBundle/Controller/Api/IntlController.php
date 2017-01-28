@@ -19,9 +19,6 @@ class IntlController extends Controller
      */
     public function indexAction($postalCode)
     {
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode)),
-            ['api-postal-codes']
-        );
+        return new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode));
     }
 }

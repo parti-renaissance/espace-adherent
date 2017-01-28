@@ -3,7 +3,7 @@ imports:
 
 services:
     app.recaptcha.api_client:
-        class: AppBundle\Recaptcha\DummyRecaptchaApiClient
+        class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
     app.mailjet.transport:
@@ -11,14 +11,12 @@ services:
         arguments: ['@?logger']
         public: false
 
-    app.cloudflare.tag_invalidator:
-        class: 'AppBundle\Cloudflare\CloudflareNullTagInvalidator'
-        arguments: ['@?logger']
-        public: false
-
     app.geocoder:
         class: 'AppBundle\Geocoder\DummyGeocoder'
         public: false
+
+    app.glide.cache_adapter:
+        class: 'League\Flysystem\Memory\MemoryAdapter'
 
 parameters:
     env(PAYBOX_SITE): "1999888"

@@ -9,13 +9,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class LiveLinkAdmin extends AbstractAdmin
 {
-    use CloudflareSynchronizedAdminTrait;
-
-    public function invalidate($object)
-    {
-        $this->getCloudflare()->invalidateTag('home');
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

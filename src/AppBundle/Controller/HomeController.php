@@ -16,14 +16,11 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('home/index.html.twig', [
-                'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
-                'live_links' => $this->getDoctrine()->getRepository('AppBundle:LiveLink')->findHomeLiveLinks(),
-                'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
-            ]),
-            ['home']
-        );
+        return $this->render('home/index.html.twig', [
+            'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
+            'live_links' => $this->getDoctrine()->getRepository('AppBundle:LiveLink')->findHomeLiveLinks(),
+            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
+        ]);
     }
 
     /**
@@ -32,6 +29,6 @@ class HomeController extends Controller
      */
     public function healthAction()
     {
-        return $this->get('app.cloudflare')->cacheIndefinitely(new Response('Healthy'), ['health']);
+        return new Response('Healthy');
     }
 }

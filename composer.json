@@ -22,6 +22,7 @@
         "ext-pdo": "*",
         "symfony/symfony": "3.2.*",
         "twig/twig": "^1.30.0",
+        "predis/predis": "^1.1.0",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -48,7 +49,8 @@
         "csa/guzzle-bundle": "^2.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.1",
         "scheb/two-factor-bundle": "^2.8",
-        "willdurand/geocoder-bundle": "^4.1"
+        "willdurand/geocoder-bundle": "^4.1",
+        "danhunsaker/flysystem-redis": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

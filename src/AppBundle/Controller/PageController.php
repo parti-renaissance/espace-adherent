@@ -16,7 +16,7 @@ class PageController extends Controller
      */
     public function emmanuelMacronAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/ce-que-je-suis', [
+        return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-ce-que-je-suis'),
         ]);
     }
@@ -27,7 +27,7 @@ class PageController extends Controller
      */
     public function emmanuelMacronRevolutionAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/revolution', [
+        return $this->render('page/emmanuel-macron/revolution.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-revolution'),
         ]);
     }
@@ -38,7 +38,7 @@ class PageController extends Controller
      */
     public function emmanuelMacronProgrammeAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/programme', [
+        return $this->render('page/emmanuel-macron/programme.html.twig', [
             'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
         ]);
     }
@@ -55,7 +55,7 @@ class PageController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->createCachedPageResponse('emmanuel-macron/proposition', [
+        return $this->render('page/emmanuel-macron/proposition.html.twig', [
             'proposal' => $proposal,
         ]);
     }
@@ -66,7 +66,7 @@ class PageController extends Controller
      */
     public function emmanuelMacronMonAgendaAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/mon-agenda');
+        return $this->render('page/emmanuel-macron/mon-agenda.html.twig');
     }
 
     /**
@@ -75,7 +75,7 @@ class PageController extends Controller
      */
     public function mouvementValeursAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/nos-valeurs', [
+        return $this->render('page/le-mouvement/nos-valeurs.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-nos-valeurs'),
         ]);
     }
@@ -86,7 +86,7 @@ class PageController extends Controller
      */
     public function mouvementOrganisationAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/notre-organisation', [
+        return $this->render('page/le-mouvement/notre-organisation.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-notre-organisation'),
         ]);
     }
@@ -97,7 +97,7 @@ class PageController extends Controller
      */
     public function mouvementComitesAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/les-comites', [
+        return $this->render('page/le-mouvement/les-comites.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-comites'),
         ]);
     }
@@ -108,7 +108,7 @@ class PageController extends Controller
      */
     public function mouvementEvenementsAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/les-evenements', [
+        return $this->render('page/le-mouvement/les-evenements.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-evenements'),
         ]);
     }
@@ -119,7 +119,7 @@ class PageController extends Controller
      */
     public function mouvementBenevoleAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/devenez-benevole', [
+        return $this->render('page/le-mouvement/devenez-benevole.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-devenez-benevole'),
         ]);
     }
@@ -130,16 +130,8 @@ class PageController extends Controller
      */
     public function mentionsLegalesAction()
     {
-        return $this->createCachedPageResponse('mentions-legales', [
+        return $this->render('page/mentions-legales.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('mentions-legales'),
         ]);
-    }
-
-    private function createCachedPageResponse(string $template, array $parameters = [])
-    {
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('page/'.$template.'.html.twig', $parameters),
-            ['pages', 'page-'.str_replace('/', '-', $template)]
-        );
     }
 }

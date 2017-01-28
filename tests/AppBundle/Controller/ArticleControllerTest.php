@@ -18,9 +18,6 @@ class ArticleControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
         $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
-
-        // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     public function testArticleWithoutImage()
@@ -30,9 +27,6 @@ class ArticleControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
         $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
-
-        // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     public function testArticleDraft()

@@ -8,7 +8,6 @@ imports:
     - { resource: services/cache.xml }
     - { resource: services/committee.xml }
     - { resource: services/content.xml }
-    - { resource: services/cloudflare.xml }
     - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
     - { resource: services/geocoder.xml }
@@ -127,13 +126,6 @@ csa_guzzle:
         mailjet_api:
             config:
                 base_uri: 'https://api.mailjet.com/v3/'
-                timeout: 2.0
-                headers:
-                    Content-Type: 'application/json'
-
-        cloudflare_api:
-            config:
-                base_uri: 'https://api.cloudflare.com/client/v4/'
                 timeout: 2.0
                 headers:
                     Content-Type: 'application/json'

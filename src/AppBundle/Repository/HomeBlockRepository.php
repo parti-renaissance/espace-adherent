@@ -12,6 +12,11 @@ class HomeBlockRepository extends EntityRepository
      */
     public function findHomeBlocks()
     {
-        return $this->findBy([], ['position' => 'ASC']);
+        return $this->createQueryBuilder('h')
+            ->select('h', 'm')
+            ->leftJoin('h.media', 'm')
+            ->orderBy('h.position', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }
