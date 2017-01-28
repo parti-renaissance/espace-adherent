@@ -123,9 +123,6 @@ export default class AddressForm extends React.Component
         return (
             <div>
                 <div className="form__row">
-                    <label className="form form__label required" htmlFor="app_donation_country">
-                        Pays
-                    </label>
 
                     {typeof this.props.defaultAddress.errors.country !== 'undefined'
                         ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.country }} />
@@ -133,6 +130,7 @@ export default class AddressForm extends React.Component
 
                     <select id="app_donation_country"
                             className="form--full form form__field"
+                            placeholder="Pays"
                             defaultValue={this.state.country ? this.state.country : this.props.defaultAddress.country}
                             onChange={this.handleCountryChange}>
                         {countriesOptions}
@@ -143,9 +141,6 @@ export default class AddressForm extends React.Component
                     <div>
                         <div className="l__row">
                             <div className="form__row">
-                                <label className="form form__label" htmlFor="app_donation_postalCode">
-                                    Code postal
-                                </label>
 
                                 {typeof this.props.defaultAddress.errors.postalCode !== 'undefined'
                                     ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.postalCode }} />
@@ -156,6 +151,7 @@ export default class AddressForm extends React.Component
                                            id="app_donation_postalCode"
                                            required="required"
                                            className="form form__field"
+                                           placeholder="Code postal"
                                            maxLength="5"
                                            disabled={this.state.loading}
                                            defaultValue={this.state.postalCode ? this.state.postalCode : this.props.defaultAddress.postalCode}
@@ -164,9 +160,6 @@ export default class AddressForm extends React.Component
                             </div>
 
                             <div className="form__row">
-                                <label className="form form__label" htmlFor="app_donation_city">
-                                    Ville
-                                </label>
 
                                 {typeof this.props.defaultAddress.errors.city !== 'undefined'
                                     ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.city }} />
@@ -176,6 +169,7 @@ export default class AddressForm extends React.Component
                                     <select id="app_donation_city"
                                             defaultValue={this.props.defaultAddress.city}
                                             onChange={this.handleCityChange}
+                                            placeholder="Ville"
                                             className="form form__field donation__form__city">
                                         {citiesOptions}
                                     </select>
@@ -191,9 +185,6 @@ export default class AddressForm extends React.Component
                         </div>
 
                         <div className="form__row">
-                            <label className="form form__label" htmlFor="app_donation_address">
-                                Adresse postale
-                            </label>
 
                             {typeof this.props.defaultAddress.errors.address !== 'undefined'
                                 ? <div dangerouslySetInnerHTML={{ __html: this.props.defaultAddress.errors.address }} />
@@ -203,6 +194,7 @@ export default class AddressForm extends React.Component
                                    id="app_donation_address"
                                    defaultValue={this.props.defaultAddress.address}
                                    onChange={this.handleAddressChange}
+                                   placeholder="Adresse postale"
                                    className="form form--full form__field" />
                         </div>
                     </div>

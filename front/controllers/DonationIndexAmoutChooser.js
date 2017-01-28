@@ -38,7 +38,12 @@ export default class DonationIndexAmoutChooser extends React.Component
                 : ''}
 
                 <div className="donation__form__reductions text--center">
-                    Soit {amountAfterTaxes} € après réduction d'impôts
+                    <div>
+                        {amountAfterTaxes}€
+                    </div>
+                    <div>
+                        après réduction d'impôts
+                    </div>
                 </div>
             </div>
         );
