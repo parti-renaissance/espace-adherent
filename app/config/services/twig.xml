@@ -20,5 +20,12 @@
             <tag name="twig.extension" />
         </service>
 
+        <!-- Markdown -->
+        <service id="app.twig.markdown" class="AppBundle\Twig\MarkdownExtension" public="false">
+            <argument type="service" id="app.content.markdown_parser" />
+
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 </container>

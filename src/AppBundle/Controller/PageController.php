@@ -159,10 +159,7 @@ class PageController extends Controller
         }
 
         return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('page/proposal.html.twig', [
-                'proposal' => $proposal,
-                'content' => $this->get('app.content.markdown_parser')->convertToHtml($proposal->getContent()),
-            ]),
+            $this->render('page/proposal.html.twig', ['proposal' => $proposal]),
             ['proposals', 'proposal-'.$proposal->getId()]
         );
     }
