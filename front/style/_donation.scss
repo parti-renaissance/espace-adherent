@@ -130,17 +130,82 @@
 }
 
 .donation {
-    margin: 20px 0 100px 0;
+    padding: 20px 0;
+    background-color: $gray;
+    background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/background__don.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    &__header {
+        h1 a {
+            @include text--logo;
+            color: white;
+        }
+    }
 
     &__form {
-        width: 55%;
+        width: 500px;
+        background: white;
+        padding: 40px 55px;
+        margin: 0 72px 0 30px;
+        text-align: center;
+        box-sizing: border-box;
+
+        @media (max-width: $tablet) {
+            width: 100%;
+            margin: 0;
+        }
+
+        form {
+            font-family: 'Roboto';
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 41px;
+            font-weight: 700;
+            font-style: italic;
+            line-height: 0.86;
+            letter-spacing: -0.7px;
+        }
+
+        .fluo {
+            background: $yellow;
+            font-family: 'Roboto';
+            padding: 5px 10px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            margin: 10px 0 30px;
+            display: inline-block;
+        }
 
         &__amount {
             margin-bottom: 40px;
+
+            .donate__amounts {
+                label.amount {
+                    background: #9b9b9b;
+                    color: white;
+
+                    &:hover {
+                        background: $pink;
+                    }
+                }
+
+                .other-amount {
+                    background: #ececec;
+                }
+            }
         }
 
         &__reductions {
-            font-size: $text--size-medium--small;
+            div:nth-child(1) {
+                margin-top: 40px;
+                font-size: 30px;
+                font-weight: 700;
+            }
         }
 
         &__phone {
@@ -148,17 +213,58 @@
         }
 
         &__city {
-            width: 200px;
+            width: 208px;
         }
     }
 
-    &__form-explainations {
-        width: 40%;
-        color: #737373;
+    &__form-steps {
+        counter-reset: step;
+        width: 340px;
+        margin: 0 auto 40px auto;
+        display: flex;
+        justify-content: space-between;
 
-        &__taxes, &__usages, &__reasons {
-            margin: 25px 0 50px 0;
+        li {
+            @include text--summary;
+            display: inline-block;
+            opacity: 0.3;
+            text-align: center;
+
+            &:before {
+                content: counter(step);
+                counter-increment: step;
+                width: 30px;
+                height: 30px;
+                background: #808080;
+                color: rgba(0, 0, 0, 1);
+                display: block;
+                border-radius: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto 5px auto;
+            }
+
+            &.active {
+                opacity: 1;
+
+                &:before {
+                    color: white;
+                }
+            }
         }
+    }
+
+    &__form-note {
+        @media (max-width: $tablet) {
+            display: none;
+        }
+    }
+
+    &__form-quote {
+        width: 250px;
+        color: white;
+        font-size: 20px;
     }
 
     &__loader {

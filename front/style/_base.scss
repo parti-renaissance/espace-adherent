@@ -10,7 +10,8 @@ body {
 }
 
 svg path,
-svg polyline {
+svg polyline,
+svg polygon {
     transition: all 0.45s;
 }
 
@@ -23,7 +24,8 @@ a {
     &:hover {
         @include hover(black);
 
-        path {
+        path,
+        polygon {
             @include hover(black);
 
             &.stroke {
