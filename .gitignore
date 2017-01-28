@@ -13,3 +13,4 @@
 /phpunit.xml
 /supervisord.log
 /supervisord.pid
+/yarn-error.log

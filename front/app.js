@@ -27,9 +27,17 @@ class App {
         /*
          * Top banner
          */
-        $('#header-banner-close-btn').click(() => {
-            $('#header-banner').hide();
-        });
+        if (typeof Cookies.get('banner_donation') === 'undefined') {
+            let banner = $('#header-banner'),
+                bannerButton = $('#header-banner-close-btn');
+
+            banner.show();
+
+            bannerButton.click(() => {
+                banner.hide();
+                Cookies.set('banner_donation', 'dismiss', { expires: 1 });
+            });
+        }
     }
 
     share(type, url, title) {
