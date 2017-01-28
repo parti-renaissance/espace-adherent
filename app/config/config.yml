@@ -10,6 +10,7 @@ imports:
     - { resource: services/content.xml }
     - { resource: services/doctrine.xml }
     - { resource: services/donation.xml }
+    - { resource: services/feature_flag.xml }
     - { resource: services/geocoder.xml }
     - { resource: services/intl.xml }
     - { resource: services/invitation.xml }
@@ -60,6 +61,8 @@ twig:
         assets_hash:          "%assets_hash%"
         sentry_dsn:           "%env(SENTRY_PUBLIC_DSN)%"
         recaptcha_public_key: "%env(RECAPTCHA_PUBLIC_KEY)%"
+        enable_platform:      "%env(ENABLE_PLATFORM)%"
+        url_legacy:           "https://en-marche.fr/espaceperso"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
