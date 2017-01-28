@@ -37,7 +37,7 @@
 
         <div class="l__wrapper--slim">
             <ul>
-                {% for proposal in proposals %}
+                {% for proposal in proposals if proposal.published %}
                 <li class="programme-proposal">
                     <a href="{{ path('page_proposal', {'slug': proposal.slug}) }}">
                         <h2>
