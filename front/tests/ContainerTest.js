@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import Container from '../src/Container';
+import Container from '../services/Container';
 
 describe('Container', () => {
     const di = new Container();

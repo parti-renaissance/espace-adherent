@@ -1,43 +1,35 @@
 import './style/app.scss';
 
-import Container from './src/Container';
-import ShareDialogFactory from './src/sharer/ShareDialogFactory';
-import Sharer from './src/sharer/Sharer';
+import Container from './services/Container';
+import registerServices from './services';
+
+// Listeners
+import cookiesConsent from './listeners/cookies-consent';
+import donationBanner from './listeners/donation-banner';
+import amountChooser from './listeners/amount-chooser';
 
 class App {
     constructor() {
         this._di = null;
+        this._listeners = [
+            cookiesConsent,
+            donationBanner,
+            amountChooser,
+        ];
     }
 
     run(parameters) {
-        let di = new Container(parameters);
-        this._di = di;
+        this._di = new Container(parameters);
 
-        /*
-         * Sharer
-         */
-        di.set('sharer', () => {
-            return new Sharer(di.get('sharer.dialog_factory'));
-        });
+        // Register the services
+        registerServices(this._di);
 
-        di.set('sharer.dialog_factory', () => {
-            return new ShareDialogFactory();
-        });
-
-        /*
-         * Top banner
-         */
-        if (typeof Cookies.get('banner_donation') === 'undefined') {
-            let banner = $('#header-banner'),
-                bannerButton = $('#header-banner-close-btn');
-
-            banner.show();
-
-            bannerButton.click(() => {
-                banner.hide();
-                Cookies.set('banner_donation', 'dismiss', { expires: 1 });
+        // Execute the page load listeners
+        on(window, 'load', () => {
+            this._listeners.forEach((listener) => {
+                listener(this._di);
             });
-        }
+        });
     }
 
     share(type, url, title) {

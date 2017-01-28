@@ -1,7 +1,5 @@
 import Raven from 'raven-js';
-import jQuery from 'jquery';
-import Cookies from 'js-cookie';
+import 'utils/dom';
+import 'utils/css';
 
 window.Raven = Raven;
-window.$ = jQuery;
-window.Cookies = Cookies;

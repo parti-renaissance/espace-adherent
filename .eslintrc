@@ -1,18 +1,23 @@
 {
   "extends": [
     "eslint:recommended",
-    "airbnb-base"
+    "airbnb"
+  ],
+  "plugins": [
+    "react"
   ],
   "parserOptions": {
     "ecmaVersion": 6,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "env": {
     "es6": true,
     "browser": true,
     "node": true,
-    "mocha": true,
-    "jquery": true
+    "mocha": true
   },
   "rules": {
     "indent": ["error", 4],

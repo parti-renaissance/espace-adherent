@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import ShareDialogFactory from '../../src/sharer/ShareDialogFactory';
+import ShareDialogFactory from '../../services/sharer/ShareDialogFactory';
 
 describe('ShareDialogFactory', () => {
     let factory = new ShareDialogFactory();
