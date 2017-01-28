@@ -34,15 +34,15 @@ class PageAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper
-            ->add('title', null, [
+        if ($this->getSubject()->getId() === null) {
+            $formMapper->add('title', null, [
                 'label' => 'Titre',
-            ])
+            ]);
+        }
+
+        $formMapper
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-            ])
-            ->add('media', null, [
-                'label' => 'Image principale',
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
@@ -63,7 +63,7 @@ class PageAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('title', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('slug', null, [
                 'label' => 'URL',

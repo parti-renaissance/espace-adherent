@@ -16,13 +16,6 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $factory = $this->container->get('app.content.page_factory');
 
         $manager->persist($factory->createFromArray([
-            'title' => 'Le mouvement - Nos valeurs',
-            'slug' => 'le-mouvement-nos-valeurs',
-            'description' => 'Nos valeurs',
-            'content' => trim(self::$nosValeurs),
-        ]));
-
-        $manager->persist($factory->createFromArray([
             'title' => 'Emmanuel Macron - Ce que je suis',
             'slug' => 'emmanuel-macron-ce-que-je-suis',
             'description' => 'Ce que je suis',
@@ -34,6 +27,48 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'slug' => 'emmanuel-macron-revolution',
             'description' => 'Révolution',
             'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Nos valeurs',
+            'slug' => 'le-mouvement-nos-valeurs',
+            'description' => 'Nos valeurs',
+            'content' => trim(self::$nosValeurs),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Notre organisation',
+            'slug' => 'le-mouvement-notre-organisation',
+            'description' => 'Notre organisation',
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Les comités',
+            'slug' => 'le-mouvement-les-comites',
+            'description' => 'Les comités',
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Les événements',
+            'slug' => 'le-mouvement-les-evenements',
+            'description' => 'Les événements',
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Devenez bénévole',
+            'slug' => 'le-mouvement-devenez-benevole',
+            'description' => 'Devenez bénévole',
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Mentions légales',
+            'slug' => 'mentions-legales',
+            'description' => 'Mentions légales',
+            'content' => file_get_contents(__DIR__.'/../legalities.md'),
         ]));
 
         $manager->flush();

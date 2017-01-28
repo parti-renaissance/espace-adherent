@@ -27,24 +27,6 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/article/{slug}", name="article_view")
-     * @Method("GET")
-     */
-    public function articleAction($slug)
-    {
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBySlug($slug);
-
-        if (!$article || !$article->isPublished()) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('home/article.html.twig', ['article' => $article]),
-            ['articles', 'article-'.$article->getId()]
-        );
-    }
-
-    /**
      * @Route("/health", name="health")
      * @Method("GET")
      */

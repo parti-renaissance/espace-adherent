@@ -33,7 +33,7 @@ class ProposalTheme
      */
     private $color;
 
-    public function __construct(string $name = '', string $color = 'f5f5f5')
+    public function __construct(string $name = '', string $color = '000000')
     {
         $this->name = $name;
         $this->color = $color;

@@ -4,5 +4,5 @@
 {% block canonical_url url('page_le_mouvement_devenez_benevole') %}
 
 {% block mouvement_content %}
-    Devenez bénévole
+    {{ page.content|markdown }}
 {% endblock %}

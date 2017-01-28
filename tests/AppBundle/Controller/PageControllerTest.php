@@ -29,8 +29,10 @@ class PageControllerTest extends WebTestCase
         return [
             ['/emmanuel-macron'],
             ['/emmanuel-macron/revolution'],
-            ['/emmanuel-macron/mes-propositions'],
             ['/emmanuel-macron/mon-agenda'],
+            ['/emmanuel-macron/le-programme'],
+            ['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],
+            ['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'],
             ['/le-mouvement'],
             ['/le-mouvement/notre-organisation'],
             ['/le-mouvement/les-comites'],
@@ -38,6 +40,12 @@ class PageControllerTest extends WebTestCase
             ['/le-mouvement/devenez-benevole'],
             ['/mentions-legales'],
         ];
+    }
+
+    public function testProposalDraft()
+    {
+        $this->client->request(Request::METHOD_GET, '/emmanuel-macron/le-programme/mieux-vivre-de-son-travail');
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     protected function setUp()

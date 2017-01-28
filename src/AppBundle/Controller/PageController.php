@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,7 +16,9 @@ class PageController extends Controller
      */
     public function emmanuelMacronAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/ce-que-je-suis');
+        return $this->createCachedPageResponse('emmanuel-macron/ce-que-je-suis', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-ce-que-je-suis'),
+        ]);
     }
 
     /**
@@ -24,16 +27,37 @@ class PageController extends Controller
      */
     public function emmanuelMacronRevolutionAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/revolution');
+        return $this->createCachedPageResponse('emmanuel-macron/revolution', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-revolution'),
+        ]);
     }
 
     /**
-     * @Route("/emmanuel-macron/mes-propositions", name="page_emmanuel_macron_mes_propositions")
+     * @Route("/emmanuel-macron/le-programme", name="page_emmanuel_macron_programme")
      * @Method("GET")
      */
-    public function emmanuelMacronMesPropositionsAction()
+    public function emmanuelMacronProgrammeAction()
     {
-        return $this->createCachedPageResponse('emmanuel-macron/mes-propositions');
+        return $this->createCachedPageResponse('emmanuel-macron/programme', [
+            'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+        ]);
+    }
+
+    /**
+     * @Route("/emmanuel-macron/le-programme/{slug}", name="page_emmanuel_macron_proposition")
+     * @Method("GET")
+     */
+    public function emmanuelMacronPropositionAction($slug)
+    {
+        $proposal = $this->getDoctrine()->getRepository(Proposal::class)->findOneBySlug($slug);
+
+        if (!$proposal || !$proposal->isPublished()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->createCachedPageResponse('emmanuel-macron/proposition', [
+            'proposal' => $proposal,
+        ]);
     }
 
     /**
@@ -51,7 +75,9 @@ class PageController extends Controller
      */
     public function mouvementValeursAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/nos-valeurs');
+        return $this->createCachedPageResponse('le-mouvement/nos-valeurs', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-nos-valeurs'),
+        ]);
     }
 
     /**
@@ -60,7 +86,9 @@ class PageController extends Controller
      */
     public function mouvementOrganisationAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/notre-organisation');
+        return $this->createCachedPageResponse('le-mouvement/notre-organisation', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-notre-organisation'),
+        ]);
     }
 
     /**
@@ -69,7 +97,9 @@ class PageController extends Controller
      */
     public function mouvementComitesAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/les-comites');
+        return $this->createCachedPageResponse('le-mouvement/les-comites', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-comites'),
+        ]);
     }
 
     /**
@@ -78,7 +108,9 @@ class PageController extends Controller
      */
     public function mouvementEvenementsAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/les-evenements');
+        return $this->createCachedPageResponse('le-mouvement/les-evenements', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-evenements'),
+        ]);
     }
 
     /**
@@ -87,81 +119,9 @@ class PageController extends Controller
      */
     public function mouvementBenevoleAction()
     {
-        return $this->createCachedPageResponse('le-mouvement/devenez-benevole');
-    }
-
-    /**
-     * @Route("/actualites", name="page_actualites")
-     * @Method("GET")
-     */
-    public function actualitesAction()
-    {
-        return $this->createCachedPageResponse('actualites/actualites');
-    }
-
-    /**
-     * @Route("/actualites/videos", name="page_actualites_videos")
-     * @Method("GET")
-     */
-    public function actualitesVideosAction()
-    {
-        return $this->createCachedPageResponse('actualites/videos');
-    }
-
-    /**
-     * @Route("/actualites/discours", name="page_actualites_discours")
-     * @Method("GET")
-     */
-    public function actualitesDiscoursAction()
-    {
-        return $this->createCachedPageResponse('actualites/discours');
-    }
-
-    /**
-     * @Route("/actualites/medias", name="page_actualites_medias")
-     * @Method("GET")
-     */
-    public function actualitesMediasAction()
-    {
-        return $this->createCachedPageResponse('actualites/medias');
-    }
-
-    /**
-     * @Route("/actualites/communiques", name="page_actualites_communiques")
-     * @Method("GET")
-     */
-    public function actualitesCommuniquesAction()
-    {
-        return $this->createCachedPageResponse('actualites/communiques');
-    }
-
-    /**
-     * @Route("/programme", name="page_programme")
-     * @Method("GET")
-     */
-    public function programmeAction()
-    {
-        return $this->createCachedPageResponse('programme', [
-            'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+        return $this->createCachedPageResponse('le-mouvement/devenez-benevole', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-devenez-benevole'),
         ]);
-    }
-
-    /**
-     * @Route("/programme/{slug}", name="page_proposal")
-     * @Method("GET")
-     */
-    public function proposalAction($slug)
-    {
-        $proposal = $this->getDoctrine()->getRepository(Proposal::class)->findOneBySlug($slug);
-
-        if (!$proposal || !$proposal->isPublished()) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('page/proposal.html.twig', ['proposal' => $proposal]),
-            ['proposals', 'proposal-'.$proposal->getId()]
-        );
     }
 
     /**
@@ -170,7 +130,9 @@ class PageController extends Controller
      */
     public function mentionsLegalesAction()
     {
-        return $this->createCachedPageResponse('mentions-legales');
+        return $this->createCachedPageResponse('mentions-legales', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('mentions-legales'),
+        ]);
     }
 
     private function createCachedPageResponse(string $template, array $parameters = [])
