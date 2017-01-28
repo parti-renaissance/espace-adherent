@@ -2,7 +2,8 @@
 
 {% block page_title 'Emmanuel Macron - Ce que je suis' %}
 {% block canonical_url url('page_emmanuel_macron') %}
+{% block meta_description page.description %}
 
 {% block emmanuel_macron_content %}
-    Ce que je suis
+    {{ page.content|markdown }}
 {% endblock %}

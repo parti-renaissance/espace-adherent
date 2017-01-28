@@ -4,5 +4,5 @@
 {% block canonical_url url('page_le_mouvement') %}
 
 {% block mouvement_content %}
-    Nos valeurs
+    {{ page.content|markdown }}
 {% endblock %}

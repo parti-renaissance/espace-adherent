@@ -3,7 +3,7 @@
 {% block page_title proposal.title %}
 {% block meta_description proposal.description %}
 
-{% block canonical_url url('page_proposal', {'slug': proposal.slug}) %}
+{% block canonical_url url('page_emmanuel_macron_proposition', {'slug': proposal.slug}) %}
 
 {% block open_graph_image %}{% spaceless %}
     {% if proposal.media %}
@@ -54,7 +54,7 @@
         {% endif %}
 
         <article class="l__wrapper--slim">
-            {{ article.content|markdown }}
+            {{ proposal.content|markdown }}
         </article>
 
         <ul class="proposal__social space--60-0 l__wrapper--slim">

@@ -4,5 +4,5 @@
 {% block canonical_url url('page_le_mouvement_les_evenements') %}
 
 {% block mouvement_content %}
-    Les événements
+    {{ page.content|markdown }}
 {% endblock %}

@@ -119,6 +119,25 @@
             <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Programme" />
         </service>
 
+        <!-- Page -->
+        <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Page</argument>
+            <argument />
+
+            <call method="setCloudflare">
+                <argument type="service" id="app.cloudflare" />
+            </call>
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Pages" group="Pages" />
+        </service>
+
         <!-- Administrator -->
         <service id="app.admin.administrator" class="AppBundle\Admin\AdministratorAdmin">
             <argument />

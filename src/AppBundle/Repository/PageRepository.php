@@ -15,8 +15,7 @@ class PageRepository extends EntityRepository
     public function findOneBySlug(string $slug)
     {
         return $this->createQueryBuilder('p')
-            ->select('p', 'm')
-            ->leftJoin('p.media', 'm')
+            ->select('p')
             ->where('p.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()

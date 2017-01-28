@@ -3,7 +3,7 @@
 {% block page_title 'Les propositions d\'Emmanuel Macron' %}
 {% block meta_description 'Le moment que nous vivons est celui d’une refondation profonde de la France. Voici celle que nous vous proposons.' %}
 
-{% block canonical_url url('page_programme') %}
+{% block canonical_url url('page_emmanuel_macron_programme') %}
 
 {% block open_graph_image %}{% spaceless %}
     {{ url('homepage')|trim('/') }}{{ static_asset('programme.jpg', {'w': 1200, 'h': 630})|raw }}
@@ -39,7 +39,7 @@
             <ul>
                 {% for proposal in proposals if proposal.published %}
                 <li class="programme-proposal">
-                    <a href="{{ path('page_proposal', {'slug': proposal.slug}) }}">
+                    <a href="{{ path('page_emmanuel_macron_proposition', {'slug': proposal.slug}) }}">
                         <h2>
                             {{ proposal.title }}
                         </h2>
