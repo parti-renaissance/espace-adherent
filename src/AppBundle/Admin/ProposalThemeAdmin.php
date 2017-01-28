@@ -14,7 +14,7 @@ class ProposalThemeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('color', 'sonata_type_color_selector', [
+            ->add('color', null, [
                 'label' => 'Couleur de fond',
             ]);
     }
