@@ -60,6 +60,6 @@ class AdherentResetPasswordHandler
             'reset_password_token' => (string) $token->getValue(),
         ];
 
-        return $this->urlGenerator->generate('adherent_forgot_password', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate('adherent_reset_password', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
