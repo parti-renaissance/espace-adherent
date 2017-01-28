@@ -1,0 +1,89 @@
+.listing {
+    margin-bottom: 70px;
+
+    nav {
+        ul li {
+            display: inline;
+            margin-right: 20px;
+
+            &.active {
+                font-weight: 700;
+            }
+
+            &.label {
+                text-transform: uppercase;
+                @include text--small;
+                letter-spacing: 1.5px;
+            }
+
+            a {
+                border: none;
+            }
+        }
+    }
+
+    article {
+        ul {
+            padding: 0;
+
+            li {
+                display: flex;
+                align-items: center;
+                list-style: none;
+                border-bottom: 1px solid rgba(0, 0, 0, .15);
+                padding: 15px 0;
+
+                &:last-child {
+                    border: none;
+                }
+
+                .thumbnail {
+                    margin-right: 25px;
+
+                    img {
+                        width: 220px;
+                        height: 150px;
+                        max-width: inherit;
+                        background-color: $gray;
+                    }
+                }
+
+                h2 {
+                    @include text--medium;
+                    font-weight: 400;
+                    margin: 0;
+                }
+
+                div {
+                    @include text--summary;
+                    margin: 5px 0 10px;
+                }
+
+                a {
+                    border: none;
+                }
+
+                .share {
+                    color: $gray;
+                    font-family: 'Roboto';
+                    font-size: $text--size-smallest;
+                    text-transform: uppercase;
+
+                    .fa {
+                        font-size: $text--size-medium--small;
+                        margin-left: 5px;
+                        cursor: pointer;
+
+                        &-facebook-square:hover {
+                            color: $facebook;
+                        }
+
+                        &-twitter:hover {
+                            color: $twitter;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -91,6 +91,51 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/actualites", name="page_actualites")
+     * @Method("GET")
+     */
+    public function actualitesAction()
+    {
+        return $this->createCachedPageResponse('actualites/actualites');
+    }
+
+    /**
+     * @Route("/actualites/videos", name="page_actualites_videos")
+     * @Method("GET")
+     */
+    public function actualitesVideosAction()
+    {
+        return $this->createCachedPageResponse('actualites/videos');
+    }
+
+    /**
+     * @Route("/actualites/discours", name="page_actualites_discours")
+     * @Method("GET")
+     */
+    public function actualitesDiscoursAction()
+    {
+        return $this->createCachedPageResponse('actualites/discours');
+    }
+
+    /**
+     * @Route("/actualites/medias", name="page_actualites_medias")
+     * @Method("GET")
+     */
+    public function actualitesMediasAction()
+    {
+        return $this->createCachedPageResponse('actualites/medias');
+    }
+
+    /**
+     * @Route("/actualites/communiques", name="page_actualites_communiques")
+     * @Method("GET")
+     */
+    public function actualitesCommuniquesAction()
+    {
+        return $this->createCachedPageResponse('actualites/communiques');
+    }
+
+    /**
      * @Route("/programme", name="page_programme")
      * @Method("GET")
      */
