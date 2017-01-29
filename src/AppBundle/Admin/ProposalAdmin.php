@@ -51,6 +51,9 @@ class ProposalAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Publication', array('class' => 'col-md-4'))
+                ->add('position', null, [
+                    'label' => 'Ordre dans la liste',
+                ])
                 ->add('published', CheckboxType::class, [
                     'label' => 'Publier la proposition',
                     'required' => false,
