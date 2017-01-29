@@ -1,10 +1,6 @@
 .listing {
     margin-bottom: 70px;
 
-    &__paginator {
-        text-align: center;
-    }
-
     nav {
         ul li {
             display: inline;
@@ -22,6 +18,39 @@
 
             a {
                 border: none;
+            }
+        }
+    }
+
+    &__paginator {
+        text-align: center;
+        margin-top: 50px;
+
+        ul li {
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            border: 1px solid black;
+
+            &:hover {
+                border-color: rgba(0, 0, 0, 0.5);
+            }
+
+            a {
+                top: 9px;
+                position: relative;
+                border: none;
+                padding: 11px 15px 10px 15px;
+
+                svg {
+                    top: 2px;
+                    position: relative;
+                }
+            }
+
+            &.active {
+                border: none;
+                font-weight: 700;
             }
         }
     }
