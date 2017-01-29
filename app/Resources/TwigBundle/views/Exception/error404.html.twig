@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Page introuvable | En Marche !' %}
+{% block stylesheets %}
+    <style type="text/css">
+        header,
+        #header-banner,
+        footer {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="error">
+        <div class="header l__wrapper">
+            <h1>
+                <a href="{{ path('homepage') }}">
+                    En Marche !
+                </a>
+            </h1>
+        </div>
+        <section class="l__wrapper--slim">
+            <div class="error__box error__box--404"></div>
+            <div>
+                <h1>
+                    Cette page n'existe pas !
+                </h1>
+                <p class="text--body text--gray">
+                    Vous trouverez peut-être ce que vous cherchiez sur notre page d'accueil.
+                </p>
+                <a href="{{ path('homepage') }}" class="btn">Retour à l'accueil</a>
+                <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne</a>
+            </div>
+        </section>
+    </main>
+{% endblock %}
