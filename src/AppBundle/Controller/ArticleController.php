@@ -2,55 +2,52 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ArticleController extends Controller
 {
-    /**
-     * @Route("/actualites", name="page_actualites")
-     * @Method("GET")
-     */
-    public function actualitesAction()
-    {
-        return $this->render('article/actualites.html.twig');
-    }
+    const PER_PAGE = 20;
 
     /**
-     * @Route("/actualites/videos", name="page_actualites_videos")
+     * @Route(
+     *     "/articles/{category}/{page}",
+     *     requirements={"page"="\d+"},
+     *     defaults={"page"=1},
+     *     name="articles_list"
+     * )
      * @Method("GET")
      */
-    public function actualitesVideosAction()
+    public function actualitesAction($category, $page)
     {
-        return $this->render('article/videos.html.twig');
-    }
+        $doctrine = $this->getDoctrine();
+        $categoriesRepository = $doctrine->getRepository(ArticleCategory::class);
 
-    /**
-     * @Route("/actualites/discours", name="page_actualites_discours")
-     * @Method("GET")
-     */
-    public function actualitesDiscoursAction()
-    {
-        return $this->render('article/discours.html.twig');
-    }
+        $category = $categoriesRepository->findOneBySlug($category);
 
-    /**
-     * @Route("/actualites/medias", name="page_actualites_medias")
-     * @Method("GET")
-     */
-    public function actualitesMediasAction()
-    {
-        return $this->render('article/medias.html.twig');
-    }
+        if (!$category) {
+            throw $this->createNotFoundException();
+        }
 
-    /**
-     * @Route("/actualites/communiques", name="page_actualites_communiques")
-     * @Method("GET")
-     */
-    public function actualitesCommuniquesAction()
-    {
-        return $this->render('article/communiques.html.twig');
+        $page = (int) $page;
+
+        $categories = $doctrine->getRepository(ArticleCategory::class)->findAll();
+        $articles = $doctrine->getRepository(Article::class)->findByCategoryPaginated($category, $page, self::PER_PAGE);
+
+        if (empty($articles)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('article/actualites.html.twig', [
+            'current' => $category,
+            'categories' => $categories,
+            'articles' => $articles,
+            'currentPage' => $page,
+            'totalPages' => ceil(count($articles) / self::PER_PAGE),
+        ]);
     }
 
     /**
@@ -65,7 +62,7 @@ class ArticleController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->render('home/article.html.twig', [
+        return $this->render('article/article.html.twig', [
             'article' => $article,
         ]);
     }

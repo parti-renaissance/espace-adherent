@@ -122,7 +122,7 @@
                     <li><h1><a href="{{ path('homepage') }}">En Marche !</a></h1></li>
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
-                    <li><a class="text--medium-small" href="{{ path('page_actualites') }}">Actualités</a></li>
+                    <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
                     {#
                     <li><a href="#">
                         <svg class="icon-search" width="23px" height="24px" viewBox="0 0 23 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
@@ -241,7 +241,7 @@
                         <ul class="list__links list__links--col list__links--no-decor list__links--nav">
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
-                            <li><a class="text--medium-small" href="{{ path('page_actualites') }}">Actualités</a></li>
+                            <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
                         </ul>
                         <hr>
                         <ul class="list__links list__links--row b__nudge--bottom-small">
@@ -302,11 +302,11 @@
                         {#<li><a href="#">Recrutement</a></li>#}
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
-                        <li><h4><a href="{{ path('page_actualites') }}" class="text--bold text--medium-small">Actualités</a></h4></li>
-                        <li><a href="{{ path('page_actualites_videos') }}">Vidéos</a></li>
-                        <li><a href="{{ path('page_actualites_discours') }}">Discours</a></li>
-                        <li><a href="{{ path('page_actualites_medias') }}">Médias</a></li>
-                        <li><a href="{{ path('page_actualites_communiques') }}">Communiqués</a></li>
+                        <li><h4><a href="{{ path('articles_list', {'category': 'actualites'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                        <li><a href="{{ path('articles_list', {'category': 'videos'}) }}">Vidéos</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'discours'}) }}">Discours</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'medias'}) }}">Médias</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S’engager</a></h4></li>

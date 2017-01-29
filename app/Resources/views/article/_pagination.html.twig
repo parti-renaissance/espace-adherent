@@ -1,0 +1,38 @@
+<nav class="l__wrapper--narrow text--body b__nudge--bottom-larger listing__paginator">
+    <ul>
+        {% if currentPage > 1 %}
+            <li>
+                <a href="{{ path('articles_list', {'category': current.slug, 'page': 1}) }}">
+                    << Première
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage - 1}) }}">
+                    < Précédente
+                </a>
+            </li>
+        {% endif %}
+
+        {# Affichage de toutes les pages entre page - 3 et page + 3 sauf si < 1 ou > totalPages #}
+        {% for page in range(max(currentPage - 3, 1), min(currentPage + 3, totalPages)) %}
+            <li class="{{ page == currentPage ? 'active' }}">
+                <a href="{{ path('articles_list', {'category': current.slug, 'page': page}) }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endfor %}
+
+        {% if currentPage < totalPages %}
+            <li>
+                <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage + 1}) }}">
+                    Suivante >
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('articles_list', {'category': current.slug, 'page': totalPages}) }}">
+                    Dernière >>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

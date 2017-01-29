@@ -2,11 +2,10 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -31,11 +30,11 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
 
         // Categories
-        $manager->persist($newsCategory = new ArticleCategory('Actualités'));
-        $manager->persist(new ArticleCategory('Vidéos'));
-        $manager->persist($speechCategory = new ArticleCategory('Discours'));
-        $manager->persist(new ArticleCategory('Médias'));
-        $manager->persist(new ArticleCategory('Communiqués'));
+        $manager->persist($newsCategory = new ArticleCategory('Actualités', 'actualites', 1));
+        $manager->persist($videosCategory = new ArticleCategory('Vidéos', 'videos', 2));
+        $manager->persist($speechCategory = new ArticleCategory('Discours', 'discours', 3));
+        $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 4));
+        $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 5));
 
         $manager->flush();
 
@@ -72,6 +71,24 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
+
+        // A lot of articles for listing
+        $faker = Factory::create('fr_FR');
+
+        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
+            for ($i = 0; $i < 150; ++$i) {
+                $manager->persist($factory->createFromArray([
+                    'title' => $faker->sentence(),
+                    'slug' => $faker->slug(),
+                    'description' => $faker->text(),
+                    'media' => $media,
+                    'displayMedia' => false,
+                    'published' => true,
+                    'category' => $category,
+                    'content' => file_get_contents(__DIR__.'/../content.md'),
+                ]));
+            }
+        }
 
         $manager->flush();
     }

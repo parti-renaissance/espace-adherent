@@ -1,6 +1,10 @@
 .listing {
     margin-bottom: 70px;
 
+    &__paginator {
+        text-align: center;
+    }
+
     nav {
         ul li {
             display: inline;
@@ -32,6 +36,10 @@
                 list-style: none;
                 border-bottom: 1px solid rgba(0, 0, 0, .15);
                 padding: 15px 0;
+
+                @media (max-width: $mobile) {
+                    display: block;
+                }
 
                 &:last-child {
                     border: none;
