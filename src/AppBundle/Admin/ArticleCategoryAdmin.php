@@ -10,9 +10,16 @@ class ArticleCategoryAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('name', null, [
-            'label' => 'Nom',
-        ]);
+        $formMapper
+            ->add('name', null, [
+                'label' => 'Nom',
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+            ]);
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -20,6 +27,12 @@ class ArticleCategoryAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('_action', null, [
                 'actions' => [

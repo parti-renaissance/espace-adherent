@@ -1,8 +1,75 @@
-{% extends 'article/layout.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block page_title 'Actualités' %}
-{% block canonical_url url('page_actualites') %}
+{% block page_title current.name %}
+{% block canonical_url url('articles_list', {'category': current.slug}) %}
 
-{% block actualites_content %}
-    Actualités
+{% block javascripts %}
+    <script type="text/javascript">
+        function controller(app) {
+            app.home();
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="listing">
+            <header class="l__wrapper--narrow space--60-0">
+                <h1 class="text--center text--large">
+                    {{ current.name }}
+                </h1>
+            </header>
+
+            <nav class="l__wrapper--narrow text--body b__nudge--bottom-larger">
+                <ul>
+                    <li class="label">
+                        Filtres :
+                    </li>
+                    {% for category in categories %}
+                        <li class="{{ current.slug == category.slug ? 'active' }}">
+                            <a href="{{ path('articles_list', {'category': category.slug}) }}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            {{ include('article/_pagination.html.twig') }}
+
+            <article class="l__wrapper--narrow">
+                <ul>
+                    {% for article in articles %}
+                    <li>
+                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="thumbnail">
+                            <img src="{{ dynamic_asset(article.media.path, {'w': 220, 'h': 150, 'fit': 'crop'}) }}">
+                        </a>
+                        <div>
+                            <h2>
+                                <a href="{{ path('article_view', {'slug': article.slug}) }}">
+                                    {{ article.title }}
+                                </a>
+                            </h2>
+                            <div>
+                                10 janvier 2016
+                            </div>
+                            <div class="share">
+                                Partagez
+                                <span role="button" onclick="share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                    <i class="fa fa-facebook-square"></i>
+                                </span>
+                                <span role="button" onclick="share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                    <i class="fa fa-twitter"></i>
+                                </span>
+                            </div>
+                        <div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </article>
+
+            {{ include('article/_pagination.html.twig') }}
+        </section>
+
+    </main>
 {% endblock %}

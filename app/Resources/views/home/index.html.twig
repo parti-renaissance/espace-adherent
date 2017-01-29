@@ -180,7 +180,9 @@
             {% endfor %}
         </ul>
         <div class="l__row l__row--center b__nudge--bottom-large">
-            <a href="#" class="btn">Plus d'actualités</a>
+            <a href="{{ path('articles_list', {'category': 'actualites'}) }}" class="btn">
+                Plus d'actualités
+            </a>
         </div>
     </section>
 

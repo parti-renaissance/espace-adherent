@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadArticleData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,12 +49,32 @@ class ArticleControllerTest extends WebTestCase
     public function provideHub()
     {
         return [
-            ['/actualites'],
-            ['/actualites/videos'],
-            ['/actualites/discours'],
-            ['/actualites/medias'],
-            ['/actualites/communiques'],
+            ['/articles/actualites'],
+            ['/articles/actualites/2'],
+            ['/articles/videos'],
+            ['/articles/videos/2'],
+            ['/articles/discours'],
+            ['/articles/discours/2'],
+            ['/articles/medias'],
+            ['/articles/medias/2'],
+            ['/articles/communiques'],
+            ['/articles/communiques/2'],
         ];
+    }
+
+    public function testScenarioHomeHub()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->filter('a:contains("Actualités")')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->click($crawler->filter('a:contains("Communiqués")')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->back();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     protected function setUp()
@@ -60,6 +82,8 @@ class ArticleControllerTest extends WebTestCase
         parent::setUp();
 
         $this->loadFixtures([
+            LoadHomeBlockData::class,
+            LoadLiveLinkData::class,
             LoadArticleData::class,
         ]);
 

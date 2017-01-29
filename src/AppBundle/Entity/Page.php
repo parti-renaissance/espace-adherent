@@ -28,7 +28,10 @@ class Page
      */
     private $id;
 
-    public function getId(): int
+    /**
+     * @return int
+     */
+    public function getId()
     {
         return $this->id;
     }
