@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Maintenance | En Marche !' %}
+{% block stylesheets %}
+    <style type="text/css">
+        header,
+        #header-banner,
+        footer {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="error">
+        <div class="header l__wrapper">
+            <h1>
+                <a href="{{ path('homepage') }}">
+                    En Marche !
+                </a>
+            </h1>
+        </div>
+        <section class="l__wrapper--slim">
+            <div class="error__box error__box--500">503</div>
+            <div>
+                <h1>
+                    Maintenance en cours.
+                </h1>
+                <p class="text--body text--gray">
+                    Le site n'est pas disponible pour le moment car il est en train d'être mis à jour.
+                    Si ce message persiste pendant plus d'une heure, vous pouvez nous contacter à
+                    <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+{% endblock %}

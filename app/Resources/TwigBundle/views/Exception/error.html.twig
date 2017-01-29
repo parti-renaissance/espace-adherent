@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Erreur serveur | En Marche !' %}
+{% block stylesheets %}
+    <style type="text/css">
+        header,
+        #header-banner,
+        footer {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="error">
+        <div class="header l__wrapper">
+            <h1>
+                <a href="{{ path('homepage') }}">
+                    En Marche !
+                </a>
+            </h1>
+        </div>
+        <section class="l__wrapper--slim">
+            <div class="error__box error__box--500">500</div>
+            <div>
+                <h1>
+                    Une erreur innatendue s'est produite.
+                </h1>
+                <p class="text--body text--gray">
+                    Essayez d'actualisez votre navigateur. Si le problème persiste, contactez-nous à
+                    <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.
+                </p>
+                <a href="{{ path('homepage') }}" class="btn">Retour à l'accueil</a>
+                <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne</a>
+            </div>
+        </section>
+    </main>
+{% endblock %}
