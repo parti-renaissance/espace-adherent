@@ -13,6 +13,7 @@ parameters:
 
     env(GCLOUD_PROJECT_ID):     ~
     env(GCLOUD_BUCKET):         ~
+    env(GCLOUD_LB_IP):          ~
 
     env(PAYBOX_SITE):           ~
     env(PAYBOX_RANK):           ~
