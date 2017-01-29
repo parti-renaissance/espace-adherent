@@ -51,7 +51,7 @@
                                 </a>
                             </h2>
                             <div>
-                                10 janvier 2016
+                                {{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }}
                             </div>
                             <div class="share">
                                 Partagez
