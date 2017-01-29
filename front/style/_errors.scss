@@ -1,0 +1,45 @@
+.error {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+        padding: 20px 0;
+
+        h1 {
+            @include text--logo;
+        }
+    }
+
+    section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+
+        @media (max-width: $mobile) {
+        }
+    }
+
+    &__box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        background: black;
+        margin-right: 25px;
+        color: white;
+        @include text--extra-large;
+
+        &--404 {
+            background-image: url('/images/404.jpg');
+            background-size: cover;
+            background-position: 63%;
+        }
+
+        @media (max-width: $mobile) {
+            display: none;
+        }
+    }
+}
