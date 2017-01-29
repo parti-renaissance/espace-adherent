@@ -14,11 +14,11 @@ if (!empty($_SERVER['BASIC_AUTH_USER']) && !empty($_SERVER['BASIC_AUTH_PASSWORD'
 
 use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__.'/../app/trusted_proxies.php';
-
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';
 include_once __DIR__.'/../var/bootstrap.php.cache';
+
+require __DIR__.'/../app/trusted_proxies.php';
 
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
