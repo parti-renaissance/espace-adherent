@@ -6,7 +6,6 @@ use AppBundle\Entity\Donation;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,7 +31,7 @@ class DonationType extends AbstractType
                 ->add('email', EmailType::class)
                 ->add('country', UnitedNationsCountryType::class)
                 ->add('postalCode', TextType::class)
-                ->add('city', HiddenType::class, [
+                ->add('city', TextType::class, [
                     'required' => false,
                 ])
                 ->add('address', TextType::class, [

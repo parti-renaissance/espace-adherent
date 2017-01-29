@@ -10,9 +10,14 @@ window.Kernel = class {
             if (app && vendor) {
                 let sentryDsn = Kernel.sentryDsn;
                 let release = Kernel.release;
+                let listeners = Kernel.listeners;
 
                 if (sentryDsn) {
                     Raven.config(sentryDsn, { release: release }).install();
+                }
+
+                for (let i in listeners) {
+                    App.addListener(listeners[i]);
                 }
 
                 App.run({
@@ -36,7 +41,12 @@ window.Kernel = class {
             runIfReady();
         });
     }
+
+    static onLoad(callback) {
+        Kernel.listeners.push(callback);
+    }
 };
 
 Kernel.release = null;
 Kernel.sentryDsn = null;
+Kernel.listeners = [];

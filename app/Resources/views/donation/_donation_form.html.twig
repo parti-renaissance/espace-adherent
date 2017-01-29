@@ -1,34 +1,7 @@
-{% block donation_form_script %}
-    <script type="text/javascript">
-        function controller(app) {
-            app.donationIndex(
-                {
-                    amount: {{ donation.amount ?: 10 }},
-                    country: '{{ donation.country }}',
-                    postalCode: '{{ donation.postalCode }}',
-                    city: '{{ donation.city }}',
-                    address: '{{ donation.address }}'
-                    {%- if form.vars.sponsor_form is defined -%}
-                    ,
-                        errors: {
-                            country: '{{ form_errors(form.country) }}',
-                            postalCode: '{{ form_errors(form.postalCode) }}',
-                            city: '{{ form_errors(form.city) }}',
-                            address: '{{ form_errors(form.address) }}'
-                        }
-                    {%- endif %}
-                },
-                {{ countries|json_encode|raw }}
-            );
-        }
-    </script>
-{% endblock %}
-
 {% block donation_form %}
     <div class="donation__form">
         <ul class="donation__form-steps">
-            <li class="active">Montant</li>
-            <li>Coordonnées</li>
+            <li class="active">Coordonnées</li>
             <li>Paiement</li>
             <li>Confirmation</li>
         </ul>
@@ -43,9 +16,8 @@
             </p>
 
             {{ form_errors(form.amount) }}
-            <div id="donation-amount" class="form__row">
-                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
-            </div>
+
+            {{ form_widget(form.amount, { 'attr': { 'class': 'form--full', 'id': 'donation-amount' } }) }}
 
             {% if form.vars.sponsor_form is defined %}
 

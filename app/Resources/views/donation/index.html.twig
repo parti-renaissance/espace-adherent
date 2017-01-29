@@ -9,18 +9,12 @@
         header,
         footer div div:nth-child(2),
         footer div div:nth-child(3) {
-             display: none;
-         }
+            display: none;
+        }
     </style>
 {% endblock %}
 
-{% use 'donation/_donation_form.html.twig' %}
-
 {% block banner '' %}
-
-{% block javascripts %}
-    {{ block('donation_form_script') }}
-{% endblock %}
 
 {% block content %}
 
@@ -32,12 +26,92 @@
         </section>
 
         <section class="l__wrapper l__row space--60-0">
-            {{ block('donation_form') }}
+            <div class="donation__form">
+                <ul class="donation__form-steps">
+                    <li class="active">Coordonnées</li>
+                    <li>Paiement</li>
+                    <li>Confirmation</li>
+                </ul>
+                <h2>Je soutiens Emmanuel Macron</h2>
+                <span class="fluo">Vous êtes une majorité à donner 50€</span>
+
+                {{ form_start(form, { attr: { class: 'form' } }) }}
+                {{ form_errors(form) }}
+
+                <p>
+                    Sélectionnez le montant de votre don :
+                </p>
+
+                {{ form_errors(form.amount) }}
+
+                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
+
+                <div class="form__row form__row--stretch">
+                    {{ form_errors(form.gender) }}
+                    {{ form_widget(form.gender) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.country) }}
+                    {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row form__row--stretch">
+                    <div class="form--mid">
+                        {{ form_errors(form.postalCode) }}
+                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                    </div>
+                    <div class="form--mid">
+                        {{ form_errors(form.city) }}
+                        {{ form_widget(form.city, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                    </div>
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.address) }}
+                    {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+                </div>
+
+                <div class="form__row form__row--stretch">
+                    {{ form_errors(form.phone) }}
+                    {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+                    {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+                </div>
+
+
+                {% if form.pass is defined %}
+                    {{ form_widget(form.pass, { label: 'adherent.pass_donation_label' }) }}
+                {% endif %}
+
+                {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
 
             <div class="donation__form-note">
-                <div class="donation__form-quote">« Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings, vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner vos idées ! »
+                <div class="donation__form-quote">
+                    « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
+                    bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
+                    vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
+                    vos idées ! »
                 </div>
-                <img width="350" height="247.63" src="/images/signature-em.png">
+                <img src="{{ asset('images/donation-signature.png') }}" style="width: 350px; padding: 25px;" />
             </div>
         </section>
     </div>

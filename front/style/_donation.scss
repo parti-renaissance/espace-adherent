@@ -132,7 +132,7 @@
 .donation {
     padding: 20px 0;
     background-color: $gray;
-    background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/background__don.jpg');
+    background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/donation-bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -275,6 +275,27 @@
         &__text {
             margin-top: 50px;
         }
+    }
+
+    &__amount-chooser {
+        margin-bottom: 30px;
+
+        &__after-taxes {
+            h3 {
+                font-size: 26px;
+                font-weight: bold;
+            }
+
+            p {
+                margin: 5px 0 10px 0;
+                padding: 0;
+            }
+        }
+    }
+
+    &__payment {
+        min-height: 939px;
+        padding-top: 50px;
     }
 }
 

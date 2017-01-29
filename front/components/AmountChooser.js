@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const defaultAmounts = [10, 20, 30, 100, 150];
+const defaultAmounts = [500, 200, 100, 70, 50, 20, 10];
 
 export default class AmountChooser extends React.Component {
     constructor(props) {
@@ -15,12 +15,16 @@ export default class AmountChooser extends React.Component {
     }
 
     handleButtonClicked(amount) {
+        this.props.onChange && this.props.onChange(amount);
+
         this.setState({
             amount: amount,
         });
     }
 
     handleInputChange(event) {
+        this.props.onChange && this.props.onChange(event.target.value);
+
         this.setState({
             amount: event.target.value,
         });
@@ -47,7 +51,7 @@ export default class AmountChooser extends React.Component {
                         type="text"
                         className="amount-chooser__other__input"
                         id="amount-chooser__other__input"
-                        placeholder="Autre montant"
+                        placeholder="Autre"
                         onChange={this.handleInputChange}
                         defaultValue={defaultAmounts.indexOf(this.props.value) > -1 ? null : this.props.value} />
 
@@ -64,5 +68,6 @@ export default class AmountChooser extends React.Component {
 
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.number
+    value: PropTypes.number,
+    onChange: PropTypes.func,
 };
