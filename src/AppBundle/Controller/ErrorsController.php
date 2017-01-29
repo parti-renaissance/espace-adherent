@@ -25,4 +25,13 @@ class ErrorsController extends Controller
     {
         return $this->render('errors/500.html.twig', []);
     }
+
+    /**
+     * @Route("/503", name="503")
+     * @Method("GET")
+     */
+    public function cinqCentTroisAction()
+    {
+        return $this->render('errors/503.html.twig', []);
+    }
 }
