@@ -13,6 +13,8 @@ parameters:
 
     env(SECRET):                ab2f3477e2b72055492b75f12490b172
 
+    env(ENABLE_PLATFORM):       1
+
     env(GCLOUD_PROJECT_ID):     ~
     env(GCLOUD_BUCKET):         ~
     env(GCLOUD_LB_IP):          ~
