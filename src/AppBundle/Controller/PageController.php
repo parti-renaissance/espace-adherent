@@ -134,4 +134,17 @@ class PageController extends Controller
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('mentions-legales'),
         ]);
     }
+
+    /**
+     * @Route("/bot-testing", name="page_bot_testing")
+     * @Method("GET")
+     */
+    public function botTestingAction()
+    {
+        if ($this->getParameter('env(ENABLE_PLATFORM)') !== '1') {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('page/bot-testing.html.twig');
+    }
 }
