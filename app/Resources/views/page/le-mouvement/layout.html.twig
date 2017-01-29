@@ -17,8 +17,8 @@
                 </h1>
             </header>
 
-            <nav class="l__wrapper--slim text--body b__nudge--bottom-larger">
-                <ul>
+            <nav class="l__wrapper text--body b__nudge--bottom-larger">
+                <ul class="l__wrapper--slim">
                     {% set currentRoute = app.request.attributes.get('_route') %}
                     {% for route, title in {
                         'page_le_mouvement': 'Nos valeurs',
