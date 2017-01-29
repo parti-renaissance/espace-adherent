@@ -16,6 +16,8 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('fr_FR');
+
         $factory = $this->container->get('app.content.article_factory');
         $mediaFactory = $this->container->get('app.content.media_factory');
         $storage = $this->container->get('app.storage');
@@ -46,6 +48,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
+            'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -57,6 +60,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => false,
+            'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -68,13 +72,12 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
             'displayMedia' => false,
             'published' => true,
+            'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
 
         // A lot of articles for listing
-        $faker = Factory::create('fr_FR');
-
         foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
             for ($i = 0; $i < 150; ++$i) {
                 $manager->persist($factory->createFromArray([
@@ -84,6 +87,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
                     'media' => $media,
                     'displayMedia' => false,
                     'published' => true,
+                    'publishedAt' => $faker->dateTimeThisDecade,
                     'category' => $category,
                     'content' => file_get_contents(__DIR__.'/../content.md'),
                 ]));
