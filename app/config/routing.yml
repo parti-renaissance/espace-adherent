@@ -2,9 +2,6 @@ lexik_paybox:
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
 
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
 admin_dashboard:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix: /admin

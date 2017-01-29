@@ -117,11 +117,6 @@ lexik_paybox:
         hmac:
             key:     "%env(PAYBOX_KEY)%"
 
-fos_js_routing:
-    cache_control:
-        public: true
-        smaxage: 31536000   # 1 year, to be purged using Cloudflare
-
 csa_guzzle:
     profiler: '%kernel.debug%'
     logger: true
