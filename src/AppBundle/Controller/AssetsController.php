@@ -36,6 +36,6 @@ class AssetsController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->get('app.cloudflare')->cacheIndefinitely($response, ['assets', 'asset-'.md5($path)]);
+        return $response;
     }
 }

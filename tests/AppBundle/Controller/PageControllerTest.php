@@ -19,9 +19,6 @@ class PageControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
-
-        // Assert Cloudflare will store this page in cache
-        $this->assertContains('public, s-maxage=', $response->headers->get('cache-control'));
     }
 
     public function providePages()

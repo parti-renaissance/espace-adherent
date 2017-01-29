@@ -18,8 +18,8 @@
                 <argument type="service" id="app.storage" />
             </call>
 
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
             </call>
 
             <call method="setTemplates">
@@ -37,10 +37,6 @@
             <argument>AppBundle\Entity\HomeBlock</argument>
             <argument />
 
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
-
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
@@ -55,10 +51,6 @@
             <argument />
             <argument>AppBundle\Entity\LiveLink</argument>
             <argument />
-
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
 
             <tag name="sonata.admin" manager-type="orm" label="Liens En direct" group="Page d'accueil" />
         </service>
@@ -77,10 +69,6 @@
             <argument />
             <argument>AppBundle\Entity\Article</argument>
             <argument />
-
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
 
             <call method="setTemplates">
                 <argument type="collection">
@@ -106,10 +94,6 @@
             <argument>AppBundle\Entity\Proposal</argument>
             <argument />
 
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
-
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
@@ -124,10 +108,6 @@
             <argument />
             <argument>AppBundle\Entity\Page</argument>
             <argument />
-
-            <call method="setCloudflare">
-                <argument type="service" id="app.cloudflare" />
-            </call>
 
             <call method="setTemplates">
                 <argument type="collection">

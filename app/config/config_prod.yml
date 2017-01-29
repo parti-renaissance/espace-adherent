@@ -2,16 +2,20 @@ imports:
     - { resource: config.yml }
     - { resource: services/sentry.xml }
 
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
+services:
+    app.doctrine_redis_cache:
+        class: Symfony\Component\Cache\DoctrineProvider
+        arguments:
+            - "@cache.app"
 
-#framework:
-#    cache:
-#        app: cache.adapter.redis
-#        default_redis_provider: "redis://localhost"
+doctrine:
+    orm:
+        metadata_cache_driver:
+            type: service
+            id: app.doctrine_redis_cache
+        query_cache_driver:
+            type: service
+            id: app.doctrine_redis_cache
 
 monolog:
     handlers:

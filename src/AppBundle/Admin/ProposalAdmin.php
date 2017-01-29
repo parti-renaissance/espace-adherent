@@ -13,17 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ProposalAdmin extends AbstractAdmin
 {
-    use CloudflareSynchronizedAdminTrait;
-
-    /**
-     * @param Proposal $object
-     */
-    public function invalidate($object)
-    {
-        $this->getCloudflare()->invalidateTag('page-programme');
-        $this->getCloudflare()->invalidateTag('proposal-'.$object->getId());
-    }
-
     /**
      * @param Proposal $object
      *

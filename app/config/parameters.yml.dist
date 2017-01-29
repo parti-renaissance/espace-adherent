@@ -6,6 +6,8 @@ parameters:
     env(DATABASE_USER):         enmarche
     env(DATABASE_PASSWORD):     enmarche
 
+    env(REDIS_HOST):            redis
+
     env(SENTRY_DSN):            ~
     env(SENTRY_PUBLIC_DSN):     ~
 
@@ -25,10 +27,6 @@ parameters:
 
     env(MAILJET_PUBLIC_KEY):    ''
     env(MAILJET_PRIVATE_KEY):   ''
-
-    env(CLOUDFLARE_ZONE_ID):    ''
-    env(CLOUDFLARE_EMAIL):      ''
-    env(CLOUDFLARE_API_KEY):    ''
 
     env(WRITER_LOGIN):          writer
     env(WRITER_PASSWORD):       writer

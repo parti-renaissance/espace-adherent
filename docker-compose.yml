@@ -7,6 +7,7 @@ services:
             dockerfile: dev.dockerfile
         depends_on:
             - db
+            - redis
         volumes:
             - .:/app
             - /app/var/cache
@@ -19,6 +20,9 @@ services:
             MYSQL_DATABASE: enmarche
             MYSQL_USER: enmarche
             MYSQL_PASSWORD: enmarche
+
+    redis:
+        image: redis:3.2
 
     tools:
         build:

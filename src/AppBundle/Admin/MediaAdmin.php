@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Media;
 use League\Flysystem\Filesystem;
+use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,20 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MediaAdmin extends AbstractAdmin
 {
-    use CloudflareSynchronizedAdminTrait;
-
     /**
      * @var Filesystem
      */
     private $storage;
 
     /**
-     * @param Media $object
+     * @var Server
      */
-    public function invalidate($object)
-    {
-        $this->getCloudflare()->invalidateTag('asset-'.md5($object->getPath()));
-    }
+    private $glide;
 
     /**
      * @param Media $media
@@ -37,6 +33,7 @@ class MediaAdmin extends AbstractAdmin
 
         try {
             $this->storage->delete('images/'.$media->getPath());
+            $this->glide->deleteCache('images/'.$media->getPath());
         } catch (\Exception $e) {
         }
     }
@@ -49,6 +46,7 @@ class MediaAdmin extends AbstractAdmin
         parent::prePersist($media);
 
         $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
+        $this->glide->deleteCache('images/'.$media->getPath());
     }
 
     /**
@@ -60,6 +58,7 @@ class MediaAdmin extends AbstractAdmin
 
         if ($media->getFile()) {
             $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
+            $this->glide->deleteCache('images/'.$media->getPath());
         }
     }
 
@@ -144,5 +143,10 @@ class MediaAdmin extends AbstractAdmin
     public function setStorage(Filesystem $storage)
     {
         $this->storage = $storage;
+    }
+
+    public function setGlide(Server $glide)
+    {
+        $this->glide = $glide;
     }
 }

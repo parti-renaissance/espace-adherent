@@ -4,19 +4,26 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Glide cache -->
+        <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false">
+            <argument type="service">
+                <service class="Predis\Client">
+                    <argument type="collection">
+                        <argument key="host">%env(REDIS_HOST)%</argument>
+                    </argument>
+                </service>
+            </argument>
+        </service>
+
         <!-- Glide -->
         <service id="app.glide" class="League\Glide\Server">
             <factory class="League\Glide\ServerFactory" method="create" />
 
             <argument type="collection">
                 <argument key="source" type="service" id="app.storage" />
-
-                <!-- Cache is disabled as we will use Cloudflare for this -->
                 <argument key="cache" type="service">
                     <service class="League\Flysystem\Filesystem">
-                        <argument type="service">
-                            <service class="League\Flysystem\Memory\MemoryAdapter" />
-                        </argument>
+                        <argument type="service" id="app.glide.cache_adapter" />
                     </service>
                 </argument>
 

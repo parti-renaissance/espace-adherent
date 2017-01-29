@@ -65,9 +65,8 @@ class ArticleController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->get('app.cloudflare')->cacheIndefinitely(
-            $this->render('home/article.html.twig', ['article' => $article]),
-            ['articles', 'article-'.$article->getId()]
-        );
+        return $this->render('home/article.html.twig', [
+            'article' => $article,
+        ]);
     }
 }

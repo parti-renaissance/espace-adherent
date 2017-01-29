@@ -12,16 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PageAdmin extends AbstractAdmin
 {
-    use CloudflareSynchronizedAdminTrait;
-
-    /**
-     * @param Page $object
-     */
-    public function invalidate($object)
-    {
-        $this->getCloudflare()->invalidateTag('page-'.$object->getSlug());
-    }
-
     /**
      * @param Page $object
      *

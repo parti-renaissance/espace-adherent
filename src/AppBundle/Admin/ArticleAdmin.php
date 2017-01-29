@@ -13,16 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ArticleAdmin extends AbstractAdmin
 {
-    use CloudflareSynchronizedAdminTrait;
-
-    /**
-     * @param Article $object
-     */
-    public function invalidate($object)
-    {
-        $this->getCloudflare()->invalidateTag('article-'.$object->getId());
-    }
-
     /**
      * @param Article $object
      *
