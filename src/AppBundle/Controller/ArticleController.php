@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ArticleController extends Controller
 {
-    const PER_PAGE = 20;
+    const PER_PAGE = 12;
 
     /**
      * @Route(
