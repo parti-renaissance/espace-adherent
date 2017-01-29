@@ -9,7 +9,8 @@ body {
     font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
 }
 
-svg path {
+svg path,
+svg polyline {
     transition: all 0.45s;
 }
 
@@ -28,6 +29,10 @@ a {
             &.stroke {
                 @include hover--stroke(black);
             }
+        }
+
+        polyline {
+            @include hover--stroke(black);
         }
     }
 

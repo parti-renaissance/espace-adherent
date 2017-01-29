@@ -1,10 +1,6 @@
 .listing {
     margin-bottom: 70px;
 
-    &__paginator {
-        text-align: center;
-    }
-
     nav {
         ul li {
             display: inline;
@@ -26,6 +22,39 @@
         }
     }
 
+    &__paginator {
+        text-align: center;
+        margin-top: 50px;
+
+        ul li {
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            border: 1px solid black;
+
+            &:hover {
+                border-color: rgba(0, 0, 0, 0.5);
+            }
+
+            a {
+                top: 9px;
+                position: relative;
+                border: none;
+                padding: 11px 15px 10px 15px;
+
+                svg {
+                    top: 2px;
+                    position: relative;
+                }
+            }
+
+            &.active {
+                border: none;
+                font-weight: 700;
+            }
+        }
+    }
+
     article {
         ul {
             padding: 0;
@@ -38,7 +67,7 @@
                 padding: 15px 0;
 
                 @media (max-width: $mobile) {
-                    display: block;
+                    // display: block;
                 }
 
                 &:last-child {
@@ -53,6 +82,15 @@
                         height: 150px;
                         max-width: inherit;
                         background-color: $gray;
+
+                        @media (max-width: $mobile) {
+                            width: 110px;
+                            height: 75px;
+                        }
+                    }
+
+                    @media (max-width: $mobile) {
+                        margin-right: 15px;
                     }
                 }
 
@@ -60,6 +98,11 @@
                     @include text--medium;
                     font-weight: 400;
                     margin: 0;
+
+                    @media (max-width: $mobile) {
+                        @include text--small;
+                        font-weight: bold;
+                    }
                 }
 
                 div {
@@ -76,6 +119,10 @@
                     font-family: 'Roboto';
                     font-size: $text--size-smallest;
                     text-transform: uppercase;
+
+                    @media (max-width: $mobile) {
+                        display: none;
+                    }
 
                     .fa {
                         font-size: $text--size-medium--small;

@@ -1,14 +1,11 @@
-<nav class="l__wrapper--narrow text--body b__nudge--bottom-larger listing__paginator">
+<div class="l__wrapper--narrow text--body b__nudge--bottom-larger listing__paginator">
     <ul>
         {% if currentPage > 1 %}
             <li>
-                <a href="{{ path('articles_list', {'category': current.slug, 'page': 1}) }}">
-                    << Première
-                </a>
-            </li>
-            <li>
                 <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage - 1}) }}">
-                    < Précédente
+                    <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <polygon id="caret-left" stroke="none" fill="#000000" fill-rule="nonzero" points="8.46391544 1.3808921 7.81608456 0.619107904 -0.771841426 7.92238841 7.81611398 15.2245509 8.46388602 14.4627167 0.771841426 7.92232879"></polygon>
+                    </svg>
                 </a>
             </li>
         {% endif %}
@@ -25,14 +22,11 @@
         {% if currentPage < totalPages %}
             <li>
                 <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage + 1}) }}">
-                    Suivante >
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('articles_list', {'category': current.slug, 'page': totalPages}) }}">
-                    Dernière >>
+                    <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <polyline id="caret-right" stroke="#000000" stroke-width="1" fill="none" points="0 1 8.14 7.9223586 0 14.8436338"></polyline>
+                    </svg>
                 </a>
             </li>
         {% endif %}
     </ul>
-</nav>
+</div>
