@@ -16,9 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-grow: 1;
-
-        @media (max-width: $mobile) {
-        }
+        margin-bottom: 40px;
     }
 
     &__box {
