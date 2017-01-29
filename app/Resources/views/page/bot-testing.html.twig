@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Le Bot' %}
+{% block canonical_url url('page_mentions_legales') %}
+
+{% block content %}
+    <main>
+        <section class="content">
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    Le Bot
+                </h1>
+            </header>
+
+            <article class="l__wrapper--slim">
+                <iframe src="https://api.motion.ai/webchat/29801?sendBtn=SEND&inputBox=Type+something...&token=7523e229de1113060eabe95d6a4aecd1"
+                        style="border: 0; width: 100%; height: 600px; margin-bottom: 50px;"></iframe>
+            </article>
+        </section>
+    </main>
+{% endblock %}
