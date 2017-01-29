@@ -23,10 +23,10 @@ class ArticleController extends Controller
      */
     public function actualitesAction($category, $page)
     {
-        $doctrine = $this->getDoctrine();
-        $categoriesRepository = $doctrine->getRepository(ArticleCategory::class);
+        $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
+        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
 
-        $category = $categoriesRepository->findOneBySlug($category);
+        $category = $categoriesRepo->findOneBySlug($category);
 
         if (!$category) {
             throw $this->createNotFoundException();
@@ -34,8 +34,12 @@ class ArticleController extends Controller
 
         $page = (int) $page;
 
-        $categories = $doctrine->getRepository(ArticleCategory::class)->findAll();
-        $articles = $doctrine->getRepository(Article::class)->findByCategoryPaginated($category, $page, self::PER_PAGE);
+        $categories = $categoriesRepo->findAll();
+        $articlesCount = $articlesRepo->countAllByCategory($category);
+        $articles = $articlesRepo->findByCategoryPaginated($category, $page, self::PER_PAGE);
+
+        var_dump($category, $page, self::PER_PAGE, $articles);
+        exit;
 
         if (empty($articles)) {
             throw $this->createNotFoundException();
@@ -46,7 +50,7 @@ class ArticleController extends Controller
             'categories' => $categories,
             'articles' => $articles,
             'currentPage' => $page,
-            'totalPages' => ceil(count($articles) / self::PER_PAGE),
+            'totalPages' => ceil($articlesCount / self::PER_PAGE),
         ]);
     }
 

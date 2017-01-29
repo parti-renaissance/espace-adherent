@@ -37,54 +37,14 @@ class ArticleControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideHub
-     */
-    public function testHub($path)
-    {
-        $this->client->request(Request::METHOD_GET, $path);
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
-    }
-
-    public function provideHub()
-    {
-        return [
-            ['/articles/actualites'],
-            ['/articles/actualites/2'],
-            ['/articles/videos'],
-            ['/articles/videos/2'],
-            ['/articles/discours'],
-            ['/articles/discours/2'],
-            ['/articles/medias'],
-            ['/articles/medias/2'],
-            ['/articles/communiques'],
-            ['/articles/communiques/2'],
-        ];
-    }
-
-    public function testScenarioHomeHub()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->click($crawler->filter('a:contains("Actualités")')->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->click($crawler->filter('a:contains("Communiqués")')->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->back();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
     protected function setUp()
     {
         parent::setUp();
 
         $this->loadFixtures([
+            LoadArticleData::class,
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
-            LoadArticleData::class,
         ]);
 
         $this->client = static::createClient();
