@@ -14,8 +14,8 @@
     &__edge {
         position: absolute;
         margin: 0 auto;
-        width: 30px;
-        height: 30px;
+        width: 15px;
+        height: 15px;
         border: 6px solid rgba(239,239,239,1);
         border-radius: 50%;
         border-left-color: rgba(213,213,213,1);
@@ -24,8 +24,8 @@
         &--small {
             animation: bigSpin .8s linear infinite;
             animation-origin: 50% 50%;
-            width: 15px;
-            height: 15px;
+            width: 7.5px;
+            height: 7.5px;
             margin-top: 8px;
             margin-left: 8px;
         }
