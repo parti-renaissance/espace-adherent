@@ -12,9 +12,17 @@ class ErrorsController extends Controller
      * @Route("/404", name="404")
      * @Method("GET")
      */
-    public function indexAction()
+    public function quatreCentQuatreAction()
     {
         return $this->render('errors/404.html.twig', []);
     }
 
+    /**
+     * @Route("/500", name="500")
+     * @Method("GET")
+     */
+    public function cinqCentAction()
+    {
+        return $this->render('errors/500.html.twig', []);
+    }
 }
