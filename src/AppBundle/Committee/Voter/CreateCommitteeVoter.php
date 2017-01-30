@@ -40,7 +40,7 @@ class CreateCommitteeVoter implements VoterInterface
     {
         $adherentUuid = (string) $adherent->getUuid();
 
-        if ($this->committeeMembershipRepository->isCommitteeHost($adherentUuid)) {
+        if ($this->committeeMembershipRepository->hostCommittee($adherentUuid)) {
             return self::ACCESS_DENIED;
         }
 

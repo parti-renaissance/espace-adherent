@@ -15,24 +15,32 @@ class CommitteeMembershipRepository extends EntityRepository
      * one committee.
      *
      * @param string $adherentUuid
+     * @param string $committeeUuid
      *
      * @return bool
      */
-    public function isCommitteeHost(string $adherentUuid): bool
+    public function hostCommittee(string $adherentUuid, string $committeeUuid = null): bool
     {
         $adherentUuid = Uuid::fromString($adherentUuid);
 
-        $query = $this
+        $qb = $this
             ->createQueryBuilder('cm')
             ->select('COUNT(cm.uuid)')
-            ->where('cm.adherentUuid = :adherent')
-            ->andWhere('cm.privilege = :privilege')
+            ->where('cm.privilege = :privilege')
+            ->andWhere('cm.adherentUuid = :adherent')
             ->setParameter('adherent', (string) $adherentUuid)
             ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
-            ->getQuery()
         ;
 
-        return (int) $query->getSingleScalarResult() >= 1;
+        if ($committeeUuid) {
+            $committeeUuid = Uuid::fromString($committeeUuid);
+            $qb
+                ->andWhere('cm.committeeUuid = :committee')
+                ->setParameter('committee', (string) $committeeUuid)
+            ;
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
     /**

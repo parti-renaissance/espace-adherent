@@ -8,6 +8,7 @@ final class CommitteePermissions
     const FOLLOW = 'FOLLOW_COMMITTEE';
     const UNFOLLOW = 'UNFOLLOW_COMMITTEE';
     const CREATE = 'CREATE_COMMITTEE';
+    const HOST = 'HOST_COMMITTEE';
 
     private function __construct()
     {

@@ -27,6 +27,18 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @Route("/comites/{uuid}/evenements/ajouter", name="app_committee_add_event")
+     * @Method("GET|POST")
+     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     */
+    public function addEventAction(Committee $committee): Response
+    {
+        return $this->render('committee/add_event.html.twig', [
+            'committee' => $committee,
+        ]);
+    }
+
+    /**
      * @Route("/comites/{uuid}/{slug}/rejoindre", name="app_committee_follow")
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")

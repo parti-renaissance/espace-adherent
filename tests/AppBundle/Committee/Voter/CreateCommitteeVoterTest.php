@@ -27,7 +27,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         $this
             ->committeeMembershipRepository
             ->expects($this->once())
-            ->method('isCommitteeHost')
+            ->method('hostCommittee')
             ->with(self::ADHERENT_UUID)
             ->willReturn(false);
 
@@ -58,7 +58,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         $this
             ->committeeMembershipRepository
             ->expects($this->once())
-            ->method('isCommitteeHost')
+            ->method('hostCommittee')
             ->with(self::ADHERENT_UUID)
             ->willReturn(true);
 
@@ -84,7 +84,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('isCommitteeHost');
+        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
         $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
 
         $adherent = $this
@@ -99,7 +99,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateCommitteePermissionWithUnsupportedAdherentIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('isCommitteeHost');
+        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
         $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
 
         $token = $this->createAuthenticationToken(new User('foobar', 'barfoo'));
@@ -109,7 +109,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateCommitteePermissionWithExplicitSubjectIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('isCommitteeHost');
+        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
         $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
 
         $token = $this->createAuthenticationToken(new User('foobar', 'barfoo'));
