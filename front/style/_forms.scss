@@ -43,6 +43,21 @@
 
     &__row {
         margin-bottom: 15px;
+
+        &--stretch {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #app_donation_gender {
+            .form {
+                font-family: 'Roboto';
+            }
+
+            label {
+                margin: 0 25px 0 5px;
+            }
+        }
     }
 
     &__error {
@@ -54,7 +69,7 @@
     }
 
     &--mid {
-        width: 49.5%;
+        width: 49%;
         margin: 0;
     }
 }
@@ -137,4 +152,3 @@
         }
     }
 }
-
