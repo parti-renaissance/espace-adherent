@@ -76,26 +76,24 @@
 
                 .thumbnail {
                     margin-right: 25px;
+                    width: 220px;
+                    height: 150px;
 
                     img {
-                        width: 220px;
-                        height: 150px;
-                        max-width: inherit;
+                        width: 100%;
                         background-color: $gray;
-
-                        @media (max-width: $mobile) {
-                            width: 110px;
-                            height: 75px;
-                        }
                     }
 
                     @media (max-width: $mobile) {
+                        width: 110px;
+                        height: 75px;
                         margin-right: 15px;
                     }
                 }
 
                 h2 {
                     @include text--medium;
+                    font-family: 'Gillsans';
                     font-weight: 400;
                     margin: 0;
 
