@@ -2,7 +2,7 @@ APP=docker-compose exec -T app
 TOOLS=docker-compose run --rm tools
 CONSOLE=$(APP) bin/console
 
-.PHONY: help
+.PHONY: help install start stop deps composer yarn db-create db-fixtures db-update clear-cache clear-all perm clean
 
 help:           ## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -46,7 +46,12 @@ clear-all:      ## Deeply clean the application (remove all the cache, the logs,
 	$(CONSOLE) cache:clear --no-warmup --env=test
 	$(APP) rm -rf var/logs/*
 	$(APP) rm -rf var/sessions/*
-	$(APP) rm -rf web/built/*
+	$(APP) rm -rf web/built
+	$(APP) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
+
+clean:         ## Removes all generated files
+	- @make clear-all
+	$(APP) rm -rf vendor node_modules
 
 perm:           ## Fix the application cache and logs permissions
 	$(APP) chmod 777 -R var
