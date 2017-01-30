@@ -64,6 +64,10 @@ committee.must_accept_confidentiality_terms: Vous devez accepter les règles de 
 
 committee.must_accept_contacting_terms: Vous devez accepter d'être contacté(e) par la plateforme En Marche !
 
+committee.event.invalid_category: Le type d'événement sélectionné n'est pas valide.
+committee.event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
+committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
+
 #
 # Donation
 #

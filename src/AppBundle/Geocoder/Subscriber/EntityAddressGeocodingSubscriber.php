@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeEvents;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Donation\DonationEvents;
 use AppBundle\Donation\DonationWasCreatedEvent;
+use AppBundle\Committee\Event\CommitteeEventCreatedEvent;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Geocoder\GeocoderInterface;
 use AppBundle\Geocoder\GeoPointInterface;
@@ -50,6 +51,11 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($event->getCommittee());
     }
 
+    public function onCommitteeEventCreated(CommitteeEventCreatedEvent $event)
+    {
+        $this->updateGeocodableEntity($event->getCommitteeEvent());
+    }
+
     private function updateGeocodableEntity(GeoPointInterface $geocodable)
     {
         if ($coordinates = $this->geocode($geocodable->getGeocodableAddress())) {
@@ -75,6 +81,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', -256],
             AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
             CommitteeEvents::CREATED => ['onCommitteeCreated', -256],
+            CommitteeEvents::EVENT_CREATED => ['onCommitteeEventCreated', -256],
         ];
     }
 }

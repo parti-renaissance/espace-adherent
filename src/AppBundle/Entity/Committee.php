@@ -297,4 +297,9 @@ class Committee implements GeoPointInterface
 
         return $this->approvedAt;
     }
+
+    public function updateSlug(string $slug)
+    {
+        $this->slug = $slug;
+    }
 }

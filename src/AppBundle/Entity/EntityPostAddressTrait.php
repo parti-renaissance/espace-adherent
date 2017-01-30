@@ -14,6 +14,11 @@ trait EntityPostAddressTrait
      */
     private $postAddress;
 
+    public function getInlineFormattedAddress($locale = 'fr_FR'): string
+    {
+        return $this->postAddress->getInlineFormattedAddress($locale);
+    }
+
     public function getCountry(): string
     {
         return $this->postAddress->getCountry();

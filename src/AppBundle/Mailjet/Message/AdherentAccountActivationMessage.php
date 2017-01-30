@@ -9,16 +9,30 @@ final class AdherentAccountActivationMessage extends MailjetMessage
 {
     public static function createFromAdherent(Adherent $adherent, string $confirmationLink): self
     {
-        $message = new static(
+        return new static(
             Uuid::uuid4(),
             '54665',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Finalisez votre inscription au mouvement En Marche !'
+            'Finalisez votre inscription au mouvement En Marche !',
+            static::getTemplateVars(),
+            static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );
-        $message->setVar('target_firstname', $adherent->getFirstName());
-        $message->setVar('confirmation_link', $confirmationLink);
+    }
 
-        return $message;
+    private static function getTemplateVars(): array
+    {
+        return [
+            'target_firstname' => '',
+            'confirmation_link' => '',
+        ];
+    }
+
+    private static function getRecipientVars(string $firstName, string $confirmationLink): array
+    {
+        return [
+            'target_firstname' => $firstName,
+            'confirmation_link' => $confirmationLink,
+        ];
     }
 }

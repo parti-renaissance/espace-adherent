@@ -2,11 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Committee\Event\CommitteeEventCommand;
 use AppBundle\Entity\Committee;
+use AppBundle\Form\CommitteeEventCommandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -35,11 +38,26 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
-    public function addEventAction(Committee $committee): Response
+    public function addEventAction(Request $request, Committee $committee): Response
     {
+        $command = new CommitteeEventCommand($this->getUser(), $committee);
+        $form = $this->createForm(CommitteeEventCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.committee.committee_event_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
+
+            return $this->redirectToRoute('app_committee_show_event', [
+                'committee_uuid' => (string) $committee->getUuid(),
+                'slug' => (string) $command->getCommitteeEvent()->getSlug(),
+            ]);
+        }
+
         return $this->render('committee/add_event.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $this->get('app.committee_manager')->findCommitteeHostsList($committee),
+            'form' => $form->createView(),
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Mailjet\Message\MailjetMessage;
 use AppBundle\ValueObject\SHA1;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -14,6 +15,13 @@ use Ramsey\Uuid\UuidInterface;
 class MailjetEmail
 {
     use EntityIdentityTrait;
+
+    /**
+     * The Mailjet batch UUID.
+     *
+     * @ORM\Column(type="uuid", nullable=true)
+     */
+    private $batch;
 
     /**
      * The Mailjet email subject.
@@ -96,9 +104,11 @@ class MailjetEmail
         string $responsePayload = null,
         string $messageClass = null,
         bool $delivered = false,
-        string $sentAt = 'now'
+        string $sentAt = 'now',
+        UuidInterface $batch = null
     ) {
         $this->uuid = $uuid;
+        $this->batch = $batch;
         $this->template = $template;
         $this->subject = $subject;
         $this->recipient = $recipient;
@@ -108,17 +118,20 @@ class MailjetEmail
         $this->sentAt = new \DateTimeImmutable($sentAt);
     }
 
-    public static function createFromMessage(MailjetMessage $message, $requestPayload): self
+    public static function createFromMessage(MailjetMessage $message, string $recipientEmailAddress, $requestPayload): self
     {
-        return new self(
+        $email = new self(
             $message->getUuid(),
             $message->getTemplate(),
             $message->getSubject(),
-            $message->getRecipientEmail(),
+            $recipientEmailAddress,
             $requestPayload,
             null,
             get_class($message)
         );
+        $email->batch = $message->getBatch();
+
+        return $email;
     }
 
     public function delivered(string $responsePayload = null)
@@ -128,6 +141,11 @@ class MailjetEmail
         }
 
         $this->delivered = true;
+    }
+
+    public function getBatch(): string
+    {
+        return $this->batch;
     }
 
     public function getSubject(): string
@@ -169,6 +187,10 @@ class MailjetEmail
     {
         $this->requestPayload = $requestPayload;
         $this->requestPayloadChecksum = SHA1::hash($requestPayload)->getHash();
+
+        if (!$this->batch) {
+            $this->batch = Uuid::uuid5(Uuid::NAMESPACE_OID, $this->requestPayloadChecksum);
+        }
 
         if ($responsePayload) {
             $this->setResponsePayload($responsePayload);

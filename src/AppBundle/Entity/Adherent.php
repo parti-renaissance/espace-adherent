@@ -282,6 +282,16 @@ class Adherent implements UserInterface, GeoPointInterface
         return $this->localHostEmailsSubscription;
     }
 
+    public function enableCommitteesNotifications()
+    {
+        $this->localHostEmailsSubscription = true;
+    }
+
+    public function disableCommitteesNotifications()
+    {
+        $this->localHostEmailsSubscription = false;
+    }
+
     /**
      * Activates the Adherent account with the provided activation token.
      *

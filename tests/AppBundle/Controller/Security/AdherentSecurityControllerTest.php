@@ -145,7 +145,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
-        $this->assertCount(0, $this->emailRepository->findMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
+        $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
@@ -168,7 +168,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 
-        $this->assertCount(1, $this->emailRepository->findMessages(AdherentResetPasswordMessage::class, 'michelle.dufour@example.ch'), 'An email should have been sent.');
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'michelle.dufour@example.ch'), 'An email should have been sent.');
     }
 
     public function testResetPasswordAction()

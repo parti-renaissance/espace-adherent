@@ -41,6 +41,10 @@ class CommitteeFactory
             $data['google_plus_page_url'] ?? null
         );
 
+        if (isset($data['slug'])) {
+            $committee->updateSlug($data['slug']);
+        }
+
         return $committee;
     }
 

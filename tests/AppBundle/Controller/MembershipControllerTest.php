@@ -129,14 +129,14 @@ class MembershipControllerTest extends SqliteWebTestCase
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertCount(1, $this->emailRepository->findMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
 
         $crawler = $this->client->followRedirect();
 

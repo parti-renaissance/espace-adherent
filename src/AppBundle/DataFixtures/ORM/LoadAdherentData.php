@@ -59,6 +59,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 0111223344',
             'registered_at' => '2016-11-16 20:45:33',
         ]);
+        $adherent2->disableCommitteesNotifications();
 
         $adherent3 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
@@ -73,6 +74,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 187264236',
             'registered_at' => '2017-01-03 08:47:54',
         ]);
+        $adherent3->enableCommitteesNotifications();
 
         $adherent4 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,
@@ -87,6 +89,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 727363643',
             'registered_at' => '2017-01-18 13:15:28',
         ]);
+        $adherent4->enableCommitteesNotifications();
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
@@ -101,6 +104,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 138764334',
             'registered_at' => '2017-01-08 05:55:43',
         ]);
+        $adherent5->enableCommitteesNotifications();
 
         $adherent6 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_6_UUID,
@@ -115,6 +119,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 673643424',
             'registered_at' => '2017-01-16 18:33:22',
         ]);
+        $adherent6->enableCommitteesNotifications();
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
@@ -129,6 +134,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
+        $adherent7->enableCommitteesNotifications();
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
@@ -154,6 +160,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'uuid' => self::COMMITTEE_1_UUID,
             'created_by' => (string) $adherent3->getUuid(),
             'name' => 'En Marche Paris 8',
+            'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108'),
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
@@ -172,6 +179,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'uuid' => self::COMMITTEE_3_UUID,
             'created_by' => (string) $adherent7->getUuid(),
             'name' => 'En Marche Dammarie-les-Lys',
+            'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152'),
         ]);

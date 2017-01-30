@@ -37,6 +37,46 @@ class CommitteeManagerTest extends SqliteWebTestCase
         $this->assertCount(0, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
     }
 
+    public function testFindCommitteeFollowersList()
+    {
+        // Approved committees
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
+        $this->assertCount(4, $this->manager->findCommitteeFollowersList($committee));
+        $this->assertCount(2, $this->manager->findCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
+        $this->assertCount(1, $this->manager->findCommitteeFollowersList($committee));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID);
+        $this->assertCount(1, $this->manager->findCommitteeFollowersList($committee));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        // Unapproved committees
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+    }
+
+    public function testFindOptinCommitteeFollowersList()
+    {
+        // Approved committees
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
+        $this->assertCount(3, $this->manager->findOptinCommitteeFollowersList($committee));
+        $this->assertCount(1, $this->manager->findOptinCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
+        $this->assertCount(1, $this->manager->findCommitteeFollowersList($committee));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        $committee = $this->createCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID);
+        $this->assertCount(1, $this->manager->findCommitteeFollowersList($committee));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($committee, CommitteeManager::EXCLUDE_HOSTS));
+
+        // Unapproved committees
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertCount(0, $this->manager->findCommitteeFollowersList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+    }
+
     private function createCommitteeMock(string $uuid)
     {
         $mock = $this
@@ -47,8 +87,7 @@ class CommitteeManagerTest extends SqliteWebTestCase
         $mock
             ->expects($this->any())
             ->method('getUuid')
-            ->willReturn(Uuid::fromString($uuid))
-        ;
+            ->willReturn(Uuid::fromString($uuid));
 
         return $mock;
     }

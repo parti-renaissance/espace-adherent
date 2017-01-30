@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
+use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
 class AdherentAccountConfirmationMessageTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,17 +20,30 @@ class AdherentAccountConfirmationMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(AdherentAccountConfirmationMessage::class, $message);
         $this->assertSame('54673', $message->getTemplate());
-        $this->assertSame(['jerome@example.com', 'Jérôme Pichoud'], $message->getRecipient());
         $this->assertSame('Confirmation de votre inscription au mouvement EnMarche !', $message->getSubject());
         $this->assertCount(4, $message->getVars());
         $this->assertSame(
             [
-                'target_firstname' => 'Jérôme',
-                'target_lastname' => 'Pichoud',
                 'adherents_count' => 8,
                 'committees_count' => 15,
+                'target_firstname' => '',
+                'target_lastname' => '',
             ],
             $message->getVars()
+        );
+
+        $recipient = $message->getRecipient(0);
+        $this->assertInstanceOf(MailjetMessageRecipient::class, $recipient);
+        $this->assertSame('jerome@example.com', $recipient->getEmailAddress());
+        $this->assertSame('Jérôme Pichoud', $recipient->getFullName());
+        $this->assertSame(
+            [
+                'adherents_count' => 8,
+                'committees_count' => 15,
+                'target_firstname' => 'Jérôme',
+                'target_lastname' => 'Pichoud',
+            ],
+            $recipient->getVars()
         );
     }
 }

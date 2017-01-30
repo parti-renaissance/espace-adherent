@@ -9,6 +9,7 @@ use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Intl;
 
 /**
  * @ORM\Embeddable
@@ -187,5 +188,22 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
                && mb_strtolower($this->postalCode) === mb_strtolower($other->getPostalCode())
                && mb_strtolower($this->country) === mb_strtolower($other->getCountry())
         ;
+    }
+
+    public function getInlineFormattedAddress($locale = 'fr_FR'): string
+    {
+        $parts[] = str_replace(',', '', $this->address);
+        $parts[] = sprintf('%s %s', $this->postalCode, $this->getCityName());
+
+        if (!$this->isFrenchAddress()) {
+            $parts[] = Intl::getRegionBundle()->getCountryName($this->country, $locale);
+        }
+
+        return implode(', ', $parts);
+    }
+
+    private function isFrenchAddress(): bool
+    {
+        return 'FR' === mb_strtoupper($this->country) && $this->city;
     }
 }
