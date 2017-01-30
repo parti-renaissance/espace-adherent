@@ -1,7 +1,7 @@
 {
   "extends": [
     "eslint:recommended",
-    "airbnb"
+    "airbnb-base"
   ],
   "plugins": [
     "react"
@@ -19,6 +19,22 @@
     "node": true,
     "mocha": true
   },
+  "globals": {
+    "dom": true,
+    "find": true,
+    "findAll": true,
+    "on": true,
+    "insertAfter": true,
+    "remove": true,
+    "show": true,
+    "hide": true,
+    "addClass": true,
+    "hasClass": true,
+    "toggleClass": true,
+    "removeClass": true,
+    "cookieconsent": true,
+    "App": true
+  },
   "rules": {
     "indent": ["error", 4],
     "quotes": ["error", "single"],
@@ -27,6 +43,9 @@
     "semi": ["error", "always"],
     "no-trailing-spaces": ["error"],
     "eol-last": ["error"],
-    "yoda": ["error", "always"]
+    "yoda": ["error", "always"],
+    "max-len": ["error", 120],
+    "no-param-reassign": ["off"],
+    "no-unused-vars": ["off"]
   }
 }

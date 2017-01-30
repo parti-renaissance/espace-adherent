@@ -24,7 +24,10 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader!sass-loader' }),
+                loaders: ExtractTextPlugin.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader!sass-loader',
+                }),
             },
             {
                 test: /\.js$/,
@@ -66,7 +69,10 @@ module.exports = {
 
         function symfonyAssetsVersion() {
             this.plugin('done', (stats) => {
-                fs.writeFile(path.join(__dirname, 'app/config', 'assets_version.yml'), `parameters:\n    assets_hash: ${stats.hash}\n`);
+                fs.writeFile(
+                    path.join(__dirname, 'app/config', 'assets_version.yml'),
+                    `parameters:\n    assets_hash: ${stats.hash}\n`
+                );
             });
         },
     ],

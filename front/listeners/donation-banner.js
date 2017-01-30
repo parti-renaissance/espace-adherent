@@ -2,16 +2,16 @@
  * Handle the click on the donation banner close button by saving the information in a cookie.
  */
 export default (di) => {
-    let banner = dom('#header-banner'),
-        bannerButton = dom('#header-banner-close-btn');
+    const banner = dom('#header-banner');
+    const bannerButton = dom('#header-banner-close-btn');
 
     if (!banner) {
         return;
     }
 
-    let cookies = di.get('cookies');
+    const cookies = di.get('cookies');
 
-    if (typeof cookies.get('banner_donation') === 'undefined') {
+    if ('undefined' === typeof cookies.get('banner_donation')) {
         show(banner);
 
         on(bannerButton, 'click', () => {

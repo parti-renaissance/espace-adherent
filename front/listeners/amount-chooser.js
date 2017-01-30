@@ -1,6 +1,4 @@
-import React from 'react';
 import { render } from 'react-dom';
-
 import AmountChooser from '../components/AmountChooser';
 
 /*
@@ -8,9 +6,9 @@ import AmountChooser from '../components/AmountChooser';
  */
 export default () => {
     findAll(document, '.amount-chooser').forEach((element) => {
-        let name = element.name,
-            value = parseInt(element.value),
-            chooser = document.createElement('div');
+        const name = element.name;
+        const value = parseInt(element.value, 10);
+        const chooser = document.createElement('div');
 
         insertAfter(element, chooser);
         remove(element);

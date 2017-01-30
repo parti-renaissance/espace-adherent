@@ -1,18 +1,10 @@
-window.dom = (selector) => {
-    return find(document, selector);
-};
+window.dom = selector => find(document, selector);
 
-window.find = (element, selector) => {
-    return element.querySelector(selector);
-};
+window.find = (element, selector) => element.querySelector(selector);
 
-window.findAll = (element, selector) => {
-    return element.querySelectorAll(selector);
-};
+window.findAll = (element, selector) => element.querySelectorAll(selector);
 
-window.on = (element, event, handler) => {
-    return element.addEventListener(event, handler);
-};
+window.on = (element, event, handler) => element.addEventListener(event, handler);
 
 window.insertAfter = (element, newElement) => {
     if (element.parentNode) {

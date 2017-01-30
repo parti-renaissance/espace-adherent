@@ -7,15 +7,15 @@ import DonationAmountChooser from '../components/DonationAmountChooser';
  * Create amount chooser input for donation
  */
 export default () => {
-    let amountInput = dom('#app_donation_amount');
+    const amountInput = dom('#app_donation_amount');
 
     if (!amountInput) {
         return;
     }
 
-    let name = amountInput.name,
-        value = parseInt(amountInput.value),
-        chooser = document.createElement('div');
+    const name = amountInput.name;
+    const value = parseInt(amountInput.value, 10);
+    const chooser = document.createElement('div');
 
     insertAfter(amountInput, chooser);
     remove(amountInput);

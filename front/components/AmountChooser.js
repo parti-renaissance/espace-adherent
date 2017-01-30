@@ -7,7 +7,7 @@ export default class AmountChooser extends React.Component {
         super(props);
 
         this.state = {
-            amount: props.value
+            amount: props.value,
         };
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
@@ -15,15 +15,19 @@ export default class AmountChooser extends React.Component {
     }
 
     handleButtonClicked(amount) {
-        this.props.onChange && this.props.onChange(amount);
+        if (this.props.onChange) {
+            this.props.onChange(amount);
+        }
 
         this.setState({
-            amount: amount,
+            amount,
         });
     }
 
     handleInputChange(event) {
-        this.props.onChange && this.props.onChange(event.target.value);
+        if (this.props.onChange) {
+            this.props.onChange(event.target.value);
+        }
 
         this.setState({
             amount: event.target.value,
@@ -31,20 +35,21 @@ export default class AmountChooser extends React.Component {
     }
 
     render() {
+        const state = this.state.amount;
+        const classSelected = 'amount-chooser__button--selected';
+
         return (
             <div className="amount-chooser">
-                <input type="hidden" name={this.props.name} value={this.state.amount} />
+                <input type="hidden" name={this.props.name} value={state} />
 
-                {defaultAmounts.map((amount) => {
-                    return (
-                        <button className={"amount-chooser__button "+(amount === this.state.amount ? 'amount-chooser__button--selected' : '')}
+                {defaultAmounts.map(amount => (
+                        <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
                                 type="button"
                                 onClick={() => this.handleButtonClicked(amount)}
-                                key={"amount_"+amount}>
+                                key={`amount_${amount}`}>
                             {amount} €
                         </button>
-                    );
-                })}
+                    ))}
 
                 <div className="amount-chooser__other">
                     <input
@@ -53,7 +58,7 @@ export default class AmountChooser extends React.Component {
                         id="amount-chooser__other__input"
                         placeholder="Autre"
                         onChange={this.handleInputChange}
-                        defaultValue={defaultAmounts.indexOf(this.props.value) > -1 ? null : this.props.value} />
+                        defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value} />
 
                     <label htmlFor="amount-chooser__other__input"
                            className="amount-chooser__other__label">

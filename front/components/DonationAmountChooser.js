@@ -6,7 +6,7 @@ export default class DonationAmountChooser extends React.Component {
         super(props);
 
         this.state = {
-            amount: props.value
+            amount: props.value,
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
@@ -14,8 +14,8 @@ export default class DonationAmountChooser extends React.Component {
 
     handleAmountChange(amount) {
         this.setState({
-            amount: amount
-        })
+            amount,
+        });
     }
 
     render() {
@@ -38,5 +38,5 @@ export default class DonationAmountChooser extends React.Component {
 
 DonationAmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.number
+    value: PropTypes.number,
 };
