@@ -37,3 +37,5 @@ adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien 
 # Committee
 #
 committee.creation.success: Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur.
+
+committee.members_count: '1 membre|%count% membres'

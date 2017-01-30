@@ -10,28 +10,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/comites")
+ * @Route("/comites/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
  */
 class CommitteeController extends Controller
 {
     /**
-     * @Route("/{uuid}/{slug}", name="app_committee_show", requirements={
-     *   "uuid": "%pattern_uuid%"
-     * })
+     * @Route(name="app_committee_show")
      * @Method("GET")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
     public function showAction(Committee $committee): Response
     {
+        $committeeManager = $this->get('app.committee_manager');
+
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
+            'committee_members_count' => $committeeManager->getMembersCount($committee),
+            'committee_hosts' => $committeeManager->findCommitteeHostsList($committee),
         ]);
     }
 
     /**
-     * @Route("/{uuid}/evenements/ajouter", name="app_committee_add_event", requirements={
-     *   "uuid": "%pattern_uuid%"
-     * })
+     * @Route("/evenements/ajouter", name="app_committee_add_event")
      * @Method("GET|POST")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
@@ -44,9 +44,7 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/membres", name="app_commitee_list_members", requirements={
-     *   "uuid": "%pattern_uuid%"
-     * })
+     * @Route("/membres", name="app_commitee_list_members")
      * @Method("GET")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
@@ -56,9 +54,7 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/rejoindre", name="app_committee_follow", requirements={
-     *   "uuid": "%pattern_uuid%"
-     * })
+     * @Route("/rejoindre", name="app_committee_follow")
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
@@ -68,11 +64,9 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/quitter", name="app_committee_unfollow", requirements={
-     *   "uuid": "%pattern_uuid%"
-     * })
+     * @Route("/quitter", name="app_committee_unfollow")
      * @Method("POST")
-     * @Security("is_granted('LEAVE_COMMITTEE', committee)")
+     * @Security("is_granted('UNFOLLOW_COMMITTEE', committee)")
      */
     public function unfollowAction(Committee $committee): Response
     {

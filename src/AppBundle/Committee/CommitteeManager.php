@@ -20,6 +20,11 @@ class CommitteeManager
         $this->membershipRepository = $membershipRepository;
     }
 
+    public function getMembersCount(Committee $committee): int
+    {
+        return $this->membershipRepository->countMembers($committee->getUuid()->toString());
+    }
+
     public function findCommitteeHostsList(Committee $committee): array
     {
         $uuids = array_map(
