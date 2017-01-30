@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by hhamon at 2017-01-27T22:01:42Z
+
+Can you still add a unit test in the `EntityAddressGeocodingSubscriberTest` suite please?
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-01-28T12:24:56Z
+
+@hhamon I've pushed 5eabc00, can you please check?
