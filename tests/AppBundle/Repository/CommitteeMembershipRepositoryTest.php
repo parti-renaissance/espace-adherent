@@ -42,10 +42,17 @@ class CommitteeMembershipRepositoryTest extends WebTestCase
 
     public function testMemberIsCommitteeHost()
     {
-        $this->assertTrue($this->repository->isCommitteeHost(LoadAdherentData::ADHERENT_3_UUID));
-        $this->assertTrue($this->repository->isCommitteeHost(LoadAdherentData::ADHERENT_5_UUID));
-        $this->assertFalse($this->repository->isCommitteeHost(LoadAdherentData::ADHERENT_2_UUID));
-        $this->assertFalse($this->repository->isCommitteeHost(LoadAdherentData::ADHERENT_4_UUID));
+        $this->assertTrue($this->repository->hostCommittee(LoadAdherentData::ADHERENT_3_UUID));
+        $this->assertTrue($this->repository->hostCommittee(LoadAdherentData::ADHERENT_3_UUID, LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertFalse($this->repository->hostCommittee(LoadAdherentData::ADHERENT_3_UUID, LoadAdherentData::COMMITTEE_2_UUID));
+
+        $this->assertTrue($this->repository->hostCommittee(LoadAdherentData::ADHERENT_5_UUID));
+        $this->assertTrue($this->repository->hostCommittee(LoadAdherentData::ADHERENT_5_UUID, LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertFalse($this->repository->hostCommittee(LoadAdherentData::ADHERENT_5_UUID, LoadAdherentData::COMMITTEE_2_UUID));
+
+        $this->assertFalse($this->repository->hostCommittee(LoadAdherentData::ADHERENT_1_UUID));
+        $this->assertFalse($this->repository->hostCommittee(LoadAdherentData::ADHERENT_2_UUID));
+        $this->assertFalse($this->repository->hostCommittee(LoadAdherentData::ADHERENT_4_UUID));
     }
 
     protected function setUp()
