@@ -93,11 +93,6 @@
                     {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
                 </div>
 
-
-                {% if form.pass is defined %}
-                    {{ form_widget(form.pass, { label: 'adherent.pass_donation_label' }) }}
-                {% endif %}
-
                 {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
 
                 {{ form_rest(form) }}
