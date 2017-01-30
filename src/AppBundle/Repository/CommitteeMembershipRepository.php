@@ -171,4 +171,28 @@ class CommitteeMembershipRepository extends EntityRepository
 
         return (int) $query->getSingleScalarResult();
     }
+
+    /**
+     * Returns the list of all hosts memberships of a committee.
+     *
+     * @param string $committeeUuid
+     *
+     * @return CommitteeMembership[]
+     */
+    public function findHostMemberships(string $committeeUuid): array
+    {
+        $committeeUuid = Uuid::fromString($committeeUuid);
+
+        $query = $this
+            ->createQueryBuilder('cm')
+            ->where('cm.committeeUuid = :committee')
+            ->andWhere('cm.privilege = :privilege')
+            ->orderBy('cm.joinedAt', 'ASC')
+            ->setParameter('committee', (string) $committeeUuid)
+            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
+            ->getQuery()
+        ;
+
+        return (array) $query->getResult();
+    }
 }

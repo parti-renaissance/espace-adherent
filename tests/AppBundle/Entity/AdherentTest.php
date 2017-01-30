@@ -45,6 +45,19 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($adherent->getLongitude());
     }
 
+    public function testAdherentsAreEqual()
+    {
+        $adherent1 = $this->createAdherent('john.smith@example.org');
+        $adherent2 = $this->createAdherent('john.smith@example.org');
+        $adherent3 = $this->createAdherent('foo.bar@example.org');
+
+        $this->assertTrue($adherent1->equals($adherent2));
+        $this->assertTrue($adherent2->equals($adherent1));
+
+        $this->assertFalse($adherent1->equals($adherent3));
+        $this->assertFalse($adherent3->equals($adherent2));
+    }
+
     public function testGeoAddressAndCoordinates()
     {
         $adherent = $this->createAdherent();
@@ -95,15 +108,15 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTimeImmutable('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
-    private function createAdherent(): Adherent
+    private function createAdherent($email = 'john.smith@example.org'): Adherent
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0140998211');
 
         return new Adherent(
-            Adherent::createUuid('john.smith@example.org'),
-            'john.smith@example.org',
+            Adherent::createUuid($email),
+            $email,
             'super-password',
             'male',
             'John',

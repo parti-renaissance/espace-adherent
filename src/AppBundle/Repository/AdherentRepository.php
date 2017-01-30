@@ -73,4 +73,27 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return (int) $query->getSingleScalarResult();
     }
+
+    /**
+     * Finds the list of adherent matching the given list of UUIDs.
+     *
+     * @param array $uuids
+     *
+     * @return Adherent[]
+     */
+    public function findList(array $uuids): array
+    {
+        if (!$uuids) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->where($qb->expr()->in('a.uuid', $uuids))
+            ->getQuery()
+        ;
+
+        return (array) $query->getResult();
+    }
 }

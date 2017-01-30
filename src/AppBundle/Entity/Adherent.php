@@ -409,4 +409,16 @@ class Adherent implements UserInterface, GeoPointInterface
     {
         return $this->postAddress;
     }
+
+    /**
+     * Returns whether or not the current adherent is the same as the given one.
+     *
+     * @param Adherent $other
+     *
+     * @return bool
+     */
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
 }

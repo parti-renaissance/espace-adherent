@@ -1,0 +1,19 @@
+<h3>Animateurs du comité</h3>
+{% for host in committee_hosts %}
+    <div class="committe-host">
+        <h4>
+            {{ host }}
+            {% if app.user.equals(host) %}(vous){% endif %}
+        </h4>
+        <span class="committee-host-email">{{ host.emailAddress }}</span>
+        {% if app.user.equals(host) %}
+            <br/>
+            <a href="{{ path('app_adherent_profile') }}">Éditer mon profil</a>
+        {% endif %}
+    </div>
+{% endfor %}
+
+<p>
+    Pour ajouter ou supprimer des animateurs, dirigez-vous vers la
+    <a href="{{ path('app_commitee_list_members') }}">section des membres</a>.
+</p>

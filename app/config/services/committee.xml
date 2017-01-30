@@ -4,6 +4,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <service id="app.committee_manager" class="AppBundle\Committee\CommitteeManager">
+            <argument type="service" id="app.repository.adherent"/>
+            <argument type="service" id="app.repository.committee_membership"/>
+        </service>
+
         <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory">
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
@@ -31,6 +36,11 @@
         </service>
 
         <service id="app.voter.follow_committee_voter" class="AppBundle\Committee\Voter\FollowCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.host_committee_voter" class="AppBundle\Committee\Voter\HostCommitteeVoter" public="false">
             <argument type="service" id="app.repository.committee_membership"/>
             <tag name="security.voter"/>
         </service>

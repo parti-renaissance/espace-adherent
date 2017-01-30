@@ -15,7 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 class CommitteeController extends Controller
 {
     /**
-     * @Route("/comites/{uuid}/{slug}", name="app_committee_show")
+     * @Route("/{uuid}/{slug}", name="app_committee_show", requirements={
+     *   "uuid": "%pattern_uuid%"
+     * })
      * @Method("GET")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
@@ -27,7 +29,9 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/comites/{uuid}/evenements/ajouter", name="app_committee_add_event")
+     * @Route("/{uuid}/evenements/ajouter", name="app_committee_add_event", requirements={
+     *   "uuid": "%pattern_uuid%"
+     * })
      * @Method("GET|POST")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
@@ -35,11 +39,26 @@ class CommitteeController extends Controller
     {
         return $this->render('committee/add_event.html.twig', [
             'committee' => $committee,
+            'committee_hosts' => $this->get('app.committee_manager')->findCommitteeHostsList($committee),
         ]);
     }
 
     /**
-     * @Route("/comites/{uuid}/{slug}/rejoindre", name="app_committee_follow")
+     * @Route("/{uuid}/{slug}/membres", name="app_commitee_list_members", requirements={
+     *   "uuid": "%pattern_uuid%"
+     * })
+     * @Method("GET")
+     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     */
+    public function listMembersAction(Committee $committee): Response
+    {
+        return new Response('TO BE IMPLEMENTED');
+    }
+
+    /**
+     * @Route("/{uuid}/{slug}/rejoindre", name="app_committee_follow", requirements={
+     *   "uuid": "%pattern_uuid%"
+     * })
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
@@ -49,7 +68,9 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/comites/{uuid}/{slug}/quitter", name="app_committee_unfollow")
+     * @Route("/{uuid}/{slug}/quitter", name="app_committee_unfollow", requirements={
+     *   "uuid": "%pattern_uuid%"
+     * })
      * @Method("POST")
      * @Security("is_granted('LEAVE_COMMITTEE', committee)")
      */
