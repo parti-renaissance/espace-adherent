@@ -53,10 +53,10 @@
                             </div>
                             <div class="share">
                                 Partagez
-                                <span role="button" onclick="share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
                                     <i class="fa fa-facebook-square"></i>
                                 </span>
-                                <span role="button" onclick="share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
                                     <i class="fa fa-twitter"></i>
                                 </span>
                             </div>
