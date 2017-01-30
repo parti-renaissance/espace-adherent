@@ -28,7 +28,7 @@ class CommitteeRepositoryTest extends SqliteWebTestCase
 
     public function testCountApprovedCommittees()
     {
-        $this->assertSame(3, $this->repository->countApprovedCommittees());
+        $this->assertSame(4, $this->repository->countApprovedCommittees());
     }
 
     protected function setUp()

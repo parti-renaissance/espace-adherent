@@ -7,6 +7,7 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
@@ -121,6 +122,16 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
         $this->client->followRedirect();
+
+        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertNotNull($adherent->getLatitude());
+        $this->assertNotNull($adherent->getLongitude());
+
+        $this->assertInstanceOf(
+            Adherent::class,
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+        );
 
         $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
@@ -333,6 +344,11 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertFalse($adherent->isEnabled());
 
         $memberships = $this->getCommitteeMembershipRepository()->findMemberships((string) $adherent->getUuid());
+
+        /** @var CommitteeMembership[] $memberships */
+        $memberships = $this->getCommitteeMembershipRepository()->findBy(['adherentUuid' => (string) $adherent->getUuid()]);
+
+        $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
 
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
@@ -345,7 +361,7 @@ class MembershipControllerTest extends SqliteWebTestCase
         $committees = $this->getCommitteeRepository()->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], 3);
         $this->assertCount(3, $committees, 'New adherent should have 3 committee proposals');
 
-        // We are 'checking' the first (0) and the last one
+        // We are 'checking' the first (0) and the last one (2)
         $this->client->submit($crawler->selectButton('app_membership_choose_nearby_committee[submit]')->form(), [
             'app_membership_choose_nearby_committee' => [
                 'committees' => [

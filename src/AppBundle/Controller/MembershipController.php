@@ -4,8 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentInterestsFormType;
@@ -142,7 +140,7 @@ class MembershipController extends Controller
      * @Route("/inscription/choisir-des-comites", name="app_membership_choose_nearby_committee")
      * @Method("GET|POST")
      */
-    public function chooseNearByCommitteeAction(Request $request): Response
+    public function chooseNearbyCommitteeAction(Request $request): Response
     {
         $membershipUtils = $this->get('app.membership_utils');
 
@@ -150,24 +148,12 @@ class MembershipController extends Controller
             throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
         }
 
-        $manager = $this->getDoctrine()->getManager();
-
-        if (!$adherent = $manager->getRepository(Adherent::class)->find($id)) {
+        if (!$adherent = $this->getDoctrine()->getRepository(Adherent::class)->find($id)) {
             throw $this->createNotFoundException('New adherent id not found.');
         }
 
-        $form = $this->createForm(MembershipChooseNearbyCommitteeType::class)
-            ->add('submit', SubmitType::class, ['label' => 'Terminer'])
-            ->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('committees')->getData() as $uuid) {
-                if ($committee = $manager->getRepository(Committee::class)->findOneBy(['uuid' => $uuid])) {
-                    $manager->persist(CommitteeMembership::createForAdherent($adherent, $committee));
-                }
-            }
-
-            $manager->flush();
+        /** @var FormInterface $form */
+        if (!$form = $this->get('app.membership.choose_nearby_committee_handler')->handle($request, $adherent)) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 
             return $this->redirectToRoute('homepage');

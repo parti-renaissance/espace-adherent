@@ -42,7 +42,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse'),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
 
@@ -53,7 +53,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
+            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', 45.570898, 5.927206),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
             'phone' => '33 0111223344',
@@ -68,7 +68,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Jacques',
             'last_name' => 'Picard',
-            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108'),
+            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', 48.8699464, 2.3297187),
             'birthdate' => '1953-04-03',
             'position' => 'retired',
             'phone' => '33 187264236',
@@ -83,7 +83,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Lucie',
             'last_name' => 'Olivera',
-            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109'),
+            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109', 48.8713224, 2.3353755),
             'birthdate' => '1989-09-17',
             'position' => 'student',
             'phone' => '33 727363643',
@@ -98,7 +98,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'female',
             'first_name' => 'Gisele',
             'last_name' => 'Berthoux',
-            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024'),
+            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', 48.9015986, 2.3052684),
             'birthdate' => '1983-12-24',
             'position' => 'unemployed',
             'phone' => '33 138764334',
@@ -113,7 +113,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Benjamin',
             'last_name' => 'Duroc',
-            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203'),
+            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203', 43.3062866, 5.3791498),
             'birthdate' => '1987-02-08',
             'position' => 'employed',
             'phone' => '33 673643424',
@@ -128,7 +128,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'gender' => 'male',
             'first_name' => 'Francis',
             'last_name' => 'Brioul',
-            'address' => PostAddress::createFrenchAddress('39 rue de Melun', '77190-77152'),
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '33 673654349',
@@ -163,7 +163,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'name' => 'En Marche Paris 8',
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108'),
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
         ]);
@@ -174,7 +174,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'created_at' => '2017-01-12 19:34:12',
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203'),
+            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
 
         $committee3 = $committeeFactory->createFromArray([
@@ -184,7 +184,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152'),
+            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
         ]);
 
         $committee4 = $committeeFactory->createFromArray([
@@ -193,7 +193,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'created_at' => '2017-01-19 08:36:55',
             'name' => 'Antenne En Marche de Fontainebleau',
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186'),
+            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.4047652, 2.6987591),
         ]);
 
         $committee5 = $committeeFactory->createFromArray([
@@ -202,7 +202,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'created_at' => '2017-01-19 10:54:28',
             'name' => 'En Marche - Comité de Évry',
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
-            'address' => PostAddress::createFrenchAddress("place des Droits de l'Homme et du Citoyen", '91000-91228'),
+            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
         ]);
 
         // Make an adherent request a new password
@@ -233,9 +233,10 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee5);
 
         // Make adherents join committees
-        $manager->persist($committee1->approved('2017-01-13 15:18:22'));
-        $manager->persist($committee4->approved('2017-01-20 23:18:33'));
-        $manager->persist($committee5->approved('2017-01-19 14:56:19'));
+        $manager->persist($committee1->approved('2017-01-03 15:18:22'));
+        $manager->persist($committee3->approved('2017-01-03 15:19:01'));
+        $manager->persist($committee4->approved('2017-01-03 15:19:10'));
+        $manager->persist($committee5->approved('2017-01-03 15:19:54'));
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));

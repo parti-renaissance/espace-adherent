@@ -4,11 +4,13 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Committee\CommitteeNearbyProvider;
+use AppBundle\Geocoder\Coordinates;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MembershipChooseNearbyCommitteeType extends AbstractType
 {
@@ -27,7 +29,7 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $committees = $this->provider->findNearbyCommittees(3);
+        $committees = $this->provider->findNearbyCommittees($options['coordinates']);
 
         $builder
             ->add('committees', ChoiceType::class, [
@@ -48,12 +50,21 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $committees = $form->getConfig()->getAttribute('committees');
+
         foreach ($committees as $name => $committee) {
             $view->vars['committees_views_data'][$name] = [
                 'slug' => $committee['committee']->getSlug(),
                 'memberships' => $committee['memberships'],
             ];
         }
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired('coordinates')
+            ->setAllowedTypes('coordinates', Coordinates::class)
+        ;
     }
 
     /**

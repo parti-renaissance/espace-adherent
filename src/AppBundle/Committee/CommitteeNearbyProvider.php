@@ -3,11 +3,14 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Entity\Committee;
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 
 class CommitteeNearbyProvider
 {
+    const COMMITTEE_PROPOSALS_COUNT = 3;
+
     private $committee;
     private $membership;
 
@@ -22,14 +25,14 @@ class CommitteeNearbyProvider
     }
 
     /**
-     * @param int $count
+     * @param Coordinates $coordinates
      *
      * @return array
      */
-    public function findNearbyCommittees(int $count): array
+    public function findNearbyCommittees(Coordinates $coordinates): array
     {
         /** @var Committee[] $committees */
-        $committees = $this->committee->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], $count);
+        $committees = $this->committee->findNearbyCommittees(self::COMMITTEE_PROPOSALS_COUNT, $coordinates);
 
         foreach ($committees as $committee) {
             $uuid = (string) $committee->getUuid();
