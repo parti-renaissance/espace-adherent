@@ -90,7 +90,7 @@
         {% endfor %}
 
         {% block banner %}
-        <div class="background--primary l__hide--on-tablet" id="header-banner">
+        <div class="background--primary l__hide--on-tablet" id="header-banner" style="display: none;">
             <div class="l__wrapper l__row l__row--h-stretch space--30-0">
                 <div class="text--large text--bold text--limited">
                     La démocratie n’a pas de prix, mais
@@ -267,12 +267,12 @@
         <footer class="background--lighter space--30-0">
             <div class="l__wrapper">
                 <div class="l__row l__row--h-stretch b__nudge--bottom-large l__tablet--col l__mobile--col-center">
-                    <svg width="109px" height="41px" viewBox="462 369 109 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
+                    <a href="{{ path('homepage') }}" class="link--no-decor"><svg width="109px" height="41px" viewBox="462 369 109 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
                         <title>En Marche Logo</title>
                         <polygon id="E" stroke="none" fill="#000000" fill-rule="evenodd" points="468.6709 369.5363 462.9999 408.6353 492.3099 408.6353 493.2979 401.6383 474.0579 401.6383 475.3849 391.9913 489.2349 391.9913 490.2219 384.9943 476.4849 384.9943 477.6969 376.5043 493.5239 376.5043 494.5109 369.5363"></polygon>
                         <polygon id="M" stroke="none" fill="#000000" fill-rule="evenodd" points="538.969 369.5363 525.569 394.3603 519.391 369.5363 508.869 369.5363 495.978 408.6353 505.822 408.6353 514.313 382.8223 520.774 408.6353 526.782 408.6353 540.351 383.6123 541.451 408.6353 551.043 408.6353 549.209 369.5363"></polygon>
                         <path id="!" d="M570.3975,373.2315 C570.3975,374.1905 570.2895,375.1775 570.0735,376.1935 C569.8565,377.2095 569.5415,378.4505 569.1275,379.9175 L564.6705,395.5175 L558.7185,395.5175 L559.2265,377.3775 C559.4145,374.9155 559.6685,373.2215 559.9885,372.3005 C560.2885,371.4725 560.8765,370.7155 561.7515,370.0295 C562.6265,369.3425 563.8525,369.0005 565.4325,369.0005 C567.2005,369.0005 568.4695,369.4375 569.2415,370.3115 C570.0115,371.1865 570.3975,372.1595 570.3975,373.2315 M566.4485,403.2745 C566.4485,404.3285 566.1845,405.3055 565.6585,406.2095 C565.1315,407.1115 564.4175,407.8265 563.5135,408.3525 C562.6115,408.8785 561.6335,409.1425 560.5805,409.1425 C559.5085,409.1425 558.5205,408.8785 557.6185,408.3525 C556.7155,407.8265 556.0015,407.1115 555.4745,406.2095 C554.9475,405.3055 554.6845,404.3285 554.6845,403.2745 C554.6845,402.2035 554.9475,401.2155 555.4745,400.3125 C556.0015,399.4105 556.7155,398.6955 557.6185,398.1685 C558.5205,397.6425 559.5085,397.3785 560.5805,397.3785 C561.6335,397.3785 562.6115,397.6425 563.5135,398.1685 C564.4175,398.6955 565.1315,399.4105 565.6585,400.3125 C566.1845,401.2155 566.4485,402.2035 566.4485,403.2745" stroke="none" fill="#000000" fill-rule="evenodd"></path>
-                    </svg>
+                    </svg></a>
                     <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
                         <li class="head">Suivez En Marche !</li>
                         <li><a href="https://www.facebook.com/EnMarche/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
@@ -343,64 +343,11 @@
         </footer>
         {% endblock %}
 
-        {% block javascripts %}
-            <script type="text/javascript">
-                function controller() {}
-            </script>
-        {% endblock %}
-
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
+        {% block javascripts '' %}
         <script type="text/javascript">
-            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }}, controller);
-        </script>
-        <script type="text/javascript">
-        function share(type, url, title) {
-            if (type == 'email') {
-                window.location = 'mailto:?subject=' + title + '&body=' + url;
-            } else {
-                if (type== 'facebook') {
-                    w = 555;
-                    h = 450;
-                    link = 'https://www.facebook.com/dialog/share?app_id=620675918119463&display=popup&href=' + url;
-                } else if (type == 'twitter') {
-                    w = 600;
-                    h = 450;
-                    link = 'https://twitter.com/share?url=' + url + '&text=' + title + '&via=enmarchefr&';
-                }
-                wLeft = window.screenLeft ? window.screenLeft : window.screenX;
-                wTop = window.screenTop ? window.screenTop : window.screenY;
-                var left = wLeft + (window.innerWidth / 2) - (w / 2);
-                var top = wTop + (window.innerHeight / 2) - (h / 2);
-
-                newwindow = window.open(link,'name','width = ' + w + ', height = ' + h + ', top=' + top + ', left=' + left +' ');
-                if (window.focus) { newwindow.focus() }
-                return false;
-            }
-        }
-        </script>
-
-        <script src="{{ asset('js/cookieconsent.min.js') }}"></script>
-        <script>
-            window.addEventListener("load", function(){
-                window.cookieconsent.initialise({
-                    "palette": {
-                        "popup": {
-                            "background": "#e5e5e5"
-                        },
-                        "button": {
-                            "background": "#55f0b8"
-                        }
-                    },
-                    "position": "bottom-right",
-                    "content": {
-                        "message": "Ce site utilise des cookies\n",
-                        "dismiss": "OK",
-                        "link": "En savoir plus",
-                        "href": "{{ path('page_mentions_legales') }}"
-                    }
-                })});
+            Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }});
         </script>
     </body>
 </html>

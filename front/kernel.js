@@ -1,41 +1,52 @@
-export default class Kernel {
-    static boot(release, sentryDsn, callback) {
-        Kernel._import((app, vendor) => {
-            if (sentryDsn) {
-                vendor.Raven.config(sentryDsn, { release: release }).install();
-            }
+window.Kernel = class {
+    static boot(release, sentryDsn) {
+        Kernel.release = release;
+        Kernel.sentryDsn = sentryDsn;
 
-            callback(app);
-        });
-    }
+        let app = false,
+            vendor = false;
 
-    static _import(callback) {
-        let callCallbackIfReady = () => {
-            if (Kernel.app && Kernel.vendor) {
-                Kernel.app.global();
-                callback(Kernel.app, Kernel.vendor);
+        let runIfReady = () => {
+            if (app && vendor) {
+                let sentryDsn = Kernel.sentryDsn;
+                let release = Kernel.release;
+                let listeners = Kernel.listeners;
+
+                if (sentryDsn) {
+                    Raven.config(sentryDsn, { release: release }).install();
+                }
+
+                for (let i in listeners) {
+                    App.addListener(listeners[i]);
+                }
+
+                App.run({
+                    sentryDsn: sentryDsn,
+                    release: release,
+                });
             }
         };
 
-        System.import('vendor').catch(Kernel._handleError).then((module) => {
-            Kernel.vendor = module.default;
-            callCallbackIfReady();
+        let handleError = (error) => {
+            throw error;
+        };
+
+        System.import('vendor').catch(handleError).then(() => {
+            vendor = true;
+            runIfReady();
         });
 
-        System.import('app').catch(Kernel._handleError).then((module) => {
-            let App = module.default;
-
-            Kernel.app = new App();
-            callCallbackIfReady();
+        System.import('app').catch(handleError).then(() => {
+            app = true;
+            runIfReady();
         });
     }
 
-    static _handleError(err) {
-        throw err;
+    static onLoad(callback) {
+        Kernel.listeners.push(callback);
     }
-}
+};
 
-Kernel.app = null;
-Kernel.vendor = null;
-
-window.Kernel = Kernel;
+Kernel.release = null;
+Kernel.sentryDsn = null;
+Kernel.listeners = [];

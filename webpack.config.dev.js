@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const fs = require('fs');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -12,18 +11,21 @@ module.exports = {
         path: path.join(__dirname, './web/built'),
         publicPath: '/built/',
         filename: '[name].js',
-        chunkFilename: '[name].js'
+        chunkFilename: '[name].js',
     },
     module: {
         loaders: [
             {
                 test: /\.(html|gif|png|jpg|jpeg|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
                 loader: 'file-loader',
-                query: { name: '[name].[ext]' }
+                query: { name: '[name].[ext]' },
             },
             {
                 test: /\.scss$/,
-                loaders: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader!sass-loader' })
+                loaders: ExtractTextPlugin.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader!sass-loader',
+                }),
             },
             {
                 test: /\.js$/,
@@ -31,30 +33,30 @@ module.exports = {
                 loaders: [
                     {
                         loader: 'babel-loader',
-                        query: { cacheDirectory: true }
-                    }
-                ]
-            }
+                        query: { cacheDirectory: true },
+                    },
+                ],
+            },
         ],
     },
     resolve: {
         extensions: ['.js'],
         modules: [
             path.resolve('./front'),
-            'node_modules'
-        ]
+            'node_modules',
+        ],
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: JSON.stringify('development') }
+            'process.env': { NODE_ENV: JSON.stringify('development') },
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: false,
-            debug: true
+            debug: true,
         }),
         new ExtractTextPlugin({
             filename: 'app.css',
-            allChunks: true
-        })
-    ]
+            allChunks: true,
+        }),
+    ],
 };

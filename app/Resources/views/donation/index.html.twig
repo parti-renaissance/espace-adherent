@@ -4,56 +4,111 @@
 {% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
 {% block canonical_url url('donation_index') %}
 
-{% use 'donation/_donation_form.html.twig' %}
+{% block stylesheets %}
+    <style type="text/css">
+        header,
+        footer div div:nth-child(2),
+        footer div div:nth-child(3) {
+            display: none;
+        }
+    </style>
+{% endblock %}
 
 {% block banner '' %}
 
-{% block javascripts %}
-    {{ block('donation_form_script') }}
-{% endblock %}
-
 {% block content %}
 
-    <section class="l__wrapper--medium">
-        <div class="donation">
-            <h2>Je donne</h2>
+    <div class="donation">
 
-            <div class="l__row l__row--top l__row--h-stretch">
+        <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
+            <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
+            <div class="text--white text--all-caps"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
+        </section>
 
-                {{ block('donation_form') }}
+        <section class="l__wrapper l__row space--60-0">
+            <div class="donation__form">
+                <ul class="donation__form-steps">
+                    <li class="active">Coordonnées</li>
+                    <li>Paiement</li>
+                    <li>Confirmation</li>
+                </ul>
+                <h2>Je soutiens Emmanuel Macron</h2>
+                <span class="fluo">Vous êtes une majorité à donner 50€</span>
 
-                <div class="donation__form-explainations">
-                    <p class="donation__form-explainations__taxes">
-                        Votre don vous donne droit à une réduction annuelle d’impôt sur le revenu à hauteur de 66%
-                        de son montant, dans la double limite de 20% du revenu imposable et de 15 000 € par foyer
-                        fiscal.
-                    </p>
+                {{ form_start(form, { attr: { class: 'form' } }) }}
+                {{ form_errors(form) }}
 
-                    <h4>Concrètement, à quoi sert mon soutien ?</h4>
+                <p>
+                    Sélectionnez le montant de votre don :
+                </p>
 
-                    <p class="donation__form-explainations__usages">
-                        Votre don nous permettra de développer tous nos outils numériques, mais aussi d’organiser
-                        des événements comme le grand rassemblement que nous avons organisé le 10 décembre. C’est
-                        grâce à vous que nous pourrons convaincre le plus grand nombre !
-                    </p>
+                {{ form_errors(form.amount) }}
 
-                    <h4>Pourquoi devrais-je donner ?</h4>
+                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
 
-                    <p class="donation__form-explainations__reasons">
-                        Parce qu'En Marche est un mouvement indépendant, et que nous ne recevons pas un seul
-                        euro de subvention de l'Etat ni d'aucun parti politique. Et parce qu'En Marche est un
-                        mouvement totalement ouvert, dont l'adhésion est gratuite. Notre réussite repose donc
-                        uniquement sur votre générosité.
-                    </p>
-
-                    <p>
-                        Si vous préférez effectuer votre don par chèque, vous pouvez également télécharger un bulletin
-                        de don et le renvoyer par courrier postal à l’adresse indiquée dessus
-                        (<a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" target="_blank">en cliquant ici</a>).
-                    </p>
+                <div class="form__row form__row--stretch">
+                    {{ form_errors(form.gender) }}
+                    {{ form_widget(form.gender) }}
                 </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.country) }}
+                    {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row form__row--stretch">
+                    <div class="form--mid">
+                        {{ form_errors(form.postalCode) }}
+                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                    </div>
+                    <div class="form--mid">
+                        {{ form_errors(form.city) }}
+                        {{ form_widget(form.city, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                    </div>
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.address) }}
+                    {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+                </div>
+
+                <div class="form__row form__row--stretch">
+                    {{ form_errors(form.phone) }}
+                    {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+                    {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+                </div>
+
+                {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
             </div>
-        </div>
-    </section>
+
+            <div class="donation__form-note">
+                <div class="donation__form-quote">
+                    « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
+                    bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
+                    vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
+                    vos idées ! »
+                </div>
+                <img src="{{ asset('images/donation-signature.png') }}" style="width: 350px; padding: 25px;" />
+            </div>
+        </section>
+    </div>
 
 {% endblock %}

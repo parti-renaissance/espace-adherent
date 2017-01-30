@@ -41,38 +41,32 @@
             </article>
 
             <ul class="article__social space--60-0 l__wrapper--slim">
-                <li role="button" aria-label="Partagez sur Twitter" role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                    onclick="share('facebook', window.location.href, '')">
-                    <i class="fa fa-facebook-square"></i> Partagez
+                <li role="button" arial-label="Partagez sur Facebook"
+                    class="btn btn--social btn--facebook"
+                    onclick="App.share('facebook', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
-                <li class="btn btn--social btn--twitter"
-                    onclick="share('twitter', window.location.href, '')">
-                    <i class="fa fa-twitter"></i> Tweetez
+                <li role="button" arial-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
-                <li role="button" arial-label="Partagez via email" class="btn btn--social btn--email" onclick=" share('email', window.location.href, '')">
-                    <i class="fa fa-envelope-o"></i> Envoyez
+                <li role="button" arial-label="Partagez via email"
+                    class="btn btn--social btn--email"
+                    onclick="App.share('email', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                 </li>
             </ul>
         </section>
 
         <section class="donate l__wrapper--narrow background--green b__nudge--bottom-huge">
-            <div class="donate__inner space--30 l__row l__row--h-stretch l__mobile--col">
-                <div class="text">
+            <div class="space--30 l__row l__row--h-stretch l__mobile--col">
+                <div class="donate__text">
                     <h2 class="text--large">Donnez et <span class="text--on-white">faites gagner le progrès !</span></h2>
                     <p class="text--body text--small b__nudge--top-large">Votre don vous donne droit à une réduction annuelle d’impôt sur le revenu à hauteur de 66% de son montant. <a href="#">En savoir plus</a>.</p>
                 </div>
-                {# React component HomeDonation replace the following div when JS is available #}
-                <div id="home-donation">
-                    <div class="donate__nojs">
-                        <a href="{{ path('donation_index') }}" title="Je donne" class="btn btn--primary btn--medium-small">
-                            Je donne
-                            <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>Right arrow</title>
-                                <polyline id="right-arrow" stroke="#FFFFFF" stroke-width="1" fill="none" points="2 6 10.14 12.9223586 2 19.8436338"></polyline>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+
+                {{ include('donation/_quick_form.html.twig') }}
             </div>
         </section>
     </main>

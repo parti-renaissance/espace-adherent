@@ -45,7 +45,6 @@
         "league/glide-symfony": "^1.0",
         "misd/phone-number-bundle": "^1.2",
         "lexik/paybox-bundle": "^2.1",
-        "friendsofsymfony/jsrouting-bundle": "^1.6",
         "csa/guzzle-bundle": "^2.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.1",
         "scheb/two-factor-bundle": "^2.8",

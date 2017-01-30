@@ -114,10 +114,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -133,10 +133,10 @@
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>
@@ -165,10 +165,10 @@
                                     </div>
                                     <div class="share">
                                         Partagez
-                                        <span role="button" onclick="share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                             <i class="fa fa-facebook-square"></i>
                                         </span>
-                                        <span role="button" onclick="share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
                                             <i class="fa fa-twitter"></i>
                                         </span>
                                     </div>
@@ -230,24 +230,18 @@
 
     <section class="donate donate--home"
              style="background-image: linear-gradient(120deg ,rgba(0,0,0,.8), rgba(0,0,0,0)), url('{{ static_asset('je-marche.jpg') }}');">
-        <div class="donate__inner l__wrapper space--45-5 l__row l__row--h-stretch l__mobile--col">
-            <div class="text text--white">
-                <h2 class="text--large">Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span></h2>
-                <p class="text--body b__nudge--top-large">En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.</p>
+        <div class="l__wrapper space--45-5 l__row l__row--h-stretch l__mobile--col">
+            <div class="donate__text text--white">
+                <h2 class="text--large">
+                    Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span>
+                </h2>
+                <p class="text--body b__nudge--top-large">
+                    En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de
+                    l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.
+                </p>
             </div>
 
-            {# React component HomeDonation replace the following div when JS is available #}
-            <div id="home-donation">
-                <div class="donate__nojs">
-                    <a href="{{ path('donation_index') }}" title="Je donne" class="btn btn--primary btn--medium-small">
-                        Je donne
-                        <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>Right arrow</title>
-                            <polyline id="right-arrow" stroke="#FFFFFF" stroke-width="1" fill="none" points="2 6 10.14 12.9223586 2 19.8436338"></polyline>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+            {{ include('donation/_quick_form.html.twig') }}
         </div>
     </section>
 </main>

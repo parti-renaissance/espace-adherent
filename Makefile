@@ -65,11 +65,14 @@ assets-dev:     ## Build the development assets
 assets-prod:    ## Build the production assets
 	$(TOOLS) yarn build-prod
 
-test:           ## [test-php test-js] Run the PHP and the Javascript tests
-test: test-php test-js
+test:           ## [test-php test-lintjs test-js] Run the PHP and the Javascript tests
+test: test-php test-lintjs test-js
 
 test-php:       ## Run the PHP tests
 	$(APP) vendor/bin/phpunit
+
+test-lintjs:    ## Lint the Javascript to follow the convention
+	$(TOOLS) yarn lint
 
 test-js:        ## Run the Javascript tests
 	$(TOOLS) yarn test

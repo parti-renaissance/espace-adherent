@@ -60,6 +60,19 @@ $text--size-extra-large: 48px;
     font-weight: 400;
 }
 
+@mixin text--logo {
+    @include text--bold;
+    font-size: $text--size-medium--large;
+    font-style: italic;
+    line-height: 0.9em;
+    margin-right: 10px;
+    letter-spacing: -0.7px;
+
+    @media (max-width: $tablet) {
+        font-size: $text--size-medium;
+    }
+}
+
 .text {
     &--summary {
         @include text--summary;
@@ -143,6 +156,10 @@ $text--size-extra-large: 48px;
 
     &--center {
         text-align: center;
+    }
+
+    &--left {
+        text-align: left;
     }
 
     &--white {
@@ -245,17 +262,7 @@ $text--size-extra-large: 48px;
             font-size: $text--size-medium--small;
 
             h1 {
-                @include text--bold;
-                font-size: $text--size-medium--large;
-                font-style: italic;
-                line-height: 0.9em;
-                margin-right: 10px;
-                letter-spacing: -0.7px;
-
-                @media (max-width: $tablet) {
-                    font-size: $text--size-medium;
-                    color: red !important;
-                }
+                @include text--logo;
             }
 
             .icon-search {

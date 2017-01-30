@@ -13,18 +13,21 @@ module.exports = {
         path: path.join(__dirname, './web/built'),
         publicPath: '/built/',
         filename: '[hash].[name].js',
-        chunkFilename: '[chunkhash].[name].js'
+        chunkFilename: '[chunkhash].[name].js',
     },
     module: {
         loaders: [
             {
                 test: /\.(html|gif|png|jpg|jpeg|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
                 loader: 'file-loader',
-                query: { name: '[name].[ext]' }
+                query: { name: '[name].[ext]' },
             },
             {
                 test: /\.scss$/,
-                loaders: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader!sass-loader' })
+                loaders: ExtractTextPlugin.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader!sass-loader',
+                }),
             },
             {
                 test: /\.js$/,
@@ -32,42 +35,45 @@ module.exports = {
                 loaders: [
                     {
                         loader: 'babel-loader',
-                        query: { cacheDirectory: true }
-                    }
-                ]
-            }
+                        query: { cacheDirectory: true },
+                    },
+                ],
+            },
         ],
     },
     resolve: {
         extensions: ['.js'],
         modules: [
             path.resolve('./front'),
-            'node_modules'
-        ]
+            'node_modules',
+        ],
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: JSON.stringify('production') }
+            'process.env': { NODE_ENV: JSON.stringify('production') },
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false },
             output: { comments: false },
-            sourceMap: true
+            sourceMap: true,
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
-            debug: false
+            debug: false,
         }),
         new ExtractTextPlugin({
             filename: '[hash].app.css',
-            allChunks: true
+            allChunks: true,
         }),
         new WebpackMd5Hash(),
 
-        function() {
-            this.plugin('done', function(stats) {
-                fs.writeFile(path.join(__dirname, 'app/config', 'assets_version.yml'), "parameters:\n    assets_hash: "+stats.hash+"\n");
+        function symfonyAssetsVersion() {
+            this.plugin('done', (stats) => {
+                fs.writeFile(
+                    path.join(__dirname, 'app/config', 'assets_version.yml'),
+                    `parameters:\n    assets_hash: ${stats.hash}\n`
+                );
             });
-        }
-    ]
+        },
+    ],
 };

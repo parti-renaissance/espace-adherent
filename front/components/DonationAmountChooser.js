@@ -1,63 +1,42 @@
 import React, { PropTypes } from 'react';
+import AmountChooser from './AmountChooser';
 
-const defaultAmounts = [10, 20, 30, 100, 150];
+export default class DonationAmountChooser extends React.Component {
+    constructor(props) {
+        super(props);
 
-const DonationAmountChooser = (props) => {
-    let defaultAmountsView = [],
-        amountInList = false;
+        this.state = {
+            amount: props.value,
+        };
 
-    defaultAmounts.forEach((amount) => {
-        amountInList = amountInList || amount === props.currentAmount;
+        this.handleAmountChange = this.handleAmountChange.bind(this);
+    }
 
-        defaultAmountsView.push(
-            <input type="radio"
-                   name="donation_amount"
-                   value={amount}
-                   id={"donation_amount_"+amount}
-                   key={"input_donation_amount_"+amount}
-                   checked={amount === props.currentAmount}
-                   onChange={() => { props.onAmountChange && props.onAmountChange(amount); }}
-            />
-        );
+    handleAmountChange(amount) {
+        this.setState({
+            amount,
+        });
+    }
 
-        defaultAmountsView.push(
-            <label htmlFor={"donation_amount_"+amount}
-                   role="button"
-                   key={"label_donation_amount_"+amount}
-                   className="amount">
-                {amount} €
-            </label>
-        );
-    });
-
-    return (
-        <div className="donate__amounts">
-            {defaultAmountsView}
-
-            <div className="other-amount">
-                <input
-                    type="text"
-                    id="donation_other_amount"
-                    placeholder="Autre montant"
-                    defaultValue={amountInList ? null : props.currentAmount}
-                    onChange={(event) => { props.onAmountChange && props.onAmountChange(parseInt(event.target.value)); }}
-                    onKeyPress={(event) => { event.charCode === 13 && props.onOtherAmountSubmit && props.onOtherAmountSubmit(); }}
+    render() {
+        return (
+            <div className="donation__amount-chooser">
+                <AmountChooser
+                    name={this.props.name}
+                    value={this.props.value}
+                    onChange={this.handleAmountChange}
                 />
 
-                <label htmlFor="donation_other_amount"
-                       className="label">
-                    <span>Entrez un autre montant</span>
-                    €
-                </label>
+                <div className="donation__amount-chooser__after-taxes">
+                    <h3>Soit {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)}€</h3>
+                    <p>après réduction d'impôts</p>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 DonationAmountChooser.propTypes = {
-    currentAmount: PropTypes.number,
-    onAmountChange: PropTypes.func,
-    onOtherAmountSubmit: PropTypes.func,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number,
 };
-
-export default DonationAmountChooser;

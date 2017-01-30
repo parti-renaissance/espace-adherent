@@ -1,31 +1,13 @@
-{% block donation_form_script %}
-    <script type="text/javascript">
-        function controller(app) {
-            app.donationIndex(
-                {
-                    amount: {{ donation.amount ?: 10 }},
-                    country: '{{ donation.country }}',
-                    postalCode: '{{ donation.postalCode }}',
-                    city: '{{ donation.city }}',
-                    address: '{{ donation.address }}'
-                    {%- if form.vars.sponsor_form is defined -%}
-                    ,
-                        errors: {
-                            country: '{{ form_errors(form.country) }}',
-                            postalCode: '{{ form_errors(form.postalCode) }}',
-                            city: '{{ form_errors(form.city) }}',
-                            address: '{{ form_errors(form.address) }}'
-                        }
-                    {%- endif %}
-                },
-                {{ countries|json_encode|raw }}
-            );
-        }
-    </script>
-{% endblock %}
-
 {% block donation_form %}
     <div class="donation__form">
+        <ul class="donation__form-steps">
+            <li class="active">Coordonnées</li>
+            <li>Paiement</li>
+            <li>Confirmation</li>
+        </ul>
+        <h2>Je soutiens Emmanuel Macron</h2>
+        <span class="fluo">Vous êtes une majorité à donner 50€</span>
+
         {{ form_start(form, { attr: { class: 'form' } }) }}
             {{ form_errors(form) }}
 
@@ -34,64 +16,58 @@
             </p>
 
             {{ form_errors(form.amount) }}
-            <div id="donation-amount" class="form__row">
-                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
-            </div>
+
+            {{ form_widget(form.amount, { 'attr': { 'class': 'form--full', 'id': 'donation-amount' } }) }}
 
             {% if form.vars.sponsor_form is defined %}
 
-                <div class="form__row">
+                <div class="form__row form__row--stretch">
                     {{ form_errors(form.gender) }}
                     {{ form_widget(form.gender) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.lastName, 'Nom') }}
                     {{ form_errors(form.lastName) }}
-                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full',
+                                                    'placeholder': 'Nom' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.firstName, 'Prénom') }}
                     {{ form_errors(form.firstName) }}
-                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full',
+                                                     'placeholder': 'Prénom' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.email, 'Adresse email') }}
                     {{ form_errors(form.email) }}
-                    {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(form.email, { 'attr': { 'class': 'form--full',
+                                                 'placeholder': 'Adresse email' } }) }}
                 </div>
 
                 <div id="donation-address">
                     <div class="form__row">
-                        {{ form_label(form.country, 'Pays') }}
                         {{ form_errors(form.country) }}
                         {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
                     </div>
 
-                    <div class="form__row">
-                        {{ form_label(form.postalCode, 'Code postal') }}
+                    <div class="form__row form__row--stretch">
                         {{ form_errors(form.postalCode) }}
-                        <div>{{ form_widget(form.postalCode) }}</div>
-
-                        {{ form_widget(form.city) }}
+                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--mid', 'placeholder': 'Code postal' } }) }}
+                        {{ form_widget(form.city, { 'attr': { 'class': 'form--mid' } }) }}
                     </div>
 
                     <div class="form__row">
-                        {{ form_label(form.address, 'Adresse postale') }}
                         {{ form_errors(form.address) }}
-                        {{ form_widget(form.address, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.address, { 'attr': { 'class': 'form--full',
+                                                       'placeholder': 'Adresse postale' } }) }}
                     </div>
                 </div>
 
-                <div class="form__row">
-                    {{ form_label(form.phone, 'Numéro de téléphone') }}
+                <div class="form__row form__row--stretch">
                     {{ form_errors(form.phone) }}
-                    <div>
-                        {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone'} }) }}
-                        {{ form_widget(form.phone.number) }}
-                    </div>
+                    {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+                    {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid',
+                                                        'placeholder': 'Numéro de téléphone' } }) }}
                 </div>
 
             {% endif %}
@@ -100,7 +76,7 @@
                 {{ form_widget(form.pass, { label: 'adherent.pass_donation_label' }) }}
             {% endif %}
 
-            {{ form_widget(form.submit) }}
+            {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
 
             {{ form_rest(form) }}
         {{ form_end(form) }}

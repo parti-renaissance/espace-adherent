@@ -1,38 +1,114 @@
-.donate {
+.amount-chooser {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-    .text {
-        width: 250px;
-    }
+    &__button,
+    &__other {
+        border: 0;
+        font-family: Gillsans, Roboto, Helvetica, sans-serif;
+        cursor: pointer;
+        width: 31%;
+        height: 43px;
+        padding: 11px 0;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        background: white;
 
-    &--home {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center top;
+        &:hover {
+            background: $gray--lighter;
+        }
 
-        .text {
-            width: 400px;
+        font-size: $text--size-medium--small;
+        text-align: center;
+        letter-spacing: 1.9px;
+
+        @media (max-width: 450px) {
+            width: 47%;
         }
     }
 
-    .text {
+    &__button {
+        outline: 0;
+
+        &--selected {
+            background-color: $pink;
+            color: white;
+
+            &:hover {
+                background: $pink-hover;
+            }
+        }
+    }
+
+    &__other {
+        position: relative;
+        float: left;
+        background: white;
+
+        &__input {
+            box-sizing: border-box;
+            width: 100%;
+            background: transparent;
+            top: -11px;
+            position: relative;
+            font-family: 'Roboto', Helvetica, sans-serif;
+            font-size: $text--size-smallest;
+            letter-spacing: 0.2px;
+            border: none;
+            cursor: text;
+            text-align: left;
+            padding: 16px 26px 13px 18px;
+
+            &:hover {
+                background: transparent;
+            }
+        }
+
+        &__label {
+            position: absolute;
+            top: 11px;
+            right: 20px;
+            font-size: $text--size-medium--small;
+
+            span {
+                display: none;
+            }
+        }
+    }
+}
+
+.donate {
+    &__text {
+        width: 250px;
+
         @media (max-width: $mobile) {
             width: 100%;
         }
     }
 
-    &__nojs {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    #home-donation {
+    &__form {
         margin-left: 15px;
         width: 450px;
 
-        .btn {
-            display: flex;
+        &__chooser__input {
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        &__button {
+            display: block;
+            width: 100%;
             justify-content: center;
             align-items: center;
+            border: 0;
+            font-family: Gillsans, Roboto, Helvetica, sans-serif;
+
+            svg {
+                top: 2px;
+            }
         }
 
         @media (max-width: $mobile) {
@@ -42,99 +118,94 @@
         }
     }
 
-    &__amounts {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
+    &--home {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center top;
 
-        input[type="radio"] {
-            position: absolute!important;
-            left: -9999px;
-            text-indent: -9999px;
-
-            &:checked + label {
-                background-color: $pink;
-                color: white;
-            }
-        }
-
-        label.amount,
-        .other-amount,
-        .other-amount input {
-            cursor: pointer;
-            width: 31%;
-            height: 43px;
-            padding: 11px 0;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            background: white;
-
-            &:hover {
-                background: $gray--lighter;
-            }
-
-            font-size: $text--size-medium--small;
-            text-align: center;
-            letter-spacing: 1.9px;
-
-            @media (max-width: 450px) {
-                width: 47%;
-            }
-        }
-
-        .other-amount input {
-            width: 100%;
-            background: transparent;
-            top: -10px;
-            position: relative;
-
-            &:hover {
-                background: transparent;
-            }
-        }
-
-        .other-amount {
-            position: relative;
-            float: left;
-            background: white;
-
-            label {
-                position: absolute;
-                top: 11px;
-                right: 20px;
-                font-size: $text--size-medium--small;
-
-                span {
-                    display: none;
-                }
-            }
-
-            input {
-                font-family: 'Roboto';
-                font-size: $text--size-smallest;
-                letter-spacing: 0.2px;
-                border: none;
-                cursor: text;
-                text-align: left;
-                padding: 0 38px 0 18px;
-            }
+        .donate__text {
+            width: 400px;
         }
     }
 }
 
 .donation {
-    margin: 20px 0 100px 0;
+    padding: 20px 0;
+    background-color: $gray;
+    background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/donation-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    &__header {
+        h1 a {
+            @include text--logo;
+            color: white;
+        }
+    }
 
     &__form {
-        width: 55%;
+        width: 500px;
+        background: white;
+        padding: 40px 55px;
+        margin: 0 72px 0 30px;
+        text-align: center;
+        box-sizing: border-box;
+
+        @media (max-width: $tablet) {
+            width: 100%;
+            margin: 0;
+        }
+
+        form {
+            font-family: 'Roboto';
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 41px;
+            font-weight: 700;
+            font-style: italic;
+            line-height: 0.86;
+            letter-spacing: -0.7px;
+        }
+
+        .fluo {
+            background: $yellow;
+            font-family: 'Roboto';
+            padding: 5px 10px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            margin: 10px 0 30px;
+            display: inline-block;
+        }
 
         &__amount {
             margin-bottom: 40px;
+
+            .donate__amounts {
+                label.amount {
+                    background: #9b9b9b;
+                    color: white;
+
+                    &:hover {
+                        background: $pink;
+                    }
+                }
+
+                .other-amount {
+                    background: #ececec;
+                }
+            }
         }
 
         &__reductions {
-            font-size: $text--size-medium--small;
+            div:nth-child(1) {
+                margin-top: 40px;
+                font-size: 30px;
+                font-weight: 700;
+            }
         }
 
         &__phone {
@@ -142,17 +213,58 @@
         }
 
         &__city {
-            width: 200px;
+            width: 208px;
         }
     }
 
-    &__form-explainations {
-        width: 40%;
-        color: #737373;
+    &__form-steps {
+        counter-reset: step;
+        width: 340px;
+        margin: 0 auto 40px auto;
+        display: flex;
+        justify-content: space-between;
 
-        &__taxes, &__usages, &__reasons {
-            margin: 25px 0 50px 0;
+        li {
+            @include text--summary;
+            display: inline-block;
+            opacity: 0.3;
+            text-align: center;
+
+            &:before {
+                content: counter(step);
+                counter-increment: step;
+                width: 30px;
+                height: 30px;
+                background: #808080;
+                color: rgba(0, 0, 0, 1);
+                display: block;
+                border-radius: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto 5px auto;
+            }
+
+            &.active {
+                opacity: 1;
+
+                &:before {
+                    color: white;
+                }
+            }
         }
+    }
+
+    &__form-note {
+        @media (max-width: $tablet) {
+            display: none;
+        }
+    }
+
+    &__form-quote {
+        width: 250px;
+        color: white;
+        font-size: 20px;
     }
 
     &__loader {
@@ -163,6 +275,27 @@
         &__text {
             margin-top: 50px;
         }
+    }
+
+    &__amount-chooser {
+        margin-bottom: 30px;
+
+        &__after-taxes {
+            h3 {
+                font-size: 26px;
+                font-weight: bold;
+            }
+
+            p {
+                margin: 5px 0 10px 0;
+                padding: 0;
+            }
+        }
+    }
+
+    &__payment {
+        min-height: 939px;
+        padding-top: 50px;
     }
 }
 

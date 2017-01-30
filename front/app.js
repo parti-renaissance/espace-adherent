@@ -1,46 +1,50 @@
-import React from 'react';
-import { render } from 'react-dom';
-
-import HomeDonation from './controllers/HomeDonation';
-import DonationIndexAmoutChooser from './controllers/DonationIndexAmoutChooser';
-import DonationIndexAddress from './controllers/DonationIndexAddress';
-import MembershipIndexAddress from './controllers/MembershipIndexAddress';
-import UpdateMembershipIndexAddress from './controllers/UpdateMembershipIndexAddress';
-import CommitteeIndexAddress from './controllers/CommitteeIndexAddress';
-
 import './style/app.scss';
 
-export default class App {
-    global() {
-        let banner = document.getElementById('header-banner');
+import Container from './services/Container';
+import registerServices from './services';
 
-        if (banner) {
-            document
-                .getElementById('header-banner-close-btn')
-                .addEventListener('click', () => {
-                    banner.style.display = 'none';
-                });
-        }
+// Listeners
+import amountChooser from './listeners/amount-chooser';
+import cookiesConsent from './listeners/cookies-consent';
+import donationBanner from './listeners/donation-banner';
+import donationAmount from './listeners/donation-amount';
+
+class App {
+    constructor() {
+        this._di = null;
+        this._listeners = [
+            cookiesConsent,
+            donationBanner,
+            amountChooser,
+            donationAmount,
+        ];
     }
 
-    home() {
-        render(<HomeDonation />, document.getElementById('home-donation'));
+    addListener(listener) {
+        this._listeners.push(listener);
     }
 
-    donationIndex(donation, countries) {
-        render(<DonationIndexAmoutChooser defaultAmount={donation.amount} />, document.getElementById('donation-amount'));
-        render(<DonationIndexAddress countries={countries} defaultAddress={donation} />, document.getElementById('donation-address'));
+    run(parameters) {
+        this._di = new Container(parameters);
+
+        // Register the services
+        registerServices(this._di);
+
+        // Execute the page load listeners
+        on(window, 'load', () => {
+            this._listeners.forEach((listener) => {
+                listener(this._di);
+            });
+        });
     }
 
-    membershipIndex(membership, countries) {
-        render(<MembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
+    get(key) {
+        return this._di.get(key);
     }
 
-    updateMembershipIndex(membership, countries) {
-        render(<UpdateMembershipIndexAddress countries={countries} defaultAddress={membership} />, document.getElementById('membership-address'));
-    }
-
-    committeeIndex(committee, countries) {
-        render(<CommitteeIndexAddress countries={countries} defaultAddress={committee} />, document.getElementById('committee-address'));
+    share(type, url, title) {
+        this._di.get('sharer').share(type, url, title);
     }
 }
+
+window.App = new App();

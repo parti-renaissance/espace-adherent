@@ -12,6 +12,7 @@ class DonationFactory
     public function createDonationFromRequest(Request $request): Donation
     {
         $donation = new Donation();
+        $donation->setAmount(50);
 
         if ($amount = $request->query->getInt('montant')) {
             $donation->setAmount($amount);

@@ -1,4 +1,5 @@
 /app/config/parameters.yml
+/app/config/assets_version.yml
 /app/data/images/
 /build/
 /node_modules/
@@ -13,3 +14,4 @@
 /phpunit.xml
 /supervisord.log
 /supervisord.pid
+/yarn-error.log
