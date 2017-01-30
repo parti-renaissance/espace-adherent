@@ -4,14 +4,16 @@
 
 {% block banner '' %}
 
-{% block sidebar %}
-    
-{% endblock %}
-
 {% block content %}
     <section class="l__wrapper--medium">
         <div class="committee">
             <h2>Créer mon événement</h2>
+        </div>
+    </section>
+
+    <section class="l__wrapper--medium">
+        <div class="committee">
+            {{ include('committee/hosts.html.twig') }}
         </div>
     </section>
 {% endblock %}

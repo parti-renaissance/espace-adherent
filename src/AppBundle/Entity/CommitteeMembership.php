@@ -168,4 +168,14 @@ class CommitteeMembership
     {
         return self::COMMITTEE_HOST === $this->privilege;
     }
+
+    /**
+     * Returns the adherent UUID.
+     *
+     * @return UuidInterface
+     */
+    public function getAdherentUuid(): UuidInterface
+    {
+        return $this->adherentUuid;
+    }
 }
