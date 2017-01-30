@@ -64,7 +64,7 @@ test:           ## [test-php test-js] Run the PHP and the Javascript tests
 test: test-php test-js
 
 test-php:       ## Run the PHP tests
-	$(APP) vendor/bin/simple-phpunit
+	$(APP) vendor/bin/phpunit
 
 test-js:        ## Run the Javascript tests
 	$(TOOLS) yarn test
