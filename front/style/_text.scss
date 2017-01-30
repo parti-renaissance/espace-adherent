@@ -73,6 +73,23 @@ $text--size-extra-large: 48px;
     }
 }
 
+@mixin text--logo {
+    @include text--bold;
+    font-size: $text--size-medium--large;
+    font-style: italic;
+    line-height: 0.9em;
+    margin-right: 10px;
+    letter-spacing: -0.7px;
+
+    @media (max-width: $tablet) {
+        font-size: $text--size-medium;
+    }
+
+    a {
+        border: 0;
+    }
+}
+
 .text {
     &--summary {
         @include text--summary;
