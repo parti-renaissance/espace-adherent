@@ -20,4 +20,22 @@ class PostAddressTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(5.987654, $address->getLongitude());
         $this->assertSame('92 bld Victor Hugo, 92110 Clichy, France', $address->getGeocodableAddress());
     }
+
+    public function testEquals()
+    {
+        $address1 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
+        $address2 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
+
+        $this->assertTrue($address1->equals($address2));
+        $this->assertTrue($address2->equals($address1));
+    }
+
+    public function testNotEquals()
+    {
+        $address1 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
+        $address2 = PostAddress::createFrenchAddress('94 bld Victor Hugo', '92110-92024');
+
+        $this->assertFalse($address1->equals($address2));
+        $this->assertFalse($address2->equals($address1));
+    }
 }

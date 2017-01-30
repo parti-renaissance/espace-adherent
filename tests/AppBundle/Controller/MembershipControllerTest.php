@@ -120,7 +120,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
@@ -203,7 +203,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertInstanceOf(Donation::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
         $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
-        $this->assertSame('Dupont', $donation->getLastName(), 'Temporary donation should be hydrated by the adherent data.');
+        $this->assertSame('Dupont', $donation->getLastName());
     }
 
     public function testDonateWithoutTemporaryDonation()
