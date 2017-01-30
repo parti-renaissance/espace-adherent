@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Repository;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class AdherentRepositoryTest extends WebTestCase
+class AdherentRepositoryTest extends SqliteWebTestCase
 {
     /**
      * @var AdherentRepository

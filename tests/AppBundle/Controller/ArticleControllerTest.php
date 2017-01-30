@@ -5,11 +5,11 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class ArticleControllerTest extends WebTestCase
+class ArticleControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -47,7 +47,7 @@ class ArticleControllerTest extends WebTestCase
             LoadLiveLinkData::class,
         ]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
     }
 
     protected function tearDown()

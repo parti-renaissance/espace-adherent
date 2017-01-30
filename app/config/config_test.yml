@@ -41,15 +41,6 @@ parameters:
         securite: Sécurité
         territoire: Territoire
 
-liip_functional_test:
-    cache_sqlite_db: true
-
-doctrine:
-    dbal:
-        driver:      pdo_sqlite
-        charset:     UTF8
-        path:        "%kernel.root_dir%/../var/cache/test/data.db"
-
 framework:
     test: ~
     session:

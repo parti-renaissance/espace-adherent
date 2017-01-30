@@ -56,7 +56,7 @@ trait ControllerTestTrait
 
     protected function init(array $fixtures = [])
     {
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
     }

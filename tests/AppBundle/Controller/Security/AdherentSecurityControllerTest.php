@@ -7,12 +7,12 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentResetPasswordMessage;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class AdherentSecurityControllerTest extends WebTestCase
+class AdherentSecurityControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -99,7 +99,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testRetrieveForgotPasswordAction()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
 
         $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
@@ -111,7 +111,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testRetrieveForgotPasswordActionWithEmptyEmail()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
 
         $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
@@ -128,7 +128,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testRetrieveForgotPasswordActionWithUnknownEmail()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
 
         $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
@@ -150,7 +150,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
 
         $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
@@ -173,7 +173,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testResetPasswordAction()
     {
-        $client = $this->client = static::createClient();
+        $client = $this->client = $this->makeClient();
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();

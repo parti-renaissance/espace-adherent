@@ -13,11 +13,11 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Entity\Donation;
 use AppBundle\Membership\MembershipUtils;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class MembershipControllerTest extends WebTestCase
+class MembershipControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 

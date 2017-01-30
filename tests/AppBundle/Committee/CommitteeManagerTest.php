@@ -5,11 +5,11 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Committee;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
-class CommitteeManagerTest extends WebTestCase
+class CommitteeManagerTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 

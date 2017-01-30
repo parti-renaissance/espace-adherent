@@ -1,0 +1,10 @@
+imports:
+    - { resource: config_test.yml }
+
+liip_functional_test:
+    cache_sqlite_db: true
+
+doctrine:
+    dbal:
+        driver:      pdo_sqlite
+        path:        "/tmp/data.db"
