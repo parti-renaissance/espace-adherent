@@ -47,6 +47,8 @@ class DonationController extends Controller
     public function payboxAction(Donation $donation)
     {
         if ($donation->isFinished()) {
+            $this->get('app.membership_utils')->clearRegisteringDonation();
+
             return $this->redirectToRoute('donation_index');
         }
 

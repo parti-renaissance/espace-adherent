@@ -63,9 +63,7 @@ class MembershipController extends Controller
      */
     public function donateAction(Request $request): Response
     {
-        $memberShipUtils = $this->get('app.membership_utils');
-
-        if (!$donation = $memberShipUtils->getRegisteringDonation()) {
+        if (!$donation = $this->get('app.membership_utils')->getRegisteringDonation()) {
             throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
         }
 
@@ -86,7 +84,6 @@ class MembershipController extends Controller
             }
 
             if ($form->isValid()) {
-                $memberShipUtils->clearRegisteringDonation();
                 $this->get('app.donation.manager')->persist($donation, $request->getClientIp());
 
                 return $this->redirectToRoute('donation_pay', [
