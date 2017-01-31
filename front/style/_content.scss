@@ -374,3 +374,39 @@
         }
     }
 }
+
+.content .team {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0;
+
+    li {
+        width: 32.5%;
+        display: inline-block;
+        list-style: none;
+        margin-bottom: 10px;
+        background: $gray--lighter;
+        height: 285px;
+
+        > div {
+            padding: 8px 20px;
+        }
+
+        .share {
+            a {
+                border: 0;
+                color: $gray;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 90px;
+    }
+}

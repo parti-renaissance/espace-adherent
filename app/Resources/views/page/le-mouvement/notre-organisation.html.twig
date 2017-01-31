@@ -4,5 +4,24 @@
 {% block canonical_url url('page_le_mouvement_notre_organisation') %}
 
 {% block mouvement_content %}
-    {{ page.content|markdown }}
+    <h2>Nos délégués nationaux</h2>
+    <p>Ces personnalités sont issues de milieux très divers (chefs d’entreprise, élus, acteurs associatifs, etc.) mais présentent toutes la caractéristique d’être des citoyens engagés.</p>
+    <ul class="team">
+        <li>
+            <img src="https://unsplash.it/400/300/?random">
+            <div class="team__meta">
+                <div>
+                    <strong>Richard Ferrand</strong>
+                    Secrétaire Général
+                </div>
+                <div class="share">
+                    <!-- need if statement: if link available, display it -->
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
 {% endblock %}
