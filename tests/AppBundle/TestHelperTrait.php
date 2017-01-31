@@ -114,6 +114,14 @@ trait TestHelperTrait
     }
 
     /**
+     * @return Adherent|null
+     */
+    protected function getAdherent(string $uuid)
+    {
+        return $this->getAdherentRepository()->findByUuid($uuid);
+    }
+
+    /**
      * @param string|null $email E-mail used to generate a unique UUID
      *
      * @return Adherent

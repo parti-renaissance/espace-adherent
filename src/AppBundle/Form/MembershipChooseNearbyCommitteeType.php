@@ -2,9 +2,10 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Committee\CommitteeManager;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Committee\CommitteeNearbyProvider;
-use AppBundle\Geocoder\Coordinates;
+use AppBundle\Geocoder\CoordinatesFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,14 +15,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MembershipChooseNearbyCommitteeType extends AbstractType
 {
-    private $provider;
+    private $committeeManager;
+    private $coordinatesFactory;
 
-    /**
-     * @param CommitteeNearbyProvider $provider
-     */
-    public function __construct(CommitteeNearbyProvider $provider)
+    public function __construct(CommitteeManager $committeeManager, CoordinatesFactory $coordinatesFactory)
     {
-        $this->provider = $provider;
+        $this->committeeManager = $committeeManager;
+        $this->coordinatesFactory = $coordinatesFactory;
     }
 
     /**
@@ -29,7 +29,7 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $committees = $this->provider->findNearbyCommittees($options['coordinates']);
+        $committees = $this->committeeManager->getNearbyCommittees($this->coordinatesFactory->createFromAdherent($options['adherent']));
 
         $builder
             ->add('committees', ChoiceType::class, [
@@ -54,7 +54,7 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
         foreach ($committees as $name => $committee) {
             $view->vars['committees_views_data'][$name] = [
                 'slug' => $committee['committee']->getSlug(),
-                'memberships' => $committee['memberships'],
+                'memberships_count' => $committee['memberships_count'],
             ];
         }
     }
@@ -62,8 +62,8 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('coordinates')
-            ->setAllowedTypes('coordinates', Coordinates::class)
+            ->setRequired('adherent')
+            ->setAllowedTypes('adherent', Adherent::class)
         ;
     }
 

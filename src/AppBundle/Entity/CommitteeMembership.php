@@ -42,13 +42,12 @@ class CommitteeMembership
     private $committeeUuid;
 
     /**
-     * The adherent UUID.
+     * @var Adherent|null
      *
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="Adherent")
+     * @ORM\JoinColumn(name="adherent_uuid", fieldName="uuid")
      */
-    private $adherentUuid;
+    private $adherent;
 
     /**
      * The privilege given to the member in the committee.
@@ -75,47 +74,31 @@ class CommitteeMembership
      *
      * @param UuidInterface $uuid
      * @param UuidInterface $committeeUuid
-     * @param UuidInterface $adherentUuid
+     * @param Adherent      $adherent
      * @param string        $privilege
-     * @param string        $joinedAt
      */
     private function __construct(
         UuidInterface $uuid,
         UuidInterface $committeeUuid,
-        UuidInterface $adherentUuid,
-        string $privilege = self::COMMITTEE_FOLLOWER,
-        string $joinedAt = 'now'
+        Adherent $adherent,
+        string $privilege = self::COMMITTEE_FOLLOWER
     ) {
         $this->uuid = $uuid;
         $this->committeeUuid = $committeeUuid;
-        $this->adherentUuid = $adherentUuid;
+        $this->adherent = $adherent;
         $this->privilege = $privilege;
-        $this->joinedAt = new \DateTime($joinedAt);
+        $this->joinedAt = new \DateTime();
     }
 
-    /**
-     * Returns a new host membership for an adherent on a committee.
-     *
-     * @param UuidInterface $committeeUuid
-     * @param UuidInterface $hostUuid
-     * @param string        $joinedAt
-     *
-     * @return CommitteeMembership
-     */
-    public static function createForHost(
-        UuidInterface $committeeUuid,
-        UuidInterface $hostUuid,
-        string $joinedAt = 'now'
-    ): self {
-        $hostUuid = clone $hostUuid;
+    public static function createForHost(UuidInterface $committeeUuid, Adherent $host): self
+    {
         $committeeUuid = clone $committeeUuid;
 
         return new self(
-            self::createUuid($hostUuid, $committeeUuid),
+            self::createUuid($host->getUuid(), $committeeUuid),
             $committeeUuid,
-            $hostUuid,
-            self::COMMITTEE_HOST,
-            $joinedAt
+            $host,
+            self::COMMITTEE_HOST
         );
     }
 
@@ -133,13 +116,12 @@ class CommitteeMembership
         Committee $committee,
         string $privilege = self::COMMITTEE_FOLLOWER
     ): self {
-        $adherentUuid = clone $adherent->getUuid();
         $committeeUuid = clone $committee->getUuid();
 
         return new self(
-            self::createUuid($adherentUuid, $committeeUuid),
+            self::createUuid($adherent->getUuid(), $committeeUuid),
             $committeeUuid,
-            $adherentUuid,
+            $adherent,
             $privilege
         );
     }
@@ -170,12 +152,32 @@ class CommitteeMembership
     }
 
     /**
+     * Returns the adherent.
+     *
+     * @return Adherent|null
+     */
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    /**
      * Returns the adherent UUID.
      *
      * @return UuidInterface
      */
     public function getAdherentUuid(): UuidInterface
     {
-        return $this->adherentUuid;
+        return $this->adherent->getUuid();
+    }
+
+    /**
+     * Returns the adherent UUID.
+     *
+     * @return UuidInterface
+     */
+    public function getCommitteeUuid(): UuidInterface
+    {
+        return $this->committeeUuid;
     }
 }

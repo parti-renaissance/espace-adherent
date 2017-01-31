@@ -45,6 +45,7 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
+        name: 'en_marche_session_%kernel.environment%'
     profiler:
         collect: false
     cache:

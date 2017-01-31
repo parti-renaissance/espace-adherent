@@ -5,8 +5,7 @@
     <services>
 
         <service id="app.committee_manager" class="AppBundle\Committee\CommitteeManager">
-            <argument type="service" id="app.repository.adherent"/>
-            <argument type="service" id="app.repository.committee_membership"/>
+            <argument type="service" id="doctrine"/>
         </service>
 
         <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory">
@@ -21,7 +20,6 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailjet"/>
         </service>
-
 
         <service id="app.committee.committee_event_handler" class="AppBundle\Committee\Event\CommitteeEventCommandHandler">
             <argument type="service" id="event_dispatcher"/>

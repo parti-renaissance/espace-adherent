@@ -19,7 +19,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $membership = $adherent->hostCommittee($committee);
 
         $token = $this->createAuthenticatedToken($adherent);
@@ -28,7 +28,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->repository
             ->expects($this->once())
             ->method('findMembership')
-            ->with((string) $adherent->getUuid(), (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn($membership);
 
         $this
@@ -49,7 +49,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
-        $adherent = $this->createAdherent(self::ADHERENT_2_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID);
         $membership = $adherent->hostCommittee($committee);
 
         $token = $this->createAuthenticatedToken($adherent);
@@ -58,7 +58,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->repository
             ->expects($this->once())
             ->method('findMembership')
-            ->with((string) $adherent->getUuid(), (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn($membership);
 
         $this
@@ -79,7 +79,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $membership = $adherent->followCommittee($committee);
 
         $token = $this->createAuthenticatedToken($adherent);
@@ -88,7 +88,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->repository
             ->expects($this->once())
             ->method('findMembership')
-            ->with((string) $adherent->getUuid(), (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn($membership);
 
         $this
@@ -107,14 +107,14 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
             ->repository
             ->expects($this->once())
             ->method('findMembership')
-            ->with((string) $adherent->getUuid(), (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn(false);
 
         $this
@@ -134,7 +134,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->repository->expects($this->never())->method('countHostMembers');
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -147,7 +147,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->repository->expects($this->never())->method('isMemberOf');
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -160,14 +160,16 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
+
         $this
             ->repository
             ->expects($this->once())
             ->method('isMemberOf')
-            ->with(self::ADHERENT_1_UUID, (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn(true);
 
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $token = $this->createAuthenticatedToken($adherent);
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -180,14 +182,16 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
 
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
+
         $this
             ->repository
             ->expects($this->once())
             ->method('isMemberOf')
-            ->with(self::ADHERENT_1_UUID, (string) $committee->getUuid())
+            ->with($adherent, (string) $committee->getUuid())
             ->willReturn(false);
 
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $token = $this->createAuthenticatedToken($adherent);
 
         $this->assertSame(
             VoterInterface::ACCESS_GRANTED,
@@ -214,7 +218,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
      */
     public function testUnsupportedCommitteeType(string $attribute)
     {
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_2_UUID));
+        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID));
 
         $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -232,7 +236,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testUnsupportedAttribute()
     {
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 
@@ -245,7 +249,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     public function testAdherentIsDeniedToFollowUnapprovedCommittee()
     {
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -258,13 +262,14 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $committee->approved();
 
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_1_UUID));
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
+        $token = $this->createAuthenticatedToken($adherent);
 
         $this
             ->repository
             ->expects($this->once())
             ->method('isMemberOf')
-            ->with(self::ADHERENT_1_UUID, $committee->getUuid()->toString())
+            ->with($adherent, $committee->getUuid()->toString())
             ->willReturn(true)
         ;
 
@@ -279,13 +284,14 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $committee->approved();
 
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_2_UUID));
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID);
+        $token = $this->createAuthenticatedToken($adherent);
 
         $this
             ->repository
             ->expects($this->once())
             ->method('isMemberOf')
-            ->with(self::ADHERENT_2_UUID, $committee->getUuid()->toString())
+            ->with($adherent, $committee->getUuid()->toString())
             ->willReturn(false)
         ;
 

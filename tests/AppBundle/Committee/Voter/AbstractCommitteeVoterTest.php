@@ -13,8 +13,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Tests\AppBundle\MysqlWebTestCase;
 
-abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractCommitteeVoterTest extends MysqlWebTestCase
 {
     const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     const ADHERENT_2_UUID = '91ed3e73-0384-4963-9159-3505c849fe39';
@@ -54,7 +55,7 @@ abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         return new UsernamePasswordToken($adherent, $adherent->getPassword(), 'users_db', $adherent->getRoles());
     }
 
-    protected function createAdherent(string $uuid, string $email = null): Adherent
+    protected function createAdherentFromUuidAndEmail(string $uuid, string $email = null): Adherent
     {
         return $this->adherentFactory->createFromArray([
             'uuid' => $uuid,

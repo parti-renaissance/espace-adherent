@@ -48,7 +48,7 @@ class CommitteeController extends Controller
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_members_count' => $committeeManager->getMembersCount($committee),
-            'committee_hosts' => $committeeManager->findCommitteeHostsList($committee),
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'form' => $form ? $form->createView() : null,
         ]);
     }
@@ -86,7 +86,7 @@ class CommitteeController extends Controller
 
         return $this->render('committee/add_event.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee_manager')->findCommitteeHostsList($committee),
+            'committee_hosts' => $this->get('app.committee_manager')->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }

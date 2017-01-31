@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Geocoder\Coordinates;
@@ -77,14 +76,13 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
     public function testApproveCommittee()
     {
         $committee = $this->createCommittee();
-        $membership = $committee->approved('2016-01-18 21:23:12');
+        $timestamp = '2016-01-18 21:23:12';
+        $committee->approved($timestamp);
 
-        $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isWaitingForApproval());
-        $this->assertEquals(new \DateTimeImmutable('2016-01-18 21:23:12'), $committee->getApprovedAt());
-        $this->assertTrue($membership->isHostMember());
+        $this->assertEquals(new \DateTimeImmutable($timestamp), $committee->getApprovedAt());
     }
 
     public function testApproveCommitteeTwice()

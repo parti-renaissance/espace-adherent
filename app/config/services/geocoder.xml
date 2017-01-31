@@ -12,6 +12,8 @@
             <argument type="service" id="cache.app"/>
         </service>
 
+        <service id="app.geocoder.coordinates_factory" class="AppBundle\Geocoder\CoordinatesFactory" />
+
         <service id="app.geocoder.entity_address_geocoding_subscriber" class="AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
             <argument type="service" id="app.geocoder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>

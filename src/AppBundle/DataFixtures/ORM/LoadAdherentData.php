@@ -167,6 +167,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
         ]);
+        $committee1->approved();
 
         $committee2 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_2_UUID,
@@ -186,6 +187,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
         ]);
+        $committee3->approved();
 
         $committee4 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,
@@ -195,6 +197,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.4047652, 2.6987591),
         ]);
+        $committee4->approved();
 
         $committee5 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_5_UUID,
@@ -204,6 +207,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
             'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
         ]);
+        $committee5->approved();
 
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
@@ -233,13 +237,14 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee5);
 
         // Make adherents join committees
-        $manager->persist($committee1->approved('2017-01-03 15:18:22'));
-        $manager->persist($committee3->approved('2017-01-03 15:19:01'));
-        $manager->persist($committee4->approved('2017-01-03 15:19:10'));
-        $manager->persist($committee5->approved('2017-01-03 15:19:54'));
+        $manager->persist($adherent3->hostCommittee($committee1));
+        $manager->persist($adherent7->hostCommittee($committee3));
+        $manager->persist($adherent7->hostCommittee($committee4));
+        $manager->persist($adherent7->hostCommittee($committee5));
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
+        $manager->persist($adherent6->hostCommittee($committee2));
 
         $manager->flush();
     }

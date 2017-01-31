@@ -59,7 +59,7 @@
             <div>
                 <div class="background--light">
                     <h5>{{ choice.vars.label }}</h5>
-                    <p>Nous sommes {{ memberships_data['memberships'] }} membres</p>
+                    <p>Nous sommes {{ memberships_data['memberships_count'] }} membres</p>
                     <div><a class="btn btn--green" href="{{ path('app_committee_show', { uuid: choice.vars.value, slug: memberships_data['slug'] }) }}">Découvrir</a></div>
                 </div>
                 <div>

@@ -53,13 +53,9 @@
         </service>
 
         <service id="app.membership.membership_choose_nearby_committee_type" class="AppBundle\Form\MembershipChooseNearbyCommitteeType">
-            <argument type="service" id="app.committee.committee_nearby_provider"/>
+            <argument type="service" id="app.committee_manager"/>
+            <argument type="service" id="app.geocoder.coordinates_factory"/>
             <tag name="form.type" />
-        </service>
-
-        <service id="app.membership.choose_nearby_committee_handler" class="AppBundle\Membership\ChooseNearbyCommitteeHandler">
-            <argument type="service" id="form.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
     </services>

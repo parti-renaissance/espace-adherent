@@ -143,16 +143,23 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('#committee-event-description')->text());
     }
 
-    public function testShowCommitteeApprovedIsAccessibleForMembers()
+    public function testShowCommitteeApprovedIsAccessible()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+
+        // Anonymous
+        $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Adherent
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         $this->client->request(Request::METHOD_GET, $committeeUrl);
 
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        // Member
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
 
         $this->client->request(Request::METHOD_GET, $committeeUrl);
@@ -162,15 +169,17 @@ class CommitteeControllerTest extends WebTestCase
 
     public function testShowCommitteeNotApprovedIsAccessibleForCreator()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
 
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+        // Adherent
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        // Creator
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
         $this->client->request(Request::METHOD_GET, $committeeUrl);
 

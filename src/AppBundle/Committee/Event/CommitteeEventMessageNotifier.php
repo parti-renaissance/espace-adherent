@@ -34,7 +34,7 @@ class CommitteeEventMessageNotifier implements EventSubscriberInterface
         $committee = $event->getCommittee();
 
         $this->mailjet->sendMessage($this->createMessage(
-            $this->manager->findOptinCommitteeFollowersList($committee),
+            $this->manager->getOptinCommitteeFollowers($committee),
             $committee,
             $event->getCommitteeEvent(),
             $event->getAuthor()

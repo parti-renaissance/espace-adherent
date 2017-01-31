@@ -152,8 +152,14 @@ class MembershipController extends Controller
             throw $this->createNotFoundException('New adherent id not found.');
         }
 
-        /** @var FormInterface $form */
-        if (!$form = $this->get('app.membership.choose_nearby_committee_handler')->handle($request, $adherent)) {
+        $form = $this->createForm(MembershipChooseNearbyCommitteeType::class, null, ['adherent' => $adherent])
+            ->add('submit', SubmitType::class, ['label' => 'Terminer'])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.committee_manager')->followCommittees($adherent, $form->get('committees')->getData());
+
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 
             return $this->redirectToRoute('homepage');

@@ -17,13 +17,25 @@ class CommitteeRepository extends EntityRepository
      *
      * @param string $name
      *
-     * @return Committee|null
+     * @return mixed
      */
-    public function findByName(string $name)
+    public function findOneByName(string $name): ?Committee
     {
         $canonicalName = Committee::canonicalize($name);
 
         return $this->findOneBy(['canonicalName' => $canonicalName]);
+    }
+
+    /**
+     * Finds Committee instances by their unique uuid.
+     *
+     * @param string[] $uuids
+     *
+     * @return Committee[]
+     */
+    public function findByUuid(array $uuids)
+    {
+        return $this->findBy(['uuid' => $uuids]);
     }
 
     /**
