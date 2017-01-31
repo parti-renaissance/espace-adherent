@@ -6,8 +6,12 @@
 
         <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
 
-        <service id="app.donation.manager" class="AppBundle\Donation\DonationManager">
+        <service id="app.donation_request.factory" class="AppBundle\Donation\DonationRequestFactory" />
+
+        <service id="app.donation_request.handler" class="AppBundle\Donation\DonationRequestHandler">
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="doctrine" />
+            <argument type="service" id="app.donation.factory" />
         </service>
 
         <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">

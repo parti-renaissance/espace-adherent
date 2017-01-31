@@ -110,14 +110,13 @@ class AdherentControllerTest extends SqliteWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(7, $errors->count());
+        $this->assertSame(6, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $errors->eq(2)->text());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
         $this->assertSame("Cette adresse n'est pas géolocalisable.", $errors->eq(3)->text());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $errors->eq(4)->text());
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(5)->text());
-        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(6)->text());
+        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
+        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -371,10 +370,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(11, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame('Cette ville et ce code postal ne sont pas liés.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
+        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#committee-address > .form__errors > li')->eq(2)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 5 caractères.', $crawler->filter('#field-description > .form__errors > li')->text());

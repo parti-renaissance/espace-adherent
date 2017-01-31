@@ -9,7 +9,7 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentInterestsFormType;
-use AppBundle\Form\DonationType;
+use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\MembershipChooseNearbyCommitteeType;
 use AppBundle\Form\MembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -63,11 +63,11 @@ class MembershipController extends Controller
      */
     public function donateAction(Request $request): Response
     {
-        if (!$donation = $this->get('app.membership_utils')->getRegisteringDonation()) {
+        if (!$donationRequest = $this->get('app.membership_utils')->getRegisteringDonation()) {
             throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
         }
 
-        $form = $this->createForm(DonationType::class, $donation, [
+        $form = $this->createForm(DonationRequestType::class, $donationRequest, [
             'locale' => $request->getLocale(),
             'submit_label' => 'adherent.submit_donation_label',
             'sponsor_form' => false,
@@ -84,18 +84,16 @@ class MembershipController extends Controller
             }
 
             if ($form->isValid()) {
-                $this->get('app.donation.manager')->persist($donation, $request->getClientIp());
+                $donation = $this->get('app.donation_request.handler')->handle($donationRequest, $request->getClientIp());
 
                 return $this->redirectToRoute('donation_pay', [
-                    'id' => $donation->getId()->toString(),
+                    'uuid' => $donation->getUuid()->toString(),
                 ]);
             }
         }
 
         return $this->render('membership/donate.html.twig', [
             'form' => $form->createView(),
-            'donation' => $donation,
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
 

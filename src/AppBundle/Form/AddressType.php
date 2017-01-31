@@ -25,7 +25,7 @@ class AddressType extends AbstractType
                 'required' => false,
                 'error_bubbling' => true,
             ])
-            ->add('cityName', HiddenType::class, [
+            ->add('cityName', TextType::class, [
                 'required' => false,
             ])
             ->add('country', UnitedNationsCountryType::class)

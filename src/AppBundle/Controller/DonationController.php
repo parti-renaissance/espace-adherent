@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Donation;
-use AppBundle\Form\DonationType;
+use AppBundle\Form\DonationRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,26 +22,26 @@ class DonationController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $donation = $this->get('app.donation.factory')->createDonationFromRequest($request);
-        $form = $this->createForm(DonationType::class, $donation, ['locale' => $request->getLocale()]);
+        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request);
+        $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.donation.manager')->persist($donation, $request->getClientIp());
+            $donation = $this->get('app.donation_request.handler')->handle($donationRequest, $request->getClientIp());
 
             return $this->redirectToRoute('donation_pay', [
-                'id' => $donation->getId()->toString(),
+                'uuid' => $donation->getUuid()->toString(),
             ]);
         }
 
         return $this->render('donation/index.html.twig', [
             'form' => $form->createView(),
-            'donation' => $donation,
+            'donation' => $donationRequest,
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
 
     /**
-     * @Route("/{id}/paiement", name="donation_pay", requirements={"id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
+     * @Route("/{uuid}/paiement", name="donation_pay", requirements={"uuid"="%pattern_uuid%"})
      * @Method("GET")
      */
     public function payboxAction(Donation $donation)
@@ -76,7 +76,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/{id}/{status}", name="donation_result", requirements={"status"="effectue|erreur", "id"="^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"})
+     * @Route("/{uuid}/{status}", name="donation_result", requirements={"status"="effectue|erreur", "uuid"="%pattern_uuid%"})
      * @Method("GET")
      */
     public function resultAction(Request $request, Donation $donation)
@@ -86,7 +86,7 @@ class DonationController extends Controller
             'ge' => $donation->getGender(),
             'ln' => $donation->getLastName(),
             'fn' => $donation->getFirstName(),
-            'em' => urlencode($donation->getEmail()),
+            'em' => urlencode($donation->getEmailAddress()),
             'co' => $donation->getCountry(),
             'pc' => $donation->getPostalCode(),
             'ci' => $donation->getCity(),

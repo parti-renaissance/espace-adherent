@@ -37,17 +37,24 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
         $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
-            'app_donation[amount]' => '30',
-            'app_donation[gender]' => 'male',
-            'app_donation[lastName]' => 'Doe',
-            'app_donation[firstName]' => 'John',
-            'app_donation[email]' => 'test@paybox.com',
-            'app_donation[country]' => 'FR',
-            'app_donation[postalCode]' => '10000',
-            'app_donation[city]' => '10000-10387',
-            'app_donation[address]' => '12 Rue Marie Curie',
-            'app_donation[phone][country]' => 'FR',
-            'app_donation[phone][number]' => '606060606',
+            'app_donation' => [
+                'amount' => '30',
+                'gender' => 'male',
+                'lastName' => 'Doe',
+                'firstName' => 'John',
+                'emailAddress' => 'test@paybox.com',
+                'address' => [
+                    'address' => '9 rue du Lycée',
+                    'country' => 'FR',
+                    'postalCode' => '06000',
+                    'city' => '06000-6088', // Nice
+                    'cityName' => '',
+                ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '04 01 02 03 04',
+                ],
+            ],
         ]));
 
         // Donation should have been saved
@@ -59,16 +66,16 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame('male', $donation->getGender());
         $this->assertSame('Doe', $donation->getLastName());
         $this->assertSame('John', $donation->getFirstName());
-        $this->assertSame('test@paybox.com', $donation->getEmail());
+        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
-        $this->assertSame('10000', $donation->getPostalCode());
-        $this->assertSame('10000-10387', $donation->getCity());
-        $this->assertSame('12 Rue Marie Curie', $donation->getAddress());
+        $this->assertSame('06000', $donation->getPostalCode());
+        $this->assertSame('06000-6088', $donation->getCity());
+        $this->assertSame('9 rue du Lycée', $donation->getAddress());
         $this->assertSame(33, $donation->getPhone()->getCountryCode());
-        $this->assertSame('606060606', $donation->getPhone()->getNationalNumber());
+        $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
 
         // We should be redirected to payment
-        $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getId()), $appClient);
+        $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
 
         $crawler = $appClient->followRedirect();
 

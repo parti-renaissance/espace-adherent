@@ -2,6 +2,7 @@
 
 namespace AppBundle\Donation;
 
+use AppBundle\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 
@@ -25,26 +26,19 @@ class TransactionSuccessListener
             return;
         }
 
-        $data = $event->getData();
+        $payboxPayload = $event->getData();
 
-        if (!isset($data['id'], $data['authorization'], $data['result'])) {
+        if (!isset($payboxPayload['id'], $payboxPayload['authorization'], $payboxPayload['result'])) {
             return;
         }
 
-        $donation = $this->manager->find('AppBundle:Donation', $data['id']);
+        $donation = $this->manager->getRepository(Donation::class)->findOneByUuid($payboxPayload['id']);
 
         if (!$donation) {
             return;
         }
 
-        $donation->setPayboxResultCode($data['result']);
-        $donation->setPayboxAuthorizationCode($data['authorization']);
-        $donation->setPayboxPayload($data);
-        $donation->setFinished(true);
-
-        if ($data['result'] === '00000') {
-            $donation->setDonatedAt(new \DateTime());
-        }
+        $donation->finish($payboxPayload);
 
         $this->manager->persist($donation);
         $this->manager->flush();
