@@ -86,6 +86,10 @@
         @media (max-width: $mobile) {
             width: 100%;
         }
+
+        h2 {
+            line-height: 41px;
+        }
     }
 
     &__form {
