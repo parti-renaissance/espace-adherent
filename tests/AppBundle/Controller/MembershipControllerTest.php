@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
@@ -11,7 +12,6 @@ use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
-use AppBundle\Entity\Donation;
 use AppBundle\Membership\MembershipUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,8 +106,8 @@ class MembershipControllerTest extends SqliteWebTestCase
         $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
-        $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame('Cette ville n\'est pas une ville française valide.', $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
+        $this->assertSame('Cette adresse n\'est pas géolocalisable.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
     }
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
@@ -168,7 +168,7 @@ class MembershipControllerTest extends SqliteWebTestCase
 
         $session = $this->client->getRequest()->getSession();
 
-        $this->assertInstanceOf(Donation::class, $session->get(MembershipUtils::REGISTERING_DONATION));
+        $this->assertInstanceOf(DonationRequest::class, $session->get(MembershipUtils::REGISTERING_DONATION));
         $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
     }
 
@@ -201,7 +201,7 @@ class MembershipControllerTest extends SqliteWebTestCase
 
         $session = $this->client->getRequest()->getSession();
 
-        $this->assertInstanceOf(Donation::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
+        $this->assertInstanceOf(DonationRequest::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
         $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
         $this->assertSame('Dupont', $donation->getLastName());
     }

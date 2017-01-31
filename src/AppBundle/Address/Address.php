@@ -4,14 +4,13 @@ namespace AppBundle\Address;
 
 use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Validator\CityAssociatedToPostalCode as AssertCityAssociatedToPostalCode;
-use AppBundle\Validator\FrenchCity as AssertFrenchCity;
+use AppBundle\Validator\Address as AssertValidAddress;
 use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertCityAssociatedToPostalCode(message="common.city.invalid_postal_code")
+ * @AssertValidAddress
  * @AssertGeocodableAddress
  */
 class Address implements AddressInterface, GeocodableInterface
@@ -29,11 +28,7 @@ class Address implements AddressInterface, GeocodableInterface
      */
     private $postalCode;
 
-    /**
-     * @AssertFrenchCity(message="common.city.invalid")
-     */
     private $city;
-
     private $cityName;
 
     /**

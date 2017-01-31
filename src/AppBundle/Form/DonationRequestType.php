@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Donation;
+use AppBundle\Donation\DonationRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DonationType extends AbstractType
+class DonationRequestType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,17 +26,12 @@ class DonationType extends AbstractType
         if ($options['sponsor_form']) {
             $builder
                 ->add('gender', GenderType::class)
-                ->add('lastName', TextType::class)
                 ->add('firstName', TextType::class)
-                ->add('email', EmailType::class)
-                ->add('country', UnitedNationsCountryType::class)
-                ->add('postalCode', TextType::class)
-                ->add('city', TextType::class, [
-                    'required' => false,
+                ->add('lastName', TextType::class)
+                ->add('emailAddress', EmailType::class, [
+                    'empty_data' => '',
                 ])
-                ->add('address', TextType::class, [
-                    'required' => false,
-                ])
+                ->add('address', AddressType::class)
                 ->add('phone', PhoneNumberType::class, [
                     'required' => false,
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
@@ -68,7 +63,7 @@ class DonationType extends AbstractType
                 'locale' => 'fr',
                 'sponsor_form' => true,
                 'submit_button' => true,
-                'data_class' => Donation::class,
+                'data_class' => DonationRequest::class,
             ])
             ->setDefined('submit_label')
             ->setAllowedTypes('locale', ['null', 'string'])

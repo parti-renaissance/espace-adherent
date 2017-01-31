@@ -34,17 +34,17 @@ class TransactionCallbackHandler
         $this->entityManager = $entityManager;
     }
 
-    public function handle(string $id, Request $request): Response
+    public function handle(string $uuid, Request $request): Response
     {
-        $donation = $this->entityManager->find('AppBundle:Donation', $id);
+        /** @var Donation $donation */
+        $donation = $this->entityManager->getRepository(Donation::class)->findOneByUuid($uuid);
 
         if (!$donation) {
             return new RedirectResponse($this->router->generate('donation_index'));
         }
 
         if (!$donation->isFinished()) {
-            $this->populateDonationWithRequestData($donation, $request);
-            $donation->setFinished(true);
+            $donation->finish($this->extractPayboxPayloadFromRequest($request));
 
             $this->entityManager->persist($donation);
             $this->entityManager->flush();
@@ -53,23 +53,7 @@ class TransactionCallbackHandler
         return $this->createRedirectResponseForDonation($donation);
     }
 
-    private function populateDonationWithRequestData(Donation $donation, Request $request)
-    {
-        $data = $this->extractRequestData($request);
-
-        $donation->setPayboxResultCode($data['result']);
-        $donation->setPayboxPayload($data);
-
-        if (isset($data['authorization'])) {
-            $donation->setPayboxAuthorizationCode($data['authorization']);
-        }
-
-        if ($donation->getPayboxResultCode() === '00000') {
-            $donation->setDonatedAt(new \DateTime());
-        }
-    }
-
-    private function extractRequestData(Request $request): array
+    private function extractPayboxPayloadFromRequest(Request $request): array
     {
         $data = array_merge($request->query->all(), [
             'authorization' => $request->query->get('authorization'),
@@ -94,7 +78,7 @@ class TransactionCallbackHandler
         // Success
         if ($code === '00000') {
             return new RedirectResponse($this->router->generate('donation_result', [
-                'id' => $donation->getId()->toString(),
+                'uuid' => $donation->getUuid()->toString(),
                 'status' => 'effectue',
             ]));
         }
@@ -102,7 +86,7 @@ class TransactionCallbackHandler
         // Known error
         if (isset(self::$errorCodes[$code])) {
             return new RedirectResponse($this->router->generate('donation_result', [
-                'id' => $donation->getId()->toString(),
+                'uuid' => $donation->getUuid()->toString(),
                 'status' => 'erreur',
                 'code' => self::$errorCodes[$code],
             ]));
@@ -110,7 +94,7 @@ class TransactionCallbackHandler
 
         // Unknown error
         return new RedirectResponse($this->router->generate('donation_result', [
-            'id' => $donation->getId()->toString(),
+            'uuid' => $donation->getUuid()->toString(),
             'status' => 'erreur',
             'code' => 'unknown',
         ]));
