@@ -52,8 +52,9 @@
                 </div>
 
                 <div class="form__row register__form__city">
-                    {{ form_widget(form.address.city, { attr: { class: 'register__form__city'}}) }}
-                    {{ form_widget(form.address.cityName, { attr: { class: 'register__form__city_name'}}) }}
+                    {{ form_errors(form.address.city) }}
+                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
                 </div>
 
                 <div class="form__row register__form__country">

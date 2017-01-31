@@ -8,24 +8,14 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        function controller(app) {
-            app.membershipIndex(
-                {
-                    country: '{{ membership.address.country|e('js') }}',
-                    postalCode: '{{ membership.address.postalCode|e('js') }}',
-                    city: '{{ membership.address.city|e('js') }}',
-                    address: '{{ membership.address.address|e('js') }}',
-                    errors: {
-                        form: '{{ form_errors(form.address)|e('js') }}',
-                        country: '{{ form_errors(form.address.country)|e('js') }}',
-                        postalCode: '{{ form_errors(form.address.postalCode)|e('js') }}',
-                        city: '{{ form_errors(form.address.city)|e('js') }}',
-                        address: '{{ form_errors(form.address.address)|e('js') }}'
-                    }
-                },
-                {{ countries|json_encode|raw }}
+        Kernel.onLoad(function() {
+            App.creteAddressSelector(
+                '{{ form.address.country.vars.id }}',
+                '{{ form.address.postalCode.vars.id }}',
+                '{{ form.address.city.vars.id }}',
+                '{{ form.address.cityName.vars.id }}'
             );
-        }
+        });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}

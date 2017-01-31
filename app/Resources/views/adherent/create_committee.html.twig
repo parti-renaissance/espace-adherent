@@ -6,22 +6,14 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        function controller(app) {
-            app.committeeIndex(
-                {
-                    country: '{{ committee.address.country|e('js') }}',
-                    postalCode: '{{ committee.address.postalCode|e('js') }}',
-                    city: '{{ committee.address.city|e('js') }}',
-                    errors: {
-                        form: '{{ form_errors(form.address)|e('js') }}',
-                        country: '{{ form_errors(form.address.country)|e('js') }}',
-                        postalCode: '{{ form_errors(form.address.postalCode)|e('js') }}',
-                        city: '{{ form_errors(form.address.city)|e('js') }}'
-                    }
-                },
-                {{ countries|json_encode|raw }}
+        Kernel.onLoad(function() {
+            App.creteAddressSelector(
+                '{{ form.address.country.vars.id }}',
+                '{{ form.address.postalCode.vars.id }}',
+                '{{ form.address.city.vars.id }}',
+                '{{ form.address.cityName.vars.id }}'
             );
-        }
+        });
     </script>
 {% endblock %}
 
@@ -76,8 +68,9 @@
                                 {{ form_label(form.address.postalCode, 'Code postal') }}
                                 {{ form_errors(form.address.postalCode) }}
                                 <div>{{ form_widget(form.address.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
+                                {{ form_errors(form.address.city) }}
                                 {{ form_widget(form.address.city) }}
-                                {{ form_widget(form.address.cityName) }}
+                                {{ form_widget(form.address.cityName, { 'attr': { 'placeholder': 'Ville' } }) }}
                             </div>
 
                             <div class="form__row" id="field-country">

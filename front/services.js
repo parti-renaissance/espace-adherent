@@ -1,9 +1,8 @@
-import Cookies from 'js-cookie';
-import reqwest from 'reqwest';
-
 import ShareDialogFactory from './services/sharer/ShareDialogFactory';
 import Sharer from './services/sharer/Sharer';
 import TaxReturnProvider from './services/donation/TaxReturnProvider';
+import ReqwestApiClient from './services/api/ReqwestApiClient';
+import AddressFormFactory from './services/address/AddressFormFactory';
 
 /**
  * @param {Container} di
@@ -38,10 +37,24 @@ export default (di) => {
     });
 
     /*
+     * API
+     */
+    di.set('api', () => {
+        return new ReqwestApiClient(di.get('reqwest'));
+    });
+
+    /*
      * Donation
      */
     di.set('donation.tax_return_provider', () => {
         return new TaxReturnProvider();
+    });
+
+    /*
+     * Address form
+     */
+    di.set('address.form_factory', () => {
+        return new AddressFormFactory(di.get('api'));
     });
 
 };
