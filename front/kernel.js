@@ -1,3 +1,8 @@
+import 'utils/dom';
+import 'utils/css';
+import 'core-js/modules/es6.array.for-each';
+import 'core-js/modules/es6.array.map';
+
 window.Kernel = class {
     static boot(release, sentryDsn) {
         Kernel.release = release;
