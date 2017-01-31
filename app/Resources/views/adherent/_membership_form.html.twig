@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="form__row register__form__country">
-                    {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'color--blue' } }) }}
+                    {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'text--blue' } }) }}
                     {{ form_errors(form.address.country) }}
                     {{ form_widget(form.address.country, { attr: { class: 'form--mid' } }) }}
                 </div>
@@ -74,13 +74,13 @@
 
         <div class="l__row">
             <div class="l__col form__row form--mid">
-                {{ form_label(form.position, 'Profession', { label_attr: { class: 'color--blue' } }) }}
+                {{ form_label(form.position, 'Profession', { label_attr: { class: 'text--blue' } }) }}
                 {{ form_errors(form.position) }}
                 {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
             </div>
 
             <div class="l__col form__row form--mid" id="field-birthdate">
-                {{ form_label(form.birthdate, 'Date de naissance', { label_attr: { class: 'color--blue' } }) }}
+                {{ form_label(form.birthdate, 'Date de naissance', { label_attr: { class: 'text--blue' } }) }}
                 {{ form_errors(form.birthdate) }}
                 {{ form_widget(form.birthdate, { attr: { class: 'form--full', placeholder: 'JJ/MM/AAAA' } }) }}
             </div>
@@ -91,7 +91,7 @@
                 {{ form_errors(form.conditions) }}
                 {{ form_widget(form.conditions) }}
                 Oui,
-                <span class="register__form__conditions__text color--blue">
+                <span class="register__form__conditions__text text--blue">
                     j'adhère à la charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !
                 </span>
             </div>
