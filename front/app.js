@@ -31,10 +31,8 @@ class App {
         registerServices(this._di);
 
         // Execute the page load listeners
-        on(window, 'load', () => {
-            this._listeners.forEach((listener) => {
-                listener(this._di);
-            });
+        this._listeners.forEach((listener) => {
+            listener(this._di);
         });
     }
 
