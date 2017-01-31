@@ -68,6 +68,9 @@ committee.event.invalid_category: Le type d'événement sélectionné n'est pas 
 committee.event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
 committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
 
+committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+committee.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
+
 #
 # Donation
 #

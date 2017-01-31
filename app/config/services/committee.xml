@@ -36,6 +36,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="app.committee.committee_feed_handler" class="AppBundle\Committee\CommitteeFeedHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
         <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">
             <argument type="service" id="app.repository.committee"/>
             <tag name="validator.constraint_validator" alias="app.validator.unique_committee"/>

@@ -7,6 +7,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\CommitteeFeedMessage;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Invite;
@@ -80,6 +81,11 @@ trait TestHelperTrait
     public function getCommitteeEventRepository(): CommitteeEventRepository
     {
         return $this->getRepository(CommitteeEvent::class);
+    }
+
+    public function getCommitteeFeedMessageRepository()
+    {
+        return $this->getRepository(CommitteeFeedMessage::class);
     }
 
     public function getCommitteeMembershipRepository(): CommitteeMembershipRepository
