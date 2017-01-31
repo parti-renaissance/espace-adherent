@@ -33,8 +33,7 @@
                             {% for route, title in {
                                 'page_emmanuel_macron': 'Ce que je suis',
                                 'page_emmanuel_macron_revolution': 'Révolution',
-                                'page_emmanuel_macron_programme': 'Mes propositions',
-                                'page_emmanuel_macron_mon_agenda': 'Mon agenda'
+                                'page_emmanuel_macron_programme': 'Mes propositions'
                             } %}
                                 <li class="{{ route == currentRoute ? 'active' }}">
                                     <a href="{{ path(route) }}">

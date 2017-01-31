@@ -53,8 +53,20 @@ Les iframes de vidéos doivent être entourées de la classe `.video`.
 Entourez les citations des tags `figure`, `blockquote` et `span`.
 Si vous voulez l'attribuer un `figcaption` à l'interieur de la `figure`.
 
+
+Une citation courte, large et centrée:
 ```
-<figure>
+<figure class="blockquote--short">
+    <blockquote>
+        <span>«Tout commence par la rénovation de l’engagement politique.»</span>
+    </blockquote>
+    <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
+</figure>
+```
+
+Une citation longue, présentée en bloc:
+```
+<figure class="blockquote--long">
     <blockquote>
         <span>«Tout commence par la rénovation de l’engagement politique.»</span>
     </blockquote>
