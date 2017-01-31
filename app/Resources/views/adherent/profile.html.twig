@@ -3,26 +3,15 @@
 {% use 'adherent/_membership_form.html.twig' %}
 
 {% block javascripts %}
-    {% set membership_data = form.vars.data %}
-
     <script type="text/javascript">
-        function controller(app) {
-            app.updateMembershipIndex(
-                {
-                    country: '{{ membership_data.address.country }}',
-                    postalCode: '{{ membership_data.address.postalCode }}',
-                    city: '{{ membership_data.address.city }}',
-                    address: '{{ membership_data.address.address }}',
-                    errors: {
-                        country: '{{ form_errors(form.address.country) }}',
-                        postalCode: '{{ form_errors(form.address.postalCode) }}',
-                        city: '{{ form_errors(form.address.city) }}',
-                        address: '{{ form_errors(form.address.address) }}'
-                    }
-                },
-                    {{ list_united_nations()|json_encode|raw }}
+        Kernel.onLoad(function() {
+            App.creteAddressSelector(
+                '{{ form.address.country.vars.id }}',
+                '{{ form.address.postalCode.vars.id }}',
+                '{{ form.address.city.vars.id }}',
+                '{{ form.address.cityName.vars.id }}'
             );
-        }
+        });
     </script>
 {% endblock %}
 

@@ -40,6 +40,10 @@ class DonationRequestFactory
             $donation->getAddress()->setCity($city);
         }
 
+        if ($cityName = $request->query->get('cn')) {
+            $donation->getAddress()->setCityName($cityName);
+        }
+
         if ($address = $request->query->get('ad')) {
             $donation->getAddress()->setAddress(urldecode($address));
         }

@@ -152,3 +152,9 @@
         }
     }
 }
+
+.address {
+    &__postal-code--loading {
+        background: url('/images/loader-sm.gif') no-repeat 93% 50%;
+    }
+}

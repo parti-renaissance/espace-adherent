@@ -43,6 +43,15 @@ class App {
     share(type, url, title) {
         this._di.get('sharer').share(type, url, title);
     }
+
+    creteAddressSelector(country, postalCode, city, cityName) {
+        const formFactory = this._di.get('address.form_factory');
+        const form = formFactory.createAddressForm(country, postalCode, city, cityName);
+
+        form.prepare();
+        form.refresh();
+        form.attachEvents();
+    }
 }
 
 window.App = new App();
