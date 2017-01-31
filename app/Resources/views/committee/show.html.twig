@@ -49,10 +49,14 @@
             </ul>
 
             <div id="comittee-host-menu">
-                {#
-                    TODO implement event message form
-                #}
-                <a href="#">Créer un événement</a>
+                <ul>
+                    <li>Créer un message</li>
+                    <li><a href="#">Créer un événement</a></li>
+                </ul>
+            </div>
+
+            <div id="committee-message-form">
+                {{ form(form) }}
             </div>
         {% endif %}
     </section>
