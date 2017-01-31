@@ -22,6 +22,11 @@ $text--size-extra-large: 48px;
     line-height: 24px;
 }
 
+@mixin text--medium-small {
+    font-size: $text--size-medium--small;
+    line-height: 1.1em;
+}
+
 @mixin text--medium {
     font-size: $text--size-medium;
     line-height: 1.2em;
@@ -71,23 +76,19 @@ $text--size-extra-large: 48px;
     @media (max-width: $tablet) {
         font-size: $text--size-medium;
     }
-}
-
-@mixin text--logo {
-    @include text--bold;
-    font-size: $text--size-medium--large;
-    font-style: italic;
-    line-height: 0.9em;
-    margin-right: 10px;
-    letter-spacing: -0.7px;
-
-    @media (max-width: $tablet) {
-        font-size: $text--size-medium;
-    }
 
     a {
         border: 0;
     }
+}
+
+@mixin text--blue {
+    color: $blue
+}
+
+@mixin text--all-caps {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
 .text {
@@ -104,7 +105,7 @@ $text--size-extra-large: 48px;
     }
 
     &--medium-small {
-        font-size: $text--size-medium--small;
+        @include text--medium-small;
     }
 
     &--medium {
@@ -162,8 +163,7 @@ $text--size-extra-large: 48px;
     }
 
     &--all-caps {
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
+        @include text--all-caps;
     }
 
     &--all-caps-wide {
@@ -181,6 +181,10 @@ $text--size-extra-large: 48px;
 
     &--white {
         color: white;
+    }
+
+    &--blue {
+        @include text--blue;
     }
 
     &--gray {

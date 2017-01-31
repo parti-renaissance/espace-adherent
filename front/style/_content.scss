@@ -26,7 +26,7 @@
 }
 
 .content header {
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 
     h2 {
         @include text--summary;
@@ -136,7 +136,7 @@
         }
 
         &.arrows {
-            font-size: 20px;
+            @include text--medium-small;
             font-weight: 700;
             padding-left: 15px;
 
@@ -187,6 +187,24 @@
             &.green {
                 @include btn--green;
             }
+        }
+    }
+
+    .box--blue {
+        border: 7px solid $blue;
+        padding: 10px 30px;
+
+        h4 {
+            @include text--medium-small;
+            @include text--blue;
+            @include text--all-caps;
+            font-family: 'Gillsans';
+            text-align: center;
+            font-weight: 700;
+        }
+
+        p {
+            @include text--blue;
         }
     }
 

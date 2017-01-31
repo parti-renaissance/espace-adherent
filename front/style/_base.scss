@@ -41,6 +41,15 @@ a {
     &.link--no-decor {
         border: none;
     }
+
+    &.link--blue {
+        color: $blue;
+        border-color: $blue;
+
+        &:hover {
+            @include hover($blue);
+        }
+    }
 }
 
 h1, h2, h3, h4 {

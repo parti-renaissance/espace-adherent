@@ -16,7 +16,7 @@
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
             <a href="{{ blocks[0].link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
-               style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: #eee"">
+               style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: #01B2FB"">
                 <div class="background">
                     <div class="content">
                         <h2>{{ blocks[0].title }}</h2>
@@ -28,7 +28,7 @@
             <div class="card card--large card--large__tablet l__hide--on-desktop">
                 <a href="{{ blocks[0].link }}" class="background-container">
                     <div class="background"
-                         style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: #eee""></div>
+                         style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: #01B2FB"></div>
                 </a>
                 <a class="content" href="{{ blocks[0].link }}">
                     <h2>{{ blocks[0].title }}</h2>
@@ -37,11 +37,12 @@
             </div>
 
             <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30"
-                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 380}) }}'); background-color: #eee">
+                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 380}) }}'); background-color: #01B2FB">
                 <div class="background">
                     <div class="content">
-                        <h2 class="text--normal text--white">{{ blocks[1].title }}</h2>
+                        <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
                         <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
+                        <div class="btn btn--blue">Je participe !</div>
                     </div>
                 </div>
             </a>
