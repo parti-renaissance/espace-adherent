@@ -50,7 +50,7 @@ Il faudra bien utiliser la classe `.list__links--col`.
     <li><a href="#">Adhérer</a></li>
     <li><a href="#">Donner</a></li>
     <li><a href="#">Rejoindre un comité</a></li>
-    <li><a href="#">S’inscrire à un évènement</a></li>                    
+    <li><a href="#">S’inscrire à un événement</a></li>                    
     <li><a href="#">FAQ</a></li>                    
 </ul>
 ```
