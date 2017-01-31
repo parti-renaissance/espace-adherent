@@ -1,0 +1,8 @@
+imports:
+    - { resource: config_test.yml }
+
+parameters:
+    env(DATABASE_HOST): "testdb"
+    env(DATABASE_NAME): "enmarche_test"
+    env(DATABASE_USER): "enmarche_test"
+    env(DATABASE_PASSWORD): "enmarche_test"

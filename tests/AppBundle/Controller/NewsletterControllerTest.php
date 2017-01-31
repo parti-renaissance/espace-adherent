@@ -4,13 +4,13 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class NewsletterControllerTest extends WebTestCase
+class NewsletterControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -88,7 +88,7 @@ class NewsletterControllerTest extends WebTestCase
             LoadHomeBlockData::class,
         ]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
     }

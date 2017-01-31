@@ -6,6 +6,10 @@ machine:
     environment:
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+        DATABASE_HOST: 127.0.0.1
+        DATABASE_USER: ubuntu
+        DATABASE_PASSWORD: ''
+        DATABASE_NAME: circle_test
     services:
         - docker
 

@@ -3,13 +3,13 @@
 namespace Tests\AppBundle\Controller\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdminData;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class AdminSecurityControllerTest extends WebTestCase
+class AdminSecurityControllerTest extends SqliteWebTestCase
 {
     /* @var Client */
     private $client;
@@ -88,7 +88,7 @@ class AdminSecurityControllerTest extends WebTestCase
             LoadAdminData::class,
         ]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
     }
 

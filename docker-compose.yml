@@ -21,6 +21,14 @@ services:
             MYSQL_USER: enmarche
             MYSQL_PASSWORD: enmarche
 
+    testdb:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: enmarche_test
+            MYSQL_DATABASE: enmarche_test
+            MYSQL_USER: enmarche_test
+            MYSQL_PASSWORD: enmarche_test
+
     redis:
         image: redis:3.2
 

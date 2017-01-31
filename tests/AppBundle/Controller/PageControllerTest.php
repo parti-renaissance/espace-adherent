@@ -4,11 +4,11 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class PageControllerTest extends WebTestCase
+class PageControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -54,7 +54,7 @@ class PageControllerTest extends WebTestCase
             LoadProposalData::class,
         ]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
     }
 
     protected function tearDown()

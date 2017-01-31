@@ -3,13 +3,13 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Invite;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class InvitationControllerTest extends WebTestCase
+class InvitationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -69,7 +69,7 @@ class InvitationControllerTest extends WebTestCase
 
         $this->loadFixtures([]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->invitationRepository = $this->getInvitationRepository();
     }

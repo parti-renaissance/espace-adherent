@@ -37,7 +37,7 @@ class PayboxFormFactory
             'PBX_REPONDRE_A' => $this->router->generate('lexik_paybox_ipn', ['time' => time()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        if ($this->environment === 'test') {
+        if ('test_sqlite' === $this->environment || 'test_mysql' === $this->environment) {
             $parameters = array_merge($parameters, [
                 'PBX_EFFECTUE' => 'https://httpbin.org/status/200',
                 'PBX_REFUSE' => 'https://httpbin.org/status/200',

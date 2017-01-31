@@ -6,11 +6,11 @@ use AppBundle\Entity\Donation;
 use AppBundle\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Goutte\Client as PayboxClient;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class DonationControllerTest extends WebTestCase
+class DonationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -120,21 +120,13 @@ class DonationControllerTest extends WebTestCase
         $this->assertNotNull($donation->getDonatedAt());
         $this->assertSame('00000', $donation->getPayboxResultCode());
         $this->assertSame('XXXXXX', $donation->getPayboxAuthorizationCode());
-
-        /*
-         * Check callback redirect to success page
-         */
-        $callbackUrl = str_replace('https://httpbin.org/status/200', '/don/callback', $mockUrl);
-
-        // $symfonyClient->request('GET', $callbackUrl);
-        // $this->assertEquals(302, $symfonyClient->getResponse()->getStatusCode());
     }
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->appClient = static::createClient();
+        $this->appClient = $this->makeClient();
         $this->payboxClient = new PayboxClient();
         $this->container = $this->appClient->getContainer();
         $this->donationRepository = $this->getDonationRepository();

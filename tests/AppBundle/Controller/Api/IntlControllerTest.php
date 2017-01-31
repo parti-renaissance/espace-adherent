@@ -2,15 +2,15 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class IntlControllerTest extends WebTestCase
+class IntlControllerTest extends SqliteWebTestCase
 {
     public function testGetPostalCode()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
         $client->request(Request::METHOD_GET, '/api/postal-code/35420');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());

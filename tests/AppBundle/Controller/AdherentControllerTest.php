@@ -9,11 +9,11 @@ use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class AdherentControllerTest extends WebTestCase
+class AdherentControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -434,7 +434,7 @@ class AdherentControllerTest extends WebTestCase
             LoadAdherentData::class,
         ]);
 
-        $this->client = static::createClient();
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();

@@ -4,10 +4,10 @@ namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Repository\CommitteeRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class CommitteeRepositoryTest extends WebTestCase
+class CommitteeRepositoryTest extends SqliteWebTestCase
 {
     /**
      * @var CommitteeRepository

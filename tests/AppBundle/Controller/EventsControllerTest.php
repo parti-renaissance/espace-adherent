@@ -2,17 +2,17 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class EventsControllerTest extends WebTestCase
+class EventsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
     public function testIndexActionIsSecured()
     {
-        $client = static::createClient();
+        $client = $this->makeClient();
         $client->request(Request::METHOD_GET, '/evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
