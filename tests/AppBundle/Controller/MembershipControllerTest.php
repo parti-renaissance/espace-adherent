@@ -1,13 +1,13 @@
 <?php
 
+// Please note that some related tests are located in the NearbyCalculationTest class.
+
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
@@ -312,77 +312,6 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
-    public function testChooseNearbyCommittee()
-    {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
-
-        $boxPattern = '#app_membership_choose_nearby_committee_committees > div';
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(3, $boxes = $crawler->filter($boxPattern));
-
-        /** @var Committee[] $committees */
-        $committees = $this->getCommitteeRepository()->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], 3);
-
-        foreach ($boxes as $i => $box) {
-            $checkbox = $crawler->filter($boxPattern.' input[type="checkbox"][name="app_membership_choose_nearby_committee[committees][]"]');
-
-            $this->assertSame((string) $committees[$i]->getUuid(), $checkbox->eq($i)->attr('value'));
-            $this->assertSame($committees[$i]->getName(), $crawler->filter($boxPattern.' h5')->eq($i)->text());
-        }
-    }
-
-    public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
-    {
-        /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
-
-        $this->assertFalse($adherent->isEnabled());
-
-        $memberships = $this->getCommitteeMembershipRepository()->findMemberships((string) $adherent->getUuid());
-
-        /** @var CommitteeMembership[] $memberships */
-        $memberships = $this->getCommitteeMembershipRepository()->findBy(['adherentUuid' => (string) $adherent->getUuid()]);
-
-        $this->assertFalse($adherent->isEnabled());
-        $this->assertCount(0, $memberships);
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        /** @var Committee[] $committees */
-        $committees = $this->getCommitteeRepository()->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], 3);
-        $this->assertCount(3, $committees, 'New adherent should have 3 committee proposals');
-
-        // We are 'checking' the first (0) and the last one (2)
-        $this->client->submit($crawler->selectButton('app_membership_choose_nearby_committee[submit]')->form(), [
-            'app_membership_choose_nearby_committee' => [
-                'committees' => [
-                    0 => $committees[0]->getUuid(),
-                    2 => $committees[2]->getUuid(),
-                ],
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        // The following test could not be realized because of a bug on the homepage
-        //$this->assertContains(
-        //    'Vous venez de rejoindre En Marche, nous vous en remercions !',
-        //    $crawler->filter('#notice-flashes')->text()
-        //);
-
-        $memberships = $this->getCommitteeMembershipRepository()->findMemberships((string) $adherent->getUuid());
-        $this->assertCount(2, $memberships);
     }
 
     private static function createFormData()

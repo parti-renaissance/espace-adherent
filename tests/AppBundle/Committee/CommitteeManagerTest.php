@@ -29,12 +29,12 @@ class CommitteeManagerTest extends SqliteWebTestCase
     {
         // Approved committees
         $this->assertCount(2, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID)));
+        $this->assertCount(1, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
         $this->assertCount(1, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID)));
         $this->assertCount(1, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
         $this->assertCount(0, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
-        $this->assertCount(0, $this->manager->findCommitteeHostsList($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
     }
 
     public function testFindCommitteeFollowersList()
