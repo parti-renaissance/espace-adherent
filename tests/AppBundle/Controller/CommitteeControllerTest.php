@@ -7,7 +7,9 @@ use AppBundle\Entity\CommitteeEvent;
 use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
 use AppBundle\Repository\CommitteeEventRepository;
 use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Entity\Committee;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -174,6 +176,77 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    public function testShowCommitteeForGuest()
+    {
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertTrue($this->seeRegisterLink($crawler), 'The guest should see the "register link"');
+        $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
+        $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
+        $this->assertTrue($this->seeMembersCount($crawler, 4), 'The guest should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The guest should see the hosts contact link');
+        $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
+        $this->assertSeeSocialLinks(
+            $crawler,
+            $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID)
+        );
+    }
+
+    public function testShowCommitteeForAdherent()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
+        $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
+        $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
+        $this->assertTrue($this->seeMembersCount($crawler, 4), 'The adherent should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 2), 'The adherent should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The adherent should see the hosts contact link');
+        $this->assertFalse($this->seeHostNav($crawler), 'The adherent should not see the host navigation');
+    }
+
+    public function testShowCommitteeForFollower()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The follower should not see the "register link"');
+        $this->assertFalse($this->seeFollowLink($crawler), 'The follower should not see the "follow link"');
+        $this->assertTrue($this->seeUnfollowLink($crawler), 'The follower should see the "unfollow link"');
+        $this->assertTrue($this->seeMembersCount($crawler, 4), 'The follower should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 2), 'The follower should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The follower should see the hosts contact link');
+        $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
+    }
+
+    public function testShowCommitteeForHost()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');
+        $this->assertFalse($this->seeFollowLink($crawler), 'The host should not see the "follow link"');
+        $this->assertTrue($this->seeUnfollowLink($crawler), 'The host should see the "unfollow link" because there is another host');
+        $this->assertTrue($this->seeMembersCount($crawler, 4), 'The host should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
+        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux'), 'The host should see his own contact link');
+        $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -182,6 +255,7 @@ class CommitteeControllerTest extends WebTestCase
             LoadAdherentData::class,
         ]);
 
+        $this->container = $this->getContainer();
         $this->client = static::createClient();
         $this->container = $this->client->getContainer();
         $this->emailRepository = $this->getMailjetEmailRepository();
@@ -195,8 +269,88 @@ class CommitteeControllerTest extends WebTestCase
         $this->committeeEventRepository = null;
         $this->emailRepository = null;
         $this->container = null;
+        $this->container = null;
         $this->client = null;
 
         parent::tearDown();
+    }
+
+    private function seeRegisterLink(Crawler $crawler, $do = 1): bool
+    {
+        $this->assertCount($do, $crawler->filter('.committee-follow-disabled'));
+
+        return 1 === count($crawler->filter('a#committee-register-link'));
+    }
+
+    private function seeFollowLink(Crawler $crawler): bool
+    {
+        return 1 === count($crawler->filter('a.committee-link.committee-follow'));
+    }
+
+    private function seeUnfollowLink(Crawler $crawler): bool
+    {
+        return 1 === count($crawler->filter('a.committee-link.committee-unfollow'));
+    }
+
+    private function seeMembersCount(Crawler $crawler, string $membersCount): bool
+    {
+        return $membersCount.' membre'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee-details h4')->text();
+    }
+
+    private function seeHosts(Crawler $crawler, int $hostsCount): bool
+    {
+        return $hostsCount === count($crawler->filter('.committee-details .committee-host'));
+    }
+
+    private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
+    {
+        return $hostsCount === count($crawler->filter('.committee-details .committee-host a'));
+    }
+
+    private function seeSelfHostContactLink(Crawler $crawler, string $name): bool
+    {
+        /** @var \DOMElement $host */
+        foreach ($crawler->filter('.committee-details .committee-host') as $host) {
+            if (false !== strpos($host->textContent, 'Contacter')) {
+                continue;
+            }
+
+            return preg_match('/'.preg_quote($name).'\s+\(vous\)/', $host->textContent);
+        }
+
+        return false;
+    }
+
+    private function seeHostNav(Crawler $crawler): bool
+    {
+        return 1 === count($crawler->filter('#committee-host-nav'));
+    }
+
+    private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
+    {
+        $facebookLinkPattern = 'a.committee-facebook';
+        $googlePlusLinkPattern = 'a.committee-google_plus';
+        $twitterLinkPattern = 'a.committee-twitter';
+
+        if ($facebookUrl = $committee->getFacebookPageUrl()) {
+            $this->assertCount(1, $facebookLink = $crawler->filter($facebookLinkPattern));
+            $this->assertSame($facebookUrl, $facebookLink->attr('href'));
+        } else {
+            $this->assertCount(0, $crawler->filter($facebookLinkPattern));
+        }
+
+        if ($googlePlusUrl = $committee->getGooglePlusPageUrl()) {
+            $this->assertCount(1, $googlePlusLink = $crawler->filter($googlePlusLinkPattern));
+            $this->assertSame($googlePlusUrl, $googlePlusLink->attr('href'));
+        } else {
+            $this->assertCount(0, $crawler->filter($googlePlusLinkPattern));
+        }
+
+        if ($twitterNickname = $committee->getTwitterNickname()) {
+            $this->assertCount(1, $twitterLink = $crawler->filter($twitterLinkPattern));
+            $this->assertSame(sprintf('https://twitter.com/%s', $twitterNickname), $twitterLink->attr('href'));
+        } else {
+            $this->assertCount(0, $crawler->filter($twitterLinkPattern));
+        }
     }
 }

@@ -45,6 +45,19 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
         );
     }
 
+    public function testAnonymousIsGrantedToShowAnyApprovedCommittee()
+    {
+        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
+        $committee->approved();
+
+        $token = $this->createAnonymousToken();
+
+        $this->assertSame(
+            VoterInterface::ACCESS_GRANTED,
+            $this->voter->vote($token, $committee, [CommitteePermissions::SHOW])
+        );
+    }
+
     public function testAnyAdherentIsGrantedToShowAnyApprovedCommittee()
     {
         $adherent = $this->createAdherent(self::ADHERENT_1_UUID);

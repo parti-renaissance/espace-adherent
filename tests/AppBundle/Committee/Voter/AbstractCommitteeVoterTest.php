@@ -8,6 +8,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
@@ -41,6 +42,11 @@ abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         $this->committeeFactory = null;
 
         parent::tearDown();
+    }
+
+    protected function createAnonymousToken(): AnonymousToken
+    {
+        return new AnonymousToken('heah', $this->getMockBuilder(UserInterface::class)->getMock());
     }
 
     protected function createAuthenticatedToken(UserInterface $adherent): UsernamePasswordToken
