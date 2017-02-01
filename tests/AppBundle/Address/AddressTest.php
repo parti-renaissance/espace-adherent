@@ -34,8 +34,8 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('6 rue Neyret', $address->getAddress());
         $this->assertSame('69001-69381', $address->getCity());
         $this->assertSame('69001', $address->getPostalCode());
-        $this->assertSame('Lyon 1er Arrondissement', $address->getCityName());
-        $this->assertSame('6 rue Neyret, 69001 Lyon 1er Arrondissement, France', $address->getGeocodableAddress());
+        $this->assertSame('Lyon 1er', $address->getCityName());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, France', $address->getGeocodableAddress());
         $this->assertTrue($address->isFrenchAddress());
     }
 

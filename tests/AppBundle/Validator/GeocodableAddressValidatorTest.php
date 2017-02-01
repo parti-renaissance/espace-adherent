@@ -71,7 +71,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         $address->setCountry('FR');
         $address->setAddress('80 rue des lapinoux');
         $address->setPostalCode('75015');
-        $address->setCityName('Paris 15e Arrondissement');
+        $address->setCityName('Paris 15e');
 
         $this->validator->validate($address, new GeocodableAddress());
 
