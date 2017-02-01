@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
@@ -79,12 +80,12 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
      *
      * @param array $uuids
      *
-     * @return Adherent[]
+     * @return AdherentCollection
      */
-    public function findList(array $uuids): array
+    public function findList(array $uuids): AdherentCollection
     {
         if (!$uuids) {
-            return [];
+            return new AdherentCollection();
         }
 
         $qb = $this->createQueryBuilder('a');
@@ -94,6 +95,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->getQuery()
         ;
 
-        return (array) $query->getResult();
+        return new AdherentCollection($query->getResult());
     }
 }

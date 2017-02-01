@@ -15,5 +15,5 @@
 
 <p>
     Pour ajouter ou supprimer des animateurs, dirigez-vous vers la
-    <a href="{{ path('app_commitee_list_members') }}">section des membres</a>.
+    <a href="{{ path('app_commitee_list_members', {'uuid': committee.uuid.toString, 'slug': committee.slug}) }}">section des membres</a>.
 </p>

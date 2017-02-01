@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
 class AdherentAccountActivationMessageTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,15 +19,20 @@ class AdherentAccountActivationMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(AdherentAccountActivationMessage::class, $message);
         $this->assertSame('54665', $message->getTemplate());
-        $this->assertSame(['jerome@example.com', 'Jérôme Pichoud'], $message->getRecipient());
         $this->assertSame('Finalisez votre inscription au mouvement En Marche !', $message->getSubject());
         $this->assertCount(2, $message->getVars());
+        $this->assertSame(['target_firstname' => '', 'confirmation_link' => ''], $message->getVars());
+
+        $recipient = $message->getRecipient(0);
+        $this->assertInstanceOf(MailjetMessageRecipient::class, $recipient);
+        $this->assertSame('jerome@example.com', $recipient->getEmailAddress());
+        $this->assertSame('Jérôme Pichoud', $recipient->getFullName());
         $this->assertSame(
             [
                 'target_firstname' => 'Jérôme',
                 'confirmation_link' => 'https://localhost/activation',
             ],
-            $message->getVars()
+            $recipient->getVars()
         );
     }
 }

@@ -406,7 +406,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertCount(1, $this->emailRepository->findMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();

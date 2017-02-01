@@ -31,11 +31,15 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
     public function onMailjetDeliveryMessage(MailjetEvent $event)
     {
         $email = $event->getEmail();
+        $message = $event->getMessage();
 
-        $this->manager->persist(MailjetEmail::createFromMessage(
-            $event->getMessage(),
-            $email->getHttpRequestPayload()
-        ));
+        foreach ($message->getRecipients() as $recipient) {
+            $this->manager->persist(MailjetEmail::createFromMessage(
+                $message,
+                $recipient->getEmailAddress(),
+                $email->getHttpRequestPayload()
+            ));
+        }
 
         $this->manager->flush();
     }

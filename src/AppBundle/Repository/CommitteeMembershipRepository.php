@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Adherent;
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\CommitteeMembership;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -67,9 +67,9 @@ class CommitteeMembershipRepository extends EntityRepository
      *
      * @param string $adherentUuid
      *
-     * @return CommitteeMembership[]
+     * @return CommitteeMembershipCollection
      */
-    public function findMemberships(string $adherentUuid)
+    public function findMemberships(string $adherentUuid): CommitteeMembershipCollection
     {
         $adherentUuid = Uuid::fromString($adherentUuid);
 
@@ -80,7 +80,7 @@ class CommitteeMembershipRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return $query->getResult();
+        return new CommitteeMembershipCollection($query->getResult());
     }
 
     /**
@@ -177,22 +177,53 @@ class CommitteeMembershipRepository extends EntityRepository
      *
      * @param string $committeeUuid
      *
-     * @return CommitteeMembership[]
+     * @return CommitteeMembershipCollection
      */
-    public function findHostMemberships(string $committeeUuid): array
+    public function findHostMemberships(string $committeeUuid): CommitteeMembershipCollection
+    {
+        return $this->findPriviledgedMemberships($committeeUuid, [CommitteeMembership::COMMITTEE_HOST]);
+    }
+
+    /**
+     * Finds the list of all committee followers memberships.
+     *
+     * @param string $committeeUuid The committee UUID
+     * @param bool   $includeHosts  Whether or not to include committee hosts as followers
+     *
+     * @return CommitteeMembershipCollection
+     */
+    public function findFollowerMemberships(string $committeeUuid, bool $includeHosts = true): CommitteeMembershipCollection
+    {
+        $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
+        if ($includeHosts) {
+            $privileges[] = CommitteeMembership::COMMITTEE_HOST;
+        }
+
+        return $this->findPriviledgedMemberships($committeeUuid, $privileges);
+    }
+
+    /**
+     * Returns the list of all priviledged memberships of a committee.
+     *
+     * @param string $committeeUuid The committee UUID
+     * @param array  $privileges    An array of privilege constants (see {@link : CommitteeMembership}
+     *
+     * @return CommitteeMembershipCollection
+     */
+    private function findPriviledgedMemberships(string $committeeUuid, array $privileges): CommitteeMembershipCollection
     {
         $committeeUuid = Uuid::fromString($committeeUuid);
 
-        $query = $this
-            ->createQueryBuilder('cm')
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
             ->where('cm.committeeUuid = :committee')
-            ->andWhere('cm.privilege = :privilege')
+            ->andWhere($qb->expr()->in('cm.privilege', $privileges))
             ->orderBy('cm.joinedAt', 'ASC')
             ->setParameter('committee', (string) $committeeUuid)
-            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
             ->getQuery()
         ;
 
-        return (array) $query->getResult();
+        return new CommitteeMembershipCollection($query->getResult());
     }
 }

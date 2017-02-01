@@ -4,10 +4,96 @@
 
 {% block banner '' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.creteAddressSelector(
+                '{{ form.address.country.vars.id }}',
+                '{{ form.address.postalCode.vars.id }}',
+                '{{ form.address.city.vars.id }}',
+                '{{ form.address.cityName.vars.id }}'
+            );
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     <section class="l__wrapper--medium">
-        <div class="committee">
+        <div class="committee-event" id="committee-event-form">
             <h2>Créer mon événement</h2>
+            <h3>Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="form__row" id="committee-event-name-field">
+                {{ form_errors(form.name) }}
+                {{ form_label(form.name, "Nom de l'événement") }}
+                {{ form_widget(form.name, { attr: { class: 'committee_event__form__name', 'placeholder': "Entrez le nom de l'événement" } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-description-field">
+                {{ form_errors(form.category) }}
+                {{ form_label(form.category, "Type") }}
+                {{ form_widget(form.category, { attr: { class: 'committee_event__form__category', 'placeholder': "Choisissez le type de l'événement" } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-beginat-field">
+                {{ form_errors(form.beginAt) }}
+                {{ form_label(form.beginAt, 'Début') }}
+                {{ form_widget(form.beginAt, { attr: { class: 'committee_event__form__begin_at' } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-finishat-field">
+                {{ form_errors(form.finishAt) }}
+                {{ form_label(form.finishAt, 'Fin') }}
+                {{ form_widget(form.finishAt, { attr: { class: 'committee_event__form__finish_at' } }) }}
+            </div>
+
+            <div id="committee-event-address">
+                {{ form_errors(form.address) }}
+
+                <div class="form__row committee_event__form--trunc" id="committee-event-address-address-field">
+                    {{ form_errors(form.address.address) }}
+                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
+                </div>
+
+                <div class="l__row">
+                    <div class="form__row committee_event__form__zip_code" id="committee-event-address-zipcode-field">
+                        {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Entrez le code postal' } }) }}
+                    </div>
+
+                    <div class="form__row committee_event__form__city" id="committee-event-address-city-field">
+                        {{ form_errors(form.address.city) }}
+                        {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
+                        {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full committee_event__form__city_name', 'placeholder': 'Ville' } }) }}
+                    </div>
+
+                    <div class="form__row committee_event__form__country" id="committee-event-address-country-field">
+                        {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'color--blue' } }) }}
+                        {{ form_errors(form.address.country) }}
+                        {{ form_widget(form.address.country, { attr: { class: 'form--mid', 'placeholder': 'Choisissez le pays' } }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form__row" id="committee-event-description-field">
+                {{ form_errors(form.description) }}
+                {{ form_label(form.description, 'À propos') }}
+                {{ form_widget(form.description, { attr: { class: 'committee_event__form__description', 'placeholder': 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '20', 'cols': '70' } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-capacity-field">
+                {{ form_errors(form.capacity) }}
+                {{ form_label(form.capacity, 'Capacité') }}
+                {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity', 'placeholder': 'Quel est le nombre maximum de participants à cet événement.' } }) }}
+            </div>
+
+            <div class="form__row text--center b__nudge--top">
+                <button type="submit">Créer cet événement</button>
+            </div>
+
+            {{ form_end(form) }}
         </div>
     </section>
 

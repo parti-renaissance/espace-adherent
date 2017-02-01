@@ -55,7 +55,7 @@ trait EntityCrudTrait
      *
      * @throws \InvalidArgumentException
      */
-    public function __set(string $property, $value)
+    public function __set($property, $value)
     {
         $class = get_class($this);
         $ucProperty = ucfirst($property);
@@ -99,7 +99,7 @@ trait EntityCrudTrait
      *
      * @throws \InvalidArgumentException
      */
-    public function __get(string $property)
+    public function __get($property)
     {
         $class = get_class($this);
         $ucProperty = ucfirst($property);

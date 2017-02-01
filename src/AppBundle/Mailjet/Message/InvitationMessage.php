@@ -8,18 +8,22 @@ final class InvitationMessage extends MailjetMessage
 {
     public static function createFromInvite(Invite $invite): self
     {
-        $message = new static(
+        return new static(
             $invite->getUuid(),
             '61613',
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à rejoindre En Marche.', $invite->getSenderFullName())
+            sprintf('%s vous invite à rejoindre En Marche.', $invite->getSenderFullName()),
+            static::getTemplateVars($invite->getFirstName(), $invite->getLastName(), $invite->getMessage())
         );
+    }
 
-        $message->setVar('sender_firstname', $invite->getFirstName());
-        $message->setVar('sender_lastname', $invite->getLastName());
-        $message->setVar('target_message', $invite->getMessage());
-
-        return $message;
+    private static function getTemplateVars(string $senderFirstName, string $senderLastName, string $targetMessage): array
+    {
+        return [
+            'sender_firstname' => $senderFirstName,
+            'sender_lastname' => $senderLastName,
+            'target_message' => $targetMessage,
+        ];
     }
 }

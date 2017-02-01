@@ -22,7 +22,7 @@ class MailjetEmailRepository extends EntityRepository
         return $this->findOneBy(['uuid' => $uuid->toString()]);
     }
 
-    public function findMessages(string $messageClass, string $recipient)
+    public function findRecipientMessages(string $messageClass, string $recipient)
     {
         $query = $this
             ->createQueryBuilder('e')
@@ -35,5 +35,22 @@ class MailjetEmailRepository extends EntityRepository
         ;
 
         return $query->getResult();
+    }
+
+    public function findMessages(string $messageClass, string $batch = null)
+    {
+        $qb = $this
+            ->createQueryBuilder('e')
+            ->where('e.messageClass = :class')
+            ->orderBy('e.sentAt', 'DESC')
+            ->setParameter('class', $messageClass);
+
+        if ($batch) {
+            $qb
+                ->andWhere('e.batch = :batch')
+                ->setParameter('batch', $batch);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
