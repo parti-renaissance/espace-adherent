@@ -111,8 +111,17 @@ Les listes à flêches:
 </ul>
 ```
 
+Une liste avec un lien bleu:
+
+```
+<ul class="arrows blue">
+    <li><a href="">Ceci est un lien bleu</a></li>
+</ul>
+```
+
+
 ## Indentation
-Permet une indentation d'un paragraphe avec la même profondeur que les listes ci-dessus. 
+Permet une indentation d'un paragraphe avec la même profondeur que les listes ci-dessus.
 
 ```
 <p class="indent">La France est riche d’une histoire mais aussi d’un avenir que nous sommes en train d’écrire.</p>

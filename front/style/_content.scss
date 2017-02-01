@@ -146,6 +146,17 @@
                 margin-left: 7px;
                 margin-bottom: 10px;
             }
+
+            &.blue {
+                a {
+                    color: $blue;
+                    border-color: $blue;
+
+                    &:hover {
+                        @include hover($blue);
+                    }
+                }
+            }
         }
     }
 
