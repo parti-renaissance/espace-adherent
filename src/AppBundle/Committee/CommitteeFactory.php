@@ -32,7 +32,8 @@ class CommitteeFactory
             $data['created_by'],
             $data['name'],
             $data['description'],
-            $data['address']
+            $data['address'],
+            $data['created_at'] ?? 'now'
         );
 
         $committee->setSocialNetworks(
