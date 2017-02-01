@@ -26,7 +26,7 @@
 }
 
 .content header {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 
     h2 {
         @include text--summary;
@@ -351,6 +351,7 @@
         flex-direction: column;
         justify-content: flex-end;
         box-sizing: border-box;
+        margin-bottom: 60px;
 
         h1 {
             max-width: 550px;
@@ -410,6 +411,7 @@
         flex-direction: column;
         justify-content: flex-end;
         position: relative;
+        margin-bottom: 60px;
 
         div {
             z-index: 1;
