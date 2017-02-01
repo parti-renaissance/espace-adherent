@@ -153,35 +153,85 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid $gray--light;
-        border-bottom: 1px solid $gray--light;
-        padding: 25px 0;
+        padding: 25px;
+        background: $pink;
+
+        &.blue {
+            background: $blue;
+        }
+
+        &.yellow {
+            background: $yellow;
+        }
+
+        &.green {
+            background: $green;
+        }
+
+        &.black {
+            background: black;
+        }
 
         @media (max-width: $mobile) {
             flex-direction: column;
         }
 
         p {
+            color: white;
             @include text--medium;
-            color: $black--half;
-            margin: 0 20px 0;
+            @include text--bold;
+            font-style: italic;
+            font-family: 'Gillsans';
+            margin: 0 20px 0 0;
+            max-width: 350px;
+
+            &.black {
+                color: black;
+            }
+
+            &.pink {
+                color: $pink;
+            }
+
+            &.blue {
+                color: $blue;
+            }
+
+            &.yellow {
+                color: $yellow;
+            }
+
+            &.green {
+                color: $green;
+                border: 0;
+            }
 
             @media (max-width: $mobile) {
                 margin: 0 0 20px 0;
+                max-width: 100%;
             }
         }
 
         a {
             font-family: 'Gillsans';
             @include btn;
+            border-color: white;
             white-space: nowrap;
 
-            &.primary {
+            &.black {
+                @include btn--black;
+            }
+
+            &.pink {
                 @include btn--primary;
             }
 
             &.blue {
                 @include btn--blue;
+            }
+
+            &.yellow {
+                @include btn--yellow;
             }
 
             &.green {
