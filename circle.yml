@@ -62,5 +62,5 @@ deployment:
             # Deploy to staging
             - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
             - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-platform enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-platform-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
