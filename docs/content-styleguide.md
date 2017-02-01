@@ -111,6 +111,13 @@ Les listes à flêches:
 </ul>
 ```
 
+## Indentation
+Permet une indentation d'un paragraphe avec la même profondeur que les listes ci-dessus. 
+
+```
+<p class="indent">La France est riche d’une histoire mais aussi d’un avenir que nous sommes en train d’écrire.</p>
+```
+
 ## Les appels à action
 La version défault:
 
