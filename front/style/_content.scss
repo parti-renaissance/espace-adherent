@@ -384,21 +384,26 @@
 
     li {
         width: 32.5%;
-        display: inline-block;
         list-style: none;
         margin-bottom: 10px;
         background: $gray--lighter;
         height: 285px;
+        display: flex;
+        flex-direction: column;
 
         > div {
-            padding: 8px 20px;
+            padding: 13px 20px 8px;
         }
 
         .share {
             a {
                 border: 0;
                 color: $gray;
-                margin-right: 5px;
+                margin-right: 10px;
+
+                &:hover {
+                    color: $blue;
+                }
             }
         }
     }
@@ -407,6 +412,21 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 90px;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    @media(max-width: $mobile) {
+        flex-direction: column;
+
+        li {
+            flex-direction: row;
+            width: 100%;
+            height: 125px;
+
+            img {
+                width: 40%;
+            }
+        }
     }
 }
