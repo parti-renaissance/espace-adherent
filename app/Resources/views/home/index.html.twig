@@ -16,7 +16,7 @@
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
             <a href="{{ blocks[0].link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
-               style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: black">
+               style="background: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}') no-repeat; background-size: cover; background-position: center; background-color: black">
                 <div class="background">
                     <div class="content">
                         <h2>{{ blocks[0].title }}</h2>
@@ -28,7 +28,7 @@
             <div class="card card--large card--large__tablet l__hide--on-desktop">
                 <a href="{{ blocks[0].link }}" class="background-container">
                     <div class="background"
-                         style="background: url('{{ dynamic_asset(blocks[0].media.path) }}') no-repeat; background-size: cover; background-position: center; background-color: black"></div>
+                         style="background: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}') no-repeat; background-size: cover; background-position: center; background-color: black"></div>
                 </a>
                 <a class="content" href="{{ blocks[0].link }}">
                     <h2>{{ blocks[0].title }}</h2>
@@ -37,7 +37,7 @@
             </div>
 
             <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30"
-                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 380}) }}'); background-color: black">
+                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 1000}) }}'); background-color: black">
                 <div class="background">
                     <div class="content">
                         <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
@@ -105,78 +105,91 @@
         <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
             {% for block in blocks|slice(2,6) %}
                 <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ block.type }} l__col--bottom">
-                    <div class="cs card--small">
-                        <a href="{{ block.link }}" class="background-container">
-                            <div class="background" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
-                            </div>
-                        </a>
-                        <a href="{{ block.link }}" class="headline link--no-decor">
-                            <h2>{{ block.title }}</h2>
-                        </a>
-                        <div class="share">
-                            Partagez
-                            <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                <i class="fa fa-facebook-square"></i>
-                            </span>
-                            <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                <i class="fa fa-twitter"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="csv card--small card--small__video">
-                        <a href="{{ block.link }}" class="background-container">
-                            <div class="background" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
-                                <i class="play-icon"></i>
-                            </div>
-                        </a>
-                        <a href="{{ block.link }}" class="headline link--no-decor">
-                            <h2>{{ block.title }}</h2>
-                        </a>
-                        <div class="share">
-                            Partagez
-                            <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                <i class="fa fa-facebook-square"></i>
-                            </span>
-                            <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                <i class="fa fa-twitter"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="cm card--medium">
-                        <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
-                            <div class="background">
-                                <div class="content">
-                                    <h2 class="headline link--no-decor b__nudge--bottom-medium">
-                                        {{ block.title }}
-                                    </h2>
-                                    <div class="btn btn--no-border">En savoir plus</div>
+                    {% if loop.index in [1, 2, 5, 6] %}
+                        {# Small block #}
+
+                        {% if block.type == 'video' %}
+                            <div class="csv card--small card--small__video">
+                                <a href="{{ block.link }}" class="background-container">
+                                    <div class="background" style="background: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}') no-repeat; background-size: cover; background-position: center;">
+                                        <i class="play-icon"></i>
+                                    </div>
+                                </a>
+                                <a href="{{ block.link }}" class="headline link--no-decor">
+                                    <h2>{{ block.title }}</h2>
+                                </a>
+                                <div class="share">
+                                    Partagez
+                                    <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </span>
+                                    <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-twitter"></i>
+                                    </span>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                    <div class="cmv card--medium card--medium__video">
-                        <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path) }}') no-repeat; background-size: cover; background-position: center;">
-                            <div class="background">
-                                <div class="content">
-                                    <div class="headline-row">
-                                        <i class="play"></i>
-                                        <h2 class="headline link--no-decor b__nudge--bottom-medium">
-                                            {{ block.title }}
-                                        </h2>
+                        {% else %}
+                            <div class="cs card--small">
+                                <a href="{{ block.link }}" class="background-container">
+                                    <div class="background" style="background: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}') no-repeat; background-size: cover; background-position: center;">
                                     </div>
-                                    <div class="share">
-                                        Partagez
-                                        <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                            <i class="fa fa-facebook-square"></i>
-                                        </span>
-                                        <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                            <i class="fa fa-twitter"></i>
-                                        </span>
-                                    </div>
+                                </a>
+                                <a href="{{ block.link }}" class="headline link--no-decor">
+                                    <h2>{{ block.title }}</h2>
+                                </a>
+                                <div class="share">
+                                    Partagez
+                                    <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </span>
+                                    <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-twitter"></i>
+                                    </span>
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        {% endif %}
+                    {% else %}
+                        {# Medium block #}
+
+                        {% if block.type == 'video' %}
+                            <div class="cmv card--medium card--medium__video">
+                                <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}') no-repeat; background-size: cover; background-position: center;">
+                                    <div class="background">
+                                        <div class="content">
+                                            <div class="headline-row">
+                                                <i class="play"></i>
+                                                <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                                    {{ block.title }}
+                                                </h2>
+                                            </div>
+                                            <div class="share">
+                                                Partagez
+                                                <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                                    <i class="fa fa-facebook-square"></i>
+                                                </span>
+                                                <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                                    <i class="fa fa-twitter"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="cm card--medium">
+                                <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}') no-repeat; background-size: cover; background-position: center;">
+                                    <div class="background">
+                                        <div class="content">
+                                            <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                                {{ block.title }}
+                                            </h2>
+                                            <div class="btn btn--no-border">En savoir plus</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -190,7 +203,7 @@
     {% if blocks|length >= 9 %}
     <section class="l__wrapper b__nudge--bottom-large">
         <div class="proteger l__col l__col--center"
-             style="background-image: linear-gradient(120deg ,rgba(0,0,0,.35), rgba(0,0,0,.35)), url('{{ dynamic_asset(blocks[8].media.path, {'w': 1200}) }}');">
+             style="background-image: linear-gradient(120deg ,rgba(0,0,0,.35), rgba(0,0,0,.35)), url('{{ dynamic_asset(blocks[8].media.path, {'w': 1800}) }}');">
             <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">{{ blocks[8].title }}</h2>
             <a href="{{ blocks[8].link }}" class="btn btn--no-border">En savoir plus</a>
         </div>

@@ -1,7 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig' %}
 
 {% block sonata_mosaic_background %}
-    <img src="{{ dynamic_asset(object.path) }}" />
+    <img src="{{ dynamic_asset(object.path, {'w': 400}) }}" />
 {% endblock %}
 
 {% block sonata_mosaic_default_view '' %}
