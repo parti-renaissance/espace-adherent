@@ -87,10 +87,17 @@
     }
 }
 
+
 .content article {
     font-family: 'Roboto', sans-serif;
     letter-spacing: 0.3px;
     line-height: 1.62;
+
+    > h1, > h2, > h3, > h4, > h5, > h6,
+    > p, > ul, > ol, > div,
+    > figure, > img, > iframe {
+        @include wrapper--slim;
+    }
 
     h1, h2, h3 {
         @include text--medium-large;
@@ -115,8 +122,9 @@
     }
 
     ul {
-       padding-left: 40px;
-       margin: 14px 0;
+       padding-left: 90px;
+       margin-top: 14px;
+       margin-bottom: 14px;
 
         li {
            list-style-type: disc;
@@ -295,15 +303,40 @@
     }
 
     figure {
-        margin: 40px 0;
+        margin-top: 40px;
+        margin-bottom: 40px;
+
+        &.fullscreen {
+            max-width: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 100%;
+            }
+
+            p {
+                @include text--medium-large;
+                @include wrapper--slim;
+                @include text--bold;
+                font-family: "Gillsans";
+                position: absolute;
+
+                @media(max-width: $mobile) {
+                    @include text--default;
+                }
+            }
+        }
+
+        &.large img {
+            width: 100%;
+        }
 
         img {
             display: block;
             margin: auto;
-
-            &.large {
-                width: 100%;
-            }
 
             @media (max-width: $mobile) {
                 width: 100%;
