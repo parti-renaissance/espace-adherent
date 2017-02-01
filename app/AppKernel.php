@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new Lexik\Bundle\PayboxBundle\LexikPayboxBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
