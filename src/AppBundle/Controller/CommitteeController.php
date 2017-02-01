@@ -44,6 +44,16 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @Route("/message/ajouter", name="app_committee_add_message")
+     * @Method("GET|POST")
+     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     */
+    public function addMessageAction(Committee $committee): Response
+    {
+        return new Response('TO BE IMPLEMENTED');
+    }
+
+    /**
      * @Route("/evenements/ajouter", name="app_committee_add_event")
      * @Method("GET|POST")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
