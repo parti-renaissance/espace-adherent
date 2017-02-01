@@ -12,11 +12,11 @@ use AppBundle\Geocoder\Exception\GeocodingException;
 class DummyGeocoder implements GeocoderInterface
 {
     private static $coordinates = [
-        '6 rue neyret, 69001 lyon 1er arrondissement, france' => [
+        '6 rue neyret, 69001 lyon 1er, france' => [
             'lat' => 45.7713288,
             'lon' => 4.8288758,
         ],
-        '50 rue de la villette, 69003 lyon 3e arrondissement, france' => [
+        '50 rue de la villette, 69003 lyon 3e, france' => [
             'lat' => 45.7596356,
             'lon' => 4.8614359,
         ],

@@ -20,7 +20,7 @@ class FranceCitiesBundleTest extends \PHPUnit_Framework_TestCase
             [
                 '75001',
                 [
-                    75101 => 'Paris 1er Arrondissement',
+                    75101 => 'Paris 1er',
                 ],
             ],
             [

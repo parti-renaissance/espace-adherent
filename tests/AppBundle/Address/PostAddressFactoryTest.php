@@ -24,8 +24,8 @@ class PostAddressFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('69001-69381', $postAddress->getCity());
         $this->assertSame('69001', $postAddress->getPostalCode());
         $this->assertSame('69381', $postAddress->getInseeCode());
-        $this->assertSame('Lyon 1er Arrondissement', $postAddress->getCityName());
-        $this->assertSame('6 rue Neyret, 69001 Lyon 1er Arrondissement, France', $postAddress->getGeocodableAddress());
+        $this->assertSame('Lyon 1er', $postAddress->getCityName());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, France', $postAddress->getGeocodableAddress());
         $this->assertNull($postAddress->getLatitude());
         $this->assertNull($postAddress->getLongitude());
     }

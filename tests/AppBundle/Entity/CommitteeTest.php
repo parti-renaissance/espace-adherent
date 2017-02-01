@@ -38,7 +38,7 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
         $committee = $this->createCommittee();
         $committee->updateCoordinates(new Coordinates(45.7713288, 4.8288758));
 
-        $this->assertSame('50 Rue de la Villette, 69003 Lyon 3e Arrondissement, France', $committee->getGeocodableAddress());
+        $this->assertSame('50 Rue de la Villette, 69003 Lyon 3e, France', $committee->getGeocodableAddress());
         $this->assertSame(45.7713288, $committee->getLatitude());
         $this->assertSame(4.8288758, $committee->getLongitude());
     }

@@ -33,12 +33,12 @@ class DummyGeocoderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                '6 rue neyret, 69001 lyon 1er arrondissement, france',
+                '6 rue neyret, 69001 lyon 1er, france',
                 45.7713288,
                 4.8288758,
             ],
             [
-                '6 rue Neyret, 69001 Lyon 1er Arrondissement, France',
+                '6 rue Neyret, 69001 Lyon 1er, France',
                 45.7713288,
                 4.8288758,
             ],
