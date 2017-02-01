@@ -144,26 +144,32 @@ class Committee implements GeoPointInterface
         $this->createdAt = $createdAt;
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address): self
+    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self
     {
-        return new self(
+        $committee = new self(
             $uuid,
             Uuid::fromString($creatorUuid),
             $name,
             $description,
             $address
         );
+        $committee->createdAt = new \DateTimeImmutable($createdAt);
+
+        return $committee;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address): self
+    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self
     {
-        return new self(
+        $committee = new self(
             self::createUuid($name),
             clone $adherent->getUuid(),
             $name,
             $description,
             $address
         );
+        $committee->createdAt = new \DateTimeImmutable($createdAt);
+
+        return $committee;
     }
 
     public static function createUuid(string $name): UuidInterface

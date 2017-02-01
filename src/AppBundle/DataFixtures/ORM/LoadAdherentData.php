@@ -159,6 +159,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee1 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_1_UUID,
             'created_by' => (string) $adherent3->getUuid(),
+            'created_at' => '2017-01-12 13:25:54',
             'name' => 'En Marche Paris 8',
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
@@ -170,6 +171,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee2 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_2_UUID,
             'created_by' => (string) $adherent6->getUuid(),
+            'created_at' => '2017-01-12 19:34:12',
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203'),
@@ -178,6 +180,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee3 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_3_UUID,
             'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-01-15 16:08:24',
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
@@ -187,6 +190,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee4 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,
             'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-01-19 08:36:55',
             'name' => 'Antenne En Marche de Fontainebleau',
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186'),
@@ -195,6 +199,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee5 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_5_UUID,
             'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-01-19 10:54:28',
             'name' => 'En Marche - Comité de Évry',
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
             'address' => PostAddress::createFrenchAddress("place des Droits de l'Homme et du Citoyen", '91000-91228'),
@@ -228,9 +233,9 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee5);
 
         // Make adherents join committees
-        $manager->persist($committee1->approved('2017-01-03 15:18:22'));
-        $manager->persist($committee4->approved('2017-01-03 15:19:10'));
-        $manager->persist($committee5->approved('2017-01-03 15:19:54'));
+        $manager->persist($committee1->approved('2017-01-13 15:18:22'));
+        $manager->persist($committee4->approved('2017-01-20 23:18:33'));
+        $manager->persist($committee5->approved('2017-01-19 14:56:19'));
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
