@@ -253,6 +253,10 @@
     height: 370px;
     background-repeat: no-repeat;
     background-size: cover;
+
+    .content {
+        max-width: 90%;
+    }
 }
 
 .proteger {
