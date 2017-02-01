@@ -77,6 +77,10 @@ $text--size-extra-large: 48px;
         font-size: $text--size-medium;
     }
 
+    @media (max-width: $mobile) {
+        font-size: $text--size-medium--small;
+    }
+
     a {
         border: 0;
     }
