@@ -81,10 +81,10 @@
 
 .donate {
     &__text {
-        width: 250px;
+        max-width: 250px;
 
         @media (max-width: $mobile) {
-            width: 100%;
+            max-width: 100%;
         }
 
         h2 {
@@ -128,7 +128,7 @@
         background-position: center top;
 
         .donate__text {
-            width: 400px;
+            max-width: 400px;
         }
     }
 }
