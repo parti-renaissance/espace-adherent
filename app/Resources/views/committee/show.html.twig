@@ -11,17 +11,50 @@
         <div class="committee">
             <h2 id="committee-name">{{ committee.name }}</h2>
         </div>
+
         <div>
-            {% if can_follow(committee) %}
-                <a href="{{ path('app_committee_follow', { uuid: committee.uuid, slug: committee.slug }) }}">
+            {% if not is_granted('ROLE_ADHERENT') %}
+                <div class="committee-link committee-follow-disabled">
+                    Suivre ce comité
+                </div>
+                <a href="{{ path('app_membership_register') }}" id="committee-register-link">Adhérer à En Marche!</a>
+            {% elseif can_follow(committee) %}
+                <a href="{{ committee_path('app_committee_unfollow', committee) }}" class="committee-link committee-follow">
                     Suivre ce comité
                 </a>
             {% elseif can_unfollow(committee) %}
-                <a href="{{ path('app_committee_unfollow', { uuid: committee.uuid, slug: committee.slug }) }}">
+                <a href="{{ committee_path('app_committee_unfollow', committee) }}" class="committee-link committee-unfollow">
                     Quitter ce comité
                 </a>
             {% endif %}
         </div>
+    </section>
+
+    <section class="l__wrapper--medium">
+        {% if is_host %}
+            <ul id="committee-host-nav">
+                <li>
+                    Discussion
+                </li>
+                <li>
+                   <a href="{{ committee_path('app_commitee_list_members', committee) }}">
+                       Membres
+                   </a>
+                </li>
+                <li>
+                    <a href="{{ committee_path('app_committee_edit', committee) }}">
+                        Éditer le comité
+                    </a>
+                </li>
+            </ul>
+
+            <div id="comittee-host-menu">
+                {#
+                    TODO implement event message form
+                #}
+                <a href="#">Créer un événement</a>
+            </div>
+        {% endif %}
     </section>
 
     <section class="l__wrapper--medium">
@@ -32,16 +65,18 @@
         </div>
         <div class="committee-details">
             <h5>Administration</h5>
-            <p>
+            <ul class="committee-hosts">
                 {% for host in committee_hosts %}
-                    {{ host }}
-                    {% if is_host and app.user.equals(host) %}
-                        (vous)
-                    {% else %}
-                        <a href="mailto:{{ host.emailaddress }}">Contacter</a>
-                    {% endif %}
+                    <li class="committee-host">
+                        {{ host }}
+                        {% if is_host and app.user.equals(host) %}
+                            (vous)
+                        {% else %}
+                            <a href="mailto:{{ host.emailaddress }}">Contacter</a>
+                        {% endif %}
+                    </li>
                 {% endfor %}
-            </p>
+            </ul>
         </div>
         <div class="committee-details">
             <h5>Localisation</h5>
@@ -52,13 +87,19 @@
         <div class="committee-details">
             <h5>Partager</h5>
             {% if committee.facebookPageUrl %}
-                <a href="{{ committee.facebookPageUrl }}" target="_blank">Facebook</a>
+                <a href="{{ committee.facebookPageUrl }}" target="_blank" class="committee-facebook">
+                    Facebook
+                </a>
             {% endif %}
             {% if committee.googlePlusPageUrl %}
-                <a href="{{ committee.googlePlusPageUrl }}" target="_blank">Google +</a>
+                <a href="{{ committee.googlePlusPageUrl }}" target="_blank" class="committee-google_plus">
+                    Google +
+                </a>
             {% endif %}
             {% if committee.twitterNickname %}
-                <a href="https://twitter.com/{{ committee.twitterNickname }}" target="_blank">Twitter</a>
+                <a href="https://twitter.com/{{ committee.twitterNickname }}" target="_blank" class="committee-twitter">
+                    Twitter
+                </a>
             {% endif %}
         </div>
         <div class="committee-details">

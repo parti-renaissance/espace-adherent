@@ -185,7 +185,7 @@ class Adherent implements UserInterface, GeoPointInterface
 
     public function getFullName()
     {
-        return $this->firstName.' '.$this->getLastName();
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function getPhone()

@@ -63,6 +63,7 @@
 
         <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
             <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="router"/>
             <tag name="twig.extension"/>
         </service>
 
