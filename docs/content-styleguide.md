@@ -112,7 +112,7 @@ Les listes à flêches:
 ```
 
 ## Les appels à action
-La version classique:
+La version défault:
 
 ```
 <div class="action">
@@ -120,17 +120,21 @@ La version classique:
     <a href="[votre lien]">Je m'inscris</a>
 </div>
 ```
+<img src="assets/CTA-default.png" width="700">
 
-Vous avez aussi l'option de changer la couleur du bouton d'action.
-- Bouton fushia, ajoutez la classe `primary`
-- Bouton bleu, ajoutez la classe `blue`
-- Bouton vert, ajoutez la classe `green`
+Vous avez aussi l'option de changer la couleur du fond, de la typographie, et du bouton d'action.
+- bleu: ajoutez la classe `blue`
+- vert: ajoutez la classe `green`
+- jaune: ajoutez la classe `yellow`
+- rose: ajoutez la classe `pink`
+- noir: ajoutez la classe `black`
 
 Comme ceci:
 
 ```
-<div class="action">
-    <p>Participez à l'événement du 1er Janvier 2017.</p>
-    <a href="[votre lien]" class="blue">Je m'inscris</a>
+<div class="action yellow">
+    <p class"pink">Participez à l'événement du 1er Janvier 2017.</p>
+    <a href="[votre lien]" class="pink">Je m'inscris</a>
 </div>
 ```
+<img src="assets/CTA-custom.png" width="700">
