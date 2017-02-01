@@ -16,6 +16,15 @@ class CommitteeManagerTest extends SqliteWebTestCase
     /* @var CommitteeManager */
     private $manager;
 
+    public function testGetMembersCount()
+    {
+        $this->assertSame(4, $this->manager->getMembersCount($this->createCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID)));
+        $this->assertSame(0, $this->manager->getMembersCount($this->createCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertSame(0, $this->manager->getMembersCount($this->createCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+        $this->assertSame(1, $this->manager->getMembersCount($this->createCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID)));
+        $this->assertSame(1, $this->manager->getMembersCount($this->createCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
+    }
+
     public function testFindCommitteeHostMembersList()
     {
         // Approved committees

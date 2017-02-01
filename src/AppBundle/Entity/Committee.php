@@ -166,7 +166,7 @@ class Committee implements GeoPointInterface
         );
     }
 
-    public static function createUuid(string $name)
+    public static function createUuid(string $name): UuidInterface
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
     }
@@ -186,32 +186,32 @@ class Committee implements GeoPointInterface
         return $this->description;
     }
 
-    public function getFacebookPageUrl()
+    public function getFacebookPageUrl(): ?string
     {
         return $this->facebookPageUrl;
     }
 
-    public function getTwitterNickname()
+    public function getTwitterNickname(): ?string
     {
         return $this->twitterNickname;
     }
 
-    public function getGooglePlusPageUrl()
+    public function getGooglePlusPageUrl(): ?string
     {
         return $this->googlePlusPageUrl;
     }
 
-    public function isWaitingForApproval()
+    public function isWaitingForApproval(): bool
     {
         return self::PENDING === $this->status && !$this->approvedAt;
     }
 
-    public function isApproved()
+    public function isApproved(): bool
     {
         return self::APPROVED === $this->status && $this->approvedAt;
     }
 
-    public function isRefused()
+    public function isRefused(): bool
     {
         return self::REFUSED === $this->status;
     }
@@ -276,7 +276,7 @@ class Committee implements GeoPointInterface
         return mb_strtolower($name);
     }
 
-    public function isCreatedBy(UuidInterface $uuid)
+    public function isCreatedBy(UuidInterface $uuid): bool
     {
         return $this->createdBy->equals($uuid);
     }
@@ -286,7 +286,7 @@ class Committee implements GeoPointInterface
      *
      * @return \DateTimeImmutable|null
      */
-    public function getApprovedAt()
+    public function getApprovedAt(): ?\DateTimeImmutable
     {
         if ($this->approvedAt instanceof \DateTime) {
             $this->approvedAt = new \DateTimeImmutable(
