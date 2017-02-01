@@ -1,5 +1,11 @@
 // Layout
 
+@mixin wrapper--slim {
+    width: 90%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
 .l {
     &__wrapper {
         width: 90%;
@@ -20,9 +26,7 @@
     }
 
     &__wrapper--slim {
-        width: 90%;
-        max-width: 700px;
-        margin: 0 auto;
+        @include wrapper--slim;
     }
 
     &__wrapper-560 {
