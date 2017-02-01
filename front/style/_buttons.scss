@@ -15,6 +15,10 @@
         border-color: black;
         color: white;
     }
+
+    @media(max-width: $mobile) {
+        font-size: $text--size-smallest;
+    }
 }
 
 @mixin btn--primary {
