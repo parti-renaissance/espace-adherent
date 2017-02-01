@@ -22,8 +22,8 @@
                     {% set currentRoute = app.request.attributes.get('_route') %}
                     {% for route, title in {
                         'page_le_mouvement': 'Qui sommes-nous?',
-                        'page_le_mouvement_les_comites': 'Nos actions',
                         'page_le_mouvement_notre_organisation': 'Notre organisation',
+                        'page_le_mouvement_les_comites': 'En marche sur le terrain',
                         'page_le_mouvement_devenez_benevole': 'Devenez bénévole',
                     } %}
                         <li class="{{ route == currentRoute ? 'active' }}">
