@@ -3,6 +3,7 @@
 namespace AppBundle\Committee\Event;
 
 use AppBundle\Committee\CommitteeEvents;
+use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,6 +28,7 @@ class CommitteeEventCommandHandler
         $command->setCommitteeEvent($event = $this->factory->createFromCommitteeEventCommand($command));
 
         $this->manager->persist($event);
+        $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
         $this->manager->flush();
 
         $this->dispatcher->dispatch(CommitteeEvents::EVENT_CREATED, new CommitteeEventCreatedEvent(

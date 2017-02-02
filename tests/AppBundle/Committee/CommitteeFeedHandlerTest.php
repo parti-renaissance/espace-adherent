@@ -5,7 +5,10 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Committee\CommitteeFeedHandler;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CommitteeFeedMessage;
+use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CommitteeFeedItemRepository;
+use AppBundle\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
@@ -13,29 +16,38 @@ class CommitteeFeedHandlerTest extends WebTestCase
 {
     use TestHelperTrait;
 
-    private $committeeFeedMessageRepository;
+    /* @var CommitteeFeedHandler */
+    private $handler;
+
+    /* @var CommitteeFeedItemRepository */
+    private $committeeFeedItemRepository;
+
+    /* @var AdherentRepository */
+    private $adherentRepository;
+
+    /* @var CommitteeRepository */
+    private $committeeRepository;
 
     public function testCreateMessage()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_5_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $adherent = $this->adherentRepository->findByUuid(LoadAdherentData::ADHERENT_5_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
 
         $messageContent = 'Bienvenue !';
 
-        $committeeFeedHandler = new CommitteeFeedHandler($this->getManagerRegistry()->getManager());
         $committeeMessage = new CommitteeMessage();
         $committeeMessage->content = $messageContent;
 
-        $message = $committeeFeedHandler->createMessage($committeeMessage, $committee, $adherent);
+        $message = $this->handler->createMessage($committeeMessage, $committee, $adherent);
 
-        $this->assertInstanceOf(CommitteeFeedMessage::class, $message);
+        $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
 
-        $messageByAuthor = $this->committeeFeedMessageRepository->findOneByAuthor($adherent);
+        $messageByAuthor = $this->committeeFeedItemRepository->findOneByAuthor($adherent);
 
         $this->assertSame($message, $messageByAuthor);
 
-        $messageByCommittee = $this->committeeFeedMessageRepository->findOneByCommittee($committee);
+        $messageByCommittee = $this->committeeFeedItemRepository->findOneByCommittee($committee);
 
         $this->assertSame($message, $messageByCommittee);
     }
@@ -47,7 +59,10 @@ class CommitteeFeedHandlerTest extends WebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->committeeFeedMessageRepository = $this->getCommitteeFeedMessageRepository();
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->committeeRepository = $this->getCommitteeRepository();
+        $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
+        $this->handler = new CommitteeFeedHandler($this->getManagerRegistry()->getManager());
 
         parent::setUp();
     }
@@ -57,7 +72,10 @@ class CommitteeFeedHandlerTest extends WebTestCase
         $this->loadFixtures([]);
 
         $this->container = null;
-        $this->committeeFeedMessageRepository = null;
+        $this->handler = null;
+        $this->adherentRepository = null;
+        $this->committeeRepository = null;
+        $this->committeeFeedItemRepository = null;
 
         parent::tearDown();
     }

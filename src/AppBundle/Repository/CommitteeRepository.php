@@ -17,7 +17,7 @@ class CommitteeRepository extends EntityRepository
      *
      * @param string $name
      *
-     * @return mixed
+     * @return Committee|null
      */
     public function findOneByName(string $name): ?Committee
     {
@@ -27,7 +27,19 @@ class CommitteeRepository extends EntityRepository
     }
 
     /**
-     * Finds Committee instances by their unique uuid.
+     * Finds a Committee instance by its unique UUID.
+     *
+     * @param string $uuid
+     *
+     * @return Committee|null
+     */
+    public function findOneByUuid(string $uuid): ?Committee
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
+
+    /**
+     * Finds Committee instances by their unique UUIDs.
      *
      * @param string[] $uuids
      *
@@ -68,7 +80,7 @@ class CommitteeRepository extends EntityRepository
      *
      * @return Committee|null
      */
-    public function findMostRecentCommittee()
+    public function findMostRecentCommittee(): ?Committee
     {
         $query = $this
             ->createQueryBuilder('c')

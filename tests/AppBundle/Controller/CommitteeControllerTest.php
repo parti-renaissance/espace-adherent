@@ -4,11 +4,12 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
 use AppBundle\Repository\CommitteeEventRepository;
+use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,9 @@ class CommitteeControllerTest extends WebTestCase
 
     /* @var CommitteeEventRepository */
     private $committeeEventRepository;
+
+    /* @var CommitteeFeedItemRepository */
+    private $committeeFeedItemRepository;
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewCommitteeEvent()
     {
@@ -134,6 +138,11 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'gisele-berthoux@caramail.com'));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'luciole1989@spambox.fr'));
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'carl999@example.fr'));
+
+        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadAdherentData::COMMITTEE_1_UUID);
+        $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
+        $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
+        $this->assertSame("Débat sur l'écologie", (string) $eventItem->getEvent());
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
@@ -305,39 +314,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeMessageForm($crawler));
         $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
 
-        $adherent = $this->getAdherentRepository()->findByEmail('gisele-berthoux@caramail.com');
-        $message = $this->getCommitteeFeedMessageRepository()->findOneByAuthor($adherent);
-
-        $this->assertInstanceOf(CommitteeFeedMessage::class, $message);
+        $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadAdherentData::COMMITTEE_1_UUID);
+        $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->loadFixtures([
-            LoadAdherentData::class,
-        ]);
-
-        $this->container = $this->getContainer();
-        $this->client = static::createClient();
-        $this->container = $this->client->getContainer();
-        $this->emailRepository = $this->getMailjetEmailRepository();
-        $this->committeeEventRepository = $this->getCommitteeEventRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->loadFixtures([]);
-
-        $this->committeeEventRepository = null;
-        $this->emailRepository = null;
-        $this->container = null;
-        $this->container = null;
-        $this->client = null;
-
-        parent::tearDown();
     }
 
     private function seeRegisterLink(Crawler $crawler, $do = 1): bool
@@ -445,5 +424,35 @@ class CommitteeControllerTest extends WebTestCase
         } else {
             $this->assertCount(0, $crawler->filter($twitterLinkPattern));
         }
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->loadFixtures([
+            LoadAdherentData::class,
+        ]);
+
+        $this->container = $this->getContainer();
+        $this->client = static::createClient();
+        $this->container = $this->client->getContainer();
+        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->committeeEventRepository = $this->getCommitteeEventRepository();
+        $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
+    }
+
+    protected function tearDown()
+    {
+        $this->loadFixtures([]);
+
+        $this->committeeFeedItemRepository = null;
+        $this->committeeEventRepository = null;
+        $this->emailRepository = null;
+        $this->container = null;
+        $this->container = null;
+        $this->client = null;
+
+        parent::tearDown();
     }
 }
