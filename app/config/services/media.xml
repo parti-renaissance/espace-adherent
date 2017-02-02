@@ -6,13 +6,7 @@
 
         <!-- Glide cache -->
         <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false">
-            <argument type="service">
-                <service class="Predis\Client">
-                    <argument type="collection">
-                        <argument key="host">%env(REDIS_HOST)%</argument>
-                    </argument>
-                </service>
-            </argument>
+            <argument type="service" id="snc_redis.default" />
         </service>
 
         <!-- Glide -->

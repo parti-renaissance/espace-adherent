@@ -6,9 +6,6 @@ framework:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
         strict_requirements: true
     profiler: { only_exceptions: false }
-    cache:
-        app: cache.adapter.redis
-        default_redis_provider: "redis://%env(REDIS_HOST)%"
 
 web_profiler:
     toolbar: true
@@ -24,4 +21,3 @@ monolog:
         console:
             type:   console
             channels: [!event, !doctrine]
-

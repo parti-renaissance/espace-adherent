@@ -10,5 +10,13 @@
             <argument/>
         </service>
 
+        <service id="cache.redis_doctrine_provider" class="Symfony\Component\Cache\DoctrineProvider">
+            <argument type="service">
+                <service class="Symfony\Component\Cache\Adapter\RedisAdapter">
+                    <argument type="service" id="snc_redis.default" />
+                </service>
+            </argument>
+        </service>
+
     </services>
 </container>
