@@ -136,9 +136,21 @@
             }
         }
 
+        &--on-small-laptop {
+            @media (max-width: $tablet + 150px) {
+                display: none;
+            }
+        }
+
         &--on-tablet {
             @media (max-width: $tablet) {
                 display: none !important;
+            }
+        }
+
+        &--above-small-laptop {
+            @media (min-width: $tablet + 151px) {
+                display: none;
             }
         }
 
