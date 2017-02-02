@@ -26,9 +26,9 @@ class AssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('webpack_asset', [$this, 'webpackAsset']),
-            new \Twig_SimpleFunction('static_asset', [$this, 'transformedStaticAsset']),
-            new \Twig_SimpleFunction('dynamic_asset', [$this, 'transformedDynamicAsset']),
+            new \Twig_SimpleFunction('webpack_asset', [$this, 'webpackAsset'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('static_asset', [$this, 'transformedStaticAsset'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('dynamic_asset', [$this, 'transformedDynamicAsset'], ['is_safe' => ['html']]),
         );
     }
 
@@ -53,6 +53,7 @@ class AssetExtension extends \Twig_Extension
 
     private function generateAssetUrl(string $path, array $parameters = [])
     {
+        $parameters['fm'] = 'jpg';
         $parameters['s'] = SignatureFactory::create($this->secret)->generateSignature($path, $parameters);
         $parameters['path'] = $path;
 
