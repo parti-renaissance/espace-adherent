@@ -114,6 +114,11 @@ class CommitteeEvent implements GeoPointInterface
         $this->createdAt = new \DateTime($createdAt ?: 'now');
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
     private static function canonicalize(string $name)
     {
         return mb_strtolower($name);
