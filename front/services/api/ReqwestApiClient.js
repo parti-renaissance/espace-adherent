@@ -17,4 +17,20 @@ export default class ReqwestApiClient {
             callback(null);
         });
     }
+
+    getCommitteeTimelineFeed(committeeUuid, committeeSlug, offset, callback) {
+        let request = this._reqwest({
+            url: '/comites/'+committeeUuid+'/'+committeeSlug+'/timeline?offset='+offset,
+            type: 'html'
+        });
+
+        request.then((response) => {
+            callback(response);
+        });
+
+        request.fail(() => {
+            callback(null);
+        });
+    }
+    
 }

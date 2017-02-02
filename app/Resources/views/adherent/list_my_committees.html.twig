@@ -1,0 +1,10 @@
+{% for committee in committees %}
+    <li>
+        <a href="{{ committee_path('app_committee_show', committee) }}">
+            {{- committee.name -}}
+        </a>
+    </li>
+{% endfor %}
+{% if committees|length > 0 %}
+    <li class="login__separator"></li>
+{% endif %}

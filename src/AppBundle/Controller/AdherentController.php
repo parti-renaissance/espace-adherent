@@ -148,4 +148,13 @@ class AdherentController extends Controller
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
+
+    public function listMyCommitteesAction(): Response
+    {
+        $manager = $this->get('app.committee_manager');
+
+        return $this->render('adherent/list_my_committees.html.twig', [
+            'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
 }

@@ -165,10 +165,7 @@
                     {% if user_is_adherent %}
                         {# This list must be designed #}
                         <ul>
-                            <li><a href="#">Comité A</a></li>
-                            <li><a href="#">Comité B</a></li>
-                            <li><a href="#">Comité C</a></li>
-                            <li class="login__separator"></li>
+                            {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
                             <li><a href="{{ path('events_index') }}">Tous les événements</a></li>
                             <li><a href="#">Tous les comités</a></li>
                             <li><a href="#">La carte En Marche !</a></li>

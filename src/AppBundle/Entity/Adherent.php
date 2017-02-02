@@ -407,6 +407,8 @@ class Adherent implements UserInterface, GeoPointInterface
 
     private function joinCommittee(Committee $committee, string $privilege): CommitteeMembership
     {
+        $committee->incrementMembersCount();
+
         return CommitteeMembership::createForAdherent($this, $committee, $privilege);
     }
 

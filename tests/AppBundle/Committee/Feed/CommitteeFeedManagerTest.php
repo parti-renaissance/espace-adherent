@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\AppBundle\Committee\Feed;
 
-use AppBundle\Committee\CommitteeFeedHandler;
+use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeFeedItem;
@@ -12,12 +12,12 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
-class CommitteeFeedHandlerTest extends SqliteWebTestCase
+class CommitteeFeedManagerTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 
-    /* @var CommitteeFeedHandler */
-    private $handler;
+    /* @var CommitteeFeedManager */
+    private $manager;
 
     /* @var CommitteeRepository */
     private $committeeRepository;
@@ -39,10 +39,7 @@ class CommitteeFeedHandlerTest extends SqliteWebTestCase
 
         $messageContent = 'Bienvenue !';
 
-        $committeeMessage = new CommitteeMessage();
-        $committeeMessage->content = $messageContent;
-
-        $message = $this->handler->createMessage($committeeMessage, $committee, $author);
+        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, $messageContent));
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
@@ -57,7 +54,7 @@ class CommitteeFeedHandlerTest extends SqliteWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->handler = $this->get('app.committee.committee_feed_handler');
+        $this->manager = $this->get('app.committee.feed_manager');
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
         $this->mailjetEmailRepository = $this->getMailjetEmailRepository();
@@ -70,7 +67,7 @@ class CommitteeFeedHandlerTest extends SqliteWebTestCase
         $this->loadFixtures([]);
 
         $this->container = null;
-        $this->handler = null;
+        $this->manager = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
         $this->mailjetEmailRepository = null;

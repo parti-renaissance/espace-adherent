@@ -115,6 +115,13 @@ class Committee implements GeoPointInterface
      */
     private $createdBy;
 
+    /**
+     * The cached number of members (followers and hosts).
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     */
+    private $membersCounts;
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -124,7 +131,8 @@ class Committee implements GeoPointInterface
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
+        int $membersCount = 0
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTime($approvedAt);
@@ -141,6 +149,7 @@ class Committee implements GeoPointInterface
         $this->description = $description;
         $this->postAddress = $address;
         $this->status = $status;
+        $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
     }
@@ -221,6 +230,21 @@ class Committee implements GeoPointInterface
     public function isRefused(): bool
     {
         return self::REFUSED === $this->status;
+    }
+
+    public function getMembersCount(): int
+    {
+        return $this->membersCounts;
+    }
+
+    public function incrementMembersCount(int $increment = 1)
+    {
+        $this->membersCounts += $increment;
+    }
+
+    public function decrementMembersCount(int $increment = 1)
+    {
+        $this->membersCounts -= $increment;
     }
 
     /**

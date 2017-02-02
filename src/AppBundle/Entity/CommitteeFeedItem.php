@@ -98,12 +98,42 @@ class CommitteeFeedItem
 
     public function getContent(): ?string
     {
+        if ($this->event instanceof CommitteeEvent) {
+            return $this->event->getDescription();
+        }
+
         return $this->content;
     }
 
     public function getEvent(): ?CommitteeEvent
     {
         return $this->event;
+    }
+
+    public function getAuthor(): Adherent
+    {
+        return $this->author;
+    }
+
+    public function getType(): string
+    {
+        return $this->itemType;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public static function getItemTypes(bool $includeMessages): array
+    {
+        $types[] = self::EVENT;
+
+        if ($includeMessages) {
+            $types[] = self::MESSAGE;
+        }
+
+        return $types;
     }
 
     public function getAuthorFirstName(): ?string

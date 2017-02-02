@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Event\CommitteeEventCommand;
+use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Committee;
 use AppBundle\Form\CommitteeEventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
@@ -25,15 +26,17 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
-    public function showAction(Committee $committee, Request $request): Response
+    public function showAction(Request $request, Committee $committee): Response
     {
         $form = null;
         if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
-            $form = $this->createForm(CommitteeFeedMessageType::class)
-                ->add('publish', SubmitType::class, ['label' => 'Publier']);
+            $message = new CommitteeMessage($this->getUser(), $committee);
+            $form = $this->createForm(CommitteeFeedMessageType::class, $message);
+            $form->add('publish', SubmitType::class, ['label' => 'Publier']);
+            $form->handleRequest($request);
 
-            if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->get('app.committee.committee_feed_handler')->createMessage($form->getData(), $committee, $this->getUser());
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->get('app.committee.feed_manager')->createMessage($message);
                 $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
 
                 return $this->redirectToRoute('app_committee_show', [
@@ -49,7 +52,27 @@ class CommitteeController extends Controller
             'committee' => $committee,
             'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
+            'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
             'form' => $form ? $form->createView() : null,
+        ]);
+    }
+
+    /**
+     * @Route("/timeline", name="app_committee_timeline")
+     * @Method("GET")
+     */
+    public function timelineAction(Request $request, Committee $committee): Response
+    {
+        $timeline = $this->get('app.committee_manager')->getTimeline(
+            $committee,
+            $this->getParameter('timeline_max_messages'),
+            $request->query->getInt('offset', 0)
+        );
+
+        return $this->render('committee/timeline/feed.html.twig', [
+            'committee' => $committee,
+            'committee_timeline' => $timeline,
         ]);
     }
 
