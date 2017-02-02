@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="app.asset.google_maps_static_provider" class="AppBundle\Asset\GoogleMapsStaticProvider">
+            <argument type="service" id="csa_guzzle.client.google_maps_static_api"/>
+            <argument type="service" id="cache.app"/>
+            <argument type="service" id="monolog.logger"/>
+            <argument>%env(GMAPS_API_KEY)%</argument>
+        </service>
+
+    </services>
+</container>

@@ -5,6 +5,7 @@ imports:
     - { resource: assets_version.yml }
     - { resource: services/address.xml }
     - { resource: services/admin.xml }
+    - { resource: services/asset.xml }
     - { resource: services/cache.xml }
     - { resource: services/committee.xml }
     - { resource: services/content.xml }
@@ -23,10 +24,11 @@ imports:
 
 parameters:
     locale: fr
-    pattern_uuid: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
-    pattern_sha1: '[0-9A-Fa-f]{40}'
-    sender_email: 'contact@en-marche.fr'
-    sender_name:  'En Marche !'
+    pattern_uuid:       '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
+    pattern_sha1:       '[0-9A-Fa-f]{40}'
+    pattern_coordinate: '-?\d+(\.\d{1,6})?'
+    sender_email:       'contact@en-marche.fr'
+    sender_name:        'En Marche !'
 
 framework:
     translator:      { fallbacks: ["%locale%"] }
@@ -130,6 +132,11 @@ csa_guzzle:
         google_charts_api:
             config:
                 base_uri: 'https://chart.googleapis.com'
+                timeout: 2.0
+
+        google_maps_static_api:
+            config:
+                base_uri: 'https://maps.googleapis.com'
                 timeout: 2.0
 
 scheb_two_factor:

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @method assertSame($expected, $actual)
+ * @method assertSame($expected, $actual, $message = '')
  */
 trait ControllerTestTrait
 {
@@ -25,9 +25,9 @@ trait ControllerTestTrait
      */
     private $manager;
 
-    public function assertResponseStatusCode(int $statusCode, Response $response)
+    public function assertResponseStatusCode(int $statusCode, Response $response, string $message = '')
     {
-        $this->assertSame($statusCode, $response->getStatusCode());
+        $this->assertSame($statusCode, $response->getStatusCode(), $message);
     }
 
     public function assertClientIsRedirectedTo(string $path, Client $client, $withSchemes = false)
