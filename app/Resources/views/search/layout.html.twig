@@ -8,8 +8,8 @@
 
 {% block content %}
     <header class="l__wrapper space--60-0">
-      <h1 class="text--large">Comités et événements</h1>
-      <h2><small>Vous pouvez participer aux événements même si vous n'êtes pas adhérent.</small></h2>
+        <h1 class="text--large">Comités et événements</h1>
+        <h2><small>Vous pouvez participer aux événements même si vous n'êtes pas adhérent.</small></h2>
     </header>
 
     <div class="l__wrapper">
@@ -18,21 +18,18 @@
             dans un rayon de
 
             {# this widget will be embedded in the ribbon text #}
-            <select name="r">
-              <option value="5">5 Km</option>
-              <option value="10">10 Km</option>
-              <option value="25">25 Km</option>
-              <option value="50" selected="selected">50 Km</option>
-              <option value="100">100 Km</option>
-              <option value="150">150 Km</option>
+            <select name="{{ constant('PARAMETER_RADIUS', search) }}">
+                {% for option in constant('RADII', search) %}
+                    <option value="{{ option }}" {% if search.radius == option %}selected="selected"{% endif %}>{{ option }} Km</option>
+                {% endfor %}
             </select>
 
             autour de
             {# this widget will be embedded in the ribbon text #}
             <input name="c" value="{{ app.request.query.get('c') ? app.request.query.get('c') : 'Paris' }}" placeholder="Ville ou code postal">
 
-            <label><input type="radio" name="t" value="committees" {% if app.request.query.get('t') != 'events' %}checked="checked"{% endif %}> Comités</label>
-            <label><input type="radio" name="t" value="events" {% if app.request.query.get('t') == 'events' %}checked="checked"{% endif %}> Evénements</label>
+            <label><input type="radio" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ constant('TYPE_COMMITTEES', search) }}" {% if search.type == constant('TYPE_COMMITTEES', search) %}checked="checked"{% endif %}> Comités</label>
+            <label><input type="radio" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ constant('TYPE_EVENTS', search) }}" {% if search.type == constant('TYPE_EVENTS', search) %}checked="checked"{% endif %}> Evénements</label>
 
             {# this button will be removed and handled by JS #}
             <button>Search</button>

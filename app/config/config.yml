@@ -18,6 +18,7 @@ imports:
     - { resource: services/media.xml }
     - { resource: services/membership.xml }
     - { resource: services/recaptcha.xml }
+    - { resource: services/search.xml }
     - { resource: services/security.xml }
     - { resource: services/storage.xml }
     - { resource: services/twig.xml }

@@ -13,6 +13,7 @@ class SearchControllerTest extends WebTestCase
     public function testIndex()
     {
         $this->client->request(Request::METHOD_GET, '/search');
+
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
