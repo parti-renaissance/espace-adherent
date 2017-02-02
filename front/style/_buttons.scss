@@ -90,6 +90,13 @@
         font-size: $text--size-medium;
     }
 
+    &--large-and-medium {
+        padding: 26px 89px;
+        @include text--medium-small;
+        letter-spacing: 1.9px;
+        font-family: "Gillsans";
+    }
+
     &--large {
         padding: 20px 25px;
         font-size: $text--size-large;
