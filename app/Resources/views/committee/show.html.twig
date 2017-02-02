@@ -90,21 +90,11 @@
         </div>
         <div class="committee-details">
             <h5>Partager</h5>
-            {% if committee.facebookPageUrl %}
-                <a href="{{ committee.facebookPageUrl }}" target="_blank" class="committee-facebook">
-                    Facebook
+            {% for key, link in committee.socialNetworksLinks %}
+                <a href="{{ link.url }}" target="_blank" class="committee-{{ key }}">
+                    {{- link.label -}}
                 </a>
-            {% endif %}
-            {% if committee.googlePlusPageUrl %}
-                <a href="{{ committee.googlePlusPageUrl }}" target="_blank" class="committee-google_plus">
-                    Google +
-                </a>
-            {% endif %}
-            {% if committee.twitterNickname %}
-                <a href="https://twitter.com/{{ committee.twitterNickname }}" target="_blank" class="committee-twitter">
-                    Twitter
-                </a>
-            {% endif %}
+            {% endfor %}
         </div>
         <div class="committee-details">
             <a href="#">Signaler ce comité local</a>

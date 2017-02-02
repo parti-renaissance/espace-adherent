@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -298,5 +299,29 @@ class Committee implements GeoPointInterface
     public function updateSlug(string $slug)
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * Returns the list of social networks links.
+     *
+     * @return Link[]
+     */
+    public function getSocialNetworksLinks(): array
+    {
+        $links = [];
+
+        if ($this->facebookPageUrl) {
+            $links['facebook'] = new Link($this->facebookPageUrl, 'Facebook');
+        }
+
+        if ($this->googlePlusPageUrl) {
+            $links['google_plus'] = new Link($this->googlePlusPageUrl, 'Google +');
+        }
+
+        if ($this->twitterNickname) {
+            $links['twitter'] = new Link(sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
+        }
+
+        return $links;
     }
 }

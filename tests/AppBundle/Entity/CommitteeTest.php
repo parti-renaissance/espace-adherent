@@ -23,6 +23,7 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('69003-69383', $committee->getCity());
         $this->assertSame('69383', $committee->getInseeCode());
         $this->assertSame('50 Rue de la Villette', $committee->getAddress());
+        $this->assertEmpty($committee->getSocialNetworksLinks());
         $this->assertNull($committee->getFacebookPageUrl());
         $this->assertNull($committee->getTwitterNickname());
         $this->assertNull($committee->getGooglePlusPageUrl());
@@ -60,6 +61,7 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
             'https://googleplus.com/en-marche'
         );
 
+        $this->assertCount(3, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon', $committee->getTwitterNickname());
         $this->assertSame('https://googleplus.com/en-marche', $committee->getGooglePlusPageUrl());
@@ -68,6 +70,7 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
         $committee->setTwitterNickname('EnMarcheLyon69');
         $committee->setGooglePlusPageUrl('https://googleplus.com/en-marche-avant');
 
+        $this->assertCount(3, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche-avant', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon69', $committee->getTwitterNickname());
         $this->assertSame('https://googleplus.com/en-marche-avant', $committee->getGooglePlusPageUrl());
