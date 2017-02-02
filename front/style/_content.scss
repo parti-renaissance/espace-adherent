@@ -99,6 +99,10 @@
         @include wrapper--slim;
     }
 
+    .no-inner {
+        width: 100%;
+    }
+
     h1, h2, h3 {
         @include text--medium-large;
         font-family: 'Gillsans';
@@ -502,7 +506,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-color: $gray--lighter;
+            background-color: $gray;
         }
 
         .share {
@@ -527,31 +531,35 @@
         box-sizing: border-box;
     }
 
-    @media(max-width: $mobile) {
-        flex-direction: column;
-
+    @media(max-width: $tablet) {
         li {
-            flex-direction: row;
+            width: 49%;
+
+            .image {
+                height: 240px;
+            }
+        }
+    }
+
+    @media(max-width: $mobile) {
+        li {
+            .image {
+                height: 180px;
+            }
+        }
+    }
+
+    @media(max-width: $mobile - 200px) {
+        li {
             width: 100%;
 
             .image {
-                width: 160px;
-                height: 130px;
+                height: 240px;
             }
         }
-
-        &__meta {
-            height: auto;
-        }
     }
+}
 
-    @media(max-width: $mobile - 300px) {
-        .image {
-            display: none;
-        }
-
-        &__meta {
-            height: 125px;
-        }
-    }
+.content .referents {
+    width: 100%;
 }
