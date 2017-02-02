@@ -179,6 +179,8 @@
         justify-content: space-between;
         padding: 25px;
         background: $pink;
+        margin-top: 20px;
+        margin-bottom: 20px;
 
         &.blue {
             background: $blue;
@@ -352,7 +354,7 @@
             }
         }
 
-        &.blockquote--short blockquote {
+        .blockquote--short blockquote {
             @include text--large;
             @include text--bold;
             line-height: 42px; /* Overwrite text--large */
@@ -380,10 +382,10 @@
             }
         }
 
-        &.blockquote--long {
+        .blockquote--long {
             background: $blue--light;
             border-left: 5px solid $blue;
-            margin: 1em 40px;
+            margin: 0 40px;
             padding: 30px;
 
             blockquote {
