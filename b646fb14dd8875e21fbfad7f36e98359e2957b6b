@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by romain-pierre at 2017-01-30T13:42:13Z
+
+Unfortunately I can not run the test with SQLite.
+
+---------------------------------------------------------------------------
+
+by tgalopin at 2017-01-30T13:44:54Z
+
+I can configure the tests to be ran on MySQL tonight.
