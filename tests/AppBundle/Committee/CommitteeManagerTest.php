@@ -132,7 +132,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertCount(3, $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent));
 
         foreach ($memberships as $i => $membership) {
-            /** @var CommitteeMembership $membership */
+            /* @var CommitteeMembership $membership */
             $this->assertSame($committees[$i], $membership->getCommitteeUuid()->toString());
         }
     }
