@@ -10,7 +10,7 @@
 
 {% block content %}
     <main>
-        <section class="content emmanuel-macron">
+        <section class="content emmanuel-macron articles">
             <header class="filtered-image" style="background-image: url('{{ static_asset('emmanuel-macron.jpg') }}');">
                 <div class="l__wrapper">
                     <h1 class="text--center text--larger text--italic">
@@ -46,7 +46,7 @@
                 </div>
             </header>
 
-            <article class="l__wrapper--slim">
+            <article>
                 {% block emmanuel_macron_content %}{% endblock %}
             </article>
 
