@@ -28,12 +28,6 @@
 <main>
     <section class="content">
         <header class="space--60-0 l__wrapper--slim">
-            <a href="{{ path('page_emmanuel_macron_programme') }}" class="icon--with-text b__nudge--bottom-small">
-                <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <polygon id="caret-left" stroke="none" fill="#000000" fill-rule="nonzero" points="8.46391544 1.3808921 7.81608456 0.619107904 -0.771841426 7.92238841 7.81611398 15.2245509 8.46388602 14.4627167 0.771841426 7.92232879"></polygon>
-                </svg>
-                Retour
-            </a>
             <h1 class="text--large b__nudge--bottom-small">
                 {{ proposal.title }}
             </h1>
@@ -84,6 +78,13 @@
                 <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
             </li>
         </ul>
+
+        <a href="{{ path('page_emmanuel_macron_programme') }}" class="icon--with-text b__nudge--bottom-60 l__wrapper--slim text--body">
+            <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <polygon id="caret-left" stroke="none" fill="#000000" fill-rule="nonzero" points="8.46391544 1.3808921 7.81608456 0.619107904 -0.771841426 7.92238841 7.81611398 15.2245509 8.46388602 14.4627167 0.771841426 7.92232879"></polygon>
+            </svg>
+            Retour aux propositions
+        </a>
 
     </section>
 

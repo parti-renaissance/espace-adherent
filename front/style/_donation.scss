@@ -127,6 +127,30 @@
             margin-top: 15px;
             width: 100%;
         }
+
+        .amount-chooser {
+            &__button {
+                background: white;
+                color: black;
+
+                &:hover {
+                    background: $gray--light;
+                }
+
+                &--selected {
+                    background: $pink;
+                    color: white;
+
+                    &:hover {
+                        background: $pink-hover;
+                    }
+                }
+            }
+
+            &__other {
+                background: white;
+            }
+        }
     }
 
     &--home {
