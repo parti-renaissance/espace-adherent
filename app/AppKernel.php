@@ -22,7 +22,6 @@ class AppKernel extends Kernel
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
-            new Snc\RedisBundle\SncRedisBundle(),
 
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
