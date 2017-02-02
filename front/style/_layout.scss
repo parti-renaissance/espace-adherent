@@ -197,6 +197,10 @@
 .b {
     &__nudge {
 
+        &--top-50 {
+            margin-top: 50px;
+        }
+
         &--top {
             margin-top: 20px;
         }
