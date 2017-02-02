@@ -8,6 +8,7 @@ use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
 use AppBundle\Repository\CommitteeEventRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeFeedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -182,6 +183,7 @@ class CommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeRegisterLink($crawler), 'The guest should see the "register link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
@@ -193,6 +195,7 @@ class CommitteeControllerTest extends WebTestCase
             $crawler,
             $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID)
         );
+        $this->assertFalse($this->seeMessageForm($crawler));
     }
 
     public function testShowCommitteeForAdherent()
@@ -203,6 +206,7 @@ class CommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
@@ -210,6 +214,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeHosts($crawler, 2), 'The adherent should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The adherent should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The adherent should not see the host navigation');
+        $this->assertFalse($this->seeMessageForm($crawler));
     }
 
     public function testShowCommitteeForFollower()
@@ -220,6 +225,7 @@ class CommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The follower should not see the "register link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The follower should not see the "follow link"');
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The follower should see the "unfollow link"');
@@ -227,6 +233,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeHosts($crawler, 2), 'The follower should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The follower should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
+        $this->assertFalse($this->seeMessageForm($crawler));
     }
 
     public function testShowCommitteeForHost()
@@ -237,6 +244,7 @@ class CommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The host should not see the "follow link"');
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The host should see the "unfollow link" because there is another host');
@@ -245,6 +253,54 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
         $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
+        $this->assertTrue($this->seeMessageForm($crawler));
+    }
+
+    public function testHostPostCommitteeMessage()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageForm($crawler));
+        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+
+        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
+            'committee_feed_message' => ['content' => 'yo'],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir au moins 10 caractères.']));
+        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+
+        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
+            'committee_feed_message' => ['content' => str_repeat('h', 1501)],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir moins de 1500 caractères.']));
+        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+
+        $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
+            'committee_feed_message' => ['content' => 'Bienvenue !'],
+        ]));
+
+        $this->assertClientIsRedirectedTo($committeeUrl, $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageForm($crawler));
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
+
+        $adherent = $this->getAdherentRepository()->findByEmail('gisele-berthoux@caramail.com');
+        $message = $this->getCommitteeFeedMessageRepository()->findOneByAuthor($adherent);
+
+        $this->assertInstanceOf(CommitteeFeedMessage::class, $message);
+        $this->assertSame('Bienvenue !', $message->getContent());
     }
 
     protected function setUp()
@@ -324,6 +380,34 @@ class CommitteeControllerTest extends WebTestCase
     private function seeHostNav(Crawler $crawler): bool
     {
         return 1 === count($crawler->filter('#committee-host-nav'));
+    }
+
+    private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool
+    {
+        if ($errorMessages) {
+            $errors = $crawler->filter('form[name="committee_feed_message"] .form__error');
+
+            $this->assertCount(count($errorMessages), $errors);
+
+            foreach ($errorMessages as $i => $errorMessage) {
+                $this->assertSame($errorMessage, trim($errors->eq($i)->text()));
+            }
+        } else {
+            $this->assertCount(0, $crawler->filter('form[name="committee_feed_message"] .form__errors'));
+        }
+
+        return 1 === count($crawler->filter('form[name="committee_feed_message"]'));
+    }
+
+    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
+    {
+        $flash = $crawler->filter('#notice-flashes');
+
+        if ($message) {
+            $this->assertSame($message, trim($flash->text()));
+        }
+
+        return 1 === count($flash);
     }
 
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)

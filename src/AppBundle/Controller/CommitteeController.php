@@ -2,13 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Event\CommitteeEventCommand;
 use AppBundle\Entity\Committee;
 use AppBundle\Form\CommitteeEventCommandType;
+use AppBundle\Form\CommitteeFeedMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,17 +22,34 @@ class CommitteeController extends Controller
 {
     /**
      * @Route(name="app_committee_show")
-     * @Method("GET")
+     * @Method("GET|POST")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
-    public function showAction(Committee $committee): Response
+    public function showAction(Committee $committee, Request $request): Response
     {
+        $form = null;
+        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
+            $form = $this->createForm(CommitteeFeedMessageType::class)
+                ->add('publish', SubmitType::class, ['label' => 'Publier']);
+
+            if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+                $this->get('app.committee.committee_feed_handler')->createMessage($form->getData(), $committee, $this->getUser());
+                $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
+
+                return $this->redirectToRoute('app_committee_show', [
+                    'uuid' => $committee->getUuid(),
+                    'slug' => $committee->getSlug(),
+                ]);
+            }
+        }
+
         $committeeManager = $this->get('app.committee_manager');
 
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->findCommitteeHostsList($committee),
+            'form' => $form ? $form->createView() : null,
         ]);
     }
 
@@ -39,16 +59,6 @@ class CommitteeController extends Controller
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
     public function editAction(Committee $committee): Response
-    {
-        return new Response('TO BE IMPLEMENTED');
-    }
-
-    /**
-     * @Route("/message/ajouter", name="app_committee_add_message")
-     * @Method("GET|POST")
-     * @Security("is_granted('HOST_COMMITTEE', committee)")
-     */
-    public function addMessageAction(Committee $committee): Response
     {
         return new Response('TO BE IMPLEMENTED');
     }
