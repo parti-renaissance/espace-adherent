@@ -142,6 +142,15 @@
                                 {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
                             </div>
 
+                            <div class="form__row">
+                                <input type="checkbox" required="required" id="donation_check" />
+                                <label for="donation_check">
+                                    Je certifie sur l'honneur être une personne physique et que le règlement de mon don
+                                    provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
+                                    ascendant ou descendant.
+                                </label>
+                            </div>
+
                             {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
 
                             <p class="text--summary b__nudge--top-50 text--left">
