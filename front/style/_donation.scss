@@ -166,10 +166,9 @@
 
 .donation {
     background-color: black;
-    background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/donation-bg.jpg');
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-size: 100%;
+    background-position: 0 0;
     height: 100vh;
     min-height: 100%;
     display: flex;
@@ -180,10 +179,6 @@
     @media (max-height: 1000px) {
         justify-content: flex-start;
         height: 100%;
-    }
-
-    @media (max-width: $mobile) {
-        background: white;
     }
 
     &__header {
@@ -203,8 +198,6 @@
         }
 
         @media (max-width: $mobile) {
-            background-image: linear-gradient(120deg ,rgba(0, 0, 0, 0.5), rgba(0, 0 , 0, 0.5)), url('/images/donation-bg.jpg');
-            padding: 30px;
             height: 210px;
             background-position: center top;
             background-size: cover;

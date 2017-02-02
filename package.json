@@ -36,6 +36,7 @@
     "react-dom": "^15.3.2",
     "reqwest": "^2.0.5",
     "sass-loader": "^4.0.0",
+    "stackblur-canvas": "^1.4.0",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.0",
     "webpack-md5-hash": "^0.0.5"

@@ -54,7 +54,10 @@
 
 {% block content %}
 
-    <div class="donation">
+    <div class="donation progressive-background"
+         data-sd="{{ static_asset('donation-bg.jpg', {'w': 300, 'q': 20}) }}"
+         data-hd="{{ static_asset('donation-bg.jpg', {'w': 2000, 'q': 70}) }}"
+         data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
         <div>
             <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
                 <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
