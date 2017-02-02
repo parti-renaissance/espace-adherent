@@ -138,7 +138,7 @@
 
         &--on-tablet {
             @media (max-width: $tablet) {
-                display: none;
+                display: none !important;
             }
         }
 
