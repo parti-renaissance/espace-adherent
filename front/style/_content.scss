@@ -145,8 +145,7 @@
         }
 
         &.arrows {
-            @include text--medium-small;
-            font-weight: 700;
+            @include text--medium-small--bold;
             padding-left: 15px;
 
             li {

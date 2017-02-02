@@ -27,6 +27,12 @@ $text--size-extra-large: 48px;
     line-height: 1.2em;
 }
 
+@mixin text--medium-small--bold {
+    font-size: $text--size-medium--small;
+    font-weight: 700;
+    line-height: 1.4em;
+}
+
 @mixin text--medium {
     font-size: $text--size-medium;
     line-height: 1.2em;
