@@ -2,17 +2,20 @@ imports:
     - { resource: config.yml }
     - { resource: services/sentry.xml }
 
-snc_redis:
-    doctrine:
-        metadata_cache:
-            client: default
-            entity_manager: default
-        result_cache:
-            client: default
-            entity_manager: default
-        query_cache:
-            client: default
-            entity_manager: default
+services:
+    app.doctrine_redis_cache:
+        class: Symfony\Component\Cache\DoctrineProvider
+        arguments:
+            - "@cache.app"
+
+doctrine:
+    orm:
+        metadata_cache_driver:
+            type: service
+            id: app.doctrine_redis_cache
+        query_cache_driver:
+            type: service
+            id: app.doctrine_redis_cache
 
 monolog:
     handlers:

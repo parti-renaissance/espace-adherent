@@ -8,7 +8,9 @@
             <argument type="service" id="geocoder"/>
         </service>
 
-        <service id="app.geocoder.cache_adapter" alias="cache.redis_doctrine_provider" />
+        <service id="app.geocoder.cache_adapter" class="Symfony\Component\Cache\DoctrineProvider">
+            <argument type="service" id="cache.app"/>
+        </service>
 
         <service id="app.geocoder.entity_address_geocoding_subscriber" class="AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
             <argument type="service" id="app.geocoder"/>
