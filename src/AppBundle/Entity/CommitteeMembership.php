@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(
  *       name="adherent_has_joined_committee",
- *       columns={"adherent_uuid", "committee_uuid"}
+ *       columns={"adherent_id", "committee_uuid"}
  *     )
  *   },
  *   indexes={
@@ -45,7 +45,6 @@ class CommitteeMembership
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="Adherent")
-     * @ORM\JoinColumn(name="adherent_uuid", fieldName="uuid")
      */
     private $adherent;
 
