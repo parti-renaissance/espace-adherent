@@ -69,6 +69,12 @@ test:           ## [test-php test-lintjs test-js] Run the PHP and the Javascript
 test: test-php test-lintjs test-js
 
 test-php:       ## Run the PHP tests
+	$(CONSOLE) --env=test_mysql doctrine:database:drop --force --if-exists
+	$(CONSOLE) --env=test_mysql doctrine:database:create --if-not-exists
+	$(CONSOLE) --env=test_mysql doctrine:schema:create
+	$(CONSOLE) --env=test_sqlite doctrine:database:drop --force --if-exists
+	$(CONSOLE) --env=test_sqlite doctrine:database:create --if-not-exists
+	$(CONSOLE) --env=test_sqlite doctrine:schema:create
 	$(APP) vendor/bin/phpunit
 
 test-lintjs:    ## Lint the Javascript to follow the convention

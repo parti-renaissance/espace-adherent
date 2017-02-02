@@ -6,7 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\Committee;
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
@@ -15,9 +15,9 @@ use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Membership\MembershipUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
-class MembershipControllerTest extends SqliteWebTestCase
+class MembershipControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -127,6 +127,16 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertNotNull($adherent->getLatitude());
         $this->assertNotNull($adherent->getLongitude());
 
+        $this->assertInstanceOf(
+            Adherent::class,
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+        );
+
+        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertNotNull($adherent->getLatitude());
+        $this->assertNotNull($adherent->getLongitude());
+
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findByEmail('paul@dupont.tld'));
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
@@ -214,24 +224,40 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
 
-    public function testPinInterestsWithoutNewAdherentId()
+    /**
+     * @dataProvider provideRegistrationOnBoardingStepUrl
+     */
+    public function testRegistrationOnBoardingWithoutNewAdherentId(string $stepUrl)
     {
-        $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+        $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testPinInterestsWithWrongNewAdherentId()
+    /**
+     * @dataProvider provideRegistrationOnBoardingStepUrl
+     */
+    public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
     {
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 'wrong id');
-        $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
+
+        $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function provideRegistrationOnBoardingStepUrl()
+    {
+        yield ['centre-interets'];
+
+        yield ['choisir-des-comites'];
     }
 
     public function testPinInterests()
     {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1);
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -288,24 +314,12 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
     }
 
-    public function testChooseNearbyCommitteeWithoutNewAdherentId()
-    {
-        $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
-    public function testChooseNearbyCommitteeWithWrongNewAdherentId()
-    {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 'wrong id');
-        $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
     public function testChooseNearbyCommittee()
     {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1);
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
+
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
@@ -314,8 +328,7 @@ class MembershipControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(3, $boxes = $crawler->filter($boxPattern));
 
-        /** @var Committee[] $committees */
-        $committees = $this->getCommitteeRepository()->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], 3);
+        $committees = $this->getCommitteeRepository()->findNearbyCommittees(3, $coordinates);
 
         foreach ($boxes as $i => $box) {
             $checkbox = $crawler->filter($boxPattern.' input[type="checkbox"][name="app_membership_choose_nearby_committee[committees][]"]');
@@ -327,12 +340,14 @@ class MembershipControllerTest extends SqliteWebTestCase
 
     public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
     {
-        /** @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertFalse($adherent->isEnabled());
 
-        $memberships = $this->getCommitteeMembershipRepository()->findMemberships((string) $adherent->getUuid());
+        $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
+
+        $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
 
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
@@ -341,11 +356,10 @@ class MembershipControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        /** @var Committee[] $committees */
-        $committees = $this->getCommitteeRepository()->findBy(['status' => Committee::APPROVED], ['id' => 'desc'], 3);
+        $committees = $this->getCommitteeRepository()->findNearbyCommittees(3, $coordinates);
         $this->assertCount(3, $committees, 'New adherent should have 3 committee proposals');
 
-        // We are 'checking' the first (0) and the last one
+        // We are 'checking' the first (0) and the last one (2)
         $this->client->submit($crawler->selectButton('app_membership_choose_nearby_committee[submit]')->form(), [
             'app_membership_choose_nearby_committee' => [
                 'committees' => [
@@ -355,17 +369,19 @@ class MembershipControllerTest extends SqliteWebTestCase
             ],
         ]);
 
-        $this->assertClientIsRedirectedTo('/', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
         // The following test could not be realized because of a bug on the homepage
+        // Issue EM-57 will resolve this blocking point by adding a 'success page'
+
+        //$this->assertClientIsRedirectedTo('/', $this->client);
+        //$crawler = $this->client->followRedirect();
+
         //$this->assertContains(
         //    'Vous venez de rejoindre En Marche, nous vous en remercions !',
         //    $crawler->filter('#notice-flashes')->text()
         //);
 
-        $memberships = $this->getCommitteeMembershipRepository()->findMemberships((string) $adherent->getUuid());
+        $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
+
         $this->assertCount(2, $memberships);
     }
 

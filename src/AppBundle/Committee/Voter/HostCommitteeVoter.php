@@ -23,6 +23,6 @@ class HostCommitteeVoter extends AbstractCommitteeVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, Committee $committee): bool
     {
-        return $this->repository->hostCommittee((string) $adherent->getUuid(), (string) $committee->getUuid());
+        return $this->repository->hostCommittee($adherent, (string) $committee->getUuid());
     }
 }

@@ -33,7 +33,7 @@ class FollowCommitteeVoter extends AbstractCommitteeVoter
         }
 
         if (CommitteePermissions::FOLLOW === $attribute) {
-            return !$this->repository->isMemberOf((string) $adherent->getUuid(), (string) $committee->getUuid());
+            return !$this->repository->isMemberOf($adherent, (string) $committee->getUuid());
         }
 
         return $this->voteOnUnfollowCommitteeAttribute($adherent, $committee);
@@ -45,7 +45,7 @@ class FollowCommitteeVoter extends AbstractCommitteeVoter
 
         // An adherent who isn't already following (or hosting) a committee
         // cannot unfollow (or leave) it.
-        if (!$membership = $this->repository->findMembership((string) $adherent->getUuid(), $committeeUuid)) {
+        if (!$membership = $this->repository->findMembership($adherent, $committeeUuid)) {
             return false;
         }
 

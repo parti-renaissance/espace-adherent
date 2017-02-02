@@ -2,59 +2,85 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Geocoder\Coordinates;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class CommitteeManager
 {
     const EXCLUDE_HOSTS = false;
     const INCLUDE_HOSTS = true;
 
-    private $adherentRepository;
-    private $membershipRepository;
+    private const COMMITTEE_PROPOSALS_COUNT = 3;
 
-    public function __construct(
-        AdherentRepository $adherentRepository,
-        CommitteeMembershipRepository $membershipRepository
-    ) {
-        $this->adherentRepository = $adherentRepository;
-        $this->membershipRepository = $membershipRepository;
+    private $registry;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
     }
 
     public function getMembersCount(Committee $committee): int
     {
-        return $this->membershipRepository->countMembers($committee->getUuid()->toString());
+        return $this->registry->getRepository(CommitteeMembership::class)->countMembers($committee->getUuid()->toString());
     }
 
-    public function findCommitteeHostsList(Committee $committee): AdherentCollection
+    public function getCommitteeHosts(Committee $committee): AdherentCollection
     {
-        $uuids = $this
-            ->membershipRepository
-            ->findHostMemberships((string) $committee->getUuid())
-            ->getAdherentUuids();
-
-        return $this->findAdherentsList($uuids);
+        return $this->registry
+            ->getRepository(CommitteeMembership::class)
+            ->findHostMembers($committee->getUuid()->toString());
     }
 
-    public function findCommitteeFollowersList(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
+    public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
-        $uuids = $this
-            ->membershipRepository
-            ->findFollowerMemberships((string) $committee->getUuid(), $withHosts)
-            ->getAdherentUuids();
-
-        return $this->findAdherentsList($uuids);
+        return $this->registry
+            ->getRepository(CommitteeMembership::class)
+            ->findFollowers($committee->getUuid()->toString(), $withHosts);
     }
 
-    public function findOptinCommitteeFollowersList(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
+    public function getOptinCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
-        return $this->findCommitteeFollowersList($committee, $withHosts)->getCommitteesNotificationsSubscribers();
+        return $this->getCommitteeFollowers($committee, $withHosts)->getCommitteesNotificationsSubscribers();
     }
 
-    private function findAdherentsList(array $uuids): AdherentCollection
+    public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT)
     {
-        return $this->adherentRepository->findList($uuids);
+        $data = [];
+        $committeeMembershipRepository = $this->registry->getRepository(CommitteeMembership::class);
+        $committees = $this->registry->getRepository(Committee::class)->findNearbyCommittees($limit, $coordinates);
+
+        foreach ($committees as $committee) {
+            $uuid = $committee->getUuid()->toString();
+
+            $data[$uuid] = [
+                'committee' => $committee,
+                'memberships_count' => $committeeMembershipRepository->countMembers($uuid),
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Adherent $adherent   The follower
+     * @param string[] $committees An array of committee uuids
+     */
+    public function followCommittees(Adherent $adherent, array $committees)
+    {
+        if (empty($committees)) {
+            return;
+        }
+
+        $manager = $this->registry->getManager();
+
+        foreach ($this->registry->getRepository(Committee::class)->findByUuid($committees) as $committee) {
+            $manager->persist($adherent->followCommittee($committee));
+        }
+
+        $manager->flush();
     }
 }

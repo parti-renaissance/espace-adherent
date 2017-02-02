@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
 {
-    const ADHERENT_UUID = '9ae87712-1bc0-4887-a00d-5c13780e5071';
     const COMMITTEE_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
 
     private $token;
@@ -29,14 +28,8 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->committeeMembershipRepository
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with(self::ADHERENT_UUID, self::COMMITTEE_UUID)
+            ->with($this->adherent, self::COMMITTEE_UUID)
             ->willReturn(true);
-
-        $this
-            ->adherent
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::ADHERENT_UUID));
 
         $this
             ->committee
@@ -53,14 +46,8 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->committeeMembershipRepository
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with(self::ADHERENT_UUID, self::COMMITTEE_UUID)
+            ->with($this->adherent, self::COMMITTEE_UUID)
             ->willReturn(false);
-
-        $this
-            ->adherent
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::ADHERENT_UUID));
 
         $this
             ->committee
@@ -74,7 +61,6 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()
     {
         $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
-        $this->adherent->expects($this->never())->method('getUuid');
         $this->committee->expects($this->never())->method('getUuid');
 
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($this->token, $this->committee, ['CREATE_FOOBAR']));

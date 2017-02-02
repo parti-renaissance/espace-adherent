@@ -225,16 +225,9 @@ class Committee implements GeoPointInterface
     /**
      * Marks this committee as approved.
      *
-     * This method also creates and returns the committee membership
-     * relationship for the adherent who created this committee. The
-     * origin adherent of this committee automatically becomes its
-     * very first host member.
-     *
-     * @param string $timestamp The approval date and time
-     *
-     * @return CommitteeMembership
+     * @param string $timestamp
      */
-    public function approved(string $timestamp = 'now'): CommitteeMembership
+    public function approved(string $timestamp = 'now')
     {
         if (self::APPROVED === $this->status) {
             throw new CommitteeAlreadyApprovedException($this->uuid);
@@ -242,8 +235,6 @@ class Committee implements GeoPointInterface
 
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTimeImmutable($timestamp);
-
-        return CommitteeMembership::createForHost($this->uuid, $this->createdBy, $timestamp);
     }
 
     public function setSocialNetworks(

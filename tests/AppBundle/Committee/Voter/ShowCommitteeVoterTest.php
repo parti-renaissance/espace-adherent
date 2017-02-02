@@ -25,7 +25,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testUnsupportedCommitteeType()
     {
-        $token = $this->createAuthenticatedToken($this->createAdherent(self::ADHERENT_2_UUID));
+        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID));
 
         $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -35,7 +35,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testUnsupportedAttribute()
     {
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 
@@ -60,7 +60,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testAnyAdherentIsGrantedToShowAnyApprovedCommittee()
     {
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
@@ -75,7 +75,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testCommitteeOwnerIsGrantedToShowHisUnapprovedCommittee()
     {
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 
@@ -87,7 +87,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testCommitteeForeignerIsDeniedToShowUnapprovedCommittee()
     {
-        $adherent = $this->createAdherent(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 

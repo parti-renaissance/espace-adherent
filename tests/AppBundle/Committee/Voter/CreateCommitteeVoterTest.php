@@ -3,19 +3,18 @@
 namespace Tests\AppBundle\Committee\Voter;
 
 use AppBundle\Committee\Voter\CreateCommitteeVoter;
-use AppBundle\Entity\Adherent;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
+class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 {
     const ADHERENT_UUID = '9ae87712-1bc0-4887-a00d-5c13780e5071';
 
+    private $adherent;
     private $committeeRepository;
     private $committeeMembershipRepository;
 
@@ -28,27 +27,17 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->committeeMembershipRepository
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with(self::ADHERENT_UUID)
+            ->with($this->adherent)
             ->willReturn(false);
 
         $this
             ->committeeRepository
             ->expects($this->once())
             ->method('hasWaitingForApprovalCommittees')
-            ->with(self::ADHERENT_UUID)
+            ->with($this->adherent->getUuid()->toString())
             ->willReturn(false);
 
-        $adherent = $this
-            ->getMockBuilder(Adherent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $adherent
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::ADHERENT_UUID));
-
-        $token = $this->createAuthenticationToken($adherent);
+        $token = $this->createAuthenticationToken($this->adherent);
 
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
@@ -59,7 +48,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->committeeMembershipRepository
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with(self::ADHERENT_UUID)
+            ->with($this->adherent)
             ->willReturn(true);
 
         $this
@@ -67,17 +56,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('hasWaitingForApprovalCommittees');
 
-        $adherent = $this
-            ->getMockBuilder(Adherent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $adherent
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::ADHERENT_UUID));
-
-        $token = $this->createAuthenticationToken($adherent);
+        $token = $this->createAuthenticationToken($this->adherent);
 
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
@@ -87,12 +66,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
         $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
 
-        $adherent = $this
-            ->getMockBuilder(Adherent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $token = $this->createAuthenticationToken($adherent);
+        $token = $this->createAuthenticationToken($this->adherent);
 
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, null, ['CREATE_FOOBAR']));
     }
@@ -126,6 +100,8 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
+        $this->adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_UUID);
+
         $this->committeeMembershipRepository = $this
             ->getMockBuilder(CommitteeMembershipRepository::class)
             ->disableOriginalConstructor()
@@ -146,6 +122,7 @@ class CreateCommitteeVoterTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
+        $this->adherent = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
         $this->voter = null;

@@ -28,6 +28,7 @@ class CommitteeCreationCommandHandler
 
     public function handle(CommitteeCreationCommand $command)
     {
+        $adherent = $command->getAdherent();
         $committee = $this->factory->createFromCommitteeCreationCommand($command);
 
         $command->setCommittee($committee);
@@ -35,7 +36,6 @@ class CommitteeCreationCommandHandler
         $this->manager->persist($committee);
         $this->manager->flush();
 
-        $adherent = $command->getAdherent();
         $this->dispatcher->dispatch(CommitteeEvents::CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());

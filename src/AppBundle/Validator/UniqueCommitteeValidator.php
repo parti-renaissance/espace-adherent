@@ -28,7 +28,7 @@ class UniqueCommitteeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, CommitteeCreationCommand::class);
         }
 
-        $committee = $this->repository->findByName($value->name);
+        $committee = $this->repository->findOneByName($value->name);
 
         if ($committee instanceof Committee) {
             $this
