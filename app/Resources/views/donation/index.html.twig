@@ -23,6 +23,24 @@
                 '{{ form.address.city.vars.id }}',
                 '{{ form.address.cityName.vars.id }}'
             );
+
+            var step1 = dom('#step1'),
+                step1Tab = dom('#step1-tab'),
+                step2 = dom('#step2'),
+                step2Tab = dom('#step2-tab'),
+                nextStep = dom('#next-step'),
+                nextStepButton = dom('#next-step-button');
+
+            hide(step2);
+            show(nextStep);
+
+            on(nextStepButton, 'click', function() {
+                hide(step1);
+                hide(nextStep);
+                show(step2);
+                removeClass(step1Tab, 'active');
+                addClass(step2Tab, 'active');
+            });
         });
     </script>
 {% endblock %}
@@ -41,77 +59,88 @@
         <section class="l__wrapper l__row space--60-0">
             <div class="donation__form">
                 <ul class="donation__form-steps">
-                    <li class="active">Coordonnées</li>
+                    <li id="step1-tab" class="active">Montant</li>
+                    <li id="step2-tab">Coordonnées</li>
                     <li>Paiement</li>
                     <li>Confirmation</li>
                 </ul>
-                <h2>Je soutiens Emmanuel Macron</h2>
-                <span class="fluo">Vous êtes une majorité à donner 50€</span>
 
                 {{ form_start(form, { attr: { class: 'form' } }) }}
-                {{ form_errors(form) }}
+                    {{ form_errors(form) }}
 
-                <p>
-                    Sélectionnez le montant de votre don :
-                </p>
+                    <div id="step1">
+                        <h2>Je soutiens Emmanuel Macron</h2>
+                        <span class="fluo">Vous êtes une majorité à donner 50€</span>
 
-                {{ form_errors(form.amount) }}
+                        <p>
+                            Sélectionnez le montant de votre don :
+                        </p>
 
-                {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
-
-                <div class="form__row form__row--stretch">
-                    {{ form_errors(form.gender) }}
-                    {{ form_widget(form.gender) }}
-                </div>
-
-                <div class="form__row">
-                    {{ form_errors(form.lastName) }}
-                    {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
-                </div>
-
-                <div class="form__row">
-                    {{ form_errors(form.firstName) }}
-                    {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
-                </div>
-
-                <div class="form__row">
-                    {{ form_errors(form.emailAddress) }}
-                    {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
-                </div>
-
-                {{ form_errors(form.address) }}
-
-                <div class="form__row">
-                    {{ form_errors(form.address.country) }}
-                    {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
-                </div>
-
-                <div class="form__row form__row--stretch">
-                    <div class="form--mid">
-                        {{ form_errors(form.address.postalCode) }}
-                        {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                        {{ form_errors(form.amount) }}
+                        {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
                     </div>
-                    <div class="form--mid">
-                        {{ form_errors(form.address.city) }}
-                        {{ form_widget(form.address.city) }}
-                        {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+
+                    <div id="next-step" style="display: none;">
+                        <button id="next-step-button" class="btn btn--large btn--primary" type="button">
+                            Continuer
+                        </button>
                     </div>
-                </div>
 
-                <div class="form__row">
-                    {{ form_errors(form.address.address) }}
-                    {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
-                </div>
+                    <div id="step2">
+                        <div class="form__row form__row--stretch">
+                            {{ form_errors(form.gender) }}
+                            {{ form_widget(form.gender) }}
+                        </div>
 
-                <div class="form__row form__row--stretch">
-                    {{ form_errors(form.phone) }}
-                    {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
-                    {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
-                </div>
+                        <div class="form__row">
+                            {{ form_errors(form.lastName) }}
+                            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+                        </div>
 
-                {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
+                        <div class="form__row">
+                            {{ form_errors(form.firstName) }}
+                            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+                        </div>
 
-                {{ form_rest(form) }}
+                        <div class="form__row">
+                            {{ form_errors(form.emailAddress) }}
+                            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
+                        </div>
+
+                        {{ form_errors(form.address) }}
+
+                        <div class="form__row">
+                            {{ form_errors(form.address.country) }}
+                            {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
+                        </div>
+
+                        <div class="form__row form__row--stretch">
+                            <div class="form--mid">
+                                {{ form_errors(form.address.postalCode) }}
+                                {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                            </div>
+                            <div class="form--mid">
+                                {{ form_errors(form.address.city) }}
+                                {{ form_widget(form.address.city) }}
+                                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                            </div>
+                        </div>
+
+                        <div class="form__row">
+                            {{ form_errors(form.address.address) }}
+                            {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+                        </div>
+
+                        <div class="form__row form__row--stretch">
+                            {{ form_errors(form.phone) }}
+                            {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+                            {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+                        </div>
+
+                        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large btn--primary' } }) }}
+                    </div>
+
+                    {{ form_rest(form) }}
                 {{ form_end(form) }}
             </div>
 
