@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Recherche {{ parent() }}
+{% endblock %}
+
+{% block banner '' %}
+
+{% block content %}
+    <header class="l__wrapper space--60-0">
+      <h1 class="text--large">Comités et événements</h1>
+      <h2><small>Vous pouvez participer aux événements même si vous n'êtes pas adhérent.</small></h2>
+    </header>
+
+    <div class="l__wrapper">
+        <form action="{{ path('search_index') }}" style="background-color: grey; padding: 20px">
+            <input name="q" placeholder="Recherche" value="{{ app.request.query.get('q') }}">
+            dans un rayon de
+
+            {# this widget will be embedded in the ribbon text #}
+            <select name="r">
+              <option value="5">5 Km</option>
+              <option value="10">10 Km</option>
+              <option value="25">25 Km</option>
+              <option value="50" selected="selected">50 Km</option>
+              <option value="100">100 Km</option>
+              <option value="150">150 Km</option>
+            </select>
+
+            autour de
+            {# this widget will be embedded in the ribbon text #}
+            <input name="c" value="{{ app.request.query.get('c') ? app.request.query.get('c') : 'Paris' }}" placeholder="Ville ou code postal">
+
+            <label><input type="radio" name="t" value="committees" {% if app.request.query.get('t') != 'events' %}checked="checked"{% endif %}> Comités</label>
+            <label><input type="radio" name="t" value="events" {% if app.request.query.get('t') == 'events' %}checked="checked"{% endif %}> Evénements</label>
+
+            {# this button will be removed and handled by JS #}
+            <button>Search</button>
+        </form>
+
+        <div>
+            {% block results '' %}
+        </div>
+
+    </div>
+{% endblock %}

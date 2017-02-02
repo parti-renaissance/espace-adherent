@@ -1,0 +1,8 @@
+{% extends 'search/layout.html.twig' %}
+
+{% block results %}
+    <a style="float: left; width: 200px; background-color: lightgrey; margin: 10px; display: block" href="#">
+        <h3>This is a committee name</h3>
+        <h5><small>{{ '1 participant|%count% participants'|transchoice(5) }} &bullet; Angoulème</small></h5>
+    </a>
+{% endblock %}
