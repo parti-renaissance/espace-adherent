@@ -280,6 +280,8 @@ class CommitteeControllerTest extends WebTestCase
 
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
 
+        $members = $this->getCommitteeMembershipRepository()->findFollowers(LoadAdherentData::COMMITTEE_1_UUID);
+
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -317,6 +319,8 @@ class CommitteeControllerTest extends WebTestCase
         $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
+
+        $this->assertCount($members->getCommitteesNotificationsSubscribers()->count(), $this->getMailjetEmailRepository()->findAll());
     }
 
     private function seeRegisterLink(Crawler $crawler, $do = 1): bool

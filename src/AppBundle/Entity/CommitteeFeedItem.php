@@ -105,4 +105,11 @@ class CommitteeFeedItem
     {
         return $this->event;
     }
+
+    public function getAuthorFirstName(): ?string
+    {
+        if ($this->author instanceof Adherent) {
+            return $this->author->getFirstName();
+        }
+    }
 }
