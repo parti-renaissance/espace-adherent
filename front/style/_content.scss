@@ -87,21 +87,18 @@
     }
 }
 
+.articles article {
+    > h1, > h2, > h3, > h4, > h5, > h6,
+    > p, > ul, > ol, > div, > blockquote,
+    > figure, > img, > iframe {
+        @include wrapper--slim;
+    }
+}
 
 .content article {
     font-family: 'Roboto', sans-serif;
     letter-spacing: 0.3px;
     line-height: 1.62;
-
-    > h1, > h2, > h3, > h4, > h5, > h6,
-    > p, > ul, > ol, > div,
-    > figure, > img, > iframe {
-        @include wrapper--slim;
-    }
-
-    .no-inner {
-        width: 100%;
-    }
 
     h1, h2, h3 {
         @include text--medium-large;
