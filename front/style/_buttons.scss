@@ -91,10 +91,12 @@
     }
 
     &--large-and-medium {
-        padding: 26px 89px;
+        padding: 26px 0;
         @include text--medium-small;
         letter-spacing: 1.9px;
         font-family: "Gillsans";
+        max-width: 300px;
+        width: 100%;
     }
 
     &--large {

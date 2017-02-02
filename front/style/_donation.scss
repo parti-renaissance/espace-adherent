@@ -170,7 +170,11 @@
             color: white;
 
             @media (max-width: $mobile) {
-                font-size: 24px;
+                font-size: $text--size-medium;
+            }
+
+            @media (max-width: $mobile - 200px) {
+                font-size: 20px;
             }
         }
 
@@ -183,6 +187,15 @@
             width: 100%;
             box-sizing: border-box;
             align-items: baseline;
+            padding: 30px 6%;
+
+            &--secure {
+                font-size: $text--size-smallest;
+            }
+        }
+
+        @media (max-width: $mobile - 200px) {
+            height: 130px;
         }
     }
 
@@ -207,6 +220,7 @@
         @media (max-width: $mobile) {
             width: 100%;
             margin: 0;
+            padding: 40px 6%;
         }
 
         form {
@@ -281,11 +295,20 @@
         display: flex;
         justify-content: space-between;
 
+        @media (max-width: $mobile) {
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
         li {
             @include text--summary;
             display: inline-block;
             opacity: 0.3;
             text-align: center;
+
+            @media (max-width: $mobile - 200px) {
+                font-size: $text--size-smallest;
+            }
 
             &:before {
                 content: counter(step);
