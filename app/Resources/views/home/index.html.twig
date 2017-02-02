@@ -15,8 +15,8 @@
 <main>
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
-            <a href="{{ blocks[0].link }}" class="card card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
-               style="background: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}') no-repeat; background-size: cover; background-position: center; background-color: black">
+            <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
+               style="background-image: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}');">
                 <div class="background">
                     <div class="content">
                         <h2>{{ blocks[0].title }}</h2>
@@ -27,8 +27,8 @@
             </a>
             <div class="card card--large card--large__tablet l__hide--on-desktop">
                 <a href="{{ blocks[0].link }}" class="background-container">
-                    <div class="background"
-                         style="background: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}') no-repeat; background-size: cover; background-position: center; background-color: black"></div>
+                    <div class="background card__background"
+                         style="background-image: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000}) }}')"></div>
                 </a>
                 <a class="content" href="{{ blocks[0].link }}">
                     <h2>{{ blocks[0].title }}</h2>
@@ -36,8 +36,8 @@
                 </a>
             </div>
 
-            <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30"
-                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 1000}) }}'); background-color: black">
+            <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30 card__background"
+                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 1000}) }}');">
                 <div class="background">
                     <div class="content">
                         <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
@@ -111,7 +111,7 @@
                         {% if block.type == 'video' %}
                             <div class="csv card--small card--small__video">
                                 <a href="{{ block.link }}" class="background-container">
-                                    <div class="background" style="background: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}') no-repeat; background-size: cover; background-position: center;">
+                                    <div class="background card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}');">
                                         <i class="play-icon"></i>
                                     </div>
                                 </a>
@@ -131,7 +131,7 @@
                         {% else %}
                             <div class="cs card--small">
                                 <a href="{{ block.link }}" class="background-container">
-                                    <div class="background" style="background: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}') no-repeat; background-size: cover; background-position: center;">
+                                    <div class="background card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 600}) }}');">
                                     </div>
                                 </a>
                                 <a href="{{ block.link }}" class="headline link--no-decor">
@@ -153,7 +153,7 @@
 
                         {% if block.type == 'video' %}
                             <div class="cmv card--medium card--medium__video">
-                                <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}') no-repeat; background-size: cover; background-position: center;">
+                                <a href="{{ block.link }}" class="background-container card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}');">
                                     <div class="background">
                                         <div class="content">
                                             <div class="headline-row">
@@ -177,7 +177,7 @@
                             </div>
                         {% else %}
                             <div class="cm card--medium">
-                                <a href="{{ block.link }}" class="background-container" style="background: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}') no-repeat; background-size: cover; background-position: center;">
+                                <a href="{{ block.link }}" class="background-container card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}')">
                                     <div class="background">
                                         <div class="content">
                                             <h2 class="headline link--no-decor b__nudge--bottom-medium">
