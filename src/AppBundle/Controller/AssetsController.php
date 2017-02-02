@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Geocoder\Coordinates;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
@@ -10,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AssetsController extends Controller
 {
@@ -37,5 +39,24 @@ class AssetsController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * @Route("/maps/{latitude},{longitude}", requirements={
+     *     "latitude"="^%pattern_coordinate%$",
+     *     "longitude"="^%pattern_coordinate%$"
+     * }, name="map_url")
+     *
+     * @Method("GET")
+     */
+    public function mapAction(string $latitude, string $longitude)
+    {
+        $coordinates = new Coordinates($latitude, $longitude);
+
+        if (!$contents = $this->get('app.asset.google_maps_static_provider')->get($coordinates)) {
+            throw $this->createNotFoundException('Unable to retrieve the requested static map file');
+        }
+
+        return new Response($contents, 200, ['content-type' => 'image/png']);
     }
 }
