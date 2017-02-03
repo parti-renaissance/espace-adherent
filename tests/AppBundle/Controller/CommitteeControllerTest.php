@@ -30,19 +30,25 @@ class CommitteeControllerTest extends WebTestCase
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewCommitteeEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
-        // Must be changed when there will be explicit navigation links in the page.
-        $this->client->request('GET', sprintf('/comites/%s/en-marche-paris-8/evenements/ajouter', LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->request('GET', sprintf('%s/evenements/ajouter', $this->client->getRequest()->getPathInfo()));
+
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testCommitteeHostCanPublishNewCommitteeEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
-        // Must be changed when there will be explicit navigation links in the page.
-        $crawler = $this->client->request('GET', sprintf('/comites/%s/en-marche-paris-8/evenements/ajouter', LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Créer un événement')->link());
+
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Submit the committee event form with invalid data
@@ -152,7 +158,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('#committee-event-description')->text());
     }
 
-    public function testShowCommitteeApprovedIsAccessible()
+    public function testApprovedCommitteePageIsViewableByAnyone()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
 
@@ -176,7 +182,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testShowCommitteeNotApprovedIsAccessibleForCreator()
+    public function testUnapprovedCommitteedIsViewableByItsCreator()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
 
@@ -195,7 +201,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testShowCommitteeForGuest()
+    public function testAnonymousGuestCanShowCommitteePage()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
 
@@ -209,14 +215,11 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The guest should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
-        $this->assertSeeSocialLinks(
-            $crawler,
-            $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID)
-        );
+        $this->assertSeeSocialLinks($crawler, $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    public function testShowCommitteeForAdherent()
+    public function testAuthenticatedAdherentCanShowCommitteePage()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
@@ -235,13 +238,10 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    public function testShowCommitteeForFollower()
+    public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
-
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The follower should not see the "register link"');
@@ -254,13 +254,10 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    public function testShowCommitteeForHost()
+    public function testAuthenticatedCommitteeHostCanShowCommitteePage()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
-
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
-
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');
@@ -274,15 +271,12 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeMessageForm($crawler));
     }
 
-    public function testHostPostCommitteeMessage()
+    public function testAuthenticatedCommitteeHostCanPostMessages()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
-
-        $members = $this->getCommitteeMembershipRepository()->findFollowers(LoadAdherentData::COMMITTEE_1_UUID);
-
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $committeeUrl = $this->client->getRequest()->getPathInfo();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
@@ -320,6 +314,7 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
+        $members = $this->getCommitteeMembershipRepository()->findFollowers(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertCount($members->getCommitteesNotificationsSubscribers()->count(), $this->getMailjetEmailRepository()->findAll());
     }
 
