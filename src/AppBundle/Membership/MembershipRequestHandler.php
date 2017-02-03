@@ -36,7 +36,7 @@ class MembershipRequestHandler
         $this->manager = $manager;
     }
 
-    public function handle(MembershipRequest $membershipRequest)
+    public function handle(MembershipRequest $membershipRequest): Adherent
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
         $token = AdherentActivationToken::generate($adherent);
@@ -50,7 +50,7 @@ class MembershipRequestHandler
 
         $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
 
-        $membershipRequest->setAdherent($adherent);
+        return $adherent;
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)
