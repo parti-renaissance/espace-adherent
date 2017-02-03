@@ -37,7 +37,7 @@ test:
 
 deployment:
     staging:
-        branch: master
+        branch: fix-doctrine-cache
         owner: EnMarche
         commands:
             # Check packages security
