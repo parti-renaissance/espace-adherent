@@ -151,6 +151,16 @@ class CommitteeMembership
     }
 
     /**
+     * Returns whether or not this membership is a follower priviledged membership.
+     *
+     * @return bool
+     */
+    public function isFollower(): bool
+    {
+        return self::COMMITTEE_FOLLOWER === $this->privilege;
+    }
+
+    /**
      * Returns the adherent.
      *
      * @return Adherent|null

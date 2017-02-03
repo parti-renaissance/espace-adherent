@@ -167,7 +167,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
         ]);
-        $committee1->approved();
+        $committee1->approved('2017-01-12 15:54:18');
 
         $committee2 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_2_UUID,

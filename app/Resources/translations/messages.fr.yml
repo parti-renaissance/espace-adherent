@@ -45,4 +45,6 @@ committee.message_created: Votre message a bien été publié.
 
 committee.members_count: '1 membre|%count% membres'
 
+committee.participants_count: '{1} %count% participant|[2,Inf[ %count% participants'
+
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.

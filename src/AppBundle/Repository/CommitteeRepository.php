@@ -12,6 +12,9 @@ class CommitteeRepository extends EntityRepository
 {
     const EARTH_MEAN_RADIUS = '6371';
 
+    const ONLY_APPROVED = 1;
+    const INCLUDE_UNAPPROVED = 2;
+
     /**
      * Finds a Committee instance by its unique canonical name.
      *
@@ -155,6 +158,29 @@ class CommitteeRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return (int) $query->getSingleScalarResult();
+        return $query->getSingleScalarResult();
+    }
+
+    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED): array
+    {
+        if (!$uuids) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->where($qb->expr()->in('c.uuid', $uuids))
+            ->orderBy('c.membersCounts', 'DESC')
+        ;
+
+        if (self::ONLY_APPROVED === $statusFilter) {
+            $qb
+                ->andWhere('c.status = :status')
+                ->setParameter('status', Committee::APPROVED)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

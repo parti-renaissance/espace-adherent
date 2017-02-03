@@ -1,0 +1,23 @@
+<div class="committee-event">
+    <div class="conmittee-event-map">
+        <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"
+             alt="{{ item.event.inlineFormattedAddress }}"
+             width="300"
+             height="200"/>
+    </div>
+    <div class="conmittee-event-details">
+        <h4>{{ item.event.name }}</h4>
+        <span class="committee-event-date">
+            <em>{{ item.event.beginAt|localizeddate('long', 'none') }}</em> à
+            <em>{{ item.event.beginAt|localizeddate('none', 'short') }}</em>.
+        </span>
+        <ul>
+            <li><a href="#" class="btn">Je participe</a></li>
+            <li>
+                <span class="committee-event-attendees">
+                    {{- 'committee.participants_count'|transchoice(item.event.participantsCount) -}}
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

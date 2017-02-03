@@ -4,6 +4,37 @@
 
 {% block banner '' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            var page = 1;
+            var limit = {{ committee_timeline_max_messages }};
+            var moreButton = dom('#committee-timeline-more');
+
+            on(moreButton, 'click', function() {
+                page++;
+                di.get('api').getCommitteeTimelineFeed(
+                    '{{ committee.uuid }}',
+                    '{{ committee.slug }}',
+                    ((page - 1) * limit),
+                    function (response) {
+                        if (response instanceof XMLHttpRequest) {
+                            hide(moreButton);
+                            return;
+                        }
+            
+                        var newPage = document.createElement('div');
+                            newPage.id = 'committee-timeline-page-'+page;
+                            newPage.innerHTML = response;
+
+                        insertAfter(dom('#committee-timeline-page-'+(page-1)), newPage);
+                    }
+                );
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     {% set is_host = is_host(committee) %}
 
@@ -30,6 +61,19 @@
         </div>
     </section>
 
+    <hr/>
+
+    <section class="l__wrapper--medium committee-timeline" id="committee-timeline">
+        <div id="committee-timeline-page-1">
+            {{ include('committee/timeline/feed.html.twig') }}
+        </div>
+        <span>
+            <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
+        </span>
+    </section>
+    
+    <hr/>
+
     <section class="l__wrapper--medium">
         {% if is_host %}
             <ul id="committee-host-nav">
@@ -51,7 +95,11 @@
             <div id="comittee-host-menu">
                 <ul>
                     <li>Créer un message</li>
-                    <li><a href="#">Créer un événement</a></li>
+                    <li>
+                        <a href="{{ committee_path('app_committee_add_event', committee) }}">
+                            Créer un événement
+                        </a>
+                    </li>
                 </ul>
             </div>
 

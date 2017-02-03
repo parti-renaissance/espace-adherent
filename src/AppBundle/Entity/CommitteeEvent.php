@@ -82,6 +82,11 @@ class CommitteeEvent implements GeoPointInterface
     private $createdBy;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     */
+    private $participantsCount;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      */
     private $committee;
@@ -98,17 +103,19 @@ class CommitteeEvent implements GeoPointInterface
         string $finishAt,
         int $capacity = null,
         string $slug = null,
-        string $createdAt = null
+        string $createdAt = null,
+        int $participantsCount = 1
     ) {
         $this->uuid = $uuid;
         $this->createdBy = $creator;
         $this->committee = $committee;
         $this->setName($name);
         $this->slug = $slug;
-        $this->category = $capacity;
+        $this->category = $category;
         $this->description = $description;
         $this->postAddress = $address;
         $this->capacity = $capacity;
+        $this->participantsCount = $participantsCount;
         $this->beginAt = new \DateTime($beginAt);
         $this->finishAt = new \DateTime($finishAt);
         $this->createdAt = new \DateTime($createdAt ?: 'now');
@@ -162,6 +169,23 @@ class CommitteeEvent implements GeoPointInterface
     public function getCommittee(): ?Committee
     {
         return $this->committee;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        if (!$this->createdAt instanceof \DateTimeImmutable) {
+            $this->createdAt = new \DateTimeImmutable(
+                $this->createdAt->format('Y-m-d H:i:s'),
+                $this->createdAt->getTimezone()
+            );
+        }
+
+        return $this->createdAt;
+    }
+
+    public function getParticipantsCount(): int
+    {
+        return $this->participantsCount;
     }
 
     public function updatePostAddress(PostAddress $postAddress)

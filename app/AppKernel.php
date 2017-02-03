@@ -27,9 +27,12 @@ class AppKernel extends Kernel
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
+
+            // KnpLabs
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\TimeBundle\KnpTimeBundle(),
 
             new AppBundle\AppBundle(),
         ];
