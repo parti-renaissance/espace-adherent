@@ -100,7 +100,10 @@
                     {% if block.type == 'video' %}
                         <div class="csv card--small card--small__video">
                             <a href="{{ block.link }}" class="background-container">
-                                <div class="background card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 600, 'q': 50}) }}');">
+                                <div class="background card__background progressive-background"
+                                     data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
+                                     data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                                     style="background-color: #000000;">
                                     <i class="play-icon"></i>
                                 </div>
                             </a>
@@ -110,15 +113,18 @@
                             <div class="share">
                                 Partagez
                                 <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                        <i class="fa fa-facebook-square"></i>
-                                    </span>
+                                    <i class="fa fa-facebook-square"></i>
+                                </span>
                                 <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
-                                        <i class="fa fa-twitter"></i>
-                                    </span>
+                                    <i class="fa fa-twitter"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="cmv card--medium card--medium__video">
-                            <a href="{{ block.link }}" class="background-container card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 50}) }}');">
+                            <a href="{{ block.link }}" class="background-container card__background progressive-background"
+                               data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
+                               data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                               style="background-color: #000000;">
                                 <div class="background">
                                     <div class="content">
                                         <div class="headline-row">
@@ -143,7 +149,10 @@
                     {% else %}
                         <div class="cs card--small">
                             <a href="{{ block.link }}" class="background-container">
-                                <div class="background card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 600, 'q': 50}) }}');">
+                                <div class="background card__background progressive-background"
+                                     data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
+                                     data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                                     style="background-color: #000000;">
                                 </div>
                             </a>
                             <a href="{{ block.link }}" class="headline link--no-decor">
@@ -160,7 +169,10 @@
                             </div>
                         </div>
                         <div class="cm card--medium">
-                            <a href="{{ block.link }}" class="background-container card__background" style="background-image: url('{{ dynamic_asset(block.media.path, {'w': 1200}) }}')">
+                            <a href="{{ block.link }}" class="background-container card__background progressive-background"
+                               data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
+                               data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                               style="background-color: #000000;">
                                 <div class="background">
                                     <div class="content">
                                         <h2 class="headline link--no-decor b__nudge--bottom-medium">
