@@ -13,7 +13,10 @@
 {% block content %}
 <main>
     <section class="content programme">
-        <header class="space--30-0" style="background-image: url('{{ static_asset('programme.jpg') }}');">
+        <header class="space--30-0 progressive-background"
+                data-sd="{{ static_asset('programme.jpg', {'w': 300, 'q': 20}) }}"
+                data-hd="{{ static_asset('programme.jpg', {'q': 70}) }}"
+                style="background-color: #2f2f39;">
             <div class="l__wrapper--slim">
                 <h1 class="text--larger b__nudge--bottom-small">
                     Les propositions d’Emmanuel Macron

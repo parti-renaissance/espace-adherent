@@ -35,7 +35,7 @@ export default () => {
             hd.src = hdSrc;
 
             on(hd, 'load', () => {
-                element.style['background-image'] = `${bgPrefix}url(${imgToCanvas(hd).toDataURL('image/png')})`;
+                element.style['background-image'] = `${bgPrefix}url(${hd.src})`;
             });
         });
     });
