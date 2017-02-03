@@ -64,6 +64,7 @@ class DonationRequestType extends AbstractType
                 'sponsor_form' => true,
                 'submit_button' => true,
                 'data_class' => DonationRequest::class,
+                'translation_domain' => false,
             ])
             ->setDefined('submit_label')
             ->setAllowedTypes('locale', ['null', 'string'])
