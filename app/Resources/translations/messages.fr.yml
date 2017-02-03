@@ -3,10 +3,13 @@
 #
 common.gender.mister: Monsieur
 common.gender.miss: Madame
+common.email_address: Adresse email
+common.zip_code: Code postal
 
 #
 # Adherent
 #
+adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité
 adherent.activity_position.employed: En activité

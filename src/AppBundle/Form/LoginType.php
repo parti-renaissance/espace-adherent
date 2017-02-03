@@ -40,6 +40,7 @@ class LoginType extends AbstractType
                 'csrf_token_id' => 'authenticate_adherent',
                 'remember_me' => false,
                 'data_class' => null,
+                'translation_domain' => false,
             ])
             ->setAllowedTypes('username_parameter', 'string')
             ->setAllowedTypes('password_parameter', 'string')
