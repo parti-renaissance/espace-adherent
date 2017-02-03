@@ -23,6 +23,7 @@ abstract class MailjetMessage
      * @param string        $subject        The message subject
      * @param array         $commonVars     The common variables shared by all recipients
      * @param array         $recipientVars  The recipient's specific variables
+     * @param UuidInterface $batch
      */
     final public function __construct(
         UuidInterface $uuid,

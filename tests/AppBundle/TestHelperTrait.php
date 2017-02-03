@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle;
 
+use AppBundle\Committee\CommitteeFeedHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
@@ -112,6 +113,11 @@ trait TestHelperTrait
     public function getMailjetEmailRepository(): MailjetEmailRepository
     {
         return $this->getRepository(MailjetEmail::class);
+    }
+
+    public function getCommitteeFeedHandler(): CommitteeFeedHandler
+    {
+        return $this->container->get('app.committee.committee_feed_handler');
     }
 
     /**

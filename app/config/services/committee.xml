@@ -36,6 +36,8 @@
 
         <service id="app.committee.committee_feed_handler" class="AppBundle\Committee\CommitteeFeedHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.committee_manager"/>
+            <argument type="service" id="app.mailjet"/>
         </service>
 
         <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">
@@ -67,11 +69,6 @@
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="router"/>
             <tag name="twig.extension"/>
-        </service>
-
-        <service id="app.committee.committee_nearby_provider" class="AppBundle\Committee\CommitteeNearbyProvider" public="false">
-            <argument type="service" id="app.repository.committee"/>
-            <argument type="service" id="app.repository.committee_membership"/>
         </service>
 
     </services>

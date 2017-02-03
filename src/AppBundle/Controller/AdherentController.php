@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
-use AppBundle\Entity\Adherent;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
