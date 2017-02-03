@@ -3,14 +3,6 @@
 {% block page_title current.name %}
 {% block canonical_url url('articles_list', {'category': current.slug}) %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-        function controller(app) {
-            app.home();
-        }
-    </script>
-{% endblock %}
-
 {% block content %}
     <main>
         <section class="listing">

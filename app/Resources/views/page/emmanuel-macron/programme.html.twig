@@ -1,23 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Les propositions d\'Emmanuel Macron' %}
-{% block meta_description 'Le moment que nous vivons est celui d’une refondation profonde de la France. Voici celle que nous vous proposons.' %}
-
 {% block canonical_url url('page_emmanuel_macron_programme') %}
+{% block meta_description page.description %}
 
 {% block open_graph_image %}{% spaceless %}
     {{ url('homepage')|trim('/') }}{{ static_asset('programme.jpg', {'w': 1200, 'h': 630})|raw }}
 {% endspaceless %}{% endblock %}
 {% block open_graph_image_width 1200 %}
 {% block open_graph_image_height 630 %}
-
-{% block javascripts %}
-    <script type="text/javascript">
-        function controller(app) {
-            app.home();
-        }
-    </script>
-{% endblock %}
 
 {% block content %}
 <main>
@@ -28,15 +19,14 @@
                     Les propositions d’Emmanuel Macron
                 </h1>
                 <p class="text--body">
-                    Le moment que nous vivons est celui d’une refondation profonde de la France.<br />
-                    Voici celle que nous vous proposons.
+                    {{ page.description }}
                 </p>
             </div>
         </header>
 
         <div class="l__wrapper--slim">
-            <p class="text--body">Le moment que nous vivons est celui d’une refondation profonde de la France. Voici celle que nous vous proposons. Le rôle de la politique est de déployer un cadre qui permettra à chacune et à chacun de trouver sa voie, de devenir maître de son destin, d’exercer sa liberté, de pouvoir choisir sa vie, puis de pouvoir vivre de son travail. C’est avec cette promesse d’émancipation que la politique doit renouer. Le chômage n’est pas une fatalité, mais un combat que nous pouvons gagner grâce aux mesures juste qui donneront à tous les acteurs la capacité de faire face aux changements.</p>
-            <p class="text--body text--bold text--medium-small"><a href="https://staging.en-marche.fr/article/comment-emmanuel-macron-a-t-il-construit-ses-propositions">Comment Emmanuel Macron a-t-il construit ses propositions ?</a></p>
+            {{ page.content|markdown }}
+
             <ul>
                 {% for proposal in proposals if proposal.published %}
                 <li class="programme-proposal">

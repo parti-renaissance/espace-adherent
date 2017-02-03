@@ -39,6 +39,7 @@ class PageController extends Controller
     public function emmanuelMacronProgrammeAction()
     {
         return $this->render('page/emmanuel-macron/programme.html.twig', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-propositions'),
             'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
         ]);
     }

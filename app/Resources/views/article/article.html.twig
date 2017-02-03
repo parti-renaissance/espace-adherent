@@ -16,14 +16,6 @@
 {% block open_graph_image_width (article.media ? article.media.width : 628) %}
 {% block open_graph_image_height (article.media ? article.media.height : 288) %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-        function controller(app) {
-            app.home();
-        }
-    </script>
-{% endblock %}
-
 {% block content %}
 <main>
     <section class="content articles">
