@@ -78,21 +78,21 @@ $filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 }
 
 .background--primary {
-    background: $pink;
+    background-color: $pink;
 }
 
 .background--light {
-    background: $gray--light;
+    background-color: $gray--light;
 }
 
 .background--lighter {
-    background: $gray--lighter;
+    background-color: $gray--lighter;
 }
 
 .background--blue {
-    background: $blue;
+    background-color: $blue;
 }
 
 .background--green {
-    background: $green;
+    background-color: $green;
 }

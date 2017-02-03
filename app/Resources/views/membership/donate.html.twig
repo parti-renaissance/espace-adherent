@@ -2,34 +2,39 @@
 
 {% block content %}
 
-    <section class="l__wrapper--medium">
-        <div class="registering_donation">
-            <h2>En Marche ! ne bénéficie pas de subventions. Soutenez-nous !</h2>
+    <main>
+        <section class="register__donation content b__nudge--bottom-huge">
+            <header class="l__wrapper--slim space--60-0">
+                <h1 class="text--center text--large">
+                    En Marche ! ne bénéficie pas de subventions. Soutenez-nous !
+                </h1>
+            </header>
 
-            <div class="l__row l__row--top l__row--h-stretch">
+            <article class="l__col">
 
-                {{ form_start(form, { attr: { class: 'form' } }) }}
+                {{ form_start(form, { attr: { class: 'form text--center' } }) }}
                     {{ form_errors(form) }}
 
-                    <p>
+                    <div class="text--body b__nudge--bottom-small">
                         Sélectionnez le montant de votre don :
-                    </p>
+                    </div>
 
                     {{ form_errors(form.amount) }}
-                    {{ form_widget(form.amount, { 'attr': { 'class': 'form--full', 'id': 'donation-amount' } }) }}
+                    {{ form_widget(form.amount, { 'attr': { 'class': 'form--full b__nudge--bottom-small', 'id': 'donation-amount' } }) }}
 
-                    {{ form_widget(form.pass, { label: 'adherent.pass_donation_label', translation_domain: 'messages' }) }}
-                    {{ form_widget(form.submit, { translation_domain: 'messages' }) }}
+                    <div class="l__row l__row--h-stretch l__mobile--col">
+                        {{ form_widget(form.pass, { label: 'adherent.pass_donation_label', translation_domain: 'messages', attr: { class: 'b__nudge--bottom-small' } }) }}
+                        {{ form_widget(form.submit, { translation_domain: 'messages', attr : { class: 'btn--primary b__nudge--bottom-small' } }) }}
+                    </div>
 
                     {{ form_rest(form) }}
                 {{ form_end(form) }}
 
-                <p class="donation__form-explainations">
+                <p class="text--body">
                     Votre don vous donne droit à une réduction annuelle d’impôt sur le revenu à hauteur de 66%
                     de son montant, dans la double limite de 20% du revenu imposable et de 15 000 € par foyer fiscal.
                 </p>
             </div>
-        </div>
-    </section>
-
+        </section>
+    </main>
 {% endblock %}

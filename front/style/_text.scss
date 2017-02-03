@@ -12,6 +12,11 @@ $text--size-extra-large: 48px;
     font-weight: 700;
 }
 
+@mixin text--smallest {
+    font-size: $text--size-smallest;
+    line-height: 18px;
+}
+
 @mixin text--small {
     font-size: $text--size-small;
     line-height: 23px;
@@ -66,7 +71,7 @@ $text--size-extra-large: 48px;
 @mixin text--summary {
     font-family: $font-roboto;
     letter-spacing: .3px;
-    line-height: 1.3;
+    line-height: 1.4;
     font-size: $text--size-small;
     font-weight: 400;
 }
@@ -128,17 +133,29 @@ $text--size-extra-large: 48px;
 
     &--large {
         @include text--large;
+
+        @media (max-width: $mobile) {
+            @include text--medium;
+        }
     }
 
     &--larger {
         font-size: $text--size-larger;
         line-height: 0.93;
         letter-spacing: -1.2px;
+
+        @media (max-width: $mobile) {
+            @include text--large;
+        }
     }
 
     &--extra-large {
         font-size: $text--size-extra-large;
         line-height: 1em;
+    }
+
+    &--logo {
+        @include text--logo;
     }
 
     &--italic {

@@ -15,7 +15,7 @@
 {%- endblock textarea_widget %}
 
 {% block button_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('btn--primary') ~ ' form btn')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('btn') ~ ' form btn')|trim}) %}
     {{- parent() -}}
 {%- endblock %}
 
@@ -56,15 +56,15 @@
     <div {{ block('widget_container_attributes') }}>
         {% for name, choice in form %}
             {% set memberships_data = form.parent.vars.committees_views_data[name] %}
-            <div>
-                <div class="background--light">
-                    <h5>{{ choice.vars.label }}</h5>
-                    <p>Nous sommes {{ memberships_data['memberships_count'] }} membres</p>
-                    <div><a class="btn btn--green" href="{{ path('app_committee_show', { uuid: choice.vars.value, slug: memberships_data['slug'] }) }}">Découvrir</a></div>
+            <div class="l__row l__row--h-stretch l__row--v-stretch l__mobile--col b__nudge--bottom-large">
+                <div class="register__comites__list background--lighter space--20">
+                    <h3 class="text--medium text--normal">{{ choice.vars.label }}</h3>
+                    <div class="text--body space--10-0">{{ memberships_data['memberships_count'] }} membres</div>
+                    <div><a class="btn btn--blue" href="{{ path('app_committee_show', { uuid: choice.vars.value, slug: memberships_data['slug'] }) }}">Découvrir</a></div>
                 </div>
-                <div>
-                  {{ form_label(choice, 'Je veux suivre ce comité') }}
-                  {{ form_widget(choice) }}
+                <div class="register__comites__follow background--lighter">
+                    {{ form_widget(choice) }}
+                    {{ form_label(choice, 'Je veux suivre ce comité') }}
                 </div>
             </div>
         {% endfor %}

@@ -1,112 +1,98 @@
 {% block adherent_membership_form %}
     {{ form_start(form) }}
-        {{ form_errors(form) }}
 
-        <div class="form__row">
-            {{ form_errors(form.gender) }}
-            {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+    <div class="l__row l__row--h-stretch">
+        {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+        {{ form_errors(form.gender) }}
+    </div>
+
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="register__form--mid">
+            {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
+            {{ form_errors(form.firstName) }}
         </div>
-
-        <div class="form__row l__row">
-            <div class="l__col form--mid">
-                {{ form_errors(form.firstName) }}
-                {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
-            </div>
-            <div class="l__col form--mid">
-                {{ form_errors(form.lastName) }}
-                {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
-            </div>
+        <div class="register__form--mid">
+            {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
+            {{ form_errors(form.lastName) }}
         </div>
+    </div>
 
-        {% if form.emailAddress is defined %}
-            <div class="form__row form__blue_row register__form--trunc" id="field-email-address">
-                {{ form_errors(form.emailAddress) }}
-                {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse e-mail' } }) }}
+    {% if form.emailAddress is defined %}
+        <div class="register__form--full" id="field-email-address">
+            {{ form_widget(form.emailAddress, { attr: { placeholder: 'Adresse e-mail' } }) }}
+            {{ form_errors(form.emailAddress) }}
+        </div>
+    {% endif %}
+
+    {% if form.password is defined %}
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__col l__col--top register__form--mid">
+                {{ form_widget(form.password.first, { attr: { placeholder: 'Mot de passe' } }) }}
+                {{ form_errors(form.password.first) }}
             </div>
-        {% endif %}
-
-        {% if form.password is defined %}
-            <div class="form__row l__row form__blue_row">
-                <div class="l__col form--mid">
-                    {{ form_errors(form.password.first) }}
-                    {{ form_widget(form.password.first, { attr: { placeholder: 'Mot de passe' } }) }}
-                </div>
-                <div class="l__col form--mid">
-                    {{ form_errors(form.password.second) }}
-                    {{ form_widget(form.password.second, { attr: { placeholder: 'Confirmation' } }) }}
-                </div>
-            </div>
-        {% endif %}
-
-        <div id="membership-address">
-            {{ form_errors(form.address) }}
-
-            <div class="form__row register__form--trunc">
-                {{ form_errors(form.address.address) }}
-                {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: 'Adresse postale' } }) }}
-            </div>
-
-            <div class="l__row">
-                <div class="form__row register__form__zip_code">
-                    {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
-                </div>
-
-                <div class="form__row register__form__city">
-                    {{ form_errors(form.address.city) }}
-                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
-                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
-                </div>
-
-                <div class="form__row register__form__country">
-                    {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'text--blue' } }) }}
-                    {{ form_errors(form.address.country) }}
-                    {{ form_widget(form.address.country, { attr: { class: 'form--mid' } }) }}
-                </div>
+            <div class="l__col l__col--top register__form--mid">
+                {{ form_widget(form.password.second, { attr: { placeholder: 'Ré-entrez votre mot de passe' } }) }}
+                {{ form_errors(form.password.second) }}
             </div>
         </div>
+    {% endif %}
 
-        <div class="form__row register__form__phone">
-            {{ form_errors(form.phone) }}
-            <div>
-                {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone'} }) }}
-                {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
-            </div>
+    <div id="membership-address">
+        {{ form_errors(form.address) }}
+        <div class="l__row l__row--h-stretch register__form--full">
+            {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+            {{ form_errors(form.address.address) }}
         </div>
 
-        <div class="l__row">
-            <div class="l__col form__row form--mid">
-                {{ form_label(form.position, 'adherent.activity_position.form_label', { label_attr: { class: 'text--blue' } }) }}
-                {{ form_errors(form.position) }}
-                {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form__zip_code register__form--third">
+                {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
             </div>
 
-            <div class="l__col form__row form--mid" id="field-birthdate">
-                {{ form_label(form.birthdate, 'Date de naissance', { label_attr: { class: 'text--blue' } }) }}
-                {{ form_errors(form.birthdate) }}
-                {{ form_widget(form.birthdate, { attr: { class: 'form--full', placeholder: 'JJ/MM/AAAA' } }) }}
+            <div class="register__form__city register__form--third">
+                {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+                {{ form_errors(form.address.city) }}
+            </div>
+
+            <div class="register__form__country register__form--third">
+                {{ form_widget(form.address.country) }}
+                {{ form_errors(form.address.country) }}
             </div>
         </div>
+    </div>
 
-        {% if form.conditions is defined %}
-            <div class="form__row register__form__conditions b__nudge--top-large" id="field-conditions">
-                {{ form_errors(form.conditions) }}
-                {{ form_widget(form.conditions) }}
-                Oui,
-                <span class="register__form__conditions__text text--blue">
-                    j'adhère à la charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !
-                </span>
-            </div>
-        {% endif %}
-
-        {% if 'test' != app.environment and form.recaptcha is defined %}
-            <div class="form__row" id="field-recaptcha">
-                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
-            </div>
-        {% endif %}
-
-        <div class="form__row text--center b__nudge--top">
-            {{ form_widget(form.submit) }}
+    <div class="register__form__phone">
+        <div class="l__row l__row--top l__row--h-stretch">
+            {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone'} }) }}
+            {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
         </div>
+        {{ form_errors(form.phone) }}
+    </div>
+
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="l__col l__col--top register__form--mid">
+            {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
+            {{ form_errors(form.position) }}
+        </div>
+
+        <div class="l__col l__col--top register__form--mid" id="field-birthdate">
+            {{ form_widget(form.birthdate, { attr: { class: 'form--full', placeholder: 'Date de naissance JJ/MM/AAAA' } }) }}
+            {{ form_errors(form.birthdate) }}
+        </div>
+    </div>
+
+    {% if form.conditions is defined %}
+        <div class="b__nudge--top text--small" id="field-conditions">
+            {{ form_widget(form.conditions) }}
+            <div class="register__form__conditions">Oui, j'adhère à la charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</div>
+            {{ form_errors(form.conditions) }}
+        </div>
+    {% endif %}
+
+    <div class="register__form">
+        {{ form_widget(form.submit, { attr: { class: 'btn--large-and-medium btn--blue b__nudge--top' }}) }}
+    </div>
 
     {{ form_end(form) }}
 {% endblock %}

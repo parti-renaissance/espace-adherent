@@ -195,6 +195,10 @@
         padding: 35px 0 15px;
     }
 
+    &--20 {
+        padding: 20px;
+    }
+
     &--20-0 {
         padding: 20px 0;
     }
@@ -220,15 +224,19 @@
         }
 
         &--top-40 {
-            margin-top: 50px;
+            margin-top: 40px;
+        }
+
+        &--top-large {
+            margin-top: 30px;
         }
 
         &--top {
             margin-top: 20px;
         }
 
-        &--top-large {
-            margin-top: 30px;
+        &--top-15 {
+            margin-top: 15px;
         }
 
         &--bottom-small {

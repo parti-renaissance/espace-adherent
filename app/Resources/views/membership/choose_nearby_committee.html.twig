@@ -5,15 +5,20 @@
 {% block title 'Suivre des comités' %}
 
 {% block content %}
-    <section class="l__wrapper--medium">
-        <div class="membership_choose_nearby_committee__form">
-            <h1>Pour terminer</h1>
-            <h4>Suivez l'actualité des commités locaux près de chez vous.<br>C'est le cœur du mouvement En Marche !</h4>
-
-            {{ form_start(form) }}
-                {{ form_row(form.committees) }}
-                {{ form_row(form.submit) }}
-            {{ form_end(form) }}
-        </div>
-    </section>
+    <main>
+        <section class="content l__wrapper--slim register__comites">
+            <header class="l__wrapper--slim space--60-0 text--center">
+                <h1 class="text--large">
+                    Pour terminer
+                </h1>
+                <h2 class="b__nudge--top-15">Suivez l'actualité des comités locaux près de chez vous.<br>C'est le cœur du mouvement En Marche !</h2>
+            </header>
+            <div class="membership_choose_nearby_committee__form">
+                {{ form_start(form) }}
+                    {{ form_row(form.committees) }}
+                    {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
 {% endblock %}

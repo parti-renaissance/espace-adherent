@@ -364,7 +364,7 @@ class MembershipControllerTest extends MysqlWebTestCase
             $checkbox = $crawler->filter($boxPattern.' input[type="checkbox"][name="app_membership_choose_nearby_committee[committees][]"]');
 
             $this->assertSame((string) $committees[$i]->getUuid(), $checkbox->eq($i)->attr('value'));
-            $this->assertSame($committees[$i]->getName(), $crawler->filter($boxPattern.' h5')->eq($i)->text());
+            $this->assertSame($committees[$i]->getName(), $crawler->filter($boxPattern.' h3')->eq($i)->text());
         }
     }
 
