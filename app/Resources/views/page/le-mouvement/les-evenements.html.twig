@@ -2,6 +2,7 @@
 
 {% block page_title 'Le mouvement - Les événements' %}
 {% block canonical_url url('page_le_mouvement_les_evenements') %}
+{% block meta_description page.description %}
 
 {% block mouvement_content %}
     {{ page.content|markdown }}
