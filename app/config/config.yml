@@ -48,13 +48,15 @@ framework:
     trusted_proxies: ~
     session:
         name:        enmarche
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        handler_id:  snc_redis.session.handler
     fragments:       ~
     http_method_override: true
     assets: ~
     php_errors:
         log: true
+    cache:
+        app: cache.adapter.doctrine
+        default_doctrine_provider: cache.redis_doctrine_provider
 
 twig:
     debug:            "%kernel.debug%"
@@ -175,3 +177,12 @@ bazinga_geocoder:
             locale:  '%locale%'
             use_ssl: true
             api_key: '%env(GMAPS_API_KEY)%'
+
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: "redis://%env(REDIS_HOST)%"
+    session:
+        client: default

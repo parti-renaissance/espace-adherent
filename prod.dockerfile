@@ -42,6 +42,7 @@ RUN apt-get update -q && \
         php7.1-phar \
         php7.1-xml \
         php7.1-zip \
+        redis-server \
         supervisor \
         tzdata \
         wget && \
@@ -59,7 +60,12 @@ RUN chmod 0444 gcloud-service-key.json && \
     mkdir /run/php && \
     mkdir var && \
 
-    SYMFONY_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
+    service redis-server start && \
+    SYMFONY_ENV=prod REDIS_HOST=127.0.0.1 composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
+    service redis-server stop && \
+
+    apt-get autoremove -y redis-server && \
+
     chown -R www-data:www-data var && \
 
     mv docker/prod/php.ini /etc/php/7.1/cli/conf.d/50-setting.ini && \
