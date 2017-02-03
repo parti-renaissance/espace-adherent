@@ -30,6 +30,7 @@ class InvitationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Invite',
+            'translation_domain' => false,
         ]);
     }
 
