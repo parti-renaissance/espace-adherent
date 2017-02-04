@@ -54,6 +54,16 @@ class CommitteeRepository extends EntityRepository
     }
 
     /**
+     * Finds approved Committee instances.
+     *
+     * @return Committee[]
+     */
+    public function findApprovedCommittees()
+    {
+        return $this->findBy(['status' => Committee::APPROVED]);
+    }
+
+    /**
      * Returns whether or not the given adherent has "waiting for approval"
      * committees.
      *

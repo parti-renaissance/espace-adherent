@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
+use AppBundle\Entity\Committee;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -89,6 +90,17 @@ class PageController extends Controller
     {
         return $this->render('page/le-mouvement/notre-organisation.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-notre-organisation'),
+        ]);
+    }
+
+    /**
+     * @Route("/le-mouvement/la-carte", name="page_le_mouvement_la_carte")
+     * @Method("GET")
+     */
+    public function mouvementCarteAction()
+    {
+        return $this->render('page/la-carte.html.twig', [
+            'committees' => $this->getDoctrine()->getRepository(Committee::class)->findApprovedCommittees(),
         ]);
     }
 

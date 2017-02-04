@@ -22,6 +22,14 @@ class PageControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
     }
 
+    public function testMap()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/la-carte');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('html:contains("Comités à proximité")')->count());
+    }
+
     public function providePages()
     {
         return [
