@@ -29,26 +29,6 @@ Image aussi large que le reste de l'article (sa largeur doit être > 725px):
 </figure>
 ```
 
-Image fullscreen, aussi large que la page:
-```
-<figure class="fullscreen">
-    <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
-</figure>
-```
-
-Image fullscreen avec un texte qui repose au dessus:
-
-Et si vous voulez que le texte soit blanc: `<p class="text--white">`.
-
-```
-<figure class="fullscreen">
-    <p>Mais ma vie, c’est aussi d’autres choses qu’il me semble utile de partager avec vous.</p>
-    <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
-</figure>
-```
-
-Note: on peut ajouter des options de gradient si necessaire.
-
 Ajouter une legende:
 ```
 <figure>
