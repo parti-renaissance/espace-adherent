@@ -80,7 +80,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $error = $crawler->filter('.login__error'));
-        $this->assertSame('Identifiants invalides.', trim($error->text()));
+        $this->assertSame('Oups! Vos identifiants sont invalides.', trim($error->text()));
     }
 
     public function provideInvalidCredentials()

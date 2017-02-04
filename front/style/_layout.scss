@@ -42,6 +42,12 @@
         margin: 0 auto;
     }
 
+    &__wrapper-300 {
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
     &__row {
         display: flex;
         flex-direction: row;

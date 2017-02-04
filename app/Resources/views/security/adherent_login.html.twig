@@ -4,25 +4,39 @@
     {{ parent() }} | Connexion
 {% endblock %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+            height: 100vh;
+            justify-content: space-between;
+        }
+        header,
+        footer {
+            flex-grow: 0;
+        }
+        main {
+            flex-grow: 1;
+        }
+    </style>
+{% endblock %}
+
 {% block banner '' %}
 
 {% block content %}
 
-    <main>
-        <section class="l__wrapper-500">
-            <div class="login">
-                <h2>Espace adhérent</h2>
+    <main class="login">
+        <section class="l__wrapper-300">
+            <div>
+                <h2>Identifiez-vous</h2>
 
                 <div class="security__form">
-                    <p class="security__form__title">Connectez-vous à votre espace adhérent</p>
-
                     <form action="{{ path('app_adherent_login_check') }}" name="app_login" method="post">
 
                     {{ form_errors(form) }}
 
                     {% if error %}
                         <div class="form__error login__error">
-                            Identifiants invalides.
+                            Oups! Vos identifiants sont invalides.
                         </div>
                     {% endif %}
 
@@ -46,21 +60,20 @@
 
                     <button type="submit"
                             title="Je me connecte"
-                            class="form form--full btn btn--primary login__button">Je me connecte</button>
+                            class="form form--full btn btn--primary">Je me connecte</button>
                     </form>
                 </div>
 
-                <a href="{{ path('adherent_forgot_password') }}">Mot de passe oublié</a>
+                <p><a href="{{ path('adherent_forgot_password') }}">Mot de passe oublié</a></p>
 
                 <div class="login__separator">
-                    <div class="login__separator__text">ou</div>
+                    <div class="login__separator__text">Pas encore adhérent?</div>
                 </div>
 
-                <div class="login__subscribe">
-                    <a href="{{ path('app_membership_register') }}" title="J'adhère à En Marche !"
-                       class="form form--full btn btn--primary login__button">
-                        J'adhère à En Marche !
-                    </a>
+                <a href="{{ path('app_membership_register') }}" title="J'adhère à En Marche !"
+                    class="form form--full btn login__subscribe">
+                    J'adhère à En Marche !
+                </a>
                 </div>
             </div>
         </section>
