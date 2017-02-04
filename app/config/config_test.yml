@@ -6,11 +6,6 @@ services:
         class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
-    app.mailjet.transport:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
-        arguments: ['@?logger']
-        public: false
-
     app.geocoder:
         class: 'AppBundle\Geocoder\DummyGeocoder'
         public: false
