@@ -96,19 +96,19 @@
 }
 
 .content article {
-    font-family: 'Roboto', sans-serif;
+    font-family: $font-roboto;
     letter-spacing: 0.3px;
     line-height: 1.62;
 
     h1, h2, h3 {
         @include text--medium-large;
-        font-family: 'Gillsans';
+        font-family: $font-gillsans;
         margin-top: 30px;
         font-weight: 700;
     }
 
     h4 {
-        font-family: 'Gillsans';
+        font-family: $font-gillsans;
         font-size: $text--size-medium--large;
         margin-top: 20px;
         font-weight: 400;
@@ -204,7 +204,7 @@
             @include text--medium;
             @include text--bold;
             font-style: italic;
-            font-family: 'Gillsans';
+            font-family: $font-gillsans;
             margin: 0 20px 0 0;
             max-width: 350px;
 
@@ -236,7 +236,7 @@
         }
 
         a {
-            font-family: 'Gillsans';
+            font-family: $font-gillsans;
             @include btn;
             border-color: white;
             white-space: nowrap;
@@ -271,7 +271,7 @@
             @include text--medium-small;
             @include text--blue;
             @include text--all-caps;
-            font-family: 'Gillsans';
+            font-family: $font-gillsans;
             text-align: center;
             font-weight: 700;
         }
@@ -321,7 +321,7 @@
                 @include text--medium-large;
                 @include wrapper--slim;
                 @include text--bold;
-                font-family: "Gillsans";
+                font-family: $font-gillsans;
                 position: absolute;
 
                 @media(max-width: $mobile) {
@@ -354,7 +354,7 @@
             @include text--large;
             @include text--bold;
             line-height: 42px; /* Overwrite text--large */
-            font-family: "Gillsans";
+            font-family: $font-gillsans;
             font-style: italic;
             text-align: center;
             margin: 55px 70px 15px;

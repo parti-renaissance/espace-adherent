@@ -12,6 +12,7 @@ export default class AmountChooser extends React.Component {
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
     }
 
     handleButtonClicked(amount) {
@@ -34,6 +35,19 @@ export default class AmountChooser extends React.Component {
         });
     }
 
+    handleInputKeyPress(event) {
+        if (!this.props.onSubmit) {
+            return;
+        }
+
+        const key = event.keyCode || event.charCode;
+
+        if (13 === key) {
+            event.preventDefault();
+            this.props.onSubmit();
+        }
+    }
+
     render() {
         const state = this.state.amount;
         const classSelected = 'amount-chooser__button--selected';
@@ -53,11 +67,15 @@ export default class AmountChooser extends React.Component {
 
                 <div className="amount-chooser__other">
                     <input
-                        type="text"
+                        type="number"
                         className="amount-chooser__other__input"
                         id="amount-chooser__other__input"
                         placeholder="Autre"
+                        min="0.01"
+                        max="7500"
+                        step="0.01"
                         onChange={this.handleInputChange}
+                        onKeyPress={this.handleInputKeyPress}
                         defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value} />
 
                     <label htmlFor="amount-chooser__other__input"
@@ -75,4 +93,5 @@ AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
     onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
 };

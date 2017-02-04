@@ -1,23 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block page_title 'Je donne' %}
-{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
-{% block canonical_url url('donation_index') %}
-
-{% block stylesheets %}
-    <style type="text/css">
-        header,
-        footer {
-            display: none;
-        }
-        footer.footer--slim {
-            display: initial;
-        }
-        body {
-            background-color: #01B2FB;
-        }
-    </style>
-{% endblock %}
+{% extends 'donation/layout.html.twig' %}
 
 {% block javascripts %}
     <script type="text/javascript">
@@ -29,175 +10,121 @@
                 '{{ form.address.cityName.vars.id }}'
             );
 
-            var step1 = dom('#step1'),
-                step1Tab = dom('#step1-tab'),
-                step2 = dom('#step2'),
-                step2Tab = dom('#step2-tab'),
-                nextStep = dom('#next-step'),
-                nextStepButton = dom('#next-step-button');
-
-            hide(step2);
-            show(nextStep);
-
-            on(nextStepButton, 'click', function() {
-                hide(step1);
-                hide(nextStep);
-                show(step2);
-                removeClass(step1Tab, 'active');
-                addClass(step2Tab, 'active');
-            });
+            App.runDonation();
         });
     </script>
 {% endblock %}
 
-{% block banner '' %}
+{% block donation_content %}
+    <ul class="donation__form-steps">
+        <li id="step1-tab" class="active"><span>Montant</span></li>
+        <li id="step2-tab">Coordonnées</li>
+        <li>Paiement</li>
+        <li>Confirmation</li>
+    </ul>
 
-{% block content %}
+    {{ form_start(form, { attr: { class: 'form' } }) }}
+    {{ form_errors(form) }}
 
-    <div class="donation progressive-background"
-         data-sd="{{ static_asset('donation-bg.jpg', {'w': 300, 'q': 20}) }}"
-         data-hd="{{ static_asset('donation-bg.jpg', {'w': 2000, 'q': 70}) }}"
-         data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
-        <div>
-            <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
-                <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
-                <div class="text--white text--all-caps"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
-            </section>
+    <div id="step1">
+        <h2>Je soutiens Emmanuel Macron</h2>
+        <span class="fluo">Vous êtes une majorité à donner 50€</span>
 
-            <section class="donation__content l__wrapper l__row space--60-0">
-                <div class="donation__form">
-                    <ul class="donation__form-steps">
-                        <li id="step1-tab" class="active">Montant</li>
-                        <li id="step2-tab">Coordonnées</li>
-                        <li>Paiement</li>
-                        <li>Confirmation</li>
-                    </ul>
+        <p class="montant">
+            Sélectionnez le montant de votre don :
+        </p>
 
-                    {{ form_start(form, { attr: { class: 'form' } }) }}
-                        {{ form_errors(form) }}
-
-                        <div id="step1">
-                            <h2>Je soutiens Emmanuel Macron</h2>
-                            <span class="fluo">Vous êtes une majorité à donner 50€</span>
-
-                            <p class="montant">
-                                Sélectionnez le montant de votre don :
-                            </p>
-
-                            {{ form_errors(form.amount) }}
-                            {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
-                        </div>
-
-                        <div id="next-step" style="display: none;">
-                            <button id="next-step-button" class="btn btn--large-and-medium btn--primary" type="button">
-                                Continuer
-                            </button>
-                        </div>
-
-                        <div id="step2">
-                            <div class="form__row form__row--stretch">
-                                {{ form_errors(form.gender) }}
-                                {{ form_widget(form.gender) }}
-                            </div>
-
-                            <div class="form__row">
-                                {{ form_errors(form.lastName) }}
-                                {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
-                            </div>
-
-                            <div class="form__row">
-                                {{ form_errors(form.firstName) }}
-                                {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
-                            </div>
-
-                            <div class="form__row">
-                                {{ form_errors(form.emailAddress) }}
-                                {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
-                            </div>
-
-                            {{ form_errors(form.address) }}
-
-                            <div class="form__row">
-                                {{ form_errors(form.address.country) }}
-                                {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
-                            </div>
-
-                            <div class="form__row form__row--stretch">
-                                <div class="form--mid">
-                                    {{ form_errors(form.address.postalCode) }}
-                                    {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
-                                </div>
-                                <div class="form--mid">
-                                    {{ form_errors(form.address.city) }}
-                                    {{ form_widget(form.address.city) }}
-                                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
-                                </div>
-                            </div>
-
-                            <div class="form__row">
-                                {{ form_errors(form.address.address) }}
-                                {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
-                            </div>
-
-                            <div class="form__row form__row--stretch">
-                                {{ form_errors(form.phone) }}
-                                {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
-                                {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
-                            </div>
-
-                            <div class="form__row">
-                                <input type="checkbox" required="required" id="donation_check" />
-                                <label for="donation_check">
-                                    Je certifie sur l'honneur être une personne physique et que le règlement de mon don
-                                    provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
-                                    ascendant ou descendant.
-                                </label>
-                            </div>
-
-                            {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
-
-                            <p class="text--summary b__nudge--top-50 text--left">
-                                Les dons à un parti politique sont plafonnés à 7 500 € par personne, par an et pour l’ensemble des partis politiques, à compter de la publication de la loi n° 2013-907 du 11 Octobre relative à la transparence de la vie publique. Les informations que vous nous communiquez sont nécessaires à la gestion de vos dons et de nos relations. Elles sont exclusivement réservées à l’usage de En Marche et en retournant ce formulaire, vous autorisez celles-ci à utiliser vos données pour des opérations de communication politique et de dons. Vos informations ne pourront être communiquées qu’à des co-contractants qui, en leur qualité de sous-traitants de En Marche, n’agiront que sur les instructions de cette dernière et seront soumis à une stricte obligation de confidentialité. Certains de ces partenaires peuvent avoir des activités dans des pays situés en dehors de l’Union Européenne, notamment aux fins d’hébergement des données. Vos données ne seront toutefois transférées que dans des pays présentant une protection adéquate au regard des garanties imposées par la loi du 6 janvier 1978 ou, en ce qui concerne les Etats-Unis, à des entités adhérant aux principes du Safe Harbor. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits d’accès, de rectification, de suppression et d’opposition aux informations vous concernant. Vous pouvez exercer ces droits en nous écrivant à l’adresse : contact@en-marche.fr ou AFEMA, BP80049 94801 VILLEJUIF.
-                            </p>
-                        </div>
-
-                        {{ form_rest(form) }}
-                    {{ form_end(form) }}
-                </div>
-
-                <div class="donation__form-note">
-                    <div class="donation__form-quote">
-                        « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
-                        bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
-                        vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
-                        vos idées ! »
-                    </div>
-                    <img src="{{ asset('images/donation-signature.png') }}" style="width: 350px; padding: 25px;" />
-                </div>
-            </section>
-        </div>
-        <footer class="footer--slim background--lighter space--30-0">
-            <div class="l__wrapper">
-                <div class="l__row l__row--h-stretch l__tablet--col l__mobile--col-center">
-                    <a href="{{ path('homepage') }}" class="link--no-decor"><svg width="109px" height="41px" viewBox="462 369 109 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
-                        <title>En Marche Logo</title>
-                        <polygon id="E" stroke="none" fill="#000000" fill-rule="evenodd" points="468.6709 369.5363 462.9999 408.6353 492.3099 408.6353 493.2979 401.6383 474.0579 401.6383 475.3849 391.9913 489.2349 391.9913 490.2219 384.9943 476.4849 384.9943 477.6969 376.5043 493.5239 376.5043 494.5109 369.5363"></polygon>
-                        <polygon id="M" stroke="none" fill="#000000" fill-rule="evenodd" points="538.969 369.5363 525.569 394.3603 519.391 369.5363 508.869 369.5363 495.978 408.6353 505.822 408.6353 514.313 382.8223 520.774 408.6353 526.782 408.6353 540.351 383.6123 541.451 408.6353 551.043 408.6353 549.209 369.5363"></polygon>
-                        <path id="!" d="M570.3975,373.2315 C570.3975,374.1905 570.2895,375.1775 570.0735,376.1935 C569.8565,377.2095 569.5415,378.4505 569.1275,379.9175 L564.6705,395.5175 L558.7185,395.5175 L559.2265,377.3775 C559.4145,374.9155 559.6685,373.2215 559.9885,372.3005 C560.2885,371.4725 560.8765,370.7155 561.7515,370.0295 C562.6265,369.3425 563.8525,369.0005 565.4325,369.0005 C567.2005,369.0005 568.4695,369.4375 569.2415,370.3115 C570.0115,371.1865 570.3975,372.1595 570.3975,373.2315 M566.4485,403.2745 C566.4485,404.3285 566.1845,405.3055 565.6585,406.2095 C565.1315,407.1115 564.4175,407.8265 563.5135,408.3525 C562.6115,408.8785 561.6335,409.1425 560.5805,409.1425 C559.5085,409.1425 558.5205,408.8785 557.6185,408.3525 C556.7155,407.8265 556.0015,407.1115 555.4745,406.2095 C554.9475,405.3055 554.6845,404.3285 554.6845,403.2745 C554.6845,402.2035 554.9475,401.2155 555.4745,400.3125 C556.0015,399.4105 556.7155,398.6955 557.6185,398.1685 C558.5205,397.6425 559.5085,397.3785 560.5805,397.3785 C561.6335,397.3785 562.6115,397.6425 563.5135,398.1685 C564.4175,398.6955 565.1315,399.4105 565.6585,400.3125 C566.1845,401.2155 566.4485,402.2035 566.4485,403.2745" stroke="none" fill="#000000" fill-rule="evenodd"></path>
-                    </svg></a>
-                    <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
-                        <li class="head">Suivez En Marche !</li>
-                        <li><a href="https://www.facebook.com/EnMarche/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                        <li><a href="https://twitter.com/enmarchefr" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="https://www.instagram.com/enmarchefr/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank"><i class="fa fa-youtube-square"></i></a></li>
-                        <li><a href="https://medium.com/@enmarchefr" target="_blank"><i class="fa fa-medium"></i></a></li>
-                        <li><a href="https://www.linkedin.com/company/en-marche" target="_blank"><i class="fa fa-linkedin-square"></i></a></li>
-                        <li><a href="https://www.snapchat.com/add/enmarchefr" target="_blank"><i class="fa fa-snapchat-ghost"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
+        {{ form_errors(form.amount) }}
+        {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
     </div>
 
+    <div id="next-step" style="display: none;">
+        <button id="next-step-button" class="btn btn--large-and-medium btn--primary" type="button">
+            Continuer
+        </button>
+    </div>
+
+    <div id="step2">
+        <div class="form__row form__row--stretch">
+            {{ form_errors(form.gender) }}
+            {{ form_widget(form.gender) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.lastName) }}
+            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.firstName) }}
+            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.emailAddress) }}
+            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
+        </div>
+
+        {{ form_errors(form.address) }}
+
+        <div class="form__row">
+            {{ form_errors(form.address.country) }}
+            {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row form__row--stretch">
+            <div class="form--mid">
+                {{ form_errors(form.address.postalCode) }}
+                {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+            </div>
+            <div class="form--mid">
+                {{ form_errors(form.address.city) }}
+                {{ form_widget(form.address.city) }}
+                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+            </div>
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.address.address) }}
+            {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+        </div>
+
+        <div class="form__row form__row--stretch">
+            {{ form_errors(form.phone) }}
+            {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+            {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+        </div>
+
+        <div class="form__row">
+            <input type="checkbox" required="required" id="donation_check" />
+            <label for="donation_check">
+                Je certifie sur l'honneur être une personne physique et que le règlement de mon don
+                provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
+                ascendant ou descendant.
+            </label>
+        </div>
+
+        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
+
+        <p class="text--summary b__nudge--top-50 text--left">
+            Les dons à un parti politique sont plafonnés à 7 500 € par personne, par an et pour l’ensemble des
+            partis politiques, à compter de la publication de la loi n° 2013-907 du 11 Octobre relative à la
+            transparence de la vie publique. Les informations que vous nous communiquez sont nécessaires à la
+            gestion de vos dons et de nos relations. Elles sont exclusivement réservées à l’usage de En Marche
+            et en retournant ce formulaire, vous autorisez celles-ci à utiliser vos données pour des opérations
+            de communication politique et de dons. Vos informations ne pourront être communiquées qu’à des
+            co-contractants qui, en leur qualité de sous-traitants de En Marche, n’agiront que sur les instructions
+            de cette dernière et seront soumis à une stricte obligation de confidentialité. Certains de ces
+            partenaires peuvent avoir des activités dans des pays situés en dehors de l’Union Européenne,
+            notamment aux fins d’hébergement des données. Vos données ne seront toutefois transférées que
+            dans des pays présentant une protection adéquate au regard des garanties imposées par la loi du 6
+            janvier 1978 ou, en ce qui concerne les Etats-Unis, à des entités adhérant aux principes du Safe Harbor.
+            En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits
+            d’accès, de rectification, de suppression et d’opposition aux informations vous concernant. Vous pouvez
+            exercer ces droits en nous écrivant à l’adresse : contact@en-marche.fr ou AFEMA, BP80049 94801 VILLEJUIF.
+        </p>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
 {% endblock %}

@@ -1,21 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block page_title 'Je donne' %}
-{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
-{% block canonical_url url('donation_index') %}
-
-{% block banner '' %}
-{% block footer '' %}
-
-{% block stylesheets %}
-    <style type="text/css">
-        header,
-        footer div div:nth-child(2),
-        footer div div:nth-child(3) {
-            display: none;
-        }
-    </style>
-{% endblock %}
+{% extends 'donation/layout.html.twig' %}
 
 {% block javascripts %}
 <script type="text/javascript">
@@ -27,51 +10,29 @@
 </script>
 {% endblock %}
 
-{% block content %}
+{% block donation_content %}
+    <ul class="donation__form-steps">
+        <li>Montant</li>
+        <li>Coordonnées</li>
+        <li class="active">Paiement</li>
+        <li>Confirmation</li>
+    </ul>
 
-    <div class="donation">
+    <div class="donation__payment">
+        <div class="donation__loader" id="app-donation-redirect-loader">
+            <p class="donation__loader__text">
+                Veuillez patienter pendant que nous vous redirigons vers votre banque ...
+            </p>
+        </div>
 
-        <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
-            <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
-            <div class="text--white text--all-caps"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
-        </section>
+        <form class="donation__nojs" action="{{ url }}" method="post" name="app_donation_payment" id="app-donation-redirect-form">
+            {% for field in form %}
+                <input type="{{ field.vars.block_prefixes[1] }}"
+                       name="{{ field.vars.name }}"
+                       {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
+            {% endfor %}
 
-        <section class="l__wrapper l__row space--60-0">
-            <div class="donation__form">
-                <ul class="donation__form-steps">
-                    <li>Coordonnées</li>
-                    <li class="active">Paiement</li>
-                    <li>Confirmation</li>
-                </ul>
-
-                <div class="donation__payment">
-                    <div class="donation__loader" id="app-donation-redirect-loader">
-                        <p class="donation__loader__text">
-                            Veuillez patienter pendant que nous vous redirigons vers votre banque ...
-                        </p>
-                    </div>
-
-                    <form class="donation__nojs" action="{{ url }}" method="post" name="app_donation_payment" id="app-donation-redirect-form">
-                        {% for field in form %}
-                            <input type="{{ field.vars.block_prefixes[1] }}"
-                                   name="{{ field.vars.name }}"
-                                   {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
-                        {% endfor %}
-
-                        <input type="submit" class="form btn btn--primary text--center" value="Continuer vers ma banque" />
-                    </form>
-                </div>
-            </div>
-
-            <div class="donation__form-note">
-                <div class="donation__form-quote">
-                    « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
-                    bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
-                    vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
-                    vos idées ! »
-                </div>
-                <img src="{{ asset('images/donation-signature.png') }}" style="width: 350px; padding: 25px;" />
-            </div>
-        </section>
+            <input type="submit" class="form btn btn--primary text--center" value="Continuer vers ma banque" />
+        </form>
     </div>
 {% endblock %}

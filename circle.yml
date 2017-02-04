@@ -30,7 +30,7 @@ dependencies:
 
 test:
     override:
-        - case $CIRCLE_NODE_INDEX in 0) yarn lint; yarn test; yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 2) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
+        - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml; yarn lint; yarn test; yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
               parallel: true
 
 deployment:

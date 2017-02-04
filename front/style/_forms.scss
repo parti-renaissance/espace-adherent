@@ -1,5 +1,5 @@
 .form {
-    font-family: 'Gillsans', 'Roboto', Helvetica, sans-serif;
+    font-family: $font-gillsans;
 
     &__field {
         padding-left: 12px;
@@ -9,7 +9,7 @@
         box-sizing: border-box;
         margin-right: 10px;
         font-size: $text--size-small;
-        font-family: 'Roboto', sans-serif;
+        font-family: $font-roboto;
         @media (max-width: $tablet) {
             margin: 5px 10px 5px 0;
         }
@@ -51,7 +51,7 @@
 
         #app_donation_gender {
             .form {
-                font-family: 'Roboto';
+                font-family: $font-roboto;
             }
 
             label {

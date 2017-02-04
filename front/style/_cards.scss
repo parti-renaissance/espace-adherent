@@ -22,7 +22,7 @@
 
     .share {
         color: $gray;
-        font-family: 'Roboto';
+        font-family: $font-roboto;
         font-size: $text--size-smallest;
         padding: 0 10px;
         text-transform: uppercase;
@@ -505,7 +505,7 @@
 
                 h2 {
                     @include text--default;
-                    font-family: 'Roboto';
+                    font-family: $font-roboto;
                     padding: 0;
                 }
             }

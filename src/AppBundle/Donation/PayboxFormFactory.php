@@ -25,7 +25,7 @@ class PayboxFormFactory
         $parameters = [
             'PBX_CMD' => $donation->getUuid()->toString(),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
-            'PBX_TOTAL' => $donation->getAmount() * 100,
+            'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',
             'PBX_RETOUR' => 'id:R;authorization:A;result:E;transaction:S;amount:M;date:W;time:Q;card_type:C;card_end:D;card_print:H',
             'PBX_TYPEPAIEMENT' => 'CARTE',
