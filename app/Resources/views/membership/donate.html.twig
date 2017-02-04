@@ -18,8 +18,8 @@
                     {{ form_errors(form.amount) }}
                     {{ form_widget(form.amount, { 'attr': { 'class': 'form--full', 'id': 'donation-amount' } }) }}
 
-                    {{ form_widget(form.pass, { label: 'adherent.pass_donation_label' }) }}
-                    {{ form_widget(form.submit) }}
+                    {{ form_widget(form.pass, { label: 'adherent.pass_donation_label', translation_domain: 'messages' }) }}
+                    {{ form_widget(form.submit, { translation_domain: 'messages' }) }}
 
                     {{ form_rest(form) }}
                 {{ form_end(form) }}
