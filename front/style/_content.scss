@@ -421,6 +421,7 @@
 
         h2 {
             @include text--large;
+            max-width: 90%;
         }
 
         div {
