@@ -53,7 +53,7 @@ class AssetExtension extends \Twig_Extension
 
     private function generateAssetUrl(string $path, array $parameters = [])
     {
-        $parameters['fm'] = 'jpg';
+        $parameters['fm'] = 'pjpg';
         $parameters['s'] = SignatureFactory::create($this->secret)->generateSignature($path, $parameters);
         $parameters['path'] = $path;
 
