@@ -65,7 +65,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
 
         /* @var Donation $donation */
-        $this->assertEquals(30, $donation->getAmount());
+        $this->assertEquals(3000, $donation->getAmount());
         $this->assertSame('male', $donation->getGender());
         $this->assertSame('Doe', $donation->getLastName());
         $this->assertSame('John', $donation->getFirstName());

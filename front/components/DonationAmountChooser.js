@@ -24,6 +24,7 @@ export default class DonationAmountChooser extends React.Component {
                 <AmountChooser
                     name={this.props.name}
                     value={this.props.value}
+                    onSubmit={this.props.onSubmit}
                     onChange={this.handleAmountChange}
                 />
 
@@ -41,4 +42,5 @@ export default class DonationAmountChooser extends React.Component {
 DonationAmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
+    onSubmit: PropTypes.func,
 };

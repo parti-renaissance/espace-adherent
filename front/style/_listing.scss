@@ -98,7 +98,7 @@
 
                 h2 {
                     @include text--medium;
-                    font-family: 'Gillsans';
+                    font-family: $font-gillsans;
                     font-weight: 400;
                     margin: 0;
 
@@ -120,7 +120,7 @@
 
                 .share {
                     color: $gray;
-                    font-family: 'Roboto';
+                    font-family: $font-roboto;
                     font-size: $text--size-smallest;
                     text-transform: uppercase;
 

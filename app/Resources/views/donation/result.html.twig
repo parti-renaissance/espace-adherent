@@ -1,72 +1,78 @@
-{% extends 'base.html.twig' %}
+{% extends 'donation/layout.html.twig' %}
 
-{% block page_title 'Je donne' %}
-{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
-{% block canonical_url url('donation_index') %}
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            hide(dom('#app-donation-redirect-form'));
+            show(dom('#app-donation-redirect-loader'));
+            document.getElementById('app-donation-redirect-form').submit();
+        });
+    </script>
+{% endblock %}
 
-{% block banner '' %}
+{% block donation_content %}
+    <ul class="donation__form-steps">
+        <li>Montant</li>
+        <li>Coordonnées</li>
+        <li>Paiement</li>
+        <li class="active">Confirmation</li>
+    </ul>
 
-{% block content %}
-<section class="l__wrapper--slim donation-result">
-    {% if successful %}
-        <p>
-            Merci de votre don !
-        </p>
-    {% else %}
-        {% if error_code == 'paybox' %}
+    <div class="donation__result {{ successful ? 'donation__result--successful' : 'donation__result--failure' }}">
+        {% if successful %}
+            <div class="donation__result--successful__amount">
+                Paiement réussi de<br />
+                <h3>{{ (donation.amount/100)|round(2) }}€</h3>
+            </div>
+            <div class="donation__result--successful__thankyou">
+                Votre soutien compte<br />
+                beaucoup pour moi.<br />
+                Vous êtes maintenant<br />
+                un acteur de la révolution<br />
+                En Marche !
+            </div>
+            <div class="donation__result--successful__thankyou">
+                Faites le savoir à vos<br />
+                proches, diffusez nos idées,<br />
+                rejoignez nos comités<br />
+                locaux. Soyez fier d’être<br />
+                En Marche !
+            </div>
+            <div class="donation__result--successful__share-pride">
+                « Fier d’être en Marche ! »
+            </div>
+            <ul class="donation__result--successful__sharer">
+                <li role="button" arial-label="Partagez sur Facebook"
+                    class="btn btn-medium btn--social btn--facebook"
+                    onclick="App.share('facebook', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ?')">
+                    <i class="fa fa-facebook-square"></i> <span>Je partage</span>
+                </li>
+                <li role="button" arial-label="Partagez via Twitter"
+                    class="btn btn-medium btn--social btn--twitter"
+                    onclick="App.share('twitter', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ?')">
+                    <i class="fa fa-twitter"></i> <span>Je tweete</span>
+                </li>
+            </ul>
             <p>
-                Un problème s'est produit avec la plateforme de paiement.
-            </p>
-            <p>
-                Pouvez-vous s'il vous plait réessayer ?
-            </p>
-            <p>
-                <a href="{{ retry_url }}" class="form btn btn--primary btn--large">
-                    Réessayer
-                </a>
-            </p>
-        {% elseif error_code == 'invalid-card' %}
-            <p>
-                Notre banque nous a indiqué que votre carte est invalide.
-            </p>
-            <p>
-                Pouvez-vous s'il vous plait réessayer en vérifiant les informations de votre carte ?
-            </p>
-            <p>
-                <a href="{{ retry_url }}" class="form btn btn--primary btn--large">
-                    Réessayer
-                </a>
-            </p>
-        {% elseif error_code == '00030' %}
-            <p>
-                Vous avez mis trop de temps à payer, votre session a expirée.
-            </p>
-            <p>
-                Pouvez-vous s'il vous plait réessayer ?
-            </p>
-            <p>
-                <a href="{{ retry_url }}" class="form btn btn--primary btn--large">
-                    Réessayer
+                <a href="{{ path('homepage') }}" class="btn btn-medium">
+                    Retour à l'accueil
                 </a>
             </p>
         {% else %}
+            <h3>
+                Votre don n'a pas été effectué, soit car vous l'avez annulé soit car une erreur s'est produite.
+            </h3>
+
             <p>
-                Une erreur inconnue s'est produite.
-            </p>
-            <p>
-                Pouvez-vous s'il vous plait réessayer ?
-            </p>
-            <p>
-                <a href="{{ retry_url }}" class="form btn btn--primary btn--large">
-                    Réessayer
+                <a href="{{ retry_url }}" class="btn btn--medium-small btn--primary">
+                    Je souhaite réessayer
                 </a>
             </p>
-        {% endif %}
 
-        <p class="donation-result__support">
-            Si le problème se reproduit et que vous ne le comprenez pas, n'hésitez pas à contacter le
-            <a href="mailto:support@en-marche.fr">support En Marche</a>.
-        </p>
-    {% endif %}
-</section>
+            <p class="donation-result__support">
+                Si le problème se reproduit et que vous ne le comprenez pas, n'hésitez pas à contacter le
+                <a href="mailto:support@en-marche.fr">support En Marche</a>.
+            </p>
+        {% endif %}
+    </div>
 {% endblock %}

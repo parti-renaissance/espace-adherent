@@ -82,7 +82,7 @@ class DonationController extends Controller
     public function resultAction(Request $request, Donation $donation)
     {
         $retryUrl = $this->generateUrl('donation_index', [
-            'montant' => $donation->getAmount(),
+            'montant' => $donation->getAmount() / 100,
             'ge' => $donation->getGender(),
             'ln' => $donation->getLastName(),
             'fn' => $donation->getFirstName(),

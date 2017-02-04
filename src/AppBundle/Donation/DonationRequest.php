@@ -66,7 +66,7 @@ class DonationRequest
      */
     private $phone;
 
-    public function __construct(int $amount = 50)
+    public function __construct(float $amount = 50.0)
     {
         $this->emailAddress = '';
         $this->address = new Address();
@@ -74,7 +74,7 @@ class DonationRequest
         $this->amount = $amount;
     }
 
-    public static function createFromAdherent(Adherent $adherent, int $amount = 50): self
+    public static function createFromAdherent(Adherent $adherent, float $amount = 50.0): self
     {
         $dto = new self($amount);
         $dto->gender = $adherent->getGender();
@@ -100,12 +100,12 @@ class DonationRequest
         return $phone;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(?int $amount)
+    public function setAmount(?float $amount)
     {
         $this->amount = $amount;
     }

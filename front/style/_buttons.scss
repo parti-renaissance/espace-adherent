@@ -95,7 +95,7 @@
         padding: 26px 0;
         @include text--medium-small;
         letter-spacing: 1.9px;
-        font-family: "Gillsans";
+        font-family: $font-gillsans;
         max-width: 300px;
         width: 100%;
     }
@@ -137,7 +137,7 @@
 
     &--social {
         font-size: $text--size-smallest;
-        font-family: 'Roboto';
+        font-family: $font-roboto;
     }
 
     &--facebook {

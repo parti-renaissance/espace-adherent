@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Je donne' %}
+{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
+{% block canonical_url url('donation_index') %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        header,
+        footer {
+            display: none;
+        }
+        footer.footer--slim {
+            display: initial;
+        }
+        body {
+            background-color: #01B2FB;
+        }
+    </style>
+{% endblock %}
+
+{% block banner '' %}
+{% block footer '' %}
+
+{% block content %}
+
+    <div class="donation progressive-background"
+         data-sd="{{ static_asset('donation-bg.jpg', {'w': 300, 'q': 20}) }}"
+         data-hd="{{ static_asset('donation-bg.jpg', {'w': 2000, 'q': 70}) }}"
+         data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))">
+        <div>
+            <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
+                <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
+                <div class="text--white text--all-caps"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
+            </section>
+
+            <section class="donation__content l__wrapper l__row space--60-0">
+                <div class="donation__form">
+                    {% block donation_content %}{% endblock %}
+                </div>
+
+                <div class="donation__form-note">
+                    <div class="donation__form-quote">
+                        « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
+                        bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
+                        vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
+                        vos idées ! »
+                    </div>
+                    <img src="{{ asset('images/donation-signature.png') }}" style="width: 350px; padding: 25px;" />
+                </div>
+            </section>
+        </div>
+        <footer class="footer--slim background--lighter space--30-0">
+            <div class="l__wrapper">
+                <div class="l__row l__row--h-stretch l__tablet--col l__mobile--col-center">
+                    <a href="{{ path('homepage') }}" class="link--no-decor"><svg width="109px" height="41px" viewBox="462 369 109 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
+                            <title>En Marche Logo</title>
+                            <polygon id="E" stroke="none" fill="#000000" fill-rule="evenodd" points="468.6709 369.5363 462.9999 408.6353 492.3099 408.6353 493.2979 401.6383 474.0579 401.6383 475.3849 391.9913 489.2349 391.9913 490.2219 384.9943 476.4849 384.9943 477.6969 376.5043 493.5239 376.5043 494.5109 369.5363"></polygon>
+                            <polygon id="M" stroke="none" fill="#000000" fill-rule="evenodd" points="538.969 369.5363 525.569 394.3603 519.391 369.5363 508.869 369.5363 495.978 408.6353 505.822 408.6353 514.313 382.8223 520.774 408.6353 526.782 408.6353 540.351 383.6123 541.451 408.6353 551.043 408.6353 549.209 369.5363"></polygon>
+                            <path id="!" d="M570.3975,373.2315 C570.3975,374.1905 570.2895,375.1775 570.0735,376.1935 C569.8565,377.2095 569.5415,378.4505 569.1275,379.9175 L564.6705,395.5175 L558.7185,395.5175 L559.2265,377.3775 C559.4145,374.9155 559.6685,373.2215 559.9885,372.3005 C560.2885,371.4725 560.8765,370.7155 561.7515,370.0295 C562.6265,369.3425 563.8525,369.0005 565.4325,369.0005 C567.2005,369.0005 568.4695,369.4375 569.2415,370.3115 C570.0115,371.1865 570.3975,372.1595 570.3975,373.2315 M566.4485,403.2745 C566.4485,404.3285 566.1845,405.3055 565.6585,406.2095 C565.1315,407.1115 564.4175,407.8265 563.5135,408.3525 C562.6115,408.8785 561.6335,409.1425 560.5805,409.1425 C559.5085,409.1425 558.5205,408.8785 557.6185,408.3525 C556.7155,407.8265 556.0015,407.1115 555.4745,406.2095 C554.9475,405.3055 554.6845,404.3285 554.6845,403.2745 C554.6845,402.2035 554.9475,401.2155 555.4745,400.3125 C556.0015,399.4105 556.7155,398.6955 557.6185,398.1685 C558.5205,397.6425 559.5085,397.3785 560.5805,397.3785 C561.6335,397.3785 562.6115,397.6425 563.5135,398.1685 C564.4175,398.6955 565.1315,399.4105 565.6585,400.3125 C566.1845,401.2155 566.4485,402.2035 566.4485,403.2745" stroke="none" fill="#000000" fill-rule="evenodd"></path>
+                        </svg></a>
+                    <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
+                        <li class="head">Suivez En Marche !</li>
+                        <li><a href="https://www.facebook.com/EnMarche/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                        <li><a href="https://twitter.com/enmarchefr" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.instagram.com/enmarchefr/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank"><i class="fa fa-youtube-square"></i></a></li>
+                        <li><a href="https://medium.com/@enmarchefr" target="_blank"><i class="fa fa-medium"></i></a></li>
+                        <li><a href="https://www.linkedin.com/company/en-marche" target="_blank"><i class="fa fa-linkedin-square"></i></a></li>
+                        <li><a href="https://www.snapchat.com/add/enmarchefr" target="_blank"><i class="fa fa-snapchat-ghost"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+{% endblock %}
