@@ -4,6 +4,12 @@ imports:
 parameters:
     timeline_max_messages: 10
 
+services:
+    app.mailjet.transport:
+        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
