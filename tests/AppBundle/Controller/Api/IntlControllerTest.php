@@ -8,6 +8,9 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 class IntlControllerTest extends SqliteWebTestCase
 {
+    /**
+     * @group functionnal
+     */
     public function testGetPostalCode()
     {
         $client = $this->makeClient();

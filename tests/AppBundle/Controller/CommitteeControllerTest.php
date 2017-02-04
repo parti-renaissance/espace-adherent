@@ -10,12 +10,12 @@ use AppBundle\Repository\CommitteeEventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Entity\Committee;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class CommitteeControllerTest extends WebTestCase
+class CommitteeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
@@ -28,6 +28,9 @@ class CommitteeControllerTest extends WebTestCase
     /* @var CommitteeFeedItemRepository */
     private $committeeFeedItemRepository;
 
+    /**
+     * @group functionnal
+     */
     public function testCommitteeFollowerIsNotAllowedToPublishNewCommitteeEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -40,6 +43,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCommitteeHostCanPublishNewCommitteeEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -158,6 +164,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('#committee-event-description')->text());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testApprovedCommitteePageIsViewableByAnyone()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
@@ -182,6 +191,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testUnapprovedCommitteedIsViewableByItsCreator()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
@@ -201,6 +213,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAnonymousGuestCanShowCommitteePage()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
@@ -219,6 +234,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticatedAdherentCanShowCommitteePage()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
@@ -238,6 +256,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -254,6 +275,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticatedCommitteeHostCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -271,6 +295,9 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertTrue($this->seeMessageForm($crawler));
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -429,13 +456,10 @@ class CommitteeControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
         ]);
 
-        $this->container = $this->getContainer();
-        $this->client = static::createClient();
-        $this->container = $this->client->getContainer();
         $this->emailRepository = $this->getMailjetEmailRepository();
         $this->committeeEventRepository = $this->getCommitteeEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
@@ -443,14 +467,11 @@ class CommitteeControllerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->committeeFeedItemRepository = null;
         $this->committeeEventRepository = null;
         $this->emailRepository = null;
-        $this->container = null;
-        $this->container = null;
-        $this->client = null;
 
         parent::tearDown();
     }

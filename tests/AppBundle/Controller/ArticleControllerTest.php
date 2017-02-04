@@ -13,6 +13,9 @@ class ArticleControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testArticlePublished()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/article/outre-mer');
@@ -22,6 +25,9 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testArticleWithoutImage()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/article/sans-image');
@@ -31,6 +37,9 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testArticleDraft()
     {
         $this->client->request(Request::METHOD_GET, '/article/brouillon');
@@ -41,20 +50,16 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadArticleData::class,
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
         ]);
-
-        $this->client = $this->makeClient();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-
-        $this->client = null;
+        $this->kill();
 
         parent::tearDown();
     }

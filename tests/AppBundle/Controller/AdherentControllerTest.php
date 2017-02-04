@@ -25,6 +25,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     /**
      * @dataProvider provideProfilePage
+     * @group functionnal
      */
     public function testProfileActionIsSecured($profilePage)
     {
@@ -36,6 +37,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     /**
      * @dataProvider provideProfilePage
+     * @group functionnal
      */
     public function testProfileActionIsAccessibleForAdherent($profilePage, $title)
     {
@@ -62,6 +64,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         yield ['/espace-adherent/mon-profil/preferences-des-emails', 'Préférences des e-mails'];
     }
 
+    /**
+     * @group functionnal
+     */
     public function testEditAdherentProfile()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -162,6 +167,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertNotSame($oldLongitude, $newLongitude);
     }
 
+    /**
+     * @group functionnal
+     */
     public function testEditAdherentInterests()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -218,6 +226,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         }
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAdherentChangePassword()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -262,6 +273,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'heaneaheah');
     }
 
+    /**
+     * @group functionnal
+     */
     public function testAdherentSetEmailNotifications()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
@@ -313,6 +327,7 @@ class AdherentControllerTest extends SqliteWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
     public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emaiLAddress, string $password)
@@ -344,6 +359,7 @@ class AdherentControllerTest extends SqliteWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideRegularAdherentsCredentials
      */
     public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $password)
@@ -428,24 +444,20 @@ class AdherentControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
         ]);
 
-        $this->client = $this->makeClient();
-        $this->container = $this->client->getContainer();
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->emailRepository = null;
         $this->committeeRepository = null;
-        $this->container = null;
-        $this->client = null;
 
         parent::tearDown();
     }

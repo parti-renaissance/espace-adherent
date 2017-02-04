@@ -16,6 +16,9 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
 
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticationIsSuccessful()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
@@ -37,6 +40,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideInvalidCredentials
      */
     public function testLoginCheckFails($username, $password)
@@ -84,19 +88,14 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdminData::class,
         ]);
-
-        $this->client = $this->makeClient();
-        $this->container = $this->client->getContainer();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-        $this->container = null;
-        $this->client = null;
+        $this->kill();
 
         parent::tearDown();
     }

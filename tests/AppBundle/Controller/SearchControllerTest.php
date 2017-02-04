@@ -2,14 +2,17 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\MysqlWebTestCase;
 
-class SearchControllerTest extends WebTestCase
+class SearchControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testIndex()
     {
         $this->client->request(Request::METHOD_GET, '/search');
@@ -21,12 +24,12 @@ class SearchControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client = static::createClient();
+        $this->init();
     }
 
     protected function tearDown()
     {
-        $this->client = null;
+        $this->kill();
 
         parent::tearDown();
     }

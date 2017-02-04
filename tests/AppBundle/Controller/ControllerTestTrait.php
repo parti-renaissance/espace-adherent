@@ -56,6 +56,10 @@ trait ControllerTestTrait
 
     protected function init(array $fixtures = [])
     {
+        if ($fixtures) {
+            $this->loadFixtures($fixtures);
+        }
+
         $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
@@ -63,6 +67,7 @@ trait ControllerTestTrait
 
     protected function kill()
     {
+        $this->loadFixtures([]);
         $this->client = null;
         $this->container = null;
         $this->manager = null;

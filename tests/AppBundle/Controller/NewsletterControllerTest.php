@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadNeswletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -20,10 +21,12 @@ class NewsletterControllerTest extends SqliteWebTestCase
     /** @var NewsletterSubscriptionRepository */
     private $subscriptionsRepository;
 
+    /**
+     * @group functionnal
+     */
     public function testSubscriptionAndRetry()
     {
-        // There should not be any subscription for the moment
-        $this->assertCount(0, $this->subscriptionsRepository->findAll());
+        $this->assertCount(1, $this->subscriptionsRepository->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
@@ -36,10 +39,10 @@ class NewsletterControllerTest extends SqliteWebTestCase
         ]));
 
         // Subscription should have been saved
-        $this->assertCount(1, $subscriptions = $this->subscriptionsRepository->findAll());
+        $this->assertCount(2, $subscriptions = $this->subscriptionsRepository->findAll());
 
         /** @var NewsletterSubscription $subscription */
-        $subscription = $subscriptions[0];
+        $subscription = $subscriptions[1];
 
         $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
         $this->assertSame('10000', $subscription->getPostalCode());
@@ -58,13 +61,15 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Subscription should not have been saved
-        $this->assertCount(1, $subscriptions = $this->subscriptionsRepository->findAll());
+        $this->assertCount(2, $this->subscriptionsRepository->findAll());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testSubscriptionFromHome()
     {
-        // There should not be any donation for the moment
-        $this->assertCount(0, $this->subscriptionsRepository->findAll());
+        $this->assertCount(1, $this->subscriptionsRepository->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -77,29 +82,26 @@ class NewsletterControllerTest extends SqliteWebTestCase
         ]));
 
         // Subscription should have been saved
-        $this->assertCount(1, $this->subscriptionsRepository->findAll());
+        $this->assertCount(2, $this->subscriptionsRepository->findAll());
     }
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadHomeBlockData::class,
+            LoadNeswletterSubscriptionData::class,
         ]);
 
-        $this->client = $this->makeClient();
-        $this->container = $this->client->getContainer();
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
-        $this->client = null;
         $this->subscriptionsRepository = null;
-        $this->container = null;
 
         parent::tearDown();
     }

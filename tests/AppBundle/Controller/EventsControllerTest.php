@@ -10,6 +10,9 @@ class EventsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testIndexActionIsSecured()
     {
         $client = $this->makeClient();

@@ -12,6 +12,9 @@ class HomeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testIndex()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -27,6 +30,9 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testHealth()
     {
         $this->client->request(Request::METHOD_GET, '/health');
@@ -38,19 +44,15 @@ class HomeControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
         ]);
-
-        $this->client = $this->makeClient();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-
-        $this->client = null;
+        $this->kill();
 
         parent::tearDown();
     }

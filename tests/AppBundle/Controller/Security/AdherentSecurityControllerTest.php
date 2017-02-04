@@ -22,6 +22,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /* @var MailjetEmailRepository */
     private $emailRepository;
 
+    /**
+     * @group functionnal
+     */
     public function testAuthenticationIsSuccessful()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
@@ -54,6 +57,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideInvalidCredentials
      */
     public function testLoginCheckFails($username, $password)
@@ -97,6 +101,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
     public function testRetrieveForgotPasswordAction()
     {
         $client = $this->makeClient();
@@ -109,6 +116,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'), 'No error should be displayed on initial display');
     }
 
+    /**
+     * @group functionnal
+     */
     public function testRetrieveForgotPasswordActionWithEmptyEmail()
     {
         $client = $this->makeClient();
@@ -126,6 +136,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertContains('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
+    /**
+     * @group functionnal
+     */
     public function testRetrieveForgotPasswordActionWithUnknownEmail()
     {
         $client = $this->makeClient();
@@ -148,6 +161,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
+    /**
+     * @group functionnal
+     */
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
     {
         $client = $this->makeClient();
@@ -157,7 +173,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
         $formData = [
-            'form' => ['email' => 'michelle.dufour@example.ch'],
+            'form' => ['email' => 'carl999@example.fr'],
         ];
 
         $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), $formData);
@@ -168,9 +184,12 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'michelle.dufour@example.ch'), 'An email should have been sent.');
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }
 
+    /**
+     * @group functionnal
+     */
     public function testResetPasswordAction()
     {
         $client = $this->client = $this->makeClient();
@@ -215,10 +234,10 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->init();
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
         ]);
+
         $this->adherentRepository = $this->getAdherentRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();
     }
@@ -226,7 +245,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     protected function tearDown()
     {
         $this->kill();
-        $this->loadFixtures([]);
+
         $this->emailRepository = null;
         $this->adherentRepository = null;
 

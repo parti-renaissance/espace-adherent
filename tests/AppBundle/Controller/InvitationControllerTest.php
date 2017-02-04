@@ -19,6 +19,9 @@ class InvitationControllerTest extends SqliteWebTestCase
     /** @var InvitationRepository */
     private $invitationRepository;
 
+    /**
+     * @group functionnal
+     */
     public function testSubscriptionAndRetry()
     {
         // There should not be any invites at the moment
@@ -67,20 +70,16 @@ class InvitationControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([]);
+        $this->init([]);
 
-        $this->client = $this->makeClient();
-        $this->container = $this->client->getContainer();
         $this->invitationRepository = $this->getInvitationRepository();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->invitationRepository = null;
-        $this->container = null;
-        $this->client = null;
 
         parent::tearDown();
     }

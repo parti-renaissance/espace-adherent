@@ -13,6 +13,7 @@ class PageControllerTest extends SqliteWebTestCase
     use ControllerTestTrait;
 
     /**
+     * @group functionnal
      * @dataProvider providePages
      */
     public function testPages($path)
@@ -39,6 +40,9 @@ class PageControllerTest extends SqliteWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
     public function testProposalDraft()
     {
         $this->client->request(Request::METHOD_GET, '/emmanuel-macron/le-programme/mieux-vivre-de-son-travail');
@@ -49,19 +53,15 @@ class PageControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadPageData::class,
             LoadProposalData::class,
         ]);
-
-        $this->client = $this->makeClient();
     }
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-
-        $this->client = null;
+        $this->kill();
 
         parent::tearDown();
     }

@@ -2,14 +2,17 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\SqliteWebTestCase;
 
-class AssetsControllerTest extends WebTestCase
+class AssetsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @group functionnal
+     */
     public function testStaticMaps()
     {
         $client = static::createClient();
@@ -63,6 +66,9 @@ class AssetsControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * @group functionnal
+     */
     public function testStaticMapsWithWrongQuery()
     {
         $client = static::createClient();
