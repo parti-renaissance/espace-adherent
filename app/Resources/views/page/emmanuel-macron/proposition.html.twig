@@ -45,7 +45,7 @@
 
         {% if proposal.media and proposal.displayMedia %}
         <figure class="fullscreen">
-            <img src="{{ dynamic_asset(proposal.media.path, {'w': proposal.media.width, 'h': 400, 'fit': 'crop', 'q': 80}) }}">
+            <img src="{{ dynamic_asset(proposal.media.path, {'q': 70}) }}">
         </figure>
         {% endif %}
 
