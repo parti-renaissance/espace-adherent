@@ -8,7 +8,7 @@ use AppBundle\Membership\MembershipOnBoardingInterface;
 /**
  * A simple instance to store a registered adherent not yet activated.
  */
-final class RegisteringAdherent implements MembershipOnBoardingInterface
+final class OnBoardingAdherent implements MembershipOnBoardingInterface
 {
     private $adherent;
 

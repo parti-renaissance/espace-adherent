@@ -6,9 +6,9 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Membership\MembershipOnBoardingInterface;
 
 /**
- * A simple instance to store a donation while on boarding.
+ * A simple instance to store a donation request while on boarding.
  */
-final class RegisteringDonation implements MembershipOnBoardingInterface
+final class OnBoardingDonation implements MembershipOnBoardingInterface
 {
     private $donationRequest;
 

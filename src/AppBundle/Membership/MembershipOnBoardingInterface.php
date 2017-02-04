@@ -7,5 +7,4 @@ namespace AppBundle\Membership;
  */
 interface MembershipOnBoardingInterface
 {
-    const NEW_ADHERENT_ID = 'membership.on_boarding.new_adherent_id';
 }

@@ -3,14 +3,12 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\Donation;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
-use AppBundle\Membership\MembershipOnBoardingInterface;
+use AppBundle\Membership\OnBoarding\OnBoardingSession;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
@@ -192,7 +190,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $session = $this->client->getRequest()->getSession();
 
-        $this->assertSame($adherent->getId(), $session->get(MembershipOnBoardingInterface::NEW_ADHERENT_ID));
+        $this->assertSame($adherent->getId(), $session->get(OnBoardingSession::NEW_ADHERENT));
     }
 
     /**
@@ -227,7 +225,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $session = $this->client->getRequest()->getSession();
 
-        $this->assertSame($adherent->getId(), $session->get(MembershipOnBoardingInterface::NEW_ADHERENT_ID));
+        $this->assertSame($adherent->getId(), $session->get(OnBoardingSession::NEW_ADHERENT));
     }
 
     /**
@@ -247,7 +245,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
     {
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, 'wrong id');
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, 'wrong id');
 
         $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
 
@@ -274,7 +272,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
 
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $adherent->getId());
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/don');
 
@@ -292,7 +290,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
 
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $adherent->getId());
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -324,7 +322,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getInterests());
 
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $adherent->getId());
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -360,7 +358,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $adherent->getId());
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
@@ -394,7 +392,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
 
-        $this->client->getContainer()->get('session')->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $adherent->getId());
+        $this->client->getContainer()->get('session')->set(OnBoardingSession::NEW_ADHERENT, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 

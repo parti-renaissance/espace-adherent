@@ -5,8 +5,9 @@ namespace AppBundle\Controller\ArgumentValueResolver;
 use AppBundle\Donation\DonationRequestFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Membership\MembershipOnBoardingInterface;
-use AppBundle\Membership\OnBoarding\RegisteringAdherent;
-use AppBundle\Membership\OnBoarding\RegisteringDonation;
+use AppBundle\Membership\OnBoarding\OnBoardingAdherent;
+use AppBundle\Membership\OnBoarding\OnBoardingDonation;
+use AppBundle\Membership\OnBoarding\OnBoardingSession;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -37,7 +38,7 @@ class MembershipOnBoardingResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
-        if (!$adherentId = $request->getSession()->get(MembershipOnBoardingInterface::NEW_ADHERENT_ID)) {
+        if (!$adherentId = $request->getSession()->get(OnBoardingSession::NEW_ADHERENT)) {
             throw new NotFoundHttpException('The adherent has not been successfully redirected from the registration page.');
         }
 
@@ -47,12 +48,14 @@ class MembershipOnBoardingResolver implements ArgumentValueResolverInterface
             throw new NotFoundHttpException(sprintf('New adherent not found for id %s".', $adherentId));
         }
 
-        if (RegisteringAdherent::class === $argument->getType()) {
-            yield new RegisteringAdherent($adherent);
+        $type = $argument->getType();
+
+        if (OnBoardingAdherent::class === $type) {
+            yield new OnBoardingAdherent($adherent);
         }
 
-        if (RegisteringDonation::class === $argument->getType()) {
-            yield new RegisteringDonation($this->donationRequestFactory->createFromAdherent($adherent));
+        if (OnBoardingDonation::class === $type) {
+            yield new OnBoardingDonation($this->donationRequestFactory->createFromAdherent($adherent));
         }
     }
 }

@@ -43,7 +43,7 @@
             <tag name="controller.argument_value_resolver"/>
         </service>
 
-        <service id="app.membership.on_boarding_util" class="AppBundle\Membership\OnBoarding\OnBoardingUtil">
+        <service id="app.membership.on_boarding_session" class="AppBundle\Membership\OnBoarding\OnBoardingSession">
             <argument type="service" id="session"/>
         </service>
 

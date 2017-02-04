@@ -6,9 +6,9 @@ use AppBundle\Controller\ArgumentValueResolver\MembershipOnBoardingResolver;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestFactory;
 use AppBundle\Entity\Adherent;
-use AppBundle\Membership\MembershipOnBoardingInterface;
-use AppBundle\Membership\OnBoarding\RegisteringAdherent;
-use AppBundle\Membership\OnBoarding\RegisteringDonation;
+use AppBundle\Membership\OnBoarding\OnBoardingAdherent;
+use AppBundle\Membership\OnBoarding\OnBoardingDonation;
+use AppBundle\Membership\OnBoarding\OnBoardingSession;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -33,11 +33,11 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertFalse(
-            $this->resolver->supports(Request::create('/'), $this->createArgumentMetadata(RegisteringAdherent::class))
+            $this->resolver->supports(Request::create('/'), $this->createArgumentMetadata(OnBoardingAdherent::class))
         );
 
         $this->assertFalse(
-            $this->resolver->supports(Request::create('/'), $this->createArgumentMetadata(RegisteringDonation::class))
+            $this->resolver->supports(Request::create('/'), $this->createArgumentMetadata(OnBoardingDonation::class))
         );
     }
 
@@ -48,11 +48,11 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue(
-            $this->resolver->supports($this->createRequest(), $this->createArgumentMetadata(RegisteringAdherent::class))
+            $this->resolver->supports($this->createRequest(), $this->createArgumentMetadata(OnBoardingAdherent::class))
         );
 
         $this->assertTrue(
-            $this->resolver->supports($this->createRequest(), $this->createArgumentMetadata(RegisteringDonation::class))
+            $this->resolver->supports($this->createRequest(), $this->createArgumentMetadata(OnBoardingDonation::class))
         );
     }
 
@@ -98,11 +98,11 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
         $results = $this->resolver->resolve(
             $this->createRequest('id'),
-            $this->createArgumentMetadata(RegisteringAdherent::class)
+            $this->createArgumentMetadata(OnBoardingAdherent::class)
         );
 
         foreach ($results as $result) {
-            $this->assertInstanceOf(RegisteringAdherent::class, $result);
+            $this->assertInstanceOf(OnBoardingAdherent::class, $result);
             $this->assertSame($adherent, $result->getAdherent());
         }
     }
@@ -117,12 +117,12 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
         $results = $this->resolver->resolve(
             $this->createRequest('id'),
-            $this->createArgumentMetadata(RegisteringDonation::class)
+            $this->createArgumentMetadata(OnBoardingDonation::class)
         );
 
         foreach ($results as $result) {
-            $this->assertInstanceOf(RegisteringDonation::class, $result);
-            $this->assertInstanceOf(DonationRequest::class, $donation = $result->getDonationRequest());
+            $this->assertInstanceOf(OnBoardingDonation::class, $result);
+            $this->assertInstanceOf(DonationRequest::class, $result->getDonationRequest());
         }
     }
 
@@ -159,7 +159,7 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
         $session = new Session(new MockArraySessionStorage());
 
         if (null !== $newAdherentId) {
-            $session->set(MembershipOnBoardingInterface::NEW_ADHERENT_ID, $newAdherentId);
+            $session->set(OnBoardingSession::NEW_ADHERENT, $newAdherentId);
         }
 
         $request->setSession($session);
