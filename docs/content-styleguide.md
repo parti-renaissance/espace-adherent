@@ -56,25 +56,21 @@ Si vous voulez l'attribuer un `figcaption` à l'interieur de la `figure`.
 
 Une citation courte, large et centrée:
 ```
-<figure>
-    <div class="blockquote--short">
-        <blockquote>
-            <span>«Tout commence par la rénovation de l’engagement politique.»</span>
-        </blockquote>
-        <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
-    </div>
+<figure class="blockquote--short">
+    <blockquote>
+        <span>«Tout commence par la rénovation de l’engagement politique.»</span>
+    </blockquote>
+    <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
 </figure>
 ```
 
 Une citation longue, présentée en bloc:
 ```
-<figure>
-    <div class="blockquote--long">
-        <blockquote>
-            <span>«Tout commence par la rénovation de l’engagement politique.»</span>
-        </blockquote>
-        <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
-    </div>
+<figure class="blockquote--long">
+    <blockquote>
+        <span>«Tout commence par la rénovation de l’engagement politique.»</span>
+    </blockquote>
+    <figcaption>Emmanuel Macron, le 12 juillet 2016</figcaption>
 </figure>
 ```
 

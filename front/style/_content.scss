@@ -123,9 +123,8 @@
     }
 
     ul {
-       padding-left: 90px;
-       margin-top: 14px;
-       margin-bottom: 14px;
+       padding-left: 40px;
+       margin-top: 14px 0;
 
         li {
            list-style-type: disc;
@@ -178,8 +177,7 @@
         justify-content: space-between;
         padding: 25px;
         background: $pink;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin: 20px 0;
 
         &.blue {
             background: $blue;
@@ -306,8 +304,7 @@
     }
 
     figure {
-        margin-top: 40px;
-        margin-bottom: 40px;
+        margin: 40px 0;
 
         &.fullscreen {
             max-width: 100%;
@@ -353,7 +350,7 @@
             }
         }
 
-        .blockquote--short blockquote {
+        &.blockquote--short blockquote {
             @include text--large;
             @include text--bold;
             line-height: 42px; /* Overwrite text--large */
@@ -381,7 +378,7 @@
             }
         }
 
-        .blockquote--long {
+        &.blockquote--long {
             background: $blue--light;
             border-left: 5px solid $blue;
             margin: 0 40px;
