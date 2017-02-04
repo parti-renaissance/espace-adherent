@@ -129,6 +129,12 @@
         }
 
         .amount-chooser {
+            &__button,
+            &__other {
+                width: 23%;
+                margin-bottom: 10px;
+            }
+
             &__button {
                 background: white;
                 color: black;
