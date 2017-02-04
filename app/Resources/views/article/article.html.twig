@@ -18,7 +18,7 @@
 
 {% block content %}
 <main>
-    <section class="content articles">
+    <section class="content">
         <header class="space--60-0 l__wrapper--slim">
             <h1 class="text--large b__nudge--bottom-small">
                 {{ article.title }}
@@ -49,7 +49,7 @@
         </figure>
         {% endif %}
 
-        <article>
+        <article class="l__wrapper--slim">
             {{ article.content|markdown }}
         </article>
 
