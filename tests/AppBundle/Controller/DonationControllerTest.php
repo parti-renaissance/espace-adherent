@@ -23,6 +23,9 @@ class DonationControllerTest extends SqliteWebTestCase
     /* @var DonationRepository */
     private $donationRepository;
 
+    /**
+     * @group functionnal
+     */
     public function testFullProcess()
     {
         $appClient = $this->appClient;
@@ -132,6 +135,8 @@ class DonationControllerTest extends SqliteWebTestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $this->loadFixtures([]);
 
         $this->appClient = $this->makeClient();
         $this->payboxClient = new PayboxClient();

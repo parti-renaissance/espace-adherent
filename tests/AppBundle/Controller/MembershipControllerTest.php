@@ -37,6 +37,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     private $emailRepository;
 
     /**
+     * @group functionnal
      * @dataProvider provideEmailAddress
      */
     public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress($emailAddress)
@@ -66,6 +67,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCannotCreateMembershipAccountIfAdherentIsUnder15YearsOld()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
@@ -80,6 +84,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame("Vous devez être âgé d'au moins 15 ans pour adhérer.", $crawler->filter('#field-birthdate > .form__errors > li')->text());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
@@ -94,6 +101,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
@@ -110,6 +120,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('Cette adresse n\'est pas géolocalisable.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->client->request(Request::METHOD_GET, '/inscription');
@@ -182,6 +195,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCreateMembershipAccountForSwissAdherentIsSuccessful()
     {
         $client = $this->client;
@@ -216,6 +232,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('Dupont', $donation->getLastName());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testDonateWithoutTemporaryDonation()
     {
         $client = $this->client;
@@ -225,6 +244,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideRegistrationOnBoardingStepUrl
      */
     public function testRegistrationOnBoardingWithoutNewAdherentId(string $stepUrl)
@@ -235,6 +255,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     }
 
     /**
+     * @group functionnal
      * @dataProvider provideRegistrationOnBoardingStepUrl
      */
     public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
@@ -253,6 +274,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         yield ['choisir-des-comites'];
     }
 
+    /**
+     * @group functionnal
+     */
     public function testPinInterests()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
@@ -278,6 +302,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         }
     }
 
+    /**
+     * @group functionnal
+     */
     public function testPinInterestsPersistsInterestsForNonActivatedAdherent()
     {
         /** @var Adherent $adherent */
@@ -314,6 +341,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testChooseNearbyCommittee()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
@@ -338,6 +368,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         }
     }
 
+    /**
+     * @group functionnal
+     */
     public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
@@ -419,10 +452,10 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         parent::setUp();
 
-        $this->init();
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
         ]);
+
         $this->adherentRepository = $this->getAdherentRepository();
         $this->activationTokenRepository = $this->getActivationTokenRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();
@@ -431,7 +464,6 @@ class MembershipControllerTest extends MysqlWebTestCase
     protected function tearDown()
     {
         $this->kill();
-        $this->loadFixtures([]);
 
         $this->emailRepository = null;
         $this->activationTokenRepository = null;
