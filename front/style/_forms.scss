@@ -61,7 +61,7 @@
     }
 
     &__error {
-        color: #c80303;
+        color: #ff0033;
     }
 
     &--full {
@@ -120,18 +120,8 @@
     margin: 50px 0 100px 0;
     text-align: center;
 
-    &__button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     &__form {
         margin-top: 25px;
-
-        &__title {
-            margin-bottom: 20px;
-        }
     }
 
     &__error {
@@ -139,16 +129,15 @@
     }
 
     &__separator {
-        margin: 52px 0 40px 0;
-        border-top: 1px solid $gray;
+        margin: 50px 0 10px 0;
+        border-top: 1px solid $gray--light;
 
         &__text {
-            width: 20%;
+            width: 55%;
             position: relative;
             top: -12px;
             margin: 0 auto;
             background-color: white;
-            text-transform: uppercase;
         }
     }
 }

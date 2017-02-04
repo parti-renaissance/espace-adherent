@@ -9,6 +9,7 @@
     font-size: $text--size-small;
     letter-spacing: 1.5px;
     transition: all 0.45s;
+    box-sizing: border-box;
 
     &:hover {
         background: black;
