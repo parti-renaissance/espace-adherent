@@ -10,5 +10,9 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="app.feature_flag.redirections_subscriber" class="AppBundle\FeatureFlag\RedirectionSubscriber">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
     </services>
 </container>
