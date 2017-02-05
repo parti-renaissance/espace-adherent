@@ -29,6 +29,7 @@ class ProposalThemeAdmin extends AbstractAdmin
                 'label' => 'Couleur de fond',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

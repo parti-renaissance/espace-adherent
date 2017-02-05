@@ -52,6 +52,7 @@ class AdministratorAdmin extends AbstractAdmin
                 'choices' => [
                     'Rédacteur' => 'ROLE_WRITER',
                     'Administrateur' => 'ROLE_ADMIN',
+                    'Développeur' => 'ROLE_DEVELOPER',
                     'Super-administrateur' => 'ROLE_SUPER_ADMIN',
                 ],
             ])
@@ -104,6 +105,7 @@ class AdministratorAdmin extends AbstractAdmin
                 'label' => 'Rôle',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'qrcode' => [
                         'template' => 'admin/admin_qrcode.html.twig',

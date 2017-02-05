@@ -7,17 +7,19 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Form\Type\BooleanType;
 
 class DonationAdmin extends AbstractAdmin
 {
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('isFinished', null, [
+            ->add('isFinished', 'boolean', [
                 'label' => 'Don terminé ?',
             ])
-            ->add('amount', null, [
+            ->add('isSuccessful', 'boolean', [
+                'label' => 'Don réussi ?',
+            ])
+            ->add('amountInEuros', null, [
                 'label' => 'Montant',
             ])
             ->add('firstName', null, [
@@ -28,6 +30,9 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('gender', null, [
                 'label' => 'Gentilé',
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse e-mail',
             ])
             ->add('country', null, [
                 'label' => 'Pays',
@@ -41,6 +46,9 @@ class DonationAdmin extends AbstractAdmin
             ->add('phone', null, [
                 'label' => 'Téléphone',
             ])
+            ->add('clientIp', null, [
+                'label' => 'IP du client',
+            ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
@@ -50,20 +58,17 @@ class DonationAdmin extends AbstractAdmin
             ->add('payboxResultCode', null, [
                 'label' => 'Code de résultat Paybox',
             ])
-            ->add('payboxAuthorization', null, [
+            ->add('payboxAuthorizationCode', null, [
                 'label' => 'Code d\'autorisation Paybox',
             ])
-            ->add('clientIp', null, [
-                'label' => 'IP du client',
+            ->add('payboxPayloadAsJson', null, [
+                'label' => 'Payload Paybox',
             ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('amount', null, [
-                'label' => 'Montant',
-            ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])
@@ -81,19 +86,23 @@ class DonationAdmin extends AbstractAdmin
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])
-            ->add('email', null, [
+            ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('amount', NumberType::class, [
+            ->add('amountInEuros', NumberType::class, [
                 'label' => 'Montant',
             ])
-            ->add('isFinished', BooleanType::class, [
+            ->add('isFinished', 'boolean', [
                 'label' => 'Don terminé ?',
+            ])
+            ->add('isSuccessful', 'boolean', [
+                'label' => 'Don réussi ?',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'show' => [],
                 ],

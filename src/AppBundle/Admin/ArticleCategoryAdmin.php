@@ -35,6 +35,7 @@ class ArticleCategoryAdmin extends AbstractAdmin
                 'label' => 'Slug',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

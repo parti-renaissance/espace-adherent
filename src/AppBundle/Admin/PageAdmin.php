@@ -65,6 +65,7 @@ class PageAdmin extends AbstractAdmin
                 'label' => 'Date de dernière mise à jour',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

@@ -130,6 +130,7 @@ class MediaAdmin extends AbstractAdmin
                 'label' => 'Date de dernière mise à jour',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'preview' => [
                         'template' => 'admin/media_preview.html.twig',

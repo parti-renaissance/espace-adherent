@@ -101,6 +101,7 @@ class ArticleAdmin extends AbstractAdmin
                 'label' => 'Dernière mise à jour',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'preview' => [
                         'template' => 'admin/article_preview.html.twig',
