@@ -59,7 +59,7 @@ export default () => {
 
         while (Math.round(a * e) / e !== a) {
             e *= 10;
-            p++;
+            p += 1;
         }
 
         return p;
@@ -79,19 +79,19 @@ export default () => {
                 hide(error7500);
                 hide(errorDecimals);
 
-                amount = typeof amount === 'number' ? amount : parseFloat(amount.replace(',', '.'));
+                amount = 'number' === typeof amount ? amount : parseFloat(amount.replace(',', '.'));
 
-                if (!amount || amount <= 0) {
+                if (!amount || 0 >= amount) {
                     show(errorInvalid);
                     return;
                 }
 
-                if (amount > 7500) {
+                if (7500 < amount) {
                     show(error7500);
                     return;
                 }
 
-                if (getPrecision(amount) > 2) {
+                if (2 < getPrecision(amount)) {
                     show(errorDecimals);
                     return;
                 }
