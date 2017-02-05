@@ -6,6 +6,15 @@
 
 {% block banner '' %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        nav,
+        #header-banner {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -21,34 +30,39 @@
 {% endblock %}
 
 {% block content %}
-    <section class="l__wrapper--medium">
-        <div class="register">
-            <h2>J'adhère au mouvement En Marche !</h2>
 
-            <p>
-                En Marche ! est un collectif citoyen qui part d'une conviction : les Français doivent être au cœur
-                de la vie politique et non son décor. Ce collectif n'est pas l'addition d'individus, mais le rassemblement
-                de personnes engagées qui partagent un socle de valeurs.
-                <a href="#" class="link--blue">Télécharger l'intégralité de la charte et des règles de fonctionnement.</a>
-            </p>
-
-            <div class="register__form">
-                {{ block('adherent_membership_form') }}
+    <main class="content register">
+        <section class="register__header background--blue progressive-background"
+                 data-sd="{{ static_asset('registration-hdr.jpg', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('registration-hdr.jpg', {'w': 2000, 'q': 70}) }}">
+            <div class="l__wrapper l__row l__row--h-stretch list__links--nav space--30-0">
+                <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">En Marche !</a></h1>
             </div>
+            <header class="space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
+                <h1 class="b__nudge--bottom-small text--blue text--larger">
+                    <span class="text--on-white">Adhérer à En Marche !</span>
+                </h1>
+                <div class="text--white text--body text--bold text--medium-small space--10-0">C’est facile, gratuit et 3 minutes suffiront.</div>
+                <div class="text--body text--white">Vous voulez participer à la révolution en Marche, vous engager et devenir un acteur de celle-ci ou simplement vous tenir informé de nos idées et de nos actions ?</div>
+            </header>
+        </section>
+        <section class="register__content">
 
-            <p>
-                Les informations que vous nous communiquez sont nécessaires à la gestion de vos dons et de nos
-                relations. Elles sont exclusivement réservées à l'usage de En Marche et en retournant ce formulaire, vous
-                autorisez celle-ci à utiliser vos données pour des opérations de communication politique et de dons. Vos
-                informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants
-                de En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation
-                de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez
-                des droits d'accès, de rectification, de suppression et d'oppostion aux informations vous concernant. Vous
-                pouvez exercer ces droits en nous écrivant à l'adresse :
-                <a href="mailto:contact@enmarche.fr" class="link--blue">contact@enmarche.fr</a>
-                ou En Marche - BP 80 049 - 94801 Villejuif.
-            </p>
-        </div>
-    </section>
+            <article class="l__wrapper--slim b__nudge--bottom-60">
+                <p class="text--body">En Marche ! est un collectif citoyen qui part d'une conviction : les Français doivent être au cœur de la vie politique et non son décor. Ce collectif n'est pas l'addition d'individus, mais le rassemblement de personnes engagées qui partagent un socle de valeurs.</p>
+                <ul class="arrows">
+                    <li><a href="#">Téléchargez l’intégralité de la charte et des règles de fonctionnement</a></li>
+                </ul>
+            </article>
+            <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
+                <div class="register__form">
+                    {{ block('adherent_membership_form') }}
+                </div>
+                <p class="text--summary b__nudge--top-50">
+                    Les informations que vous nous communiquez sont nécessaires à la gestion de vos dons et de nos relations. Elles sont exclusivement réservées à l'usage de En Marche et en retournant ce formulaire, vous autorisez celle-ci à utiliser vos données pour des opérations de communication politique et de dons. Vos informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants de En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits d'accès, de rectification, de suppression et d'oppostion aux informations vous concernant. Vous pouvez exercer ces droits en nous écrivant à l'adresse : <a href="mailto:contact@enmarche.fr">contact@enmarche.fr</a> ou En Marche - BP 80 049 - 94801 Villejuif.
+                </p>
+            </article>
+        </section>
+    </main>
 
 {% endblock %}

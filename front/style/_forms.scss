@@ -23,6 +23,19 @@
         }
     }
 
+    &__errors {
+        padding-left: 13px !important;
+        padding-right: 13px;
+        @include text--smallest;
+        font-family: $font-roboto;
+
+        li {
+            list-style-type: none !important;
+            padding: 2px 0 0;
+            width: 95%;
+        }
+    }
+
     &__email {
         width: 290px;
         @media (max-width: $tablet) {
@@ -43,6 +56,7 @@
 
     &__row {
         margin-bottom: 15px;
+        width: 100%;
 
         &--stretch {
             display: flex;
@@ -70,6 +84,11 @@
 
     &--mid {
         width: 49%;
+        margin: 0;
+    }
+
+    &--third {
+        width: 32%;
         margin: 0;
     }
 }

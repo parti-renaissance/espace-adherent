@@ -1,98 +1,165 @@
 .register {
-    margin: 20px 0 100px 0;
-
-    h2 {
-        text-align: center;
-    }
-
-    &--intro {
-        text-align: justify;
-        margin: 30px 20px;
+    &__header {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     &__form {
-        width: 75%;
+        width: 100%;
         margin: 0 auto;
+        display: flex;
+        justify-content: center;
 
-        &--trunc {
-            width: 97.5%;
+        form {
+            width: 100%;
         }
 
-        &__gender {
-            label {
-                font-size: 18px;
-                margin: 0 30px 0 8px;
+        &__row {
+            width: 100%;
+            background: yellow;
+        }
+
+        &--full,
+        &--mid,
+        &--third {
+            margin: 5px 0;
+
+            input,
+            select {
+                width: 100%;
+                margin-right: 0;
             }
         }
 
-        &__zip_code {
-            width: 20%;
-            margin-top: 18px;
+        &--mid {
+            width: 49%;
 
-            input {
+            @media (max-width: $mobile) {
                 width: 100%;
             }
         }
 
-        &__city {
-            width: 40%;
-            margin-top: 18px;
+        &--third {
+            width: 32%;
 
-            select {
-                width: 85%;
-                margin-left: 10%;
+            @media (max-width: $mobile) {
+                width: 100%;
             }
+        }
 
+        &__phone {
+            margin: 5px 0;
+
+            select,
             input {
-                width: 85%;
-                margin-left: 10%;
+                width: 49%;
+                margin-right: 0;
             }
         }
 
-        &__country {
-            width: 40%;
-
+        &__gender {
             label {
-                margin-left: 5%;
-            }
-            select {
-                width: 90%;
-                margin-left: 5%;
-            }
-        }
-
-        &__profession {
-            select {
-                width: 95%;
+                @include text--small;
+                margin: 0 20px 0 8px;
+                font-family: $font-roboto;
             }
         }
 
         &__conditions {
-            font-size: 18px;
-
-            input {
-                margin-right: 8px;
-            }
-
-            &__text {
-                font-size: 16px;
-            }
+            margin-left: 25px;
+            margin-top: -22px;
         }
 
-        @media (max-width: $mobile) {
-            width: 100%;
+        #membership-address {
+            display: flex;
+            flex-direction: column;
+
+            .form__errors {
+                order: 3;
+                margin-bottom: 10px;
+                margin-top: -5px;
+            }
         }
     }
 
-    &--mentions {
-        width: 70%;
-        font-size: 12px;
-        text-align: justify;
-        margin: 30px auto 0;
-        color: #737373;
+    &__donation {
+        article {
+            max-width: 575px;
+            width: 90%;
+            margin: 0 auto;
+        }
+    }
 
-        @media (max-width: $mobile) {
+    &__interests {
+        label {
+            height: 25px;
+            width: 20%;
+            font-family: $font-roboto;
+
+            @media (max-width: $mobile) {
+                width: 41%;
+            }
+        }
+
+        input {
+            width: 3%;
+
+            @media (max-width: $mobile) {
+                width: 5%;
+            }
+        }
+
+        &__options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        &__buttons {
             width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+
+            @media (max-width: $mobile) {
+                button {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    &__comites {
+        margin-bottom: 120px;
+        align-items: stretch;
+
+        &__list {
+            flex-grow: 2;
+        }
+
+        &__follow {
+            flex-grow: 1;
+            max-width: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 20px;
+
+            @media (max-width: $mobile) {
+                justify-content: flex-start;
+                max-width: 100%;
+            }
+
+            input {
+                margin-right: 10px;
+            }
+
+            .form {
+                font-family: $font-roboto;
+            }
         }
     }
 }
