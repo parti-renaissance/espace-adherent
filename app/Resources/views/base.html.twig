@@ -70,9 +70,9 @@
     </head>
     <body>
         {% for message in app.session.flashbag.get('info') %}
-            <p id="notice-flashes">
-                {{ message }}
-            </p>
+            <div class="flash" id="notice-flashes">
+                <div class="flash__inner">{{ message }}</div>
+            </div>
         {% endfor %}
 
         {% block banner %}

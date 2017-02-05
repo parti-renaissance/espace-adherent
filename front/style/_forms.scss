@@ -166,3 +166,13 @@
         background: url('/images/loader-sm.gif') no-repeat 93% 50%;
     }
 }
+
+.flash {
+    background-color: $yellow;
+
+    &__inner {
+        @include wrapper;
+        padding: 20px 0;
+        font-family: $font-roboto;
+    }
+}
