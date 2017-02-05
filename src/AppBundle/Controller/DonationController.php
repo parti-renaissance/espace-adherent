@@ -44,10 +44,10 @@ class DonationController extends Controller
      * @Route("/{uuid}/paiement", name="donation_pay", requirements={"uuid"="%pattern_uuid%"})
      * @Method("GET")
      */
-    public function payboxAction(Donation $donation)
+    public function payboxAction(Request $request, Donation $donation)
     {
         if ($donation->isFinished()) {
-            if ($this->get('app.membership.on_boarding_session')->isStarted()) {
+            if ($this->get('app.membership.on_boarding_session_handler')->isStarted($request->getSession())) {
                 return $this->redirectToRoute('app_membership_pin_interests');
             }
 

@@ -40,7 +40,7 @@ class MembershipController extends Controller
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $adherent = $this->get('app.membership_request_handler')->handle($membership);
 
-            $this->get('app.membership.on_boarding_session')->start($adherent);
+            $this->get('app.membership.on_boarding_session_handler')->start($request->getSession(), $adherent);
 
             return $this->redirectToRoute('app_membership_donate');
         }
@@ -136,7 +136,7 @@ class MembershipController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee_manager')->followCommittees($adherent, $form->get('committees')->getData());
 
-            $this->get('app.membership.on_boarding_session')->terminate();
+            $this->get('app.membership.on_boarding_session_handler')->terminate($request->getSession());
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 

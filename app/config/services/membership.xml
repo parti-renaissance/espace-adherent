@@ -38,14 +38,13 @@
         </service>
 
         <service id="app.controller.membership_on_boarding_resolver" class="AppBundle\Controller\ArgumentValueResolver\MembershipOnBoardingResolver">
+            <argument type="service" id="app.membership.on_boarding_session_handler"/>
             <argument type="service" id="app.repository.adherent" />
             <argument type="service" id="app.donation_request.factory"/>
             <tag name="controller.argument_value_resolver"/>
         </service>
 
-        <service id="app.membership.on_boarding_session" class="AppBundle\Membership\OnBoarding\OnBoardingSession">
-            <argument type="service" id="session"/>
-        </service>
+        <service id="app.membership.on_boarding_session_handler" class="AppBundle\Membership\OnBoarding\OnBoardingSessionHandler" />
 
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
             <argument type="service" id="app.repository.adherent"/>

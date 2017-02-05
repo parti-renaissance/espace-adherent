@@ -7,7 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Membership\MembershipOnBoardingInterface;
 use AppBundle\Membership\OnBoarding\OnBoardingAdherent;
 use AppBundle\Membership\OnBoarding\OnBoardingDonation;
-use AppBundle\Membership\OnBoarding\OnBoardingSession;
+use AppBundle\Membership\OnBoarding\OnBoardingSessionHandler;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -16,11 +16,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MembershipOnBoardingResolver implements ArgumentValueResolverInterface
 {
+    private $sessionHandler;
     private $adherentRepository;
     private $donationRequestFactory;
 
-    public function __construct(AdherentRepository $adherentRepository, DonationRequestFactory $donationRequestFactory)
-    {
+    public function __construct(
+        OnBoardingSessionHandler $sessionHandler,
+        AdherentRepository $adherentRepository,
+        DonationRequestFactory $donationRequestFactory
+    ) {
+        $this->sessionHandler = $sessionHandler;
         $this->adherentRepository = $adherentRepository;
         $this->donationRequestFactory = $donationRequestFactory;
     }
@@ -38,14 +43,14 @@ class MembershipOnBoardingResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
-        if (!$adherentId = $request->getSession()->get(OnBoardingSession::NEW_ADHERENT)) {
+        if (!$adherentId = $this->sessionHandler->getNewAdherentId($request->getSession())) {
             throw new NotFoundHttpException('The adherent has not been successfully redirected from the registration page.');
         }
 
         $adherent = $this->adherentRepository->find($adherentId);
 
         if (!$adherent instanceof Adherent) {
-            throw new NotFoundHttpException(sprintf('New adherent not found for id %s".', $adherentId));
+            throw new NotFoundHttpException(sprintf('New adherent not found for id "%s".', $adherentId));
         }
 
         $type = $argument->getType();

@@ -8,7 +8,7 @@ use AppBundle\Donation\DonationRequestFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Membership\OnBoarding\OnBoardingAdherent;
 use AppBundle\Membership\OnBoarding\OnBoardingDonation;
-use AppBundle\Membership\OnBoarding\OnBoardingSession;
+use AppBundle\Membership\OnBoarding\OnBoardingSessionHandler;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -58,6 +58,7 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedExceptionMessage The adherent has not been successfully redirected from the registration page.
      */
     public function testResolveWithNoAdherentId()
     {
@@ -71,10 +72,11 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedExceptionMessage New adherent not found for id "1".
      */
     public function testResolveWithWrongAdherentId()
     {
-        $wrongID = 'fake';
+        $wrongID = 1;
 
         $this->adherentRepository
             ->expects($this->once())
@@ -88,16 +90,17 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithRegisteringAdherent()
     {
+        $newAdherentId = 1;
         $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
 
         $this->adherentRepository
             ->expects($this->once())
             ->method('find')
-            ->with('id')
+            ->with($newAdherentId)
             ->willReturn($adherent);
 
         $results = $this->resolver->resolve(
-            $this->createRequest('id'),
+            $this->createRequest($newAdherentId),
             $this->createArgumentMetadata(OnBoardingAdherent::class)
         );
 
@@ -109,14 +112,16 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveWithRegisteringDonation()
     {
+        $newAdherentId = 1;
+
         $this->adherentRepository
             ->expects($this->once())
             ->method('find')
-            ->with('id')
+            ->with($newAdherentId)
             ->willReturn($this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock());
 
         $results = $this->resolver->resolve(
-            $this->createRequest('id'),
+            $this->createRequest($newAdherentId),
             $this->createArgumentMetadata(OnBoardingDonation::class)
         );
 
@@ -135,7 +140,11 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->donationRequestFactory = new DonationRequestFactory();
 
-        $this->resolver = new MembershipOnBoardingResolver($this->adherentRepository, $this->donationRequestFactory);
+        $this->resolver = new MembershipOnBoardingResolver(
+            new OnBoardingSessionHandler(),
+            $this->adherentRepository,
+            $this->donationRequestFactory
+        );
     }
 
     public function tearDown()
@@ -153,13 +162,13 @@ class MembershipOnBoardingResolverTest extends \PHPUnit_Framework_TestCase
         return new ArgumentMetadata('arg', $type, false, false, null);
     }
 
-    private function createRequest(?string $newAdherentId = null): Request
+    private function createRequest(?int $newAdherentId = null): Request
     {
         $request = Request::create('/');
         $session = new Session(new MockArraySessionStorage());
 
         if (null !== $newAdherentId) {
-            $session->set(OnBoardingSession::NEW_ADHERENT, $newAdherentId);
+            $session->set(OnBoardingSessionHandler::NEW_ADHERENT, $newAdherentId);
         }
 
         $request->setSession($session);
