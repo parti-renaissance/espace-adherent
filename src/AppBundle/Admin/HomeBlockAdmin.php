@@ -74,6 +74,7 @@ class HomeBlockAdmin extends AbstractAdmin
                 'label' => 'Cible du lien',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

@@ -105,7 +105,7 @@ class Donation implements GeoPointInterface
 
     public function __toString()
     {
-        return $this->lastName.' '.$this->firstName.' ('.$this->amount.' €)';
+        return $this->lastName.' '.$this->firstName.' ('.($this->amount / 100).' €)';
     }
 
     public function init(string $clientIp)
@@ -148,6 +148,11 @@ class Donation implements GeoPointInterface
         return $this->amount;
     }
 
+    public function getAmountInEuros()
+    {
+        return $this->amount / 100;
+    }
+
     public function getGender()
     {
         return $this->gender;
@@ -186,6 +191,11 @@ class Donation implements GeoPointInterface
     public function getPayboxPayload()
     {
         return $this->payboxPayload;
+    }
+
+    public function getPayboxPayloadAsJson()
+    {
+        return json_encode($this->payboxPayload, JSON_PRETTY_PRINT);
     }
 
     public function getFinished()

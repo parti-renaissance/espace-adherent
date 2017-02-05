@@ -95,6 +95,7 @@ class ProposalAdmin extends AbstractAdmin
                 'label' => 'Dernière mise à jour',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
                     'preview' => [
                         'template' => 'admin/proposal_preview.html.twig',
