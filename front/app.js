@@ -8,6 +8,7 @@ import amountChooser from './listeners/amount-chooser';
 import cookiesConsent from './listeners/cookies-consent';
 import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
+import externalLinks from './listeners/external-links';
 
 class App {
     constructor() {
@@ -17,6 +18,7 @@ class App {
             donationBanner,
             amountChooser,
             progressiveBackground,
+            externalLinks,
         ];
     }
 
