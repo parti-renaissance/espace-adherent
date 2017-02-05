@@ -15,26 +15,12 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
 
-        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
-        <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" /><![endif]-->
-        <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('apple-icon-57x57.png') }}" />
-        <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('apple-icon-60x60.png') }}" />
-        <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('apple-icon-72x72.png') }}" />
-        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('apple-icon-76x76.png') }}" />
-        <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('apple-icon-114x114.png') }}" />
-        <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('apple-icon-120x120.png') }}" />
-        <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('apple-icon-144x144.png') }}" />
-        <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('apple-icon-152x152.png') }}" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-icon-180x180.png') }}" />
-        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('android-icon-192x192.png') }}" />
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}" />
-        <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}" />
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}" />
-        <meta name="msapplication-TileImage" content="{{ asset('ms-icon-144x144.png') }}" />
-        <meta name="msapplication-TileColor" content="#ffffff" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
+        <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
+        <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}?v2" sizes="16x16" />
+        <link rel="manifest" href="{{ asset('manifest.json') }}?v2" />
+        <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
         <meta name="theme-color" content="#ffffff" />
-
-        <link rel="manifest" href="{{ asset('manifest.json') }}" />
 
         <title>{% block title %}{% block page_title %}{% endblock %} | En Marche !{% endblock %}</title>
 
@@ -46,7 +32,7 @@
         <meta property="og:url" content="{% block open_graph_url %}{{ block('canonical_url') }}{% endblock %}" />
         <meta property="og:title" content="{% block open_graph_title %}{{ block('title') }}{% endblock %}" />
         <meta property="og:description" content="{% block open_graph_description %}{{ block('meta_description') }}{% endblock %}" />
-        <meta property="og:image" content="{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('logo/large_bg_transparent.png') }}{% endblock %}" />
+        <meta property="og:image" content="{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}{% endblock %}" />
         <meta property="og:image:width" content="{% block open_graph_image_width %}628{% endblock %}" />
         <meta property="og:image:height" content="{% block open_graph_image_height %}288{% endblock %}" />
         {% block open_graph %}{% endblock %}
