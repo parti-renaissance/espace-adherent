@@ -15,12 +15,10 @@ export default () => {
     const nextStepButton = dom('#next-step-button');
 
     hide(step2);
-    show(nextStep);
 
     const goStep1 = () => {
         hide(step2);
         show(step1);
-        show(nextStep);
         removeClass(step2Tab, 'active');
         removeClass(step1Tab, 'clickable');
         addClass(step1Tab, 'active');
@@ -47,6 +45,26 @@ export default () => {
     const value = parseFloat(amountInput.value.replace(',', '.'));
     const chooser = document.createElement('div');
 
+    const error7500 = dom('#error-7500');
+    const errorDecimals = dom('#error-decimals');
+    const errorInvalid = dom('#error-invalid');
+
+    const getPrecision = (a) => {
+        if (!isFinite(a)) {
+            return 0;
+        }
+
+        let e = 1;
+        let p = 0;
+
+        while (Math.round(a * e) / e !== a) {
+            e *= 10;
+            p++;
+        }
+
+        return p;
+    };
+
     insertAfter(amountInput, chooser);
     remove(amountInput);
 
@@ -55,6 +73,31 @@ export default () => {
             name={name}
             value={value}
             onSubmit={goStep2}
+            onChange={(amount) => {
+                hide(nextStep);
+                hide(errorInvalid);
+                hide(error7500);
+                hide(errorDecimals);
+
+                amount = typeof amount === 'number' ? amount : parseFloat(amount.replace(',', '.'));
+
+                if (!amount || amount <= 0) {
+                    show(errorInvalid);
+                    return;
+                }
+
+                if (amount > 7500) {
+                    show(error7500);
+                    return;
+                }
+
+                if (getPrecision(amount) > 2) {
+                    show(errorDecimals);
+                    return;
+                }
+
+                show(nextStep);
+            }}
         />,
         chooser
     );

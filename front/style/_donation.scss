@@ -70,6 +70,12 @@
             &:hover {
                 background: transparent;
             }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
         }
 
         &__label {

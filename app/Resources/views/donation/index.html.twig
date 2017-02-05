@@ -38,6 +38,24 @@
         {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
     </div>
 
+    <div id="error-7500" style="display: none;">
+        <p>
+            Vous ne pouvez pas entrer un montant de don supérieur à 7500€.
+        </p>
+    </div>
+
+    <div id="error-decimals" style="display: none;">
+        <p>
+            Un don de ce montant n'est pas possible, vous devez l'arrondir.
+        </p>
+    </div>
+
+    <div id="error-invalid" style="display: none;">
+        <p>
+            Un don de ce montant n'est pas possible.
+        </p>
+    </div>
+
     <div id="next-step" style="display: none;">
         <button id="next-step-button" class="btn btn--large-and-medium btn--primary" type="button">
             Continuer
