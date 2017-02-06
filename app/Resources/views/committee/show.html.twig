@@ -7,6 +7,8 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
+            var committeeUuid = '{{ committee.uuid }}';
+            var committeeSlug = '{{ committee.slug }}';
             var page = 1;
             var limit = {{ committee_timeline_max_messages }};
             var moreButton = dom('#committee-timeline-more');
@@ -14,8 +16,8 @@
             on(moreButton, 'click', function() {
                 page++;
                 di.get('api').getCommitteeTimelineFeed(
-                    '{{ committee.uuid }}',
-                    '{{ committee.slug }}',
+                    committeeUuid,
+                    committeeSlug,
                     ((page - 1) * limit),
                     function (response) {
                         if (response instanceof XMLHttpRequest) {
@@ -31,6 +33,27 @@
                     }
                 );
             });
+
+        {% if is_granted('ROLE_ADHERENT') %}
+
+            var toggleMembershipButton = dom('#committee-toggle-membership');
+
+            on(toggleMembershipButton, 'click', function () {
+                di.get('api').toggleCommitteeMembership(
+                    committeeUuid,
+                    committeeSlug,
+                    toggleMembershipButton.getAttribute('data-action'),
+                    toggleMembershipButton.getAttribute('data-csrf-token'),
+                    function (result) {
+                        toggleMembershipButton.setAttribute('class', 'rejoindre' == result.button.action ? 'btn committee-follow' : 'btn committee-unfollow');
+                        toggleMembershipButton.setAttribute('data-action', result.button.action);
+                        toggleMembershipButton.setAttribute('data-csrf-token', result.button.csrf_token);
+                        toggleMembershipButton.innerHTML = result.button.label;
+                    }
+                );
+            });
+        {% endif %}
+
         });
     </script>
 {% endblock %}
@@ -45,18 +68,20 @@
 
         <div>
             {% if not is_granted('ROLE_ADHERENT') %}
-                <div class="committee-link committee-follow-disabled">
-                    Suivre ce comité
-                </div>
-                <a href="{{ path('app_membership_register') }}" id="committee-register-link">Adhérer à En Marche!</a>
+                <div class="btn committee-link committee-follow-disabled">Suivre ce comité</div>
+                <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="btn">Adhérer à En Marche!</a>
             {% elseif can_follow(committee) %}
-                <a href="{{ committee_path('app_committee_unfollow', committee) }}" class="committee-link committee-follow">
-                    Suivre ce comité
-                </a>
+                <button role="button"
+                        class="btn committee-follow"
+                        id="committee-toggle-membership"
+                        data-action="rejoindre"
+                        data-csrf-token="{{ csrf_token('committee.follow') }}">Suivre ce comité</button>
             {% elseif can_unfollow(committee) %}
-                <a href="{{ committee_path('app_committee_unfollow', committee) }}" class="committee-link committee-unfollow">
-                    Quitter ce comité
-                </a>
+                <button role="button"
+                        class="btn committee-unfollow"
+                        id="committee-toggle-membership"
+                        data-action="quitter"
+                        data-csrf-token="{{ csrf_token('committee.unfollow') }}">Quitter ce comité</button>
             {% endif %}
         </div>
     </section>

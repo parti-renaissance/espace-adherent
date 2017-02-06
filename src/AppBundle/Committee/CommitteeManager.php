@@ -8,10 +8,11 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Repository\CommitteeFeedItemRepository;
+use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CommitteeManager
@@ -30,19 +31,19 @@ class CommitteeManager
 
     public function getAdherentCommittees(Adherent $adherent, int $limit = 5): array
     {
-        $memberships = $this->getRepository(CommitteeMembership::class)->findMemberships($adherent);
+        $memberships = $this->getMembershipRepository()->findMemberships($adherent);
 
         if (!$memberships->count()) {
             return [];
         }
 
         // We want the hosted committes first.
-        $repository = $this->getRepository(Committee::class);
+        $repository = $this->getCommitteeRepository();
 
         $hostedCommittees = $repository->findCommittees(
             $memberships->getCommitteeHostMemberships()->getCommitteeUuids(),
-            $limit,
-            CommitteeRepository::INCLUDE_UNAPPROVED
+            CommitteeRepository::INCLUDE_UNAPPROVED,
+            $limit
         );
 
         if ($limit === $hostedCommitteesCount = count($hostedCommittees)) {
@@ -51,31 +52,43 @@ class CommitteeManager
 
         // Then, the followed committees.
         $limit -= $hostedCommitteesCount;
-        $followedCommittees = $this->getRepository(Committee::class)->findCommittees($memberships->getCommitteeFollowerMemberships()->getCommitteeUuids(), $limit);
+        $followedCommittees = $repository->findCommittees(
+            $memberships->getCommitteeFollowerMemberships()->getCommitteeUuids(),
+            CommitteeRepository::ONLY_APPROVED,
+            $limit
+        );
 
         return $hostedCommittees + $followedCommittees;
     }
 
     public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
     {
-        $repository = $this->getRepository(CommitteeFeedItem::class);
-
-        return $repository->findPaginatedMostRecentFeedItems((string) $committee->getUuid(), $limit, $firstResultIndex);
+        return $this
+            ->getCommitteeFeedItemRepository()
+            ->findPaginatedMostRecentFeedItems((string) $committee->getUuid(), $limit, $firstResultIndex)
+        ;
     }
 
+    /**
+     * Returns the total number of members in the committee.
+     *
+     * @param Committee $committee The committee
+     *
+     * @return int
+     */
     public function getMembersCount(Committee $committee): int
     {
-        return $this->getRepository(CommitteeMembership::class)->countMembers($committee->getUuid()->toString());
+        return $this->getMembershipRepository()->countMembers($committee->getUuid()->toString());
     }
 
     public function getCommitteeHosts(Committee $committee): AdherentCollection
     {
-        return $this->getRepository(CommitteeMembership::class)->findHostMembers($committee->getUuid()->toString());
+        return $this->getMembershipRepository()->findHostMembers($committee->getUuid()->toString());
     }
 
     public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
-        return $this->getRepository(CommitteeMembership::class)->findFollowers($committee->getUuid()->toString(), $withHosts);
+        return $this->getMembershipRepository()->findFollowers($committee->getUuid()->toString(), $withHosts);
     }
 
     public function getOptinCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
@@ -86,8 +99,8 @@ class CommitteeManager
     public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT)
     {
         $data = [];
-        $committeeMembershipRepository = $this->getRepository(CommitteeMembership::class);
-        $committees = $this->getRepository(Committee::class)->findNearbyCommittees($limit, $coordinates);
+        $committeeMembershipRepository = $this->getMembershipRepository();
+        $committees = $this->getCommitteeRepository()->findNearbyCommittees($limit, $coordinates);
 
         foreach ($committees as $committee) {
             $uuid = $committee->getUuid()->toString();
@@ -113,7 +126,7 @@ class CommitteeManager
             return;
         }
 
-        foreach ($this->getRepository(Committee::class)->findByUuid($committees) as $committee) {
+        foreach ($this->getCommitteeRepository()->findByUuid($committees) as $committee) {
             $this->followCommittee($adherent, $committee);
         }
 
@@ -137,13 +150,51 @@ class CommitteeManager
         }
     }
 
+    /**
+     * Makes an adherent unfollow one committee.
+     *
+     * @param Adherent  $adherent  The follower
+     * @param Committee $committee The committee to follow
+     * @param bool      $flush     Whether or not to flush the transaction
+     */
+    public function unfollowCommittee(Adherent $adherent, Committee $committee, bool $flush = true)
+    {
+        $membership = $this->getMembershipRepository()->findMembership($adherent, (string) $committee->getUuid());
+
+        if ($membership) {
+            $this->doUnfollowCommittee($membership, $committee, $flush);
+        }
+    }
+
+    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee, bool $flush = true)
+    {
+        $manager = $this->getManager();
+
+        $manager->remove($membership);
+        $committee->decrementMembersCount();
+
+        if ($flush) {
+            $manager->flush();
+        }
+    }
+
     private function getManager(): ObjectManager
     {
         return $this->registry->getManager();
     }
 
-    private function getRepository(string $class): ObjectRepository
+    private function getCommitteeRepository(): CommitteeRepository
     {
-        return $this->registry->getRepository($class);
+        return $this->registry->getRepository(Committee::class);
+    }
+
+    private function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
+    {
+        return $this->registry->getRepository(CommitteeFeedItem::class);
+    }
+
+    private function getMembershipRepository(): CommitteeMembershipRepository
+    {
+        return $this->registry->getRepository(CommitteeMembership::class);
     }
 }

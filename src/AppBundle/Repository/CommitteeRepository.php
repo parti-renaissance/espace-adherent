@@ -171,7 +171,7 @@ class CommitteeRepository extends EntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED): array
+    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): array
     {
         if (!$uuids) {
             return [];
@@ -189,6 +189,10 @@ class CommitteeRepository extends EntityRepository
                 ->andWhere('c.status = :status')
                 ->setParameter('status', Committee::APPROVED)
             ;
+        }
+
+        if ($limit >= 1) {
+            $qb->setMaxResults($limit);
         }
 
         return $qb->getQuery()->getResult();
