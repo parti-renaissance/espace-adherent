@@ -4,32 +4,23 @@ export default class ReqwestApiClient {
     }
 
     getPostalCodeCities(postalCode, callback) {
-        let request = this._reqwest({
+        this._createRequest(callback, {
             url: '/api/postal-code/'+postalCode,
             type: 'json'
-        });
-
-        request.then((response) => {
-            callback(response);
-        });
-
-        request.fail(() => {
-            callback(null);
         });
     }
 
     getCommitteeTimelineFeed(committeeUuid, committeeSlug, offset, callback) {
-        let request = this._reqwest({
+        this._createRequest(callback, {
             url: '/comites/'+committeeUuid+'/'+committeeSlug+'/timeline?offset='+offset,
             type: 'html'
         });
+    }
 
-        request.then((response) => {
-            callback(response);
-        });
-
-        request.fail(() => {
-            callback(null);
+    getReferents(callback) {
+        this._createRequest(callback, {
+            url: '/api/referents',
+            type: 'json'
         });
     }
 
@@ -38,11 +29,25 @@ export default class ReqwestApiClient {
             url: '/comites/'+committeeUuid+'/'+committeeSlug+'/'+action,
             type: 'html',
             method: 'post',
-            data: { 'token': token }
+            data: {
+                'token': token
+            }
         });
 
         request.then((response) => {
             callback(JSON.parse(response));
+        });
+
+        request.fail(() => {
+            callback(null);
+        });
+    }
+
+    _createRequest(callback, parameters) {
+        let request = this._reqwest(parameters);
+
+        request.then((response) => {
+            callback(response);
         });
 
         request.fail(() => {

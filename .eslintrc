@@ -33,7 +33,8 @@
     "toggleClass": true,
     "removeClass": true,
     "cookieconsent": true,
-    "App": true
+    "App": true,
+    "google": true
   },
   "rules": {
     "indent": ["error", 4],
