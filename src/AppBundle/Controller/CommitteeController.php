@@ -141,7 +141,13 @@ class CommitteeController extends Controller
      */
     public function listMembersAction(Committee $committee): Response
     {
-        return new Response('TO BE IMPLEMENTED');
+        $committeeManager = $this->get('app.committee_manager');
+
+        return $this->render('committee/members.html.twig', [
+            'committee' => $committee,
+            'committee_members_count' => $committeeManager->getMembersCount($committee),
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+        ]);
     }
 
     /**

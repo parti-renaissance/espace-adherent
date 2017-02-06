@@ -105,41 +105,5 @@
         {% endif %}
     </section>
 
-    <section class="l__wrapper--medium">
-        <div class="committee-details">
-            <h4>{{ 'committee.members_count'|transchoice(committee_members_count) }}</h4>
-            <h5>À propos</h5>
-            <p id="committee-description">{{ committee.description }}</p>
-        </div>
-        <div class="committee-details">
-            <h5>Administration</h5>
-            <ul class="committee-hosts">
-                {% for host in committee_hosts %}
-                    <li class="committee-host">
-                        {{ host }}
-                        {% if is_host and app.user.equals(host) %}
-                            (vous)
-                        {% else %}
-                            <a href="mailto:{{ host.emailaddress }}">Contacter</a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="committee-details">
-            <h5>Localisation</h5>
-            <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}" alt="Plan" />
-        </div>
-        <div class="committee-details">
-            <h5>Partager</h5>
-            {% for key, link in committee.socialNetworksLinks %}
-                <a href="{{ link.url }}" target="_blank" class="committee-{{ key }}">
-                    {{- link.label -}}
-                </a>
-            {% endfor %}
-        </div>
-        <div class="committee-details">
-            <a href="#">Signaler ce comité local</a>
-        </div>
-    </section>
+    {{ include('committee/_sidebar.html.twig') }}
 {% endblock %}
