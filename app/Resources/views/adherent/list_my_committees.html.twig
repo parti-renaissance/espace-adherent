@@ -1,10 +1,20 @@
-{% for committee in committees %}
-    <li>
-        <a href="{{ committee_path('app_committee_show', committee) }}">
-            {{- committee.name -}}
-        </a>
-    </li>
-{% endfor %}
-{% if committees|length > 0 %}
-    <li class="login__separator"></li>
+{% if committees|length < 1 %}
+    <div class="text--center">
+        <div class="text--body b__nudge--bottom-small">Rejoignez un comité<br>En Marche !</div>
+        <a class="btn btn--blue form--full" href="{{ path('app_search_committees') }}">Trouver un comité</a>
+    </div>
+{% else %}
+    <ul>
+        {% for committee in committees %}
+            <li class="bullet">
+                <a href="{{ committee_path('app_committee_show', committee) }}">
+                    {{- committee.name -}}
+                </a>
+            </li>
+        {% endfor %}
+
+        <!--<li class="nav__user__menu__comites--all">
+            <a href="#">Voir tous mes comités</a>
+        </li>-->
+    </ul>
 {% endif %}
