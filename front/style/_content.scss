@@ -128,7 +128,8 @@
 
     ul {
        padding-left: 40px;
-       margin-top: 14px 0;
+       margin-top: 14px;
+       margin-bottom: 14px;
 
         li {
            list-style-type: disc;
@@ -286,18 +287,18 @@
     }
 
     .video {
-    	position: relative;
-    	padding-bottom: 56.25%; /* 16:9 */
-    	padding-top: 25px;
-    	height: 0;
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        padding-top: 25px;
+        height: 0;
         margin-bottom: 100px;
 
         iframe {
-        	position: absolute;
-        	top: 0;
-        	left: 0;
-        	width: 100%;
-        	height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     }
 
@@ -308,7 +309,8 @@
     }
 
     figure {
-        margin: 40px 0;
+        margin-top: 40px;
+        margin-bottom: 40px;
 
         &.fullscreen {
             max-width: 100%;
@@ -385,7 +387,7 @@
         &.blockquote--long {
             background: $blue--light;
             border-left: 5px solid $blue;
-            margin: 0 40px;
+            margin: 40px;
             padding: 30px;
 
             blockquote {
