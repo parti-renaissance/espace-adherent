@@ -31,6 +31,70 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
+    public function testAnonymousUserIsNotAllowedToFollowCommittee()
+    {
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertTrue($this->seeRegisterLink($crawler));
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testAutenticatedAdherentCanFollowCommittee()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        // Browse to the committee details page
+        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 membre', $crawler->filter('.committee-details > h4')->text());
+        $this->assertTrue($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+
+        // Emulate POST request to follow the committee.
+        $token = $crawler->selectButton('Suivre ce comité')->attr('data-csrf-token');
+        $this->client->request(Request::METHOD_POST, $committeeUrl.'/rejoindre', ['token' => $token]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Refresh the committee details page
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 membres', $crawler->filter('.committee-details > h4')->text());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertTrue($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+
+        // Emulate POST request to unfollow the committee.
+        $token = $crawler->selectButton('Quitter ce comité')->attr('data-csrf-token');
+        $this->client->request(Request::METHOD_POST, $committeeUrl.'/quitter', ['token' => $token]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Refresh the committee details page
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 membre', $crawler->filter('.committee-details > h4')->text());
+        $this->assertTrue($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+    }
+
+    /**
+     * @group functionnal
+     */
     public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -430,21 +494,21 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertCount($members->getCommitteesNotificationsSubscribers()->count(), $this->getMailjetEmailRepository()->findAll());
     }
 
-    private function seeRegisterLink(Crawler $crawler, $do = 1): bool
+    private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
     {
-        $this->assertCount($do, $crawler->filter('.committee-follow-disabled'));
+        $this->assertCount($nb, $crawler->filter('.committee-follow-disabled'));
 
-        return 1 === count($crawler->filter('a#committee-register-link'));
+        return 1 === count($crawler->filter('#committee-register-link'));
     }
 
     private function seeFollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('a.committee-link.committee-follow'));
+        return 1 === count($crawler->filter('.committee-follow'));
     }
 
     private function seeUnfollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('a.committee-link.committee-unfollow'));
+        return 1 === count($crawler->filter('.committee-unfollow'));
     }
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
