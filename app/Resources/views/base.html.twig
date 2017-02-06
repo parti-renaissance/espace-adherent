@@ -330,7 +330,7 @@
         <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
         {% block javascripts '' %}
         <script type="text/javascript">
-            on(window, 'load', () => {
+            on(window, 'load', function() {
                 Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }});
             });
 
