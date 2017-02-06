@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block page_title 'Le mouvement - La carte' %}
+{% block canonical_url url('page_le_mouvement_la_carte') %}
+
+{% block content %}
+    <main>
+        <section class="content">
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    Comités à proximité
+                </h1>
+            </header>
+
+            <article class="list__links list__links--col list__links--no-decor">
+              <ul>
+                {% for committee in committees %}
+                    <li class="text--on-white">{{ committee.name }} <br/> {{ committee.cityName }}</li>
+                {% endfor %}
+              </ul>
+            </article>
+        </section>
+    </main>
+{% endblock %}
