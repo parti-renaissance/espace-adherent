@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Membres du comité « {{ committee.name }} » {{ parent() }}
+{% endblock %}
+
+{% block banner '' %}
+
+{% block content %}
+    {% set is_host = is_host(committee) %}
+
+    <section class="l__wrapper--medium">
+        <h1>{{ committee.name }}</h1>
+
+        <a href="#">Discussion</a>
+        <strong>Membres</strong>
+
+        <a href="{{ committee_path('app_committee_edit', committee) }}">Editer le comité</a>
+
+        <a href="#" class="btn">Contacter</a>
+        <a href="#" class="btn">Exporter</a>
+        <a href="#" class="btn">Inviter des personnes</a>
+
+        <table>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Age</th>
+                <th>Code Postal</th>
+            </tr>
+        </table>
+    </section>
+
+    {{ include('committee/_sidebar.html.twig') }}
+{% endblock %}
