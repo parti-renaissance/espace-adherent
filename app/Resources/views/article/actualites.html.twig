@@ -32,7 +32,7 @@
                     {% for article in articles %}
                     <li>
                         <a href="{{ path('article_view', {'slug': article.slug}) }}" class="thumbnail">
-                            <img src="{{ dynamic_asset(article.media.path, {'w': 250, 'h': 170, 'fit': 'crop'}) }}">
+                            <img src="{{ media_asset(article.media, {'w': 250, 'h': 170, 'fit': 'crop'}) }}">
                         </a>
                         <div>
                             <h2>

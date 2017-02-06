@@ -8,7 +8,7 @@
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
             <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
-               style="background-image: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000, 'q': 70}) }}');">
+               style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}');">
                 <div class="background">
                     <div class="content">
                         <h2>{{ blocks[0].title }}</h2>
@@ -20,7 +20,7 @@
             <div class="card card--large card--large__tablet l__hide--on-desktop">
                 <a href="{{ blocks[0].link }}" class="background-container">
                     <div class="background card__background"
-                         style="background-image: url('{{ dynamic_asset(blocks[0].media.path, {'w': 1000, 'q': 70}) }}')"></div>
+                         style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}')"></div>
                 </a>
                 <a class="content" href="{{ blocks[0].link }}">
                     <h2>{{ blocks[0].title }}</h2>
@@ -29,7 +29,7 @@
             </div>
 
             <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30 card__background"
-                 style="background-image: url('{{ dynamic_asset(blocks[1].media.path, {'w': 1000, 'q': 70}) }}');">
+                 style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
                 <div class="background">
                     <div class="content">
                         <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
@@ -101,8 +101,8 @@
                         <div class="csv card--small card--small__video">
                             <a href="{{ block.link }}" class="background-container">
                                 <div class="background card__background progressive-background"
-                                     data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
-                                     data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                                     data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                                     data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
                                      style="background-color: #000000;">
                                     <i class="play-icon"></i>
                                 </div>
@@ -122,8 +122,8 @@
                         </div>
                         <div class="cmv card--medium card--medium__video">
                             <a href="{{ block.link }}" class="background-container card__background progressive-background"
-                               data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
-                               data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                               data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                               data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
                                style="background-color: #000000;">
                                 <div class="background">
                                     <div class="content">
@@ -150,8 +150,8 @@
                         <div class="cs card--small">
                             <a href="{{ block.link }}" class="background-container">
                                 <div class="background card__background progressive-background"
-                                     data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
-                                     data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                                     data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                                     data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
                                      style="background-color: #000000;">
                                 </div>
                             </a>
@@ -170,8 +170,8 @@
                         </div>
                         <div class="cm card--medium">
                             <a href="{{ block.link }}" class="background-container card__background progressive-background"
-                               data-sd="{{ dynamic_asset(block.media.path, {'w': 300, 'q': 20}) }}"
-                               data-hd="{{ dynamic_asset(block.media.path, {'w': 1200, 'q': 70}) }}"
+                               data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                               data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
                                style="background-color: #000000;">
                                 <div class="background">
                                     <div class="content">
@@ -197,8 +197,8 @@
     {% if blocks|length >= 9 %}
     <section class="l__wrapper b__nudge--bottom-large">
         <div class="proteger l__col l__col--center progressive-background"
-             data-sd="{{ dynamic_asset(blocks[8].media.path, {'w': 300, 'q': 20}) }}"
-             data-hd="{{ dynamic_asset(blocks[8].media.path, {'w': 1800, 'q': 70}) }}"
+             data-sd="{{ media_asset(blocks[8].media, {'w': 300, 'q': 20}) }}"
+             data-hd="{{ media_asset(blocks[8].media, {'w': 1800, 'q': 70}) }}"
              data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 35))"
              style="background-color: #000000;">
             <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">{{ blocks[8].title }}</h2>
