@@ -164,6 +164,13 @@
                             {% endif %}
                             <li><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
                             <li><a href="#">Aide</a></li>
+                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <li>
+                                    <a href="{{ path('app_admin_impersonation_exit') }}">
+                                        Quitter l'impersonnification
+                                    </a>
+                                </li>
+                            {% endif %}
                             <li><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
                         </ul>
                     {% endif %}

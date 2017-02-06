@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Role\SwitchUserRole;
 
 /**
  * @Route("/admin")
@@ -67,5 +69,29 @@ class AdminSecurityController extends Controller
     public function qrCodeAction(Administrator $administrator): Response
     {
         return $this->get('app.security.2fa_qr_code_factory')->createQrCodeResponse($administrator);
+    }
+
+    /**
+     * Exit impersonation.
+     *
+     * @Route("/impersonation/exit", name="app_admin_impersonation_exit")
+     * @Method("GET")
+     */
+    public function exitImpersonationAction(): Response
+    {
+        $tokenStorage = $this->get('security.token_storage');
+        $impersonatingUser = null;
+
+        foreach ($tokenStorage->getToken()->getRoles() as $role) {
+            if ($role instanceof SwitchUserRole) {
+                $impersonatingUser = $role->getSource()->getUser();
+                break;
+            }
+        }
+
+        $token = new UsernamePasswordToken($impersonatingUser, '', 'admins_db', [$impersonatingUser->getRole()]);
+        $tokenStorage->setToken($token);
+
+        return $this->redirect($this->generateUrl('admin_app_adherent_list'));
     }
 }
