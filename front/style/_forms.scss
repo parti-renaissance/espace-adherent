@@ -107,6 +107,18 @@
             text-align: center;
         }
     }
+
+
+    @media (max-width: $mobile) {
+        button {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        input {
+            margin-right: 0;
+        }
+    }
 }
 
 .newsletter-page, .invitation-page {
