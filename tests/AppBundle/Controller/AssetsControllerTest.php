@@ -2,6 +2,8 @@
 
 namespace Tests\AppBundle\Controller;
 
+use League\Glide\Signatures\Signature;
+use League\Glide\Signatures\SignatureFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
@@ -9,6 +11,43 @@ use Tests\AppBundle\SqliteWebTestCase;
 class AssetsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
+
+    /** @var Signature */
+    private $signature;
+
+    /**
+     * @group functionnal
+     */
+    public function testAssetWithSignatureIsFound()
+    {
+        $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg', [
+            's' => $this->signature->generateSignature('/assets/10decembre.jpg', []),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testAssetWithoutSignatureIsNotFound()
+    {
+        $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testInvalidAssetWithSignatureIsNotFound()
+    {
+        $this->client->request(Request::METHOD_GET, '/assets/invalid.jpg', [
+            's' => $this->signature->generateSignature('/assets/invalid.jpg', []),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
 
     /**
      * @group functionnal
@@ -114,5 +153,23 @@ class AssetsControllerTest extends SqliteWebTestCase
             $client->getResponse(),
             'Foreign characters are not allowed'
         );
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->signature = SignatureFactory::create($this->container->getParameter('kernel.secret'));
+    }
+
+    protected function tearDown()
+    {
+        $this->kill();
+
+        $this->signature = null;
+
+        parent::tearDown();
     }
 }
