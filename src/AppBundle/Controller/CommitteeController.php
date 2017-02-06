@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Event\CommitteeEventCommand;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Committee;
+use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\CommitteeEventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -81,9 +83,27 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('HOST_COMMITTEE', committee)")
      */
-    public function editAction(Committee $committee): Response
+    public function editAction(Request $request, Committee $committee): Response
     {
-        return new Response('TO BE IMPLEMENTED');
+        $command = CommitteeCommand::createFromCommittee($committee);
+        $form = $this->createForm(CommitteeCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.committee.committee_update_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.update.success'));
+
+            return $this->redirectToRoute('app_committee_edit', [
+                'uuid' => (string) $committee->getUuid(),
+                'slug' => $committee->getSlug(),
+            ]);
+        }
+
+        return $this->render('committee/edit.html.twig', [
+            'form' => $form->createView(),
+            'committee' => $committee,
+            'committee_hosts' => $this->get('app.committee_manager')->getCommitteeHosts($committee),
+        ]);
     }
 
     /**

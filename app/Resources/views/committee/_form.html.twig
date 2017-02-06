@@ -1,0 +1,78 @@
+{{ form_errors(form) }}
+
+<h3>Renseignez les informations de votre comité local</h3>
+
+<div class="form__row" id="field-name">
+    {{ form_label(form.name, 'Nom du comité') }}
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name, {
+        'attr': {
+            'class': 'form--full',
+            'placeholder': 'Nom du comité',
+        }
+    }) }}
+</div>
+
+<div class="form__row" id="field-description">
+    {{ form_label(form.description, 'Description du comité') }}
+    {{ form_errors(form.description) }}
+    {{ form_widget(form.description, {
+        'attr': {
+            'class': 'form--full',
+            'placeholder': 'Description du comité',
+        }
+    }) }}
+</div>
+
+<div id="committee-address">
+    {{ form_errors(form.address) }}
+    <div class="form__row" id="field-address">
+        {{ form_label(form.address.address, 'Adresse') }}
+        {{ form_errors(form.address.address) }}
+        {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row" id="field-postal-code-city">
+        {{ form_label(form.address.postalCode, 'Code postal') }}
+        {{ form_errors(form.address.postalCode) }}
+        <div>{{ form_widget(form.address.postalCode, { 'attr': { 'placeholder': 'Code postal' } }) }}</div>
+        {{ form_errors(form.address.city) }}
+        {{ form_widget(form.address.city) }}
+        {{ form_widget(form.address.cityName, { 'attr': { 'placeholder': 'Ville' } }) }}
+    </div>
+
+    <div class="form__row" id="field-country">
+        {{ form_label(form.address.country, 'Pays') }}
+        {{ form_errors(form.address.country) }}
+        {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+</div>
+
+<h3>Renseignez les pages liées de votre comité local sur les réseaux sociaux</h3>
+
+<div class="form__row" id="field-facebook-page-url">
+    {{ form_label(form.facebookPageUrl, 'Page Facebook de votre comité') }}
+    {{ form_errors(form.facebookPageUrl) }}
+    {{ form_widget(form.facebookPageUrl, { 'attr': {
+        'class': 'form--full',
+        'placeholder': 'Page Facebook de votre comité'
+    } }) }}
+</div>
+
+<div class="form__row" id="field-twitter-nickname">
+    {{ form_label(form.twitterNickname, 'Compte Twitter de votre comité') }}
+    {{ form_errors(form.twitterNickname) }}
+    {{ form_widget(form.twitterNickname, { 'attr': {
+        'class': 'form--full',
+        'placeholder': 'Compte Twitter de votre comité'
+    } }) }}
+</div>
+
+<div class="form__row" id="field-googleplus-page-url">
+    {{ form_label(form.googlePlusPageUrl, 'Page Google+ de votre comité') }}
+    {{ form_errors(form.googlePlusPageUrl) }}
+    {{ form_widget(form.googlePlusPageUrl, { 'attr': {
+        'class': 'form--full',
+        'placeholder': 'Page Google+ de votre comité'
+    } }) }}
+</div>

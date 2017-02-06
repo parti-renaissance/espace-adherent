@@ -31,6 +31,91 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
+    public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->request('GET', sprintf('%s/editer', $this->client->getRequest()->getPathInfo()));
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testCommitteeHostCanEditCommitteeInformation()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Submit the committee form with invalid data
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer les modifications')->form([
+            'committee' => [
+                'name' => 'F',
+                'description' => 'F',
+                'address' => [
+                    'address' => '',
+                    'country' => 'FR',
+                    'postalCode' => '99999',
+                    'city' => '10102-45029',
+                ],
+                'facebookPageUrl' => 'yo',
+                'twitterNickname' => '@!!',
+                'googlePlusPageUrl' => 'yo',
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(8, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
+        $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
+        $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
+        $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 5 caractères.', $crawler->filter('#field-description > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
+        $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
+
+        // Submit the committee form with valid data to create committee
+        $this->client->submit($crawler->selectButton('Enregistrer les modifications')->form([
+            'committee' => [
+                'name' => 'Clichy est En Marche !',
+                'description' => 'Comité français En Marche ! de la ville de Clichy',
+                'address' => [
+                    'country' => 'FR',
+                    'address' => '92 bld victor hugo',
+                    'postalCode' => '92110',
+                    'city' => '92110-92024',
+                    'cityName' => '',
+                ],
+                'facebookPageUrl' => 'https://www.facebook.com/EnMarcheClichy',
+                'twitterNickname' => '@enmarcheclichy',
+                'googlePlusPageUrl' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        // Follow the redirect and check the adherent can see the committee edit page again
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('Les informations du comité ont été mises à jour avec succès.', $crawler->filter('#notice-flashes')->text());
+        $this->assertSame('Clichy est En Marche !', $crawler->filter('#committee_name')->attr('value'));
+        $this->assertSame('Comité français En Marche ! de la ville de Clichy', $crawler->filter('#committee_description')->text());
+    }
+
+    /**
+     * @group functionnal
+     */
     public function testCommitteeFollowerIsNotAllowedToPublishNewCommitteeEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');

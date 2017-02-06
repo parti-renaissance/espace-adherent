@@ -41,6 +41,8 @@ adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien 
 #
 committee.creation.success: Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur.
 
+committee.update.success: Les informations du comité ont été mises à jour avec succès.
+
 committee.message_created: Votre message a bien été publié.
 
 committee.members_count: '1 membre|%count% membres'

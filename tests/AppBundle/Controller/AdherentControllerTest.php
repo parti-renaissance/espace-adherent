@@ -371,7 +371,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         // Submit the committee form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Créer mon comité')->form([
-            'committee' => [
+            'create_committee' => [
                 'name' => 'F',
                 'description' => 'F',
                 'address' => [
@@ -400,7 +400,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         // Submit the committee form with valid data to create committee
         $this->client->submit($crawler->selectButton('Créer mon comité')->form([
-            'committee' => [
+            'create_committee' => [
                 'name' => 'Lyon est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Lyon',
                 'address' => [
