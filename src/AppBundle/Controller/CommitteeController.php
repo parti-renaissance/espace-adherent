@@ -151,22 +151,46 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/rejoindre", name="app_committee_follow")
+     * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')")
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
-    public function followAction(Committee $committee): Response
+    public function followAction(Request $request, Committee $committee): Response
     {
-        return new Response('FOLLOWING COMMITTEE');
+        if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
+        }
+
+        $this->get('app.committee_manager')->followCommittee($this->getUser(), $committee);
+
+        return $this->json([
+            'button' => [
+                'label' => 'Quitter ce comité',
+                'action' => 'quitter',
+                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('committee.unfollow'),
+            ],
+        ]);
     }
 
     /**
-     * @Route("/quitter", name="app_committee_unfollow")
+     * @Route("/quitter", name="app_committee_unfollow", condition="request.request.has('token')")
      * @Method("POST")
      * @Security("is_granted('UNFOLLOW_COMMITTEE', committee)")
      */
-    public function unfollowAction(Committee $committee): Response
+    public function unfollowAction(Request $request, Committee $committee): Response
     {
-        return new Response('UNFOLLOWING COMMITTEE');
+        if (!$this->isCsrfTokenValid('committee.unfollow', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
+        }
+
+        $this->get('app.committee_manager')->unfollowCommittee($this->getUser(), $committee);
+
+        return $this->json([
+            'button' => [
+                'label' => 'Suivre ce comité',
+                'action' => 'rejoindre',
+                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('committee.follow'),
+            ],
+        ]);
     }
 }
