@@ -1,18 +1,102 @@
 {% extends 'base.html.twig' %}
 
-{% block title committee_event.name %}
+{% block title "#{committee_event.name} - #{committee_event.beginAt|localizeddate('full', 'none')|capitalize} à #{committee_event.beginAt|date('g\\hi')} - #{committee_event.postalCode} #{committee_event.cityName}" %}
 
 {% block banner '' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        var map = null;
+        function initMap() {
+            var point = {
+                lat: {{ committee_event.latitude }},
+                lng: {{ committee_event.longitude }}
+            };
+    
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: point,
+                zoom: 15
+            });
+
+            var marker = new google.maps.Marker({
+                position: point,
+                map: map,
+                title: '{{ committee_event.name|e('js') }}'
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;callback=initMap"></script>
+{% endblock %}
+
 {% block content %}
+    {% set committee_event_url = url('app_committee_show_event', {committee_uuid: committee.uuid.toString, slug: committee_event.slug}) %}
+
     <section class="l__wrapper--medium">
-        <div class="committee-event">
-            <h2 id="committee-event-name">
-                {{- committee_event.name -}}
-            </h2>
-            <h3 id="committee-event-description">
-                {{- committee_event.description|nl2br -}}
-            </h3>
+        <a href="{{ path('events_index') }}" class="back-to-list">Retour</a>
+
+        <div class="committee-event-header">
+
+            <div class="committee-event-titles">
+                <h2 class="committee-event-name">
+                    {{- committee_event.name -}}
+                </h2>
+                <h3 class="committee-event-organizer">
+                    Organisé par {{ committee_event.organizer }} du comité <a href="{{ committee_path('app_committee_show', committee) }}">{{- committee.name -}}</a>
+                </h3>
+            </div>
+
+            <div class="committee-event-cta">
+                <button class="btn" role="button">Je veux participer</button>
+                <span class="event-social-networks">Partagez</span>
+                <ul>
+                    <li class="social-facebook">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ committee_event_url|url_encode }}">
+                            Facebook
+                        </a>
+                    </li>
+                    <li class="social-twitter">
+                        <a href="https://twitter.com/home?status=Événement En Marche ! à {{ committee_event.cityName }} le {{ committee_event.beginAt|date('d/m') }} : {{ committee_event_url }}">
+                            Twitter
+                        </a>
+                    </li>
+                    <li class="social-google_plus">
+                        <a href="https://plus.google.com/share?url={{ committee_event_url|url_encode }}">
+                            Google+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
         </div>
+
+        <div class="committee-event-schedule">
+            <ul>
+                <li class="committee-event-date">
+                    {{- committee_event.beginAt|localizeddate('full', 'none')|capitalize }}, {{ committee_event.beginAt|date('g\\hi') -}}
+                </li>
+                <li class="committee-event-address">
+                    {{- committee_event.inlineFormattedAddress -}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="committee-event-map" id="map" style="height: 350px; width: 1000px; background: red;"></div>
+
+        <section class="l__wrapper--medium">
+            <ul id="committee-event-nav">
+                <li>À propos</li>
+                <li>
+                    <a href="mailto:?subject=Rejoins cet événement En Marche !&amp;body=Je vais participer à l'événement {{ committee_event.name }} ({{ committee_event_url }}), rejoins moi !">Inviter des amis</a>
+                </li>
+                <li>
+                    <a href="mailto:{{ committee_event.organizer.emailAddress }}">Contact</a>
+                </li>
+            </ul>
+
+            <div class="committee-event-description">
+                {{- committee_event.description|nl2br -}}
+            </div>
+        </section>
+
     </section>
 {% endblock %}

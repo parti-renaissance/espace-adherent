@@ -17,18 +17,17 @@ class CommitteeEventFactory
 
     public function createFromArray(array $data): CommitteeEvent
     {
-        foreach (['uuid', 'author', 'committee', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
+        foreach (['uuid', 'organizer', 'committee', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
         }
 
         $uuid = Uuid::fromString($data['uuid']);
-        $author = Uuid::fromString($data['author']);
 
         return new CommitteeEvent(
             $uuid,
-            $author,
+            $data['organizer'],
             $data['committee'],
             $data['name'],
             $data['category'],
@@ -44,7 +43,7 @@ class CommitteeEventFactory
     {
         return new CommitteeEvent(
             $command->getUuid(),
-            $command->getAuthor()->getUuid(),
+            $command->getAuthor(),
             $command->getCommittee(),
             $command->getName(),
             $command->getCategory(),

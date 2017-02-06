@@ -19,12 +19,13 @@ class CommitteeEventController extends Controller
     /**
      * @Route("", name="app_committee_show_event")
      * @Method("GET")
-     * @Entity("event", expr="repository.findBySlug(slug)")
+     * @Entity("event", expr="repository.findOneBySlug(slug)")
      */
     public function showAction(CommitteeEvent $event): Response
     {
         return $this->render('events/show.html.twig', [
             'committee_event' => $event,
+            'committee' => $event->getCommittee(),
         ]);
     }
 

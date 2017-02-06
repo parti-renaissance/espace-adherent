@@ -309,8 +309,12 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Le nouvel événement a bien été créé et publié sur la page du comité.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame("Débat sur l'écologie", $crawler->filter('#committee-event-name')->text());
-        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('#committee-event-description')->text());
+        $this->assertSame("Débat sur l'écologie - Mercredi 2 mars 2022 à 9h30 - 69001 Lyon 1er", $crawler->filter('title')->text());
+        $this->assertSame("Débat sur l'écologie", $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim($crawler->filter('.committee-event-organizer')->text()));
+        $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
     }
 
     /**

@@ -77,9 +77,10 @@ class CommitteeEvent implements GeoPointInterface
     /**
      * The adherent UUID who created this committee event.
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="RESTRICT")
      */
-    private $createdBy;
+    private $organizer;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
@@ -93,7 +94,7 @@ class CommitteeEvent implements GeoPointInterface
 
     public function __construct(
         UuidInterface $uuid,
-        UuidInterface $creator,
+        Adherent $organizer,
         Committee $committee,
         string $name,
         string $category,
@@ -107,7 +108,7 @@ class CommitteeEvent implements GeoPointInterface
         int $participantsCount = 1
     ) {
         $this->uuid = $uuid;
-        $this->createdBy = $creator;
+        $this->organizer = $organizer;
         $this->committee = $committee;
         $this->setName($name);
         $this->slug = $slug;
@@ -169,6 +170,11 @@ class CommitteeEvent implements GeoPointInterface
     public function getCommittee(): ?Committee
     {
         return $this->committee;
+    }
+
+    public function getOrganizer(): ?Adherent
+    {
+        return $this->organizer;
     }
 
     public function getCreatedAt(): \DateTimeImmutable
