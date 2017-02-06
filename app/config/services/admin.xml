@@ -141,6 +141,21 @@
             <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Utilisateurs" />
         </service>
 
+        <!-- Administrator -->
+        <service id="app.admin.adherent" class="AppBundle\Admin\AdherentAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Adherent</argument>
+            <argument />
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Utilisateurs" />
+        </service>
+
         <!-- Donation -->
         <service id="app.admin.donation" class="AppBundle\Admin\DonationAdmin">
             <argument />

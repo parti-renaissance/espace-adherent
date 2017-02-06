@@ -231,7 +231,10 @@ class Adherent implements UserInterface, GeoPointInterface
     public function getActivatedAt()
     {
         if ($this->activatedAt instanceof \DateTime) {
-            $this->activatedAt = new \DateTimeImmutable($this->activatedAt->format('U'));
+            $this->activatedAt = new \DateTimeImmutable(
+                $this->activatedAt->format('Y-m-d H:i:s'),
+                $this->activatedAt->getTimezone()
+            );
         }
 
         return $this->activatedAt;
@@ -360,6 +363,14 @@ class Adherent implements UserInterface, GeoPointInterface
     }
 
     /**
+     * @return string
+     */
+    public function getInterestsAsJson()
+    {
+        return \GuzzleHttp\json_encode($this->interests, JSON_PRETTY_PRINT);
+    }
+
+    /**
      * @param array|null $interests
      */
     public function setInterests(array $interests = null)
@@ -432,5 +443,40 @@ class Adherent implements UserInterface, GeoPointInterface
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getRegisteredAt()
+    {
+        return $this->registeredAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setHasSubscribedMainEmails($mainEmailsSubscription)
+    {
+        $this->mainEmailsSubscription = $mainEmailsSubscription;
+    }
+
+    public function setHasSubscribedReferentsEmails($referentsEmailsSubscription)
+    {
+        $this->referentsEmailsSubscription = $referentsEmailsSubscription;
+    }
+
+    public function setHasSubscribedLocalHostEmails($localHostEmailsSubscription)
+    {
+        $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
 }
