@@ -46,7 +46,7 @@ class App {
         this._di.get('sharer').share(type, url, title);
     }
 
-    creteAddressSelector(country, postalCode, city, cityName) {
+    createAddressSelector(country, postalCode, city, cityName) {
         const formFactory = this._di.get('address.form_factory');
         const form = formFactory.createAddressForm(country, postalCode, city, cityName);
 
