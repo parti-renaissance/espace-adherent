@@ -17,7 +17,7 @@ class AssetsControllerTest extends SqliteWebTestCase
     {
         $client = static::createClient();
 
-        $client->request(Request::METHOD_GET, '/maps/47.395081,8.336142');
+        $client->request(Request::METHOD_GET, '/maps/47.3950813,8.3361425');
         $response = $client->getResponse();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
@@ -30,21 +30,21 @@ class AssetsControllerTest extends SqliteWebTestCase
 
         $tag = md5($response->getContent());
 
-        $client->request(Request::METHOD_GET, '/maps/47.395081,8.336142');
+        $client->request(Request::METHOD_GET, '/maps/47.3950813,8.3361425');
         $this->assertEquals(
             $tag,
             md5($client->getResponse()->getContent()),
             'Exactly same queries should have exactly same image data responses'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47.395081,9.336142');
+        $client->request(Request::METHOD_GET, '/maps/47.3950813,9.3361425');
         $this->assertNotEquals(
             $tag,
             md5($client->getResponse()->getContent()),
             'Different queries should not have exactly same image data responses'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/-47.395081,-8.336142');
+        $client->request(Request::METHOD_GET, '/maps/-47.3950813,-8.3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_OK,
             $client->getResponse(),
@@ -73,7 +73,7 @@ class AssetsControllerTest extends SqliteWebTestCase
     {
         $client = static::createClient();
 
-        $client->request(Request::METHOD_GET, '/maps/47.395081');
+        $client->request(Request::METHOD_GET, '/maps/47.3950813');
         $this->assertResponseStatusCode(
             Response::HTTP_NOT_FOUND,
             $client->getResponse(),
@@ -87,28 +87,28 @@ class AssetsControllerTest extends SqliteWebTestCase
             'Coordinates should have a precision of at least 1 digit'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47.3950834,8.3361424');
+        $client->request(Request::METHOD_GET, '/maps/47.39508135,8.3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_NOT_FOUND,
             $client->getResponse(),
-            'Coordinates should have a precision of max 6 digits'
+            'Coordinates should have a precision of max 7 digits'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47.395081;8.336142');
+        $client->request(Request::METHOD_GET, '/maps/47.3950813;8.3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_NOT_FOUND,
             $client->getResponse(),
             'Coordinates separator should be a comma'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47,395081,8,336142');
+        $client->request(Request::METHOD_GET, '/maps/47,3950813,8,3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_NOT_FOUND,
             $client->getResponse(),
             'Precision separator should be a dot'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47.39508a,8.336142');
+        $client->request(Request::METHOD_GET, '/maps/47.39508a3,8.3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_NOT_FOUND,
             $client->getResponse(),

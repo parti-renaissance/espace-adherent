@@ -65,6 +65,7 @@ class GoogleMapsStaticProvider
             'zoom' => self::MAPS_ZOOM_LEVEL,
             'size' => '400x400',
             'key' => $this->key,
+            'markers' => $coordinates->getLatitude().','.$coordinates->getLongitude(),
         ], null, '&', PHP_QUERY_RFC3986);
 
         try {
