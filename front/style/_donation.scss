@@ -177,7 +177,7 @@
 }
 
 .donation {
-    background-color: black;
+    background-color: $blue;
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: 0 0;
@@ -186,7 +186,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
 
     @media (max-height: 1000px) {
         justify-content: flex-start;
@@ -361,7 +360,7 @@
                     color: white;
                 }
             }
-            
+
             &.clickable {
                 text-decoration: none;
                 border: 0;
