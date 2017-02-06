@@ -8,7 +8,6 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
-use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,7 +36,6 @@ class AdherentController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get('app.membership_request_handler')->update($adherent, $membership);
-
             $this->addFlash('info', $this->get('translator')->trans('adherent.update_profile.success'));
 
             return $this->redirectToRoute('app_adherent_profile');
@@ -127,7 +125,7 @@ class AdherentController extends Controller
      */
     public function createCommitteeAction(Request $request): Response
     {
-        $command = new CommitteeCreationCommand($user = $this->getUser());
+        $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
@@ -144,8 +142,6 @@ class AdherentController extends Controller
         return $this->render('adherent/create_committee.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
-            'committee' => $command,
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
 

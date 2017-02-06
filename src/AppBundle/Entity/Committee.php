@@ -197,6 +197,11 @@ class Committee implements GeoPointInterface
         return $this->slug;
     }
 
+    public function getPostAddress(): PostAddress
+    {
+        return $this->postAddress;
+    }
+
     public function getDescription(): string
     {
         return $this->description;
@@ -347,5 +352,20 @@ class Committee implements GeoPointInterface
         }
 
         return $links;
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
+
+    public function update(string $name, string $description, PostAddress $address)
+    {
+        $this->setName($name);
+        $this->description = $description;
+
+        if (!$this->postAddress->equals($address)) {
+            $this->postAddress = $address;
+        }
     }
 }

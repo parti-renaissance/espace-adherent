@@ -14,6 +14,11 @@
 
         <service id="app.committee_event_factory" class="AppBundle\Committee\Event\CommitteeEventFactory"/>
 
+        <service id="app.committee.committee_update_handler" class="AppBundle\Committee\CommitteeUpdateCommandHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
         <service id="app.committee.committee_creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.committee_factory"/>

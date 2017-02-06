@@ -2,7 +2,7 @@
 
 namespace AppBundle\Validator;
 
-use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\CommitteeRepository;
 use Symfony\Component\Validator\Constraint;
@@ -24,20 +24,27 @@ class UniqueCommitteeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, UniqueCommittee::class);
         }
 
-        if (!$value instanceof CommitteeCreationCommand) {
-            throw new UnexpectedTypeException($value, CommitteeCreationCommand::class);
+        if (!$value instanceof CommitteeCommand) {
+            throw new UnexpectedTypeException($value, CommitteeCommand::class);
         }
 
-        $committee = $this->repository->findOneByName($value->name);
-
-        if ($committee instanceof Committee) {
-            $this
-                ->context
-                ->buildViolation($constraint->message)
-                ->setParameter('{{ name }}', $value->name)
-                ->atPath($constraint->errorPath)
-                ->addViolation()
-            ;
+        $found = $this->repository->findOneByName($value->name);
+        if (!$found instanceof Committee) {
+            return;
         }
+
+        $committee = $value->getCommittee();
+
+        if ($committee instanceof Committee && $committee->equals($found)) {
+            return;
+        }
+
+        $this
+            ->context
+            ->buildViolation($constraint->message)
+            ->setParameter('{{ name }}', $value->name)
+            ->atPath($constraint->errorPath)
+            ->addViolation()
+        ;
     }
 }
