@@ -5,7 +5,7 @@ namespace AppBundle\Geocoder;
 use AppBundle\Geocoder\Exception\GeocodingException;
 
 /**
- * This class is only meant for unit and functiontal tests purposes.
+ * This class is only meant for unit and functional tests purposes.
  *
  * @internal
  */

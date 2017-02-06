@@ -130,9 +130,7 @@
         </div>
         <div class="committee-details">
             <h5>Localisation</h5>
-            {#
-                TODO add static image
-            #}
+            <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}" alt="Plan" />
         </div>
         <div class="committee-details">
             <h5>Partager</h5>

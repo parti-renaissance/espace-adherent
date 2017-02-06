@@ -27,7 +27,7 @@ parameters:
     locale: fr
     pattern_uuid:          '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1:          '[0-9A-Fa-f]{40}'
-    pattern_coordinate:    '-?\d+(\.\d{1,6})?'
+    pattern_coordinate:    '-?\d+(\.\d{1,7})?'
     sender_email:          'contact@en-marche.fr'
     sender_name:           'En Marche !'
     timeline_max_messages: 30
