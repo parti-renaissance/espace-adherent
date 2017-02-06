@@ -5,14 +5,10 @@
 {% block banner '' %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.creteAddressSelector(
-                '{{ form.address.country.vars.id }}',
-                '{{ form.address.postalCode.vars.id }}',
-                '{{ form.address.city.vars.id }}',
-                '{{ form.address.cityName.vars.id }}'
-            );
+            {{ js.address(form.address) }}
         });
     </script>
 {% endblock %}
