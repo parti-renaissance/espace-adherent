@@ -1,5 +1,24 @@
 {% extends 'page/le-mouvement/layout.html.twig' %}
 
+{% block stylesheets %}
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+        background: url('{{ asset('images/loader-sm.gif') }}') no-repeat 50% 50%;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_api_key }}"></script>
+    <script>
+        Kernel.onLoad(function() {
+            App.runOrganisation();
+        });
+    </script>
+{% endblock %}
+
 {% block page_title 'Le mouvement - Notre organisation' %}
 {% block canonical_url url('page_le_mouvement_notre_organisation') %}
 {% block meta_description page.description %}

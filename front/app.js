@@ -60,6 +60,12 @@ class App {
             module.default();
         });
     }
+
+    runOrganisation() {
+        System.import('pages/organisation').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
+        });
+    }
 }
 
 window.App = new App();
