@@ -1,0 +1,45 @@
+.cc-window {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+
+    &__text {
+        margin-right: 20px;
+        font-size: 20px;
+
+        span, a {
+            font-family: $font-roboto;
+        }
+    }
+
+    &__button {
+        a {
+            font-size: 34px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 70px;
+            box-sizing: border-box;
+            font-family: $font-gillsans;
+        }
+    }
+
+    @media (max-width: $mobile + 50px) {
+        height: auto;
+        padding: 20px 0;
+        text-align: center;
+
+        &__text {
+            margin-bottom: 20px;
+        }
+
+        &__button a {
+            height: auto;
+            font-size: 20px;
+        }
+    }
+}

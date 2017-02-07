@@ -4,15 +4,20 @@
 export default () => {
     cookieconsent.initialise({
         palette: {
-            popup: { background: '#e5e5e5' },
-            button: { background: '#55f0b8' },
+            popup: { background: '#edf861' },
+            button: { background: '#ffffff' },
         },
-        position: 'bottom-right',
+        position: 'bottom',
         content: {
-            message: 'Ce site utilise des cookies\n',
+            message: 'Ce site utilise des cookies — ',
             dismiss: 'OK',
             link: 'En savoir plus',
             href: '/mentions-legales',
+        },
+        layout: 'en-marche',
+        layouts: {
+            'en-marche': '<div class="cc-window__text">{{message}}{{link}}</div>' +
+            '<div class="cc-window__button">{{compliance}}</div>',
         },
     });
 };
