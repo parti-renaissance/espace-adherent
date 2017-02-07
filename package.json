@@ -38,7 +38,6 @@
     "sass-loader": "^4.0.0",
     "stackblur-canvas": "^1.4.0",
     "style-loader": "^0.13.1",
-    "webpack": "^2.2.0",
-    "webpack-md5-hash": "^0.0.5"
+    "webpack": "^2.2.0"
   }
 }
