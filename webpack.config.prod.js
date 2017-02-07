@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
@@ -47,6 +46,10 @@ module.exports = {
             path.resolve('./front'),
             'node_modules',
         ],
+        alias: {
+            react: path.resolve(__dirname, 'node_modules/react'),
+            'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
+        },
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -65,7 +68,6 @@ module.exports = {
             filename: '[hash].app.css',
             allChunks: true,
         }),
-        new WebpackMd5Hash(),
 
         function symfonyAssetsVersion() {
             this.plugin('done', (stats) => {
