@@ -213,6 +213,11 @@ class Adherent implements UserInterface, GeoPointInterface
         return $this->birthdate;
     }
 
+    public function getAge(): int
+    {
+        return ($this->birthdate->diff(new \DateTime()))->y;
+    }
+
     public function getPosition()
     {
         return $this->position;

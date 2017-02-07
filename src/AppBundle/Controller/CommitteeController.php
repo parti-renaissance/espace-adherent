@@ -7,6 +7,7 @@ use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Event\CommitteeEventCommand;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\CommitteeEventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
@@ -143,10 +144,13 @@ class CommitteeController extends Controller
     {
         $committeeManager = $this->get('app.committee_manager');
 
+        $members = $this->getDoctrine()->getRepository(CommitteeMembership::class)->findMembers($committee->getUuid());
+
         return $this->render('committee/members.html.twig', [
             'committee' => $committee,
             'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'members' => $members,
         ]);
     }
 

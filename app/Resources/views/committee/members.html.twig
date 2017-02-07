@@ -6,6 +6,64 @@
 
 {% block banner '' %}
 
+{% block javascripts %}
+    <script type="application/javascript">
+        var allCheckbox = dom('#members-check-all');
+        var selectionCheckboxes = document.getElementsByName('members[]');
+        var contactButton = dom('#members-contact-button');
+        var exportButton = dom('#members-export-button');
+
+        // Bind the 'select all' checkbox
+        on(allCheckbox, 'change', function() {
+            if (allCheckbox.checked) {
+                toggleCheckboxs(true);
+                toggleButtons(true);
+            } else {
+                toggleCheckboxs(false);
+                toggleButtons(false);
+            }
+        });
+
+        // Bind each 'selection' checkbox
+        selectionCheckboxes.forEach(function(element) {
+            on(element, 'change', function() {
+                var all = true;
+
+                // Default behaviour
+                toggleButtons(false);
+                allCheckbox.checked = false;
+
+                selectionCheckboxes.forEach(function (element) {
+                    if (element.checked) {
+                        // Enable button if at least one selection checkbox is checked
+                        toggleButtons(true);
+                    } else {
+                        all = false;
+                    }
+                });
+
+                // When all selection checkbox are checked, also check the 'select all' checkbox
+                if (all) {
+                    allCheckbox.checked = true;
+                }
+            });
+        });
+
+        // Toggle action buttons
+        function toggleButtons(value) {
+            contactButton.disabled = !value;
+            exportButton.disabled = !value;
+        }
+
+        // Toggle each 'selection' checkbox
+        function toggleCheckboxs(value) {
+            selectionCheckboxes.forEach(function (element) {
+                element.checked = value;
+            });
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
     {% set is_host = is_host(committee) %}
 
@@ -17,18 +75,27 @@
 
         <a href="{{ committee_path('app_committee_edit', committee) }}">Editer le comité</a>
 
-        <a href="#" class="btn">Contacter</a>
-        <a href="#" class="btn">Exporter</a>
+        <button id="members-contact-button">Contacter</button>
+        <button id="members-export-button">Exporter</button>
         <a href="#" class="btn">Inviter des personnes</a>
 
         <table>
             <tr>
-                <th><input type="checkbox"></th>
+                <th><input type="checkbox" id="members-check-all" /></th>
                 <th>Prénom</th>
                 <th>Nom</th>
                 <th>Age</th>
                 <th>Code Postal</th>
             </tr>
+            {% for member in members %}
+                <tr>
+                    <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+                    <td>{{ member.firstName }}</td>
+                    <td>{{ member.lastName }}</td>
+                    <td>{{ member.age }}</td>
+                    <td>{{ member.cityName }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </section>
 
