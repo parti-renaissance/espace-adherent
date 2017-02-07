@@ -12,6 +12,7 @@
         var selectionCheckboxes = document.getElementsByName('members[]');
         var contactButton = dom('#members-contact-button');
         var exportButton = dom('#members-export-button');
+        var exportSelection = dom('#members-export-selection');
 
         // Bind the 'select all' checkbox
         on(allCheckbox, 'change', function() {
@@ -61,6 +62,19 @@
                 element.checked = value;
             });
         }
+
+        // Bind the export button (build a Json list of members to export)
+        on(exportButton, 'click', function () {
+            var members = [];
+
+            selectionCheckboxes.forEach(function(element) {
+                if (element.checked) {
+                    members.push(element.value);
+                }
+            });
+
+            exportSelection.value = JSON.stringify(members);
+        });
     </script>
 {% endblock %}
 
@@ -76,7 +90,14 @@
         <a href="{{ committee_path('app_committee_edit', committee) }}">Editer le comité</a>
 
         <button id="members-contact-button">Contacter</button>
-        <button id="members-export-button">Exporter</button>
+
+        <form method="post" action="{{ committee_path('app_commitee_export_members', committee) }}">
+            <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" />
+            <input type="hidden" name="exports" value="" id="members-export-selection" />
+
+            <button id="members-export-button">Exporter</button>
+        </form>
+
         <a href="#" class="btn">Inviter des personnes</a>
 
         <table>

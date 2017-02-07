@@ -115,6 +115,16 @@ class CommitteeManager
     }
 
     /**
+     * @param Committee $committee
+     *
+     * @return AdherentCollection
+     */
+    public function getCommitteeMembers(Committee $committee): AdherentCollection
+    {
+        return $this->getMembershipRepository()->findMembers($committee->getUuid());
+    }
+
+    /**
      * Makes an adherent follow multiple committees at once.
      *
      * @param Adherent $adherent   The follower
