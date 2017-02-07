@@ -1,3 +1,5 @@
+NodeList.prototype.forEach = Array.prototype.forEach;
+
 window.dom = selector => find(document, selector);
 
 window.find = (element, selector) => element.querySelector(selector);
