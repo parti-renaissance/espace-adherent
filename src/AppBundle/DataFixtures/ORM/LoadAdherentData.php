@@ -21,6 +21,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
     const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
     const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
+    const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -136,6 +137,22 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         ]);
         $adherent7->enableCommitteesNotifications();
 
+        $referent = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_8_UUID,
+            'password' => 'referent',
+            'email' => 'referent@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Francis',
+            'last_name' => 'Brioul',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'birthdate' => '1962-01-07',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $referent->setReferent(['FR', '35', '77000'], -1.6743, 48.112);
+        $referent->enableCommitteesNotifications();
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -144,6 +161,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $key5 = AdherentActivationToken::generate($adherent5);
         $key6 = AdherentActivationToken::generate($adherent6);
         $key7 = AdherentActivationToken::generate($adherent7);
+        $key8 = AdherentActivationToken::generate($referent);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -152,6 +170,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $adherent5->activate($key5, '2017-01-08 06:42:56');
         $adherent6->activate($key6, '2017-01-17 08:07:45');
         $adherent7->activate($key7, '2017-01-25 19:34:02');
+        $referent->activate($key8, '2017-02-07 13:20:45');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -220,6 +239,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent5);
         $manager->persist($adherent6);
         $manager->persist($adherent7);
+        $manager->persist($referent);
 
         $manager->persist($key1);
         $manager->persist($key2);
