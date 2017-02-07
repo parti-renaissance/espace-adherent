@@ -66,6 +66,7 @@ twig:
         assets_hash:          "%assets_hash%"
         sentry_dsn:           "%env(SENTRY_PUBLIC_DSN)%"
         recaptcha_public_key: "%env(RECAPTCHA_PUBLIC_KEY)%"
+        google_maps_api_key:  "%env(GMAPS_API_KEY)%"
         enable_platform:      "%env(ENABLE_PLATFORM)%"
         gmaps_api_key:        "%env(GMAPS_API_KEY)%"
         url_legacy:           "https://en-marche.fr/espaceperso"

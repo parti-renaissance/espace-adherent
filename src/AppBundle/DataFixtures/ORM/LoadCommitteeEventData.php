@@ -29,7 +29,7 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
 
         $event = $committeeEventFactory->createFromArray([
             'uuid' => self::COMMITTEE_EVENT_1_UUID,
-            'author' => $author->getUuid(),
+            'organizer' => $author,
             'committee' => $committee,
             'name' => 'Réunion de réflexion',
             'category' => 'CE005',
