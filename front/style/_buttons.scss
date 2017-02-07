@@ -1,6 +1,6 @@
 @mixin btn {
     cursor: pointer;
-    padding: 10px 15px;
+    padding: 1px 15px 0;
     display: inline-block;
     background: white;
     border: 1px solid black;
@@ -9,7 +9,11 @@
     font-size: $text--size-small;
     letter-spacing: 1.5px;
     transition: all 0.45s;
+    height: 40px;
     box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
         background: black;
@@ -81,29 +85,25 @@
 .btn {
     @include btn;
 
-    &--medium-small {
-        padding: 10px 15px;
-        font-size: $text--size-medium--small;
-    }
-
     &--medium {
-        padding: 15px 20px;
-        font-size: $text--size-medium;
+        font-size: $text--size-medium--small;
+        height: 47px;
     }
 
     &--large-and-medium {
-        padding: 26px 0;
         @include text--medium-small;
         letter-spacing: 1.9px;
         font-family: $font-gillsans;
         max-width: 300px;
         width: 100%;
+        height: 75px;
     }
 
     &--large {
-        padding: 20px 25px;
+        padding: 0 25px;
         font-size: $text--size-large;
         letter-spacing: 3.5px;
+        height: 70px;
     }
 
     &--no-border {
