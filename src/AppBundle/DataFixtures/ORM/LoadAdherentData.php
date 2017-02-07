@@ -187,7 +187,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
         ]);
-        $committee3->approved();
+        $committee3->approved('2017-01-16 09:18:33');
 
         $committee4 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,

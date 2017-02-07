@@ -8,6 +8,7 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeEvent as EntityCommitteeEvent;
 use AppBundle\Entity\PostAddress;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,14 +24,15 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
     public function load(ObjectManager $manager)
     {
         $author = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_3_UUID);
 
         $committeeEventFactory = $this->getCommitteeEventFactory();
 
         $event = $committeeEventFactory->createFromArray([
             'uuid' => self::COMMITTEE_EVENT_1_UUID,
             'organizer' => $author,
-            'committee' => $committee,
+            'committee' => $committee1,
             'name' => 'Réunion de réflexion',
             'category' => 'CE005',
             'description' => 'Nous allons échanger autour de différents sujets',
@@ -43,45 +45,68 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
         $manager->persist($event);
         $manager->flush();
 
-        $feedManager = $this->getCommitteeFeedManager();
-        foreach ($this->getCommitteeMessageData() as $data) {
-            $feedManager->createMessage(new CommitteeMessage($author, $committee, $data['text'], $data['created_at']));
+        foreach ($this->getCommitteeMessageData($committee1) as $data) {
+            $this->publishCommitteeMessage($committee1, $author, $data['text'], $data['created_at']);
+        }
+
+        foreach ($this->getCommitteeMessageData($committee2) as $data) {
+            $this->publishCommitteeMessage($committee2, $author, $data['text'], $data['created_at']);
         }
 
         for ($day = 1; $day <= 31; ++$day) {
-            $feedManager->createMessage(new CommitteeMessage(
-                $author,
-                $committee,
-                sprintf("Rapport d'activité du %u janvier 2017.", $day),
-                sprintf('2017-01-%02u 09:00:00', $day))
-            );
+            $this->publishCommitteeMessage($committee1, $author, sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
         }
 
-        $feedManager->createEvent(new CommitteeEvent($author, $event));
+        $this->publishCommitteeEvent($event);
     }
 
-    private function getCommitteeMessageData(): \Generator
+    private function publishCommitteeMessage(Committee $committee, Adherent $author, string $text, string $createdAt = 'now')
     {
-        yield [
-            'text' => 'Ouverture du comité !',
-            'created_at' => '2017-01-12 20:13:26',
-        ];
-        yield [
-            'text' => "Comment ça va aujourd'hui les Marcheurs ?",
-            'created_at' => '2017-01-13 08:31:12',
-        ];
-        yield [
-            'text' => 'Tout le monde est prêt pour le porte à porte ?',
-            'created_at' => '2017-01-13 10:08:45',
-        ];
-        yield [
-            'text' => 'Réunion écologiste en préparation !',
-            'created_at' => '2017-01-14 11:14:54',
-        ];
-        yield [
-            'text' => "Visite d'Émmanuel Macron le 20 janvier.",
-            'created_at' => '2017-01-15 13:28:33',
-        ];
+        return $this->getCommitteeFeedManager()->createMessage(new CommitteeMessage($author, $committee, $text, $createdAt));
+    }
+
+    private function publishCommitteeEvent(EntityCommitteeEvent $event)
+    {
+        return $this->getCommitteeFeedManager()->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
+    }
+
+    private function getCommitteeMessageData(Committee $committee): \Generator
+    {
+        $uuid = (string) $committee->getUuid();
+
+        if (LoadAdherentData::COMMITTEE_1_UUID === $uuid) {
+            yield [
+                'text' => 'Ouverture du comité !',
+                'created_at' => '2017-01-12 20:13:26',
+            ];
+            yield [
+                'text' => "Comment ça va aujourd'hui les Marcheurs ?",
+                'created_at' => '2017-01-13 08:31:12',
+            ];
+            yield [
+                'text' => 'Tout le monde est prêt pour le porte à porte ?',
+                'created_at' => '2017-01-13 10:08:45',
+            ];
+            yield [
+                'text' => 'Réunion écologiste en préparation !',
+                'created_at' => '2017-01-14 11:14:54',
+            ];
+            yield [
+                'text' => "Visite d'Émmanuel Macron le 20 janvier.",
+                'created_at' => '2017-01-15 13:28:33',
+            ];
+        }
+
+        if ($uuid === LoadAdherentData::COMMITTEE_3_UUID) {
+            yield [
+                'text' => 'Lancement du comité !',
+                'created_at' => '2017-01-16 13:14:56',
+            ];
+            yield [
+                'text' => 'À la recherche de volontaires !',
+                'created_at' => '2017-01-17 20:02:21',
+            ];
+        }
     }
 
     private function getCommitteeFeedManager(): CommitteeFeedManager

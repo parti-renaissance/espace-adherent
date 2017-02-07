@@ -38,6 +38,7 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->leftJoin('i.event', 'e')
             ->where('i.itemType = :type')
             ->orderBy('i.createdAt', 'DESC')
+            ->setMaxResults(1)
             ->setParameter('type', $type);
 
         if ($committeeUuid) {

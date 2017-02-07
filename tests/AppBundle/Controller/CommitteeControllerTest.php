@@ -3,11 +3,15 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCommitteeEventData;
 use AppBundle\Entity\CommitteeEvent;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
+use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeEventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
+use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
@@ -22,11 +26,17 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /* @var MailjetEmailRepository */
     private $emailRepository;
 
+    /* @var CommitteeRepository */
+    private $committeeRepository;
+
     /* @var CommitteeEventRepository */
     private $committeeEventRepository;
 
     /* @var CommitteeFeedItemRepository */
     private $committeeFeedItemRepository;
+
+    /* @var CommitteeMembershipRepository */
+    private $committeeMembershipRepository;
 
     /**
      * @group functionnal
@@ -325,23 +335,38 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
 
         // Anonymous
-        $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCountTimelineMessages($crawler, 2);
+        $this->assertSeeTimelineMessages($crawler, [
+            ['Jacques Picard', 'Connectez-vous'],
+            ['Jacques Picard', 'Connectez-vous'],
+        ]);
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCountTimelineMessages($crawler, 2);
+        $this->assertSeeTimelineMessages($crawler, [
+            ['Jacques Picard', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'Lancement du comité !'],
+        ]);
 
         // Member
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
 
-        $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCountTimelineMessages($crawler, 2);
+        $this->assertSeeTimelineMessages($crawler, [
+            ['Jacques Picard', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'Lancement du comité !'],
+        ]);
     }
 
     /**
@@ -383,7 +408,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The guest should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
-        $this->assertSeeSocialLinks($crawler, $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
@@ -494,8 +519,19 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
-        $members = $this->getCommitteeMembershipRepository()->findFollowers(LoadAdherentData::COMMITTEE_1_UUID);
-        $this->assertCount($members->getCommitteesNotificationsSubscribers()->count(), $this->getMailjetEmailRepository()->findAll());
+        $this->assertCount(
+            $this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID),
+            $this->emailRepository->findMessages(CommitteeMessageNotificationMessage::class, $message->getUuid())
+        );
+    }
+
+    private function getCommitteeSubscribersCount(string $committeeUuid): int
+    {
+        return $this
+            ->committeeMembershipRepository
+            ->findFollowers($committeeUuid)
+            ->getCommitteesNotificationsSubscribers()
+            ->count();
     }
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
@@ -577,6 +613,25 @@ class CommitteeControllerTest extends SqliteWebTestCase
         return 1 === count($flash);
     }
 
+    private function assertCountTimelineMessages(Crawler $crawler, int $nb)
+    {
+        $this->assertSame($nb, $crawler->filter('.committee-timeline-message')->count());
+    }
+
+    private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
+    {
+        foreach ($messages as $position => $message) {
+            list($author, $text) = $message;
+            $this->assertSeeTimelineMessage($crawler, $position, $author, $text);
+        }
+    }
+
+    private function assertSeeTimelineMessage(Crawler $crawler, int $position, string $author, string $text)
+    {
+        $this->assertSame($author, $crawler->filter('.committee-timeline-message h3')->eq($position)->text());
+        $this->assertContains($text, $crawler->filter('.committee-timeline-message p')->eq($position)->text());
+    }
+
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
     {
         $facebookLinkPattern = 'a.committee-facebook';
@@ -611,19 +666,24 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadCommitteeEventData::class,
         ]);
 
         $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeEventRepository = $this->getCommitteeEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
+        $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
     }
 
     protected function tearDown()
     {
         $this->kill();
 
+        $this->committeeMembershipRepository = null;
         $this->committeeFeedItemRepository = null;
         $this->committeeEventRepository = null;
+        $this->committeeRepository = null;
         $this->emailRepository = null;
 
         parent::tearDown();

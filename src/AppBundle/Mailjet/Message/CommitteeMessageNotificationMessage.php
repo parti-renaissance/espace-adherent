@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeFeedNotificationMessage extends MailjetMessage
+class CommitteeMessageNotificationMessage extends MailjetMessage
 {
     /**
      * Creates a new message instance for a list of recipients.
@@ -34,7 +34,8 @@ class CommitteeFeedNotificationMessage extends MailjetMessage
             $recipient->getFullName(),
             'Un animateur vous a envoyé un message',
             static::getTemplateVars($message->getAuthorFirstName(), $message->getContent()),
-            static::getRecipientVars($recipient->getFirstName())
+            static::getRecipientVars($recipient->getFirstName()),
+            $message->getUuid()
         );
 
         foreach ($recipients as $recipient) {

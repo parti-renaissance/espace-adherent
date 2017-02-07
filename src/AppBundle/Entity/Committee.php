@@ -340,18 +340,23 @@ class Committee implements GeoPointInterface
         $links = [];
 
         if ($this->facebookPageUrl) {
-            $links['facebook'] = new Link($this->facebookPageUrl, 'Facebook');
+            $links['facebook'] = $this->createLink($this->facebookPageUrl, 'Facebook');
         }
 
         if ($this->googlePlusPageUrl) {
-            $links['google_plus'] = new Link($this->googlePlusPageUrl, 'Google +');
+            $links['google_plus'] = $this->createLink($this->googlePlusPageUrl, 'Google +');
         }
 
         if ($this->twitterNickname) {
-            $links['twitter'] = new Link(sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
+            $links['twitter'] = $this->createLink(sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
         }
 
         return $links;
+    }
+
+    private function createLink(string $url, string $label): Link
+    {
+        return new Link($url, $label);
     }
 
     public function equals(self $other): bool
