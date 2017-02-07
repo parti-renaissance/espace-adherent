@@ -88,16 +88,17 @@
 
     <hr/>
 
-    <section class="l__wrapper--medium committee-timeline" id="committee-timeline">
-        <div id="committee-timeline-page-1">
-            {{ include('committee/timeline/feed.html.twig') }}
-        </div>
-        <span>
-            <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
-        </span>
-    </section>
-    
-    <hr/>
+    {% if committee_timeline|length %}
+        <section class="l__wrapper--medium committee-timeline" id="committee-timeline">
+            <div id="committee-timeline-page-1">
+                {{ include('committee/timeline/feed.html.twig') }}
+            </div>
+            <span>
+                <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
+            </span>
+        </section>
+        <hr/>
+    {% endif %}
 
     <section class="l__wrapper--medium">
         {% if is_host %}

@@ -1,3 +1,5 @@
+<p>{{ item.content|nl2br }}</p>
+
 <div class="committee-event">
     <div class="conmittee-event-map">
         <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"

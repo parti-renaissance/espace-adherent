@@ -30,6 +30,7 @@ class CommitteeEventRepository extends EntityRepository
         $query = $this
             ->createQueryBuilder('ce')
             ->orderBy('ce.createdAt', 'DESC')
+            ->setMaxResults(1)
             ->getQuery();
 
         return $query->getOneOrNullResult();

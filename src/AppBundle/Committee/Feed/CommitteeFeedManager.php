@@ -6,7 +6,7 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeFeedNotificationMessage;
+use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class CommitteeFeedManager
@@ -57,6 +57,6 @@ class CommitteeFeedManager
     {
         $followers = $this->committeeManager->getCommitteeFollowers($committee)->getCommitteesNotificationsSubscribers();
 
-        $this->mailjet->sendMessage(CommitteeFeedNotificationMessage::create($followers->toArray(), $message));
+        $this->mailjet->sendMessage(CommitteeMessageNotificationMessage::create($followers->toArray(), $message));
     }
 }
