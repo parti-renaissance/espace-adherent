@@ -117,6 +117,13 @@ class Adherent implements UserInterface, GeoPointInterface
      */
     private $localHostEmailsSubscription = false;
 
+    /**
+     * @ORM\Embedded(class="ManagedArea", columnPrefix="managed_area_")
+     *
+     * @var ManagedArea
+     */
+    private $managedArea;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -157,7 +164,13 @@ class Adherent implements UserInterface, GeoPointInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_ADHERENT'];
+        $roles = ['ROLE_ADHERENT'];
+
+        if ($this->isReferent()) {
+            $roles[] = 'ROLE_REFERENT';
+        }
+
+        return $roles;
     }
 
     public function getPassword()
@@ -483,5 +496,43 @@ class Adherent implements UserInterface, GeoPointInterface
     public function setHasSubscribedLocalHostEmails($localHostEmailsSubscription)
     {
         $this->localHostEmailsSubscription = $localHostEmailsSubscription;
+    }
+
+    public function getManagedArea(): ManagedArea
+    {
+        return $this->managedArea;
+    }
+
+    public function setManagedArea(ManagedArea $managedArea)
+    {
+        $this->managedArea = $managedArea;
+    }
+
+    public function setReferent(array $codes, string $markerLatitude, string $markerLongitude)
+    {
+        $this->managedArea = new ManagedArea();
+        $this->managedArea->setCodes($codes);
+        $this->managedArea->setMarkerLatitude($markerLatitude);
+        $this->managedArea->setMarkerLongitude($markerLongitude);
+    }
+
+    public function isReferent()
+    {
+        return $this->managedArea instanceof ManagedArea && !empty($this->managedArea->getCodes());
+    }
+
+    public function getManagedAreaCodesAsString(): string
+    {
+        return $this->managedArea->getCodesAsString();
+    }
+
+    public function getManagedAreaMarkerLatitude(): string
+    {
+        return $this->managedArea->getMarkerLatitude();
+    }
+
+    public function getManagedAreaMarkerLongitude(): string
+    {
+        return $this->managedArea->getMarkerLongitude();
     }
 }

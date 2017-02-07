@@ -15,6 +15,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
     const ADHERENT_UUID = '9ae87712-1bc0-4887-a00d-5c13780e5071';
 
     private $adherent;
+    private $referent;
     private $committeeRepository;
     private $committeeMembershipRepository;
 
@@ -42,7 +43,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
 
-    public function testCreateCommitteePermissionIsDenied()
+    public function testCreateCommitteePermissionIsDeniedWhenHost()
     {
         $this
             ->committeeMembershipRepository
@@ -57,6 +58,44 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->method('hasWaitingForApprovalCommittees');
 
         $token = $this->createAuthenticationToken($this->adherent);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
+    }
+
+    public function testCreateCommitteePermissionIsDeniedWhenHostWaitingForApproval()
+    {
+        $this
+            ->committeeMembershipRepository
+            ->expects($this->once())
+            ->method('hostCommittee')
+            ->with($this->adherent)
+            ->willReturn(false);
+
+        $this
+            ->committeeRepository
+            ->expects($this->once())
+            ->method('hasWaitingForApprovalCommittees')
+            ->with($this->adherent->getUuid()->toString())
+            ->willReturn(true);
+
+        $token = $this->createAuthenticationToken($this->adherent);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
+    }
+
+    public function testCreateCommitteePermissionIsDeniedWhenReferent()
+    {
+        $this
+            ->committeeMembershipRepository
+            ->expects($this->never())
+            ->method('hostCommittee');
+
+        $this
+            ->committeeRepository
+            ->expects($this->never())
+            ->method('hasWaitingForApprovalCommittees');
+
+        $token = $this->createAuthenticationToken($this->referent);
 
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
@@ -101,6 +140,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         parent::setUp();
 
         $this->adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_UUID);
+        $this->referent = $this->createReferentFromUuidAndEmail(self::ADHERENT_UUID);
 
         $this->committeeMembershipRepository = $this
             ->getMockBuilder(CommitteeMembershipRepository::class)
@@ -123,6 +163,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
     protected function tearDown()
     {
         $this->adherent = null;
+        $this->referent = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
         $this->voter = null;

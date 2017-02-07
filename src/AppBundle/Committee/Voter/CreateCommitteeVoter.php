@@ -38,6 +38,10 @@ class CreateCommitteeVoter implements VoterInterface
 
     private function voteOnCreateCommitteeAttribute(Adherent $adherent)
     {
+        if ($adherent->isReferent()) {
+            return self::ACCESS_DENIED;
+        }
+
         $adherentUuid = (string) $adherent->getUuid();
 
         if ($this->committeeMembershipRepository->hostCommittee($adherent)) {

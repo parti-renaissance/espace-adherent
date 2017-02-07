@@ -70,6 +70,14 @@ abstract class AbstractCommitteeVoterTest extends MysqlWebTestCase
         ]);
     }
 
+    protected function createReferentFromUuidAndEmail(string $uuid, string $email = null): Adherent
+    {
+        $referent = $this->createAdherentFromUuidAndEmail($uuid, $email);
+        $referent->setReferent(['FR', '35', '77000'], -1.6743, 48.112);
+
+        return $referent;
+    }
+
     protected function createCommittee(string $adherentUuid): Committee
     {
         $createdBy = Uuid::fromString($adherentUuid);
