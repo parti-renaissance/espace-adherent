@@ -282,4 +282,31 @@ class CommitteeMembershipRepository extends EntityRepository
             return $membership->getAdherent();
         }, $query->getResult()));
     }
+
+    /**
+     * Returns the list of all members of a committee.
+     *
+     * @param string $committeeUuid The committee UUID
+     *
+     * @return AdherentCollection
+     */
+    public function findMembers(string $committeeUuid): AdherentCollection
+    {
+        $committeeUuid = Uuid::fromString($committeeUuid);
+
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
+            ->select('cm')
+            ->leftJoin('cm.adherent', 'adherent')
+            ->where('cm.committeeUuid = :committee')
+            ->orderBy('cm.joinedAt', 'ASC')
+            ->setParameter('committee', (string) $committeeUuid)
+            ->getQuery()
+        ;
+
+        return new AdherentCollection(array_map(function (CommitteeMembership $membership) {
+            return $membership->getAdherent();
+        }, $query->getResult()));
+    }
 }
