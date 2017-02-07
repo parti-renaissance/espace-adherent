@@ -46,7 +46,7 @@
             </div>
 
             <div class="committee-event-cta">
-                <button class="btn" role="button">Je veux participer</button>
+                <a href="{{ path('app_committee_show_event', {committee_uuid: committee.uuid.toString, slug: committee_event.slug}) }}">Je veux participer</a>
                 <span class="event-social-networks">Partagez</span>
                 <ul>
                     <li class="social-facebook">

@@ -30,11 +30,28 @@ class CommitteeEventController extends Controller
     }
 
     /**
-     * @Route("/participer", name="app_committee_attend_event")
-     * @Method("GET")
+     * @Route("/inscription", name="app_committee_attend_event")
+     * @Method("GET|POST")
+     * @Entity("event", expr="repository.findOneBySlug(slug)")
      */
-    public function attendAction(): Response
+    public function attendAction(CommitteeEvent $event): Response
     {
-        return new Response('TO BE IMPLEMENTED');
+        return $this->render('events/attend.html.twig', [
+            'committee_event' => $event,
+            'committee' => $event->getCommittee(),
+        ]);
+    }
+
+    /**
+     * @Route("/confirmation", name="app_committee_attend_event_confirmation")
+     * @Method("GET")
+     * @Entity("event", expr="repository.findOneBySlug(slug)")
+     */
+    public function attendConfirmationAction(CommitteeEvent $event): Response
+    {
+        return $this->render('events/attend_confirmation.html.twig', [
+            'committee_event' => $event,
+            'committee' => $event->getCommittee(),
+        ]);
     }
 }
