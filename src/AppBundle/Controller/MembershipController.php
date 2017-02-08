@@ -12,6 +12,8 @@ use AppBundle\Form\MembershipChooseNearbyCommitteeType;
 use AppBundle\Form\MembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Membership\OnBoarding\OnBoardingAdherent;
+use AppBundle\Membership\OnBoarding\OnBoardingDonation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,11 +38,9 @@ class MembershipController extends Controller
         ;
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->handle($membership);
+            $adherent = $this->get('app.membership_request_handler')->handle($membership);
 
-            if ($membership->hasAdherent()) {
-                $this->get('app.membership_utils')->createRegisteringDonation($membership->getAdherent());
-            }
+            $this->get('app.membership.on_boarding_session_handler')->start($request->getSession(), $adherent);
 
             return $this->redirectToRoute('app_membership_donate');
         }
@@ -59,12 +59,9 @@ class MembershipController extends Controller
      * @Route("/inscription/don", name="app_membership_donate")
      * @Method("GET|POST")
      */
-    public function donateAction(Request $request): Response
+    public function donateAction(Request $request, OnBoardingDonation $onBoardingDonation): Response
     {
-        if (!$donationRequest = $this->get('app.membership_utils')->getRegisteringDonation()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
+        $donationRequest = $onBoardingDonation->getDonationRequest();
         $form = $this->createForm(DonationRequestType::class, $donationRequest, [
             'locale' => $request->getLocale(),
             'submit_label' => 'adherent.submit_donation_label',
@@ -102,28 +99,16 @@ class MembershipController extends Controller
      * @Route("/inscription/centre-interets", name="app_membership_pin_interests")
      * @Method("GET|POST")
      */
-    public function pinInterestsAction(Request $request): Response
+    public function pinInterestsAction(Request $request, OnBoardingAdherent $onBoardingAdherent): Response
     {
-        $membershipUtils = $this->get('app.membership_utils');
-
-        if (!$id = $membershipUtils->getNewAdherentId()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
-        $manager = $this->getDoctrine()->getManager();
-
-        if (!$adherent = $manager->getRepository(Adherent::class)->find($id)) {
-            throw $this->createNotFoundException('New adherent id not found.');
-        }
-
-        $form = $this->createForm(AdherentInterestsFormType::class, $adherent)
+        $form = $this->createForm(AdherentInterestsFormType::class, $onBoardingAdherent->getAdherent())
             ->add('pass', SubmitType::class)
             ->add('submit', SubmitType::class)
         ;
 
         if ($form->handleRequest($request)->isSubmitted()) {
             if ($form->get('submit')->isClicked() && $form->isValid()) {
-                $manager->flush();
+                $this->getDoctrine()->getManager()->flush();
             }
 
             return $this->redirectToRoute('app_membership_choose_nearby_committee');
@@ -140,18 +125,9 @@ class MembershipController extends Controller
      * @Route("/inscription/choisir-des-comites", name="app_membership_choose_nearby_committee")
      * @Method("GET|POST")
      */
-    public function chooseNearbyCommitteeAction(Request $request): Response
+    public function chooseNearbyCommitteeAction(Request $request, OnBoardingAdherent $onBoardingAdherent): Response
     {
-        $membershipUtils = $this->get('app.membership_utils');
-
-        if (!$id = $membershipUtils->getNewAdherentId()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
-        if (!$adherent = $this->getDoctrine()->getRepository(Adherent::class)->find($id)) {
-            throw $this->createNotFoundException('New adherent id not found.');
-        }
-
+        $adherent = $onBoardingAdherent->getAdherent();
         $form = $this->createForm(MembershipChooseNearbyCommitteeType::class, null, ['adherent' => $adherent])
             ->add('submit', SubmitType::class, ['label' => 'Terminer'])
             ->handleRequest($request)
@@ -159,6 +135,8 @@ class MembershipController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee_manager')->followCommittees($adherent, $form->get('committees')->getData());
+
+            $this->get('app.membership.on_boarding_session_handler')->terminate($request->getSession());
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
 

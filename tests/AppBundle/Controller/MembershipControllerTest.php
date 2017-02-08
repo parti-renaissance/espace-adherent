@@ -3,16 +3,15 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
+use AppBundle\Membership\OnBoarding\OnBoardingSessionHandler;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
-use AppBundle\Membership\MembershipUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\MysqlWebTestCase;
@@ -190,9 +189,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->followRedirect();
 
         $session = $this->client->getRequest()->getSession();
+        $onBoardingSessionHandler = $this->getOnBoardingSessionHandler();
 
-        $this->assertInstanceOf(DonationRequest::class, $session->get(MembershipUtils::REGISTERING_DONATION));
-        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
+        $this->assertTrue($onBoardingSessionHandler->isStarted($session));
+        $this->assertSame($adherent->getId(), $onBoardingSessionHandler->getNewAdherentId($session));
     }
 
     /**
@@ -226,21 +226,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertNotNull($adherent->getLongitude());
 
         $session = $this->client->getRequest()->getSession();
+        $onBoardingSessionHandler = $this->getOnBoardingSessionHandler();
 
-        $this->assertInstanceOf(DonationRequest::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
-        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
-        $this->assertSame('Dupont', $donation->getLastName());
-    }
-
-    /**
-     * @group functionnal
-     */
-    public function testDonateWithoutTemporaryDonation()
-    {
-        $client = $this->client;
-        $client->request(Request::METHOD_GET, '/inscription/don');
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
+        $this->assertTrue($onBoardingSessionHandler->isStarted($session));
+        $this->assertSame($adherent->getId(), $onBoardingSessionHandler->getNewAdherentId($session));
     }
 
     /**
@@ -260,7 +249,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
     {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 'wrong id');
+        $this->client->getContainer()->get('session')->set(OnBoardingSessionHandler::NEW_ADHERENT, 99999999999999);
 
         $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
 
@@ -269,9 +258,31 @@ class MembershipControllerTest extends MysqlWebTestCase
 
     public function provideRegistrationOnBoardingStepUrl()
     {
+        yield ['don'];
+
         yield ['centre-interets'];
 
         yield ['choisir-des-comites'];
+    }
+
+    /*
+     * donate action cannot be tested because the address is filled in javascript
+     */
+
+    /**
+     * @group functionnal
+     */
+    public function testDonateIgnored()
+    {
+        $this->startOnBoardingSession();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription/don');
+
+        $this->client->submit($crawler->selectButton('app_donation[pass]')->form());
+
+        $this->assertCount(0, $this->getDonationRepository()->findAll());
+
+        $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
     }
 
     /**
@@ -279,9 +290,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testPinInterests()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
+        $this->startOnBoardingSession();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -307,13 +316,10 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testPinInterestsPersistsInterestsForNonActivatedAdherent()
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->startOnBoardingSession();
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getInterests());
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -346,10 +352,8 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testChooseNearbyCommittee()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->startOnBoardingSession();
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
@@ -373,7 +377,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->startOnBoardingSession();
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertFalse($adherent->isEnabled());
@@ -382,8 +386,6 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
@@ -470,5 +472,19 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->adherentRepository = null;
 
         parent::tearDown();
+    }
+
+    private function getOnBoardingSessionHandler(): OnBoardingSessionHandler
+    {
+        return $this->getContainer()->get('app.membership.on_boarding_session_handler');
+    }
+
+    private function startOnBoardingSession(): Adherent
+    {
+        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+
+        $this->client->getContainer()->get('session')->set(OnBoardingSessionHandler::NEW_ADHERENT, $adherent->getId());
+
+        return $adherent;
     }
 }

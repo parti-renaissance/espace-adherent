@@ -194,25 +194,4 @@ class MembershipRequest
     {
         return $this->birthdate;
     }
-
-    /**
-     * @return Adherent|null
-     */
-    public function getAdherent()
-    {
-        return $this->adherent;
-    }
-
-    /**
-     * @param Adherent|null $adherent
-     */
-    public function setAdherent(Adherent $adherent)
-    {
-        $this->adherent = $adherent;
-    }
-
-    public function hasAdherent(): bool
-    {
-        return null !== $this->adherent;
-    }
 }

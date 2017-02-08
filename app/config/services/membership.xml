@@ -37,10 +37,14 @@
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
-        <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
+        <service id="app.controller.membership_on_boarding_resolver" class="AppBundle\Controller\ArgumentValueResolver\MembershipOnBoardingResolver">
+            <argument type="service" id="app.membership.on_boarding_session_handler"/>
+            <argument type="service" id="app.repository.adherent" />
             <argument type="service" id="app.donation_request.factory"/>
-            <argument type="service" id="session"/>
+            <tag name="controller.argument_value_resolver"/>
         </service>
+
+        <service id="app.membership.on_boarding_session_handler" class="AppBundle\Membership\OnBoarding\OnBoardingSessionHandler" />
 
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
             <argument type="service" id="app.repository.adherent"/>
