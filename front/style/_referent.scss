@@ -1,0 +1,43 @@
+.referent {
+    &__sidebar {
+        min-width: 300px;
+        border-right: 2px solid #f2f2f2;
+        padding: 0 20px 20px 20px;
+
+        h4 {
+            text-transform: uppercase;
+            font-weight: normal;
+            margin-top: 20px;
+            color: #828282;
+            font-size: 16px;
+            padding: 10px 15px;
+        }
+
+        a {
+            font-size: 14px;
+            display: block;
+            border: 0;
+            text-decoration: none;
+            transition: 0s;
+            padding: 10px 15px;
+            
+            &:hover {
+                color: black;
+                text-decoration: underline;
+            }
+        }
+
+        li.active a {
+            background: #e9e9e9;
+            color: black;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    &__content {
+        padding: 20px;
+    }
+}
