@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace référent' %}
+{% block canonical_url url('app_referent_users') %}
+
+{% block content %}
+    <main>
+        <section class="referent">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    Espace référent
+                </h1>
+            </header>
+
+            <div class="l__row l__tablet--col l__row--v-stretch">
+                <div class="referent__sidebar">
+                    <ul>
+                        <li>
+                            <h4>Utilisateurs</h4>
+
+                            <ul>
+                                <li {% block referent_menu_users_list %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users') }}">
+                                        Tous les utilisateurs
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_users_subscribers %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users_subscribers') }}">
+                                        Envoyer un message aux marcheurs
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_users_adherents %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users_adherents') }}">
+                                        Envoyer un message à tous les adhérents
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_users_followers %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users_followers') }}">
+                                        Envoyer un message aux membres de comités
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_users_hosts %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users_hosts') }}">
+                                        Envoyer un message aux animateurs de comités
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_users_postal_code %}{% endblock %}>
+                                    <a href="{{ path('app_referent_users_postal_code') }}">
+                                        Envoyer un message par code postal
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h4>Événements</h4>
+
+                            <ul>
+                                <li {% block referent_menu_events_list %}{% endblock %}>
+                                    <a href="{{ path('app_referent_events') }}">
+                                        Tous les événements
+                                    </a>
+                                </li>
+                                <li {% block referent_menu_events_create %}{% endblock %}>
+                                    <a href="{{ path('app_referent_events_create') }}">
+                                        Créer un événement
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h4>Comités</h4>
+
+                            <ul>
+                                <li {% block referent_menu_commitees_list %}{% endblock %}>
+                                    <a href="{{ path('app_referent_commitees') }}">
+                                        Tous les comités
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="referent__content">
+                    {% block referent_content %}{% endblock %}
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
