@@ -402,16 +402,11 @@ class MembershipControllerTest extends MysqlWebTestCase
             ],
         ]);
 
-        // The following test could not be realized because of a bug on the homepage
-        // Issue EM-57 will resolve this blocking point by adding a 'success page'
+        $this->assertClientIsRedirectedTo('/inscription/terminee', $this->client);
 
-        //$this->assertClientIsRedirectedTo('/', $this->client);
-        //$crawler = $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        //$this->assertContains(
-        //    'Vous venez de rejoindre En Marche, nous vous en remercions !',
-        //    $crawler->filter('#notice-flashes')->text()
-        //);
+        $this->assertContains('Finalisez dès maintenant votre adhésion', $crawler->text());
 
         $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
 

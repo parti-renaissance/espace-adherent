@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+
+{% block title %}
+    Inscription terminée {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="content l__wrapper--slim register__comites">
+            <header class="l__wrapper--slim space--60-0 text--center">
+                <img src="{{ asset('logo/small_bg_white.jpg') }}" alt="En Marche !" />
+
+                <h1 class="text--large">
+                    Merci {{ name }} de votre confiance !
+                </h1>
+                <h2 class="b__nudge--top-15">
+                    Finalisez dès maintenant votre adhésion<br />
+                    <small>en cliquant sur le lien de confirmation<br />envoyé à votre adresse email.</small>
+                </h2>
+                <p>Sans cela, vous ne pourrez accéder à votre espace adhérent.</p>
+            </header>
+        </section>
+    </main>
+{% endblock %}
