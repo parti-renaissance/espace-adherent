@@ -3,6 +3,7 @@ import Sharer from './services/sharer/Sharer';
 import TaxReturnProvider from './services/donation/TaxReturnProvider';
 import ReqwestApiClient from './services/api/ReqwestApiClient';
 import AddressFormFactory from './services/address/AddressFormFactory';
+import Slugifier from './services/slugifier/Slugifier';
 
 /**
  * @param {Container} di
@@ -23,6 +24,13 @@ export default (di) => {
      */
     di.set('cookies', () => {
         return Cookies;
+    });
+
+    /*
+     * Slugifier
+     */
+    di.set('slugifier', () => {
+        return new Slugifier();
     });
 
     /*

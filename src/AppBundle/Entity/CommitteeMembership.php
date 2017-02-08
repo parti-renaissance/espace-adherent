@@ -44,7 +44,7 @@ class CommitteeMembership
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="Adherent")
+     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      */
     private $adherent;
 

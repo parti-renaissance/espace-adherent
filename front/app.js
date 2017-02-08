@@ -66,6 +66,12 @@ class App {
             module.default(this.get('api'));
         });
     }
+
+    runReferentUsers(users) {
+        System.import('pages/referent_users').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('slugifier'), users);
+        });
+    }
 }
 
 window.App = new App();

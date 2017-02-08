@@ -19,6 +19,7 @@ imports:
     - { resource: services/membership.xml }
     - { resource: services/newsletter.xml }
     - { resource: services/recaptcha.xml }
+    - { resource: services/referent.xml }
     - { resource: services/search.xml }
     - { resource: services/security.xml }
     - { resource: services/storage.xml }

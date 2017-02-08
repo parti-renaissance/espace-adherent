@@ -8,6 +8,8 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
@@ -124,6 +126,13 @@ class Adherent implements UserInterface, GeoPointInterface
      */
     private $managedArea;
 
+    /**
+     * @var CommitteeMembership[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent")
+     */
+    private $memberships;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -150,6 +159,7 @@ class Adherent implements UserInterface, GeoPointInterface
         $this->phone = $phone;
         $this->status = $status;
         $this->registeredAt = new \DateTimeImmutable($registeredAt);
+        $this->memberships = new ArrayCollection();
     }
 
     public static function createUuid(string $email)
@@ -534,5 +544,27 @@ class Adherent implements UserInterface, GeoPointInterface
     public function getManagedAreaMarkerLongitude(): ?string
     {
         return $this->managedArea->getMarkerLongitude();
+    }
+
+    /**
+     * @return CommitteeMembership[]|Collection
+     */
+    public function getMemberships()
+    {
+        return $this->memberships;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHost(): bool
+    {
+        foreach ($this->memberships as $membership) {
+            if ($membership->isHostMember()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
