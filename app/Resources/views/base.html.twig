@@ -340,6 +340,7 @@
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery-3.1.1.slim.min.js') }}"></script>
         {% block javascripts '' %}
         <script type="text/javascript">
             on(window, 'load', function() {
@@ -355,6 +356,16 @@
             ga('create', 'UA-72646335-1', 'auto');
             ga('send', 'pageview');
             {% endif %}
+        </script>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('a').not('[href*="mailto:"]').each(function () {
+                var isInternalLink = new RegExp('/' + window.location.host + '/');
+                if ( ! isInternalLink.test(this.href) ) {
+                    $(this).attr('target', '_blank');
+                }
+            });
+        });
         </script>
     </body>
 </html>
