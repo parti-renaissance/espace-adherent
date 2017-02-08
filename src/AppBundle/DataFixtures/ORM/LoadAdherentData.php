@@ -142,15 +142,15 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'password' => 'referent',
             'email' => 'referent@en-marche-dev.fr',
             'gender' => 'male',
-            'first_name' => 'Francis',
-            'last_name' => 'Brioul',
+            'first_name' => 'Referent',
+            'last_name' => 'Referent',
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referent->setReferent(['FR', '35', '77000'], -1.6743, 48.112);
+        $referent->setReferent(['CH', '92', '77000'], -1.6743, 48.112);
         $referent->enableCommitteesNotifications();
 
         // Create adherents accounts activation keys

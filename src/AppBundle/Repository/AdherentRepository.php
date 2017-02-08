@@ -97,4 +97,39 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return new AdherentCollection($query->getResult());
     }
+
+    /**
+     * Finds the list of adherents managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Adherent[]
+     */
+    public function findAllManagedBy(Adherent $referent): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->orderBy('a.firstName', 'ASC')
+            ->addOrderBy('a.lastName', 'ASC')
+            ->where('a.id != :self')
+            ->setParameter('self', $referent->getId());
+
+        $codesFilter = $qb->expr()->orX();
+
+        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+            if (is_numeric($code)) {
+                // Postal code prefix
+                $codesFilter->add($qb->expr()->like('a.postAddress.postalCode', ':code'.$key));
+                $qb->setParameter('code'.$key, $code.'%');
+            } else {
+                // Country
+                $codesFilter->add($qb->expr()->eq('a.postAddress.country', ':code'.$key));
+                $qb->setParameter('code'.$key, $code);
+            }
+        }
+
+        $qb->andWhere($codesFilter);
+
+        return $qb->getQuery()->getResult();
+    }
 }

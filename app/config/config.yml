@@ -17,6 +17,7 @@ imports:
     - { resource: services/mailjet.xml }
     - { resource: services/media.xml }
     - { resource: services/membership.xml }
+    - { resource: services/newsletter.xml }
     - { resource: services/recaptcha.xml }
     - { resource: services/search.xml }
     - { resource: services/security.xml }
