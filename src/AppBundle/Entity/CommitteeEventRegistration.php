@@ -71,25 +71,6 @@ class CommitteeEventRegistration
         $this->createdAt = new \DateTimeImmutable($createdAt);
     }
 
-    public static function create(
-        CommitteeEvent $event,
-        string $firstName,
-        string $emailAddress,
-        string $postalCode,
-        bool $newsletterSubscriber = false,
-        UuidInterface $adherentUuid = null
-    ): self {
-        return new self(
-            Uuid::uuid4(),
-            $event,
-            $firstName,
-            $emailAddress,
-            $postalCode,
-            $newsletterSubscriber,
-            $adherentUuid
-        );
-    }
-
     public function getEvent(): CommitteeEvent
     {
         return $this->event;
