@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Committee\CommitteeUtils;
 use AppBundle\Committee\Event\CommitteeEventCommand;
 use AppBundle\Committee\Feed\CommitteeMessage;
+use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\CommitteeCommandType;
@@ -151,6 +153,28 @@ class CommitteeController extends Controller
             'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'members' => $members,
+        ]);
+    }
+
+    /**
+     * @Route("/membres/export", name="app_commitee_export_members")
+     * @Method("POST")
+     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     */
+    public function exportMembersAction(Request $request, Committee $committee): Response
+    {
+        if (!$this->isCsrfTokenValid('committee.export_members', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
+        }
+
+        $committeeManager = $this->get('app.committee_manager');
+
+        $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('exports', ''));
+        $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
+
+        return new Response(AdherentCsvSerializer::serialize($adherents ?? []), 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="membres-du-comite.csv"',
         ]);
     }
 
