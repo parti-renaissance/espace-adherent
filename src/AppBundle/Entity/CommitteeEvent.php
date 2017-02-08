@@ -194,6 +194,16 @@ class CommitteeEvent implements GeoPointInterface
         return $this->participantsCount;
     }
 
+    public function incrementParticipantsCount(int $increment = 1)
+    {
+        $this->participantsCount += $increment;
+    }
+
+    public function decrementParticipantsCount(int $increment = 1)
+    {
+        $this->participantsCount -= $increment;
+    }
+
     public function updatePostAddress(PostAddress $postAddress)
     {
         if (!$this->postAddress->equals($postAddress)) {
@@ -205,5 +215,10 @@ class CommitteeEvent implements GeoPointInterface
     {
         $this->name = $name;
         $this->canonicalName = static::canonicalize($name);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
     }
 }

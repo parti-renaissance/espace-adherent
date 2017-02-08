@@ -20,9 +20,51 @@
                 </p>
             {% endif %}
 
-            <form action="{{ path('app_committee_attend_event') }}" method="post">
-                {# Committee Event Registration Form Here #}
+            <form action="{{ path('app_committee_attend_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
+                {{ form_errors(form) }}
+                <div class="form__row" id="field-first-name">
+                    {{ form_label(form.firstName, 'Prénom') }}
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Entrez votre prénom',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row" id="field-postal-code">
+                    {{ form_label(form.postalCode, 'Code postal') }}
+                    {{ form_errors(form.postalCode) }}
+                    {{ form_widget(form.postalCode, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Entrez votre code postal',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row" id="field-email-address">
+                    {{ form_label(form.emailAddress, 'Adresse e-mail') }}
+                    {{ form_errors(form.emailAddress) }}
+                    {{ form_widget(form.emailAddress, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Entrez votre adresse e-mail',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row" id="field-newsletter-subscriber">
+                    {{ form_errors(form.newsletterSubscriber) }}
+                    <label for="{{ form.newsletterSubscriber.vars.id }}">
+                        {{ form_widget(form.newsletterSubscriber) }}
+                        J'accepte de recevoir les e-mails En Marche !
+                    </label>
+                </div>
+
                 <div>
+                    {{ form_rest(form) }}
                     <button type="submit" id="attend-committee-event">Je m'inscris</button>
                 </div>
             </form>

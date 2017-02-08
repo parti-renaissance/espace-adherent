@@ -14,6 +14,8 @@
 
         <service id="app.committee_event_factory" class="AppBundle\Committee\Event\CommitteeEventFactory"/>
 
+        <service id="app.committee_event_registration_factory" class="AppBundle\Committee\Event\CommitteeEventRegistrationFactory"/>
+
         <service id="app.committee.committee_update_handler" class="AppBundle\Committee\CommitteeUpdateCommandHandler">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
@@ -32,11 +34,21 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service id="app.committee.committee_event_registration_handler" class="AppBundle\Committee\Event\CommitteeEventRegistrationCommandHandler">
+            <argument type="service" id="app.committee_event_registration_factory"/>
+            <argument type="service" id="app.committee.event_registration_manager"/>
+        </service>
+
         <service id="app.committee.event_message_notifier" class="AppBundle\Committee\Event\CommitteeEventMessageNotifier">
             <argument type="service" id="app.mailjet"/>
             <argument type="service" id="app.committee_manager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.committee.event_registration_manager" class="AppBundle\Committee\Event\CommitteeEventRegistrationManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.committee_event_registration"/>
         </service>
 
         <service id="app.committee.feed_manager" class="AppBundle\Committee\Feed\CommitteeFeedManager">
