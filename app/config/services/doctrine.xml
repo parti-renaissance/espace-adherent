@@ -24,6 +24,11 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.committee_event_registration" class="AppBundle\Repository\CommitteeEventRegistrationRepository" public="false">
+            <argument>AppBundle\Entity\CommitteeEventRegistration</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.mailjet_email" class="AppBundle\Repository\MailjetEmailRepository" public="false">
             <argument>AppBundle\Entity\MailjetEmail</argument>
             <factory service="doctrine" method="getRepository"/>

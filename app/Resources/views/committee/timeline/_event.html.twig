@@ -14,7 +14,9 @@
             <em>{{ item.event.beginAt|localizeddate('none', 'short') }}</em>.
         </span>
         <ul>
-            <li><a href="#" class="btn">Je participe</a></li>
+            <li>
+                <a href="{{ path('app_committee_attend_event', {committee_uuid: committee.uuid.toString, slug: item.event.slug}) }}" class="btn">Je participe</a>
+            </li>
             <li>
                 <span class="committee-event-attendees">
                     {{- 'committee.participants_count'|transchoice(item.event.participantsCount) -}}
