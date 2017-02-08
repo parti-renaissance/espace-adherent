@@ -1,0 +1,16 @@
+<div class="committee-event-header">
+
+    <div class="committee-event-titles">
+        <h2 class="committee-event-name">
+            {{- committee_event.name -}}
+        </h2>
+        <h3 class="committee-event-date">
+            {{- committee_event.beginAt|localizeddate('full', 'none')|capitalize }} à {{ committee_event.beginAt|date('g\\hi') -}}.
+        </h3>
+
+        <h3 class="committee-event-address">
+            {{- committee_event.inlineFormattedAddress -}}
+        </h3>
+    </div>
+
+</div>

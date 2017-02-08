@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title "#{committee_event.name} - #{committee_event.postalCode} #{committee_event.cityName} - Confirmation d'inscription" %}
+
+{% block banner '' %}
+
+{% block content %}
+
+    <section class="l__wrapper--medium">
+        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link">Retour</a>
+
+        {{ include('events/_event_header.html.twig') }}
+
+        <div class="committee-event-registration-confirmation">
+            <p>
+                Votre participation est bien enregistrée !
+            </p>
+            <div class="text--center">
+                <a class="btn" href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}">Retour à l'événement</a>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

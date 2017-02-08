@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title "#{committee_event.name} - #{committee_event.postalCode} #{committee_event.cityName} - Inscription" %}
+
+{% block banner '' %}
+
+{% block content %}
+
+    <section class="l__wrapper--medium">
+        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link">Retour</a>
+
+        {{ include('events/_event_header.html.twig') }}
+
+        <div class="committee-event-registration">
+            <h2>Complétez ces informations pour participer à l'événement</h2>
+            {% if not is_granted('ROLE_ADHERENT') %}
+                <p>
+                    Avez-vous déjà un compte En Marche ?
+                    <a href="{{ path('app_adherent_login') }}">Connectez-vous</a>.
+                </p>
+            {% endif %}
+
+            <form action="{{ path('app_committee_attend_event') }}" method="post">
+                {# Committee Event Registration Form Here #}
+                <div>
+                    <button type="submit" id="attend-committee-event">Je m'inscris</button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+{% endblock %}
