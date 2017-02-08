@@ -30,4 +30,9 @@ class CommitteeEventRegistrationType extends AbstractType
             'data_class' => CommitteeEventRegistrationCommand::class,
         ]);
     }
+
+    public function getBlockPrefix()
+    {
+        return 'event_registration';
+    }
 }
