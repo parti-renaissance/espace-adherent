@@ -160,13 +160,34 @@ class MembershipController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee_manager')->followCommittees($adherent, $form->get('committees')->getData());
 
-            $this->addFlash('info', $this->get('translator')->trans('adherent.registration.success'));
-
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_membership_complete');
         }
 
         return $this->render('membership/choose_nearby_committee.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * This action is the landing page at the end of the subscription process.
+     *
+     * @Route("/inscription/terminee", name="app_membership_complete")
+     * @Method("GET")
+     */
+    public function completeAction(): Response
+    {
+        $membershipUtils = $this->get('app.membership_utils');
+
+        if (!$id = $membershipUtils->getNewAdherentId()) {
+            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
+        }
+
+        if (!$adherent = $this->getDoctrine()->getRepository(Adherent::class)->find($id)) {
+            throw $this->createNotFoundException('New adherent id not found.');
+        }
+
+        return $this->render('membership/complete.html.twig', [
+            'name' => $adherent->getFirstName(),
         ]);
     }
 

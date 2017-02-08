@@ -2,7 +2,9 @@
 
 {% block banner '' %}
 
-{% block title 'Suivre des comités' %}
+{% block title %}
+    Suivre des comités {{ parent() }}
+{% endblock %}
 
 {% block content %}
     <main>
