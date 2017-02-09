@@ -118,11 +118,13 @@ trait EntityCrudTrait
     }
 
     /**
-     * Temporary workaround to be able to call the same method multiple times
-     * with Alice. Current Alice version doesn't support calling the same method
-     * multiple times and will be implemented in the next upcoming major release.
+     * Magic method call.
      *
-     * @todo remove this method when Alice library will be >= 3.0
+     * This method will catch any method calls like $object->someProperty() in
+     * order to return the value of the requested property. This is mainly
+     * useful when the $object is manipulated through a CRUD system like the
+     * Symfony form framework, the SonataAdminBundle bundle or the
+     * EasyAdminBundle bundle.
      *
      * @param string $method    The magic invoked method name
      * @param array  $arguments The arguments to pass to the magic invoked method
@@ -133,18 +135,10 @@ trait EntityCrudTrait
      */
     public function __call(string $method, array $arguments)
     {
-        if (!preg_match('/^(?:set)?\_(?:\d+)?\_(?P<method>[a-z][a-zA-Z0-9]+)$/', $method, $matches)) {
-            throw new \BadMethodCallException(sprintf('Trying to call an unsupported method %s() on an object of type %s.', $method, get_class($this)));
+        if (property_exists($this, $method)) {
+            return $this->{$method};
         }
 
-        $invokable = $matches['method'];
-        $callable = [$this, $invokable];
-        if (!method_exists($this, $invokable) || !is_callable($callable)) {
-            throw new \BadMethodCallException(sprintf('Method %s() does not exist or is not invokable on an object of type %s.', $invokable, get_class($this)));
-        }
-
-        @trigger_error(sprintf('Invoking the real %s() method through its virtual alias method name %s() is deprecated and will be removed as soon as Alice fixtures library reaches version 3.0.0.', $invokable, $method), E_USER_DEPRECATED);
-
-        return call_user_func_array($callable, (array) $arguments[0]);
+        throw new \BadMethodCallException(sprintf('Trying to call an unsupported method %s() on an object of type %s.', $method, get_class($this)));
     }
 }

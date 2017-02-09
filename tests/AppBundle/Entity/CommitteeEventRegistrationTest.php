@@ -2,7 +2,8 @@
 
 namespace Tests\AppBundle\Entity;
 
-use AppBundle\Committee\CommitteeEvent;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CommitteeEvent;
 use AppBundle\Entity\CommitteeEventRegistration;
 use Ramsey\Uuid\Uuid;
 
@@ -22,8 +23,8 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
             Uuid::fromString(self::REGISTRATION_UUID),
             $event = $this->createCommitteeEventMock(self::EVENT_1_UUID),
             'Joseph',
-            '67001',
             'joseph.seguin@domain.tld',
+            '67001',
             false,
             Uuid::fromString(self::ADHERENT_1_UUID)
         );
@@ -48,8 +49,9 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
             Uuid::fromString(self::REGISTRATION_UUID),
             $event = $this->createCommitteeEventMock(self::EVENT_2_UUID),
             'Rose',
+            'rose-lr@domain.tld',
             '59000',
-            'rose-lr@domain.tld'
+            true
         );
 
         $this->assertEquals(Uuid::fromString(self::REGISTRATION_UUID), $registration->getUuid());
@@ -68,7 +70,7 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
     private function createAdherentMock(string $uuid)
     {
         $adherent = $this
-            ->getMockBuilder(CommitteeEvent::class)
+            ->getMockBuilder(Adherent::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -79,12 +81,23 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
 
     private function createCommitteeEventMock(string $uuid)
     {
+        $uuid = Uuid::fromString($uuid);
+
         $event = $this
             ->getMockBuilder(CommitteeEvent::class)
+            ->setMethods(['getUuid'])
+            ->setMethodsExcept(['equals'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $event->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
+        // Hack to ensure the $uuid protected property contains
+        // a valid UuidInterface instance.
+        $rp = new \ReflectionProperty($event, 'uuid');
+        $rp->setAccessible(true);
+        $rp->setValue($event, $uuid);
+        $rp->setAccessible(false);
+
+        $event->expects($this->any())->method('getUuid')->willReturn($uuid);
 
         return $event;
     }

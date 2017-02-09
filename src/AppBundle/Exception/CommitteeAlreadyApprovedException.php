@@ -4,21 +4,12 @@ namespace AppBundle\Exception;
 
 use Ramsey\Uuid\UuidInterface;
 
-class CommitteeAlreadyApprovedException extends \RuntimeException
+class CommitteeAlreadyApprovedException extends CommitteeException
 {
-    private $committeeUuid;
-
-    public function __construct(UuidInterface $committeeUuid, $message = '', \Exception $previous = null)
+    public function __construct(UuidInterface $committeeUuid, \Exception $previous = null)
     {
         $message = sprintf('Committee %s has already been approved by an administrator.', $committeeUuid->toString());
 
-        parent::__construct($message, 0, $previous);
-
-        $this->committeeUuid = $committeeUuid;
-    }
-
-    public function getAdherentUuid(): UuidInterface
-    {
-        return $this->committeeUuid;
+        parent::__construct($committeeUuid, $message, $previous);
     }
 }

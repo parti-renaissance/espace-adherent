@@ -1,0 +1,13 @@
+{% if object.waitingForApproval %}
+    <a href="{{ path('app_admin_committee_approve', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
+       title="Approuver" rel="noopener noreferrer">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Approuver
+    </a>
+
+    <a href="{{ path('app_admin_committee_refuse', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
+       title="Refuser" rel="noopener noreferrer">
+        <i class="fa fa-ban" aria-hidden="true"></i>
+        Refuser
+    </a>
+{% endif %}
