@@ -521,17 +521,17 @@ class Adherent implements UserInterface, GeoPointInterface
         return $this->managedArea instanceof ManagedArea && !empty($this->managedArea->getCodes());
     }
 
-    public function getManagedAreaCodesAsString(): string
+    public function getManagedAreaCodesAsString(): ?string
     {
         return $this->managedArea->getCodesAsString();
     }
 
-    public function getManagedAreaMarkerLatitude(): string
+    public function getManagedAreaMarkerLatitude(): ?string
     {
         return $this->managedArea->getMarkerLatitude();
     }
 
-    public function getManagedAreaMarkerLongitude(): string
+    public function getManagedAreaMarkerLongitude(): ?string
     {
         return $this->managedArea->getMarkerLongitude();
     }

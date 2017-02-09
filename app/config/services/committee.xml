@@ -8,8 +8,18 @@
             <argument type="service" id="doctrine"/>
         </service>
 
+        <service id="app.committee_authority" class="AppBundle\Committee\CommitteeManagementAuthority">
+            <argument type="service" id="app.committee_manager"/>
+            <argument type="service" id="app.committee.url_generator"/>
+            <argument type="service" id="app.mailjet"/>
+        </service>
+
         <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory">
             <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.committee.url_generator" class="AppBundle\Committee\CommitteeUrlGenerator">
+            <argument type="service" id="router"/>
         </service>
 
         <service id="app.committee_event_factory" class="AppBundle\Committee\Event\CommitteeEventFactory"/>
@@ -88,7 +98,7 @@
 
         <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
             <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="router"/>
+            <argument type="service" id="app.committee.url_generator"/>
             <tag name="twig.extension"/>
         </service>
 

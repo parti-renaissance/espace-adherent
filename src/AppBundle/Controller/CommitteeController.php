@@ -46,10 +46,7 @@ class CommitteeController extends Controller
                 $this->get('app.committee.feed_manager')->createMessage($message);
                 $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
 
-                return $this->redirectToRoute('app_committee_show', [
-                    'uuid' => $committee->getUuid(),
-                    'slug' => $committee->getSlug(),
-                ]);
+                return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $committee));
             }
         }
 

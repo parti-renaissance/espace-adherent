@@ -3,8 +3,8 @@
 namespace AppBundle\Twig;
 
 use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\Entity\Committee;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeExtension extends \Twig_Extension
@@ -12,8 +12,10 @@ class CommitteeExtension extends \Twig_Extension
     private $authorizationChecker;
     private $urlGenerator;
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        CommitteeUrlGenerator $urlGenerator
+    ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
     }
@@ -59,19 +61,13 @@ class CommitteeExtension extends \Twig_Extension
         return $this->authorizationChecker->isGranted(CommitteePermissions::SHOW, $committee);
     }
 
-    public function getPath(string $routeName, Committee $committee): string
+    public function getPath(string $routeName, Committee $committee, array $params = []): string
     {
-        return $this->urlGenerator->generate($routeName, [
-            'uuid' => $committee->getUuid()->toString(),
-            'slug' => $committee->getSlug(),
-        ]);
+        return $this->urlGenerator->getPath($routeName, $committee, $params);
     }
 
-    public function getUrl(string $routeName, Committee $committee): string
+    public function getUrl(string $routeName, Committee $committee, array $params = []): string
     {
-        return $this->urlGenerator->generate($routeName, [
-            'uuid' => $committee->getUuid()->toString(),
-            'slug' => $committee->getSlug(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->getUrl($routeName, $committee, $params);
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
+use AppBundle\Exception\CommitteeException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,6 +101,13 @@ class Committee implements GeoPointInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $approvedAt;
+
+    /**
+     * The timestamp when an administrator refused this committee.
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $refusedAt;
 
     /**
      * @var \DateTime
@@ -265,6 +273,21 @@ class Committee implements GeoPointInterface
 
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTimeImmutable($timestamp);
+    }
+
+    /**
+     * Marks this committee as refused/rejected.
+     *
+     * @param string $timestamp
+     */
+    public function refused(string $timestamp = 'now')
+    {
+        if (!$this->isWaitingForApproval()) {
+            throw new CommitteeException($this->uuid, 'Commitee must be pending in order to be refused.');
+        }
+
+        $this->status = self::REFUSED;
+        $this->refusedAt = new \DateTimeImmutable($timestamp);
     }
 
     public function setSocialNetworks(

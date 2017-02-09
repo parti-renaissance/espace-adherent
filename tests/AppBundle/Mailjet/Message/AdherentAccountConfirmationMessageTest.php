@@ -20,7 +20,7 @@ class AdherentAccountConfirmationMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(AdherentAccountConfirmationMessage::class, $message);
         $this->assertSame('54673', $message->getTemplate());
-        $this->assertSame('Confirmation de votre inscription au mouvement EnMarche !', $message->getSubject());
+        $this->assertSame('Confirmation de votre inscription au mouvement En Marche !', $message->getSubject());
         $this->assertCount(4, $message->getVars());
         $this->assertSame(
             [

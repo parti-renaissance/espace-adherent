@@ -37,7 +37,7 @@ class CommitteeManager
             return [];
         }
 
-        // We want the hosted committes first.
+        // We want the hosted committees first.
         $repository = $this->getCommitteeRepository();
 
         $hostedCommittees = $repository->findCommittees(
@@ -86,6 +86,11 @@ class CommitteeManager
         return $this->getMembershipRepository()->findHostMembers($committee->getUuid()->toString());
     }
 
+    public function getCommitteeCreator(Committee $committee): Adherent
+    {
+        return $this->getCommitteeHosts($committee)->first();
+    }
+
     public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
         return $this->getMembershipRepository()->findFollowers($committee->getUuid()->toString(), $withHosts);
@@ -122,6 +127,36 @@ class CommitteeManager
     public function getCommitteeMembers(Committee $committee): AdherentCollection
     {
         return $this->getMembershipRepository()->findMembers($committee->getUuid());
+    }
+
+    /**
+     * Approves one committee.
+     *
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function approveCommittee(Committee $committee, bool $flush = true)
+    {
+        $committee->approved();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+    }
+
+    /**
+     * Refuses one committee.
+     *
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function refuseCommittee(Committee $committee, bool $flush = true)
+    {
+        $committee->refused();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
     }
 
     /**

@@ -20,6 +20,7 @@ security:
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_WRITER
             - ROLE_APP_ADMIN_ADHERENT_ALL
+            - ROLE_APP_ADMIN_COMMITTEE_ALL
             - ROLE_APP_ADMIN_DONATION_EXPORT
             - ROLE_APP_ADMIN_DONATION_LIST
             - ROLE_APP_ADMIN_DONATION_VIEW

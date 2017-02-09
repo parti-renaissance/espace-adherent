@@ -4,13 +4,18 @@ lexik_paybox:
 
 admin_dashboard:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-    prefix: /admin
+    prefix:   "/admin"
 
 admin_crud:
     resource: .
-    type: sonata_admin
-    prefix: /admin
+    type:     sonata_admin
+    prefix:   "/admin"
 
 app:
     resource: "@AppBundle/Controller/"
     type:     "annotation"
+
+app_admin:
+    resource: "@AppBundle/Controller/Admin"
+    type:     "annotation"
+    prefix:   "/admin"
