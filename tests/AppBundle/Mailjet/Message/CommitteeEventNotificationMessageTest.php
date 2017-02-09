@@ -11,8 +11,7 @@ use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
 {
     const SHOW_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
-    const ACCEPT_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/accepter';
-    const IGNORE_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/ignorer';
+    const ATTEND_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
 
     public function testCreateCommitteeEventNotificationMessage()
     {
@@ -26,12 +25,9 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
             $recipients[0],
             $this->createCommitteeEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
             self::SHOW_EVENT_URL,
+            self::ATTEND_EVENT_URL,
             function (Adherent $adherent) {
-                return CommitteeEventNotificationMessage::getRecipientVars(
-                    $adherent->getFirstName(),
-                    self::ACCEPT_EVENT_URL,
-                    self::IGNORE_EVENT_URL
-                );
+                return CommitteeEventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
 
@@ -49,9 +45,9 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
                 'event-slug' => self::SHOW_EVENT_URL,
-                'target_firstname' => '',
-                'event_ok_link' => '',
+                'event_ok_link' => self::ATTEND_EVENT_URL,
                 'event_ko_link' => self::SHOW_EVENT_URL,
+                'target_firstname' => '',
             ],
             $message->getVars()
         );
@@ -69,9 +65,9 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
                 'event-slug' => self::SHOW_EVENT_URL,
+                'event_ok_link' => self::ATTEND_EVENT_URL,
+                'event_ko_link' => self::SHOW_EVENT_URL,
                 'target_firstname' => 'Émmanuel',
-                'event_ok_link' => self::ACCEPT_EVENT_URL,
-                'event_ko_link' => self::IGNORE_EVENT_URL,
             ],
             $recipient->getVars()
         );
@@ -89,9 +85,9 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
                 'event-slug' => self::SHOW_EVENT_URL,
+                'event_ok_link' => self::ATTEND_EVENT_URL,
+                'event_ko_link' => self::SHOW_EVENT_URL,
                 'target_firstname' => 'Éric',
-                'event_ok_link' => self::ACCEPT_EVENT_URL,
-                'event_ko_link' => self::IGNORE_EVENT_URL,
             ],
             $recipient->getVars()
         );

@@ -15,6 +15,7 @@ class CommitteeEventNotificationMessage extends MailjetMessage
      * @param Adherent       $host
      * @param CommitteeEvent $event
      * @param string         $eventLink
+     * @param string         $eventOkLink
      * @param \Closure       $recipientVarsGenerator
      *
      * @return CommitteeEventNotificationMessage
@@ -24,6 +25,7 @@ class CommitteeEventNotificationMessage extends MailjetMessage
         Adherent $host,
         CommitteeEvent $event,
         string $eventLink,
+        string $eventOkLink,
         \Closure $recipientVarsGenerator
     ): self {
         if (!$recipients) {
@@ -45,7 +47,8 @@ class CommitteeEventNotificationMessage extends MailjetMessage
                 static::formatDate($event->getBeginAt(), 'mm')
             ),
             $event->getInlineFormattedAddress(),
-            $eventLink
+            $eventLink,
+            $eventOkLink
         );
 
         $message = new self(
@@ -77,7 +80,8 @@ class CommitteeEventNotificationMessage extends MailjetMessage
         string $eventDate,
         string $eventHour,
         string $eventAddress,
-        string $eventLink
+        string $eventLink,
+        string $eventOkLink
     ): array {
         return [
             // Global common variables
@@ -90,23 +94,18 @@ class CommitteeEventNotificationMessage extends MailjetMessage
             // @todo this variable name must be renamed and uniquified in the template.
             'event_slug' => $eventLink,
             'event-slug' => $eventLink,
+            'event_ok_link' => $eventOkLink,
+            'event_ko_link' => $eventLink,
 
             // Recipient specific template variables
             'target_firstname' => '',
-            'event_ok_link' => '',
-            'event_ko_link' => $eventLink,
         ];
     }
 
-    public static function getRecipientVars(
-        string $firstName,
-        string $acceptEventAttendanceLink,
-        string $declineEventAttendanceLink
-    ): array {
+    public static function getRecipientVars(string $firstName): array
+    {
         return [
             'target_firstname' => $firstName,
-            'event_ok_link' => $acceptEventAttendanceLink,
-            'event_ko_link' => $declineEventAttendanceLink,
         ];
     }
 
