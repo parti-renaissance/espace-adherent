@@ -19,7 +19,7 @@ export default class ReqwestApiClient {
 
     getSearchResults(query, radius, city, type, offset, callback) {
         let request = this._reqwest({
-            url: '/results?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset,
+            url: '/recherche?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset,
             type: 'html'
         });
 

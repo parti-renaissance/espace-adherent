@@ -32,7 +32,7 @@
     {% set committee_event_url = url('app_committee_show_event', {committee_uuid: committee.uuid.toString, slug: committee_event.slug}) %}
 
     <section class="l__wrapper--medium">
-        <a href="{{ path('events_index') }}" class="back-to-list">Retour</a>
+        <a href="{{ path('app_search_events') }}" class="back-to-list">Retour</a>
 
         <div class="committee-event-header">
 

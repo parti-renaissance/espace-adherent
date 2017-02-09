@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Recherche {{ parent() }}
+{% endblock %}
+
+{% block banner '' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_api_key }}&amp;libraries=places"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            var page = 1;
+            var limit = {{ search_max_results|default('30') }};
+            var moreButton = dom('#search-more');
+            var query = dom("[name='q']");
+            var radius = dom("[name='r']");
+            var city = dom("[name='c']");
+            var type = dom("[name='t']").value;
+
+            on(moreButton, 'click', function () {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), function (response) {
+                    if (response instanceof XMLHttpRequest) {
+                        hide(moreButton);
+                        return;
+                    }
+
+                    dom('#search-results').innerHTML = dom('#search-results').innerHTML + response;
+                });
+
+                page++;
+            });
+
+            // Allow to copy/paste and on each key press
+            on(query, 'keyup', fetchResults);
+            on(query, 'onchange', fetchResults);
+
+            on(radius, 'change', fetchResults);
+
+            // Allow to copy/paste and on each key press
+            on(city, 'keyup', fetchResults);
+            on(city, 'onchange', fetchResults);
+
+            function fetchResults() {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, function (response) {
+                    if (response instanceof XMLHttpRequest) {
+                        hide(moreButton);
+                        dom('#search-results').innerHTML = 'Aucun résultat pour ces critères de recherche.';
+
+                        return;
+                    }
+
+                    dom('#search-results').innerHTML = response;
+                });
+            }
+
+            autocomplete = new google.maps.places.Autocomplete(city, {
+                types: ['(cities)'],
+
+            });
+
+            fetchResults();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <header class="l__wrapper space--60-0">
+        <h1 class="text--large">{% block search_title 'Comités'%}</h1>
+        <h2><small>{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</small></h2>
+    </header>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ path('app_search_committees') }}">Tous les comités</a>
+            </li>
+            <li>
+                <a href="{{ path('app_search_events') }}">Tous les événements</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="l__wrapper">
+        {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
+        <div id="search-results"></div>
+        <button role="button" class="btn" id="search-more">Afficher plus</button>
+    </div>
+{% endblock %}
