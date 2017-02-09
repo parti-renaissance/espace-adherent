@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\ReferentMessageType;
+use AppBundle\Entity\Committee;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,11 +23,11 @@ class ReferentController extends Controller
      */
     public function usersAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
+        $factory = $this->get('app.referent.data_grid_factory');
         $exporter = $this->get('app.referent.managed_users.exporter');
 
         return $this->render('referent/users/list.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($factory->createManagedUsersCollectionFor($this->getUser())),
+            'managedUsersJson' => $exporter->exportAsJson($factory->findUsersManagedBy($this->getUser())),
         ]);
     }
 
@@ -142,7 +143,11 @@ class ReferentController extends Controller
      */
     public function commiteesAction(): Response
     {
-        // TODO IMPLEMENT
-        return $this->render('referent/commitees/list.html.twig');
+        $factory = $this->get('app.referent.data_grid_factory');
+        $exporter = $this->get('app.referent.managed_committees.exporter');
+
+        return $this->render('referent/commitees/list.html.twig', [
+            'commiteesAsJson' => $exporter->exportAsJson($factory->findCommitteesManagedBy($this->getUser())),
+        ]);
     }
 }

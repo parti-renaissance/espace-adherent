@@ -3,27 +3,29 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManager;
 
-class ManagedUserFactory
+class DataGridFactory
 {
-    /**
-     * @var AdherentRepository
-     */
+    /** @var AdherentRepository */
     private $adherentsRepository;
 
-    /**
-     * @var NewsletterSubscriptionRepository
-     */
+    /** @var NewsletterSubscriptionRepository */
     private $newsletterSubscriptionsRepository;
+
+    /** @var CommitteeRepository */
+    private $committeesRepository;
 
     public function __construct(EntityManager $manager)
     {
         $this->adherentsRepository = $manager->getRepository(Adherent::class);
         $this->newsletterSubscriptionsRepository = $manager->getRepository(NewsletterSubscription::class);
+        $this->committeesRepository = $manager->getRepository(Committee::class);
     }
 
     /**
@@ -34,7 +36,7 @@ class ManagedUserFactory
      *
      * @return ManagedUser[]
      */
-    public function createManagedUsersCollectionFor(Adherent $referent): array
+    public function findUsersManagedBy(Adherent $referent)
     {
         $managedUsers = [];
 
@@ -51,5 +53,17 @@ class ManagedUserFactory
         });
 
         return $managedUsers;
+    }
+
+    /**
+     * Find all the committees managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Committee[]
+     */
+    public function findCommitteesManagedBy(Adherent $referent)
+    {
+        return $this->committeesRepository->findAllManagedBy($referent);
     }
 }

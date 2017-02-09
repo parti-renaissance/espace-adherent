@@ -20,14 +20,17 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
     const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
     const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
-    const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
+    const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-2ef9f9495084';
     const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
     const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
     const COMMITTEE_4_UUID = 'd648d486-fbb3-4394-b4b3-016fac3658af';
-    const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-8674-a43910da6419';
+    const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-a676-a43910da6419';
+    const COMMITTEE_6_UUID = 'b4219d47-9743-4d3a-8674-a43910da6419';
+    const COMMITTEE_7_UUID = 'a9fc8d48-6316-4d3a-9ac3-50b3f9b586f4';
+    const COMMITTEE_8_UUID = '29461c49-cf4c-4d3a-8674-2ef9f9495084';
 
     use ContainerAwareTrait;
 
@@ -228,6 +231,36 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         ]);
         $committee5->approved();
 
+        $committee6 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_6_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-02-10 19:54:28',
+            'name' => 'En Marche Suisse',
+            'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
+            'address' => PostAddress::createForeignAddress('CH', '1211', 'Genève', 'Boulevard du Théâtre 11', 46.2017613, 6.14268),
+        ]);
+        $committee6->approved();
+
+        $committee7 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_7_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-02-10 19:54:28',
+            'name' => 'En Marche - Clichy',
+            'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
+            'address' => PostAddress::createFrenchAddress('92-98 Boulevard Victor Hugo', '92110-92024', 48.901098, 2.3155268),
+        ]);
+        $committee7->approved();
+
+        $committee8 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_8_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-02-10 19:54:28',
+            'name' => 'En Marche - Comité de Melun',
+            'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
+            'address' => PostAddress::createFrenchAddress('16 Rue Paul Doumer', '77000-77288', 48.5399085, 2.6608184),
+        ]);
+        $committee8->approved();
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -255,6 +288,9 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee3);
         $manager->persist($committee4);
         $manager->persist($committee5);
+        $manager->persist($committee6);
+        $manager->persist($committee7);
+        $manager->persist($committee8);
 
         // Make adherents join committees
         $manager->persist($adherent3->hostCommittee($committee1));
@@ -265,6 +301,9 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
         $manager->persist($adherent6->hostCommittee($committee2));
+        $manager->persist($adherent6->hostCommittee($committee6));
+        $manager->persist($adherent6->hostCommittee($committee7));
+        $manager->persist($adherent6->hostCommittee($committee8));
 
         $manager->flush();
     }

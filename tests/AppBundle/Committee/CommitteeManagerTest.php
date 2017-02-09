@@ -87,9 +87,9 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertSame([
+            LoadAdherentData::COMMITTEE_6_UUID,
             LoadAdherentData::COMMITTEE_4_UUID,
-            LoadAdherentData::COMMITTEE_3_UUID,
-            LoadAdherentData::COMMITTEE_5_UUID,
+            LoadAdherentData::COMMITTEE_8_UUID,
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
 
         $adherent = $adherentRepository->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
@@ -97,8 +97,8 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
         $this->assertSame([
             LoadAdherentData::COMMITTEE_1_UUID,
+            LoadAdherentData::COMMITTEE_7_UUID,
             LoadAdherentData::COMMITTEE_5_UUID,
-            LoadAdherentData::COMMITTEE_3_UUID,
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
     }
 

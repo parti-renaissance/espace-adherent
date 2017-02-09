@@ -94,12 +94,14 @@ export default class DataGrid extends React.Component {
 
         return (
             <div className="datagrid">
-                <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
-                    <input type="text"
-                           placeholder="Recherche ..."
-                           className="form form__field"
-                           onChange={this.handleSearchInputChange} />
-                </div>
+                {!this.props.searchable ? '' : (
+                    <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
+                        <input type="text"
+                               placeholder="Recherche ..."
+                               className="form form__field"
+                               onChange={this.handleSearchInputChange} />
+                    </div>
+                )}
 
                 <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
                     <ul>
@@ -256,7 +258,9 @@ DataGrid.propTypes = {
     rows: PropTypes.array.isRequired,
     searchEngine: PropTypes.object.isRequired,
     orderBy: PropTypes.string.isRequired,
-    onSelectedChange: PropTypes.func.isRequired,
+    selectable: PropTypes.bool,
+    searchable: PropTypes.bool,
+    onSelectedChange: PropTypes.func,
     perPage: PropTypes.number,
     tableClassName: PropTypes.string,
     pagerClassName: PropTypes.string,

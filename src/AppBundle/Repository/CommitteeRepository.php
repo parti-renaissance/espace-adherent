@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\EntityRepository;
@@ -164,6 +165,40 @@ class CommitteeRepository extends EntityRepository
         if ($limit >= 1) {
             $qb->setMaxResults($limit);
         }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Finds the list of commitees managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Committee[]
+     */
+    public function findAllManagedBy(Adherent $referent): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->orderBy('c.name', 'ASC')
+            ->where('c.status = :approved')
+            ->setParameter('approved', Committee::APPROVED);
+
+        $codesFilter = $qb->expr()->orX();
+
+        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+            if (is_numeric($code)) {
+                // Postal code prefix
+                $codesFilter->add($qb->expr()->like('c.postAddress.postalCode', ':code'.$key));
+                $qb->setParameter('code'.$key, $code.'%');
+            } else {
+                // Country
+                $codesFilter->add($qb->expr()->eq('c.postAddress.country', ':code'.$key));
+                $qb->setParameter('code'.$key, $code);
+            }
+        }
+
+        $qb->andWhere($codesFilter);
 
         return $qb->getQuery()->getResult();
     }

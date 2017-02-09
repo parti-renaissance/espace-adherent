@@ -28,7 +28,18 @@ class CommitteeRepositoryTest extends SqliteWebTestCase
 
     public function testCountApprovedCommittees()
     {
-        $this->assertSame(4, $this->repository->countApprovedCommittees());
+        $this->assertSame(7, $this->repository->countApprovedCommittees());
+    }
+
+    public function testFindAllManagedBy()
+    {
+        $referent = $this->getAdherentRepository()->loadUserByUsername('referent@en-marche-dev.fr');
+        $managedByReferent = $this->repository->findAllManagedBy($referent);
+
+        $this->assertCount(3, $managedByReferent, 'Referent should manage 3 adherents in his area.');
+        $this->assertSame('En Marche - Clichy', $managedByReferent[0]->getName());
+        $this->assertSame('En Marche - Comité de Melun', $managedByReferent[1]->getName());
+        $this->assertSame('En Marche Suisse', $managedByReferent[2]->getName());
     }
 
     protected function setUp()
