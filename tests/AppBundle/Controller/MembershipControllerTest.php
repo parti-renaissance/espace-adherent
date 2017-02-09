@@ -160,11 +160,14 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
 
         $crawler = $this->client->followRedirect();
 
+        // User is automatically logged-in and redirected to the events page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
+        $this->assertSame('Événements', $crawler->filter('.search-title')->text());
 
         // Activate user account twice
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);

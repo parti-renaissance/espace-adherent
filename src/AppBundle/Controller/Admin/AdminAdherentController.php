@@ -24,7 +24,7 @@ class AdminAdherentController extends Controller
             return $this->redirectToRoute('homepage');
         }
 
-        $authUtils->authenticateUser($impersonatingUser);
+        $authUtils->authenticateAdmin($impersonatingUser);
 
         return $this->redirectToRoute('admin_app_adherent_list');
     }

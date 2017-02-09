@@ -30,8 +30,18 @@ final class AuthenticationUtils
         return $impersonatingUser;
     }
 
-    public function authenticateUser(UserInterface $user)
+    public function authenticateAdmin(UserInterface $user)
     {
-        $this->tokenStorage->setToken(new UsernamePasswordToken($user, '', 'admins_db', $user->getRoles()));
+        $this->doAuthenticateUser($user, 'admins_db');
+    }
+
+    public function authenticateAdherent(UserInterface $user)
+    {
+        $this->doAuthenticateUser($user, 'users_db');
+    }
+
+    private function doAuthenticateUser(UserInterface $user, string $provider)
+    {
+        return $this->tokenStorage->setToken(new UsernamePasswordToken($user, '', $provider, $user->getRoles()));
     }
 }
