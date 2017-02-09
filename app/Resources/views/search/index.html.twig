@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Recherche {{ parent() }}
+{% endblock %}
+
+{% block banner '' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_api_key }}&amp;libraries=places"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            var page = 1;
+            var limit = {{ search_max_results }};
+            var moreButton = dom('#search-more');
+            var query = dom("[name='q']");
+            var radius = dom("[name='r']");
+            var city = dom("[name='c']");
+            var type = document.getElementsByName('t');
+
+            on(moreButton, 'click', function () {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, getRadioValue(type), (page * limit), function (response) {
+                    if (response instanceof XMLHttpRequest) {
+                        hide(moreButton);
+                        return;
+                    }
+
+                    dom('#search-results').innerHTML = dom('#search-results').innerHTML + response;
+                });
+
+                page++;
+            });
+
+            // Allow to copy/paste and on each key press
+            on(query, 'keyup', fetchResults);
+            on(query, 'onchange', fetchResults);
+
+            on(radius, 'change', fetchResults);
+
+            // Allow to copy/paste and on each key press
+            on(city, 'keyup', fetchResults);
+            on(city, 'onchange', fetchResults);
+
+            // Bind each type radio buttons
+            type.forEach(function (element) {
+                on(element, 'change', fetchResults);
+            });
+
+            function fetchResults() {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, getRadioValue(type), 0, function (response) {
+                    if (response instanceof XMLHttpRequest) {
+                        hide(moreButton);
+                        dom('#search-results').innerHTML = 'Aucun résultat pour ces critères de recherche.';
+
+                        return;
+                    }
+
+                    dom('#search-results').innerHTML = response;
+                });
+            }
+
+            function getRadioValue(element) {
+                for (var i = 0; i < element.length; i++) {
+                    if (element[i].checked) {
+                        return element[i].value;
+                    }
+                }
+            }
+
+            autocomplete = new google.maps.places.Autocomplete(city, {
+                types: ['(cities)'],
+
+            });
+
+            autocomplete.addListener('place_changed', fetchResults);
+
+            fetchResults();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <header class="l__wrapper space--60-0">
+        <h1 class="text--large">Comités et événements</h1>
+        <h2><small>Vous pouvez participer aux événements même si vous n'êtes pas adhérent.</small></h2>
+    </header>
+
+    <div class="l__wrapper">
+        <div style="background-color: grey; padding: 20px">
+            <input name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_QUERY') }}" placeholder="Recherche">
+            dans un rayon de
+
+            {# this widget will be embedded in the ribbon text #}
+            <select name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_RADIUS') }}">
+                {% for option in constant('AppBundle\\Search\\SearchParametersFilter::RADII') %}
+                    <option value="{{ option }}" {% if constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_RADIUS') == option %}selected="selected"{% endif %}>{{ option }} Km</option>
+                {% endfor %}
+            </select>
+
+            autour de
+            {# this widget will be embedded in the ribbon text #}
+            <input name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_CITY') }}" value="{% if app.user.cityName is defined %}{{ app.user.cityName }}{% else %}{{ constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_CITY') }}{% endif %}" placeholder="Ville ou code postal">
+
+            <label><input type="radio" name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_TYPE') }}" value="{{ constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES') }}" checked="checked"> Comités</label>
+            <label><input type="radio" name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_TYPE') }}" value="{{ constant('AppBundle\\Search\\SearchParametersFilter::TYPE_EVENTS') }}"> Evénements</label>
+        </div>
+        <div id="search-results"></div>
+
+        <button role="button" class="btn" id="search-more">Afficher plus</button>
+    </div>
+{% endblock %}

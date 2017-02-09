@@ -1,0 +1,22 @@
+{% for result in results %}
+    {% if date is not defined or date != result.event.beginAt|date('Ymd') %}
+        {% set date = result.event.beginAt|date('Ymd') %}
+
+        <h1>{{ result.event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }}</h1>
+    {% endif %}
+
+    <div style="margin: 10px">
+        <img src="{{ path('map_url', { latitude: result.event.latitude, longitude: result.event.longitude }) }}" style="float: right; width: 200px">
+
+        <p class="text--medium">{{ result.event.name }}</p>
+        <p>
+            {{ result.event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ result.event.cityName }}
+        </p>
+        <p>Organisé par : <strong>{{ result.event.committee.name }}</strong></p>
+
+        <a href="{{ path('app_committee_attend_event', { committee_uuid: result.event.committee.uuid, slug: result.event.slug }) }}" class="btn btn--blue">Je Participe</a>
+        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(result.attendees) }}
+
+        <hr style="clear: both"/>
+    </div>
+{% endfor %}

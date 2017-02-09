@@ -1,0 +1,9 @@
+{% for result in results %}
+    <div style="float: left; width: 340px; height: 200px; background-color: #eee; margin: 10px; padding: 10px">
+        <p class="text--medium">{{ result.committee.name }}</p>
+        <p><strong>{{ result.committee.cityName }}</strong></p>
+
+        <a href="{{ committee_path('app_committee_show', result.committee) }}" class="btn btn--blue">Je Participe</a>
+        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(result.memberships) }}
+    </div>
+{% endfor %}
