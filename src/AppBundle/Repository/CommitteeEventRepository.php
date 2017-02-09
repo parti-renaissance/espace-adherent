@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityRepository;
 
 class CommitteeEventRepository extends EntityRepository
 {
+    use NearbyTrait;
+
     public function findOneBySlug(string $slug): ?CommitteeEvent
     {
         $query = $this

@@ -17,6 +17,21 @@ export default class ReqwestApiClient {
         });
     }
 
+    getSearchResults(query, radius, city, type, offset, callback) {
+        let request = this._reqwest({
+            url: '/results?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset,
+            type: 'html'
+        });
+
+        request.then((response) => {
+            callback(response);
+        });
+
+        request.fail(() => {
+            callback(null);
+        });
+    }
+
     getReferents(callback) {
         this._createRequest(callback, {
             url: '/api/referents',

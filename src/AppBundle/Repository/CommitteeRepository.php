@@ -5,12 +5,11 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeRepository extends EntityRepository
 {
-    const EARTH_MEAN_RADIUS = '6371';
+    use NearbyTrait;
 
     const ONLY_APPROVED = 1;
     const INCLUDE_UNAPPROVED = 2;
@@ -106,34 +105,6 @@ class CommitteeRepository extends EntityRepository
     }
 
     /**
-     * Calculates the distance (in Km) between the committee and the provided geographical
-     * points in a select statement. You can use this template to apply your constraints
-     * by using the 'distance_between' attribute.
-     *
-     * Setting the hidden flag to false allow you to get an array as result containing
-     * the entity and the calculated distance.
-     *
-     * @param Coordinates $coordinates
-     * @param bool        $hidden
-     *
-     * @return QueryBuilder
-     */
-    public function createNearbyCommitteeQueryBuilder(Coordinates $coordinates, bool $hidden = true)
-    {
-        $hidden = $hidden ? 'hidden' : '';
-
-        $exp = 'cos(radians(c.postAddress.latitude)) * cos(radians(c.postAddress.longitude) - radians(:longitude))';
-
-        return $this
-            ->createQueryBuilder('c')
-            ->addSelect('('.self::EARTH_MEAN_RADIUS.' * acos(cos(radians(:latitude)) * '.$exp.' +
-            sin(radians(:latitude)) * sin(radians(c.postAddress.latitude)))) as '.$hidden.' distance_between')
-            ->setParameter('latitude', $coordinates->getLatitude())
-            ->setParameter('longitude', $coordinates->getLongitude())
-        ;
-    }
-
-    /**
      * @param int         $count
      * @param Coordinates $coordinates
      *
@@ -142,10 +113,9 @@ class CommitteeRepository extends EntityRepository
     public function findNearbyCommittees(int $count, Coordinates $coordinates)
     {
         $query = $this
-            ->createNearbyCommitteeQueryBuilder($coordinates)
-            ->where('c.status = :status')
+            ->createNearbyQueryBuilder($coordinates)
+            ->where('n.status = :status')
             ->setParameter('status', Committee::APPROVED)
-            ->orderBy('distance_between', 'asc')
             ->setMaxResults($count)
             ->getQuery()
         ;

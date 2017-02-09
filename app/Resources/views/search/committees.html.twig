@@ -6,10 +6,7 @@
             <h3>{{ result.committee.name }}</h3>
             <h5>
                 <small>
-                  {{ 'committee.participants_count'|transchoice(result.memberships) }}
-                  {% if result.committee.cityName is not empty %}
-                      &bullet; {{ result.committee.cityName }}
-                  {% endif %}
+                  {{ 'committee.participants_count'|transchoice(result.memberships) }} &bullet; {{ result.committee.cityName }}
                 </small>
             </h5>
         </a>
