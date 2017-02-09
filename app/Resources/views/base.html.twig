@@ -152,8 +152,8 @@
                         {# This list must be designed #}
                         <ul>
                             {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
-                            <li><a href="{{ path('events_index') }}">Tous les événements</a></li>
-                            <li><a href="#">Tous les comités</a></li>
+                            <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
+                            <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
                             <li><a href="#">La carte En Marche !</a></li>
                             <li><a href="#">Documents</a></li>
                             <li class="login__separator"></li>

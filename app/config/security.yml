@@ -83,7 +83,7 @@ security:
                 login_path: app_adherent_login
                 check_path: app_adherent_login_check
 
-                default_target_path: events_index
+                default_target_path: app_search_events
                 always_use_default_target_path: true
 
                 username_parameter: _adherent_email
