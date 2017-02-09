@@ -59,3 +59,8 @@ committee.contact_members.success: Félicitations, votre message a bien été en
 # Search
 #
 search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville que vous avez saisie.
+
+#
+# Referent
+#
+referent.message.success: Votre message a été envoyé avec succès.

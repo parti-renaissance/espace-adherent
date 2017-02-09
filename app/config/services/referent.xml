@@ -8,5 +8,13 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="app.referent.referent_message_factory" class="AppBundle\Referent\ReferentMessageFactory">
+            <argument type="service" id="app.referent.users_list_builder" />
+        </service>
+
+        <service id="app.referent.referent_message_handler" class="AppBundle\Referent\ReferentMessageHandler">
+            <argument type="service" id="app.mailjet" />
+        </service>
+
     </services>
 </container>

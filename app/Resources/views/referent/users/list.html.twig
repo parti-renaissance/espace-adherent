@@ -20,15 +20,17 @@
 
     <hr />
 
-    <p>
-        <button class="btn btn--blue referent__btn-send-mail" id="send-mail-btn" type="button">
-            Envoyer un e-mail
-        </button>
+    <form method="post" action="{{ path('app_referent_users_selected') }}">
+        <p id="selected-users">
+            <button class="btn btn--blue referent__btn-send-mail" id="send-mail-btn" disabled="disabled">
+                Envoyer un e-mail
+            </button>
 
-        <span class="referent__users-count-container">
-            <span id="selected-users-count">0</span> utilisateur(s) sélectionnés
-        </span>
-    </p>
+            <span class="referent__users-count-container">
+                <span id="selected-users-count">0</span> utilisateur(s) sélectionnés
+            </span>
+        </p>
+    </form>
 
     <hr />
 

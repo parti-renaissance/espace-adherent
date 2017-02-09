@@ -10,17 +10,29 @@ export default (slugifier, users) => {
     const dataGridFactory = new DataGridFactory(new SearchEngine(slugifier));
     const selectedUsersCount = dom('#selected-users-count');
     const sendMailBtn = dom('#send-mail-btn');
+    const selectedUsers = dom('#selected-users');
 
-    let selected = [];
+    const createInputHidden = (name, value) => {
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+
+        return input;
+    };
 
     const onSelectedChange = (rows) => {
-        selected = [];
+        let count = 0;
 
         Object.keys(rows).forEach((key) => {
-            selected.push(rows[key]);
+            insertAfter(selectedUsers, createInputHidden('selected['+count+'][type]', rows[key].type));
+            insertAfter(selectedUsers, createInputHidden('selected['+count+'][id]', rows[key].id));
+
+            count += 1;
         });
 
-        selectedUsersCount.innerHTML = selected.length;
+        selectedUsersCount.innerHTML = count;
+        sendMailBtn.disabled = count === 0;
     };
 
     const columns = [
@@ -88,8 +100,4 @@ export default (slugifier, users) => {
     );
 
     render(dataGrid, dom('#users-list'));
-
-    on(sendMailBtn, 'click', () => {
-        // TODO redirect to send message page
-    });
 };

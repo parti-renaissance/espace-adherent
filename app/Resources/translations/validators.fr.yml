@@ -93,3 +93,9 @@ neswletter.postalCode.invalid: Ce code postal n'est pas valide.
 #
 invitation.message.not_blank: Vous devez entrer un message d'invitation.
 invitation.email.was_invited_recently: Cette personne a déjà été invitée récemment, mais merci de votre proposition !
+
+#
+# Referent
+#
+referent.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
