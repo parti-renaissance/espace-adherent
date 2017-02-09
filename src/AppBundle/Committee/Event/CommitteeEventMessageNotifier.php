@@ -52,19 +52,14 @@ class CommitteeEventMessageNotifier implements EventSubscriberInterface
             'slug' => $event->getSlug(),
         ];
 
-        $urlGenerator = $this->urlGenerator;
-
         return CommitteeEventNotificationMessage::create(
             $followers->toArray(),
             $host,
             $event,
             $this->generateUrl('app_committee_show_event', $params),
-            function (Adherent $adherent) use ($urlGenerator, $params) {
-                return CommitteeEventNotificationMessage::getRecipientVars(
-                    $adherent->getFirstName(),
-                    $urlGenerator->generate('app_committee_attend_event', $params),
-                    $urlGenerator->generate('app_committee_show_event', $params)
-                );
+            $this->generateUrl('app_committee_attend_event', $params),
+            function (Adherent $adherent) {
+                return CommitteeEventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
