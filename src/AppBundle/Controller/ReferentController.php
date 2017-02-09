@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\ReferentMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,8 +28,44 @@ class ReferentController extends Controller
     }
 
     /**
+     * @Route("/utilisateurs/envoyer-un-message/selectionnes", name="app_referent_users_selected")
+     * @Method("POST")
+     */
+    public function usersSendMessageSelectedAction(Request $request): Response
+    {
+        $selected = $request->request->get('selected', []);
+
+        if (empty($selected)) {
+            return $this->redirectToRoute('app_referent_users');
+        }
+
+        $factory = $this->get('app.referent.referent_message_factory');
+        $referentMessage = $factory->createReferentMessageFor($this->getUser(), $selected);
+
+        if (empty($referentMessage->getTo())) {
+            return $this->redirectToRoute('app_referent_users');
+        }
+
+        $form = $this->createForm(ReferentMessageType::class, $referentMessage);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.referent.referent_message_handler')->handle($referentMessage);
+            $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
+
+            return $this->redirectToRoute('app_referent_users');
+        }
+
+        return $this->render('referent/users/message-selected.html.twig', [
+            'selected' => $selected,
+            'referentMessage' => $referentMessage,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/utilisateurs/envoyer-un-message/marcheurs", name="app_referent_users_subscribers")
-     * @Method("GET|POST")
+     * @Method("GET")
      */
     public function usersSendMessageSubscribersAction(): Response
     {
@@ -37,7 +75,7 @@ class ReferentController extends Controller
 
     /**
      * @Route("/utilisateurs/envoyer-un-message/adherents", name="app_referent_users_adherents")
-     * @Method("GET|POST")
+     * @Method("GET")
      */
     public function usersSendMessageAdherentsAction(): Response
     {
