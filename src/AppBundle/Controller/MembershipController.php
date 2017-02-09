@@ -212,6 +212,8 @@ class MembershipController extends Controller
         try {
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+
+            return $this->redirectToRoute('app_search_events');
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
         } catch (AdherentTokenExpiredException $e) {

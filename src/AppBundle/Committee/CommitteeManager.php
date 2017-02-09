@@ -242,4 +242,9 @@ class CommitteeManager
     {
         return $this->registry->getRepository(CommitteeMembership::class);
     }
+
+    public function countApprovedCommittees(): int
+    {
+        return $this->getCommitteeRepository()->countApprovedCommittees();
+    }
 }

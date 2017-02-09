@@ -2,42 +2,41 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CommitteeRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Security\AuthenticationUtils;
 
 class AdherentAccountActivationHandler
 {
-    private $adherentRepository;
-    private $committeeRepository;
-    private $manager;
+    private $adherentManager;
+    private $committeeManager;
     private $mailjet;
+    private $authenticator;
 
     public function __construct(
-        AdherentRepository $adherentRepository,
-        CommitteeRepository $committeeRepository,
-        ObjectManager $manager,
-        MailjetService $mailjet
+        AdherentManager $adherentManager,
+        CommitteeManager $committeeManager,
+        MailjetService $mailjet,
+        AuthenticationUtils $authenticator
     ) {
-        $this->adherentRepository = $adherentRepository;
-        $this->committeeRepository = $committeeRepository;
-        $this->manager = $manager;
+        $this->adherentManager = $adherentManager;
+        $this->committeeManager = $committeeManager;
         $this->mailjet = $mailjet;
+        $this->authenticator = $authenticator;
     }
 
     public function handle(Adherent $adherent, AdherentActivationToken $token)
     {
-        $adherent->activate($token);
-        $this->manager->flush();
+        $this->adherentManager->activateAccount($adherent, $token);
+        $this->authenticator->authenticateAdherent($adherent);
 
         $this->mailjet->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
             $adherent,
-            $this->adherentRepository->countActiveAdherents(),
-            $this->committeeRepository->countApprovedCommittees()
+            $this->adherentManager->countActiveAdherents(),
+            $this->committeeManager->countApprovedCommittees()
         ));
     }
 }
