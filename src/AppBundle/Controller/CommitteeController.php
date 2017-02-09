@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCommand;
+use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\CommitteeUtils;
 use AppBundle\Committee\Event\CommitteeEventCommand;
@@ -13,6 +14,7 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\CommitteeEventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
+use AppBundle\Form\ContactMembersType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -175,6 +177,46 @@ class CommitteeController extends Controller
         return new Response(AdherentCsvSerializer::serialize($adherents ?? []), 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="membres-du-comite.csv"',
+        ]);
+    }
+
+    /**
+     * @Route("/membres/contact", name="app_commitee_contact_members")
+     * @Method("POST")
+     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     */
+    public function contactMembersAction(Request $request, Committee $committee): Response
+    {
+        if (!$this->isCsrfTokenValid('committee.contact_members', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
+        }
+
+        $committeeManager = $this->get('app.committee_manager');
+
+        $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('contacts', ''));
+        $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
+        $command = new CommitteeContactMembersCommand($adherents, $this->getUser());
+
+        $form = $this->createForm(ContactMembersType::class, $command)
+            ->add('submit', SubmitType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.committee.committee_contact_members_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.success'));
+
+            return $this->redirectToRoute('app_commitee_list_members', [
+                'uuid' => $committee->getUuid(),
+                'slug' => $committee->getSlug(),
+            ]);
+        }
+
+        return $this->render('committee/contact.html.twig', [
+            'committee' => $committee,
+            'committee_members_count' => $committeeManager->getMembersCount($committee),
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'contacts' => CommitteeUtils::getUuidsFromAdherents($adherents),
+            'form' => $form->createView(),
         ]);
     }
 

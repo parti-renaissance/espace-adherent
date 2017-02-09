@@ -53,6 +53,8 @@ committee.event.creation.success: Le nouvel événement a bien été créé et p
 
 committee.event.registration.success: Votre inscription à l'événement est confirmée.
 
+committee.contact_members.success: Félicitations, votre message a bien été envoyé aux membres sélectionnés.
+
 #
 # Search
 #
