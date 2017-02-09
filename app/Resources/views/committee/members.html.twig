@@ -11,6 +11,7 @@
         var allCheckbox = dom('#members-check-all');
         var selectionCheckboxes = document.getElementsByName('members[]');
         var contactButton = dom('#members-contact-button');
+        var contactSelection = dom('#members-contact-selection');
         var exportButton = dom('#members-export-button');
         var exportSelection = dom('#members-export-selection');
 
@@ -75,6 +76,19 @@
 
             exportSelection.value = JSON.stringify(members);
         });
+
+        // Bind the export button (build a Json list of members to export)
+        on(contactButton, 'click', function () {
+            var members = [];
+
+            selectionCheckboxes.forEach(function(element) {
+                if (element.checked) {
+                    members.push(element.value);
+                }
+            });
+
+            contactSelection.value = JSON.stringify(members);
+        });
     </script>
 {% endblock %}
 
@@ -89,13 +103,18 @@
 
         <a href="{{ committee_path('app_committee_edit', committee) }}">Editer le comité</a>
 
-        <button id="members-contact-button">Contacter</button>
+        <form method="post" action="{{ committee_path('app_commitee_contact_members', committee) }}">
+            <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" />
+            <input type="hidden" name="contacts" value="" id="members-contact-selection" />
+
+            <button id="members-contact-button" disabled="disabled">Contacter</button>
+        </form>
 
         <form method="post" action="{{ committee_path('app_commitee_export_members', committee) }}">
             <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" />
             <input type="hidden" name="exports" value="" id="members-export-selection" />
 
-            <button id="members-export-button">Exporter</button>
+            <button id="members-export-button" disabled="disabled">Exporter</button>
         </form>
 
         <a href="#" class="btn">Inviter des personnes</a>

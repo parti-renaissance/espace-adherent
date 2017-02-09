@@ -300,7 +300,7 @@ class CommitteeMembershipRepository extends EntityRepository
             ->select('cm')
             ->leftJoin('cm.adherent', 'adherent')
             ->where('cm.committeeUuid = :committee')
-            ->orderBy('cm.joinedAt', 'ASC')
+            ->orderBy('adherent.firstName', 'ASC')
             ->setParameter('committee', (string) $committeeUuid)
             ->getQuery()
         ;
