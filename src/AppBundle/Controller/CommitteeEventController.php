@@ -47,7 +47,7 @@ class CommitteeEventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee.committee_event_registration_handler')->handle($command);
-            $this->addFlash('notice', $this->get('translator')->trans('committee.event.registration.success'));
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.registration.success'));
 
             return $this->redirectToRoute('app_committee_attend_event_confirmation', [
                 'committee_uuid' => (string) $committee->getUuid(),
@@ -81,7 +81,6 @@ class CommitteeEventController extends Controller
         }
 
         if (!$registration->matches($event, $this->getUser())) {
-            die('loool');
             throw $this->createAccessDeniedException('Invalid event registration');
         }
 

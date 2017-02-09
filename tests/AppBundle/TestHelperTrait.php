@@ -8,6 +8,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\CommitteeEventRegistration;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
@@ -19,6 +20,7 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use AppBundle\Repository\CommitteeEventRegistrationRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\CommitteeEventRepository;
@@ -93,6 +95,11 @@ trait TestHelperTrait
     public function getCommitteeMembershipRepository(): CommitteeMembershipRepository
     {
         return $this->getRepository(CommitteeMembership::class);
+    }
+
+    public function getCommitteeEventRegistrationRepository(): CommitteeEventRegistrationRepository
+    {
+        return $this->getRepository(CommitteeEventRegistration::class);
     }
 
     public function getDonationRepository(): DonationRepository
