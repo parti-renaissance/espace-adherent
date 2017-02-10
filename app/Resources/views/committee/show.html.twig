@@ -103,13 +103,9 @@
     <section class="l__wrapper--medium">
         {% if is_host %}
             <ul id="committee-host-nav">
+                <li>Discussion</li>
                 <li>
-                    Discussion
-                </li>
-                <li>
-                   <a href="{{ committee_path('app_commitee_list_members', committee) }}">
-                       Membres
-                   </a>
+                   <a href="{{ committee_path('app_commitee_list_members', committee) }}">Membres</a>
                 </li>
                 <li>
                     <a href="{{ committee_path('app_committee_edit', committee) }}">Éditer le comité</a>
@@ -118,7 +114,9 @@
 
             <div id="comittee-host-menu">
                 <ul>
-                    <li>Créer un message</li>
+                    <li>
+                        <a href="#committee-message-form">Créer un message</a>
+                    </li>
                     <li>
                         <a href="{{ committee_path('app_committee_add_event', committee) }}">Créer un événement</a>
                     </li>

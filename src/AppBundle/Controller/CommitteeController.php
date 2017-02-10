@@ -54,7 +54,6 @@ class CommitteeController extends Controller
 
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
-            'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
@@ -149,7 +148,6 @@ class CommitteeController extends Controller
 
         return $this->render('committee/members.html.twig', [
             'committee' => $committee,
-            'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'members' => $members,
         ]);
@@ -210,7 +208,6 @@ class CommitteeController extends Controller
 
         return $this->render('committee/contact.html.twig', [
             'committee' => $committee,
-            'committee_members_count' => $committeeManager->getMembersCount($committee),
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'contacts' => CommitteeUtils::getUuidsFromAdherents($adherents),
             'form' => $form->createView(),
