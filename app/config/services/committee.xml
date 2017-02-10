@@ -11,7 +11,7 @@
         <service id="app.committee_authority" class="AppBundle\Committee\CommitteeManagementAuthority">
             <argument type="service" id="app.committee_manager"/>
             <argument type="service" id="app.committee.url_generator"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
         </service>
 
         <service id="app.committee_factory" class="AppBundle\Committee\CommitteeFactory">
@@ -35,11 +35,11 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.committee_factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
         </service>
 
         <service id="app.committee.committee_contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
         </service>
 
         <service id="app.committee.committee_event_handler" class="AppBundle\Committee\Event\CommitteeEventCommandHandler">
@@ -54,7 +54,7 @@
         </service>
 
         <service id="app.committee.event_message_notifier" class="AppBundle\Committee\Event\CommitteeEventMessageNotifier">
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="app.committee_manager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
@@ -68,7 +68,7 @@
         <service id="app.committee.feed_manager" class="AppBundle\Committee\Feed\CommitteeFeedManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.committee_manager"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.campaign"/>
         </service>
 
         <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">

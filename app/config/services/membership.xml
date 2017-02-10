@@ -14,7 +14,7 @@
             <argument type="service" id="app.membership.adherent_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="router"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
@@ -25,7 +25,7 @@
 
         <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
             <argument type="service" id="router"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="security.encoder_factory"/>
         </service>
@@ -33,7 +33,7 @@
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
             <argument type="service" id="app.adherent_manager"/>
             <argument type="service" id="app.committee_manager"/>
-            <argument type="service" id="app.mailjet"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="app.security.authentication_utils"/>
         </service>
 

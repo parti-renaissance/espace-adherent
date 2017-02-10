@@ -27,13 +27,9 @@ parameters:
     env(RECAPTCHA_PUBLIC_KEY):  ''
     env(RECAPTCHA_PRIVATE_KEY): ''
 
-    env(MAILJET_PUBLIC_KEY):    ''
-    env(MAILJET_PRIVATE_KEY):   ''
-
-    env(WRITER_LOGIN):          writer
-    env(WRITER_PASSWORD):       writer
-
-    env(ADMIN_LOGIN):           admin
-    env(ADMIN_PASSWORD):        admin
+    env(MAILJET_TRANSACTIONAL_PUBLIC_KEY):     ''
+    env(MAILJET_TRANSACTIONAL_PRIVATE_KEY):    ''
+    env(MAILJET_CAMPAIGN_PUBLIC_KEY):          ''
+    env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
 
     env(GMAPS_API_KEY):         ''

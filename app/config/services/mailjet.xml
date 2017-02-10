@@ -4,29 +4,47 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Mailjet main service -->
-        <service id="app.mailjet" class="AppBundle\Mailjet\MailjetService" public="false">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailjet.transport"/>
-            <argument type="service" id="app.mailjet.message_factory"/>
-        </service>
-
-        <service id="app.mailjet.message_factory" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
-            <argument>%sender_email%</argument>
-            <argument>%sender_name%</argument>
-        </service>
-
-        <!-- Real Mailjet transport layer using their REST API -->
-        <service id="app.mailjet.transport" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
-            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
-            <argument>%env(MAILJET_PUBLIC_KEY)%</argument>
-            <argument>%env(MAILJET_PRIVATE_KEY)%</argument>
-        </service>
-
+        <!-- Events subscriber to save API calls into the database -->
         <service id="app.mailjet.mailjet_email_doctrine_backup_subscriber" class="AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.repository.mailjet_email"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <!-- Mailjet client for transactional e-mails -->
+        <service id="app.mailjet.client.transactional" class="AppBundle\Mailjet\MailjetService" public="false">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.mailjet.transport.transactional"/>
+            <argument type="service" id="app.mailjet.message_factory.transactional"/>
+        </service>
+
+        <service id="app.mailjet.transport.transactional" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailjet.message_factory.transactional" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
+            <argument>%transactional_sender_email%</argument>
+            <argument>%transactional_sender_name%</argument>
+        </service>
+
+        <!-- Mailjet client for campaign e-mails -->
+        <service id="app.mailjet.client.campaign" class="AppBundle\Mailjet\MailjetService" public="false">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.mailjet.transport.campaign"/>
+            <argument type="service" id="app.mailjet.message_factory.campaign"/>
+        </service>
+
+        <service id="app.mailjet.transport.campaign" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailjet.message_factory.campaign" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
+            <argument>%campaign_sender_email%</argument>
+            <argument>%campaign_sender_name%</argument>
         </service>
 
     </services>

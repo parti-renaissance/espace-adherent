@@ -6,7 +6,7 @@
 
         <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet" />
+            <argument type="service" id="app.mailjet.client.campaign" />
         </service>
 
         <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">

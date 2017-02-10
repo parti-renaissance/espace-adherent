@@ -5,7 +5,12 @@ parameters:
     timeline_max_messages: 10
 
 services:
-    app.mailjet.transport:
+    app.mailjet.transport.transactional:
+        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
+        arguments: ['@?logger']
+        public: false
+
+    app.mailjet.transport.campaign:
         class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
         arguments: ['@?logger']
         public: false
