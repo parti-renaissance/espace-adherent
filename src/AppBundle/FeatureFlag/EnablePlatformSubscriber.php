@@ -4,8 +4,10 @@ namespace AppBundle\FeatureFlag;
 
 use AppBundle\Controller\AdherentController;
 use AppBundle\Controller\CommitteeController;
-use AppBundle\Controller\EventsController;
+use AppBundle\Controller\CommitteeEventController;
 use AppBundle\Controller\MembershipController;
+use AppBundle\Controller\ReferentController;
+use AppBundle\Controller\SearchController;
 use AppBundle\Controller\Security\AdherentSecurityController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -46,8 +48,10 @@ class EnablePlatformSubscriber implements EventSubscriberInterface
     private static $disabledControllers = [
         AdherentController::class,
         CommitteeController::class,
-        EventsController::class,
         MembershipController::class,
         AdherentSecurityController::class,
+        CommitteeEventController::class,
+        ReferentController::class,
+        SearchController::class,
     ];
 }
