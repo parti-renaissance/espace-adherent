@@ -72,11 +72,9 @@ class GoogleMapsStaticProvider
             $client = $this->client->request('GET', self::MAPS_API_ENDPOINT.'?'.$parameters);
 
             if (200 !== $client->getStatusCode()) {
-                throw new \Exception(sprintf(
-                    'Guzzle client status error: "%s" was returned with the reason "%s"',
-                    $client->getStatusCode(),
-                    $client->getReasonPhrase()
-                ));
+                throw new \Exception(
+                    sprintf('Guzzle client status error: "%s" was returned', $client->getStatusCode())
+                );
             }
 
             return $client->getBody()->getContents();
