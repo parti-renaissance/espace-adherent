@@ -143,6 +143,10 @@
             &__other {
                 width: 23%;
                 margin-bottom: 10px;
+
+                @media (max-width: $mobile) {
+                    width: 48%;
+                }
             }
 
             &__button {
@@ -193,7 +197,11 @@
 
     @media (max-height: 1000px) {
         justify-content: flex-start;
-        height: 100%;
+        height: auto;
+    }
+
+    @media (max-width: $mobile) {
+        background-color: white;
     }
 
     &__header {

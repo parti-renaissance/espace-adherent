@@ -32,9 +32,15 @@
         height: auto;
         padding: 20px 0;
         text-align: center;
+        width: 100%;
 
         &__text {
             margin-bottom: 20px;
+            margin-right: 0;
+
+            .cc-message {
+                margin-bottom: 0.2em;
+            }
         }
 
         &__button a {

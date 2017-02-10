@@ -86,7 +86,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
     private static $nosValeurs = '
 Nous croyons au progrès face à tous les conservatismes. Nous croyons que le temps n’est pas aux petits
-ajustements mais à l’innovation radicale. Nous croyons en l’émancipation de tous. Nous croyons que le 
+ajustements mais à l’innovation radicale. Nous croyons en l’émancipation de tous. Nous croyons que le
 destin de l’Europe et celui de la France sont indissociables. Nous croyons en notre capacité à agir
 ensemble.
     ';

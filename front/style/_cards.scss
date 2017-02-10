@@ -334,6 +334,10 @@
             color: white;
         }
 
+        a {
+            transition: none;
+        }
+
         .background-container {
             @include gradient-container;
 

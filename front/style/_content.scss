@@ -28,6 +28,10 @@
 .content header {
     margin-bottom: 30px;
 
+    @media (max-width: $mobile) {
+        padding-bottom: 30px;
+    }
+
     h2 {
         @include text--summary;
 
@@ -70,12 +74,20 @@
             a {
                 border: none;
             }
+
+            @media (max-width: $mobile) {
+                margin: 5px 12.5px;
+            }
         }
     }
 }
 
 .content figure {
     margin-bottom: 60px;
+
+    @media (max-width: $mobile) {
+        margin-bottom: 30px;
+    }
 
     &.fullscreen {
         margin-left: 0;
@@ -451,16 +463,6 @@
             padding: 5px;
         }
     }
-
-    .more {
-        @include text--summary;
-        text-transform: uppercase;
-        color: rgba(0, 0, 0, 0.3);
-        width: 450px;
-        display: block;
-        margin: 0 auto;
-        text-align: center;
-    }
 }
 
 .content.emmanuel-macron {
@@ -521,6 +523,34 @@
                 &:hover {
                     color: $blue;
                 }
+
+                @media (max-width: $mobile) {
+                    margin-right: 10px;
+                    color: white;
+                    padding: 5px;
+                    display: inline-block;
+                    width: 35px;
+                    height: 35px;
+                    box-sizing: border-box;
+                    text-align: center;
+
+                    &[href*="facebook"] {
+                        background-color: $facebook;
+                    }
+
+                    &[href*="twitter"] {
+                        background-color: $twitter;
+                    }
+
+                    &[href*="linkedin"] {
+                        background-color: $linkedin;
+                    }
+
+                    &:hover {
+                        color: white;
+                        background-color: $gray;
+                    }
+                }
             }
         }
     }
@@ -532,6 +562,10 @@
         justify-content: space-between;
         height: 125px;
         box-sizing: border-box;
+
+        @media (max-width: $mobile) {
+            height: 135px;
+        }
     }
 
     @media(max-width: $tablet) {
