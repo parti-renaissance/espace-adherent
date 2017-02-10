@@ -131,10 +131,5 @@ class RedirectionSubscriber implements EventSubscriberInterface
         '/emmanuel-macron' => '/emmanuel-macron',
         '/en-marche' => '/le-mouvement',
         '/suivez-en-marche' => '/le-mouvement',
-
-        // To check
-        // '/438-2' => '/article/438-2',
-        // '/reflexions-sur-la-laicite' => '/article/reflexions-sur-la-laicite',
-        // '/forces-femmes-accompagner-le-retour-a-lemploi-apres-45-ans' => '/article/forces-femmes-accompagner-le-retour-a-lemploi-apres-45-ans',
     ];
 }
