@@ -104,14 +104,14 @@
         <a href="{{ committee_path('app_committee_edit', committee) }}">Editer le comité</a>
 
         <form method="post" action="{{ committee_path('app_commitee_contact_members', committee) }}">
-            <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" />
+            <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" id="members-contact-token" />
             <input type="hidden" name="contacts" value="" id="members-contact-selection" />
 
             <button id="members-contact-button" disabled="disabled">Contacter</button>
         </form>
 
         <form method="post" action="{{ committee_path('app_commitee_export_members', committee) }}">
-            <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" />
+            <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
             <input type="hidden" name="exports" value="" id="members-export-selection" />
 
             <button id="members-export-button" disabled="disabled">Exporter</button>
