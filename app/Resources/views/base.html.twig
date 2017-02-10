@@ -128,57 +128,66 @@
                         </a>
                     {% endif %}
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Je donne</a>
-                    <a href="{{ enable_platform ? (path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login')) : url_legacy }}" class="icon--with-text text--medium-small">
-                        <svg width="28px" height="27px" viewBox="503 375 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <path
-                                d="M517.1737,375 C509.8977,375 503.9997,380.898 503.9997,388.174 C503.9997,395.45 509.8977,401.348 517.1737,401.348 C524.4497,401.348 530.3477,395.45 530.3477,388.174 C530.3477,380.898 524.4497,375 517.1737,375 M517.1737,376 C523.8867,376 529.3477,381.461 529.3477,388.174 C529.3477,394.886 523.8867,400.348 517.1737,400.348 C510.4607,400.348 504.9997,394.886 504.9997,388.174 C504.9997,381.461 510.4607,376 517.1737,376"
-                                stroke="none"
-                                fill="#000000"
-                                fill-rule="evenodd"></path>
-                            <path
-                                d="M517.1737,379.9834 C514.8597,379.9834 512.9837,381.8594 512.9837,384.1734 C512.9837,386.4884 514.8597,388.3644 517.1737,388.3644 C519.4877,388.3644 521.3637,386.4884 521.3637,384.1734 C521.3637,381.8594 519.4877,379.9834 517.1737,379.9834 M517.1737,380.9834 C518.9327,380.9834 520.3637,382.4144 520.3637,384.1734 C520.3637,385.9324 518.9327,387.3644 517.1737,387.3644 C515.4147,387.3644 513.9837,385.9324 513.9837,384.1734 C513.9837,382.4144 515.4147,380.9834 517.1737,380.9834"
-                                stroke="none"
-                                fill="#000000"
-                                fill-rule="evenodd"></path>
-                            <path
-                                d="M508.424568,397.153247 C510.76681,393.840331 513.821352,391.4676 517.3383,391.4676 C520.844145,391.4676 523.792095,393.805307 526.000766,397.080174 C526.155171,397.309115 526.465934,397.369538 526.694874,397.215134 C526.923815,397.060729 526.984238,396.749966 526.829834,396.521026 C524.453485,392.997537 521.263123,390.4676 517.3383,390.4676 C513.409729,390.4676 510.119924,393.02308 507.608032,396.575953 C507.448616,396.801433 507.502173,397.113453 507.727653,397.272868 C507.953133,397.432284 508.265153,397.378727 508.424568,397.153247 Z"
-                                stroke="none"
-                                fill="#000000"
-                                fill-rule="evenodd"></path>
-                        </svg>
-                        {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
-                    </a>
-                    {% if user_is_adherent %}
-                        {# This list must be designed #}
-                        <ul>
-                            {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
-                            <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
-                            <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
-                            <li><a href="#">La carte En Marche !</a></li>
-                            <li><a href="#">Documents</a></li>
-                            <li class="login__separator"></li>
-                            {% if is_granted('CREATE_COMMITTEE') %}
-                                <li>
-                                    <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
-                                </li>
-                            {% endif %}
-                            {% if is_granted('ROLE_REFERENT') %}
-                                <li>
-                                    <a href="{{ path('app_referent_users') }}">Espace référent</a>
-                                </li>
-                            {% endif %}
-                            <li><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
-                            <li><a href="#">Aide</a></li>
-                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                <li>
-                                    <a href="{{ path('app_admin_impersonation_exit') }}">
-                                        Quitter l'impersonnification
-                                    </a>
-                                </li>
-                            {% endif %}
-                            <li><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
-                        </ul>
-                    {% endif %}
+                    <div class="nav__user">
+                        <a href="{{ enable_platform ? (path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login')) : url_legacy }}" class="icon--with-text text--medium-small nav__user__name">
+                            <svg width="28px" height="27px" viewBox="503 375 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <path
+                                    d="M517.1737,375 C509.8977,375 503.9997,380.898 503.9997,388.174 C503.9997,395.45 509.8977,401.348 517.1737,401.348 C524.4497,401.348 530.3477,395.45 530.3477,388.174 C530.3477,380.898 524.4497,375 517.1737,375 M517.1737,376 C523.8867,376 529.3477,381.461 529.3477,388.174 C529.3477,394.886 523.8867,400.348 517.1737,400.348 C510.4607,400.348 504.9997,394.886 504.9997,388.174 C504.9997,381.461 510.4607,376 517.1737,376"
+                                    stroke="none"
+                                    fill="#000000"
+                                    fill-rule="evenodd"></path>
+                                <path
+                                    d="M517.1737,379.9834 C514.8597,379.9834 512.9837,381.8594 512.9837,384.1734 C512.9837,386.4884 514.8597,388.3644 517.1737,388.3644 C519.4877,388.3644 521.3637,386.4884 521.3637,384.1734 C521.3637,381.8594 519.4877,379.9834 517.1737,379.9834 M517.1737,380.9834 C518.9327,380.9834 520.3637,382.4144 520.3637,384.1734 C520.3637,385.9324 518.9327,387.3644 517.1737,387.3644 C515.4147,387.3644 513.9837,385.9324 513.9837,384.1734 C513.9837,382.4144 515.4147,380.9834 517.1737,380.9834"
+                                    stroke="none"
+                                    fill="#000000"
+                                    fill-rule="evenodd"></path>
+                                <path
+                                    d="M508.424568,397.153247 C510.76681,393.840331 513.821352,391.4676 517.3383,391.4676 C520.844145,391.4676 523.792095,393.805307 526.000766,397.080174 C526.155171,397.309115 526.465934,397.369538 526.694874,397.215134 C526.923815,397.060729 526.984238,396.749966 526.829834,396.521026 C524.453485,392.997537 521.263123,390.4676 517.3383,390.4676 C513.409729,390.4676 510.119924,393.02308 507.608032,396.575953 C507.448616,396.801433 507.502173,397.113453 507.727653,397.272868 C507.953133,397.432284 508.265153,397.378727 508.424568,397.153247 Z"
+                                    stroke="none"
+                                    fill="#000000"
+                                    fill-rule="evenodd"></path>
+                            </svg>
+                            {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                        </a>
+                        {% if user_is_adherent %}
+                            <div class="nav__user__caret">
+                                <span class="nav__user__caret--outer"></span>
+                                <span class="nav__user__caret--inner"></span>
+                            </div>
+                            <div class="nav__user__menu">
+                                <div class="nav__user__menu__comites">
+                                    {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
+                                </div>
+                                <ul class="nav__user__menu__account">
+                                    <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
+                                    <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
+                                    <li><a href="#">La carte En Marche !</a></li>
+                                    <li><a href="#">Documents</a></li>
+                                    <li class="nav__user__menu__separator"></li>
+                                    {% if is_granted('CREATE_COMMITTEE') %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_REFERENT') %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_referent_users') }}">Espace référent</a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="text--small"><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
+                                    <li class="text--small"><a href="#">Aide</a></li>
+                                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_admin_impersonation_exit') }}">
+                                                Quitter l'impersonnification
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </nav>
             <!--  Header / Navigation Mobile-->
