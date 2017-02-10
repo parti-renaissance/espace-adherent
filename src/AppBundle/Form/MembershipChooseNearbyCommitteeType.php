@@ -49,12 +49,13 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        /** @var Committee[] $committees */
         $committees = $form->getConfig()->getAttribute('committees');
 
         foreach ($committees as $name => $committee) {
             $view->vars['committees_views_data'][$name] = [
-                'slug' => $committee['committee']->getSlug(),
-                'memberships_count' => $committee['memberships_count'],
+                'slug' => $committee->getSlug(),
+                'members_count' => $committee->getMembersCount(),
             ];
         }
     }
@@ -82,9 +83,7 @@ class MembershipChooseNearbyCommitteeType extends AbstractType
      */
     private static function getChoices(array $data): array
     {
-        foreach ($data as $row) {
-            /** @var Committee $committee */
-            $committee = $row['committee'];
+        foreach ($data as $committee) {
             $choices[$committee->getName()] = (string) $committee->getUuid();
         }
 

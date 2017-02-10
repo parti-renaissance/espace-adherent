@@ -58,8 +58,7 @@ class SearchResultsProvider
             $qb->setParameter('query', '%'.$query.'%');
         }
 
-        /** @var Committee[] $committees */
-        $committees = $qb
+        return $qb
             ->andWhere('n.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->setFirstResult($search->getOffset())
@@ -67,15 +66,6 @@ class SearchResultsProvider
             ->getQuery()
             ->getResult()
         ;
-
-        foreach ($committees as $committee) {
-            $results[] = [
-                'committee' => $committee,
-                'memberships' => $this->membership->countMembers($committee->getUuid()),
-            ];
-        }
-
-        return $results ?? [];
     }
 
     public function findEvents(SearchParametersFilter $search): array
@@ -99,21 +89,11 @@ class SearchResultsProvider
             $qb->setParameter('query', '%'.$query.'%');
         }
 
-        /** @var Committee[] $committees */
-        $events = $qb
+        return $qb
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
             ->getQuery()
             ->getResult()
         ;
-
-        foreach ($events as $event) {
-            $results[] = [
-                'event' => $event,
-                'attendees' => 5, // Fixture
-            ];
-        }
-
-        return $results ?? [];
     }
 }

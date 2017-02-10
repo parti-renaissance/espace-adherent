@@ -92,16 +92,10 @@ class CommitteeManager
     public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT)
     {
         $data = [];
-        $committeeMembershipRepository = $this->getMembershipRepository();
         $committees = $this->getCommitteeRepository()->findNearbyCommittees($limit, $coordinates);
 
         foreach ($committees as $committee) {
-            $uuid = $committee->getUuid()->toString();
-
-            $data[$uuid] = [
-                'committee' => $committee,
-                'memberships_count' => $committeeMembershipRepository->countMembers($uuid),
-            ];
+            $data[(string) $committee->getUuid()] = $committee;
         }
 
         return $data;
