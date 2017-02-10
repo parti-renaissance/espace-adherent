@@ -525,6 +525,128 @@ class CommitteeControllerTest extends SqliteWebTestCase
         );
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testCommitteeMembers()
+    {
+        // Authenticate as the committee animator
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->client->click($crawler->selectLink('Membres')->link());
+
+        $this->assertTrue($this->seeMembersList($crawler, 2));
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testCommitteeExportMembers()
+    {
+        // Authenticate as the committee animator
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->client->click($crawler->selectLink('Membres')->link());
+
+        $token = $crawler->filter('#members-export-token')->attr('value');
+        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
+
+        $exportUrl = $this->client->getRequest()->getPathInfo().'/export';
+
+        $this->client->request(Request::METHOD_POST, $exportUrl, [
+            'token' => $token,
+            'exports' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
+
+        // Try to illegally export an adherent data
+        $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
+
+        $this->client->request(Request::METHOD_POST, $exportUrl, [
+            'token' => $token,
+            'exports' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
+
+        $this->client->request(Request::METHOD_POST, $exportUrl, [
+            'token' => $token,
+            'exports' => json_encode([]),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(2, explode("\n", $this->client->getResponse()->getContent()));
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testCommitteeContactMembers()
+    {
+        // Authenticate as the committee animator
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->client->click($crawler->selectLink('Membres')->link());
+
+        $token = $crawler->filter('#members-contact-token')->attr('value');
+        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
+
+        $membersUrl = $this->client->getRequest()->getPathInfo();
+        $contactUrl = $membersUrl.'/contact';
+
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $token,
+            'contacts' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Try to post with an empty message
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'message' => ' ',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('.form__errors > .form__error')->text());
+
+        $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'message' => 'Hello!',
+        ]);
+
+        $this->assertClientIsRedirectedTo($membersUrl, $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux membres sélectionnés.');
+
+        // Try to illegally contact an adherent
+        $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
+
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $token,
+            'contacts' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, json_decode($crawler->filter('input[name="contacts"]')->attr('value'), true));
+
+        // Force the contact form with foreign uuid
+        $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => json_encode($uuids),
+            'message' => 'Hello!',
+        ]);
+
+        $this->assertClientIsRedirectedTo($membersUrl, $this->client);
+    }
+
     private function getCommitteeSubscribersCount(string $committeeUuid): int
     {
         return $this
@@ -532,6 +654,12 @@ class CommitteeControllerTest extends SqliteWebTestCase
             ->findFollowers($committeeUuid)
             ->getCommitteesNotificationsSubscribers()
             ->count();
+    }
+
+    private function seeMembersList(Crawler $crawler, int $count): bool
+    {
+        // Header row is part of the count
+        return $count === count($crawler->filter('table > tr'));
     }
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool

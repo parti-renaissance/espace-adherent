@@ -3,6 +3,7 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Exception\AdherentCollectionException;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeUtils
@@ -34,6 +35,9 @@ class CommitteeUtils
     }
 
     /**
+     * Returns a collection of Adherent from the provided collection, only when the adherent is
+     * also known from the Uuid collection.
+     *
      * @param Uuid[]|string[] $uuids
      * @param mixed           $adherents
      *
@@ -42,13 +46,13 @@ class CommitteeUtils
     public static function removeUnknownAdherents(array $uuids, $adherents): array
     {
         if (!is_iterable($adherents)) {
-            throw new \BadMethodCallException('This method requires a collection of Adherent entities');
+            throw new AdherentCollectionException();
         }
 
         foreach ($uuids as $uuid) {
             foreach ($adherents as $adherent) {
                 if (!$adherent instanceof Adherent) {
-                    throw new \BadMethodCallException('This method requires a collection of Adherent entities');
+                    throw new AdherentCollectionException();
                 }
 
                 if ((string) $adherent->getUuid() === (string) $uuid) {
@@ -61,15 +65,19 @@ class CommitteeUtils
     }
 
     /**
-     * @param Adherent[] $adherents
+     * @param mixed $adherents
      *
      * @return string[]
      */
-    public static function getUuidsFromAdherents(array $adherents): array
+    public static function getUuidsFromAdherents($adherents): array
     {
+        if (!is_iterable($adherents)) {
+            throw new AdherentCollectionException();
+        }
+
         foreach ($adherents as $adherent) {
             if (!$adherent instanceof Adherent) {
-                throw new \BadMethodCallException('This method requires a collection of Adherent entities');
+                throw new AdherentCollectionException();
             }
 
             $uuids[] = (string) $adherent->getUuid();

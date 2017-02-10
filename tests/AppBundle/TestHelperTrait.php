@@ -3,6 +3,7 @@
 namespace Tests\AppBundle;
 
 use AppBundle\Committee\Feed\CommitteeFeedManager;
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
@@ -41,6 +42,9 @@ trait TestHelperTrait
      * @var ContainerInterface
      */
     protected $container;
+
+    /** @var Adherent[] */
+    protected $adherents;
 
     public function get($id)
     {
@@ -133,6 +137,23 @@ trait TestHelperTrait
     protected function getAdherent(string $uuid)
     {
         return $this->getAdherentRepository()->findByUuid($uuid);
+    }
+
+    /**
+     * @param bool $refresh Leave to false to avoid reloading from database
+     *
+     * @return Adherent[]
+     */
+    protected function getAdherents($refresh = false): array
+    {
+        if (null === $this->adherents || $refresh) {
+            $this->adherents = [
+                $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID),
+                $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID),
+            ];
+        }
+
+        return $this->adherents;
     }
 
     /**

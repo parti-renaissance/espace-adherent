@@ -2,22 +2,22 @@
 
 namespace AppBundle\Committee\Serializer;
 
-use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Exception\AdherentCollectionException;
 
 class AdherentCsvSerializer
 {
     /**
-     * @param array|AdherentCollection $adherents
+     * @param mixed $adherents
      *
      * @return string
      *
-     * @throws \BadMethodCallException
+     * @throws AdherentCollectionException
      */
     public static function serialize($adherents): string
     {
         if (!is_iterable($adherents)) {
-            throw new \BadMethodCallException('This method requires a collection of Adherent entities');
+            throw new AdherentCollectionException();
         }
 
         $handle = fopen('php://memory', 'r+');
@@ -25,7 +25,7 @@ class AdherentCsvSerializer
 
         foreach ($adherents as $adherent) {
             if (!$adherent instanceof Adherent) {
-                throw new \BadMethodCallException('This method requires a collection of Adherent entities');
+                throw new AdherentCollectionException();
             }
 
             fputcsv($handle, [
