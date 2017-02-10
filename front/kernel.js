@@ -1,7 +1,9 @@
 import 'utils/dom';
 import 'utils/css';
+import 'utils/text';
 import 'core-js/modules/es6.array.for-each';
 import 'core-js/modules/es6.array.map';
+import 'core-js/modules/es6.object.keys';
 import 'core-js/modules/es6.promise';
 
 window.Kernel = class {

@@ -175,6 +175,19 @@
         }
     }
 
+    &--disabled {
+        border-color: #c9c9c9;
+        color: #999;
+
+        &:hover {
+            cursor: default;
+            background: #fff;
+            transition: 0s;
+            border-color: #c9c9c9;
+            color: #999;
+        }
+    }
+
     svg {
         position: relative;
         left: 5px;

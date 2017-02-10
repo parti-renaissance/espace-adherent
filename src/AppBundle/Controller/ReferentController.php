@@ -20,8 +20,9 @@ class ReferentController extends Controller
      */
     public function usersAction(): Response
     {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/list.html.twig');
+        return $this->render('referent/users/list.html.twig', [
+            'users' => $this->get('app.referent.users_list_builder')->buildManagedUsersListFor($this->getUser()),
+        ]);
     }
 
     /**

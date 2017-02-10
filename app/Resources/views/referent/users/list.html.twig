@@ -2,8 +2,35 @@
 
 {% block referent_menu_users_list 'class="active"' %}
 
+{% block javascripts %}
+<script type="text/javascript">
+    Kernel.onLoad(function() {
+        App.runReferentUsers({{ users.exportJson|raw }});
+    });
+</script>
+{% endblock %}
+
 {% block referent_content %}
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi beatae consequuntur deleniti dolorem,
-    et harum laudantium molestias mollitia nihil quibusdam quidem repellendus tempore. Delectus dolore error
-    explicabo saepe voluptatum.
+    <h3>Tous les utilisateurs</h3>
+
+    <p>
+        Inclus tous les marcheurs (tous les inscrits à la newsletter), tous les adhérents, tous les membres de comités
+        et tous les animateurs de comité.
+    </p>
+
+    <hr />
+
+    <p>
+        <button class="btn btn--blue referent__btn-send-mail" id="send-mail-btn" type="button">
+            Envoyer un e-mail
+        </button>
+
+        <span class="referent__users-count-container">
+            <span id="selected-users-count">0</span> utilisateur(s) sélectionnés
+        </span>
+    </p>
+
+    <hr />
+
+    <div id="users-list"></div>
 {% endblock %}

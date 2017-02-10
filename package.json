@@ -33,6 +33,7 @@
     "raven-js": "^3.8.0",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
+    "react-data-grid": "^2.0.6",
     "react-dom": "^15.3.2",
     "reqwest": "^2.0.5",
     "sass-loader": "^4.0.0",
