@@ -1,7 +1,9 @@
 @mixin btn {
     cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     padding: 1px 15px 0;
-    display: inline-block;
     background: white;
     border: 1px solid black;
     color: black;
@@ -11,9 +13,6 @@
     transition: all 0.45s;
     height: 40px;
     box-sizing: border-box;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
 
     &:hover {
         background: black;
@@ -180,4 +179,8 @@
         position: relative;
         left: 5px;
     }
+}
+
+button.btn {
+    display: inline-block;
 }

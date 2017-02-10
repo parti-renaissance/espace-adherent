@@ -29,7 +29,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--medium-small {
     font-size: $text--size-medium--small;
-    line-height: 1.2em;
+    line-height: 28px;
 }
 
 @mixin text--medium-small--bold {
@@ -53,6 +53,12 @@ $text--size-extra-large: 48px;
     font-size: $text--size-large;
     letter-spacing: -0.5px;
     line-height: 38px;
+}
+
+@mixin text--larger {
+    font-size: $text--size-larger;
+    line-height: 0.93;
+    letter-spacing: -1.2px;
 }
 
 @mixin text--extra-large {
@@ -135,14 +141,12 @@ $text--size-extra-large: 48px;
         @include text--large;
 
         @media (max-width: $mobile) {
-            @include text--medium;
+            @include text--medium-large;
         }
     }
 
     &--larger {
-        font-size: $text--size-larger;
-        line-height: 0.93;
-        letter-spacing: -1.2px;
+        @include text--larger;
 
         @media (max-width: $mobile) {
             @include text--large;
@@ -152,6 +156,10 @@ $text--size-extra-large: 48px;
     &--extra-large {
         font-size: $text--size-extra-large;
         line-height: 1em;
+
+        @media (max-width: $mobile) {
+            @include text--larger;
+        }
     }
 
     &--logo {
@@ -216,6 +224,10 @@ $text--size-extra-large: 48px;
 
     &--gray {
         color: $black--half;
+    }
+
+    &--light-gray {
+        color: $gray;
     }
 }
 
