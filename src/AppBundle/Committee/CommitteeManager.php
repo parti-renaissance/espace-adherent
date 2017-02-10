@@ -69,18 +69,6 @@ class CommitteeManager
         ;
     }
 
-    /**
-     * Returns the total number of members in the committee.
-     *
-     * @param Committee $committee The committee
-     *
-     * @return int
-     */
-    public function getMembersCount(Committee $committee): int
-    {
-        return $this->getMembershipRepository()->countMembers($committee->getUuid()->toString());
-    }
-
     public function getCommitteeHosts(Committee $committee): AdherentCollection
     {
         return $this->getMembershipRepository()->findHostMembers($committee->getUuid()->toString());

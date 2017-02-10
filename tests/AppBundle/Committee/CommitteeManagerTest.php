@@ -19,15 +19,6 @@ class CommitteeManagerTest extends MysqlWebTestCase
     /* @var CommitteeManager */
     private $committeeManager;
 
-    public function testGetMembersCount()
-    {
-        $this->assertSame(4, $this->committeeManager->getMembersCount($this->getCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID)));
-        $this->assertSame(1, $this->committeeManager->getMembersCount($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
-        $this->assertSame(1, $this->committeeManager->getMembersCount($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
-        $this->assertSame(1, $this->committeeManager->getMembersCount($this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID)));
-        $this->assertSame(1, $this->committeeManager->getMembersCount($this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
-    }
-
     public function testGetCommitteeHosts()
     {
         $this->assertInstanceOf(
