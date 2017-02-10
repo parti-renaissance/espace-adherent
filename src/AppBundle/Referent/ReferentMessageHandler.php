@@ -3,6 +3,8 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\ReferentMessage;
+use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 
 class ReferentMessageHandler
 {
@@ -13,8 +15,8 @@ class ReferentMessageHandler
         $this->mailjet = $mailjet;
     }
 
-    public function handle(ReferentMessage $referentMessage)
+    public function handle(ReferentMessageModel $referentMessage)
     {
-        // TODO Implement
+        $this->mailjet->sendMessage(ReferentMessage::createFromModel($referentMessage));
     }
 }

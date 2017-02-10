@@ -38,7 +38,12 @@ class ManagedUser
     /**
      * @var string|null
      */
-    private $name;
+    private $firstName;
+
+    /**
+     * @var string|null
+     */
+    private $lastName;
 
     /**
      * @var \DateTime|null
@@ -66,7 +71,8 @@ class ManagedUser
         string $email,
         string $postalCode,
         bool $emailVisible = false,
-        string $name = null,
+        string $firstName = null,
+        string $lastName = null,
         \DateTime $birthdate = null,
         string $city = null,
         string $country = null,
@@ -80,7 +86,8 @@ class ManagedUser
         $this->id = $id;
         $this->email = $email;
         $this->emailVisible = $emailVisible;
-        $this->name = $name;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->birthdate = $birthdate;
         $this->postalCode = $postalCode;
         $this->city = $city;
@@ -96,7 +103,8 @@ class ManagedUser
             $adherent->getEmailAddress(),
             $adherent->getPostalCode(),
             $adherent->isHost(),
-            $adherent->getFirstName().' '.$adherent->getLastName()[0],
+            $adherent->getFirstName(),
+            $adherent->getLastName(),
             $adherent->getBirthdate(),
             $adherent->getCityName(),
             $adherent->getCountry(),
@@ -139,9 +147,28 @@ class ManagedUser
         return $this->postalCode;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name;
+        return $this->firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function getFullName(): ?string
+    {
+        if (!$this->firstName || !$this->lastName) {
+            return null;
+        }
+
+        return $this->firstName.' '.$this->lastName;
+    }
+
+    public function getPartialName(): ?string
+    {
+        return $this->firstName.' '.$this->lastName[0];
     }
 
     public function getBirthdate(): ?\DateTime

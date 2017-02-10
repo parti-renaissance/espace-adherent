@@ -7,11 +7,11 @@ use AppBundle\Entity\Adherent;
 class ReferentMessageFactory
 {
     /**
-     * @var UsersListBuilder
+     * @var ManagedUserFactory
      */
     private $usersListBuilder;
 
-    public function __construct(UsersListBuilder $usersListBuilder)
+    public function __construct(ManagedUserFactory $usersListBuilder)
     {
         $this->usersListBuilder = $usersListBuilder;
     }
@@ -34,11 +34,13 @@ class ReferentMessageFactory
 
     private function createManagedUsersListIndexedByTypeAndId(Adherent $referent): array
     {
-        $users = $this->usersListBuilder->buildManagedUsersListFor($referent);
+        $users = $this->usersListBuilder->createManagedUsersCollectionFor($referent);
         $registry = [];
 
         foreach ($users as $user) {
-            $registry[$user->getType()][$user->getId()] = $user;
+            if ($user->hasReferentsEmailsSubscription()) {
+                $registry[$user->getType()][$user->getId()] = $user;
+            }
         }
 
         return $registry;
