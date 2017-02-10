@@ -1,9 +1,9 @@
-{% for result in results %}
+{% for committee in results %}
     <div style="float: left; width: 340px; height: 200px; background-color: #eee; margin: 10px; padding: 10px">
-        <p class="text--medium">{{ result.committee.name }}</p>
-        <p><strong>{{ result.committee.cityName }}</strong></p>
+        <p class="text--medium">{{ committee.name }}</p>
+        <p><strong>{{ committee.cityName }}</strong></p>
 
-        <a href="{{ committee_path('app_committee_show', result.committee) }}" class="btn btn--blue">Je Participe</a>
-        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(result.memberships) }}
+        <a href="{{ committee_path('app_committee_show', committee) }}" class="btn btn--blue">Je Participe</a>
+        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(committee.membersCount) }}
     </div>
 {% endfor %}

@@ -124,28 +124,6 @@ class CommitteeMembershipRepository extends EntityRepository
     }
 
     /**
-     * Returns the number of members (hosts and followers) for the given committee.
-     *
-     * @param string $committeeUuid
-     *
-     * @return int
-     */
-    public function countMembers(string $committeeUuid): int
-    {
-        $committeeUuid = Uuid::fromString($committeeUuid);
-
-        $query = $this
-            ->createQueryBuilder('cm')
-            ->select('COUNT(cm.uuid)')
-            ->where('cm.committeeUuid = :committee')
-            ->setParameter('committee', (string) $committeeUuid)
-            ->getQuery()
-        ;
-
-        return (int) $query->getSingleScalarResult();
-    }
-
-    /**
      * Returns the number of host members for the given committee.
      *
      * @param string $committeeUuid
