@@ -46,6 +46,9 @@ class ArticleAdmin extends AbstractAdmin
                     'label' => 'Afficher l\'image principale dans l\'article',
                     'required' => false,
                 ])
+                ->add('themes', null, [
+                    'label' => 'Thèmes',
+                ])
             ->end()
             ->with('Publication', array('class' => 'col-md-4'))
                 ->add('published', CheckboxType::class, [

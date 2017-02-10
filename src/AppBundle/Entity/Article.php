@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,9 +73,17 @@ class Article
      */
     private $displayMedia = true;
 
+    /**
+     * @var ProposalTheme[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="ProposalTheme")
+     */
+    private $themes;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): int
@@ -155,5 +165,23 @@ class Article
         $this->displayMedia = $displayMedia;
 
         return $this;
+    }
+
+    public function addTheme(ProposalTheme $theme)
+    {
+        $this->themes[] = $theme;
+    }
+
+    public function removeTheme(ProposalTheme $theme)
+    {
+        $this->themes->removeElement($theme);
+    }
+
+    /**
+     * @return ProposalTheme[]|Collection
+     */
+    public function getThemes()
+    {
+        return $this->themes;
     }
 }
