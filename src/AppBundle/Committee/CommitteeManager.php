@@ -84,9 +84,14 @@ class CommitteeManager
         return $this->getMembershipRepository()->findFollowers($committee->getUuid()->toString(), $withHosts);
     }
 
-    public function getOptinCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
+    public function getOptinCommitteeFollowers(Committee $committee): AdherentCollection
     {
-        return $this->getCommitteeFollowers($committee, $withHosts)->getCommitteesNotificationsSubscribers();
+        $followers = $this->getCommitteeFollowers($committee, self::EXCLUDE_HOSTS);
+
+        return $this
+            ->getCommitteeHosts($committee)
+            ->merge($followers->getCommitteesNotificationsSubscribers())
+        ;
     }
 
     public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT)
