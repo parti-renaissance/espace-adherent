@@ -61,14 +61,11 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testGetOptinCommitteeFollowers()
     {
-        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
-        $this->assertInstanceOf(
-            AdherentCollection::class,
-            $hosts = $this->committeeManager->getOptinCommitteeFollowers($committee)
-        );
         // Approved committees
-        $this->assertCount(3, $hosts);
-        $this->assertCount(1, $this->committeeManager->getOptinCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
+        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $this->assertInstanceOf(AdherentCollection::class, $followers = $this->committeeManager->getOptinCommitteeFollowers($committee));
+        $this->assertCount(3, $followers);
 
         $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
         $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee));

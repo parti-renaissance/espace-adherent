@@ -9,6 +9,9 @@
         Kernel.onLoad(function(di) {
             var committeeUuid = '{{ committee.uuid }}';
             var committeeSlug = '{{ committee.slug }}';
+
+        {% if committee_timeline|length %}
+
             var page = 1;
             var limit = {{ committee_timeline_max_messages }};
             var moreButton = dom('#committee-timeline-more');
@@ -33,6 +36,8 @@
                     }
                 );
             });
+
+        {% endif %}
 
         {% if is_granted('ROLE_ADHERENT') %}
 

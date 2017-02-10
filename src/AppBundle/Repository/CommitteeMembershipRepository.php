@@ -7,6 +7,7 @@ use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 
@@ -256,9 +257,7 @@ class CommitteeMembershipRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return new AdherentCollection(array_map(function (CommitteeMembership $membership) {
-            return $membership->getAdherent();
-        }, $query->getResult()));
+        return $this->createAdherentCollection($query);
     }
 
     /**
@@ -283,8 +282,18 @@ class CommitteeMembershipRepository extends EntityRepository
             ->getQuery()
         ;
 
-        return new AdherentCollection(array_map(function (CommitteeMembership $membership) {
-            return $membership->getAdherent();
-        }, $query->getResult()));
+        return $this->createAdherentCollection($query);
+    }
+
+    private function createAdherentCollection(Query $query): AdherentCollection
+    {
+        return new AdherentCollection(
+            array_map(
+                function (CommitteeMembership $membership) {
+                    return $membership->getAdherent();
+                },
+                $query->getResult()
+            )
+        );
     }
 }

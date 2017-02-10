@@ -55,7 +55,7 @@ class CommitteeFeedManager
 
     private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee)
     {
-        $followers = $this->committeeManager->getCommitteeFollowers($committee)->getCommitteesNotificationsSubscribers();
+        $followers = $this->committeeManager->getOptinCommitteeFollowers($committee);
 
         $this->mailjet->sendMessage(CommitteeMessageNotificationMessage::create($followers->toArray(), $message));
     }
