@@ -67,7 +67,7 @@
             left: 5px;
             width: 18px;
             height: 15px;
-            z-index: 2;
+            z-index: $zIndex__overlay-caret;
 
             span {
                 position: absolute;
@@ -109,7 +109,7 @@
             top: 65px;
             left: -115px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-            z-index: 1;
+            z-index: $zIndex__overlay-menu;
             box-sizing: border-box;
 
             li {
