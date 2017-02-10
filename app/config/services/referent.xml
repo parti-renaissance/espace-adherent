@@ -4,16 +4,18 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.referent.users_list_builder" class="AppBundle\Referent\UsersListBuilder">
+        <service id="app.referent.managed_users.factory" class="AppBundle\Referent\ManagedUserFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
-        <service id="app.referent.referent_message_factory" class="AppBundle\Referent\ReferentMessageFactory">
-            <argument type="service" id="app.referent.users_list_builder" />
+        <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter" />
+
+        <service id="app.referent.message_factory" class="AppBundle\Referent\ReferentMessageFactory">
+            <argument type="service" id="app.referent.managed_users.factory" />
         </service>
 
-        <service id="app.referent.referent_message_handler" class="AppBundle\Referent\ReferentMessageHandler">
-            <argument type="service" id="app.mailjet" />
+        <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
         </service>
 
     </services>

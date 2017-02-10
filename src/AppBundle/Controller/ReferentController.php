@@ -22,8 +22,11 @@ class ReferentController extends Controller
      */
     public function usersAction(): Response
     {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
         return $this->render('referent/users/list.html.twig', [
-            'users' => $this->get('app.referent.users_list_builder')->buildManagedUsersListFor($this->getUser()),
+            'managedUsersJson' => $exporter->exportAsJson($factory->createManagedUsersCollectionFor($this->getUser())),
         ]);
     }
 
@@ -39,7 +42,7 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
-        $factory = $this->get('app.referent.referent_message_factory');
+        $factory = $this->get('app.referent.message_factory');
         $referentMessage = $factory->createReferentMessageFor($this->getUser(), $selected);
 
         if (empty($referentMessage->getTo())) {
@@ -50,7 +53,7 @@ class ReferentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.referent.referent_message_handler')->handle($referentMessage);
+            $this->get('app.referent.message_handler')->handle($referentMessage);
             $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
 
             return $this->redirectToRoute('app_referent_users');

@@ -8,7 +8,7 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManager;
 
-class UsersListBuilder
+class ManagedUserFactory
 {
     /**
      * @var AdherentRepository
@@ -32,9 +32,9 @@ class UsersListBuilder
      *
      * @param Adherent $referent
      *
-     * @return ManagedUser[]|ManagedUserCollection
+     * @return ManagedUser[]
      */
-    public function buildManagedUsersListFor(Adherent $referent): ManagedUserCollection
+    public function createManagedUsersCollectionFor(Adherent $referent): array
     {
         $managedUsers = [];
 
@@ -50,6 +50,6 @@ class UsersListBuilder
             return strnatcmp($a->getPostalCode(), $b->getPostalCode());
         });
 
-        return new ManagedUserCollection($managedUsers);
+        return $managedUsers;
     }
 }

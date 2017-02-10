@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
+use AppBundle\Mailjet\Message\ReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
@@ -60,12 +62,62 @@ class ReferentControllerTest extends SqliteWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testReferentSendMessage()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $crawler = $this->client->request(
+            Request::METHOD_POST,
+            '/referent/utilisateurs/envoyer-un-message/selectionnes',
+            [
+                'selected' => [
+                    [
+                        'id' => '1',
+                        'type' => 'adherent',
+                    ],
+                    [
+                        'id' => '7',
+                        'type' => 'adherent',
+                    ],
+                    [
+                        'id' => '4',
+                        'type' => 'newsletter_subscriber',
+                    ],
+                    [
+                        'id' => '3',
+                        'type' => 'newsletter_subscriber',
+                    ],
+                    [
+                        'id' => '5',
+                        'type' => 'adherent',
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->client->submit($crawler->filter('form[name=referent_message]')->form([
+            'referent_message[subject]' => 'Un superbe sujet de message',
+            'referent_message[content]' => 'Un superbe contenu de message !',
+        ]));
+
+        $this->assertClientIsRedirectedTo('/referent/utilisateurs', $this->client);
+
+        // 2 emails should have been sent
+        $this->assertCount(2, $this->getMailjetEmailRepository()->findMessages(ReferentMessage::class));
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->init([
             LoadAdherentData::class,
+            LoadNewsletterSubscriptionData::class,
         ]);
     }
 

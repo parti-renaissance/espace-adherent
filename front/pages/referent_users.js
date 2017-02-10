@@ -13,7 +13,7 @@ export default (slugifier, users) => {
     const selectedUsers = dom('#selected-users');
 
     const createInputHidden = (name, value) => {
-        let input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'hidden';
         input.name = name;
         input.value = value;
@@ -25,14 +25,14 @@ export default (slugifier, users) => {
         let count = 0;
 
         Object.keys(rows).forEach((key) => {
-            insertAfter(selectedUsers, createInputHidden('selected['+count+'][type]', rows[key].type));
-            insertAfter(selectedUsers, createInputHidden('selected['+count+'][id]', rows[key].id));
+            insertAfter(selectedUsers, createInputHidden(`selected[${count}][type]`, rows[key].type));
+            insertAfter(selectedUsers, createInputHidden(`selected[${count}][id]`, rows[key].id));
 
             count += 1;
         });
 
         selectedUsersCount.innerHTML = count;
-        sendMailBtn.disabled = count === 0;
+        sendMailBtn.disabled = 0 === count;
     };
 
     const columns = [

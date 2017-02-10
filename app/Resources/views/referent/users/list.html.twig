@@ -5,7 +5,7 @@
 {% block javascripts %}
 <script type="text/javascript">
     Kernel.onLoad(function() {
-        App.runReferentUsers({{ users.exportJson|raw }});
+        App.runReferentUsers({{ managedUsersJson|raw }});
     });
 </script>
 {% endblock %}
