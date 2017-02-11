@@ -177,7 +177,7 @@
                     border-color: $blue;
 
                     &:hover {
-                        @include color($blue);
+                        @include hover($blue);
                     }
                 }
             }

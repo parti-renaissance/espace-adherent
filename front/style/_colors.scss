@@ -68,14 +68,20 @@ $filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 }
 
 
-// Hovers
+// SVGs
 @mixin color($color) {
+    color: rgba($color, 1);
+    border-color: rgba($color, 1);
+    fill: rgba($color, 1);
+}
+
+@mixin hover($color) {
     color: rgba($color, 0.4);
     border-color: rgba($color, 0.4);
     fill: rgba($color, 0.4);
 }
 
-@mixin color-stroke($color) {
+@mixin hover-stroke($color) {
     stroke: rgba($color, 0.4);
 }
 
