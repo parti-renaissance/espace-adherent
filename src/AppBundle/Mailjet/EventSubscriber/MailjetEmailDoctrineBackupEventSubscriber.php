@@ -5,6 +5,7 @@ namespace AppBundle\Mailjet\EventSubscriber;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
+use AppBundle\Mailjet\MailjetUtils;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,13 +47,26 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
 
     public function onMailjetDeliverySuccess(MailjetEvent $event)
     {
-        $message = $event->getMessage();
+        $templateEmail = $event->getEmail();
 
-        if (!$email = $this->repository->findByUuid($message->getUuid())) {
+        if (!$responsePayload = $templateEmail->getHttpResponsePayload()) {
             return;
         }
 
-        $email->delivered($event->getEmail()->getHttpResponsePayload());
+        $message = $event->getMessage();
+        if (empty($emails = $this->repository->findByMessageBatchUuid($message->getBatch()))) {
+            return;
+        }
+
+        $recipients = MailjetUtils::getSuccessfulRecipientsFromJson($responsePayload, true);
+
+        foreach ($emails as $email) {
+            $recipient = MailjetUtils::canonicalize($email->getRecipient());
+            if (isset($recipients[$recipient])) {
+                $email->delivered($responsePayload);
+            }
+        }
+
         $this->manager->flush();
     }
 }

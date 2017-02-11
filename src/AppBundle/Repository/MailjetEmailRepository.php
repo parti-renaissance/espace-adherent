@@ -15,14 +15,24 @@ class MailjetEmailRepository extends EntityRepository
      *
      * @return MailjetEmail|null
      */
-    public function findByUuid(string $uuid)
+    public function findOneByUuid(string $uuid): ?MailjetEmail
     {
-        $uuid = Uuid::fromString($uuid);
-
-        return $this->findOneBy(['uuid' => $uuid->toString()]);
+        return $this->findOneBy(['uuid' => Uuid::fromString($uuid)->toString()]);
     }
 
-    public function findRecipientMessages(string $messageClass, string $recipient)
+    /**
+     * Finds a list of MailjetEmail instances having the same message batch UUID.
+     *
+     * @param string $uuid
+     *
+     * @return MailjetEmail[]
+     */
+    public function findByMessageBatchUuid(string $uuid): array
+    {
+        return $this->findBy(['messageBatchUuid' => Uuid::fromString($uuid)->toString()]);
+    }
+
+    public function findRecipientMessages(string $messageClass, string $recipient): array
     {
         $query = $this
             ->createQueryBuilder('e')
@@ -37,7 +47,7 @@ class MailjetEmailRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findMessages(string $messageClass, string $batch = null)
+    public function findMessages(string $messageClass, string $batch = null): array
     {
         $qb = $this
             ->createQueryBuilder('e')
@@ -47,7 +57,7 @@ class MailjetEmailRepository extends EntityRepository
 
         if ($batch) {
             $qb
-                ->andWhere('e.batch = :batch')
+                ->andWhere('e.messageBatchUuid = :batch')
                 ->setParameter('batch', $batch);
         }
 

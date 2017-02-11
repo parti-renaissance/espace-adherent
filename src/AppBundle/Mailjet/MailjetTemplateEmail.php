@@ -78,7 +78,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $this->httpResponsePayload = $httpResponsePayload;
     }
 
-    public function getHttpRequestPayload()
+    public function getHttpRequestPayload(): string
     {
         if (!$this->httpRequestPayload) {
             $this->httpRequestPayload = json_encode($this->getBody());
@@ -87,12 +87,12 @@ final class MailjetTemplateEmail implements \JsonSerializable
         return $this->httpRequestPayload;
     }
 
-    public function getHttpResponsePayload()
+    public function getHttpResponsePayload(): ?string
     {
         return $this->httpResponsePayload;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         $body = $this->getBody();
 
