@@ -75,6 +75,10 @@
         &--bottom {
             align-items: flex-end;
         }
+
+        &--top {
+            align-items: flex-start;
+        }
     }
 
     &__col {
