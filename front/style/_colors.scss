@@ -69,13 +69,13 @@ $filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 
 
 // Hovers
-@mixin hover($color) {
+@mixin color($color) {
     color: rgba($color, 0.4);
     border-color: rgba($color, 0.4);
     fill: rgba($color, 0.4);
 }
 
-@mixin hover--stroke($color) {
+@mixin color-stroke($color) {
     stroke: rgba($color, 0.4);
 }
 
