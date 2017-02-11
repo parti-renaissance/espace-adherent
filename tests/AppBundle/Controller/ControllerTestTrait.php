@@ -49,7 +49,14 @@ trait ControllerTestTrait
             '_adherent_password' => $password,
         ]));
 
-        $this->assertClientIsRedirectedTo('/evenements', $client, true);
+        $shouldBeRedirectedTo = $client->getRequest()->getSchemeAndHttpHost().'/evenements';
+
+        if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
+            throw new \RuntimeException(
+                'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdherent() '.
+                'and ensure you are properly loading adherents fixtures.'
+            );
+        }
 
         return $client->followRedirect();
     }

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Documents' %}
+{% block canonical_url url('app_documents_index') %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper--slim documents">
+            <header>
+                <h1 class="text--center text--large">
+                    Documents
+                </h1>
+            </header>
+
+            <div class="documents__category">
+                <a href="{{ path('app_documents_index') }}" class="back-to-list icon--with-text">
+                    {{ include('components/caret--left.html.twig') }}
+                    Retour à la racine</a>
+            </div>
+
+            <div class="documents__category">
+                {% if type == 'adherents' %}
+                    <h2>Documents adhérents</h2>
+                {% elseif type == 'hosts' %}
+                    <h2>Documents animateurs</h2>
+                {% else %}
+                    <h2>Documents référents</h2>
+                {% endif %}
+
+                {{ include('documents/tree.html.twig', { treeType: type, documents: documents }) }}
+            </div>
+        </section>
+    </main>
+{% endblock %}

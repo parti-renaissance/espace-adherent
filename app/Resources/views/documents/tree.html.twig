@@ -1,0 +1,10 @@
+<ul class="documents__tree">
+    {% for document in documents %}
+        <li>
+            <a href="{{ path(document.type == 'dir' ? 'app_documents_directory' : 'app_documents_file', {'type': treeType, 'path': document.path}) }}">
+                <i class="fa fa-{{ document.icon }}"></i>
+                {{ document.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

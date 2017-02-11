@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Documents' %}
+{% block canonical_url url('app_documents_index') %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper--slim documents">
+            <header>
+                <h1 class="text--center text--large">
+                    Documents
+                </h1>
+            </header>
+
+            {% if documents.adherent is defined %}
+                <div class="documents__category">
+                    <h2>Documents adhérents</h2>
+
+                    {{ include('documents/tree.html.twig', { treeType: 'adherents', documents: documents.adherent }) }}
+                </div>
+            {% endif %}
+
+            {% if documents.host is defined %}
+                <div class="documents__category">
+                    <h2>Documents animateurs</h2>
+
+                    {{ include('documents/tree.html.twig', { treeType: 'animateurs', documents: documents.host }) }}
+                </div>
+            {% endif %}
+
+            {% if documents.referent is defined %}
+                <div class="documents__category">
+                    <h2>Documents référents</h2>
+
+                    {{ include('documents/tree.html.twig', { treeType: 'referents', documents: documents.referent }) }}
+                </div>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

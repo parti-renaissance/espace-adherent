@@ -1,0 +1,23 @@
+.documents {
+    margin-bottom: 50px;
+
+    &__category {
+        margin-top: 30px;
+    }
+
+    &__tree {
+        margin: 20px 10px;
+
+        a {
+            border: 0;
+            display: block;
+            padding: 7px 13px;
+            transition: none;
+
+            &:hover {
+                color: black;
+                background: #e9e9e9;
+            }
+        }
+    }
+}

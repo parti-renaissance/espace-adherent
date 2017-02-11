@@ -68,7 +68,7 @@ class CommitteeMembershipRepository extends EntityRepository
      *
      * @param Adherent $adherent
      *
-     * @return CommitteeMembershipCollection
+     * @return CommitteeMembershipCollection|CommitteeMembership[]
      */
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
     {
