@@ -122,3 +122,64 @@
         min-height: 150px;
     }
 }
+
+.committee__event {
+    &__header {
+        margin-top: 20px;
+        background-color: $blue;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px;
+
+        &__titles {
+            margin-right: 25px;
+        }
+
+        &__cta {
+            min-width: 200px;
+
+            &__social {
+                margin-top: 15px;
+
+                li .fa {
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: .5;
+                    }
+                }
+            }
+        }
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+
+            &__titles,
+            &__cta {
+                width: 100%;
+            }
+
+            &__titles {
+                margin: 0 0 30px;
+            }
+        }
+    }
+
+    &__map {
+        height: 350px;
+        margin-bottom: 60px;
+        border-bottom: 1px solid $gray--light;
+    }
+
+    &__schedule {
+        padding: 30px;
+
+        .fa {
+            margin-right: 8px;
+            width: 15px;
+            text-align: center;
+        }
+    }
+}

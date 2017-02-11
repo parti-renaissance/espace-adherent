@@ -231,6 +231,13 @@ $text--size-extra-large: 48px;
     }
 }
 
+.link {
+    &--white {
+        color: white;
+        border-color: white;
+    }
+}
+
 .list {
     &__links {
         display: flex;
@@ -249,6 +256,12 @@ $text--size-extra-large: 48px;
             text-transform: uppercase;
             font-family: $font-gillsans;
             letter-spacing: 1.5px;
+        }
+
+        &--default {
+            li {
+                font-size: $text--size-default;
+            }
         }
     }
 
@@ -304,13 +317,33 @@ $text--size-extra-large: 48px;
                 font-size: 38px;
             }
         }
-        @media (max-width: $mobile) {
+
+        &--small {
             li {
+                padding-right: 15px;
+
+                .fa {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        @media (max-width: $mobile) {
+            li,
+            li:last-child {
                 padding-left: 15px;
                 padding-right: 15px;
 
                 .fa {
                     margin-bottom: 10px;
+                }
+            }
+
+            &--small {
+                li,
+                li:last-child {
+                    padding-left: 10px;
+                    padding-right: 10px;
                 }
             }
         }

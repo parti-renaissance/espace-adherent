@@ -134,6 +134,10 @@
         @include btn--blue;
     }
 
+    &--black {
+        @include btn--black;
+    }
+
     &--social {
         font-size: $text--size-smallest;
         font-family: $font-roboto;
