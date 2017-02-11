@@ -216,6 +216,11 @@ $text--size-extra-large: 48px;
 
     &--white {
         color: white;
+
+        path,
+        polygon {
+            @include color(white);
+        }
     }
 
     &--blue {
