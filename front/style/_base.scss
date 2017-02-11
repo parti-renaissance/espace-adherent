@@ -25,19 +25,19 @@ a {
     transition: all 0.45s;
 
     &:hover {
-        @include color(black);
+        @include hover(black);
 
         path,
         polygon {
-            @include color(black);
+            @include hover(black);
 
             &.stroke {
-                @include color-stroke(black);
+                @include hover-stroke(black);
             }
         }
 
         polyline {
-            @include color-stroke(black);
+            @include hover-stroke(black);
         }
     }
 
@@ -50,7 +50,7 @@ a {
         border-color: $blue;
 
         &:hover {
-            @include color($blue);
+            @include hover($blue);
         }
     }
 }
