@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Merci</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actiontype</th>
+                <th>Convincedcontact</th>
+                <th>Almostconvincedcontact</th>
+                <th>Notconvicedcontact</th>
+                <th>Publicreaction</th>
+                <th>Organizer</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for jemarcheReport in jemarcheReports %}
+            <tr>
+                <td><a href="{{ path('jemarchereport_show', { 'id': jemarcheReport.id }) }}">{{ jemarcheReport.id }}</a></td>
+                <td>{{ jemarcheReport.actionType }}</td>
+                <td>{{ jemarcheReport.convincedContact }}</td>
+                <td>{{ jemarcheReport.almostConvincedContact }}</td>
+                <td>{{ jemarcheReport.notConvicedContact }}</td>
+                <td>{{ jemarcheReport.publicReaction }}</td>
+                <td>{{ jemarcheReport.organizer }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('jemarchereport_show', { 'id': jemarcheReport.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('jemarchereport_edit', { 'id': jemarcheReport.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <ul>
+        <li>
+            <a href="{{ path('jemarchereport_new') }}">Retour au formulaire</a>
+        </li>
+    </ul>
+{% endblock %}

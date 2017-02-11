@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="background--blue space--60-0">
+        <div class="l__wrapper-500 text--center b__nudge--bottom-larger">
+            <h3 class="text--white text--all-caps-wide text--normal b__nudge--bottom-small">Je Marche</h3>
+            <div class="text--white text--large text--bold">Je contribue directement à la victoire d'Emmanuel Macron</div>
+        </div>
+    </section>
+    <section class="l__wrapper b__nudge--bottom-large">
+        <div class="proteger l__col l__col--center"  data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35))" style="background-color: #000000;">
+            <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">Je consulte les actions collectives près de chez moi</h2>
+            <a href="#" class="btn btn--no-border" target="_blank" rel="noopener noreferrer">Voir les actions</a>
+        </div>
+    </section>
+
+    <section class="l__wrapper b__nudge--bottom-larger">
+        <h2>JE CHOISIS DE MENER UNE ACTION POUR EMMANUEL MACRON</h2>
+        <p>Slectionnez une des 6 actions à mener en toute autonomie</p>
+        <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
+            <li class="card card--3 card--3--video l__col--bottom">
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt1">La Marche
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt2">Le Porte à Porte
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt3">Le Diner
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt4">La Correspondance
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt5">L'Atelier du Projet
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" id="bt6">L'Action qui me Ressemble
+                </button>
+            </li>
+            <li class="card card--3 card--3--video l__col--bottom">
+                <div class="info" id="info1">
+                    <h4>En quoi consiste LA MARCHE</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+                <div class="info" id="info2">
+                    <h4>En quoi consiste LE PORTE À PORTE</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+                <div class="info" id="info3">
+                    <h4>En quoi consiste LE DINER</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+                <div class="info" id="info4">
+                    <h4>En quoi consiste LA CORRESPONDANCE</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+                <div class="info" id="info5">
+                    <h4>En quoi consiste L'ATELIER DU PROJET</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+                <div class="info" id="info6">
+                    <h4>En quoi consiste L'ACTION QUI ME RESSEMBLE</h4>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <p>Lorem Ipsum</p>
+                    <input type="button" class="btn btn-default" value="TELECHARGER LE GUIDE DE L'ACTION">
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section class="l__wrapper b__nudge--bottom-larger">
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+            <h2>J'AI RECUPERE DES EMAILS SUITE A MON ACTION</h2>
+            <p>Saisissez les emails des personnes rencontrées souhaitant recevoir la lettre d'Emanuel Macron</p>
+            <div class="form__row">
+                <h3>Quelle action avez-vous realisé ?</h3>
+                {{ form_widget(form.actionType) }}
+            </div>
+            <div class="form__row">
+                <h3>Personnes convaincues</h3>
+                <p>Elles ont dit : « Je vais soutenir Emmanuel Macron et je souhaite être tenu informé de la campagne »</p>
+                {{ form_widget(form.convincedContact) }}
+            </div>
+            <div class="form__row">
+                <h3>Personnes quasiment convaincues</h3>
+                <p>Elles ont dit : « Jen ne sais pas encore pour qui je vais voter, je souhaite en savoir plus sur Emmanuel Macron »</p>
+                {{ form_widget(form.almostConvincedContact) }}
+            </div>
+            <div class="form__row">
+                <h3>Personnes (pas encore) convaincues</h3>
+                <p>Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne votteront pas pour lui.</p>
+                {{ form_widget(form.notConvicedContact) }}
+            </div>
+            <div class="form__row">
+                <h3>Reaction des personnes recontrées</h3>
+                {{ form_widget(form.publicReaction) }}
+            </div>
+            <div class="form__row">
+                <h3>Votre email</h3>
+                {{ form_widget(form.organizer) }}
+            </div>
+            {{ form_widget(form._token) }}
+            <div class="form__row">
+                <input type="submit" class="form form--full btn btn--blue" value="J'ENVOIE LE RAPPORT">
+            </div>
+        {{ form_end(form) }}
+    </section>
+
+         {#
+     {{ form_start(form) }}
+     {{ form_widget(form) }}
+     <input type="submit" class="form form--full btn btn--blue" value="J'ENVOIE LE RAPPORT">
+     {{ form_end(form) }}
+
+     #}
+
+
+{% endblock %}
