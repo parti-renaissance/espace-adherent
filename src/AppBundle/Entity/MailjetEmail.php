@@ -9,7 +9,15 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="mailjet_emails")
+ * @ORM\Table(
+ *   name="mailjet_emails",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="mailjet_email_uuid", columns="uuid")
+ *   },
+ *   indexes={
+ *     @ORM\Index(name="mailjet_email_message_batch_uuid", columns="message_batch_uuid")
+ *   }
+ * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MailjetEmailRepository")
  */
 class MailjetEmail
@@ -17,11 +25,11 @@ class MailjetEmail
     use EntityIdentityTrait;
 
     /**
-     * The Mailjet batch UUID.
+     * The Mailjet message UUID.
      *
-     * @ORM\Column(type="uuid", nullable=true)
+     * @ORM\Column(type="uuid")
      */
-    private $batch;
+    private $messageBatchUuid;
 
     /**
      * The Mailjet email subject.
@@ -97,6 +105,7 @@ class MailjetEmail
 
     public function __construct(
         UuidInterface $uuid,
+        UuidInterface $messageBatchUuid,
         string $template,
         string $subject,
         string $recipient,
@@ -108,7 +117,7 @@ class MailjetEmail
         UuidInterface $batch = null
     ) {
         $this->uuid = $uuid;
-        $this->batch = $batch;
+        $this->messageBatchUuid = $messageBatchUuid;
         $this->template = $template;
         $this->subject = $subject;
         $this->recipient = $recipient;
@@ -121,7 +130,8 @@ class MailjetEmail
     public static function createFromMessage(MailjetMessage $message, string $recipientEmailAddress, $requestPayload): self
     {
         $email = new self(
-            $message->getUuid(),
+            Uuid::uuid4(),
+            $message->getBatch(),
             $message->getTemplate(),
             $message->getSubject(),
             $recipientEmailAddress,
@@ -129,7 +139,6 @@ class MailjetEmail
             null,
             get_class($message)
         );
-        $email->batch = $message->getBatch();
 
         return $email;
     }
@@ -143,9 +152,9 @@ class MailjetEmail
         $this->delivered = true;
     }
 
-    public function getBatch(): string
+    public function getMessageBatchUuid(): UuidInterface
     {
-        return $this->batch;
+        return $this->messageBatchUuid;
     }
 
     public function getSubject(): string
@@ -187,10 +196,6 @@ class MailjetEmail
     {
         $this->requestPayload = $requestPayload;
         $this->requestPayloadChecksum = SHA1::hash($requestPayload)->getHash();
-
-        if (!$this->batch) {
-            $this->batch = Uuid::uuid5(Uuid::NAMESPACE_OID, $this->requestPayloadChecksum);
-        }
 
         if ($responsePayload) {
             $this->setResponsePayload($responsePayload);

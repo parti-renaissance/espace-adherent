@@ -40,7 +40,7 @@ abstract class MailjetMessage
         $this->template = $template;
         $this->subject = $subject;
         $this->vars = $commonVars;
-        $this->batch = $batch;
+        $this->batch = $batch ?? $uuid;
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -61,7 +61,7 @@ abstract class MailjetMessage
         return $this->uuid;
     }
 
-    final public function getBatch(): ?UuidInterface
+    final public function getBatch(): UuidInterface
     {
         return $this->batch;
     }
