@@ -50,6 +50,34 @@ class MailjetTemplateEmailTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($body, $email->getBody());
     }
 
+    public function testCreateMailjetTemplateEmailWithReplyTo()
+    {
+        $email = new MailjetTemplateEmail('12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
+        $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
+
+        $body = [
+            'FromEmail' => 'contact@en-marche.fr',
+            'FromName' => 'En Marche !',
+            'Subject' => 'Votre donation !',
+            'MJ-TemplateID' => '12345',
+            'MJ-TemplateLanguage' => true,
+            'Recipients' => [
+                [
+                    'Email' => 'john.smith@example.tld',
+                    'Name' => 'John Smith',
+                    'Vars' => [
+                        'name' => 'John Smith',
+                    ],
+                ],
+            ],
+            'Headers' => [
+                'Reply-To' => 'reply@to.me',
+            ],
+        ];
+
+        $this->assertSame($body, $email->getBody());
+    }
+
     public function testCreateMailjetTemplateEmailFromDummyMessage()
     {
         $email = MailjetTemplateEmail::createWithMailjetMessage(DummyMessage::create(), 'contact@en-marche.fr');

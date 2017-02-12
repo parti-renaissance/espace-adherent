@@ -35,6 +35,7 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             'Un animateur vous a envoyé un message',
             static::getTemplateVars($message->getAuthorFirstName(), $message->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
+            $message->getAuthor()->getEmailAddress(),
             $message->getUuid()
         );
 

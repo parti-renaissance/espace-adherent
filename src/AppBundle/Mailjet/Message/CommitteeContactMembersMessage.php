@@ -9,21 +9,22 @@ final class CommitteeContactMembersMessage extends MailjetMessage
 {
     /**
      * @param Adherent[] $recipients
-     * @param Adherent   $animator
+     * @param Adherent   $host
      * @param string     $message
      *
      * @return CommitteeContactMembersMessage
      */
-    public static function create(array $recipients, Adherent $animator, string $message): self
+    public static function create(array $recipients, Adherent $host, string $message): self
     {
         $message = new self(
             Uuid::uuid4(),
             '54909',
-            $animator->getEmailAddress(),
-            $animator->getFullName(),
+            $host->getEmailAddress(),
+            $host->getFullName(),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
-            ['animator_firstname' => $animator->getFirstName(), 'animator_message' => $message],
-            ['target_firstname' => $animator->getFirstName()],
+            ['animator_firstname' => $host->getFirstName(), 'animator_message' => $message],
+            ['target_firstname' => $host->getFirstName()],
+            $host->getEmailAddress(),
             Uuid::uuid4()
         );
 
