@@ -14,7 +14,7 @@ final class AdherentResetPasswordMessage extends MailjetMessage
             '54686',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Réinitialisez votre mot de passe pour vous connecter à En Marche !'
+            'Réinitialisez votre mot de passe'
         );
         $message->setVar('target_firstname', $adherent->getFirstName());
         $message->setVar('reset_link', $resetPasswordLink);

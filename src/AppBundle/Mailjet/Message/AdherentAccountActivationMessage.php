@@ -14,7 +14,7 @@ final class AdherentAccountActivationMessage extends MailjetMessage
             '54665',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Finalisez votre inscription au mouvement En Marche !',
+            'Plus qu\'une étape',
             static::getTemplateVars(),
             static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );
