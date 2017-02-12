@@ -11,6 +11,7 @@ $yellow-hover: #c4d02a;
 $error: #EE001D;
 
 // Grays
+$dark: #4a4a4a;
 $gray--dark: #666;
 $black--half: rgba(0, 0, 0, .5);
 $gray: #BCBCBC;
@@ -87,6 +88,10 @@ $filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 
 .background--primary {
     background-color: $pink;
+}
+
+.background--dark {
+    background-color: $dark;
 }
 
 .background--light {

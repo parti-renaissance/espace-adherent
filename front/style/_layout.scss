@@ -90,6 +90,10 @@
             align-items: center;
         }
 
+        &--left {
+            align-items:flex-start;
+        }
+
         &--top {
             justify-content: flex-start;
         }
@@ -100,6 +104,10 @@
 
         &--bottom {
             justify-content: flex-end;
+        }
+
+        &--v-stretch {
+            justify-content: space-between;
         }
     }
 

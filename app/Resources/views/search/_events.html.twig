@@ -2,21 +2,34 @@
     {% if date is not defined or date != event.beginAt|date('Ymd') %}
         {% set date = event.beginAt|date('Ymd') %}
 
-        <h1>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }}</h1>
+        <div class="text--normal text--bold text--all-caps b__nudge--bottom-medium">
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }}
+        </div>
+
     {% endif %}
 
-    <div style="margin: 10px">
-        <img src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}" style="float: right; width: 200px">
+        <div class="search__results__row l__row l__row--h-stretch l__row--v-center">
+            <div class="search__results__info l__col l__col--v-stretch l__col--left">
+                <div class="search__results__meta">
+                    <h2 class="text--normal text--medium b__nudge--bottom-small">{{ event.name }}</h2>
+                    <div class="text--body">
+                        {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}
+                    </div>
+                    <div class="text--body">Organisé par <span class="text--bold">{{ event.committee.name }}</span></div>
+                </div>
 
-        <p class="text--medium">{{ event.name }}</p>
-        <p>
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}
-        </p>
-        <p>Organisé par : <strong>{{ event.committee.name }}</strong></p>
+                <div class="search__results__cta">
+                    <a class="btn btn--blue"
+                       href="{{ path('app_committee_attend_event', { committee_uuid: event.committee.uuid, slug: event.slug }) }}">
+                        Je Participe
+                    </a>
+                    <div class="text--body icon--with-text l__row--center">
+                        {{ include('components/participants.html.twig') }}
+                        {{ 'committee.participants_count'|transchoice(event.participantsCount) }}
+                    </div>
+                </div>
+            </div>
 
-        <a href="{{ path('app_committee_attend_event', { committee_uuid: event.committee.uuid, slug: event.slug }) }}" class="btn btn--blue">Je Participe</a>
-        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(event.participantsCount) }}
-
-        <hr style="clear: both"/>
-    </div>
+            <img class="search-map" src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}">
+        </div>
 {% endfor %}
