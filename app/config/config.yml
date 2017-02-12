@@ -30,10 +30,12 @@ parameters:
     pattern_uuid:          '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1:          '[0-9A-Fa-f]{40}'
     pattern_coordinate:    '-?\d+(\.\d{1,7})?'
-    sender_email:          'contact@en-marche.fr'
-    sender_name:           'En Marche !'
     timeline_max_messages: 30
     search_max_results:    30
+    transactional_sender_email:  'contact@en-marche.fr'
+    transactional_sender_name:   'En Marche !'
+    campaign_sender_email:       'jemarche@en-marche.fr'
+    campaign_sender_name:        'En Marche !'
 
 framework:
     translator:      { fallbacks: ["%locale%"] }
