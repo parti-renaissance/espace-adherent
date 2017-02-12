@@ -59,6 +59,7 @@ class CommitteeEventNotificationMessage extends MailjetMessage
             'Nouvel événement dans votre comité En Marche !',
             $vars,
             $recipientVarsGenerator($recipient),
+            $host->getEmailAddress(),
             $event->getUuid()
         );
 

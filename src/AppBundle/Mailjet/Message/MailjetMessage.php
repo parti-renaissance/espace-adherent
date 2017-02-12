@@ -12,6 +12,7 @@ abstract class MailjetMessage
     private $subject;
     private $template;
     private $recipients;
+    private $replyTo;
 
     /**
      * MailjetMessage constructor.
@@ -23,6 +24,7 @@ abstract class MailjetMessage
      * @param string        $subject        The message subject
      * @param array         $commonVars     The common variables shared by all recipients
      * @param array         $recipientVars  The recipient's specific variables
+     * @param string        $replyTo        The email address to use for the Reply-to header
      * @param UuidInterface $batch
      */
     final public function __construct(
@@ -33,6 +35,7 @@ abstract class MailjetMessage
         string $subject,
         array $commonVars = [],
         array $recipientVars = [],
+        string $replyTo = null,
         UuidInterface $batch = null
     ) {
         $this->uuid = $uuid;
@@ -40,6 +43,7 @@ abstract class MailjetMessage
         $this->template = $template;
         $this->subject = $subject;
         $this->vars = $commonVars;
+        $this->replyTo = $replyTo;
         $this->batch = $batch ?? $uuid;
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
@@ -84,6 +88,11 @@ abstract class MailjetMessage
     final public function getTemplate(): string
     {
         return $this->template;
+    }
+
+    public function getReplyTo(): ?string
+    {
+        return $this->replyTo;
     }
 
     final public function addRecipient(string $recipientEmail, $recipientName, array $vars = [])

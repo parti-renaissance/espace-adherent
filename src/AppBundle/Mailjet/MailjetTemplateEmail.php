@@ -9,24 +9,31 @@ final class MailjetTemplateEmail implements \JsonSerializable
 {
     private $senderEmail;
     private $senderName;
+    private $replyTo;
     private $subject;
     private $recipients;
     private $template;
     private $httpRequestPayload;
     private $httpResponsePayload;
 
-    public function __construct(string $template, string $subject, string $senderEmail, string $sendName = null)
-    {
-        $this->senderName = $sendName;
-        $this->senderEmail = $senderEmail;
-        $this->subject = $subject;
+    public function __construct(
+        string $template,
+        string $subject,
+        string $senderEmail,
+        string $senderName = null,
+        string $replyTo = null
+    ) {
         $this->template = $template;
+        $this->subject = $subject;
+        $this->senderEmail = $senderEmail;
+        $this->senderName = $senderName;
+        $this->replyTo = $replyTo;
         $this->recipients = [];
     }
 
     public static function createWithMailjetMessage(MailjetMessage $message, string $senderEmail, string $senderName = null): self
     {
-        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName);
+        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo());
 
         foreach ($message->getRecipients() as $recipient) {
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
@@ -65,6 +72,12 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $body['MJ-TemplateID'] = $this->template;
         $body['MJ-TemplateLanguage'] = true;
         $body['Recipients'] = $this->recipients;
+
+        if ($this->replyTo) {
+            $body['Headers'] = [
+                'Reply-To' => $this->replyTo,
+            ];
+        }
 
         return $body;
     }
