@@ -22,15 +22,10 @@ class NewsletterController extends Controller
 
         $form = $this->createForm(NewsletterSubscriptionType::class, $subscription);
         $form->add('submit', SubmitType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $subscription->setClientIp($request->getClientIp());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($subscription);
-            $em->flush();
+            $this->get('app.newsletter_subscription.handler')->handle($subscription, $request);
 
             return $this->render('newsletter/subscribed.html.twig');
         }

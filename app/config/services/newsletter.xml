@@ -4,7 +4,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.newsletter.subscription_factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
+        <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
+
+        <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.transactional" />
+        </service>
 
     </services>
 </container>

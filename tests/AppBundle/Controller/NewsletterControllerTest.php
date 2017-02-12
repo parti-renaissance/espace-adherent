@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
@@ -48,6 +49,9 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertSame('10000', $subscription->getPostalCode());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        // Email should have been sent
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(NewsletterSubscriptionMessage::class));
+
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
 
@@ -83,6 +87,9 @@ class NewsletterControllerTest extends SqliteWebTestCase
 
         // Subscription should have been saved
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
+
+        // Email should have been sent
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(NewsletterSubscriptionMessage::class));
     }
 
     protected function setUp()

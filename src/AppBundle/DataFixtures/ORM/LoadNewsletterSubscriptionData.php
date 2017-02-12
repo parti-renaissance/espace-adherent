@@ -14,7 +14,7 @@ class LoadNewsletterSubscriptionData implements FixtureInterface, ContainerAware
     public function load(ObjectManager $manager)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
-        $factory = $this->container->get('app.newsletter.subscription_factory');
+        $factory = $this->container->get('app.newsletter_subscription.factory');
 
         $em->persist($factory->create('foobar@en-marche-dev.fr', '35420'));
         $em->persist($factory->create('referent@en-marche-dev.fr', '35420'));
