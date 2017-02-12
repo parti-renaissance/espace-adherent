@@ -1,0 +1,165 @@
+.search {
+    &__bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 60px;
+
+        &__options {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+
+            &__options {
+                flex-direction: column;
+            }
+        }
+
+        .search-box {
+            width: 285px;
+            height: 55px;
+            border: 0;
+            box-sizing: border-box;
+            padding: 0 20px;
+            margin-right: 25px;
+            @include text--body;
+
+            @media (max-width: $tablet) {
+                margin-bottom: 20px;
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+
+        select {
+            background: transparent;
+            @include text--body;
+            color: white;
+            border-radius: 0;
+            -webkit-appearance: none;
+            border: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            margin: 0 10px;
+        }
+
+        .search-city {
+            border: 0;
+            background: none;
+            color: white;
+            @include text--body;
+            margin-left: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, .5);
+            transition: all .2s;
+            box-sizing: border-box;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        &__toggle {
+            border: 1px solid white;
+            color: white;
+            display: flex;
+            @include text--body;
+            @include text--bold;
+
+            @media (max-width: $tablet) {
+                margin-top: 20px;
+                height: 55px;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                text-align: center;
+            }
+
+            li {
+                @media (max-width: $tablet) {
+                    width: 50%;
+                }
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    padding: 0 20px;
+                    color: white;
+                    width: 100%;
+                    box-sizing: border-box;
+
+                    @media (max-width: $tablet) {
+                        justify-content: center;
+                    }
+                }
+            }
+
+            li.active a {
+                background: white;
+                color: black;
+            }
+        }
+    }
+
+    &__results {
+        margin-bottom: 100px;
+
+        &.app_search_committees {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        &__row {
+            padding: 20px 0;
+            border-top: 1px solid $gray--lighter;
+
+            .search-map {
+                width: 360px;
+                height: 200px;
+
+                @media (max-width: $mobile) {
+                    display: none;
+                }
+            }
+        }
+
+        &__info {
+            height: 200px;
+            flex-grow: 1;
+            margin-right: 20px;
+
+            @media (max-width: $mobile) {
+                margin-right: 0;
+            }
+        }
+
+        &__cta {
+            display: flex;
+
+            a {
+                margin-right: 20px;
+            }
+        }
+    }
+
+    &__committee__box {
+        background-color: $gray--lighter;
+        padding: 20px;
+        width: 32%;
+        height: 215px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 25px;
+
+        @media (max-width: $tablet) {
+            width: 48%;
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+    }
+}

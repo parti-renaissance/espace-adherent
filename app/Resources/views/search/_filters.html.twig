@@ -1,16 +1,30 @@
-<div style="background-color: grey; padding: 20px">
-    <input name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_QUERY') }}" placeholder="Recherche">
-    dans un rayon de
+<div class="search__bar background--blue space--30 text--white text--body">
+    <div class="search__bar__options">
+        <input class="search-box"name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_QUERY') }}" placeholder="Recherche">
 
-    {# this widget will be embedded in the ribbon text #}
-    <select name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_RADIUS') }}">
-        {% for option in constant('AppBundle\\Search\\SearchParametersFilter::RADII') %}
-            <option value="{{ option }}" {% if constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_RADIUS') == option %}selected="selected"{% endif %}>{{ option }} Km</option>
-        {% endfor %}
-    </select>
+        <div>
+            dans un rayon de
+            {# this widget will be embedded in the ribbon text #}
+            <select name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_RADIUS') }}">
+                {% for option in constant('AppBundle\\Search\\SearchParametersFilter::RADII') %}
+                    <option value="{{ option }}" {% if constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_RADIUS') == option %}selected="selected"{% endif %}>{{ option }} Km</option>
+                {% endfor %}
+            </select>
 
-    autour de
-    {# this widget will be embedded in the ribbon text #}
-    <input name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_CITY') }}" value="{% if app.user.cityName is defined %}{{ app.user.cityName }}{% else %}{{ constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_CITY') }}{% endif %}" placeholder="Ville ou code postal">
-    <input type="hidden" name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_TYPE') }}" value="{{ search_type }}"/>
+            autour de
+            {# this widget will be embedded in the ribbon text #}
+            <input class="search-city" name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_CITY') }}" value="{% if app.user.cityName is defined %}{{ app.user.cityName }}{% else %}{{ constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_CITY') }}{% endif %}" placeholder="Ville ou code postal">
+            <input type="hidden" name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_TYPE') }}" value="{{ search_type }}"/>
+        </div>
+    </div>
+
+    <ul class="search__bar__toggle">
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        <li class="{{ currentRoute == 'app_search_events' ? 'active' }}">
+            <a href="{{ path('app_search_events') }}" class="link--no-decor">Événements</a>
+        </li>
+        <li class="{{ currentRoute == 'app_search_committees' ? 'active' }}">
+            <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
+        </li>
+    </ul>
 </div>

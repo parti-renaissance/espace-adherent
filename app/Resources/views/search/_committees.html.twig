@@ -1,9 +1,16 @@
 {% for committee in results %}
-    <div style="float: left; width: 340px; height: 200px; background-color: #eee; margin: 10px; padding: 10px">
-        <p class="text--medium">{{ committee.name }}</p>
-        <p><strong>{{ committee.cityName }}</strong></p>
+    <div class="search__committee__box">
+        <div class="search__results__meta">
+            <h2 class="text--medium text--normal">{{ committee.name }}</h2>
+            <div class="text--body text--bold">{{ committee.cityName }}</div>
+        </div>
 
-        <a href="{{ committee_path('app_committee_show', committee) }}" class="btn btn--blue">Je Participe</a>
-        <i class="fa fa-users"></i> {{ 'committee.participants_count'|transchoice(committee.membersCount) }}
+        <div class="search__results__cta">
+            <a href="" class="btn btn--blue">Je Participe</a>
+            <div class="text--body icon--with-text l__row--center">
+                {{ include('components/participants.html.twig') }}
+                {{ 'committee.participants_count'|transchoice(committee.membersCount) }}
+            </div>
+        </div>
     </div>
 {% endfor %}

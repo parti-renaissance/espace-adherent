@@ -45,7 +45,7 @@
                 di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, function (response) {
                     if (response instanceof XMLHttpRequest) {
                         hide(moreButton);
-                        dom('#search-results').innerHTML = 'Aucun résultat pour ces critères de recherche.';
+                        dom('#search-results').innerHTML = '<div class="text--body text--center">Aucun résultat pour ces critères de recherche.</div>';
 
                         return;
                     }
@@ -65,25 +65,20 @@
 {% endblock %}
 
 {% block content %}
-    <header class="l__wrapper space--60-0">
+<main class="search">
+    <header class="l__wrapper space--60-0 text--center">
         <h1 class="text--large search-title">{% block search_title 'Comités'%}</h1>
-        <h2><small>{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</small></h2>
+        <h2 class="text--body text--normal">{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</h2>
     </header>
-
-    <nav>
-        <ul>
-            <li>
-                <a href="{{ path('app_search_committees') }}">Tous les comités</a>
-            </li>
-            <li>
-                <a href="{{ path('app_search_events') }}">Tous les événements</a>
-            </li>
-        </ul>
-    </nav>
 
     <div class="l__wrapper">
         {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
-        <div id="search-results"></div>
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        <div class="search__results {{ currentRoute }}" id="search-results"></div>
+    </div>
+
+    <div class="l__wrapper text--center b__nudge--bottom-huge">
         <button role="button" class="btn" id="search-more">Afficher plus</button>
     </div>
+</main>
 {% endblock %}
