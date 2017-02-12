@@ -29,6 +29,22 @@ class CommitteeManager
         $this->registry = $registry;
     }
 
+    public function isCommitteeHost(Adherent $adherent): bool
+    {
+        $memberships = $this->getMembershipRepository()->findMemberships($adherent);
+
+        if (!$memberships->count()) {
+            return false;
+        }
+
+        $hostedCommittees = $this->getCommitteeRepository()->findCommittees(
+            $memberships->getCommitteeHostMemberships()->getCommitteeUuids(),
+            CommitteeRepository::ONLY_APPROVED
+        );
+
+        return count($hostedCommittees) >= 1;
+    }
+
     public function getAdherentCommittees(Adherent $adherent, int $limit = 5): array
     {
         $memberships = $this->getMembershipRepository()->findMemberships($adherent);

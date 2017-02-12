@@ -10,6 +10,7 @@ imports:
     - { resource: services/committee.xml }
     - { resource: services/content.xml }
     - { resource: services/doctrine.xml }
+    - { resource: services/documents.xml }
     - { resource: services/donation.xml }
     - { resource: services/feature_flag.xml }
     - { resource: services/geocoder.xml }

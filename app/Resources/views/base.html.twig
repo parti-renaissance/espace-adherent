@@ -162,7 +162,7 @@
                                     <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
                                     <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
                                     <li><a href="#">La carte En Marche !</a></li>
-                                    <li><a href="#">Documents</a></li>
+                                    <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
                                     <li class="nav__user__menu__separator"></li>
                                     {% if is_granted('CREATE_COMMITTEE') %}
                                         <li class="text--small">
