@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Invite;
+use AppBundle\Mailjet\Message\InvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
@@ -47,6 +48,9 @@ class InvitationControllerTest extends SqliteWebTestCase
         $this->assertSame('Galopin', $invite->getLastName());
         $this->assertSame('Je t\'invite à rejoindre En Marche !', $invite->getMessage());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Email should have been sent
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(InvitationMessage::class));
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');
