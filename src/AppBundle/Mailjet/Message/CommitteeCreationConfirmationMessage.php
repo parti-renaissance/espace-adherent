@@ -14,7 +14,7 @@ class CommitteeCreationConfirmationMessage extends MailjetMessage
             '54689',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmation de création de votre comité En Marche !'
+            'Votre comité sera bientôt en ligne'
         );
 
         $message->setVar('target_firstname', $adherent->getFirstName());

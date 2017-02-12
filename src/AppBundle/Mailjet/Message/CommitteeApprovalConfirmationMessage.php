@@ -14,7 +14,7 @@ final class CommitteeApprovalConfirmationMessage extends MailjetMessage
             '54720',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Confirmation de création de votre comité En Marche !',
+            'Votre comité est validé, à vous de jouer',
             static::getTemplateVars($committeeCityName, $committeeUrl),
             static::getRecipientVars($host->getFirstName())
         );

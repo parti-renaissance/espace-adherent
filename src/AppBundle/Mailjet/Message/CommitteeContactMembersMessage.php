@@ -18,7 +18,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
     {
         $message = new self(
             Uuid::uuid4(),
-            '54909',
+            '63337',
             $host->getEmailAddress(),
             $host->getFullName(),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",

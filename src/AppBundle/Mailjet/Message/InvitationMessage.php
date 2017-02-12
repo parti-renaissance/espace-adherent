@@ -10,7 +10,7 @@ final class InvitationMessage extends MailjetMessage
     {
         return new static(
             $invite->getUuid(),
-            '61613',
+            '108243',
             $invite->getEmail(),
             null,
             sprintf('%s vous invite à rejoindre En Marche.', $invite->getSenderFullName()),

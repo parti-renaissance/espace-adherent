@@ -29,10 +29,10 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
 
         $message = new self(
             Uuid::uuid4(),
-            '54909',
+            '63337',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Un animateur vous a envoyé un message',
+            "L'animateur d'un comité que vous suivez vous a envoyé un message",
             static::getTemplateVars($message->getAuthorFirstName(), $message->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
             $message->getAuthor()->getEmailAddress(),

@@ -53,10 +53,10 @@ class CommitteeEventNotificationMessage extends MailjetMessage
 
         $message = new self(
             Uuid::uuid4(),
-            '61378',
+            '54917',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Nouvel événement dans votre comité En Marche !',
+            'Un événement a lieu dans un comité que vous suivez',
             $vars,
             $recipientVarsGenerator($recipient),
             $host->getEmailAddress(),
