@@ -21,12 +21,26 @@ export default (slugifier, users) => {
         return input;
     };
 
+    let inputs = [];
+
     const onSelectedChange = (rows) => {
         let count = 0;
 
+        inputs.forEach((input) => {
+            remove(input);
+        });
+
+        inputs = [];
+
         Object.keys(rows).forEach((key) => {
-            insertAfter(selectedUsers, createInputHidden(`selected[${count}][type]`, rows[key].type));
-            insertAfter(selectedUsers, createInputHidden(`selected[${count}][id]`, rows[key].id));
+            const inputType = createInputHidden(`selected[${count}][type]`, rows[key].type);
+            const inputId = createInputHidden(`selected[${count}][id]`, rows[key].id);
+
+            inputs.push(inputType);
+            inputs.push(inputId);
+
+            insertAfter(selectedUsers, inputType);
+            insertAfter(selectedUsers, inputId);
 
             count += 1;
         });
