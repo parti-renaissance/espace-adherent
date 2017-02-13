@@ -1,7 +1,12 @@
 <ul class="documents__tree">
     {% for document in documents %}
         <li>
-            <a href="{{ path(document.type == 'dir' ? 'app_documents_directory' : 'app_documents_file', {'type': treeType, 'path': document.path}) }}">
+            {% if 'dir' == document.type %}
+            <a href="{{ path('app_documents_directory', {'type': treeType, 'path': document.path}) }}">
+            {% else %}
+            <a href="{{ path('app_documents_file', {'type': treeType, 'path': document.path}) }}"
+               target="_blank" rel="noopener noreferrer">
+            {% endif %}
                 <i class="fa fa-{{ document.icon }}"></i>
                 {{ document.name }}
             </a>
