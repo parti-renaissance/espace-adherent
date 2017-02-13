@@ -3,16 +3,20 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\DonationMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 
 class TransactionSuccessListener
 {
     private $manager;
+    private $mailjet;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, MailjetService $mailjet)
     {
         $this->manager = $manager;
+        $this->mailjet = $mailjet;
     }
 
     /**
@@ -42,5 +46,9 @@ class TransactionSuccessListener
 
         $this->manager->persist($donation);
         $this->manager->flush();
+
+        if ($donation->isSuccessful()) {
+            $this->mailjet->sendMessage(DonationMessage::createFromDonation($donation));
+        }
     }
 }

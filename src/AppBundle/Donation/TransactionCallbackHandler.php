@@ -3,6 +3,8 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\DonationMessage;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,6 +15,7 @@ class TransactionCallbackHandler
 {
     private $router;
     private $entityManager;
+    private $mailjet;
 
     private static $errorCodes = [
         // Platform or authorization center error
@@ -28,10 +31,11 @@ class TransactionCallbackHandler
         '00030' => 'timeout',
     ];
 
-    public function __construct(Router $router, EntityManager $entityManager)
+    public function __construct(Router $router, EntityManager $entityManager, MailjetService $mailjet)
     {
         $this->router = $router;
         $this->entityManager = $entityManager;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(string $uuid, Request $request): Response
@@ -48,6 +52,10 @@ class TransactionCallbackHandler
 
             $this->entityManager->persist($donation);
             $this->entityManager->flush();
+
+            if ($donation->isSuccessful()) {
+                $this->mailjet->sendMessage(DonationMessage::createFromDonation($donation));
+            }
         }
 
         return $this->createRedirectResponseForDonation($donation);
