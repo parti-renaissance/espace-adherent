@@ -86,11 +86,11 @@ class CommitteeEventNotificationMessage extends MailjetMessage
     ): array {
         return [
             // Global common variables
-            'animator_firstname' => $hostFirstName,
-            'event_name' => $eventName,
+            'animator_firstname' => self::escape($hostFirstName),
+            'event_name' => self::escape($eventName),
             'event_date' => $eventDate,
             'event_hour' => $eventHour,
-            'event_address' => $eventAddress,
+            'event_address' => self::escape($eventAddress),
 
             // @todo this variable name must be renamed and uniquified in the template.
             'event_slug' => $eventLink,
@@ -106,7 +106,7 @@ class CommitteeEventNotificationMessage extends MailjetMessage
     public static function getRecipientVars(string $firstName): array
     {
         return [
-            'target_firstname' => $firstName,
+            'target_firstname' => self::escape($firstName),
         ];
     }
 

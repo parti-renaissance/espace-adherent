@@ -32,7 +32,7 @@ final class CommitteeApprovalConfirmationMessage extends MailjetMessage
     private static function getRecipientVars(string $firstName): array
     {
         return [
-            'animator_firstname' => $firstName,
+            'animator_firstname' => self::escape($firstName),
         ];
     }
 }

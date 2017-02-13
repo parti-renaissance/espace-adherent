@@ -16,7 +16,7 @@ final class AdherentResetPasswordMessage extends MailjetMessage
             $adherent->getFullName(),
             'Réinitialisez votre mot de passe'
         );
-        $message->setVar('target_firstname', $adherent->getFirstName());
+        $message->setVar('target_firstname', self::escape($adherent->getFirstName()));
         $message->setVar('reset_link', $resetPasswordLink);
 
         return $message;

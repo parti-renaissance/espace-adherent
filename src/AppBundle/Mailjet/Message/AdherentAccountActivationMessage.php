@@ -31,7 +31,7 @@ final class AdherentAccountActivationMessage extends MailjetMessage
     private static function getRecipientVars(string $firstName, string $confirmationLink): array
     {
         return [
-            'target_firstname' => $firstName,
+            'target_firstname' => self::escape($firstName),
             'confirmation_link' => $confirmationLink,
         ];
     }

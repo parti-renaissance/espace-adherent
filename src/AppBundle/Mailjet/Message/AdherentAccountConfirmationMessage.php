@@ -33,8 +33,8 @@ final class AdherentAccountConfirmationMessage extends MailjetMessage
     private static function getRecipientVars(string $firstName, string $lastName): array
     {
         return [
-            'target_firstname' => $firstName,
-            'target_lastname' => $lastName,
+            'target_firstname' => self::escape($firstName),
+            'target_lastname' => self::escape($lastName),
         ];
     }
 }

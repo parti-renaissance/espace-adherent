@@ -13,7 +13,7 @@ final class InvitationMessage extends MailjetMessage
             '108243',
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à rejoindre En Marche.', $invite->getSenderFullName()),
+            sprintf('%s vous invite à rejoindre En Marche.', self::escape($invite->getSenderFullName())),
             static::getTemplateVars($invite->getFirstName(), $invite->getLastName(), $invite->getMessage())
         );
     }
@@ -21,9 +21,9 @@ final class InvitationMessage extends MailjetMessage
     private static function getTemplateVars(string $senderFirstName, string $senderLastName, string $targetMessage): array
     {
         return [
-            'sender_firstname' => $senderFirstName,
-            'sender_lastname' => $senderLastName,
-            'target_message' => $targetMessage,
+            'sender_firstname' => self::escape($senderFirstName),
+            'sender_lastname' => self::escape($senderLastName),
+            'target_message' => nl2br(self::escape($targetMessage)),
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Mailjet\Message;
 
-use AppBundle\Referent\ManagedUser;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 use Ramsey\Uuid\Uuid;
 
@@ -10,16 +9,11 @@ final class ReferentMessage extends MailjetMessage
 {
     public static function createFromModel(ReferentMessageModel $model): self
     {
+        $referent = $model->getFrom();
         $recipients = $model->getTo();
 
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
-        }
-
-        /** @var ManagedUser $recipient */
-        $recipient = array_shift($recipients);
-        if (!$recipient instanceof ManagedUser) {
-            throw new \RuntimeException('First recipient must be an ManagedUser instance.');
         }
 
         $batchUuid = Uuid::uuid4();
@@ -27,17 +21,17 @@ final class ReferentMessage extends MailjetMessage
         $message = new self(
             Uuid::uuid4(),
             '63336',
-            $recipient->getEmail(),
-            $recipient->getFullName(),
+            $referent->getEmailAddress(),
+            $referent->getFullName(),
             $model->getSubject(),
             [
-                'referant_firstname' => self::escape($model->getFrom()->getFullName()),
+                'referant_firstname' => self::escape($referent->getFullName()),
                 'target_message' => nl2br(self::escape($model->getContent())),
             ],
             [
-                'target_firstname' => self::escape($recipient->getFullName() ?: ''),
+                'target_firstname' => self::escape($referent->getFullName() ?: ''),
             ],
-            $model->getFrom()->getEmailAddress(),
+            $referent->getEmailAddress(),
             $batchUuid
         );
 
