@@ -1,13 +1,11 @@
 <?php
 
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * JemarcheReport
- *
- * @ORM\Table(name="jemarche_report")
+ * @ORM\Table(name="jemarche_reports")
  * @ORM\Entity()
  */
 class JemarcheReport
@@ -24,48 +22,56 @@ class JemarcheReport
     /**
      * @var string
      *
-     * @ORM\Column(name="actionType", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank
      */
     private $actionType;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="convincedContact", type="text")
+     * @ORM\Column(type="text")
      */
-    private $convincedContact;
+    private $convincedContacts;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="almostConvincedContact", type="text")
+     * @ORM\Column(type="text")
      */
-    private $almostConvincedContact;
+    private $almostConvincedContacts;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="notConvicedContact", type="text")
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
-    private $notConvicedContact;
+    private $notConvincedContacts;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="publicReaction", type="text")
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
-    private $publicReaction;
+    private $publicReactions;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="organizer", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank
      */
     private $organizer;
 
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -75,7 +81,7 @@ class JemarcheReport
     }
 
     /**
-     * Set actionType
+     * Set actionType.
      *
      * @param string $actionType
      *
@@ -89,7 +95,7 @@ class JemarcheReport
     }
 
     /**
-     * Get actionType
+     * Get actionType.
      *
      * @return string
      */
@@ -99,103 +105,103 @@ class JemarcheReport
     }
 
     /**
-     * Set convincedContact
+     * Set convincedContacts.
      *
-     * @param string $convincedContact
+     * @param string $convincedContacts
      *
      * @return JemarcheReport
      */
-    public function setConvincedContact($convincedContact)
+    public function setConvincedContacts($convincedContacts)
     {
-        $this->convincedContact = $convincedContact;
+        $this->convincedContacts = $convincedContacts;
 
         return $this;
     }
 
     /**
-     * Get convincedContact
+     * Get convincedContacts.
      *
      * @return string
      */
-    public function getConvincedContact()
+    public function getConvincedContacts()
     {
-        return $this->convincedContact;
+        return $this->convincedContacts;
     }
 
     /**
-     * Set almostConvincedContact
+     * Set almostConvincedContacts.
      *
-     * @param string $almostConvincedContact
+     * @param string $almostConvincedContacts
      *
      * @return JemarcheReport
      */
-    public function setAlmostConvincedContact($almostConvincedContact)
+    public function setAlmostConvincedContacts($almostConvincedContacts)
     {
-        $this->almostConvincedContact = $almostConvincedContact;
+        $this->almostConvincedContacts = $almostConvincedContacts;
 
         return $this;
     }
 
     /**
-     * Get almostConvincedContact
+     * Get almostConvincedContacts.
      *
      * @return string
      */
-    public function getAlmostConvincedContact()
+    public function getAlmostConvincedContacts()
     {
-        return $this->almostConvincedContact;
+        return $this->almostConvincedContacts;
     }
 
     /**
-     * Set notConvicedContact
+     * Set notConvincedContacts.
      *
-     * @param string $notConvicedContact
+     * @param string $notConvincedContacts
      *
      * @return JemarcheReport
      */
-    public function setNotConvicedContact($notConvicedContact)
+    public function setNotConvincedContacts($notConvincedContacts)
     {
-        $this->notConvicedContact = $notConvicedContact;
+        $this->notConvincedContacts = $notConvincedContacts;
 
         return $this;
     }
 
     /**
-     * Get notConvicedContact
+     * Get notConvincedContacts.
      *
      * @return string
      */
-    public function getNotConvicedContact()
+    public function getNotConvincedContacts()
     {
-        return $this->notConvicedContact;
+        return $this->notConvincedContacts;
     }
 
     /**
-     * Set publicReaction
+     * Set publicReactions.
      *
-     * @param string $publicReaction
+     * @param string $publicReactions
      *
      * @return JemarcheReport
      */
-    public function setPublicReaction($publicReaction)
+    public function setPublicReactions($publicReactions)
     {
-        $this->publicReaction = $publicReaction;
+        $this->publicReactions = $publicReactions;
 
         return $this;
     }
 
     /**
-     * Get publicReaction
+     * Get publicReactions.
      *
      * @return string
      */
-    public function getPublicReaction()
+    public function getPublicReactions()
     {
-        return $this->publicReaction;
+        return $this->publicReactions;
     }
 
     /**
-     * Set organizer
+     * Set organizer.
      *
      * @param string $organizer
      *
@@ -209,7 +215,7 @@ class JemarcheReport
     }
 
     /**
-     * Get organizer
+     * Get organizer.
      *
      * @return string
      */
