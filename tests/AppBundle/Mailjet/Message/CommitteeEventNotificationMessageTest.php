@@ -32,9 +32,9 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(CommitteeEventNotificationMessage::class, $message);
-        $this->assertSame('61378', $message->getTemplate());
+        $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('Nouvel événement dans votre comité En Marche !', $message->getSubject());
+        $this->assertSame('Un événement a lieu dans un comité que vous suivez', $message->getSubject());
         $this->assertCount(10, $message->getVars());
         $this->assertSame(
             [

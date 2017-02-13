@@ -32,6 +32,7 @@ class Adherent implements UserInterface, GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityPersonNameTrait;
 
     /**
      * @ORM\Column
@@ -42,16 +43,6 @@ class Adherent implements UserInterface, GeoPointInterface
      * @ORM\Column(length=6)
      */
     private $gender;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $lastName;
 
     /**
      * @ORM\Column
@@ -167,11 +158,6 @@ class Adherent implements UserInterface, GeoPointInterface
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
     }
 
-    public function __toString(): string
-    {
-        return $this->getFullName();
-    }
-
     public function getRoles(): array
     {
         $roles = ['ROLE_ADHERENT'];
@@ -206,11 +192,6 @@ class Adherent implements UserInterface, GeoPointInterface
         return $this->emailAddress;
     }
 
-    public function getFullName()
-    {
-        return $this->firstName.' '.$this->lastName;
-    }
-
     public function getPhone()
     {
         return $this->phone;
@@ -219,16 +200,6 @@ class Adherent implements UserInterface, GeoPointInterface
     public function getGender()
     {
         return $this->gender;
-    }
-
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName()
-    {
-        return $this->lastName;
     }
 
     public function getBirthdate()

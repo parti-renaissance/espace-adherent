@@ -19,7 +19,7 @@ class InvitationMessageTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertInstanceOf(InvitationMessage::class, $message);
-        $this->assertSame('61613', $message->getTemplate());
+        $this->assertSame('108243', $message->getTemplate());
         $this->assertSame('Paul Auffray vous invite à rejoindre En Marche.', $message->getSubject());
         $this->assertCount(3, $message->getVars());
         $this->assertSame(

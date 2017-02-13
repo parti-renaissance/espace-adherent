@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Donation;
+use AppBundle\Mailjet\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Goutte\Client as PayboxClient;
@@ -77,6 +78,9 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame(33, $donation->getPhone()->getCountryCode());
         $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
 
+        // Email should not have been sent
+        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
 
@@ -130,6 +134,9 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertNotNull($donation->getDonatedAt());
         $this->assertSame('00000', $donation->getPayboxResultCode());
         $this->assertSame('XXXXXX', $donation->getPayboxAuthorizationCode());
+
+        // Email should have been sent
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
     }
 
     protected function setUp()

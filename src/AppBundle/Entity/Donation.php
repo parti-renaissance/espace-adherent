@@ -17,6 +17,7 @@ class Donation implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityPersonNameTrait;
 
     /**
      * @ORM\Column(type="integer")
@@ -27,16 +28,6 @@ class Donation implements GeoPointInterface
      * @ORM\Column(length=6)
      */
     private $gender;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $lastName;
 
     /**
      * @ORM\Column
@@ -158,16 +149,6 @@ class Donation implements GeoPointInterface
         return $this->gender;
     }
 
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
     public function getEmailAddress()
     {
         return $this->emailAddress;
@@ -208,12 +189,12 @@ class Donation implements GeoPointInterface
         return $this->clientIp;
     }
 
-    public function getDonatedAt()
+    public function getDonatedAt(): ?\DateTimeInterface
     {
         return $this->donatedAt;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
