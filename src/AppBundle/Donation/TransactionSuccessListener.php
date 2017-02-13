@@ -5,7 +5,7 @@ namespace AppBundle\Donation;
 use AppBundle\Entity\Donation;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\DonationMessage;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 
 class TransactionSuccessListener
@@ -13,7 +13,7 @@ class TransactionSuccessListener
     private $manager;
     private $mailjet;
 
-    public function __construct(EntityManagerInterface $manager, MailjetService $mailjet)
+    public function __construct(ObjectManager $manager, MailjetService $mailjet)
     {
         $this->manager = $manager;
         $this->mailjet = $mailjet;

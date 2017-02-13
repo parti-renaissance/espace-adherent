@@ -5,11 +5,11 @@ namespace AppBundle\Donation;
 use AppBundle\Entity\Donation;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\DonationMessage;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TransactionCallbackHandler
 {
@@ -31,7 +31,7 @@ class TransactionCallbackHandler
         '00030' => 'timeout',
     ];
 
-    public function __construct(Router $router, EntityManager $entityManager, MailjetService $mailjet)
+    public function __construct(UrlGeneratorInterface $router, ObjectManager $entityManager, MailjetService $mailjet)
     {
         $this->router = $router;
         $this->entityManager = $entityManager;
