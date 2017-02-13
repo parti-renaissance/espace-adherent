@@ -20,7 +20,7 @@ class JemarcheReportController extends Controller
     /**
      * Creates a new jemarcheReport entity.
      *
-     * @Route("/", name="jemarchereport")
+     * @Route(name="jemarchereport")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
