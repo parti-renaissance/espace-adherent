@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class JemarcheReportController extends Controller
 {
-
     /**
      * Creates a new jemarcheReport entity.
      *

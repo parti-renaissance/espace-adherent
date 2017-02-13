@@ -69,7 +69,6 @@ class JemarcheReport
      */
     private $organizer;
 
-
     /**
      * Get id.
      *
@@ -224,4 +223,3 @@ class JemarcheReport
         return $this->organizer;
     }
 }
-
