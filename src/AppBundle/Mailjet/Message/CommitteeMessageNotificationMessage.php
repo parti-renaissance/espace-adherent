@@ -12,11 +12,11 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
      * Creates a new message instance for a list of recipients.
      *
      * @param Adherent[]        $recipients
-     * @param CommitteeFeedItem $message
+     * @param CommitteeFeedItem $feedItem
      *
      * @return self
      */
-    public static function create(array $recipients, CommitteeFeedItem $message): self
+    public static function create(array $recipients, CommitteeFeedItem $feedItem): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipients is required.');
@@ -33,10 +33,10 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
-            static::getTemplateVars($message->getAuthorFirstName(), $message->getContent()),
+            static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
-            $message->getAuthor()->getEmailAddress(),
-            $message->getUuid()
+            $feedItem->getAuthor()->getEmailAddress(),
+            $feedItem->getUuid()
         );
 
         foreach ($recipients as $recipient) {
@@ -53,15 +53,15 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
     private static function getTemplateVars(string $hostFirstName, string $hostMessage): array
     {
         return [
-            'animator_firstname' => $hostFirstName,
-            'animator_message' => $hostMessage,
+            'animator_firstname' => self::escape($hostFirstName),
+            'animator_message' => nl2br(self::escape($hostMessage)),
         ];
     }
 
     private static function getRecipientVars(string $firstName): array
     {
         return [
-            'target_firstname' => $firstName,
+            'target_firstname' => self::escape($firstName),
         ];
     }
 }

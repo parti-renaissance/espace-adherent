@@ -107,8 +107,8 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $this->assertClientIsRedirectedTo('/referent/utilisateurs', $this->client);
 
-        // 2 emails should have been sent
-        $this->assertCount(2, $this->getMailjetEmailRepository()->findMessages(ReferentMessage::class));
+        // 3 emails should have been sent: one for the referent and one for each subscriber
+        $this->assertCount(3, $this->getMailjetEmailRepository()->findMessages(ReferentMessage::class));
     }
 
     protected function setUp()

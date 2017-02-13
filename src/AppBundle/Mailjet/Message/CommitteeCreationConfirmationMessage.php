@@ -17,7 +17,7 @@ class CommitteeCreationConfirmationMessage extends MailjetMessage
             'Votre comité sera bientôt en ligne'
         );
 
-        $message->setVar('target_firstname', $adherent->getFirstName());
+        $message->setVar('target_firstname', self::escape($adherent->getFirstName()));
         $message->setVar('committee_city', $city);
 
         return $message;

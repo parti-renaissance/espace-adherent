@@ -15,7 +15,7 @@ final class DonationMessage extends MailjetMessage
             $donation->getFullName(),
             'Merci pour votre engagement',
             [
-                'target_firstname' => $donation->getFirstName(),
+                'target_firstname' => self::escape($donation->getFirstName()),
                 'year' => (int) $donation->getDonatedAt()->format('Y') + 1,
             ]
         );

@@ -58,6 +58,9 @@ class ReferentMessage
         return $this->from;
     }
 
+    /**
+     * @return ManagedUser[]
+     */
     public function getTo(): array
     {
         return $this->to;
