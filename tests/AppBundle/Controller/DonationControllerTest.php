@@ -36,13 +36,12 @@ class DonationControllerTest extends SqliteWebTestCase
         /*
          * Initial questions page
          */
-        $crawler = $appClient->request(Request::METHOD_GET, '/don');
+        $crawler = $appClient->request(Request::METHOD_GET, '/don/coordonnees?montant=30');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
         $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation' => [
-                'amount' => '30',
                 'gender' => 'male',
                 'lastName' => 'Doe',
                 'firstName' => 'John',

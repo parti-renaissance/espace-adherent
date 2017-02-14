@@ -71,7 +71,8 @@ class DonationRequest
         $this->emailAddress = '';
         $this->address = new Address();
         $this->phone = static::createPhoneNumber();
-        $this->amount = $amount;
+
+        $this->setAmount($amount);
     }
 
     public static function createFromAdherent(Adherent $adherent, float $amount = 50.0): self
@@ -107,7 +108,7 @@ class DonationRequest
 
     public function setAmount(?float $amount)
     {
-        $this->amount = $amount;
+        $this->amount = floor($amount * 100) / 100;
     }
 
     public function getGender(): ?string
