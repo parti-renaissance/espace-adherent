@@ -1,26 +1,29 @@
-<p>{{ item.content|nl2br }}</p>
+<p class="text--body">{{ item.content|nl2br }}</p>
 
 <div class="committee-event">
-    <div class="conmittee-event-map">
+    <div class="committee-event-map">
         <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"
              alt="{{ item.event.inlineFormattedAddress }}"
-             width="300"
+             width="200"
              height="200"/>
     </div>
-    <div class="conmittee-event-details">
-        <h4>{{ item.event.name }}</h4>
-        <span class="committee-event-date">
-            <em>{{ item.event.beginAt|localizeddate('long', 'none') }}</em> à
-            <em>{{ item.event.beginAt|localizeddate('none', 'short') }}</em>.
-        </span>
-        <ul>
+    <div class="committee-event-details">
+        <div>
+            <h4 class="text--medium text--normal b__nudge--bottom-tiny">{{ item.event.name }}</h4>
+            <span class="committee-event-date text--body">
+                {{ item.event.beginAt|localizeddate('long', 'none') }} à
+                {{ item.event.beginAt|localizeddate('none', 'short') }}
+            </span>
+        </div>
+        <ul class="l__row l__row--h-stretch">
             <li>
-                <a href="{{ path('app_committee_attend_event', {committee_uuid: committee.uuid.toString, slug: item.event.slug}) }}" class="btn">Je participe</a>
+                <a href="{{ path('app_committee_attend_event', {committee_uuid: committee.uuid.toString, slug: item.event.slug}) }}" class="btn btn--blue">Je participe</a>
             </li>
-            <li>
-                <span class="committee-event-attendees">
-                    {{- 'committee.participants_count'|transchoice(item.event.participantsCount) -}}
-                </span>
+            <li class="icon--with-text text--body">
+                    {{ include('components/participants.html.twig') }}
+                    <span class="committee-event-attendees">
+                        {{- 'committee.participants_count'|transchoice(item.event.participantsCount) -}}
+                    </span>
             </li>
         </ul>
     </div>

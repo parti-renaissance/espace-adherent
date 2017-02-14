@@ -1,7 +1,7 @@
 {% for item in committee_timeline %}
-    <div class="committee-timeline-item committee-timeline-{{ item.type }}">
-        <h3>{{ item.author }}</h3>
-        <span class="time-ago"><em>{{ item.createdAt|ago }}</em></span>
+    <div class="committee__timeline__item committee__timeline__{{ item.type }}">
+        <h3 class="text--body">{{ item.author }}</h3>
+        <span class="time-ago text--body">{{ item.createdAt|ago|capitalize }}</span>
         {{ include("committee/timeline/_#{item.type}.html.twig", ignore_missing=true) }}
     </div>
 {% endfor %}

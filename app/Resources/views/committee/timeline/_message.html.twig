@@ -1,9 +1,9 @@
 {% if is_granted('ROLE_ADHERENT') %}
-    <p>{{ item.content|nl2br }}</p>
+    <div class="text--body">{{ item.content|nl2br }}</div>
 {% else %}
-    <p class="committee-message-invisible">
+    <div class="committee-message-invisible text--body space--10-0">
         <a href="{{ path('app_adherent_login') }}">Connectez-vous</a>
         (ou <a href="{{ path('app_membership_register') }}">rejoignez En-Marche.fr</a>)
         afin de voir ce message.
-    </p>
+    </div>
 {% endif %}

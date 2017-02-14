@@ -384,7 +384,8 @@ $text--size-extra-large: 48px;
         align-items: center;
         border: none;
 
-        svg {
+        svg,
+        i {
             margin-right: 7px;
         }
     }
