@@ -75,6 +75,7 @@ class MembershipRequest
     public $conditions;
 
     /**
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
      * @AssertRecaptcha(groups={"Registration"})
      */
     public $recaptcha;

@@ -23,7 +23,7 @@ class InvitationControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
-    public function testSubscriptionAndRetry()
+    public function testInvite()
     {
         // There should not be any invites at the moment
         $this->assertEmpty($this->invitationRepository->findAll());
@@ -34,6 +34,7 @@ class InvitationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_invitation]')->form([
+            'g-recaptcha-response' => 'dummy',
             'app_invitation[lastName]' => 'Galopin',
             'app_invitation[firstName]' => 'Titouan',
             'app_invitation[email]' => 'titouan.galopin@en-marche.fr',

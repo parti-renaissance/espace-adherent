@@ -419,6 +419,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     private static function createFormData()
     {
         return [
+            'g-recaptcha-response' => 'dummy',
             'membership_request' => [
                 'gender' => 'male',
                 'firstName' => 'Paul',
