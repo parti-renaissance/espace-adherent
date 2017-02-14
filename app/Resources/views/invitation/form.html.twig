@@ -3,6 +3,10 @@
 {% block page_title 'Inviter une connaissance' %}
 {% block canonical_url url('invitation_form') %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
 {% block content %}
 
     <main>
@@ -38,6 +42,11 @@
                         {{ form_errors(form.message) }}
                         {{ form_widget(form.message, { 'attr': { 'class': 'form--full form__field--textarea-120' } }) }}
                     </div>
+
+                    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                    {% if recaptcha_public_key is not empty %}
+                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+                    {% endif %}
 
                     {{ form_widget(form.submit, { 'label': 'Envoyer l\'invitation' }) }}
 

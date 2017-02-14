@@ -18,7 +18,7 @@ class InvitationController extends Controller
      */
     public function invitationAction(Request $request)
     {
-        $invite = new Invite();
+        $invite = Invite::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
 
         $form = $this->createForm(InvitationType::class, $invite);
         $form->add('submit', SubmitType::class);

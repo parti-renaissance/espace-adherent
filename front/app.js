@@ -9,6 +9,7 @@ import cookiesConsent from './listeners/cookies-consent';
 import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
 import externalLinks from './listeners/external-links';
+import noJsRecaptcha from './listeners/no-js-recaptcha';
 
 class App {
     constructor() {
@@ -19,6 +20,7 @@ class App {
             amountChooser,
             progressiveBackground,
             externalLinks,
+            noJsRecaptcha,
         ];
     }
 

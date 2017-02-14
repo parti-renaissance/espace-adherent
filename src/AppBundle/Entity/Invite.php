@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Validator\WasNotInvitedRecently;
+use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
+use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invitations")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InvitationRepository")
  *
- * @WasNotInvitedRecently(
+ * @AssertWasNotInvitedRecently(
  *     emailField="email",
  *     since="24 hours",
  *     message="invitation.email.was_invited_recently"
@@ -85,10 +86,27 @@ class Invite
      */
     private $createdAt;
 
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
+     * @AssertRecaptcha
+     */
+    public $recaptcha;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->createdAt = new \DateTime();
+        $this->recaptcha = '';
+    }
+
+    public static function createWithCaptcha(string $recaptcha)
+    {
+        $invite = new self();
+        $invite->recaptcha = $recaptcha;
+
+        return $invite;
     }
 
     public static function create(
