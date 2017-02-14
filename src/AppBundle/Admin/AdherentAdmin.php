@@ -198,7 +198,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'impresonate' => [
+                    'impersonate' => [
                         'template' => 'admin/adherent_impersonate.html.twig',
                     ],
                     'show' => [],
