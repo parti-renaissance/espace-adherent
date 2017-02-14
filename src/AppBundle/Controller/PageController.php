@@ -41,7 +41,9 @@ class PageController extends Controller
     {
         return $this->render('page/emmanuel-macron/programme.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-propositions'),
-            'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+
+            // TODO Enable when the proposals are ready
+            // 'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
         ]);
     }
 
@@ -51,6 +53,8 @@ class PageController extends Controller
      */
     public function emmanuelMacronPropositionAction($slug)
     {
+        // TODO Enable when the proposals are ready
+        throw $this->createNotFoundException();
         $proposal = $this->getDoctrine()->getRepository(Proposal::class)->findOneBySlug($slug);
 
         if (!$proposal || !$proposal->isPublished()) {

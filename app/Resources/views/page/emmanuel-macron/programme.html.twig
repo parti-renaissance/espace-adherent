@@ -11,49 +11,53 @@
 {% block open_graph_image_height 630 %}
 
 {% block content %}
-<main>
-    <section class="content programme">
-        <header class="space--30-0 progressive-background"
-                data-sd="{{ static_asset('programme.jpg', {'w': 300, 'q': 20}) }}"
-                data-hd="{{ static_asset('programme.jpg', {'q': 70}) }}"
-                style="background-color: #2f2f39;">
-            <div class="l__wrapper--slim">
-                <h1 class="text--larger b__nudge--bottom-small">
-                    Les propositions d’Emmanuel Macron
+    <main>
+        <section class="content">
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ page.title }}
                 </h1>
-                <p class="text--body">
-                    {{ page.description }}
-                </p>
-            </div>
-        </header>
+                <h2 class="text--gray b__nudge--bottom bigger">{{ page.description }}</h2>
+                <ul class="article__social">
+                    <li role="button" arial-label="Partagez sur Facebook"
+                        class="btn btn--social btn--facebook"
+                        onclick="App.share('facebook', window.location.href, '{{ page.title|escape('js') }}')">
+                        <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                    </li>
+                    <li role="button" arial-label="Partagez via Twitter"
+                        class="btn btn--social btn--twitter"
+                        onclick="App.share('twitter', window.location.href, '{{ page.title|escape('js') }}')">
+                        <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                    </li>
+                    <li role="button" arial-label="Partagez via email"
+                        class="btn btn--social btn--email"
+                        onclick="App.share('email', window.location.href, '{{ page.title }}')">
+                        <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                    </li>
+                </ul>
+            </header>
 
-        <div class="l__wrapper--slim">
-            {{ page.content|markdown }}
+            <article class="l__wrapper--slim">
+                {{ page.content|markdown }}
+            </article>
 
-            <ul>
-                {% for proposal in proposals if proposal.published %}
-                <li class="programme-proposal">
-                    <a href="{{ path('page_emmanuel_macron_proposition', {'slug': proposal.slug}) }}">
-                        <h2>
-                            {{ proposal.title }}
-                        </h2>
-                        <div>
-                            {% for theme in proposal.themes %}
-                                <span style="color: #{{ theme.color }};">
-                                    {{ theme.name }}
-                                </span>
-                            {% endfor %}
-                        </div>
-                    </a>
+            <ul class="article__social space--60-0 l__wrapper--slim">
+                <li role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
+                    onclick="App.share('facebook', window.location.href, '{{ page.title|escape('js') }}')">
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
-                {% endfor %}
+                <li role="button" aria-label="Partagez sur Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', window.location.href, '{{ page.title|escape('js') }}')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </li>
+                <li role="button" arial-label="Partagez via email"
+                    class="btn btn--social btn--email"
+                    onclick="App.share('email', window.location.href, '{{ page.title }}')">
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                </li>
             </ul>
-        </div>
-        <div class="l__wrapper-500 space--60-0 text--all-caps text--summary text--center text--light-gray">
-            Cet espace accueillera de nouvelles propositions dans les semaines qui viennent.
-        </div>
 
-    </section>
-
-</main>
+        </section>
+    </main>
 {% endblock %}
