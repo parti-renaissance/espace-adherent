@@ -20,6 +20,8 @@ export default class AmountChooser extends React.Component {
             this.props.onChange(amount);
         }
 
+        this.refs.other_amount.value = '';
+
         this.setState({
             amount,
         });
@@ -74,6 +76,8 @@ export default class AmountChooser extends React.Component {
                         min="0.01"
                         max="7500"
                         step="0.01"
+                        ref="other_amount"
+                        onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleInputKeyPress}
                         defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value} />

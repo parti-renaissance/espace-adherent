@@ -428,6 +428,17 @@
         }
     }
 
+    &__informations__amount {
+        font-size: 14px;
+        font-family: $font-roboto;
+        margin-bottom: 32px;
+
+        h3 {
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
+
     &__payment {
         min-height: 450px;
         padding-top: 50px;

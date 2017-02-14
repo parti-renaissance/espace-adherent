@@ -1,0 +1,111 @@
+{% extends 'donation/layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+        });
+    </script>
+{% endblock %}
+
+{% block donation_content %}
+    <ul class="donation__form-steps">
+        <li><a href="{{ path('donation_index', {'montant': donation.amount}) }}">Montant</a></li>
+        <li class="active">Coordonnées</li>
+        <li>Paiement</li>
+        <li>Confirmation</li>
+    </ul>
+
+    <div class="donation__informations">
+        <div class="donation__informations__amount">
+            Je donne<br />
+            <h3>{{ donation.amount }}€</h3>
+        </div>
+
+        {{ form_start(form, { attr: { class: 'form' } }) }}
+        {{ form_errors(form) }}
+
+        <div class="form__row form__row--stretch">
+            {{ form_errors(form.gender) }}
+            {{ form_widget(form.gender) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.lastName) }}
+            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.firstName) }}
+            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.emailAddress) }}
+            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
+        </div>
+
+        {{ form_errors(form.address) }}
+
+        <div class="form__row">
+            {{ form_errors(form.address.country) }}
+            {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row form__row--stretch">
+            <div class="form--mid">
+                {{ form_errors(form.address.postalCode) }}
+                {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+            </div>
+            <div class="form--mid">
+                {{ form_errors(form.address.city) }}
+                {{ form_widget(form.address.city) }}
+                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+            </div>
+        </div>
+
+        <div class="form__row">
+            {{ form_errors(form.address.address) }}
+            {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+        </div>
+
+        <div class="form__row form__row--stretch">
+            {{ form_errors(form.phone) }}
+            {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
+            {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+        </div>
+
+        <div class="form__row form__checkbox">
+            <input type="checkbox" required="required" id="donation_check" />
+            <label for="donation_check">
+                Je certifie sur l'honneur être une personne physique et que le règlement de mon don
+                provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
+                ascendant ou descendant.
+            </label>
+        </div>
+
+        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
+
+        <p class="text--summary b__nudge--top-50 text--left">
+            Les dons à un parti politique sont plafonnés à 7 500 € par personne, par an et pour l’ensemble des
+            partis politiques, à compter de la publication de la loi n° 2013-907 du 11 Octobre relative à la
+            transparence de la vie publique. Les informations que vous nous communiquez sont nécessaires à la
+            gestion de vos dons et de nos relations. Elles sont exclusivement réservées à l’usage de En Marche
+            et en retournant ce formulaire, vous autorisez celles-ci à utiliser vos données pour des opérations
+            de communication politique et de dons. Vos informations ne pourront être communiquées qu’à des
+            co-contractants qui, en leur qualité de sous-traitants de En Marche, n’agiront que sur les instructions
+            de cette dernière et seront soumis à une stricte obligation de confidentialité. Certains de ces
+            partenaires peuvent avoir des activités dans des pays situés en dehors de l’Union Européenne,
+            notamment aux fins d’hébergement des données. Vos données ne seront toutefois transférées que
+            dans des pays présentant une protection adéquate au regard des garanties imposées par la loi du 6
+            janvier 1978 ou, en ce qui concerne les Etats-Unis, à des entités adhérant aux principes du Safe Harbor.
+            En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits
+            d’accès, de rectification, de suppression et d’opposition aux informations vous concernant. Vous pouvez
+            exercer ces droits en nous écrivant à l’adresse : contact@en-marche.fr ou AFEMA, BP80049 94801 VILLEJUIF.
+        </p>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

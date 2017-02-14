@@ -4,8 +4,6 @@
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
-
             App.runDonation();
         });
     </script>
@@ -13,132 +11,29 @@
 
 {% block donation_content %}
     <ul class="donation__form-steps">
-        <li id="step1-tab" class="active"><span>Montant</span></li>
-        <li id="step2-tab">Coordonnées</li>
+        <li class="active"><span>Montant</span></li>
+        <li>Coordonnées</li>
         <li>Paiement</li>
         <li>Confirmation</li>
     </ul>
 
-    {{ form_start(form, { attr: { class: 'form' } }) }}
-    {{ form_errors(form) }}
+    <div class="donation__amount">
+        <form method="get" action="{{ path('donation_informations') }}">
+            <h2>Je soutiens Emmanuel Macron</h2>
+            <span class="fluo">Vous êtes une majorité à donner 50€</span>
 
-    <div id="step1">
-        <h2>Je soutiens Emmanuel Macron</h2>
-        <span class="fluo">Vous êtes une majorité à donner 50€</span>
+            <p class="montant">
+                Sélectionnez le montant de votre don :
+            </p>
 
-        <p class="montant">
-            Sélectionnez le montant de votre don :
-        </p>
+            <input name="montant"
+                   id="donation-amount"
+                   class="form form__field form--full"
+                   type="number" min="0.01" max="7500" step="0.01" value="{{ amount }}" />
 
-        {{ form_errors(form.amount) }}
-        {{ form_widget(form.amount, { 'attr': { 'class': 'form--full' } }) }}
+            <button class="btn btn--large-and-medium btn--primary" type="submit">
+                Continuer
+            </button>
+        </form>
     </div>
-
-    <div id="error-7500" style="display: none;">
-        <p>
-            Vous ne pouvez pas entrer un montant de don supérieur à 7500€.
-        </p>
-    </div>
-
-    <div id="error-decimals" style="display: none;">
-        <p>
-            Un don de ce montant n'est pas possible, vous devez l'arrondir.
-        </p>
-    </div>
-
-    <div id="error-invalid" style="display: none;">
-        <p>
-            Un don de ce montant n'est pas possible.
-        </p>
-    </div>
-
-    <div id="next-step" style="display: none;">
-        <button id="next-step-button" class="btn btn--large-and-medium btn--primary" type="button">
-            Continuer
-        </button>
-    </div>
-
-    <div id="step2">
-        <div class="form__row form__row--stretch">
-            {{ form_errors(form.gender) }}
-            {{ form_widget(form.gender) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.lastName) }}
-            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.firstName) }}
-            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.emailAddress) }}
-            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
-        </div>
-
-        {{ form_errors(form.address) }}
-
-        <div class="form__row">
-            {{ form_errors(form.address.country) }}
-            {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
-
-        <div class="form__row form__row--stretch">
-            <div class="form--mid">
-                {{ form_errors(form.address.postalCode) }}
-                {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
-            </div>
-            <div class="form--mid">
-                {{ form_errors(form.address.city) }}
-                {{ form_widget(form.address.city) }}
-                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
-            </div>
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.address.address) }}
-            {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
-        </div>
-
-        <div class="form__row form__row--stretch">
-            {{ form_errors(form.phone) }}
-            {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
-            {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
-        </div>
-
-        <div class="form__row form__checkbox">
-            <input type="checkbox" required="required" id="donation_check" />
-            <label for="donation_check">
-                Je certifie sur l'honneur être une personne physique et que le règlement de mon don
-                provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
-                ascendant ou descendant.
-            </label>
-        </div>
-
-        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
-
-        <p class="text--summary b__nudge--top-50 text--left">
-            Les dons à un parti politique sont plafonnés à 7 500 € par personne, par an et pour l’ensemble des
-            partis politiques, à compter de la publication de la loi n° 2013-907 du 11 Octobre relative à la
-            transparence de la vie publique. Les informations que vous nous communiquez sont nécessaires à la
-            gestion de vos dons et de nos relations. Elles sont exclusivement réservées à l’usage de En Marche
-            et en retournant ce formulaire, vous autorisez celles-ci à utiliser vos données pour des opérations
-            de communication politique et de dons. Vos informations ne pourront être communiquées qu’à des
-            co-contractants qui, en leur qualité de sous-traitants de En Marche, n’agiront que sur les instructions
-            de cette dernière et seront soumis à une stricte obligation de confidentialité. Certains de ces
-            partenaires peuvent avoir des activités dans des pays situés en dehors de l’Union Européenne,
-            notamment aux fins d’hébergement des données. Vos données ne seront toutefois transférées que
-            dans des pays présentant une protection adéquate au regard des garanties imposées par la loi du 6
-            janvier 1978 ou, en ce qui concerne les Etats-Unis, à des entités adhérant aux principes du Safe Harbor.
-            En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits
-            d’accès, de rectification, de suppression et d’opposition aux informations vous concernant. Vous pouvez
-            exercer ces droits en nous écrivant à l’adresse : contact@en-marche.fr ou AFEMA, BP80049 94801 VILLEJUIF.
-        </p>
-    </div>
-
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
 {% endblock %}

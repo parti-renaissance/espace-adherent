@@ -9,10 +9,6 @@ export default class DonationAmountChooser extends React.Component {
             amount: props.value,
         };
 
-        if (props.onChange) {
-            props.onChange(props.value);
-        }
-
         this.handleAmountChange = this.handleAmountChange.bind(this);
     }
 
@@ -20,10 +16,6 @@ export default class DonationAmountChooser extends React.Component {
         this.setState({
             amount,
         });
-
-        if (this.props.onChange) {
-            this.props.onChange(amount);
-        }
     }
 
     render() {
@@ -32,7 +24,6 @@ export default class DonationAmountChooser extends React.Component {
                 <AmountChooser
                     name={this.props.name}
                     value={this.props.value}
-                    onSubmit={this.props.onSubmit}
                     onChange={this.handleAmountChange}
                 />
 
@@ -50,6 +41,4 @@ export default class DonationAmountChooser extends React.Component {
 DonationAmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
-    onSubmit: PropTypes.func,
-    onChange: PropTypes.func,
 };

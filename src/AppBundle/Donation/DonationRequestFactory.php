@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DonationRequestFactory
 {
-    public function createFromRequest(Request $request, float $defaultAmount = 50.0): DonationRequest
+    public function createFromRequest(Request $request, float $amount): DonationRequest
     {
-        $donation = new DonationRequest((float) $request->query->get('montant', $defaultAmount));
+        $donation = new DonationRequest($amount);
 
         if (($gender = $request->query->get('ge')) && in_array($gender, ['male', 'female'], true)) {
             $donation->setGender($gender);

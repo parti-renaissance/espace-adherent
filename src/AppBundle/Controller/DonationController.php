@@ -17,12 +17,29 @@ use Symfony\Component\HttpFoundation\Request;
 class DonationController extends Controller
 {
     /**
-     * @Route(name="donation_index", options={"expose"=true})
-     * @Method({"GET", "POST"})
+     * @Route(name="donation_index")
+     * @Method("GET")
      */
     public function indexAction(Request $request)
     {
-        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request);
+        return $this->render('donation/index.html.twig', [
+            'amount' => (float) $request->query->get('montant', 50),
+        ]);
+    }
+
+    /**
+     * @Route("/coordonnees", name="donation_informations")
+     * @Method({"GET", "POST"})
+     */
+    public function informationsAction(Request $request)
+    {
+        $amount = (float) $request->query->get('montant');
+
+        if (!$amount) {
+            return $this->redirectToRoute('donation_index');
+        }
+
+        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request, $amount);
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -33,7 +50,7 @@ class DonationController extends Controller
             ]);
         }
 
-        return $this->render('donation/index.html.twig', [
+        return $this->render('donation/informations.html.twig', [
             'form' => $form->createView(),
             'donation' => $donationRequest,
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
@@ -81,7 +98,7 @@ class DonationController extends Controller
      */
     public function resultAction(Request $request, Donation $donation)
     {
-        $retryUrl = $this->generateUrl('donation_index', [
+        $retryUrl = $this->generateUrl('donation_informations', [
             'montant' => $donation->getAmount() / 100,
             'ge' => $donation->getGender(),
             'ln' => $donation->getLastName(),

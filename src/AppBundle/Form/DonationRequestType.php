@@ -6,7 +6,7 @@ use AppBundle\Donation\DonationRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,9 +21,7 @@ class DonationRequestType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', NumberType::class, [
-            'scale' => 2,
-        ]);
+        $builder->add('amount', HiddenType::class);
 
         if ($options['sponsor_form']) {
             $builder
