@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Les propositions d\'Emmanuel Macron' %}
+{% block canonical_url url('page_emmanuel_macron_programme') %}
+{% block meta_description page.description %}
+
+{% block open_graph_image %}{% spaceless %}
+    {{ url('homepage')|trim('/') }}{{ static_asset('programme.jpg', {'w': 1200, 'h': 630})|raw }}
+{% endspaceless %}{% endblock %}
+{% block open_graph_image_width 1200 %}
+{% block open_graph_image_height 630 %}
+
+{% block content %}
+<main>
+    <section class="content programme">
+        <header class="space--30-0 progressive-background"
+                data-sd="{{ static_asset('programme.jpg', {'w': 300, 'q': 20}) }}"
+                data-hd="{{ static_asset('programme.jpg', {'q': 70}) }}"
+                style="background-color: #2f2f39;">
+            <div class="l__wrapper--slim">
+                <h1 class="text--larger b__nudge--bottom-small">
+                    Les propositions d’Emmanuel Macron
+                </h1>
+                <p class="text--body">
+                    {{ page.description }}
+                </p>
+            </div>
+        </header>
+
+        <div class="l__wrapper--slim">
+            {{ page.content|markdown }}
+
+            <ul>
+                {% for proposal in proposals if proposal.published %}
+                <li class="programme-proposal">
+                    <a href="{{ path('page_emmanuel_macron_proposition', {'slug': proposal.slug}) }}">
+                        <h2>
+                            {{ proposal.title }}
+                        </h2>
+                        <div>
+                            {% for theme in proposal.themes %}
+                                <span style="color: #{{ theme.color }};">
+                                    {{ theme.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="l__wrapper-500 space--60-0 text--all-caps text--summary text--center text--light-gray">
+            Cet espace accueillera de nouvelles propositions dans les semaines qui viennent.
+        </div>
+
+    </section>
+
+</main>
+{% endblock %}
