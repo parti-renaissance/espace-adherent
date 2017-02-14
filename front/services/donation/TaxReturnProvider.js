@@ -6,6 +6,6 @@ export default class TaxReturnProvider {
             return '0.00';
         }
 
-        return (amount * 0.33).toFixed(2);
+        return (amount * 0.34).toFixed(2);
     }
 }

@@ -5,7 +5,8 @@ describe('TaxReturnProvider', () => {
     let provider = new TaxReturnProvider();
 
     it('returns valid output for valid amount', () => {
-        assert.equal('16.50', provider.getAmountAfterTaxReturn(50));
+        assert.equal('3.40', provider.getAmountAfterTaxReturn(10));
+        assert.equal('17.00', provider.getAmountAfterTaxReturn(50));
     });
 
     it('returns zero output for invalid amount', () => {
