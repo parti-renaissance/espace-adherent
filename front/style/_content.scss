@@ -113,10 +113,6 @@
     letter-spacing: 0.3px;
     line-height: 1.62;
 
-    a img {
-        border: 0;
-    }
-
     h1, h2, h3 {
         @include text--medium-large;
         font-family: $font-gillsans;
@@ -413,6 +409,7 @@
         }
     }
 }
+
 .content.programme {
     padding-bottom: 10px;
 
@@ -493,6 +490,15 @@
         li a {
             color: white;
         }
+    }
+}
+
+.content.emmanuel-programme article,
+.content.emmanuel-macron article {
+    ul.arrows,
+    ul.dots,
+    ul {
+        padding-left: 55px;
     }
 }
 
