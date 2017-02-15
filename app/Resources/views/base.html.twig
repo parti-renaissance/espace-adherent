@@ -122,7 +122,7 @@
                 </ul>
                 <div class="l__row">
                     {% if not user_is_adherent %}
-                        <a href="{{ enable_platform ? path('app_membership_register') : url_legacy }}"
+                        <a href="{{ enable_platform ? path('app_membership_register') : legacy_adhesion }}"
                            class="btn b__nudge--right-nano">
                             J'adhère
                         </a>
@@ -196,7 +196,7 @@
                     <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
                     <li class="l__row">
                         {% if not user_is_adherent %}
-                            <a href="{{ enable_platform ? path('app_membership_register') : url_legacy }}"
+                            <a href="{{ enable_platform ? path('app_membership_register') : legacy_adhesion }}"
                                class="btn b__nudge--right-nano l__hide--on-mobile">
                                 J'adhère
                             </a>
@@ -313,10 +313,10 @@
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S’engager</a></h4></li>
-                        <li><a href="{{ enable_platform ? path('app_membership_register') : url_legacy }}">Adhérer</a></li>
+                        <li><a href="{{ enable_platform ? path('app_membership_register') : legacy_adhesion }}">Adhérer</a></li>
                         <li><a href="{{ path('donation_index') }}">Donner</a></li>
-                        <li><a href="{{ url_legacy }}">Rejoindre un comité</a></li>
-                        <li><a href="{{ url_legacy }}">S’inscrire à un événement</a></li>
+                        <li><a href="{{ enable_platform ? path('app_search_committees') : url_legacy }}">Rejoindre un comité</a></li>
+                        <li><a href="{{ enable_platform ? path('app_search_events') : url_legacy }}">S’inscrire à un événement</a></li>
                         <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                         {#<li><a href="#">FAQ</a></li>#}
                     </ul>

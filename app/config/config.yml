@@ -74,7 +74,8 @@ twig:
         recaptcha_public_key: "%env(RECAPTCHA_PUBLIC_KEY)%"
         google_maps_api_key:  "%env(GMAPS_API_KEY)%"
         enable_platform:      "%env(ENABLE_PLATFORM)%"
-        url_legacy:           "https://en-marche.fr/espaceperso"
+        url_legacy:           "https://adherents.en-marche.fr"
+        legacy_adhesion:      "/adherer.html"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
