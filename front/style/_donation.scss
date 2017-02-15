@@ -187,8 +187,8 @@
 .donation {
     background-color: $blue;
     background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: 0 0;
+    background-size: cover;
+    background-attachment: fixed;
     height: 100vh;
     min-height: 100%;
     display: flex;
