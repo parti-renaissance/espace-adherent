@@ -328,6 +328,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
 
             img {
                 width: 100%;
@@ -339,6 +340,9 @@
                 @include text--bold;
                 font-family: $font-gillsans;
                 position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
 
                 @media(max-width: $mobile) {
                     @include text--default;
