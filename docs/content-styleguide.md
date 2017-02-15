@@ -38,7 +38,7 @@ Ajouter une legende:
 ```
 
 Dans le cas où une image possède un lien, ajouter la classe `link--no-decor` dans le lien entourant l'image. Cela
-évitera à l'image d'avoir une bordure. 
+évitera à l'image d'avoir une bordure.
 ```
 <a href="http://en-marche.fr" class="link--no-decor">
     <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
@@ -158,7 +158,7 @@ Comme ceci:
 
 ```
 <div class="action yellow">
-    <p class"pink">Participez à l'événement du 1er Janvier 2017.</p>
+    <p class="pink">Participez à l'événement du 1er Janvier 2017.</p>
     <a href="[votre lien]" class="pink">Je m'inscris</a>
 </div>
 ```
