@@ -214,10 +214,6 @@
             @media (max-width: $mobile) {
                 font-size: $text--size-medium;
             }
-
-            @media (max-width: $mobile - 200px) {
-                font-size: 20px;
-            }
         }
 
         @media (max-width: $mobile) {
@@ -228,8 +224,9 @@
             box-sizing: border-box;
             align-items: baseline;
             padding: 30px 6%;
+            font-size: $text--size-smallest;
 
-            &--secure {
+            .fa {
                 font-size: $text--size-smallest;
             }
         }

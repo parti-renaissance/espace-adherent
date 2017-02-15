@@ -479,6 +479,10 @@
         position: relative;
         margin-bottom: 60px;
 
+        @media (max-width: $mobile) {
+            background-position: 70%;
+        }
+
         div {
             z-index: 1;
         }
