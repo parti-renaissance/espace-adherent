@@ -504,6 +504,11 @@
     ul.dots,
     ul {
         padding-left: 55px;
+
+        @media (max-width: $mobile) {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
     }
 }
 
