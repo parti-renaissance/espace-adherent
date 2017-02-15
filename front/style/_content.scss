@@ -350,8 +350,13 @@
             }
         }
 
-        &.large img {
-            width: 100%;
+        &.large {
+            margin-left: auto;
+            margin-right: auto;
+
+            img {
+                width: 100%;
+            }
         }
 
         img {
