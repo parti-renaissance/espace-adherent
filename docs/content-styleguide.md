@@ -37,6 +37,15 @@ Ajouter une legende:
 </figure>
 ```
 
+Dans le cas où une image possède un lien, ajouter la classe `link--no-decor` dans le lien entourant l'image. Cela
+évitera à l'image d'avoir une bordure. 
+```
+<a href="http://en-marche.fr" class="link--no-decor">
+    <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
+</a>
+```
+
+
 
 ## Videos
 
