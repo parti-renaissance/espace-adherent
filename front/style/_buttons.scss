@@ -134,6 +134,10 @@
         @include btn--blue;
     }
 
+    &--text-blue {
+        color: $blue;
+    }
+
     &--black {
         @include btn--black;
     }
@@ -141,6 +145,10 @@
     &--social {
         font-size: $text--size-smallest;
         font-family: $font-roboto;
+
+        i {
+            margin-right: 7px;
+        }
     }
 
     &--facebook {
@@ -152,6 +160,18 @@
     &--twitter {
         background: $twitter;
         border-color: $twitter;
+        color: white;
+    }
+
+    &--google_plus {
+        background: $google;
+        border-color: $google;
+        color: white;
+    }
+
+    &--instagram {
+        background: $instagram;
+        border-color: $instagram;
         color: white;
     }
 

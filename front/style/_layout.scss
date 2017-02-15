@@ -21,6 +21,16 @@
         @include wrapper--slim;
     }
 
+    &__wrapper--main {
+        max-width: 800px;
+        flex-grow: 1;
+        margin-right: 30px;
+    }
+
+    &__wrapper--aside {
+        width: 285px;
+    }
+
     &__wrapper-560 {
         width: 90%;
         max-width: 560px;

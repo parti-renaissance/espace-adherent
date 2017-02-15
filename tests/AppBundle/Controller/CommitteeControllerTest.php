@@ -66,7 +66,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 membre', $crawler->filter('.committee-details > h4')->text());
+        $this->assertSame('1 membre', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -81,7 +81,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 membres', $crawler->filter('.committee-details > h4')->text());
+        $this->assertSame('2 membres', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -96,7 +96,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 membre', $crawler->filter('.committee-details > h4')->text());
+        $this->assertSame('1 membre', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -681,23 +681,23 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
     {
-        return $membersCount.' membre'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee-details h4')->text();
+        return $membersCount.' membre'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee__card .committee-members')->text();
     }
 
     private function seeHosts(Crawler $crawler, int $hostsCount): bool
     {
-        return $hostsCount === count($crawler->filter('.committee-details .committee-host'));
+        return $hostsCount === count($crawler->filter('.committee__card .committee-host'));
     }
 
     private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
     {
-        return $hostsCount === count($crawler->filter('.committee-details .committee-host a'));
+        return $hostsCount === count($crawler->filter('.committee__card .committee-host a'));
     }
 
     private function seeSelfHostContactLink(Crawler $crawler, string $name): bool
     {
         /** @var \DOMElement $host */
-        foreach ($crawler->filter('.committee-details .committee-host') as $host) {
+        foreach ($crawler->filter('.committee__card .committee-host') as $host) {
             if (false !== strpos($host->textContent, 'Contacter')) {
                 continue;
             }
@@ -743,7 +743,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     private function assertCountTimelineMessages(Crawler $crawler, int $nb)
     {
-        $this->assertSame($nb, $crawler->filter('.committee-timeline-message')->count());
+        $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count());
     }
 
     private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
@@ -756,15 +756,15 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     private function assertSeeTimelineMessage(Crawler $crawler, int $position, string $author, string $text)
     {
-        $this->assertSame($author, $crawler->filter('.committee-timeline-message h3')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.committee-timeline-message p')->eq($position)->text());
+        $this->assertSame($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
+        $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
     }
 
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
     {
-        $facebookLinkPattern = 'a.committee-facebook';
-        $googlePlusLinkPattern = 'a.committee-google_plus';
-        $twitterLinkPattern = 'a.committee-twitter';
+        $facebookLinkPattern = 'a.committee__social--facebook';
+        $googlePlusLinkPattern = 'a.committee__social--google_plus';
+        $twitterLinkPattern = 'a.committee__social--twitter';
 
         if ($facebookUrl = $committee->getFacebookPageUrl()) {
             $this->assertCount(1, $facebookLink = $crawler->filter($facebookLinkPattern));

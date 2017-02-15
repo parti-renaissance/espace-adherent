@@ -22,6 +22,8 @@ $gray--lighter: #F2F2F2;
 $facebook: #3b5998;
 $twitter: #1da1f2;
 $linkedin: #0077b5;
+$google: #db4437;
+$instagram: #cd486b;
 
 // Gradients
 $gradient--light: linear-gradient(20deg ,rgba(0, 0, 0, .0), rgba(0, 0, 0, .3));
@@ -84,6 +86,12 @@ $filter: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3));
 
 @mixin hover-stroke($color) {
     stroke: rgba($color, 0.4);
+}
+
+.svg--black {
+    path {
+        @include color(black);
+    }
 }
 
 .background--primary {

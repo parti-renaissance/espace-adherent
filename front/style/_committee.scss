@@ -1,14 +1,5 @@
 .committee {
-    margin: 20px 0 100px 0;
-
-    h2 {
-        text-align: center;
-    }
-
-    &--intro {
-        text-align: justify;
-        margin: 30px 20px;
-    }
+    margin: 0 0 100px 0;
 
     &__form {
         width: 75%;
@@ -95,31 +86,89 @@
             width: 100%;
         }
     }
-}
 
-.committee-timeline {
-    .committee-timeline-item {
-        background: #efefef;
-        border: 1px solid #000;
-        margin: 20px;
-        padding: 15px;
+    &__aside {
+        img {
+            max-width: 100%;
+        }
     }
 
-    .committee-event {
-        background: lightblue;
-        padding: 10px;
-        min-height: 200px;
+    &__hosts {
+        li {
+            padding: 10px 0;
+        }
     }
 
-    .committee-event-map {
-        width: 300px;
+    &__timeline {
+        &__item {
+            padding: 30px 0;
+            border-bottom: 1px solid $gray--light;
+        }
+    }
+
+    &__card {
+        margin: 20px 0;
+
+        h5 {
+            border-top: 1px solid $gray--light;
+            padding: 15px 0 10px 0;
+            margin: 0;
+            @include text--small;
+            @include text--all-caps;
+            font-weight: normal;
+
+            svg {
+                width: 18px;
+            }
+        }
+
+        .committee-host {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    &__social {
+        &--facebook {
+            .fa:before {
+                content: '\f230';
+            }
+        }
+        &--google_plus {
+            .fa:before {
+                content: '\f2b3';
+            }
+        }
+    }
+
+    &-event {
+        background: $gray--lighter;
         height: 200px;
-        margin-right: 20px;
-        float: left;
+        width: 750px;
+        margin: 0 auto;
+        display: flex;
+        margin-top: 20px;
+
+        &-map {
+            width: 200px;
+            height: 200px;
+            background: $gray;
+        }
+
+        &-details {
+            padding: 25px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
     }
 
-    .conmittee-event-details {
-        min-height: 150px;
+    @media (max-width: $mobile) {
+        h2 {
+            margin-bottom: 20px;
+        }
     }
 }
 
