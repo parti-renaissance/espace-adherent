@@ -62,6 +62,62 @@
             'page': '/j\'adhère/'
         });
     </script>
+
+    <script src="{{ asset('legacy/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('legacy/feed.min.js') }}"></script>
+    <script src="{{ asset('legacy/adhesion.min.js') }}"></script>
+
+    <!-- temporary override styles -->
+    <style type="text/css">
+        .layout-container {
+            padding-top: 0 !important;
+        }
+        .form-group,
+        .form-group-material {
+            margin-bottom: 35px;
+        }
+
+        .new-form .label {
+            color: black;
+            font-size: 100%;
+            font-weight: normal;
+            white-space: normal;
+        }
+
+        .new-form .form-join > div {
+            /*overflow-x: hidden;*/
+        }
+
+        .new-form form {
+            max-width: 530px;
+            margin: auto;
+        }
+
+        .new-form form .checkbox,
+        .new-form form .radio {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .new-form [vc-recaptcha] {
+            max-width: 530px;
+            margin: auto;
+        }
+
+        .interets-label {
+            font-weight: normal;
+        }
+
+        .buttons {
+            margin: 20px 0;
+        }
+
+        @media screen and (min-width: 480px) {
+            .split-3 {
+                columns: 2;
+            }
+        }
+    </style>
 </head>
 
 <body class="page page-id-187 page-template-default">
@@ -80,47 +136,14 @@
     </div>
 </div>
 <div class="layout-container">
-    <div id="layout-header" class="layout-header">
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <div class="header-side-button">
-                        <a onclick="ga('send', 'event', 'Logo','Click','','1')" class="button agree-link"
-                           href="/adherer.html" title="J'adhère">J'adhère <i class="emi emi-angle-right"></i></a>
-                        <a onclick="ga('send', 'event', 'Je donne','Click','','1')" class="button donate-link"
-                           href="/don" title="Je donne">Je donne <i class="emi emi-angle-right"></i></a>
-                    </div>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas"
-                            data-target=".navmenu-main">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar icon-bar-top"></span>
-                        <span class="icon-bar icon-bar-bottom"></span>
-                    </button>
-                    <a onclick="ga('send', 'event', 'Logo','Click','','1')" class="navbar-brand" href="/"><img
-                                src="{{ asset('legacy/logo.png') }}" width="314" height="144"
-                                alt="En Marche"></a>
-                </div>
-                <div class="collapse navbar-collapse hidden-sm" id="bs-example-navbar-collapse-1">
-                    <div class="menu-menu-principal-container">
-                        <ul class="nav navbar-nav">
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19"><a href="/le-mouvement">En Marche</a></li>
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17"><a href="/emmanuel-macron">Emmanuel Macron</a></li>
-                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16"><a href="/articles/actualites">Actualités</a></li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2743"><a href="https://adherents.en-marche.fr">Nos comités</a></li>
-                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2608"><a href="/le-mouvement/notre-organisation">Notre organisation</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <script src="{{ asset('legacy/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('legacy/feed.min.js') }}"></script>
-    <script src="{{ asset('legacy/adhesion.min.js') }}"></script>
     <div class="layout-main">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                    <div style="text-align: center; ">
+                        <img src="{{ asset('logo/large_bg_white.jpg') }}" style="width: 250px; margin-bottom: 50px;" />
+                    </div>
+
                     <div class="adhesion-accueil">
                         <div class="adhesion-accueil-pre">
                             <h2 class="section-title">Bienvenue: devenez adhérent !</h2>
@@ -152,58 +175,6 @@
             </div>
         </div>
 
-        <!-- temporary override styles -->
-        <style type="text/css">
-            .new-form {
-
-            }
-
-            .form-group,
-            .form-group-material {
-                margin-bottom: 35px;
-            }
-
-            .new-form .label {
-                color: black;
-                font-size: 100%;
-                font-weight: normal;
-                white-space: normal;
-            }
-
-            .new-form .form-join > div {
-                /*overflow-x: hidden;*/
-            }
-
-            .new-form form {
-                max-width: 530px;
-                margin: auto;
-            }
-
-            .new-form form .checkbox,
-            .new-form form .radio {
-                margin-top: 0;
-                margin-bottom: 5px;
-            }
-
-            .new-form [vc-recaptcha] {
-                max-width: 530px;
-                margin: auto;
-            }
-
-            .interets-label {
-                font-weight: normal;
-            }
-
-            .buttons {
-                margin: 20px 0;
-            }
-
-            @media screen and (min-width: 480px) {
-                .split-3 {
-                    columns: 2;
-                }
-            }
-        </style>
         <div class="new-form" ng-app="app">
             <user-register hide-intro="true"></user-register>
         </div>
@@ -225,26 +196,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-lg-10 col-lg-offset-1">
-                    <div class="logo">
-                        <a href="/"><img src="{{ asset('legacy/logo.png') }}" width="149" height="68"
-                                         alt="En Marche"></a>
-                    </div>
-                    <ul class="list-inline network">
-                        <li class="label">Suivez-nous sur :</li>
-                        <li><a href="https://twitter.com/enmarchefr" target="_blank"><i class="emi emi-twitter"></i></a>
-                        </li>
-                        <li><a href="https://www.facebook.com/En-Marche-543099962534877/" target="_blank"><i
-                                        class="emi emi-facebook"></i></a></li>
-                        <li><a href="https://www.instagram.com/enmarchefr/" target="_blank"><i
-                                        class="emi emi-instagram"></i></a></li>
-                    </ul>
-                    <ul class="list-inline network">
-                        <li class="label">Écrivez-nous :</li>
-                        <li><a href="mailto:contact@en-marche.fr"><i class="emi emi-envelope"></i></a></li>
-                    </ul>
-                    <!--                     <ul class="list-inline">
-                    <li class="label"><a href="wp-content/themes/jemarche/assets/pdf//bulletin-de-don-EMa.pdf">Vous pouvez envoyer vos dons en téléchargeant ce bulletin</a></li>
-                </ul> -->
                     <ul class="list-inline">
                         <li class="label"><a href="{{ asset('legacy/bulletin-adhesion-EMa.pdf') }}">Vous
                                 pouvez également adhérer en téléchargeant ce bulletin</a></li>
