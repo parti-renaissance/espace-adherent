@@ -34,6 +34,18 @@ class PageController extends Controller
     }
 
     /**
+     * Redirections to the program.
+     *
+     * @Route("/programme")
+     * @Route("/le-programme")
+     * @Method("GET")
+     */
+    public function redirectProgrammeAction()
+    {
+        return $this->redirectToRoute('page_emmanuel_macron_programme');
+    }
+
+    /**
      * @Route("/emmanuel-macron/le-programme", name="page_emmanuel_macron_programme")
      * @Method("GET")
      */
