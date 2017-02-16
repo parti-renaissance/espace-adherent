@@ -81,7 +81,7 @@ class Donation implements GeoPointInterface
         string $lastName,
         string $emailAddress,
         PostAddress $postAddress,
-        PhoneNumber $phone
+        ?PhoneNumber $phone
     ) {
         $this->amount = $amount;
         $this->gender = $gender;
