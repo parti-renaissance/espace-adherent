@@ -25,10 +25,18 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max=15)
      */
     private $postalCode;
 
+    /**
+     * @Assert\Length(max=15)
+     */
     private $city;
+
+    /**
+     * @Assert\Length(max=255)
+     */
     private $cityName;
 
     /**
