@@ -36,7 +36,7 @@ class NewsletterSubscription
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=11)
+     * @ORM\Column(type="string", length=11, nullable=true)
      *
      * @Assert\Length(min=2, max=11, minMessage="neswletter.postalCode.invalid", maxMessage="neswletter.postalCode.invalid")
      */
