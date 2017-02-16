@@ -36,7 +36,8 @@ class TransactionSuccessListener
             return;
         }
 
-        $donation = $this->manager->getRepository(Donation::class)->findOneByUuid($payboxPayload['id']);
+        $id = explode('_', $payboxPayload['id'])[0];
+        $donation = $this->manager->getRepository(Donation::class)->findOneByUuid($id);
 
         if (!$donation) {
             return;

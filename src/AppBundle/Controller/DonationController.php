@@ -83,7 +83,7 @@ class DonationController extends Controller
      */
     public function callbackAction(Request $request)
     {
-        $id = $request->query->get('id');
+        $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
             return $this->redirectToRoute('donation_index');
