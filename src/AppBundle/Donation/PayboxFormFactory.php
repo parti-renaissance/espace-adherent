@@ -3,6 +3,7 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
+use Cocur\Slugify\Slugify;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -12,18 +13,20 @@ class PayboxFormFactory
     private $environment;
     private $requestHandler;
     private $router;
+    private $slugify;
 
-    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router)
+    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, Slugify $slugify)
     {
         $this->environment = $environment;
         $this->requestHandler = $requestHandler;
         $this->router = $router;
+        $this->slugify = $slugify;
     }
 
     public function createPayboxFormForDonation(Donation $donation)
     {
         $parameters = [
-            'PBX_CMD' => $donation->getUuid()->toString(),
+            'PBX_CMD' => $donation->getUuid()->toString().'_'.$this->slugify->slugify($donation->getFullName()),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
             'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',

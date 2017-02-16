@@ -18,6 +18,7 @@
             <argument>%kernel.environment%</argument>
             <argument type="service" id="lexik_paybox.request_handler" />
             <argument type="service" id="router" />
+            <argument type="service" id="sonata.core.slugify.cocur" />
         </service>
 
         <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
