@@ -194,6 +194,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-position: center;
 
     @media (max-height: 1000px) {
         justify-content: flex-start;
@@ -202,6 +203,8 @@
 
     @media (max-width: $mobile) {
         background-color: white;
+        background-position: 0 0;
+        background-size: 100%;
     }
 
     &__header {
