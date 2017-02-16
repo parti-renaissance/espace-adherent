@@ -24,3 +24,7 @@ monolog:
 
         console:
             type:                   console
+
+lexik_paybox:
+    parameters:
+        production:  true
