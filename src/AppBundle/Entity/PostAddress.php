@@ -73,12 +73,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      */
     private $longitude;
 
-    private function __construct(string $country, string $postalCode, string $cityName, string $street, float $latitude = null, $longitude = null)
+    private function __construct(string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, $longitude = null)
     {
-        if (empty($cityName)) {
-            throw new \InvalidArgumentException('The city name cannot be empty.');
-        }
-
         $this->country = $country;
         $this->address = $street;
         $this->postalCode = $postalCode;
@@ -112,7 +108,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     public static function createForeignAddress(
         string $country,
         string $zipCode,
-        string $cityName,
+        ?string $cityName,
         string $street,
         float $latitude = null,
         float $longitude = null

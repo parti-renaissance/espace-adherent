@@ -49,8 +49,8 @@ class DonationRequest
     public $lastName;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration"})
-     * @Assert\Email(message="common.email.invalid", groups={"Registration"})
+     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
      */
     private $emailAddress;
 
