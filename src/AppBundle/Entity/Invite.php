@@ -101,6 +101,11 @@ class Invite
         $this->recaptcha = '';
     }
 
+    public function __toString()
+    {
+        return 'Invitation de '.$this->getSenderFullName().' à '.$this->email;
+    }
+
     public static function createWithCaptcha(string $recaptcha)
     {
         $invite = new self();
