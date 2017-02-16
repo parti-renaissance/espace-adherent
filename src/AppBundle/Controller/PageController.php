@@ -153,15 +153,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/adherer.html")
-     * @Method("GET")
-     */
-    public function legacyAdherentAction()
-    {
-        return $this->render('page/legacy-adherer.html.twig');
-    }
-
-    /**
      * @Route("/bot-testing", name="page_bot_testing")
      * @Method("GET")
      */
