@@ -70,6 +70,14 @@
                         onclick="App.share('email', '{{ committee_event_url|url_encode }}', 'En Marche ! à {{ committee_event.cityName }} le {{ committee_event.beginAt|date('d/m') }}: ')">
                         <i class="fa fa-envelope-o"></i>
                     </li>
+                    <li role="button" arial-label="{{ 'committee.event.show.share.download_ical'|trans }}"
+                        class=""
+                    >
+                        <a href="{{ path('app_committee_event_export_ical', {committee_uuid: committee.uuid, slug: committee_event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
+                            <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                            <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

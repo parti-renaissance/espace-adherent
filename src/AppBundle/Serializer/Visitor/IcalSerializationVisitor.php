@@ -1,0 +1,23 @@
+<?php
+
+namespace AppBundle\Serializer\Visitor;
+
+use JMS\Serializer\GenericSerializationVisitor;
+use Sabre\VObject\Component\VCalendar;
+
+class IcalSerializationVisitor extends GenericSerializationVisitor
+{
+    /**
+     * @return null|string
+     */
+    public function getResult()
+    {
+        if (!$root = $this->getRoot()) {
+            return;
+        }
+
+        $vCalendar = new VCalendar($root);
+
+        return $vCalendar->serialize();
+    }
+}
