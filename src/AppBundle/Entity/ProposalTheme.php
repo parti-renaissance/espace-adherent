@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,7 +36,7 @@ class ProposalTheme
 
     public function __construct(string $name = '', string $color = '000000')
     {
-        $this->name = $name;
+        $this->name = EmojisRemover::remove($name);
         $this->color = $color;
     }
 
@@ -56,7 +57,7 @@ class ProposalTheme
 
     public function setName(string $name): ProposalTheme
     {
-        $this->name = $name;
+        $this->name = EmojisRemover::remove($name);
 
         return $this;
     }

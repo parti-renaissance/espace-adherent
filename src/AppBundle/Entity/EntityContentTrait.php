@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -64,7 +65,7 @@ trait EntityContentTrait
      */
     public function setTitle($title): self
     {
-        $this->title = $title;
+        $this->title = EmojisRemover::remove($title);
 
         return $this;
     }
@@ -104,7 +105,7 @@ trait EntityContentTrait
      */
     public function setDescription($description): self
     {
-        $this->description = $description;
+        $this->description = EmojisRemover::remove($description);
 
         return $this;
     }
@@ -124,7 +125,7 @@ trait EntityContentTrait
      */
     public function setContent($content): self
     {
-        $this->content = $content;
+        $this->content = EmojisRemover::remove($content);
 
         return $this;
     }

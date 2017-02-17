@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -168,7 +169,7 @@ class HomeBlock
      */
     public function setTitle($title): HomeBlock
     {
-        $this->title = $title;
+        $this->title = EmojisRemover::remove($title);
 
         return $this;
     }
@@ -188,7 +189,7 @@ class HomeBlock
      */
     public function setSubtitle($subtitle): HomeBlock
     {
-        $this->subtitle = $subtitle;
+        $this->subtitle = EmojisRemover::remove($subtitle);
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
@@ -96,7 +97,7 @@ class NewsletterSubscription
 
     public function setPostalCode(string $postalCode): NewsletterSubscription
     {
-        $this->postalCode = $postalCode;
+        $this->postalCode = EmojisRemover::remove($postalCode);
 
         return $this;
     }
