@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Je Marche !' %}
+{% block canonical_url url('app_je_marche') %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="content l__wrapper--slim">
+            <h1 class="text--large b__nudge--bottom-small">
+                Je Marche !
+            </h1>
+
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <div class="form__row">
+                {{ form_label(form.type, 'Quelle action avez-vous réalisé ?') }}
+                {{ form_widget(form.type, { attr: { 'class': 'form--full' } }) }}
+                {{ form_errors(form.type) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.convinced, 'Personnes convaincues (une addresse e-mail par ligne)') }}
+                {{ form_widget(form.convinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_errors(form.convinced) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.almostConvinced, 'Personnes quasiment convaincues (une addresse e-mail par ligne)') }}
+                {{ form_widget(form.almostConvinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_errors(form.almostConvinced) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.notConvinced, 'Nombre de personnes pas (encore) convaincues') }}
+                {{ form_widget(form.notConvinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_errors(form.notConvinced) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.reaction, 'Quelle a été la réaction globale des personnes recontrées ?') }}
+                {{ form_widget(form.reaction, { attr: { 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_errors(form.reaction) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.emailAddress, 'Quelle est votre adresse e-mail ?') }}
+                {{ form_widget(form.emailAddress, { attr: { 'class': 'form--full' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+            {% endif %}
+
+            {{ form_rest(form) }}
+
+            <button type="submit">
+                Envoyer
+            </button>
+
+            {{ form_end(form) }}
+        </section>
+    </main>
+{% endblock %}
