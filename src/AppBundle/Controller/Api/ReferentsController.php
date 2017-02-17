@@ -23,59 +23,74 @@ class ReferentsController extends Controller
 
     private static $referents = [
         [
+            'postalCode' => '65000',
+            'name' => 'Frédéric Laval',
+            'coordinates' => [0.070888, 43.228758],
+        ],
+        [
+            'postalCode' => '42000',
+            'name' => 'Christian Soleil',
+            'coordinates' => [4.397309, 45.435549],
+        ],
+        [
+            'postalCode' => '18000',
+            'name' => 'Loïc Kervran',
+            'coordinates' => [2.37736, 47.083994],
+        ],
+        [
+            'postalCode' => '10000',
+            'name' => 'Fabien Lauro',
+            'coordinates' => [4.076463, 48.300452],
+        ],
+        [
             'postalCode' => '95000',
             'name' => 'Mohamed Saou',
-            'coordinates' => [49.048254, 2.047804],
+            'coordinates' => [2.047804, 49.048254],
         ],
         [
             'postalCode' => '89000',
             'name' => 'Patrice José Tampied Azurza',
-            'coordinates' => [47.79466, 3.569805],
+            'coordinates' => [3.569805, 47.79466],
         ],
         [
             'postalCode' => '84000',
             'name' => 'Jean François Césarini',
-            'coordinates' => [43.933313, 4.838738],
+            'coordinates' => [4.838738, 43.933313],
         ],
         [
             'postalCode' => '53000',
             'name' => 'Aurélien Page',
-            'coordinates' => [48.066823, -0.766356],
+            'coordinates' => [-0.766356, 48.066823],
         ],
         [
             'postalCode' => '50000',
             'name' => 'Pierre Henry Debray',
-            'coordinates' => [49.112172, -1.093256],
+            'coordinates' => [-1.093256, 49.112172],
         ],
         [
             'postalCode' => '38000',
             'name' => 'Francis Palombi',
-            'coordinates' => [44.523531, 3.497892],
-        ],
-        [
-            'postalCode' => '38000',
-            'name' => 'Francis Palombi',
-            'coordinates' => [44.523531, 3.497892],
+            'coordinates' => [3.497892, 44.523531],
         ],
         [
             'postalCode' => '23000',
             'name' => 'Patrick Bernard',
-            'coordinates' => [46.1719, 1.871858],
+            'coordinates' => [1.871858, 46.1719],
         ],
         [
             'postalCode' => '15000',
             'name' => 'François Danemans',
-            'coordinates' => [44.928588, 2.44461],
+            'coordinates' => [2.44461, 44.928588],
         ],
         [
             'postalCode' => '07000',
             'name' => 'Michel Coste',
-            'coordinates' => [44.735372, 4.600135],
+            'coordinates' => [4.600135, 44.735372],
         ],
         [
             'postalCode' => '03000',
             'name' => 'Pierre Thépot',
-            'coordinates' => [46.568577, 3.335909],
+            'coordinates' => [3.335909, 46.568577],
         ],
         [
             'postalCode' => '81000',
@@ -121,11 +136,6 @@ class ReferentsController extends Controller
             'postalCode' => '90000',
             'name' => 'Bruno Kern',
             'coordinates' => [6.8667, 47.6333],
-        ],
-        [
-            'postalCode' => '973000',
-            'name' => 'Jonas Océan',
-            'coordinates' => [-52.325249, 4.941459],
         ],
         [
             'postalCode' => '54000',
@@ -188,11 +198,6 @@ class ReferentsController extends Controller
             'coordinates' => [0.616995, 44.202338],
         ],
         [
-            'postalCode' => '04000',
-            'name' => 'Helne Verny',
-            'coordinates' => [-0.4971, 43.8902],
-        ],
-        [
             'postalCode' => '75009,75010',
             'name' => 'Celine Calvez',
             'coordinates' => [2.348584, 48.870625],
@@ -251,11 +256,6 @@ class ReferentsController extends Controller
             'postalCode' => '32000',
             'name' => 'Sylvie Theye',
             'coordinates' => [0.5833, 43.65],
-        ],
-        [
-            'postalCode' => '47000',
-            'name' => 'Sebastien Maurel',
-            'coordinates' => [1.435434, 44.446095],
         ],
         [
             'postalCode' => '88000',
