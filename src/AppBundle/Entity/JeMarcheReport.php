@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -214,6 +215,6 @@ class JeMarcheReport
 
     public function setReaction(string $reaction)
     {
-        $this->reaction = $reaction;
+        $this->reaction = EmojisRemover::remove($reaction);
     }
 }
