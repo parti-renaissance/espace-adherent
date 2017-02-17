@@ -18,7 +18,7 @@ class JeMarcheReport
     const TYPE_WALK = 'la-marche';
     const TYPE_DOOR_TO_DOOR = 'porte-a-porte';
     const TYPE_DINNER = 'diner';
-    const TYPE_CORRESPONDENCE = 'correspondance';
+    const TYPE_CONVERSATION = 'conversation';
     const TYPE_WORKSHOP = 'atelier';
     const TYPE_ACTION = 'action-qui-me-ressemble';
 
@@ -126,7 +126,7 @@ class JeMarcheReport
             self::TYPE_WALK,
             self::TYPE_DOOR_TO_DOOR,
             self::TYPE_DINNER,
-            self::TYPE_CORRESPONDENCE,
+            self::TYPE_CONVERSATION,
             self::TYPE_WORKSHOP,
             self::TYPE_ACTION,
         ];

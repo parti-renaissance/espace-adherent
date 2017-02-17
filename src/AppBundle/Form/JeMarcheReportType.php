@@ -25,7 +25,7 @@ class JeMarcheReportType extends AbstractType
                     'J\'ai organisé une marche' => JeMarcheReport::TYPE_WALK,
                     'J\'ai effectué du porte a porte' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
                     'J\'ai organisé un diner' => JeMarcheReport::TYPE_DINNER,
-                    'J\'ai démarré une correspondance' => JeMarcheReport::TYPE_CORRESPONDENCE,
+                    'J\'ai discuté avec quelqu\'un' => JeMarcheReport::TYPE_CONVERSATION,
                     'J\'ai organisé un atelier du projet' => JeMarcheReport::TYPE_WORKSHOP,
                     'J\'ai effectué une action qui me ressemble' => JeMarcheReport::TYPE_ACTION,
                 ],
