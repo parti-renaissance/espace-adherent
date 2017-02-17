@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
@@ -151,7 +152,7 @@ class Invite
      */
     public function setLastName($lastName): Invite
     {
-        $this->lastName = $lastName;
+        $this->lastName = EmojisRemover::remove($lastName);
 
         return $this;
     }
@@ -171,7 +172,7 @@ class Invite
      */
     public function setFirstName($firstName): Invite
     {
-        $this->firstName = $firstName;
+        $this->firstName = EmojisRemover::remove($firstName);
 
         return $this;
     }
@@ -211,7 +212,7 @@ class Invite
      */
     public function setMessage($message): Invite
     {
-        $this->message = $message;
+        $this->message = EmojisRemover::remove($message);
 
         return $this;
     }

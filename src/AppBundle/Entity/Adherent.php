@@ -8,6 +8,7 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -141,8 +142,8 @@ class Adherent implements UserInterface, GeoPointInterface
         $this->uuid = $uuid;
         $this->password = $password;
         $this->gender = $gender;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->firstName = EmojisRemover::remove($firstName);
+        $this->lastName = EmojisRemover::remove($lastName);
         $this->emailAddress = $emailAddress;
         $this->birthdate = $birthdate;
         $this->position = $position;

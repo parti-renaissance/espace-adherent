@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,7 +50,7 @@ class ArticleCategory
 
     public function __construct(string $name = '', string $slug = '', int $position = 1)
     {
-        $this->name = $name;
+        $this->name = EmojisRemover::remove($name);
         $this->slug = $slug;
         $this->position = $position;
     }

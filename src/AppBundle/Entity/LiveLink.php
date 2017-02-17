@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -86,7 +87,7 @@ class LiveLink
 
     public function setTitle($title): LiveLink
     {
-        $this->title = $title;
+        $this->title = EmojisRemover::remove($title);
 
         return $this;
     }

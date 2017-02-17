@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Exception\InitializedEntityException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -85,8 +86,8 @@ class Donation implements GeoPointInterface
     ) {
         $this->amount = $amount;
         $this->gender = $gender;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->firstName = EmojisRemover::remove($firstName);
+        $this->lastName = EmojisRemover::remove($lastName);
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->phone = $phone;

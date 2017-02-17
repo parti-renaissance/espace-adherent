@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\UuidInterface;
@@ -113,7 +114,7 @@ class CommitteeEvent implements GeoPointInterface
         $this->setName($name);
         $this->slug = $slug;
         $this->category = $category;
-        $this->description = $description;
+        $this->description = EmojisRemover::remove($description);
         $this->postAddress = $address;
         $this->capacity = $capacity;
         $this->participantsCount = $participantsCount;
@@ -213,7 +214,7 @@ class CommitteeEvent implements GeoPointInterface
 
     private function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = EmojisRemover::remove($name);
         $this->canonicalName = static::canonicalize($name);
     }
 

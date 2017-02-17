@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Exception\CommitteeException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Utils\EmojisRemover;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -154,7 +155,7 @@ class Committee implements GeoPointInterface
         $this->createdBy = $creator;
         $this->setName($name);
         $this->slug = $slug;
-        $this->description = $description;
+        $this->description = EmojisRemover::remove($description);
         $this->postAddress = $address;
         $this->status = $status;
         $this->membersCounts = $membersCount;
@@ -317,7 +318,7 @@ class Committee implements GeoPointInterface
 
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = EmojisRemover::remove($name);
         $this->canonicalName = static::canonicalize($name);
     }
 
@@ -390,7 +391,7 @@ class Committee implements GeoPointInterface
     public function update(string $name, string $description, PostAddress $address)
     {
         $this->setName($name);
-        $this->description = $description;
+        $this->description = EmojisRemover::remove($description);
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
