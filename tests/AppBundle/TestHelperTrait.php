@@ -14,6 +14,7 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Invite;
+use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
@@ -28,6 +29,7 @@ use AppBundle\Repository\CommitteeEventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\InvitationRepository;
+use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -119,6 +121,11 @@ trait TestHelperTrait
     public function getNewsletterSubscriptionRepository(): NewsletterSubscriptionRepository
     {
         return $this->getRepository(NewsletterSubscription::class);
+    }
+
+    public function getJeMarcheReportRepository(): JeMarcheReportRepository
+    {
+        return $this->getRepository(JeMarcheReport::class);
     }
 
     public function getMailjetEmailRepository(): MailjetEmailRepository

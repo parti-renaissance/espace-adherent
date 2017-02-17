@@ -99,3 +99,9 @@ invitation.email.was_invited_recently: Cette personne a déjà été invitée r�
 #
 referent.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
+
+#
+# Je Marche
+#
+jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.
+jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre positif ou zéro.

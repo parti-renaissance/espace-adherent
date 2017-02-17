@@ -198,5 +198,14 @@
             <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Campagne" />
         </service>
 
+        <!-- JeMarcheReport -->
+        <service id="app.admin.je_marche" class="AppBundle\Admin\JeMarcheReportAdmin">
+            <argument />
+            <argument>AppBundle\Entity\JeMarcheReport</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Campagne" />
+        </service>
+
     </services>
 </container>
