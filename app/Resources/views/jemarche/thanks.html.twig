@@ -4,17 +4,22 @@
 {% block canonical_url url('app_je_marche') %}
 
 {% block content %}
-    <main>
-        <section class="content l__wrapper--slim">
-            <header class="space--60-0">
+    <main class="content je-marche">
+        <section>
+            <header class="space--60-0 l__wrapper--slim text--center">
                 <h1 class="text--large b__nudge--bottom-small">
                     Je Marche !
                 </h1>
+                <h2>Je choisis mes actions pour faire gagner le camp du progrès.</h2>
             </header>
+            <hr class="l__wrapper" />
+        </section>
 
-            <p>
-                Merci !
-            </p>
+        <section class="l__wrapper--narrow space--60-0 text--center">
+            <h2>Merci !</h2>
+            <div class="space--60-0">
+                <a class="btn btn--blue btn--medium" href="/je-marche">Refaire une action !</a>
+            </div>
         </section>
     </main>
 {% endblock %}
