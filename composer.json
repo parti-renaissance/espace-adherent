@@ -52,7 +52,8 @@
         "danhunsaker/flysystem-redis": "^1.0",
         "snc/redis-bundle": "^2.0",
         "beberlei/DoctrineExtensions": "^1.0",
-        "knplabs/knp-time-bundle": "^1.7"
+        "knplabs/knp-time-bundle": "^1.7",
+        "tackk/cartographer": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

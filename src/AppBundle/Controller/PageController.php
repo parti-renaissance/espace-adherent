@@ -84,6 +84,8 @@ class PageController extends Controller
      */
     public function emmanuelMacronMonAgendaAction()
     {
+        // TODO Enable when Open Agenda is ready
+        throw $this->createNotFoundException();
         return $this->render('page/emmanuel-macron/mon-agenda.html.twig');
     }
 

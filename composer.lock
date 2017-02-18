@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "971476be55da4d1a8fc82280c70c5827",
+    "content-hash": "5d4db931490ee0fe8d694b6f1edab200",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -5115,6 +5115,53 @@
                 "framework"
             ],
             "time": "2017-01-12T21:36:55+00:00"
+        },
+        {
+            "name": "tackk/cartographer",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tackk/cartographer.git",
+                "reference": "9f938498f98c620148370c1b69b84f9044de98b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tackk/cartographer/zipball/9f938498f98c620148370c1b69b84f9044de98b0",
+                "reference": "9f938498f98c620148370c1b69b84f9044de98b0",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "1.0.*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Tackk\\Cartographer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dan Horrigan",
+                    "email": "dh@tackk.com"
+                }
+            ],
+            "description": "A PHP sitemap generation tool.",
+            "keywords": [
+                "Sitemap",
+                "generator"
+            ],
+            "time": "2015-05-01T18:41:15+00:00"
         },
         {
             "name": "twig/extensions",
