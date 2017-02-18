@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,6 +32,7 @@ class JeMarcheReportType extends AbstractType
                 ],
             ])
             ->add('emailAddress', EmailType::class)
+            ->add('postalCode', TextType::class)
             ->add($this->createEmailsListField($builder, 'convinced'))
             ->add($this->createEmailsListField($builder, 'almostConvinced'))
             ->add('notConvinced', IntegerType::class)

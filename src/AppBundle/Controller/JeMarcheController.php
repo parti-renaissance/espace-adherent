@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class JeMarcheController extends Controller
 {
     /**
-     * @Route("/je-marche", name="app_je_marche")
+     * @Route("/jemarche", name="app_je_marche")
      * @Method("GET|POST")
      */
     public function indexAction(Request $request): Response
@@ -37,11 +37,20 @@ class JeMarcheController extends Controller
     }
 
     /**
-     * @Route("/je-marche/merci", name="app_je_marche_thanks")
+     * @Route("/jemarche/merci", name="app_je_marche_thanks")
      * @Method("GET")
      */
     public function thanksAction(): Response
     {
         return $this->render('jemarche/thanks.html.twig');
+    }
+
+    /**
+     * @Route("/je-marche", name="app_je_marche_redirect")
+     * @Method("GET")
+     */
+    public function redirectAction(): Response
+    {
+        return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 }
