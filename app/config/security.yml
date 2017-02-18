@@ -1,8 +1,13 @@
 security:
+    erase_credentials: false
 
     encoders:
         AppBundle\Entity\Administrator: bcrypt
         AppBundle\Entity\Adherent: bcrypt
+        legacy_encoder:
+            algorithm:        sha1
+            encode_as_base64: false
+            iterations:       1
 
     role_hierarchy:
         ROLE_WRITER:
