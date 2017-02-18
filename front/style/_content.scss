@@ -654,8 +654,11 @@
 
             li {
                 width: 32%;
-                height: 75px;
-                margin-bottom: 10px;
+                height: 105px;
+
+                &:nth-child(-n+3) {
+                    margin-bottom: 10px;
+                }
 
                 @media (max-width: $tablet) {
                     width: auto;
@@ -701,10 +704,14 @@
             padding: 30px;
             box-sizing: border-box;
             background: $gray--lighter;
-            align-self: stretch;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            height: 220px;
 
             @media (max-width: $tablet) {
                 width: 100%;
+                height: auto;
             }
 
             h4 {
