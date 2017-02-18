@@ -91,11 +91,18 @@
         img {
             max-width: 100%;
         }
+
+        @media (max-width: $tablet) {
+            background: $gray--lighter;
+            padding: 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
     }
 
     &__hosts {
         li {
-            padding: 10px 0;
+            padding: 10px 0 0;
         }
     }
 
@@ -126,6 +133,13 @@
             display: flex;
             justify-content: space-between;
         }
+
+        @media (max-width: $tablet) {
+            h5,
+            img {
+                display: none;
+            }
+        }
     }
 
     &__social {
@@ -144,7 +158,7 @@
     &-event {
         background: $gray--lighter;
         height: 200px;
-        width: 750px;
+        max-width: 750px;
         margin: 0 auto;
         display: flex;
         margin-top: 20px;
