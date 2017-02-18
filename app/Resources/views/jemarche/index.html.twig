@@ -17,7 +17,7 @@
             for (i = 0; i < x.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" action__menu__item--active", "");
             }
-            document.getElementById(actionName).style.display = "block";
+            document.getElementById(actionName).style.display = "flex";
             event.currentTarget.className += " action__menu__item--active";
         }
     </script>
@@ -39,12 +39,12 @@
         <article>
             <div class="action green">
                 <p>Je m'inscris à une action proposée près de chez moi</p>
-                <a class="pink" href="#">Voir les actions</a>
+                <a class="pink" href="{{ path('app_referent_users') }}">Voir les actions</a>
             </div>
         </article>
     </section>
 
-    <section class="l__wrapper--medium">
+    <section class="l__wrapper--medium space--60-0">
         <h1>Je choisis de mener une action de ma propre initiative</h1>
         <p class="text--body">Sélectionnez l'une des 6 actions que vous pouvez mener en toute autonomie.</p>
 
