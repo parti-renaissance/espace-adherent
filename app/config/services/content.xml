@@ -25,5 +25,12 @@
         <!-- Proposal factory -->
         <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
 
+        <!-- Sitemap factory -->
+        <service id="app.content.sitemap_factory" class="AppBundle\Sitemap\SitemapFactory">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="cache.app" />
+        </service>
+
     </services>
 </container>

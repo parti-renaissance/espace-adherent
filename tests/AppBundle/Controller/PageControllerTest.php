@@ -35,7 +35,8 @@ class PageControllerTest extends SqliteWebTestCase
         return [
             ['/emmanuel-macron'],
             ['/emmanuel-macron/revolution'],
-            ['/emmanuel-macron/mon-agenda'],
+            // TODO Enable when Open Agenda is ready
+            //['/emmanuel-macron/mon-agenda'],
             ['/emmanuel-macron/le-programme'],
             // TODO Enable when the proposals are ready
             //['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],

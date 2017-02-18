@@ -40,6 +40,26 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
     }
 
+    /**
+     * @dataProvider provideSitemaps
+     * @group functionnal
+     */
+    public function testSitemaps($page)
+    {
+        $this->client->request(Request::METHOD_GET, $page);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+    }
+
+    public function provideSitemaps()
+    {
+        return [
+            ['/sitemap.xml'],
+            ['/sitemap_main.xml'],
+            ['/sitemap_content.xml'],
+        ];
+    }
+
     protected function setUp()
     {
         parent::setUp();

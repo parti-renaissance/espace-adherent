@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tackk\Cartographer\SitemapIndex;
 
 class HomeController extends Controller
 {
@@ -30,5 +32,44 @@ class HomeController extends Controller
     public function healthAction()
     {
         return new Response('Healthy');
+    }
+
+    /**
+     * @Route("/sitemap.xml", name="app_sitemap_index")
+     * @Method("GET")
+     */
+    public function sitemapIndexAction()
+    {
+        $sitemapIndex = new SitemapIndex();
+        $sitemapIndex->add($this->generateUrl('app_sitemap_main', [], UrlGeneratorInterface::ABSOLUTE_URL), null);
+        $sitemapIndex->add($this->generateUrl('app_sitemap_content', [], UrlGeneratorInterface::ABSOLUTE_URL), null);
+
+        return $this->createXmlResponse((string) $sitemapIndex);
+    }
+
+    /**
+     * @Route("/sitemap_main.xml", name="app_sitemap_main")
+     * @Method("GET")
+     */
+    public function sitemapMainAction()
+    {
+        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createMainSitemap());
+    }
+
+    /**
+     * @Route("/sitemap_content.xml", name="app_sitemap_content")
+     * @Method("GET")
+     */
+    public function sitemapContentAction()
+    {
+        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createContentSitemap());
+    }
+
+    private function createXmlResponse(string $content)
+    {
+        $response = new Response($content);
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
     }
 }

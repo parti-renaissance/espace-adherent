@@ -66,4 +66,19 @@ class ArticleRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return Article[]
+     */
+    public function findAllPublished()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'm', 'c')
+            ->leftJoin('a.media', 'm')
+            ->leftJoin('a.category', 'c')
+            ->andWhere('a.published = :published')
+            ->setParameter('published', true)
+            ->getQuery()
+            ->getResult();
+    }
 }
