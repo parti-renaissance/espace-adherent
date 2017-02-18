@@ -100,13 +100,13 @@ class CommitteeEventController extends Controller
      * @Method("GET")
      * @Entity("event", expr="repository.findOneBySlug(slug)")
      */
-    public function exportIcalAction(CommitteeEvent $committeeEvent) : Response
+    public function exportIcalAction(CommitteeEvent $committeeEvent): Response
     {
         return new Response(
             $this->get('jms_serializer')->serialize($committeeEvent, 'ical'),
             Response::HTTP_OK, [
                 'Content-Type' => 'text/calendar',
-                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename=' . $committeeEvent->getSlug().'.ics',
+                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$committeeEvent->getSlug().'.ics',
             ]
         );
     }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace AppBundle\Committee\Serializer;
 
 use AppBundle\Entity\CommitteeEvent;
@@ -13,9 +11,9 @@ use JMS\Serializer\SerializationContext;
 class CommitteeEventICalHandler implements SubscribingHandlerInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public static function getSubscribingMethods() : array
+    public static function getSubscribingMethods(): array
     {
         return [
             [
@@ -23,7 +21,7 @@ class CommitteeEventICalHandler implements SubscribingHandlerInterface
                 'format' => 'ical',
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
                 'method' => 'serialize',
-            ]
+            ],
         ];
     }
 
@@ -33,7 +31,7 @@ class CommitteeEventICalHandler implements SubscribingHandlerInterface
      * @param array                    $type
      * @param SerializationContext     $context
      */
-    public function serialize(IcalSerializationVisitor $visitor, CommitteeEvent $committeeEvent, array $type, SerializationContext $context) : void
+    public function serialize(IcalSerializationVisitor $visitor, CommitteeEvent $committeeEvent, array $type, SerializationContext $context): void
     {
         $eventData = [
             'VEVENT' => [
@@ -42,7 +40,7 @@ class CommitteeEventICalHandler implements SubscribingHandlerInterface
                 'DESCRIPTION' => $committeeEvent->getDescription(),
                 'DTSTART' => $committeeEvent->getBeginAt()->format(\DateTime::W3C),
                 'DTEND' => $committeeEvent->getFinishAt()->format(\DateTime::W3C),
-                'LOCATION' => $committeeEvent->getInlineFormattedAddress()
+                'LOCATION' => $committeeEvent->getInlineFormattedAddress(),
             ],
         ];
 

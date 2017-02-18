@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Serializer\Visitor;
 
 use AppBundle\Serializer\Visitor\IcalSerializationVisitor;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 
 class IcalSerializationVisitorTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,13 +15,13 @@ class IcalSerializationVisitorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->propertyNamingStrategy = $this->createMock('JMS\Serializer\Naming\PropertyNamingStrategyInterface');
+        $this->propertyNamingStrategy = $this->createMock(PropertyNamingStrategyInterface::class);
 
         $this->visitor = new IcalSerializationVisitor($this->propertyNamingStrategy);
     }
 
     /**
-     * Ensure a NULL value is returned when no data has been provided
+     * Ensure a NULL value is returned when no data has been provided.
      */
     public function testGetResultEmptyData()
     {
@@ -28,7 +29,7 @@ class IcalSerializationVisitorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Ensure the output is a string
+     * Ensure the output is a string.
      *
      * TODO Check generated content
      */
