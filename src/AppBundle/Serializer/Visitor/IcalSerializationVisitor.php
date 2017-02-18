@@ -16,8 +16,6 @@ class IcalSerializationVisitor extends GenericSerializationVisitor
             return;
         }
 
-        $vCalendar = new VCalendar($root);
-
-        return $vCalendar->serialize();
+        return (new VCalendar($root))->serialize();
     }
 }
