@@ -51,6 +51,21 @@ class JeMarcheReport
     private $emailAddress = '';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=11)
+     *
+     * @Assert\NotBlank(message="jemarche.postal_code.not_blank")
+     * @Assert\Length(
+     *     min=2,
+     *     max=11,
+     *     minMessage="jemarche.postal_code.invalid",
+     *     maxMessage="jemarche.postal_code.invalid"
+     * )
+     */
+    private $postalCode = '';
+
+    /**
      * @var array
      *
      * @ORM\Column(type="simple_array")
@@ -73,13 +88,13 @@ class JeMarcheReport
     private $almostConvinced = [];
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(type="smallint")
      *
      * @Assert\GreaterThanOrEqual(value=0, message="jemarche.not_conviced.greater_than_or_equal_0")
      */
-    private $notConvinced = 0;
+    private $notConvinced;
 
     /**
      * @var string
@@ -158,6 +173,16 @@ class JeMarcheReport
         $this->emailAddress = $emailAddress;
     }
 
+    public function getPostalCode(): string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(string $postalCode)
+    {
+        $this->postalCode = $postalCode;
+    }
+
     public function getConvinced(): array
     {
         return $this->convinced;
@@ -198,12 +223,12 @@ class JeMarcheReport
         $this->almostConvinced = $almostConvinced;
     }
 
-    public function getNotConvinced(): int
+    public function getNotConvinced(): ?int
     {
         return $this->notConvinced;
     }
 
-    public function setNotConvinced(int $notConvinced)
+    public function setNotConvinced(?int $notConvinced)
     {
         $this->notConvinced = $notConvinced;
     }

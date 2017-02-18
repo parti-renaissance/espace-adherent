@@ -19,6 +19,9 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Organisateur',
             ])
+            ->add('postalCode', null, [
+                'label' => 'Code postal',
+            ])
             ->add('convincedAsString', null, [
                 'label' => 'Convaincus',
             ])
@@ -44,6 +47,9 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Organisateur',
+            ])
+            ->add('postalCode', null, [
+                'label' => 'Code postal',
             ]);
     }
 
@@ -55,6 +61,9 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Organisateur',
+            ])
+            ->add('postalCode', null, [
+                'label' => 'Code postal',
             ])
             ->add('countConvinced', NumberType::class, [
                 'label' => 'Convaincus',

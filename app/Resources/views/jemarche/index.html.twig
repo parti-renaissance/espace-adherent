@@ -5,21 +5,10 @@
 
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js"></script>
-
     <script type="text/javascript">
-        function openAction(actionName) {
-            var i;
-            var x = document.getElementsByClassName("action__item");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("action__menu__item");
-            for (i = 0; i < x.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" action__menu__item--active", "");
-            }
-            document.getElementById(actionName).style.display = "flex";
-            event.currentTarget.className += " action__menu__item--active";
-        }
+        Kernel.onLoad(function() {
+            App.runJeMarche();
+        });
     </script>
 {% endblock %}
 
@@ -113,6 +102,13 @@
             </div>
 
             <div class="form__row">
+                {{ form_label(form.postalCode, 'Où l\'avez-vous réalisée (code postal) ?') }}
+                <br />
+                {{ form_widget(form.postalCode, { attr: { 'class': 'b__nudge--top-10', 'placeholder': 'Code postal' } }) }}
+                {{ form_errors(form.postalCode) }}
+            </div>
+
+            <div class="form__row">
                 {{ form_label(form.convinced, 'Personnes convaincues') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite etre tenu informe de la campagne."</div>
                 {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une addresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
@@ -129,7 +125,7 @@
             <div class="form__row">
                 {{ form_label(form.notConvinced, 'Nombre de personnes pas (encore) convaincues') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne voteront pas pour lui.</div>
-                {{ form_widget(form.notConvinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_widget(form.notConvinced) }}
                 {{ form_errors(form.notConvinced) }}
             </div>
 

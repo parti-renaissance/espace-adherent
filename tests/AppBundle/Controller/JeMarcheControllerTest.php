@@ -28,13 +28,14 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/je-marche');
+        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_je_marche]')->form([
             'g-recaptcha-response' => 'dummy',
             'app_je_marche[type]' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
+            'app_je_marche[postalCode]' => '60200',
             'app_je_marche[convinced]' => "abc@en-marche.fr\ndef@en-marche.fr\nghi@en-marche.fr",
             'app_je_marche[almostConvinced]' => "xyz@en-marche.fr\ntuv@en-marche.fr",
             'app_je_marche[notConvinced]' => '4',
@@ -42,13 +43,14 @@ class JeMarcheControllerTest extends SqliteWebTestCase
             'app_je_marche[emailAddress]' => 'foobar@en-marche.fr',
         ]));
 
-        $this->assertClientIsRedirectedTo('/je-marche/merci', $this->client);
+        $this->assertClientIsRedirectedTo('/jemarche/merci', $this->client);
 
         // Report should have been saved
         /* @var JeMarcheReport $report */
         $this->assertCount(1, $reports = $this->jeMarcheReportRepostitory->findAll());
         $this->assertInstanceOf(JeMarcheReport::class, $report = $reports[0]);
         $this->assertSame(JeMarcheReport::TYPE_DOOR_TO_DOOR, $report->getType());
+        $this->assertSame('60200', $report->getPostalCode());
         $this->assertSame('foobar@en-marche.fr', $report->getEmailAddress());
         $this->assertSame(4, $report->getNotConvinced());
         $this->assertSame(['abc@en-marche.fr', 'def@en-marche.fr', 'ghi@en-marche.fr'], $report->getConvinced());

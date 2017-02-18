@@ -105,3 +105,5 @@ referent.message.max_length: Le message doit contenir moins de {{ limit }} carac
 #
 jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.
 jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre positif ou zéro.
+jemarche.postal_code.not_blank: Vous devez entrer un code postal.
+jemarche.postal_code.invalid: Ce code postal n'est pas valide.
