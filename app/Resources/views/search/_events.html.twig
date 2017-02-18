@@ -30,6 +30,9 @@
                 </div>
             </div>
 
-            <img class="search-map" src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}">
+            <img class="search-map"
+                 src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
+                 title="Carte d'accès à l'événement {{ event.name }}"
+                 alt="{{ item.event.inlineFormattedAddress }}" />
         </div>
 {% endfor %}

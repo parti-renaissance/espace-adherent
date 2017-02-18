@@ -32,7 +32,9 @@
             {{ include('components/location-pin.html.twig') }}
             Localisation
         </h5>
-        <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}" alt="Plan" />
+        <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}"
+             title="Carte d'accès au comité {{ committee.name }}"
+             alt="{{ committee.inlineFormattedAddress }}" />
     </div>
     <div class="committee__card">
         <h5>Suivez notre comité</h5>

@@ -45,7 +45,9 @@
 
         {% if proposal.media and proposal.displayMedia %}
         <figure class="fullscreen">
-            <img src="{{ media_asset(proposal.media, {'q': 70}) }}">
+            <img src="{{ media_asset(proposal.media, {'q': 70}) }}"
+                 title="{{ proposal.title }}"
+                 alt="{{ proposal.media.name }}" />
         </figure>
         {% endif %}
 

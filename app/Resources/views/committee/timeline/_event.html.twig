@@ -3,9 +3,10 @@
 <div class="committee-event">
     <div class="committee-event-map">
         <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"
+             title="Carte d'accès à l'événement {{ item.event.name }}"
              alt="{{ item.event.inlineFormattedAddress }}"
              width="200"
-             height="200"/>
+             height="200" />
     </div>
     <div class="committee-event-details">
         <div>
