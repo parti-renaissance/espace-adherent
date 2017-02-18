@@ -5,52 +5,143 @@
 
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <script type="text/javascript">
+        function openAction(actionName) {
+            var i;
+            var x = document.getElementsByClassName("action__item");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("action__menu__item");
+            for (i = 0; i < x.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" action__menu__item--active", "");
+            }
+            document.getElementById(actionName).style.display = "block";
+            event.currentTarget.className += " action__menu__item--active";
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="content l__wrapper--slim">
+<main class="content je-marche">
+    <section>
+        <header class="space--60-0 l__wrapper--slim text--center">
             <h1 class="text--large b__nudge--bottom-small">
                 Je Marche !
             </h1>
+            <h2>Je choisis mes actions pour faire gagner le camp du progrès.</h2>
+        </header>
+        <hr class="l__wrapper" />
+    </section>
 
+    <section class="l__wrapper--narrow space--30-0">
+        <article>
+            <div class="action green">
+                <p>Je m'inscris à une action proposée près de chez moi</p>
+                <a class="pink" href="#">Voir les actions</a>
+            </div>
+        </article>
+    </section>
+
+    <section class="l__wrapper--medium">
+        <h1>Je choisis de mener une action de ma propre initiative</h1>
+        <p class="text--body">Sélectionnez l'une des 6 actions que vous pouvez mener en toute autonomie.</p>
+
+        <div class="action__items l__row l__row--h-stretch l__row--top l__tablet--col">
+            <ul class="action__menu">
+                <li><a class="action__menu__item action__menu__item--active" href="javascript:void(0)" onclick="openAction('action__one')">Le porte-à-porte</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__two')">L'atelier</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__three')">La marche</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__four')">La conversation</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__five')">L'action qui vous ressemble</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__six')">Le dîner</a></li>
+            </ul>
+
+            <div id="action__one" class="action__item">
+              <h4>Le porte à porte</h4>
+              <p>Le porte-à-porte, c’est pour nous le moyen le plus efficace  d’aller au-devant des citoyens et en particulier de ceux qui habituellement ne donnent pas de la voix. Et pour y parvenir, le maillon clé, c’est vous !</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-porte-a-porte.pdf">Télécharger le guide de l'action</a>
+            </div>
+
+            <div id="action__two" class="action__item" style="display:none">
+              <h4>L'atelier</h4>
+              <p>Organisez des ateliers pour débattre sur des thématiques du  projet d’Emmanuel MACRON. Ouvert à tous, ces ateliers sont un temps d’écoute, de partage et de conviction autour des sujets que vous aurez choisis.</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-atelier.pdf">Télécharger le guide de l'action</a>
+            </div>
+
+            <div id="action__three" class="action__item" style="display:none">
+              <h4>La Marche</h4>
+              <p>Marcher à la rencontre de nos concitoyens est un acte fondateur de notre mouvement. En abordant les passants dans la rue et en vous rendant chez les commerçants de votre quartier, vous créez un moment d’échange original sur les raisons de  voter pour Emmanuel MACRON.</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-marche.pdf">Télécharger le guide de l'action</a>
+            </div>
+
+            <div id="action__four" class="action__item" style="display:none">
+              <h4>La conversation</h4>
+              <p>Agir c’est d’abord convaincre nos proches, nos amis, nos collègues, notre famille de voter Emmanuel MACRON en leur parlant de sujets qui les intéressent. Une simple conversation, un appel ou un email peuvent suffire !</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-conversation.pdf">Télécharger le guide de l'action</a>
+            </div>
+
+            <div id="action__five" class="action__item" style="display:none">
+              <h4>L'action qui vous ressemble</h4>
+              <p>Pour  cela, nous vous invitons à imaginer et réaliser votre propre action en rejoignant ou en organisant un événement citoyen, solidaire, écologique, sportif ou culturel !</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-action.pdf">Télécharger le guide de l'action</a>
+            </div>
+
+            <div id="action__six" class="action__item" style="display:none">
+              <h4>Le dîner</h4>
+              <p>Nous vous invitons à organiser un moment convivial  avec vos proches, comme un dîner, un apéritif ou un thé, pour parler de la  présidentielle, écouter leurs préoccupations et partager vos convictions. Quoi  de mieux que de convaincre autour d’un délicieux repas ?</p>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-diner.pdf">Télécharger le guide de l'action</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="l__wrapper--medium space--60-0">
+        <h1>J'ai récupéré des emails suite à mon action</h1>
+        <p class="text--body">Saisissez les emails des personnes rencontrées souhaitant recevoir la lettre d'Emmanuel Macron.</p>
+
+
+        <div class="text--body">
             {{ form_start(form) }}
 
             {{ form_errors(form) }}
 
             <div class="form__row">
                 {{ form_label(form.type, 'Quelle action avez-vous réalisé ?') }}
-                {{ form_widget(form.type, { attr: { 'class': 'form--full' } }) }}
+                {{ form_widget(form.type, { attr: { 'class': 'b__nudge--top-10 form--full' } }) }}
                 {{ form_errors(form.type) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.convinced, 'Personnes convaincues (une addresse e-mail par ligne)') }}
-                {{ form_widget(form.convinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_label(form.convinced, 'Personnes convaincues') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite etre tenu informe de la campagne."</div>
+                {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une addresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.convinced) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.almostConvinced, 'Personnes quasiment convaincues (une addresse e-mail par ligne)') }}
-                {{ form_widget(form.almostConvinced, { attr: { 'class': 'form--full' } }) }}
+                {{ form_label(form.almostConvinced, 'Personnes encore indécises mais intéréssées') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter, je souhaite en savoir plus sur Emmanuel Macron."</div>
+                {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une addresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.almostConvinced) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(form.notConvinced, 'Nombre de personnes pas (encore) convaincues') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne voteront pas pour lui.</div>
                 {{ form_widget(form.notConvinced, { attr: { 'class': 'form--full' } }) }}
                 {{ form_errors(form.notConvinced) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.reaction, 'Quelle a été la réaction globale des personnes recontrées ?') }}
-                {{ form_widget(form.reaction, { attr: { 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_label(form.reaction, 'Réaction des personnes recontrées') }}
+                {{ form_widget(form.reaction, { attr: { placeholder: 'Décrivez ici les réactions des personnes avec lesquelles vous avez échangé', 'class': 'b__nudge--top-10 form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.reaction) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.emailAddress, 'Quelle est votre adresse e-mail ?') }}
-                {{ form_widget(form.emailAddress, { attr: { 'class': 'form--full' } }) }}
+                {{ form_label(form.emailAddress, 'Votre email') }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre email', 'class': 'b__nudge--top-10 form--full' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 
@@ -61,11 +152,12 @@
 
             {{ form_rest(form) }}
 
-            <button type="submit">
-                Envoyer
+            <button type="submit" class="b__nudge--top btn btn--blue">
+                J'envoie le rapport
             </button>
 
             {{ form_end(form) }}
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 {% endblock %}
