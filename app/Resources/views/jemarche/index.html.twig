@@ -28,7 +28,7 @@
     <section>
         <header class="space--60-0 l__wrapper--slim text--center">
             <h1 class="text--large b__nudge--bottom-small">
-                Je Marche !
+                {{ include('components/je-marche.html.twig') }}
             </h1>
             <h2>Je choisis mes actions pour faire gagner le camp du progrès.</h2>
         </header>
@@ -38,7 +38,7 @@
     <section class="l__wrapper--narrow space--30-0">
         <article>
             <div class="action green">
-                <p>Je m'inscris à une action proposée près de chez moi</p>
+                <p>Je m'inscris à une action collective proposée près de chez moi</p>
                 <a class="pink" href="{{ enable_platform ? path('app_search_events') : url_legacy }}">Voir les actions</a>
             </div>
         </article>
