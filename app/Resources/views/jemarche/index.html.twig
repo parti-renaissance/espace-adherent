@@ -39,7 +39,7 @@
         <article>
             <div class="action green">
                 <p>Je m'inscris à une action proposée près de chez moi</p>
-                <a class="pink" href="{{ path('app_referent_users') }}">Voir les actions</a>
+                <a class="pink" href="{{ enable_platform ? (path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login')) : url_legacy }}">Voir les actions</a>
             </div>
         </article>
     </section>
