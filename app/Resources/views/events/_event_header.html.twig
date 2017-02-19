@@ -1,14 +1,16 @@
-<div class="committee-event-header">
+<div class="committee-event-header l__wrapper--medium space--60-0">
 
     <div class="committee-event-titles">
-        <h2 class="committee-event-name">
+        <h2 class="committee-event-name text--large b__nudge--bottom">
             {{- committee_event.name -}}
         </h2>
-        <h3 class="committee-event-date">
+        <h3 class="committee-event-date text--body text--normal icon--with-text">
+            <i class="fa fa-clock-o"></i>
             {{- committee_event.beginAt|localizeddate('full', 'none')|capitalize }} à {{ committee_event.beginAt|date('g\\hi') -}}.
         </h3>
 
-        <h3 class="committee-event-address">
+        <h3 class="committee-event-address text--body text--normal icon--with-text">
+            <i class="fa fa-map-marker"></i>
             {{- committee_event.inlineFormattedAddress -}}
         </h3>
     </div>

@@ -6,13 +6,17 @@
 
 {% block content %}
 
-    <section class="l__wrapper--medium">
-        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link">Retour</a>
-
+    <section class="l__wrapper">
+        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour
+        </a>
         {{ include('events/_event_header.html.twig') }}
-
+        <hr/>
+    </section>
+    <section class="l__wrapper--medium space--30-0 b__nudge--bottom-huge">
         <div class="committee-event-registration">
-            <h2>Complétez ces informations pour participer à l'événement</h2>
+            <h2 class="b__nudge--bottom text--normal">Complétez ces informations pour participer à l'événement</h2>
             {% if not is_granted('ROLE_ADHERENT') %}
                 <p>
                     Avez-vous déjà un compte En Marche ?
@@ -65,7 +69,7 @@
 
                 <div>
                     {{ form_rest(form) }}
-                    <button type="submit" id="attend-committee-event">Je m'inscris</button>
+                    <button type="submit" class="btn btn--blue" id="attend-committee-event">Je m'inscris</button>
                 </div>
             </form>
         </div>

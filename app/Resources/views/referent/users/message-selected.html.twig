@@ -4,8 +4,9 @@
 
 {% block referent_content %}
     <p>
-        <a href="{{ path('app_referent_users') }}">
-            < Retour
+        <a href="{{ path('app_referent_users') }}" class="icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour
         </a>
     </p>
 
