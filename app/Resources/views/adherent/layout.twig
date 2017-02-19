@@ -8,15 +8,19 @@
 
 {% block content %}
 
-<main>
-    <section class="l__wrapper adherent_profile">
-        <h2>{{ app.user.fullname }}</h2>
-        <p>{{ app.user.emailaddress }}</p>
+<main class="adherent_profile">
+    <section class="l__wrapper--medium space--30-0">
+        <h2 class="text--large text--normal b__nudge--bottom-tiny">{{ app.user.fullname }}</h2>
+        <div class="text--body text--gray">{{ app.user.emailaddress }}</div>
+    </section>
 
-        <div class="l__row b__nudge--bottom-large">
+    <hr class="l__wrapper b__nudge--bottom-larger"/>
+
+    <section class="l__wrapper--medium">
+        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
             {% include 'adherent/_profile_menu.html.twig' %}
 
-            <div class="l__col">
+            <div class="l__wrapper--main l__wrapper--main-right">
                 {% block adherent_profile_form %}{% endblock %}
             </div>
         </div>

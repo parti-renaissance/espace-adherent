@@ -4,6 +4,21 @@
 
     <h3>Préférences des e-mails</h3>
 
-    {{ form(form) }}
+    {{ form_start(form, { attr: { class: 'form' } }) }}
+
+    {{ form_errors(form.emails_subscriptions) }}
+
+        {% for subscription in form.emails_subscriptions %}
+            <div class="form__checkbox">
+                {{ form_widget(subscription) }}
+                {{ form_label(subscription) }}
+            </div>
+        {% endfor %}
+
+        <div class="b__nudge--top">
+            {{ form_widget(form.submit, { label: 'Enregistrer les modifications', attr: { class: 'btn--blue' } }) }}
+        </div>
+
+    {{ form_end(form) }}
 
 {% endblock %}
