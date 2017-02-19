@@ -64,6 +64,11 @@
         margin-bottom: 15px;
         width: 100%;
 
+        label {
+            font-family: $font-roboto;
+            @include text--small;
+        }
+
         &--stretch {
             display: flex;
             justify-content: space-between;

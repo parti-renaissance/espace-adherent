@@ -387,6 +387,11 @@ $text--size-extra-large: 48px;
         svg,
         i {
             margin-right: 7px;
+
+            &.fa {
+                width: 15px;
+                text-align: center;
+            }
         }
     }
 }
