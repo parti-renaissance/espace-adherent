@@ -22,9 +22,14 @@
     }
 
     &__wrapper--main {
+        width: 90%;
         max-width: 800px;
         flex-grow: 1;
         margin-right: 30px;
+
+        @media (max-width: $tablet) {
+            order: 2;
+        }
     }
 
     &__wrapper--aside {
