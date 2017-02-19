@@ -22,13 +22,21 @@
     }
 
     &__wrapper--main {
-        width: 90%;
+        width: 100%;
         max-width: 800px;
         flex-grow: 1;
-        margin-right: 30px;
+
+        &-right {
+            margin-left: 30px;
+        }
+
+        &-left {
+            margin-right: 30px;
+        }
 
         @media (max-width: $tablet) {
             order: 2;
+            margin: 0;
         }
     }
 
@@ -307,6 +315,10 @@
 
         &--right-larger {
             margin-right: 40px;
+        }
+
+        &--left-large {
+            margin-left: 30px;
         }
     }
 }

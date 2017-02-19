@@ -1,5 +1,9 @@
 .form {
-    font-family: $font-gillsans;
+
+    &__label {
+        font-family: $font-roboto;
+        @include text--small;
+    }
 
     &__field {
         padding-left: 12px;
@@ -105,6 +109,55 @@
     &--third {
         width: 32%;
         margin: 0;
+    }
+
+    &__checkbox {
+        display: flex;
+        align-items: center;
+
+        &--col {
+            width: 25%;
+
+            @media (max-width: $mobile) {
+                width: 50%;
+            }
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+
+            &:before {
+                content: ' ';
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                border: 1px solid $gray--light;
+                transition: all .2s;
+            }
+        }
+
+        &:hover {
+            label:before {
+                background: $gray--lighter;
+            }
+        }
+
+        input[type="checkbox"] {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+
+            &:checked + label:before {
+                border-color: $blue;
+                background: $blue;
+                content: $checkbox__mark;
+            }
+        }
     }
 }
 

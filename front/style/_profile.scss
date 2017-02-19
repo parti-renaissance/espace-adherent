@@ -1,0 +1,76 @@
+.adherent_profile {
+    form {
+        border: 1px solid $gray--light;
+        padding: 40px;
+        margin-top: 20px;
+    }
+
+    h3 {
+        @include text--medium;
+        font-weight: normal;
+    }
+
+    &-menu {
+        @media (max-width: $tablet) {
+            width: 100%;
+            margin-bottom: 20px;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        ul {
+            li {
+                height: 50px;
+                display: flex;
+                align-items: center;
+                border: 1px solid $gray--light;
+                max-width: 225px;
+                box-sizing: border-box;
+                margin-top: -1px;
+
+                @media (max-width: $tablet) {
+                    border: 0;
+                    height: 40px;
+                    align-items: flex-start;
+                }
+
+                a {
+                    display: block;
+                    border: 0;
+                    padding: 15px 20px;
+                    width: 100%;
+                    border-left: 1px solid white;
+                    @include text--summary;
+
+                    @media (max-width: $tablet) {
+                        border: 0;
+                        padding: 0;
+                        margin-right: 20px;
+                    }
+
+                    &.active {
+                        font-weight: bold;
+                        border-color: $blue;
+                        border-width: 2px;
+                        padding-left: 19px;
+                        margin-left: -1px;
+
+                        @media (max-width: $tablet) {
+                            border-bottom: 2px solid $blue;
+                            padding: 0 0 5px 0;
+                            margin: 0 20px 0 0;
+                        }
+                    }
+                }
+            }
+
+            @media (max-width: $tablet) {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+
+    }
+}
