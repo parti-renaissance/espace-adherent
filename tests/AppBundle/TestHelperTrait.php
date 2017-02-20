@@ -8,8 +8,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent;
-use AppBundle\Entity\CommitteeEventRegistration;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
@@ -22,10 +22,10 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
-use AppBundle\Repository\CommitteeEventRegistrationRepository;
+use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\CommitteeEventRepository;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\InvitationRepository;
@@ -88,9 +88,9 @@ trait TestHelperTrait
         return $this->getRepository(Committee::class);
     }
 
-    public function getCommitteeEventRepository(): CommitteeEventRepository
+    public function getEventRepository(): EventRepository
     {
-        return $this->getRepository(CommitteeEvent::class);
+        return $this->getRepository(Event::class);
     }
 
     public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
@@ -103,9 +103,9 @@ trait TestHelperTrait
         return $this->getRepository(CommitteeMembership::class);
     }
 
-    public function getCommitteeEventRegistrationRepository(): CommitteeEventRegistrationRepository
+    public function getEventRegistrationRepository(): EventRegistrationRepository
     {
-        return $this->getRepository(CommitteeEventRegistration::class);
+        return $this->getRepository(EventRegistration::class);
     }
 
     public function getDonationRepository(): DonationRepository

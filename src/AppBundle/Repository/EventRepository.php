@@ -3,14 +3,14 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
 
-class CommitteeEventRepository extends EntityRepository
+class EventRepository extends EntityRepository
 {
     use NearbyTrait;
 
-    public function findOneBySlug(string $slug): ?CommitteeEvent
+    public function findOneBySlug(string $slug): ?Event
     {
         $query = $this
             ->createQueryBuilder('e')
@@ -27,7 +27,7 @@ class CommitteeEventRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findMostRecentCommitteeEvent(): ?CommitteeEvent
+    public function findMostRecentEvent(): ?Event
     {
         $query = $this
             ->createQueryBuilder('ce')

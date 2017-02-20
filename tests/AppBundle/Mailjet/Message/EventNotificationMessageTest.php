@@ -3,35 +3,35 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
+use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
-class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
+class EventNotificationMessageTest extends \PHPUnit_Framework_TestCase
 {
     const SHOW_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
     const ATTEND_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
 
-    public function testCreateCommitteeEventNotificationMessage()
+    public function testCreateEventNotificationMessage()
     {
         $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
         $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');
         $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
         $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
 
-        $message = CommitteeEventNotificationMessage::create(
+        $message = EventNotificationMessage::create(
             $recipients,
             $recipients[0],
-            $this->createCommitteeEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
+            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
             self::SHOW_EVENT_URL,
             self::ATTEND_EVENT_URL,
             function (Adherent $adherent) {
-                return CommitteeEventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
 
-        $this->assertInstanceOf(CommitteeEventNotificationMessage::class, $message);
+        $this->assertInstanceOf(EventNotificationMessage::class, $message);
         $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('Un événement a lieu dans un comité que vous suivez', $message->getSubject());
@@ -93,11 +93,11 @@ class CommitteeEventNotificationMessageTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function createCommitteeEventMock(string $name, string $beginAt, string $street, string $cityCode): CommitteeEvent
+    private function createEventMock(string $name, string $beginAt, string $street, string $cityCode): Event
     {
         $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
-        $event = $this->getMockBuilder(CommitteeEvent::class)->disableOriginalConstructor()->getMock();
+        $event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
         $event->expects($this->any())->method('getName')->willReturn($name);
         $event->expects($this->any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
         $event->expects($this->any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);

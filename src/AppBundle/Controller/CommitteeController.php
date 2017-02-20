@@ -6,13 +6,13 @@ use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\CommitteeUtils;
-use AppBundle\Committee\Event\CommitteeEventCommand;
+use AppBundle\Event\EventCommand;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\CommitteeCommandType;
-use AppBundle\Form\CommitteeEventCommandType;
+use AppBundle\Form\EventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
 use AppBundle\Form\ContactMembersType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -50,7 +50,7 @@ class CommitteeController extends Controller
             }
         }
 
-        $committeeManager = $this->get('app.committee_manager');
+        $committeeManager = $this->get('app.committee.manager');
 
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
@@ -67,7 +67,7 @@ class CommitteeController extends Controller
      */
     public function timelineAction(Request $request, Committee $committee): Response
     {
-        $timeline = $this->get('app.committee_manager')->getTimeline(
+        $timeline = $this->get('app.committee.manager')->getTimeline(
             $committee,
             $this->getParameter('timeline_max_messages'),
             $request->query->getInt('offset', 0)
@@ -91,7 +91,7 @@ class CommitteeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.committee_update_handler')->handle($command);
+            $this->get('app.committee.update_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.update.success'));
 
             return $this->redirectToRoute('app_committee_edit', [
@@ -103,7 +103,7 @@ class CommitteeController extends Controller
         return $this->render('committee/edit.html.twig', [
             'form' => $form->createView(),
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee_manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
         ]);
     }
 
@@ -114,23 +114,23 @@ class CommitteeController extends Controller
      */
     public function addEventAction(Request $request, Committee $committee): Response
     {
-        $command = new CommitteeEventCommand($this->getUser(), $committee);
-        $form = $this->createForm(CommitteeEventCommandType::class, $command);
+        $command = new EventCommand($this->getUser(), $committee);
+        $form = $this->createForm(EventCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.committee_event_handler')->handle($command);
+            $this->get('app.event.handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_committee_show_event', [
                 'committee_uuid' => (string) $committee->getUuid(),
-                'slug' => (string) $command->getCommitteeEvent()->getSlug(),
+                'slug' => (string) $command->getEvent()->getSlug(),
             ]);
         }
 
         return $this->render('committee/add_event.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee_manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }
@@ -142,7 +142,7 @@ class CommitteeController extends Controller
      */
     public function listMembersAction(Committee $committee): Response
     {
-        $committeeManager = $this->get('app.committee_manager');
+        $committeeManager = $this->get('app.committee.manager');
 
         $members = $this->getDoctrine()->getRepository(CommitteeMembership::class)->findMembers($committee->getUuid());
 
@@ -164,7 +164,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
 
-        $committeeManager = $this->get('app.committee_manager');
+        $committeeManager = $this->get('app.committee.manager');
 
         $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('exports', ''));
         $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
@@ -186,7 +186,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
         }
 
-        $committeeManager = $this->get('app.committee_manager');
+        $committeeManager = $this->get('app.committee.manager');
 
         $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('contacts', ''));
         $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
@@ -197,7 +197,7 @@ class CommitteeController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.committee_contact_members_handler')->handle($command);
+            $this->get('app.committee.contact_members_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.success'));
 
             return $this->redirectToRoute('app_commitee_list_members', [
@@ -225,7 +225,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
         }
 
-        $this->get('app.committee_manager')->followCommittee($this->getUser(), $committee);
+        $this->get('app.committee.manager')->followCommittee($this->getUser(), $committee);
 
         return $this->json([
             'button' => [
@@ -247,7 +247,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->get('app.committee_manager')->unfollowCommittee($this->getUser(), $committee);
+        $this->get('app.committee.manager')->unfollowCommittee($this->getUser(), $committee);
 
         return $this->json([
             'button' => [

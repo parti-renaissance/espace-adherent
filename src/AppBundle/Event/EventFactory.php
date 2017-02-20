@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Address\PostAddressFactory;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeEventFactory
+class EventFactory
 {
     private $addressFactory;
 
@@ -15,7 +15,7 @@ class CommitteeEventFactory
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
-    public function createFromArray(array $data): CommitteeEvent
+    public function createFromArray(array $data): Event
     {
         foreach (['uuid', 'organizer', 'committee', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
@@ -25,7 +25,7 @@ class CommitteeEventFactory
 
         $uuid = Uuid::fromString($data['uuid']);
 
-        return new CommitteeEvent(
+        return new Event(
             $uuid,
             $data['organizer'],
             $data['committee'],
@@ -39,9 +39,9 @@ class CommitteeEventFactory
         );
     }
 
-    public function createFromCommitteeEventCommand(CommitteeEventCommand $command): CommitteeEvent
+    public function createFromEventCommand(EventCommand $command): Event
     {
-        return new CommitteeEvent(
+        return new Event(
             $command->getUuid(),
             $command->getAuthor(),
             $command->getCommittee(),

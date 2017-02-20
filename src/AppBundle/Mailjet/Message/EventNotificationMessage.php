@@ -3,27 +3,27 @@
 namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeEventNotificationMessage extends MailjetMessage
+class EventNotificationMessage extends MailjetMessage
 {
     /**
      * Creates a new message instance for a list of recipients.
      *
-     * @param Adherent[]     $recipients
-     * @param Adherent       $host
-     * @param CommitteeEvent $event
-     * @param string         $eventLink
-     * @param string         $eventOkLink
-     * @param \Closure       $recipientVarsGenerator
+     * @param Adherent[] $recipients
+     * @param Adherent   $host
+     * @param Event      $event
+     * @param string     $eventLink
+     * @param string     $eventOkLink
+     * @param \Closure   $recipientVarsGenerator
      *
-     * @return CommitteeEventNotificationMessage
+     * @return EventNotificationMessage
      */
     public static function create(
         array $recipients,
         Adherent $host,
-        CommitteeEvent $event,
+        Event $event,
         string $eventLink,
         string $eventOkLink,
         \Closure $recipientVarsGenerator

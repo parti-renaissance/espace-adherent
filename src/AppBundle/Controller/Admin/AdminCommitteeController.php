@@ -23,7 +23,7 @@ class AdminCommitteeController extends Controller
     public function approveAction(Committee $committee): Response
     {
         try {
-            $this->get('app.committee_authority')->approve($committee);
+            $this->get('app.committee.authority')->approve($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
         } catch (CommitteeException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
@@ -41,7 +41,7 @@ class AdminCommitteeController extends Controller
     public function refuseAction(Committee $committee): Response
     {
         try {
-            $this->get('app.committee_authority')->refuse($committee);
+            $this->get('app.committee.authority')->refuse($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
         } catch (CommitteeException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);

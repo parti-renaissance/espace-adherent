@@ -19,13 +19,13 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.committee_event" class="AppBundle\Repository\CommitteeEventRepository" public="false">
-            <argument>AppBundle\Entity\CommitteeEvent</argument>
+        <service id="app.repository.event" class="AppBundle\Repository\EventRepository" public="false">
+            <argument>AppBundle\Entity\Event</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.committee_event_registration" class="AppBundle\Repository\CommitteeEventRegistrationRepository" public="false">
-            <argument>AppBundle\Entity\CommitteeEventRegistration</argument>
+        <service id="app.repository.event_registration" class="AppBundle\Repository\EventRegistrationRepository" public="false">
+            <argument>AppBundle\Entity\EventRegistration</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 

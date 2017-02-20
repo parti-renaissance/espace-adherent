@@ -1,34 +1,34 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeEvent;
-use AppBundle\Entity\CommitteeEventRegistration;
-use AppBundle\Repository\CommitteeEventRegistrationRepository;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
+use AppBundle\Repository\EventRegistrationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class CommitteeEventRegistrationManager
+class EventRegistrationManager
 {
     private $manager;
     private $repository;
 
-    public function __construct(ObjectManager $manager, CommitteeEventRegistrationRepository $repository)
+    public function __construct(ObjectManager $manager, EventRegistrationRepository $repository)
     {
         $this->manager = $manager;
         $this->repository = $repository;
     }
 
-    public function findRegistration(string $uuid): ?CommitteeEventRegistration
+    public function findRegistration(string $uuid): ?EventRegistration
     {
         return $this->repository->findOneByUuid($uuid);
     }
 
     public function searchRegistration(
-        CommitteeEvent $event,
+        Event $event,
         string $emailAddress,
         Adherent $adherent = null
-    ): ?CommitteeEventRegistration {
+    ): ?EventRegistration {
         $eventUuid = (string) $event->getUuid();
 
         if (!$adherent) {
@@ -38,7 +38,7 @@ class CommitteeEventRegistrationManager
         return $this->repository->findAdherentRegistration($eventUuid, (string) $adherent->getUuid());
     }
 
-    public function create(CommitteeEventRegistration $registration, bool $flush = true)
+    public function create(EventRegistration $registration, bool $flush = true)
     {
         $event = $registration->getEvent();
         $event->incrementParticipantsCount();
@@ -50,7 +50,7 @@ class CommitteeEventRegistrationManager
         }
     }
 
-    public function remove(CommitteeEventRegistration $registration, bool $flush = true)
+    public function remove(EventRegistration $registration, bool $flush = true)
     {
         $event = $registration->getEvent();
         $event->decrementParticipantsCount();

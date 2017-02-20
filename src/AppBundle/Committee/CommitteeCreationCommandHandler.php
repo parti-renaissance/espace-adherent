@@ -2,6 +2,7 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Events;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -37,7 +38,7 @@ class CommitteeCreationCommandHandler
         $this->manager->persist($adherent->hostCommittee($committee));
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(CommitteeEvents::CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
+        $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
         $this->mailjet->sendMessage($message);

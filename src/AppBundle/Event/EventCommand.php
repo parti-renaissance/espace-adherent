@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class CommitteeEventCommand
+class EventCommand
 {
     private $uuid;
 
@@ -24,7 +24,7 @@ class CommitteeEventCommand
     /**
      * @Assert\NotBlank
      * @Assert\Choice(
-     *   callback="AppBundle\Committee\Event\EventCategories::all",
+     *   callback="AppBundle\Event\EventCategories::all",
      *   strict=true,
      *   message="committee.event.invalid_category"
      * )
@@ -64,7 +64,7 @@ class CommitteeEventCommand
 
     private $author;
     private $committee;
-    private $committeeEvent;
+    private $event;
 
     public function __construct(
         Adherent $author,
@@ -186,14 +186,14 @@ class CommitteeEventCommand
         }
     }
 
-    public function setCommitteeEvent(CommitteeEvent $event)
+    public function setEvent(Event $event)
     {
-        $this->committeeEvent = $event;
+        $this->event = $event;
     }
 
-    public function getCommitteeEvent(): ?CommitteeEvent
+    public function getEvent(): ?Event
     {
-        return $this->committeeEvent;
+        return $this->event;
     }
 
     public function getUuid(): UuidInterface

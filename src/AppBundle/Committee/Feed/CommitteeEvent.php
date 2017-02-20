@@ -4,14 +4,14 @@ namespace AppBundle\Committee\Feed;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent as EntityCommitteeEvent;
+use AppBundle\Entity\Event as EntityEvent;
 
 class CommitteeEvent
 {
     private $event;
     private $author;
 
-    public function __construct(Adherent $author, EntityCommitteeEvent $event)
+    public function __construct(Adherent $author, EntityEvent $event)
     {
         $this->author = $author;
         $this->event = $event;
@@ -32,7 +32,7 @@ class CommitteeEvent
         return $this->event->getCommittee();
     }
 
-    public function getEvent(): EntityCommitteeEvent
+    public function getEvent(): EntityEvent
     {
         return $this->event;
     }

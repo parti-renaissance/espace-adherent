@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
-use AppBundle\Committee\CommitteeEvents;
+use AppBundle\Events;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CommitteeEventCommandHandler
+class EventCommandHandler
 {
     private $dispatcher;
     private $factory;
@@ -15,7 +15,7 @@ class CommitteeEventCommandHandler
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        CommitteeEventFactory $factory,
+        EventFactory $factory,
         ObjectManager $manager
     ) {
         $this->dispatcher = $dispatcher;
@@ -23,15 +23,15 @@ class CommitteeEventCommandHandler
         $this->manager = $manager;
     }
 
-    public function handle(CommitteeEventCommand $command)
+    public function handle(EventCommand $command)
     {
-        $command->setCommitteeEvent($event = $this->factory->createFromCommitteeEventCommand($command));
+        $command->setEvent($event = $this->factory->createFromEventCommand($command));
 
         $this->manager->persist($event);
         $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(CommitteeEvents::EVENT_CREATED, new CommitteeEventCreatedEvent(
+        $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventCreatedEvent(
             $command->getCommittee(),
             $command->getAuthor(),
             $event

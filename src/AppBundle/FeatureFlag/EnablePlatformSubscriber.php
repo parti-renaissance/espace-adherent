@@ -4,7 +4,7 @@ namespace AppBundle\FeatureFlag;
 
 use AppBundle\Controller\AdherentController;
 use AppBundle\Controller\CommitteeController;
-use AppBundle\Controller\CommitteeEventController;
+use AppBundle\Controller\EventController;
 use AppBundle\Controller\MembershipController;
 use AppBundle\Controller\ReferentController;
 use AppBundle\Controller\SearchController;
@@ -50,7 +50,7 @@ class EnablePlatformSubscriber implements EventSubscriberInterface
         CommitteeController::class,
         MembershipController::class,
         AdherentSecurityController::class,
-        CommitteeEventController::class,
+        EventController::class,
         ReferentController::class,
         SearchController::class,
     ];

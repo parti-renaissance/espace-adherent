@@ -276,6 +276,6 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
 
     private function getCommitteeFactory(): CommitteeFactory
     {
-        return $this->container->get('app.committee_factory');
+        return $this->container->get('app.committee.factory');
     }
 }

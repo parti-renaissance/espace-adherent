@@ -35,9 +35,9 @@ class CommitteeFeedItem
     private $author;
 
     /**
-     * @var CommitteeEvent
+     * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CommitteeEvent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
     private $event;
@@ -81,7 +81,7 @@ class CommitteeFeedItem
     }
 
     public static function createEvent(
-        CommitteeEvent $event,
+        Event $event,
         Adherent $author,
         string $createdAt = 'now'
     ): self {
@@ -99,14 +99,14 @@ class CommitteeFeedItem
 
     public function getContent(): ?string
     {
-        if ($this->event instanceof CommitteeEvent) {
+        if ($this->event instanceof Event) {
             return $this->event->getDescription();
         }
 
         return $this->content;
     }
 
-    public function getEvent(): ?CommitteeEvent
+    public function getEvent(): ?Event
     {
         return $this->event;
     }

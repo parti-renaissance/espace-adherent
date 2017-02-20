@@ -32,7 +32,7 @@
 
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
             <argument type="service" id="app.adherent_manager"/>
-            <argument type="service" id="app.committee_manager"/>
+            <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="app.security.authentication_utils"/>
         </service>
@@ -58,7 +58,7 @@
         </service>
 
         <service id="app.membership.membership_choose_nearby_committee_type" class="AppBundle\Form\MembershipChooseNearbyCommitteeType">
-            <argument type="service" id="app.committee_manager"/>
+            <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.geocoder.coordinates_factory"/>
             <tag name="form.type" />
         </service>

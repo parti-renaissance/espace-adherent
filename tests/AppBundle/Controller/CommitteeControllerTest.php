@@ -3,12 +3,12 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCommitteeEventData;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
+use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
-use AppBundle\Repository\CommitteeEventRepository;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
@@ -29,7 +29,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /* @var CommitteeRepository */
     private $committeeRepository;
 
-    /* @var CommitteeEventRepository */
+    /* @var EventRepository */
     private $committeeEventRepository;
 
     /* @var CommitteeFeedItemRepository */
@@ -190,7 +190,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
-    public function testCommitteeFollowerIsNotAllowedToPublishNewCommitteeEvent()
+    public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
@@ -205,7 +205,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
-    public function testCommitteeHostCanPublishNewCommitteeEvent()
+    public function testCommitteeHostCanPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
@@ -302,17 +302,17 @@ class CommitteeControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertInstanceOf(CommitteeEvent::class, $event = $this->committeeEventRepository->findMostRecentCommitteeEvent());
+        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
         $this->assertSame("Débat sur l'écologie", $event->getName());
-        $this->assertCount(3, $this->emailRepository->findMessages(CommitteeEventNotificationMessage::class, (string) $event->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'gisele-berthoux@caramail.com'));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'luciole1989@spambox.fr'));
-        $this->assertCount(0, $this->emailRepository->findRecipientMessages(CommitteeEventNotificationMessage::class, 'carl999@example.fr'));
+        $this->assertCount(3, $this->emailRepository->findMessages(EventNotificationMessage::class, (string) $event->getUuid()));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'gisele-berthoux@caramail.com'));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'luciole1989@spambox.fr'));
+        $this->assertCount(0, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'carl999@example.fr'));
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
-        $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
+        $this->assertInstanceOf(Event::class, $eventItem->getEvent());
         $this->assertSame("Débat sur l'écologie", (string) $eventItem->getEvent());
 
         // Follow the redirect and check the adherent can see the committee page
@@ -794,12 +794,12 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
-            LoadCommitteeEventData::class,
+            LoadEventData::class,
         ]);
 
         $this->emailRepository = $this->getMailjetEmailRepository();
         $this->committeeRepository = $this->getCommitteeRepository();
-        $this->committeeEventRepository = $this->getCommitteeEventRepository();
+        $this->committeeEventRepository = $this->getEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
     }

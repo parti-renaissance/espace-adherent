@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 final class EventCategories
 {

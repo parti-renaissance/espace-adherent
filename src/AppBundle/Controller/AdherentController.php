@@ -130,7 +130,7 @@ class AdherentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.committee_creation_handler')->handle($command);
+            $this->get('app.committee.creation_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.creation.success'));
 
             return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $command->getCommittee()));
@@ -144,7 +144,7 @@ class AdherentController extends Controller
 
     public function listMyCommitteesAction(): Response
     {
-        $manager = $this->get('app.committee_manager');
+        $manager = $this->get('app.committee.manager');
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),

@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Collection\AdherentCollection;
-use AppBundle\Committee\CommitteeEvents;
+use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeEventNotificationMessage;
+use AppBundle\Mailjet\Message\EventNotificationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CommitteeEventMessageNotifier implements EventSubscriberInterface
+class EventMessageNotifier implements EventSubscriberInterface
 {
     private $mailjet;
     private $manager;
@@ -29,14 +29,14 @@ class CommitteeEventMessageNotifier implements EventSubscriberInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function onCommitteeEventCreated(CommitteeEventCreatedEvent $event)
+    public function onEventCreated(EventCreatedEvent $event)
     {
         $committee = $event->getCommittee();
 
         $this->mailjet->sendMessage($this->createMessage(
             $this->manager->getOptinCommitteeFollowers($committee),
             $committee,
-            $event->getCommitteeEvent(),
+            $event->getEvent(),
             $event->getAuthor()
         ));
     }
@@ -44,22 +44,22 @@ class CommitteeEventMessageNotifier implements EventSubscriberInterface
     private function createMessage(
         AdherentCollection $followers,
         Committee $committee,
-        CommitteeEvent $event,
+        Event $event,
         Adherent $host
-    ): CommitteeEventNotificationMessage {
+    ): EventNotificationMessage {
         $params = [
             'committee_uuid' => (string) $committee->getUuid(),
             'slug' => $event->getSlug(),
         ];
 
-        return CommitteeEventNotificationMessage::create(
+        return EventNotificationMessage::create(
             $followers->toArray(),
             $host,
             $event,
             $this->generateUrl('app_committee_show_event', $params),
             $this->generateUrl('app_committee_attend_event', $params),
             function (Adherent $adherent) {
-                return CommitteeEventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
@@ -72,7 +72,7 @@ class CommitteeEventMessageNotifier implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CommitteeEvents::EVENT_CREATED => ['onCommitteeEventCreated', -128],
+            Events::EVENT_CREATED => ['onEventCreated', -128],
         ];
     }
 }
