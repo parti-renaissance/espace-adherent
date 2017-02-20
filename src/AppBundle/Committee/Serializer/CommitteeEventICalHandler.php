@@ -6,7 +6,6 @@ use AppBundle\Entity\CommitteeEvent;
 use AppBundle\Serializer\Visitor\IcalSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
-use JMS\Serializer\SerializationContext;
 
 class CommitteeEventICalHandler implements SubscribingHandlerInterface
 {
@@ -28,10 +27,8 @@ class CommitteeEventICalHandler implements SubscribingHandlerInterface
     /**
      * @param IcalSerializationVisitor $visitor
      * @param CommitteeEvent           $committeeEvent
-     * @param array                    $type
-     * @param SerializationContext     $context
      */
-    public function serialize(IcalSerializationVisitor $visitor, CommitteeEvent $committeeEvent, array $type, SerializationContext $context): void
+    public function serialize(IcalSerializationVisitor $visitor, CommitteeEvent $committeeEvent): void
     {
         $eventData = [
             'VEVENT' => [
