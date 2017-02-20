@@ -332,6 +332,7 @@
                         <li><a href="{{ enable_platform ? path('app_search_committees') : url_legacy }}">Rejoindre un comité</a></li>
                         <li><a href="{{ enable_platform ? path('app_search_events') : url_legacy }}">S’inscrire à un événement</a></li>
                         <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
+                        {#<li><a href="{{ path('app_je_marche') }}">Je Marche</a></li>#}
                         {#<li><a href="#">FAQ</a></li>#}
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
@@ -365,16 +366,6 @@
             on(window, 'load', function() {
                 Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }});
             });
-
-            {% if app.environment == 'prod' %}
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-72646335-1', 'auto');
-            ga('send', 'pageview');
-            {% endif %}
         </script>
     </body>
 </html>

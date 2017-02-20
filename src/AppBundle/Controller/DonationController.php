@@ -83,7 +83,7 @@ class DonationController extends Controller
      */
     public function callbackAction(Request $request)
     {
-        $id = $request->query->get('id');
+        $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
             return $this->redirectToRoute('donation_index');
@@ -98,7 +98,7 @@ class DonationController extends Controller
      */
     public function resultAction(Request $request, Donation $donation)
     {
-        $retryUrl = $this->generateUrl('donation_informations', [
+        $parameters = [
             'montant' => $donation->getAmount() / 100,
             'ge' => $donation->getGender(),
             'ln' => $donation->getLastName(),
@@ -108,9 +108,14 @@ class DonationController extends Controller
             'pc' => $donation->getPostalCode(),
             'ci' => $donation->getCity(),
             'ad' => urlencode($donation->getAddress()),
-            'phc' => $donation->getPhone()->getCountryCode(),
-            'phn' => $donation->getPhone()->getNationalNumber(),
-        ]);
+        ];
+
+        if ($donation->getPhone()) {
+            $parameters['phc'] = $donation->getPhone()->getCountryCode();
+            $parameters['phn'] = $donation->getPhone()->getNationalNumber();
+        }
+
+        $retryUrl = $this->generateUrl('donation_informations', $parameters);
 
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),

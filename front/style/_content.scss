@@ -631,3 +631,114 @@
 .content .referents {
     width: 100%;
 }
+
+.content.je-marche {
+    header h2 {
+        @include text--body;
+    }
+
+    .action__items {
+        ul {
+            width: 42%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            @media (max-width: $tablet) {
+                width: 100%;
+                flex-wrap: nowrap;
+                overflow-x: scroll;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            li {
+                width: 32%;
+                height: 105px;
+
+                &:nth-child(-n+3) {
+                    margin-bottom: 10px;
+                }
+
+                @media (max-width: $tablet) {
+                    width: auto;
+                    margin-right: 10px;
+                    height: auto;
+                }
+            }
+        }
+
+        .action__menu__item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 0;
+            line-height: 18px;
+            text-align: center;
+            background: $gray--lighter;
+            @include text--summary;
+
+            @media (max-width: $tablet) {
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            &:hover {
+                color: black;
+                background: $gray--light;
+            }
+
+            &--active {
+                background: $green;
+
+                &:hover {
+                    background: $green-hover;
+                }
+            }
+        }
+
+        .action__item {
+            width: 57%;
+            padding: 30px;
+            box-sizing: border-box;
+            background: $gray--lighter;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            height: 220px;
+
+            @media (max-width: $tablet) {
+                width: 100%;
+                height: auto;
+            }
+
+            h4 {
+                @include text--body;
+                text-transform: uppercase;
+            }
+
+            p {
+                margin: 0;
+                @include text--summary;
+            }
+
+            a {
+                margin-top: 20px;
+                @include btn;
+                @include btn--green;
+            }
+        }
+    }
+
+    label {
+        @include text--body;
+        font-size: 20px;
+    }
+
+    textarea {
+        padding: 15px 10px;
+    }
+}

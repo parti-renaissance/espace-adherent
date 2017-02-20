@@ -3,7 +3,8 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 1px 15px 0;
+    text-align: center;
+    padding: 7px 15px 7px;
     background: white;
     border: 1px solid black;
     color: black;
@@ -11,7 +12,6 @@
     font-size: $text--size-small;
     letter-spacing: 1.5px;
     transition: all 0.45s;
-    height: 40px;
     box-sizing: border-box;
 
     &:hover {
@@ -220,4 +220,5 @@
 
 button.btn {
     display: inline-block;
+    padding: 11px 15px 10px;
 }

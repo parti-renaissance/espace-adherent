@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
@@ -38,7 +39,12 @@ class NewsletterSubscription
      *
      * @ORM\Column(type="string", length=11, nullable=true)
      *
-     * @Assert\Length(min=2, max=11, minMessage="neswletter.postalCode.invalid", maxMessage="neswletter.postalCode.invalid")
+     * @Assert\Length(
+     *     min=2,
+     *     max=11,
+     *     minMessage="neswletter.postalCode.invalid",
+     *     maxMessage="neswletter.postalCode.invalid"
+     * )
      */
     private $postalCode;
 
@@ -59,6 +65,11 @@ class NewsletterSubscription
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 
     public function getId(): int
@@ -91,7 +102,7 @@ class NewsletterSubscription
 
     public function setPostalCode(string $postalCode): NewsletterSubscription
     {
-        $this->postalCode = $postalCode;
+        $this->postalCode = EmojisRemover::remove($postalCode);
 
         return $this;
     }

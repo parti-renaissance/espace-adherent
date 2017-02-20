@@ -8,6 +8,7 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -24,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
  */
-class Adherent implements UserInterface, GeoPointInterface
+class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
@@ -35,7 +37,12 @@ class Adherent implements UserInterface, GeoPointInterface
     use EntityPersonNameTrait;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
+     */
+    private $oldPassword;
+
+    /**
+     * @ORM\Column(nullable=true)
      */
     private $password;
 
@@ -141,8 +148,8 @@ class Adherent implements UserInterface, GeoPointInterface
         $this->uuid = $uuid;
         $this->password = $password;
         $this->gender = $gender;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->firstName = EmojisRemover::remove($firstName);
+        $this->lastName = EmojisRemover::remove($lastName);
         $this->emailAddress = $emailAddress;
         $this->birthdate = $birthdate;
         $this->position = $position;
@@ -171,7 +178,24 @@ class Adherent implements UserInterface, GeoPointInterface
 
     public function getPassword()
     {
-        return $this->password;
+        return !$this->password ? $this->oldPassword : $this->password;
+    }
+
+    public function hasLegacyPassword(): bool
+    {
+        return null !== $this->oldPassword;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEncoderName()
+    {
+        if ($this->hasLegacyPassword()) {
+            return 'legacy_encoder';
+        }
+
+        return null;
     }
 
     public function getSalt()
@@ -324,6 +348,16 @@ class Adherent implements UserInterface, GeoPointInterface
         $token->consume($this);
 
         $this->password = $newPassword;
+    }
+
+    public function clearOldPassword()
+    {
+        $this->oldPassword = null;
+    }
+
+    public function migratePassword(string $newEncodedPassword)
+    {
+        $this->password = $newEncodedPassword;
     }
 
     /**

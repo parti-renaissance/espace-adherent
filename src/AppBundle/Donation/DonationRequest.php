@@ -18,6 +18,7 @@ class DonationRequest
     private $amount;
 
     /**
+     * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",

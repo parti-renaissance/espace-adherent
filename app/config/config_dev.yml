@@ -15,6 +15,10 @@ services:
         arguments: ['@?logger']
         public: false
 
+    app.recaptcha.api_client:
+        class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
+        public: false
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"

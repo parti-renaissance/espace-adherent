@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Merci de marcher' %}
+{% block canonical_url url('app_je_marche') %}
+
+{% block content %}
+    <main class="content je-marche">
+        <section>
+            <header class="space--60-0 l__wrapper--slim text--center">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ include('components/je-marche.html.twig') }}
+                </h1>
+                <h2>Je choisis mes actions pour faire gagner le camp du progrès.</h2>
+            </header>
+            <hr class="l__wrapper" />
+        </section>
+
+        <section class="l__wrapper--narrow space--60-0 text--center">
+            <h2>Merci !</h2>
+            <div class="space--60-0">
+                <a class="btn btn--blue btn--medium" href="/je-marche">Refaire une action !</a>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -50,9 +50,10 @@ class AdministratorAdmin extends AbstractAdmin
             ->add('role', ChoiceType::class, [
                 'label' => 'Rôle',
                 'choices' => [
-                    'Rédacteur' => 'ROLE_WRITER',
+                    'Rédacteur (articles, page d\'accueil, pages, programme)' => 'ROLE_WRITER',
+                    'Campagne (newsletter, invitations, Je Marche)' => 'ROLE_CAMPAIGN',
+                    'Territoire (Campagne + adhérent, comités, événements, référents)' => 'ROLE_TERRITORY',
                     'Administrateur' => 'ROLE_ADMIN',
-                    'Développeur' => 'ROLE_DEVELOPER',
                     'Super-administrateur' => 'ROLE_SUPER_ADMIN',
                 ],
             ])

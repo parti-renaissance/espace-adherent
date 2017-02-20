@@ -4,6 +4,21 @@
 
     <h3>Centres d'intérêt</h3>
 
-    {{ form(form) }}
+    {{ form_start(form, { attr: { class: 'form l__row l__row--wrap', id: 'app_adherent_pin_interests' } }) }}
+
+    {{ form_errors(form.interests) }}
+
+        {% for interest in form.interests %}
+            <div class="form__checkbox form__checkbox--col">
+                {{ form_widget(interest) }}
+                {{ form_label(interest) }}
+            </div>
+        {% endfor %}
+
+        <div class="b__nudge--top">
+            {{ form_widget(form.submit, { label: 'Enregistrer les modifications', attr: { class: 'btn--blue' } }) }}
+        </div>
+
+    {{ form_end(form) }}
 
 {% endblock %}

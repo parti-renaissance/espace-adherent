@@ -74,6 +74,12 @@ class App {
             module.default(this.get('slugifier'), users);
         });
     }
+
+    runJeMarche() {
+        System.import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();

@@ -177,7 +177,7 @@
             <argument>AppBundle\Entity\Donation</argument>
             <argument />
 
-            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Don et newsletter" />
+            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Campagne" />
         </service>
 
         <!-- NewsletterSubscription -->
@@ -186,7 +186,25 @@
             <argument>AppBundle\Entity\NewsletterSubscription</argument>
             <argument />
 
-            <tag name="sonata.admin" manager-type="orm" label="Newsletter" group="Don et newsletter" />
+            <tag name="sonata.admin" manager-type="orm" label="Newsletter" group="Campagne" />
+        </service>
+
+        <!-- Invite -->
+        <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Invite</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Campagne" />
+        </service>
+
+        <!-- JeMarcheReport -->
+        <service id="app.admin.je_marche" class="AppBundle\Admin\JeMarcheReportAdmin">
+            <argument />
+            <argument>AppBundle\Entity\JeMarcheReport</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Campagne" />
         </service>
 
     </services>

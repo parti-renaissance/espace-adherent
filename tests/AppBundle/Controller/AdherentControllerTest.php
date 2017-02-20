@@ -46,10 +46,10 @@ class AdherentControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $current = $crawler->filter('.adherent_profile .adherent-profile-menu ul li a.active'));
+        $this->assertCount(1, $current = $crawler->filter('.adherent_profile .adherent_profile-menu ul li a.active'));
         $this->assertSame($profilePage, $current->attr('href'));
-        $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent_profile > h2')->text());
-        $this->assertSame('carl999@example.fr', $crawler->filter('.adherent_profile > p')->text());
+        $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent_profile > section > h2')->text());
+        $this->assertSame('carl999@example.fr', $crawler->filter('.adherent_profile > section > div')->text());
         $this->assertSame($title, $crawler->filter('.adherent_profile h3')->text());
     }
 
@@ -178,7 +178,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $checkBoxPattern = '#app_adherent_pin_interests_interests > '.
+        $checkBoxPattern = '#app_adherent_pin_interests '.
                            'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
         $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
