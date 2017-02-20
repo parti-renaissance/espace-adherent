@@ -52,7 +52,6 @@ security:
     access_decision_manager:
         strategy: unanimous
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         admins_db:
             entity: { class: 'AppBundle\Entity\Administrator' }

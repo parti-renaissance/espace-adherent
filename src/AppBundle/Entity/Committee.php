@@ -37,6 +37,7 @@ class Committee implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityTimestampableTrait;
 
     /**
      * The committee name.
@@ -111,16 +112,9 @@ class Committee implements GeoPointInterface
     private $refusedAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
      * The adherent UUID who created this committee.
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", nullable=true)
      */
     private $createdBy;
 
@@ -161,6 +155,7 @@ class Committee implements GeoPointInterface
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
+        $this->updatedAt = $createdAt;
     }
 
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self

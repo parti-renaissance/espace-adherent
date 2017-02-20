@@ -31,7 +31,7 @@ class EventRegistration
     private $emailAddress;
 
     /**
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      */
     private $postalCode;
 

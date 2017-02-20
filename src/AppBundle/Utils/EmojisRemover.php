@@ -10,7 +10,7 @@ class EmojisRemover
             return null;
         }
 
-        return preg_replace('/'.implode('|', self::$matchers).'/u', '', $text);
+        return mb_convert_encoding(preg_replace('/'.implode('|', self::$matchers).'/u', '', $text), 'UTF-8', 'UTF-8');
     }
 
     private static $matchers = [

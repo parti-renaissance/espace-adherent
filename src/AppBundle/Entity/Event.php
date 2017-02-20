@@ -24,6 +24,7 @@ class Event implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityTimestampableTrait;
 
     /**
      * @ORM\Column(length=100)
@@ -54,7 +55,7 @@ class Event implements GeoPointInterface
     private $description;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $capacity;
 
@@ -67,13 +68,6 @@ class Event implements GeoPointInterface
      * @ORM\Column(type="datetime")
      */
     private $finishAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     /**
      * The adherent UUID who created this committee event.
@@ -121,6 +115,7 @@ class Event implements GeoPointInterface
         $this->beginAt = new \DateTime($beginAt);
         $this->finishAt = new \DateTime($finishAt);
         $this->createdAt = new \DateTime($createdAt ?: 'now');
+        $this->updatedAt = new \DateTime($createdAt ?: 'now');
     }
 
     public function __toString(): string

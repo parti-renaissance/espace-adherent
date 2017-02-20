@@ -314,7 +314,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
 
         $this->assertFalse($adherent->isEnabled());
-        $this->assertNull($adherent->getInterests());
+        $this->assertEmpty($adherent->getInterests());
 
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
