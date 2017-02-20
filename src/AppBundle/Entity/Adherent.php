@@ -39,12 +39,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(nullable=true)
      */
-    private $oldPassword;
+    private $password;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    private $password;
+    private $oldPassword;
 
     /**
      * @ORM\Column(length=6)
@@ -62,7 +62,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $phone;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthdate;
 
@@ -98,9 +98,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $lastLoggedAt;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="json_array")
      */
-    private $interests;
+    private $interests = [];
 
     /**
      * @ORM\Column(type="boolean")
