@@ -2,20 +2,20 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Committee\Event\CommitteeEventFactory;
+use AppBundle\Event\EventFactory;
 use AppBundle\Committee\Feed\CommitteeEvent;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent as EntityCommitteeEvent;
+use AppBundle\Entity\Event as EntityEvent;
 use AppBundle\Entity\PostAddress;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterface
+class LoadEventData implements FixtureInterface, ContainerAwareInterface
 {
     const COMMITTEE_EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     const COMMITTEE_EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
@@ -35,7 +35,7 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
         $committee4 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_4_UUID);
         $committee5 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_5_UUID);
 
-        $committeeEventFactory = $this->getCommitteeEventFactory();
+        $committeeEventFactory = $this->getEventFactory();
 
         $event1 = $committeeEventFactory->createFromArray([
             'uuid' => self::COMMITTEE_EVENT_1_UUID,
@@ -115,7 +115,7 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
         return $this->getCommitteeFeedManager()->createMessage(new CommitteeMessage($author, $committee, $text, $createdAt));
     }
 
-    private function publishCommitteeEvent(EntityCommitteeEvent $event)
+    private function publishCommitteeEvent(EntityEvent $event)
     {
         return $this->getCommitteeFeedManager()->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
     }
@@ -164,8 +164,8 @@ class LoadCommitteeEventData implements FixtureInterface, ContainerAwareInterfac
         return $this->container->get('app.committee.feed_manager');
     }
 
-    private function getCommitteeEventFactory(): CommitteeEventFactory
+    private function getEventFactory(): EventFactory
     {
-        return $this->container->get('app.committee_event_factory');
+        return $this->container->get('app.event.factory');
     }
 }

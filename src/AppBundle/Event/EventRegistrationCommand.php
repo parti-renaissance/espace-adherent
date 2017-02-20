@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CommitteeEventRegistrationCommand
+class EventRegistrationCommand
 {
     /**
-     * @var CommitteeEvent
+     * @var Event
      */
     private $event;
 
@@ -41,7 +41,7 @@ class CommitteeEventRegistrationCommand
     private $newsletterSubscriber;
     private $registrationUuid;
 
-    public function __construct(CommitteeEvent $event, Adherent $adherent = null)
+    public function __construct(Event $event, Adherent $adherent = null)
     {
         $this->event = $event;
         $this->newsletterSubscriber = false;
@@ -61,7 +61,7 @@ class CommitteeEventRegistrationCommand
         $this->newsletterSubscriber = $adherent->hasSubscribedMainEmails();
     }
 
-    public function getCommitteeEvent(): CommitteeEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }

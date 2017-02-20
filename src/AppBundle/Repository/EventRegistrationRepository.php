@@ -2,14 +2,14 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\CommitteeEventRegistration;
+use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeEventRegistrationRepository extends EntityRepository
+class EventRegistrationRepository extends EntityRepository
 {
-    public function findOneByUuid(string $uuid): ?CommitteeEventRegistration
+    public function findOneByUuid(string $uuid): ?EventRegistration
     {
         $query = $this
             ->createQueryBuilder('r')
@@ -23,7 +23,7 @@ class CommitteeEventRegistrationRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?CommitteeEventRegistration
+    public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?EventRegistration
     {
         $uuid = Uuid::fromString($adherentUuid);
 
@@ -37,7 +37,7 @@ class CommitteeEventRegistrationRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findGuestRegistration(string $eventUuid, string $emailAddress): ?CommitteeEventRegistration
+    public function findGuestRegistration(string $eventUuid, string $emailAddress): ?EventRegistration
     {
         $query = $this
             ->createEventRegistrationQueryBuilder($eventUuid)

@@ -6,16 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeEventRegistrationRepository")
- * @ORM\Table(name="committee_events_registrations")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRegistrationRepository")
+ * @ORM\Table(name="events_registrations")
  */
-class CommitteeEventRegistration
+class EventRegistration
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CommitteeEvent")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $event;
@@ -52,7 +52,7 @@ class CommitteeEventRegistration
 
     public function __construct(
         UuidInterface $uuid,
-        CommitteeEvent $event,
+        Event $event,
         string $firstName,
         string $emailAddress,
         string $postalCode,
@@ -70,7 +70,7 @@ class CommitteeEventRegistration
         $this->createdAt = new \DateTimeImmutable($createdAt);
     }
 
-    public function getEvent(): CommitteeEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }
@@ -95,7 +95,7 @@ class CommitteeEventRegistration
         return $this->newsletterSubscriber;
     }
 
-    public function matches(CommitteeEvent $event, Adherent $adherent = null): bool
+    public function matches(Event $event, Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {
             return false;

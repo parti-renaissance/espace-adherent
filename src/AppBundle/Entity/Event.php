@@ -9,17 +9,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeEventRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  * @ORM\Table(
- *   name="committee_events",
+ *   name="events",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="committee_event_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="committee_event_canonical_name_unique", columns="canonical_name"),
- *     @ORM\UniqueConstraint(name="committee_event_slug_unique", columns="slug")
+ *     @ORM\UniqueConstraint(name="event_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="event_canonical_name_unique", columns="canonical_name"),
+ *     @ORM\UniqueConstraint(name="event_slug_unique", columns="slug")
  *   }
  * )
  */
-class CommitteeEvent implements GeoPointInterface
+class Event implements GeoPointInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;

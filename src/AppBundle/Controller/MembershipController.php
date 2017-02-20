@@ -158,7 +158,7 @@ class MembershipController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee_manager')->followCommittees($adherent, $form->get('committees')->getData());
+            $this->get('app.committee.manager')->followCommittees($adherent, $form->get('committees')->getData());
 
             return $this->redirectToRoute('app_membership_complete');
         }

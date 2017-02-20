@@ -3,7 +3,7 @@
 namespace AppBundle\Search;
 
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeEventRepository;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 
@@ -16,7 +16,7 @@ class SearchResultsProvider
     public function __construct(
         CommitteeRepository $committee,
         CommitteeMembershipRepository $membership,
-        CommitteeEventRepository $event
+        EventRepository $event
     ) {
         $this->committee = $committee;
         $this->membership = $membership;

@@ -3,11 +3,11 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeEvent;
-use AppBundle\Entity\CommitteeEventRegistration;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
+class EventRegistrationTest extends \PHPUnit_Framework_TestCase
 {
     const REGISTRATION_UUID = '75aac96a-9cba-4bd8-91f4-414d269ca0b0';
 
@@ -17,11 +17,11 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
     const ADHERENT_1_UUID = '0936205b-35fb-4250-a97e-bfc3a2bcba12';
     const ADHERENT_2_UUID = '59e4203a-cf4a-4a39-a5f1-768d46c3575e';
 
-    public function testCreateCommitteeEventRegistrationForRegisteredAdherent()
+    public function testCreateEventRegistrationForRegisteredAdherent()
     {
-        $registration = new CommitteeEventRegistration(
+        $registration = new EventRegistration(
             Uuid::fromString(self::REGISTRATION_UUID),
-            $event = $this->createCommitteeEventMock(self::EVENT_1_UUID),
+            $event = $this->createEventMock(self::EVENT_1_UUID),
             'Joseph',
             'joseph.seguin@domain.tld',
             '67001',
@@ -38,16 +38,16 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($registration->matches($event, $this->createAdherentMock(self::ADHERENT_1_UUID)));
         $this->assertFalse($registration->matches($event, $this->createAdherentMock(self::ADHERENT_2_UUID)));
-        $this->assertFalse($registration->matches($this->createCommitteeEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_1_UUID)));
-        $this->assertFalse($registration->matches($this->createCommitteeEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_2_UUID)));
-        $this->assertFalse($registration->matches($this->createCommitteeEventMock(self::EVENT_2_UUID)));
+        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_1_UUID)));
+        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_2_UUID)));
+        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID)));
     }
 
-    public function testCreateCommitteeEventRegistrationForGuest()
+    public function testCreateEventRegistrationForGuest()
     {
-        $registration = new CommitteeEventRegistration(
+        $registration = new EventRegistration(
             Uuid::fromString(self::REGISTRATION_UUID),
-            $event = $this->createCommitteeEventMock(self::EVENT_2_UUID),
+            $event = $this->createEventMock(self::EVENT_2_UUID),
             'Rose',
             'rose-lr@domain.tld',
             '59000',
@@ -62,7 +62,7 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($registration->isNewsletterSubscriber());
 
         $this->assertTrue($registration->matches($event));
-        $this->assertFalse($registration->matches($this->createCommitteeEventMock(self::EVENT_1_UUID)));
+        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_1_UUID)));
         $this->assertFalse($registration->matches($event, $this->createAdherentMock(self::ADHERENT_1_UUID)));
         $this->assertFalse($registration->matches($event, $this->createAdherentMock(self::ADHERENT_2_UUID)));
     }
@@ -79,12 +79,12 @@ class CommitteeEventRegistrationTest extends \PHPUnit_Framework_TestCase
         return $adherent;
     }
 
-    private function createCommitteeEventMock(string $uuid)
+    private function createEventMock(string $uuid)
     {
         $uuid = Uuid::fromString($uuid);
 
         $event = $this
-            ->getMockBuilder(CommitteeEvent::class)
+            ->getMockBuilder(Event::class)
             ->setMethods(['getUuid'])
             ->setMethodsExcept(['equals'])
             ->disableOriginalConstructor()

@@ -1,24 +1,24 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
-class CommitteeEventRegistrationCommandHandler
+class EventRegistrationCommandHandler
 {
     private $factory;
     private $manager;
 
     public function __construct(
-        CommitteeEventRegistrationFactory $factory,
-        CommitteeEventRegistrationManager $manager
+        EventRegistrationFactory $factory,
+        EventRegistrationManager $manager
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
     }
 
-    public function handle(CommitteeEventRegistrationCommand $command)
+    public function handle(EventRegistrationCommand $command)
     {
         $registration = $this->manager->searchRegistration(
-            $command->getCommitteeEvent(),
+            $command->getEvent(),
             $command->getEmailAddress(),
             $command->getAdherent()
         );

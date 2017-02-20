@@ -2,11 +2,11 @@
 
 namespace AppBundle\Geocoder\Subscriber;
 
-use AppBundle\Committee\CommitteeEvents;
+use AppBundle\Events;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Donation\DonationEvents;
 use AppBundle\Donation\DonationWasCreatedEvent;
-use AppBundle\Committee\Event\CommitteeEventCreatedEvent;
+use AppBundle\Event\EventCreatedEvent;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Geocoder\GeocoderInterface;
 use AppBundle\Geocoder\GeoPointInterface;
@@ -51,9 +51,9 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($event->getCommittee());
     }
 
-    public function onCommitteeEventCreated(CommitteeEventCreatedEvent $event)
+    public function onEventCreated(EventCreatedEvent $event)
     {
-        $this->updateGeocodableEntity($event->getCommitteeEvent());
+        $this->updateGeocodableEntity($event->getEvent());
     }
 
     private function updateGeocodableEntity(GeoPointInterface $geocodable)
@@ -80,8 +80,8 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             DonationEvents::CREATED => ['onDonationCreated', -256],
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', -256],
             AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
-            CommitteeEvents::CREATED => ['onCommitteeCreated', -256],
-            CommitteeEvents::EVENT_CREATED => ['onCommitteeEventCreated', -256],
+            Events::COMMITTEE_CREATED => ['onCommitteeCreated', -256],
+            Events::EVENT_CREATED => ['onEventCreated', -256],
         ];
     }
 }

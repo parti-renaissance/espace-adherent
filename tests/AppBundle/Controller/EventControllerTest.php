@@ -3,25 +3,25 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCommitteeEventData;
-use AppBundle\Entity\CommitteeEventRegistration;
-use AppBundle\Repository\CommitteeEventRegistrationRepository;
+use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\Entity\EventRegistration;
+use AppBundle\Repository\EventRegistrationRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
-class CommitteeEventControllerTest extends SqliteWebTestCase
+class EventControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    /** @var CommitteeEventRegistrationRepository */
+    /** @var EventRegistrationRepository */
     private $repository;
 
     /**
      * @group functionnal
      */
-    public function testAnonymousUserCanRegisterToCommitteeEvent()
+    public function testAnonymousUserCanRegisterToEvent()
     {
         $committeeUrl = sprintf('/comites/%s/en-marche-paris-8', LoadAdherentData::COMMITTEE_1_UUID);
 
@@ -55,7 +55,7 @@ class CommitteeEventControllerTest extends SqliteWebTestCase
             ],
         ]));
 
-        $this->assertInstanceOf(CommitteeEventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::COMMITTEE_EVENT_1_UUID, 'paupau75@example.org'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::COMMITTEE_EVENT_1_UUID, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -69,7 +69,7 @@ class CommitteeEventControllerTest extends SqliteWebTestCase
         $this->assertSame('2 participants', $crawler->filter('.committee-event-attendees')->text());
     }
 
-    public function testRegisteredAdherentUserCanRegisterToCommitteeEvent()
+    public function testRegisteredAdherentUserCanRegisterToEvent()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
@@ -90,7 +90,7 @@ class CommitteeEventControllerTest extends SqliteWebTestCase
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
-        $this->assertInstanceOf(CommitteeEventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::COMMITTEE_EVENT_1_UUID, 'benjyd@aol.com'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::COMMITTEE_EVENT_1_UUID, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
 
@@ -121,10 +121,10 @@ class CommitteeEventControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
-            LoadCommitteeEventData::class,
+            LoadEventData::class,
         ]);
 
-        $this->repository = $this->getCommitteeEventRegistrationRepository();
+        $this->repository = $this->getEventRegistrationRepository();
     }
 
     protected function tearDown()

@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace AppBundle\Event;
 
 use AppBundle\Committee\CommitteeEvent as BaseEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeEvent;
+use AppBundle\Entity\Event;
 
-class CommitteeEventCreatedEvent extends BaseEvent
+class EventCreatedEvent extends BaseEvent
 {
     private $author;
     private $event;
 
-    public function __construct(Committee $committee, Adherent $author, CommitteeEvent $event)
+    public function __construct(Committee $committee, Adherent $author, Event $event)
     {
         parent::__construct($committee);
 
@@ -25,7 +25,7 @@ class CommitteeEventCreatedEvent extends BaseEvent
         return $this->author;
     }
 
-    public function getCommitteeEvent(): CommitteeEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }

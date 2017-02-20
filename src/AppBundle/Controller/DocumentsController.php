@@ -27,7 +27,7 @@ class DocumentsController extends Controller
             $documents['referent'] = $this->get('app.documents_repository')->listReferentDirectory('/');
         }
 
-        if ($this->get('app.committee_manager')->isCommitteeHost($this->getUser())) {
+        if ($this->get('app.committee.manager')->isCommitteeHost($this->getUser())) {
             $documents['host'] = $this->get('app.documents_repository')->listHostDirectory('/');
         }
 
@@ -81,7 +81,7 @@ class DocumentsController extends Controller
 
     private function checkDocumentTypeAccess(string $type)
     {
-        $committeeManager = $this->get('app.committee_manager');
+        $committeeManager = $this->get('app.committee.manager');
         if (DocumentRepository::DIRECTORY_HOSTS === $type && !$committeeManager->isCommitteeHost($this->getUser())) {
             throw $this->createNotFoundException();
         }
