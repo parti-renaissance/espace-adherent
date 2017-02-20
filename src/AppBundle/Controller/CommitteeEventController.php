@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/comites/{committee_uuid}/evenements/{slug}", requirements={
@@ -89,5 +90,24 @@ class CommitteeEventController extends Controller
             'committee' => $event->getCommittee(),
             'registration' => $registration,
         ]);
+    }
+
+    /**
+     * @Route(
+     *   path="/ical",
+     *   name="app_committee_event_export_ical"
+     * )
+     * @Method("GET")
+     * @Entity("event", expr="repository.findOneBySlug(slug)")
+     */
+    public function exportIcalAction(CommitteeEvent $committeeEvent): Response
+    {
+        return new Response(
+            $this->get('jms_serializer')->serialize($committeeEvent, 'ical'),
+            Response::HTTP_OK, [
+                'Content-Type' => 'text/calendar',
+                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$committeeEvent->getSlug().'.ics',
+            ]
+        );
     }
 }

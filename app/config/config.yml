@@ -24,6 +24,7 @@ imports:
     - { resource: services/search.xml }
     - { resource: services/security.xml }
     - { resource: services/storage.xml }
+    - { resource: services/serializer.xml }
     - { resource: services/twig.xml }
 
 parameters:
