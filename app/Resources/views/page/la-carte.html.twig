@@ -3,22 +3,53 @@
 {% block page_title 'Le mouvement - La carte' %}
 {% block canonical_url url('page_le_mouvement_la_carte') %}
 
-{% block content %}
-    <main>
-        <section class="content">
-            <header class="space--60-0 l__wrapper--slim">
-                <h1 class="text--large b__nudge--bottom-small">
-                    Comités à proximité
-                </h1>
-            </header>
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+            height: 100vh;
+            justify-content: flex-start;
+        }
+        footer {
+            display: none;
+        }
+    </style>
+{% endblock %}
 
-            <article class="list__links list__links--col list__links--no-decor">
-              <ul>
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <script>
+        Kernel.onLoad(function() {
+            App.runCommittees();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <main class="content committees-map">
+        <header class="space--60-0 l__wrapper--slim text--center">
+            <h1 class="text--large b__nudge--bottom-small">
+                Comités à proximité
+            </h1>
+        </header>
+        <section class="committees-map__container">
+            <aside>
+                <ul>
                 {% for committee in committees %}
-                    <li class="text--on-white">{{ committee.name }} <br/> {{ committee.cityName }}</li>
+                    <li>
+                        <h3 class="text--normal b__nudge--bottom-small">{{ committee.name }}</h3>
+                        <div class="text--summary text--gray">
+                            {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                             &middot;
+                            {{ committee.cityName }}
+                        </div>
+                    </li>
                 {% endfor %}
-              </ul>
-            </article>
-        </section>
+                </ul>
+             </aside>
+
+             <article class="text--center">
+                 <div id="map">hello</div>
+             </article>
+         </section>
     </main>
 {% endblock %}

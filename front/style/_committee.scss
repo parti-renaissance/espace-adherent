@@ -246,3 +246,37 @@
         }
     }
 }
+
+.committees-map {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    header {
+        margin-bottom: 0;
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        border-top: 1px solid $gray--light;
+
+        aside {
+            overflow-y: scroll;
+            border-right: 1px solid $gray--light;
+            width: 30%;
+            box-sizing: border-box;
+
+            li {
+                border-bottom: 1px solid $gray--light;
+                padding: 20px 25px;
+            }
+        }
+
+        article {
+            background: yellow;
+            width: 100%;
+        }
+    }
+}
