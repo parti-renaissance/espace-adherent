@@ -1,7 +1,11 @@
 {% for committee in results %}
     <div class="search__committee__box">
         <div class="search__results__meta">
-            <h2 class="text--medium text--normal">{{ committee.name }}</h2>
+            <h2 class="text--medium text--normal">
+                <a href="{{ committee_path('app_committee_show', committee) }}">
+                    {{ committee.name }}
+                </a>
+            </h2>
             <div class="text--body text--bold">{{ committee.cityName }}</div>
         </div>
 

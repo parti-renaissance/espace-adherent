@@ -7,7 +7,7 @@
 {% block content %}
 
     <section class="l__wrapper">
-        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link icon--with-text">
+        <a href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour
         </a>
@@ -24,7 +24,7 @@
                 </p>
             {% endif %}
 
-            <form action="{{ path('app_committee_attend_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
+            <form action="{{ path('app_committee_attend_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
                 <div class="form__row" id="field-first-name">
                     {{ form_label(form.firstName, 'Prénom') }}

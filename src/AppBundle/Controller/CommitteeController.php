@@ -64,6 +64,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/timeline", name="app_committee_timeline")
      * @Method("GET")
+     * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
     public function timelineAction(Request $request, Committee $committee): Response
     {
@@ -123,7 +124,7 @@ class CommitteeController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_committee_show_event', [
-                'committee_uuid' => (string) $committee->getUuid(),
+                'uuid' => (string) $command->getEvent()->getUuid(),
                 'slug' => (string) $command->getEvent()->getSlug(),
             ]);
         }
