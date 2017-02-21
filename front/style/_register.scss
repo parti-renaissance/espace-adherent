@@ -83,44 +83,10 @@
         }
     }
 
-    &__donation {
-        article {
-            max-width: 575px;
-            width: 90%;
-            margin: 0 auto;
-        }
-    }
-
     &__interests {
-        label {
-            height: 25px;
-            width: 20%;
-            font-family: $font-roboto;
-
-            @media (max-width: $mobile) {
-                width: 41%;
-            }
-        }
-
-        input {
-            width: 3%;
-
-            @media (max-width: $mobile) {
-                width: 5%;
-            }
-        }
-
-        &__options {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-
         &__buttons {
             width: 100%;
-            max-width: 340px;
+            max-width: 370px;
             margin: 0 auto;
 
             @media (max-width: $mobile) {
@@ -134,7 +100,6 @@
 
     &__comites {
         margin-bottom: 120px;
-        align-items: stretch;
 
         &__list {
             flex-grow: 2;
@@ -151,14 +116,6 @@
             @media (max-width: $mobile) {
                 justify-content: flex-start;
                 max-width: 100%;
-            }
-
-            input {
-                margin-right: 10px;
-            }
-
-            .form {
-                font-family: $font-roboto;
             }
         }
     }

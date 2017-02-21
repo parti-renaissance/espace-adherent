@@ -290,7 +290,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $checkBoxPattern = '#app_adherent_pin_interests_interests > '.
+        $checkBoxPattern = '#app_adherent_pin_interests '.
                            'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
         $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
