@@ -48,7 +48,7 @@ class EventMessageNotifier implements EventSubscriberInterface
         Adherent $host
     ): EventNotificationMessage {
         $params = [
-            'committee_uuid' => (string) $committee->getUuid(),
+            'uuid' => (string) $event->getUuid(),
             'slug' => $event->getSlug(),
         ];
 

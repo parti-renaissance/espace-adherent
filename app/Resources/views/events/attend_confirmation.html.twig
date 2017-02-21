@@ -7,7 +7,7 @@
 {% block content %}
 
     <section class="l__wrapper--medium">
-        <a href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link">Retour</a>
+        <a href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" class="previous-link">Retour</a>
 
         {{ include('events/_event_header.html.twig') }}
 
@@ -16,7 +16,7 @@
                 Votre participation est bien enregistrée !
             </p>
             <div class="text--center">
-                <a class="btn" href="{{ path('app_committee_show_event', {'committee_uuid': committee.uuid.toString, 'slug': committee_event.slug}) }}">Retour à l'événement</a>
+                <a class="btn" href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}">Retour à l'événement</a>
             </div>
         </div>
 

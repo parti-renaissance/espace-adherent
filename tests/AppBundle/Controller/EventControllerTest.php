@@ -55,7 +55,7 @@ class EventControllerTest extends SqliteWebTestCase
             ],
         ]));
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::COMMITTEE_EVENT_1_UUID, 'paupau75@example.org'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -90,7 +90,7 @@ class EventControllerTest extends SqliteWebTestCase
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::COMMITTEE_EVENT_1_UUID, 'benjyd@aol.com'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
 

@@ -17,10 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadEventData implements FixtureInterface, ContainerAwareInterface
 {
-    const COMMITTEE_EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
-    const COMMITTEE_EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
-    const COMMITTEE_EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
-    const COMMITTEE_EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
+    const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
+    const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
+    const EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
+    const EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
 
     use ContainerAwareTrait;
 
@@ -38,7 +38,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $committeeEventFactory = $this->getEventFactory();
 
         $event1 = $committeeEventFactory->createFromArray([
-            'uuid' => self::COMMITTEE_EVENT_1_UUID,
+            'uuid' => self::EVENT_1_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Réunion de réflexion parisienne',
@@ -51,7 +51,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
 
         $event2 = $committeeEventFactory->createFromArray([
-            'uuid' => self::COMMITTEE_EVENT_2_UUID,
+            'uuid' => self::EVENT_2_UUID,
             'organizer' => $author7,
             'committee' => $committee3,
             'name' => 'Réunion de réflexion dammarienne',
@@ -64,7 +64,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
 
         $event3 = $committeeEventFactory->createFromArray([
-            'uuid' => self::COMMITTEE_EVENT_3_UUID,
+            'uuid' => self::EVENT_3_UUID,
             'organizer' => $author7,
             'committee' => $committee4,
             'name' => 'Réunion de réflexion bellifontaine',
@@ -77,7 +77,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
 
         $event4 = $committeeEventFactory->createFromArray([
-            'uuid' => self::COMMITTEE_EVENT_4_UUID,
+            'uuid' => self::EVENT_4_UUID,
             'organizer' => $author7,
             'committee' => $committee5,
             'name' => 'Réunion de réflexion évryenne',

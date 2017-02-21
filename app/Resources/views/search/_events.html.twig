@@ -11,7 +11,11 @@
         <div class="search__results__row l__row l__row--h-stretch l__row--v-center">
             <div class="search__results__info l__col l__col--v-stretch l__col--left">
                 <div class="search__results__meta">
-                    <h2 class="text--normal text--medium b__nudge--bottom-small">{{ event.name }}</h2>
+                    <h2 class="text--normal text--medium b__nudge--bottom-small">
+                        <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">
+                            {{ event.name }}
+                        </a>
+                    </h2>
                     <div class="text--body">
                         {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}
                     </div>
@@ -20,7 +24,7 @@
 
                 <div class="search__results__cta">
                     <a class="btn btn--blue"
-                       href="{{ path('app_committee_attend_event', { committee_uuid: event.committee.uuid, slug: event.slug }) }}">
+                       href="{{ path('app_committee_attend_event', { uuid: event.uuid, slug: event.slug }) }}">
                         Je Participe
                     </a>
                     <div class="text--body icon--with-text l__row--center">
@@ -33,6 +37,6 @@
             <img class="search-map"
                  src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
                  title="Carte d'accès à l'événement {{ event.name }}"
-                 alt="{{ item.event.inlineFormattedAddress }}" />
+                 alt="{{ event.inlineFormattedAddress }}" />
         </div>
 {% endfor %}
