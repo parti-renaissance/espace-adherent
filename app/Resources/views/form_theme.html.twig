@@ -63,7 +63,6 @@
                         {{ include('components/participants.html.twig') }}
                         {{ 'committee.members_count'|transchoice(committee_data['members_count']) }}
                     </div>
-                    <div><a class="btn btn--blue b__nudge--top" href="{{ path('app_committee_show', { uuid: choice.vars.value, slug: committee_data['slug'] }) }}">Découvrir</a></div>
                 </div>
                 <div class="register__comites__follow form__checkbox">
                     {{ form_widget(choice) }}

@@ -13,20 +13,17 @@
             <hr class="l__wrapper b__nudge--bottom-large"/>
 
             <article class="l__wrapper--slim">
-
                 {{ form_start(form, { attr: { class: 'form text--center' } }) }}
                     {{ form_errors(form) }}
 
-                    <div class="text--body b__nudge--bottom-small">
-                        Sélectionnez le montant de votre don :
-                    </div>
-
                     {{ form_errors(form.amount) }}
-                    {{ form_widget(form.amount, { 'attr': { 'class': 'form--full b__nudge--bottom-small', 'id': 'donation-amount' } }) }}
+                    {{ form_widget(form.amount, { 'attr': { 'class': 'amount-chooser' } }) }}
 
+                    <div class="l__col l__wrapper-500 space--20-0">
+                        {{ form_widget(form.submit, { translation_domain: 'messages', attr : { class: 'btn--primary b__nudge--bottom-small' } }) }}
+                    </div>
                     <div class="l__col l__wrapper-500">
                         {{ form_widget(form.pass, { label: 'adherent.pass_donation_label', translation_domain: 'messages', attr: { class: 'b__nudge--bottom-small' } }) }}
-                        {{ form_widget(form.submit, { translation_domain: 'messages', attr : { class: 'btn--primary b__nudge--bottom-small' } }) }}
                     </div>
 
                     {{ form_rest(form) }}
@@ -36,7 +33,7 @@
                     Votre don vous donne droit à une réduction annuelle d’impôt sur le revenu à hauteur de 66%
                     de son montant, dans la double limite de 20% du revenu imposable et de 15 000 € par foyer fiscal.
                 </p>
-            </div>
+            </article>
         </section>
     </main>
 {% endblock %}

@@ -89,7 +89,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         $this->assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         $this->assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        $this->assertSame('08/07/1950', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+        $this->assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -141,7 +141,7 @@ class AdherentControllerTest extends SqliteWebTestCase
                     'number' => '04 01 02 03 04',
                 ],
                 'position' => 'student',
-                'birthdate' => '27/10/1985',
+                'birthdate' => '1985-10-27',
             ],
         ]));
 

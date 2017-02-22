@@ -1,8 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'committee/_layout.html.twig' %}
 
 {% block title "Édition du comité « #{committee.name} »" %}
-
-{% block banner '' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
@@ -13,30 +11,31 @@
     </script>
 {% endblock %}
 
-{% block content %}
-    <section class="l__wrapper--medium">
-        <div class="committee">
-            <h2>Édition des informations du comité</h2>
+{% block committee_content %}
+    <main>
+        <section class="l__wrapper--medium space--30-0">
+            <a href="{{ committee_path('app_committee_show', committee) }}" class="back-to-list icon--with-text">
+                {{ include('components/caret--left.html.twig') }}
+                Retour au comité</a>
 
-            <div class="l__row l__row--top l__row--h-stretch">
-                <div class="committee__form">
-                    <form method="post" id="edit-committee-form" class="form committee-form">
-                        {{ include('committee/_form.html.twig') }}
-                        <div>
-                            <button type="submit" id="edit-committee">Enregistrer les modifications</button>
-                        </div>
-                        {{ form_rest(form) }}
-                    </form>
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">
+                    Modifier mon comité En Marche
+                </h1>
+            </header>
+
+            <form method="post" id="edit-committee-form" class="form committee-form">
+                {{ include('committee/_form.html.twig') }}
+                <div>
+                    <button type="submit" id="edit-committee" class="btn btn--blue">
+                        Enregistrer
+                    </button>
+                    <a href="{{ committee_path('app_committee_show', committee) }}" class="btn">
+                        Annuler
+                    </a>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="l__wrapper--medium">
-        <div class="committee">
-            {{ include('committee/hosts.html.twig') }}
-        </div>
-    </section>
-
+                {{ form_rest(form) }}
+            </form>
+        </section>
+    </main>
 {% endblock %}

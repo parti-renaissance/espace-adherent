@@ -132,7 +132,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Submit the committee form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer les modifications')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
                 'name' => 'F',
                 'description' => 'F',
@@ -160,7 +160,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
 
         // Submit the committee form with valid data to create committee
-        $this->client->submit($crawler->selectButton('Enregistrer les modifications')->form([
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
                 'name' => 'Clichy est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Clichy',
