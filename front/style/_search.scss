@@ -111,11 +111,19 @@
         }
 
         &__row {
-            padding: 20px 0;
-            border-top: 1px solid $gray--lighter;
+            margin: 10px 0;
+            background-color: $gray--lighter;
+
+            &:hover {
+                background-color: $gray--light;
+            }
+
+            &__link:hover {
+                color: black;
+            }
 
             .search-map {
-                height: 200px;
+                height: 190px;
 
                 @media (max-width: $mobile) {
                     display: none;
@@ -124,7 +132,8 @@
         }
 
         &__info {
-            height: 200px;
+            padding: 20px;
+            height: 150px;
             flex-grow: 1;
             margin-right: 20px;
 
@@ -136,7 +145,7 @@
         &__cta {
             display: flex;
 
-            a {
+            .btn {
                 margin-right: 20px;
             }
         }
@@ -152,6 +161,7 @@
         flex-direction: column;
         justify-content: space-between;
         margin-bottom: 25px;
+        border: 0;
 
         @media (max-width: $tablet) {
             width: 48%;
@@ -159,6 +169,15 @@
 
         @media (max-width: $mobile) {
             width: 100%;
+        }
+
+        .search__results__cta .btn {
+            margin-right: 20px;
+        }
+
+        &:hover {
+            background-color: #d4d4d4;
+            color: black;
         }
     }
 }
