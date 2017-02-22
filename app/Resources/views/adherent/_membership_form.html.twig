@@ -85,9 +85,9 @@
     </div>
 
     {% if form.conditions is defined %}
-        <div class="b__nudge--top text--small" id="field-conditions">
+        <div class="b__nudge--top text--small form__checkbox" id="field-conditions">
             {{ form_widget(form.conditions) }}
-            <div class="register__form__conditions">Oui, j'adhère à la charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</div>
+            {{ form_label(form.conditions, 'Oui, j\'adhère à la charte et j\'ai pris connaissance des règles de fonctionnement d\'En Marche !') }}
             {{ form_errors(form.conditions) }}
         </div>
     {% endif %}

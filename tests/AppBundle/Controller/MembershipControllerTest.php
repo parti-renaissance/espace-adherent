@@ -77,7 +77,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['birthdate'] = date('d/m/Y');
+        $data['membership_request']['birthdate'] = date('Y-m-d');
         $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -441,7 +441,7 @@ class MembershipControllerTest extends MysqlWebTestCase
                     'number' => '0140998080',
                 ],
                 'position' => 'retired',
-                'birthdate' => '20/01/1950',
+                'birthdate' => '1950-01-20',
                 'conditions' => true,
             ],
         ];

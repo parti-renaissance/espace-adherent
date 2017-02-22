@@ -13,15 +13,20 @@
                 <h1 class="text--large">
                     Pour terminer
                 </h1>
-                <h2 class="b__nudge--top-15 bigger">Suivez l'actualité des comités locaux près de chez vous.<br>C'est le cœur du mouvement En Marche !</h2>
+                <h2 class="b__nudge--top-15">
+                    Suivez l'actualité des comités locaux près de chez vous.<br />
+                    C'est le cœur du mouvement En Marche !
+                </h2>
             </header>
             <hr class="l__wrapper b__nudge--bottom-large" />
             <div class="l__wrapper--slim membership_choose_nearby_committee__form">
                 {{ form_start(form) }}
                     {{ form_row(form.committees) }}
-                    <div class="b__nudge--bottom-large text--center">* En cochant ces cases, j'accepte de recevoir l'actualité des comités sélectionnés</div>
                     <div class="text--center">
-                        {{ form_row(form.submit) }}
+                        <p>
+                            En cochant ces cases, j'accepte de recevoir l'actualité des comités sélectionnés.
+                        </p>
+                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn--primary'}}) }}
                     </div>
                 {{ form_end(form) }}
             </div>

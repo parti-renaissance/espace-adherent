@@ -26,8 +26,8 @@ class MembershipRequestType extends AbstractType
                 'empty_data' => '',
             ])
             ->add('birthdate', BirthdayType::class, [
-                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
+                'html5' => true,
             ])
             ->add('position', ActivityPositionType::class)
             ->add('address', AddressType::class)

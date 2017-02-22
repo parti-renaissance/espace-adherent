@@ -138,6 +138,7 @@
                 margin-right: 10px;
                 border: 1px solid $gray--light;
                 transition: all .2s;
+                background: #fff;
             }
         }
 
@@ -255,4 +256,9 @@
         padding: 20px 0;
         font-family: $font-roboto;
     }
+}
+
+input[type=date]::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
 }
