@@ -10,7 +10,9 @@
                 </h1>
             </header>
 
-            <article class="l__col">
+            <hr class="l__wrapper b__nudge--bottom-large"/>
+
+            <article class="l__wrapper--slim">
 
                 {{ form_start(form, { attr: { class: 'form text--center' } }) }}
                     {{ form_errors(form) }}
@@ -22,7 +24,7 @@
                     {{ form_errors(form.amount) }}
                     {{ form_widget(form.amount, { 'attr': { 'class': 'form--full b__nudge--bottom-small', 'id': 'donation-amount' } }) }}
 
-                    <div class="l__row l__row--h-stretch l__mobile--col">
+                    <div class="l__col l__wrapper-500">
                         {{ form_widget(form.pass, { label: 'adherent.pass_donation_label', translation_domain: 'messages', attr: { class: 'b__nudge--bottom-small' } }) }}
                         {{ form_widget(form.submit, { translation_domain: 'messages', attr : { class: 'btn--primary b__nudge--bottom-small' } }) }}
                     </div>
