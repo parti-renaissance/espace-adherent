@@ -1,20 +1,18 @@
 {% for committee in results %}
-    <div class="search__committee__box">
+    <a href="{{ committee_path('app_committee_show', committee) }}" class="search__committee__box">
         <div class="search__results__meta">
             <h2 class="text--medium text--normal">
-                <a href="{{ committee_path('app_committee_show', committee) }}">
-                    {{ committee.name }}
-                </a>
+                {{ committee.name }}
             </h2>
             <div class="text--body text--bold">{{ committee.cityName }}</div>
         </div>
 
         <div class="search__results__cta">
-            <a href="" class="btn btn--blue">Je Participe</a>
+            <span class="btn btn--blue">Je Participe</span>
             <div class="text--body icon--with-text l__row--center">
                 {{ include('components/participants.html.twig') }}
                 {{ 'committee.participants_count'|transchoice(committee.membersCount) }}
             </div>
         </div>
-    </div>
+    </a>
 {% endfor %}
