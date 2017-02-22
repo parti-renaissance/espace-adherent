@@ -10,6 +10,18 @@
                 <h1 class="text--center text--large">
                     {{ current.name }}
                 </h1>
+
+                {% if current.slug == 'communiques' %}
+                    <p class="text--center">
+                        Vous pouvez contacter le service de presse d'En Marche ! par téléphone au<br />
+                        +33 (0)1 86 95 84 23 ou par email à
+                        <a href="mailto:contactpresse@en-marche.fr">contactpresse@en-marche.fr</a>.
+                    </p>
+                    <p class="text--center">
+                        Please get in touch with our PR department at<br />
+                        <a href="mailto:contactpresse@en-marche.fr">contactpresse@en-marche.fr</a> or +33 (0)1 86 95 84 23.
+                    </p>
+                {% endif %}
             </header>
 
             <nav class="l__wrapper text--body b__nudge--bottom-larger">
