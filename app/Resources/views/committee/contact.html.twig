@@ -7,23 +7,47 @@
 {% block content %}
     {% set is_host = is_host(committee) %}
 
-    <section class="l__wrapper--medium">
-        <h1>{{ committee.name }}</h1>
-        <h2>Contacter les membres</h2>
+<main class="committee__members__contact">
+    <header class="background--blue space--60-0">
+        <div class="l__wrapper--medium l__row l__row--h-stretch l__mobile--col">
+            <div class="text--white">
+                <div class="text--all-caps text--small b__nudge--bottom-tiny">Comité local</div>
+                <h2 class="text--large">
+                    {{ include('components/location-pin.html.twig') }}
+                    <span id="committee-name">{{ committee.name }}</span>
+                </h2>
+            </div>
 
-        {% if contacts is empty %}
-            <div class="error">Vous n'avez pas selectionné de membre destinataire de ce message, il ne pourra donc pas être envoyé.</div>
-        {% else %}
-            <div>{{ 'Votre message sera envoyé par e-mail à %s de votre comité.'|format('committee.members_count'|transchoice(contacts|length)) }}</div>
-        {% endif %}
+            <div class="l__col">
+                {% block committee_lcol %}{% endblock %}
+            </div>
+        </div>
+    </header>
 
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
-            <input type="hidden" name="contacts" value="{{ contacts|json_encode }}">
-            {{ form_row(form.message) }}
-            {{ form_row(form.submit, { label: 'Envoyer' }) }}
-        {{ form_end(form) }}
-    </section>
+    <div class="l__wrapper l__row l__row--top l__row--h-stretch b__nudge--top-large">
 
-    {{ include('committee/_sidebar.html.twig') }}
+        <div class="l__wrapper--main l__wrapper--main-left">
+            <h2 class="text--large">Contacter les membres</h2>
+
+            {% if contacts is empty %}
+                <div class="error">Vous n'avez pas selectionné de membre destinataire de ce message, il ne pourra donc pas être envoyé.</div>
+            {% else %}
+                <div class="text--body">{{ 'Votre message sera envoyé par e-mail à %s de votre comité.'|format('committee.members_count'|transchoice(contacts|length)) }}</div>
+            {% endif %}
+
+            {{ form_start(form) }}
+                {{ form_errors(form.message) }}
+                <input type="hidden" name="contacts" value="{{ contacts|json_encode }}">
+                {{ form_widget(form.message, { attr: { class: ' b__nudge--top-15', placeholder: 'Écrivez votre message' } }) }}
+                {{ form_row(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+            {{ form_end(form) }}
+
+        </div>
+
+        {{ include('committee/_sidebar.html.twig') }}
+
+    </div>
+
+</main>
+
 {% endblock %}
