@@ -196,6 +196,7 @@
     }
 
     &-event {
+        // An event within the timeline
         background: $gray--lighter;
         height: 200px;
         max-width: 750px;
@@ -283,6 +284,35 @@
             margin-right: 8px;
             width: 15px;
             text-align: center;
+        }
+    }
+
+    &__create {
+        margin-top: 30px;
+
+        label {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        .event__address div {
+            width: 32%;
+        }
+
+        .event__finish_at,
+        .event__begin_at {
+            display: flex;
+        }
+
+        @media (max-width: $tablet) {
+            aside {
+                display: none;
+            }
         }
     }
 }
