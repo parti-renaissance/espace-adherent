@@ -1,6 +1,46 @@
 .committee {
     margin: 0 0 100px 0;
 
+    &__host {
+        &__nav {
+            @include text--body;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0 40px;
+        }
+
+        &__menu {
+            li {
+                padding: 15px 25px;
+
+                &:first-child {
+                    background: $gray--lighter;
+                }
+
+                &:last-child {
+                    background: white;
+                    padding: 15px 25px;
+                }
+            }
+        }
+    }
+
+    &__message {
+        background: $gray--lighter;
+        padding: 25px;
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    }
+
     &__form {
         width: 75%;
         margin: 0 auto;
