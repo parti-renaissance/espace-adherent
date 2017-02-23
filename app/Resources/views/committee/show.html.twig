@@ -81,28 +81,39 @@
 {% block committee_content %}
     <nav>
         {% if is_host %}
-            <ul id="committee-host-nav">
-                <li>Discussion</li>
-                <li>
-                    <a href="{{ committee_path('app_commitee_list_members', committee) }}">Membres</a>
-                </li>
-                <li>
-                    <a href="{{ committee_path('app_committee_edit', committee) }}">Éditer le comité</a>
-                </li>
-            </ul>
-
-            <div id="comittee-host-menu">
-                <ul>
+            <div id="committee-host-nav" class="committee__host__nav">
+                <ul class="list__links list__links--default list__links--row list__links--row-left">
+                    <li class="text--bold">Discussion</li>
                     <li>
-                        <a href="#committee-message-form">Créer un message</a>
+                        <a href="{{ committee_path('app_commitee_list_members', committee) }}" class="link--no-decor">
+                            Membres
+                        </a>
                     </li>
+                </ul>
+                <ul class="list__links list__links--default list__links--row">
                     <li>
-                        <a href="{{ committee_path('app_committee_add_event', committee) }}">Créer un événement</a>
+                        <a href="{{ committee_path('app_committee_edit', committee) }}" class="icon--with-text">
+                            <i class="fa fa-sliders"></i>
+                            Éditer le comité
+                        </a>
                     </li>
                 </ul>
             </div>
 
-            <div id="committee-message-form">
+            <div id="comittee-host-menu" class="committee__host__menu">
+                <ul class="list__links list__links--default list__links--row list__links--row-left">
+                    <li>
+                        Créer un message
+                    </li>
+                    <li>
+                        <a href="{{ committee_path('app_committee_add_event', committee) }}" class="link--no-decor">
+                            Créer un événement
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="committee-message-form" class="committee__message">
                 {{ form(form) }}
             </div>
         {% endif %}

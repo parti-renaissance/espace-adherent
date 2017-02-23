@@ -1,6 +1,84 @@
 .committee {
     margin: 0 0 100px 0;
 
+    &__host {
+        &__nav {
+            @include text--body;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0 40px;
+        }
+
+        &__menu {
+            li {
+                padding: 15px 25px;
+
+                &:first-child {
+                    background: $gray--lighter;
+                }
+
+                &:last-child {
+                    background: white;
+                    padding: 15px 25px;
+                }
+            }
+        }
+    }
+
+    &__members {
+        &__nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+
+            > div {
+                display: flex;
+            }
+        }
+
+        &__list {
+            font-family: $font-roboto;
+            width: 100%;
+
+            tr {
+                border-bottom: 1px solid $gray--light;
+
+                &:first-child {
+                    background: $gray--lighter;
+                    border-color: $gray;
+                }
+
+                th {
+                    text-align: left;
+                }
+            }
+        }
+
+        &__contact {
+            textarea {
+                width: 100%;
+                height: 80px;
+                padding: 15px;
+            }            
+        }
+    }
+
+    &__message {
+        background: $gray--lighter;
+        padding: 25px;
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    }
+
     &__form {
         width: 75%;
         margin: 0 auto;
@@ -156,6 +234,7 @@
     }
 
     &-event {
+        // An event within the timeline
         background: $gray--lighter;
         height: 200px;
         max-width: 750px;
@@ -243,6 +322,35 @@
             margin-right: 8px;
             width: 15px;
             text-align: center;
+        }
+    }
+
+    &__create {
+        margin-top: 30px;
+
+        label {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        .event__address div {
+            width: 32%;
+        }
+
+        .event__finish_at,
+        .event__begin_at {
+            display: flex;
+        }
+
+        @media (max-width: $tablet) {
+            aside {
+                display: none;
+            }
         }
     }
 }

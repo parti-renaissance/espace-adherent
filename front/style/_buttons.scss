@@ -13,11 +13,21 @@
     letter-spacing: 1.5px;
     transition: all 0.45s;
     box-sizing: border-box;
+    font-family: $font-gillsans;
 
     &:hover {
         background: black;
         border-color: black;
         color: white;
+    }
+
+    &:disabled,
+    &:disabled:hover {
+        opacity: 0.7;
+        background: $gray--light;
+        color: $black--half;
+        border-color: $gray;
+        cursor: not-allowed;
     }
 
     @media(max-width: $mobile) {
