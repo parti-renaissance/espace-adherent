@@ -2,7 +2,7 @@
     {% if date is not defined or date != event.beginAt|date('Ymd') %}
         {% set date = event.beginAt|date('Ymd') %}
 
-        <div class="text--normal text--bold text--all-caps b__nudge--bottom-medium">
+        <div class="text--normal text--bold text--all-caps b__nudge--bottom-medium b__nudge--top-large">
             {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }}
         </div>
 

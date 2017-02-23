@@ -21,6 +21,15 @@
         color: white;
     }
 
+    &:disabled,
+    &:disabled:hover {
+        opacity: 0.7;
+        background: $gray--light;
+        color: $black--half;
+        border-color: $gray;
+        cursor: not-allowed;
+    }
+
     @media(max-width: $mobile) {
         font-size: $text--size-smallest;
     }

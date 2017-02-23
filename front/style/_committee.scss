@@ -26,6 +26,36 @@
         }
     }
 
+    &__members {
+        &__nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+
+            > div {
+                display: flex;
+            }
+        }
+
+        &__list {
+            font-family: $font-roboto;
+            width: 100%;
+
+            tr {
+                border-bottom: 1px solid $gray--light;
+
+                &:first-child {
+                    background: $gray--lighter;
+                    border-color: $gray;
+                }
+
+                th {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
     &__message {
         background: $gray--lighter;
         padding: 25px;
