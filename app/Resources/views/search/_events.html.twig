@@ -18,7 +18,9 @@
                     <div class="text--body">
                         {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}
                     </div>
+                    {% if event.committee %}
                     <div class="text--body">Organisé par <span class="text--bold">{{ event.committee.name }}</span></div>
+                    {% endif %}
                 </div>
 
                 <div class="search__results__cta">
