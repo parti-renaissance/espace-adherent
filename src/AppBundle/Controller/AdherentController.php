@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
@@ -139,6 +140,19 @@ class AdherentController extends Controller
         return $this->render('adherent/create_committee.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/mes-evenements", name="app_adherent_events")
+     * @Method("GET")
+     */
+    public function eventsAction(): Response
+    {
+        $registrationsRepository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
+        return $this->render('adherent/events.html.twig', [
+            'registrations' => $registrationsRepository->findAdherentRegistrations($this->getUser()),
         ]);
     }
 

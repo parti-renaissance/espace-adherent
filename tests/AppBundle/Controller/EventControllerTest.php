@@ -104,6 +104,11 @@ class EventControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
