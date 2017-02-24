@@ -28,7 +28,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 participant', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('1 inscrit', $crawler->filter('.committee-event-attendees')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Je participe')->link());
 
@@ -66,7 +66,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 participants', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
     }
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
@@ -78,7 +78,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 participant', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('1 inscrit', $crawler->filter('.committee-event-attendees')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Je participe')->link());
 
@@ -101,7 +101,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 participants', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)

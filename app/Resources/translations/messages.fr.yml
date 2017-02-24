@@ -45,9 +45,8 @@ committee.update.success: Les informations du comité ont été mises à jour av
 
 committee.message_created: Votre message a bien été publié.
 
-committee.members_count: '1 membre|%count% membres'
-
-committee.participants_count: '{1} %count% participant|[2,Inf[ %count% participants'
+committee.members_count: '1 adhérent|%count% adhérents'
+event.participants_count: '1 inscrit|%count% inscrits'
 
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
 

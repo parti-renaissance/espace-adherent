@@ -163,8 +163,8 @@
                     {% for member in members %}
                         <tr>
                             <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                            <td>{{ member.firstName }}</td>
-                            <td>{{ member.lastName }}</td>
+                            <td>{{ member.firstName|capitalize }}</td>
+                            <td>{{ member.lastNameInitial|upper }}</td>
                             <td>{{ member.age }}</td>
                             <td>{{ member.cityName }}</td>
                         </tr>
