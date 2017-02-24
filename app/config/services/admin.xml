@@ -162,13 +162,16 @@
             <argument>AppBundle\Entity\Committee</argument>
             <argument />
 
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
+            <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoire" />
+        </service>
 
-            <tag name="sonata.admin" manager-type="orm" label="Comités" group="Comités" />
+        <!-- Event -->
+        <service id="app.admin.event" class="AppBundle\Admin\EventAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Event</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoire" />
         </service>
 
         <!-- Donation -->

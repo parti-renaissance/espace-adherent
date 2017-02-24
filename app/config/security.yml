@@ -37,6 +37,7 @@ security:
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_APP_ADMIN_ADHERENT_ALL
             - ROLE_APP_ADMIN_COMMITTEE_ALL
+            - ROLE_APP_ADMIN_EVENT_ALL
 
         ROLE_ADMIN:
             - ROLE_WRITER
