@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Event\EventCategories;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
@@ -141,6 +142,11 @@ class Event implements GeoPointInterface
     public function getCategory(): string
     {
         return $this->category;
+    }
+
+    public function getCategoryName(): string
+    {
+        return EventCategories::getCategoryName($this->category);
     }
 
     public function getDescription(): string

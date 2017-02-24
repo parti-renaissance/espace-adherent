@@ -38,4 +38,9 @@ final class EventCategories
     {
         return self::ALL;
     }
+
+    public static function getCategoryName($code)
+    {
+        return array_flip(self::CHOICES)[$code] ?? '';
+    }
 }

@@ -158,6 +158,11 @@ class Committee implements GeoPointInterface
         $this->updatedAt = $createdAt;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self
     {
         $committee = new self(

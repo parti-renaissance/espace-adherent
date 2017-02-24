@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Committee;
+use AppBundle\Event\EventCategories;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,14 +12,20 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CommitteeAdmin extends AbstractAdmin
+class EventAdmin extends AbstractAdmin
 {
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Événement', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
+                ])
+                ->add('category', null, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('committee', null, [
+                    'label' => 'Comité organisateur',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
@@ -27,29 +33,17 @@ class CommitteeAdmin extends AbstractAdmin
                         'rows' => '3',
                     ],
                 ])
-                ->add('slug', null, [
-                    'label' => 'Slug',
+                ->add('beginAt', null, [
+                    'label' => 'Date de début',
                 ])
-                ->add('facebookPageUrl', 'url', [
-                    'label' => 'Facebook',
-                ])
-                ->add('twitterNickname', null, [
-                    'label' => 'Twitter',
-                ])
-                ->add('googlePlusPageUrl', 'url', [
-                    'label' => 'Google+',
-                ])
-                ->add('status', null, [
-                    'label' => 'Status',
+                ->add('finishAt', null, [
+                    'label' => 'Date de fin',
                 ])
                 ->add('createdAt', null, [
                     'label' => 'Date de création',
                 ])
-                ->add('approvedAt', null, [
-                    'label' => 'Date d\'approbation',
-                ])
-                ->add('refusedAt', null, [
-                    'label' => 'Date de refus',
+                ->add('participantsCount', null, [
+                    'label' => 'Nombre de participants',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -78,17 +72,16 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Événement', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Statut',
-                    'choices' => [
-                        'Approuvé' => Committee::APPROVED,
-                        'En attente d\'approbation' => Committee::PENDING,
-                        'Refusé' => Committee::REFUSED,
-                    ],
+                ->add('category', ChoiceType::class, [
+                    'label' => 'Catégorie',
+                    'choices' => EventCategories::CHOICES,
+                ])
+                ->add('committee', null, [
+                    'label' => 'Comité organisateur',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
@@ -96,20 +89,11 @@ class CommitteeAdmin extends AbstractAdmin
                         'rows' => '3',
                     ],
                 ])
-                ->add('slug', null, [
-                    'label' => 'Slug',
+                ->add('beginAt', null, [
+                    'label' => 'Date de début',
                 ])
-                ->add('facebookPageUrl', 'url', [
-                    'label' => 'Facebook',
-                    'required' => false,
-                ])
-                ->add('twitterNickname', null, [
-                    'label' => 'Twitter',
-                    'required' => false,
-                ])
-                ->add('googlePlusPageUrl', 'url', [
-                    'label' => 'Google+',
-                    'required' => false,
+                ->add('finishAt', null, [
+                    'label' => 'Date de fin',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -141,14 +125,6 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('status', null, [
-                'label' => 'Statut',
-                'choices' => [
-                    'En attente' => Committee::PENDING,
-                    'Approuvé' => Committee::APPROVED,
-                    'Refusé' => Committee::REFUSED,
-                ],
-            ])
         ;
     }
 
@@ -158,29 +134,27 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('postalCode', null, [
-                'label' => 'Code Postal',
+            ->add('committee', null, [
+                'label' => 'Comité organisateur',
+            ])
+            ->add('beginAt', null, [
+                'label' => 'Date de début',
             ])
             ->add('cityName', null, [
                 'label' => 'Ville',
             ])
-            ->add('isWaitingForApproval', 'boolean', [
-                'label' => 'En attente ?',
+            ->add('categoryName', null, [
+                'label' => 'Type d\'évenement',
             ])
-            ->add('isApproved', 'boolean', [
-                'label' => 'Approuvé ?',
-            ])
-            ->add('isRefused', 'boolean', [
-                'label' => 'Refusé ?',
+            ->add('participantsCount', null, [
+                'label' => 'Participants',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'approve' => [
-                        'template' => 'admin/committee_approve.html.twig',
-                    ],
                     'show' => [],
                     'edit' => [],
+                    'delete' => [],
                 ],
             ])
         ;
