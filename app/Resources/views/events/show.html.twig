@@ -55,7 +55,7 @@
                     <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'event.participants_count'|transchoice(committee.membersCount) }}
+                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
                     </div>
                     <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                         <li class="head">Partagez</li>
