@@ -74,7 +74,9 @@ class SearchResultsProvider
             $qb = $this->event
                 ->createNearbyQueryBuilder($coordinates)
                 ->where($this->committee->getNearbyExpression().' < :distance_max')
+                ->andWhere('n.beginAt > :now')
                 ->setParameter('distance_max', $search->getRadius())
+                ->setParameter('now', new \DateTime())
                 ->orderBy('n.beginAt', 'asc')
                 ->addOrderBy('distance_between', 'asc')
             ;

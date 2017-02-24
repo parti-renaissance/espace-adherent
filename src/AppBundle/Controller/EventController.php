@@ -23,7 +23,7 @@ class EventController extends Controller
     public function showAction(Event $event): Response
     {
         return $this->render('events/show.html.twig', [
-            'committee_event' => $event,
+            'event' => $event,
             'committee' => $event->getCommittee(),
         ]);
     }
