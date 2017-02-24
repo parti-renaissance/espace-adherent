@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -47,6 +48,19 @@ class EventRegistrationRepository extends EntityRepository
         ;
 
         return $query->getOneOrNullResult();
+    }
+
+    public function findAdherentRegistrations(Adherent $adherent)
+    {
+        return $this
+            ->createQueryBuilder('er')
+            ->select('er', 'e')
+            ->leftJoin('er.event', 'e')
+            ->orderBy('e.createdAt', 'DESC')
+            ->where('er.adherentUuid = :adherent')
+            ->setParameter('adherent', $adherent->getUuid()->toString())
+            ->getQuery()
+            ->getResult();
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder
