@@ -28,7 +28,7 @@
             <li class="icon--with-text text--body">
                     {{ include('components/participants.html.twig') }}
                     <span class="committee-event-attendees">
-                        {{- 'committee.participants_count'|transchoice(item.event.participantsCount) -}}
+                        {{- 'event.participants_count'|transchoice(item.event.participantsCount) -}}
                     </span>
             </li>
         </ul>

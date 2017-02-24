@@ -66,7 +66,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 membre', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertSame('1 adhérent', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -81,7 +81,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 membres', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertSame('2 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -96,7 +96,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 membre', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertSame('1 adhérent', $crawler->filter('.committee__card > .committee-members')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -531,11 +531,11 @@ class CommitteeControllerTest extends SqliteWebTestCase
     public function testCommitteeMembers()
     {
         // Authenticate as the committee animator
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
 
-        $this->assertTrue($this->seeMembersList($crawler, 2));
+        $this->assertTrue($this->seeMembersList($crawler, 5));
     }
 
     /**
@@ -544,8 +544,8 @@ class CommitteeControllerTest extends SqliteWebTestCase
     public function testCommitteeExportMembers()
     {
         // Authenticate as the committee animator
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
@@ -587,8 +587,8 @@ class CommitteeControllerTest extends SqliteWebTestCase
     public function testCommitteeContactMembers()
     {
         // Authenticate as the committee animator
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
@@ -681,7 +681,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
     {
-        return $membersCount.' membre'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee__card .committee-members')->text();
+        return $membersCount.' adhérent'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee__card .committee-members')->text();
     }
 
     private function seeHosts(Crawler $crawler, int $hostsCount): bool

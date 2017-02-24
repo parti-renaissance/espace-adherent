@@ -8,10 +8,10 @@
         </div>
 
         <div class="search__results__cta">
-            <span class="btn btn--blue">Je Participe</span>
+            <span class="btn btn--blue">Je le suis</span>
             <div class="text--body icon--with-text l__row--center">
                 {{ include('components/participants.html.twig') }}
-                {{ 'committee.participants_count'|transchoice(committee.membersCount) }}
+                {{ 'event.participants_count'|transchoice(committee.membersCount) }}
             </div>
         </div>
     </a>

@@ -36,7 +36,7 @@ class CommitteeController extends Controller
     public function showAction(Request $request, Committee $committee): Response
     {
         $form = null;
-        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
+        if ($this->isGranted(CommitteePermissions::POST_MESSAGE, $committee)) {
             $message = new CommitteeMessage($this->getUser(), $committee);
             $form = $this->createForm(CommitteeFeedMessageType::class, $message);
             $form->add('publish', SubmitType::class, ['label' => 'Publier']);
@@ -111,7 +111,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/evenements/ajouter", name="app_committee_add_event")
      * @Method("GET|POST")
-     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     * @Security("is_granted('POST_MESSAGE_COMMITTEE', committee)")
      */
     public function addEventAction(Request $request, Committee $committee): Response
     {
@@ -179,7 +179,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/membres/contact", name="app_commitee_contact_members")
      * @Method("POST")
-     * @Security("is_granted('HOST_COMMITTEE', committee)")
+     * @Security("is_granted('POST_MESSAGE_COMMITTEE', committee)")
      */
     public function contactMembersAction(Request $request, Committee $committee): Response
     {

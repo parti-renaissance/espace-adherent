@@ -12,7 +12,7 @@
             var limit = {{ committee_timeline_max_messages }};
             var moreButton = dom('#committee-timeline-more');
 
-            on(moreButton, 'click', function() {
+            moreButton && on(moreButton, 'click', function() {
                 page++;
                 di.get('api').getCommitteeTimelineFeed(
                     committeeUuid,
@@ -39,7 +39,7 @@
 
             var toggleMembershipButton = dom('#committee-toggle-membership');
 
-            on(toggleMembershipButton, 'click', function () {
+            toggleMembershipButton && on(toggleMembershipButton, 'click', function () {
                 di.get('api').toggleCommitteeMembership(
                     committeeUuid,
                     committeeSlug,
@@ -60,36 +60,31 @@
 {% endblock %}
 
 {% block committee_lcol %}
-    {% if not is_granted('ROLE_ADHERENT') %}
-        <div class="btn btn--no-border btn--text-blue committee-link b__nudge--bottom-small committee-follow-disabled">Suivre ce comité</div>
-        <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="btn btn--no-border btn--text-blue ">Adhérer à En Marche!</a>
-    {% elseif can_follow(committee) %}
-        <button role="button"
-                class="btn committee-follow"
-                id="committee-toggle-membership"
-                data-action="rejoindre"
-                data-csrf-token="{{ csrf_token('committee.follow') }}">Suivre ce comité</button>
-    {% elseif can_unfollow(committee) %}
-        <button role="button"
-                class="btn btn--no-border btn--text-blue committee-unfollow"
-                id="committee-toggle-membership"
-                data-action="quitter"
-                data-csrf-token="{{ csrf_token('committee.unfollow') }}">Quitter ce comité</button>
+    {% if committee.isApproved %}
+        {% if not is_granted('ROLE_ADHERENT') %}
+            <div class="btn btn--no-border btn--text-blue committee-link b__nudge--bottom-small committee-follow-disabled">Suivre ce comité</div>
+            <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="btn btn--no-border btn--text-blue ">Adhérer à En Marche!</a>
+        {% elseif can_follow(committee) %}
+            <button role="button"
+                    class="btn committee-follow"
+                    id="committee-toggle-membership"
+                    data-action="rejoindre"
+                    data-csrf-token="{{ csrf_token('committee.follow') }}">Suivre ce comité</button>
+        {% elseif can_unfollow(committee) %}
+            <button role="button"
+                    class="btn btn--no-border btn--text-blue committee-unfollow"
+                    id="committee-toggle-membership"
+                    data-action="quitter"
+                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">Quitter ce comité</button>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
 {% block committee_content %}
-    <nav>
-        {% if is_host %}
+    {% if not committee.isApproved %}
+        <nav>
             <div id="committee-host-nav" class="committee__host__nav">
-                <ul class="list__links list__links--default list__links--row list__links--row-left">
-                    <li class="text--bold">Discussion</li>
-                    <li>
-                        <a href="{{ committee_path('app_commitee_list_members', committee) }}" class="link--no-decor">
-                            Membres
-                        </a>
-                    </li>
-                </ul>
+                <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
                 <ul class="list__links list__links--default list__links--row">
                     <li>
                         <a href="{{ committee_path('app_committee_edit', committee) }}" class="icon--with-text">
@@ -99,34 +94,69 @@
                     </li>
                 </ul>
             </div>
+        </nav>
 
-            <div id="comittee-host-menu" class="committee__host__menu">
-                <ul class="list__links list__links--default list__links--row list__links--row-left">
-                    <li>
-                        Créer un message
-                    </li>
-                    <li>
-                        <a href="{{ committee_path('app_committee_add_event', committee) }}" class="link--no-decor">
-                            Créer un événement
-                        </a>
-                    </li>
-                </ul>
+        <section>
+            <div class="committee__waiting-for-approval">
+                Votre comité est en attente de validation par les équipes d'En Marche !
+                Vous serez alerté par e-mail quand nous l'aurons accepté.
             </div>
 
-            <div id="committee-message-form" class="committee__message">
-                {{ form(form) }}
-            </div>
-        {% endif %}
-    </nav>
-
-    {% if committee_timeline|length %}
-        <section class="committee__timeline" id="committee-timeline">
-            <div id="committee-timeline-page-1">
-                {{ include('committee/timeline/feed.html.twig') }}
-            </div>
-            <div class="text--center space--30-0">
-                <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
-            </div>
+            <p>
+                Une fois que votre comité sera validé, vous pourrez contacter les adhérents suivants votre comité
+                sur cette page.
+            </p>
         </section>
+    {% else %}
+        <nav>
+            {% if is_host %}
+                <div id="committee-host-nav" class="committee__host__nav">
+                    <ul class="list__links list__links--default list__links--row list__links--row-left">
+                        <li class="text--bold">Discussion</li>
+                        <li>
+                            <a href="{{ committee_path('app_commitee_list_members', committee) }}" class="link--no-decor">
+                                Membres
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="list__links list__links--default list__links--row">
+                        <li>
+                            <a href="{{ committee_path('app_committee_edit', committee) }}" class="icon--with-text">
+                                <i class="fa fa-sliders"></i>
+                                Éditer le comité
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="comittee-host-menu" class="committee__host__menu">
+                    <ul class="list__links list__links--default list__links--row list__links--row-left">
+                        <li>
+                            Créer un message
+                        </li>
+                        <li>
+                            <a href="{{ committee_path('app_committee_add_event', committee) }}" class="link--no-decor">
+                                Créer un événement
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="committee-message-form" class="committee__message">
+                    {{ form(form) }}
+                </div>
+            {% endif %}
+        </nav>
+
+        {% if committee_timeline|length %}
+            <section class="committee__timeline" id="committee-timeline">
+                <div id="committee-timeline-page-1">
+                    {{ include('committee/timeline/feed.html.twig') }}
+                </div>
+                <div class="text--center space--30-0">
+                    <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
+                </div>
+            </section>
+        {% endif %}
     {% endif %}
 {% endblock %}

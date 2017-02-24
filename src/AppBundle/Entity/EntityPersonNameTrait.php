@@ -40,4 +40,9 @@ trait EntityPersonNameTrait
     {
         return $this->lastName;
     }
+
+    public function getLastNameInitial()
+    {
+        return $this->lastName[0].'.';
+    }
 }
