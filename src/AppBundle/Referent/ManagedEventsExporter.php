@@ -33,6 +33,7 @@ class ManagedEventsExporter
                         'slug' => $event->getSlug(),
                     ]),
                 ],
+                'beginAt' => $event->getBeginAt()->format('d/m/Y H:i'),
                 'category' => $event->getCategoryName(),
                 'postalCode' => $event->getPostalCode(),
                 'organizer' => $event->getOrganizer()->getPartialName(),
