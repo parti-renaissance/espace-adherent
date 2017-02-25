@@ -30,7 +30,7 @@ class AdherentCsvSerializer
 
             fputcsv($handle, [
                 $adherent->getFirstName(),
-                $adherent->getLastName(),
+                $adherent->getLastNameInitial(),
                 $adherent->getAge(),
                 $adherent->getCityName(),
                 $adherent->getCountry(),

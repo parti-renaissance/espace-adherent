@@ -28,7 +28,7 @@ trait EntityPersonNameTrait
 
     public function getPartialName(): string
     {
-        return $this->firstName.' '.$this->lastName[0];
+        return $this->firstName.' '.$this->getLastNameInitial();
     }
 
     public function getFirstName()
@@ -43,6 +43,8 @@ trait EntityPersonNameTrait
 
     public function getLastNameInitial()
     {
-        return $this->lastName[0].'.';
+        $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
+
+        return strtoupper($normalized[0]).'.';
     }
 }
