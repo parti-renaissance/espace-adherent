@@ -45,9 +45,9 @@ class AdherentCsvSerializerTest extends \PHPUnit_Framework_TestCase
 
         $csv = [
             'Prénom,Nom,Age,Ville,Pays,"Adresse email"',
-            'Michel,Dufour,44,Melun,FR,michel.dufour@example.fr',
-            'Carl,Mirabeau,66,Fontainebleau,FR,carl999@example.fr',
-            '"Jean_Pierre-André dît \'JPA\'","(Docteur) De ""Maupassant""",22,"Paris 8e",FR,naugthy.user+en-marche@gmail.com',
+            'Michel,D.,44,Melun,FR,michel.dufour@example.fr',
+            'Carl,M.,66,Fontainebleau,FR,carl999@example.fr',
+            '"Jean_Pierre-André dît \'JPA\'",D.,22,"Paris 8e",FR,naugthy.user+en-marche@gmail.com',
             '',
         ];
 
