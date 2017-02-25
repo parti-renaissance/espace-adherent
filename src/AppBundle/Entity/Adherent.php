@@ -231,9 +231,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->birthdate;
     }
 
-    public function getAge(): int
+    public function getAge(): ?int
     {
-        return ($this->birthdate->diff(new \DateTime()))->y;
+        return $this->birthdate ? ($this->birthdate->diff(new \DateTime()))->y : null;
     }
 
     public function getPosition()

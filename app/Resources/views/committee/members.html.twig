@@ -158,7 +158,8 @@
                         <th>Prénom</th>
                         <th>Nom</th>
                         <th>Age</th>
-                        <th>Code Postal</th>
+                        <th>CP</th>
+                        <th>Ville</th>
                     </tr>
                     {% for member in members %}
                         <tr>
@@ -166,6 +167,7 @@
                             <td>{{ member.firstName|capitalize }}</td>
                             <td>{{ member.lastNameInitial|upper }}</td>
                             <td>{{ member.age }}</td>
+                            <td>{{ member.postalCode }}</td>
                             <td>{{ member.cityName }}</td>
                         </tr>
                     {% endfor %}
