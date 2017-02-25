@@ -14,6 +14,10 @@
             <argument type="service" id="router" />
         </service>
 
+        <service id="app.referent.managed_committees.exporter" class="AppBundle\Referent\ManagedCommitteesExporter">
+            <argument type="service" id="router" />
+        </service>
+
         <service id="app.referent.message_factory" class="AppBundle\Referent\ReferentMessageFactory">
             <argument type="service" id="app.referent.managed_users.factory" />
         </service>
