@@ -36,6 +36,8 @@ adherent.update_interests.success: Vos centres d'intérêts ont bien été mis �
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien été mises à jour.
 
+adherent.contact.success: Votre message a bien été envoyé.
+
 #
 # Committee
 #

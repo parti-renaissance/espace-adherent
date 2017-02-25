@@ -3,8 +3,11 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Mailjet\Message\AdherentContactMessage;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
@@ -56,11 +59,8 @@ class AdherentControllerTest extends SqliteWebTestCase
     public function provideProfilePage()
     {
         yield ['/espace-adherent/mon-profil', 'Informations personnelles'];
-
         yield ['/espace-adherent/mon-profil/centres-d-interet', 'Centres d\'intérêt'];
-
         yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
-
         yield ['/espace-adherent/mon-profil/preferences-des-emails', 'Préférences des e-mails'];
     }
 
@@ -440,11 +440,73 @@ class AdherentControllerTest extends SqliteWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testDocumentsActionSecured()
+    {
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testDocumentsActionIsAccessibleAsAdherent()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Documents', $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testContactActionSecured()
+    {
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testContactActionForAdherent()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
+
+        $this->client->submit($crawler->selectButton('Envoyer')->form([
+            'contact_message' => [
+                'content' => 'A message I would like to send to Miss Dufour',
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('Votre message a bien été envoyé.', $crawler->filter('#notice-flashes')->text());
+
+        // Email should have been sent
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(AdherentContactMessage::class));
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->init([
+            LoadHomeBlockData::class,
+            LoadLiveLinkData::class,
             LoadAdherentData::class,
         ]);
 

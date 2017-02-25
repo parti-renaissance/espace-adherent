@@ -3,10 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Contact\ContactMessage;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
+use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
@@ -153,6 +158,58 @@ class AdherentController extends Controller
 
         return $this->render('adherent/events.html.twig', [
             'registrations' => $registrationsRepository->findAdherentRegistrations($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route("/contacter/{uuid}", name="app_adherent_contact")
+     * @Method("GET|POST")
+     */
+    public function contactAction(Request $request, Adherent $adherent): Response
+    {
+        $fromType = $request->query->get('from');
+        $fromId = $request->query->get('id');
+        $from = null;
+
+        if ($fromType && $fromId) {
+            if ($fromType === 'committee') {
+                $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
+            } else {
+                $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
+            }
+        }
+
+        $message = new ContactMessage($this->getUser(), $adherent);
+
+        $form = $this->createForm(ContactMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.adherent.contact_message_handler')->handle($message);
+            $this->addFlash('info', $this->get('translator')->trans('adherent.contact.success'));
+
+            if ($from instanceof Committee) {
+                return $this->redirectToRoute('app_committee_show', [
+                    'uuid' => $from->getUuid()->toString(),
+                    'slug' => $from->getSlug(),
+                ]);
+            }
+
+            if ($from instanceof Event) {
+                return $this->redirectToRoute('app_committee_show_event', [
+                    'uuid' => $from->getUuid()->toString(),
+                    'slug' => $from->getSlug(),
+                ]);
+            }
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('adherent/contact.html.twig', [
+            'adherent' => $adherent,
+            'form' => $form->createView(),
+            'fromType' => $fromType,
+            'from' => $from,
         ]);
     }
 

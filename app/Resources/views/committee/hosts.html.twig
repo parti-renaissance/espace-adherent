@@ -6,7 +6,8 @@
         {% if app.user.equals(host) %}
             (vous)
         {% else %}
-            <a href="mailto:{{ host.emailaddress }}" class="link--no-decor text--blue text--normal text--summary">
+            <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
+               class="link--no-decor text--blue text--normal text--summary">
                 Contacter
             </a>
         {% endif %}
