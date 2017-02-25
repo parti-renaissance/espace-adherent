@@ -11,6 +11,7 @@ use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
@@ -120,7 +121,11 @@ class CommitteeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.handler')->handle($command);
+            $event = $this->get('app.event.handler')->handle($command);
+
+            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
+            $this->get('app.event.registration_handler')->handle($registrationCommand);
+
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_committee_show_event', [
@@ -192,6 +197,17 @@ class CommitteeController extends Controller
         $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('contacts', ''));
         $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
         $command = new CommitteeContactMembersCommand($adherents, $this->getUser());
+
+        $contacts = CommitteeUtils::getUuidsFromAdherents($adherents);
+
+        if (empty($contacts)) {
+            $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.none'));
+
+            return $this->redirectToRoute('app_commitee_list_members', [
+                'uuid' => $committee->getUuid(),
+                'slug' => $committee->getSlug(),
+            ]);
+        }
 
         $form = $this->createForm(ContactMembersType::class, $command)
             ->add('submit', SubmitType::class)
