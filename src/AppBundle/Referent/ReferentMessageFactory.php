@@ -7,13 +7,13 @@ use AppBundle\Entity\Adherent;
 class ReferentMessageFactory
 {
     /**
-     * @var ManagedUserFactory
+     * @var DataGridFactory
      */
-    private $usersListBuilder;
+    private $dataGridFactory;
 
-    public function __construct(ManagedUserFactory $usersListBuilder)
+    public function __construct(DataGridFactory $dataGridFactory)
     {
-        $this->usersListBuilder = $usersListBuilder;
+        $this->dataGridFactory = $dataGridFactory;
     }
 
     public function createReferentMessageFor(Adherent $referent, array $selected): ReferentMessage
@@ -34,7 +34,7 @@ class ReferentMessageFactory
 
     private function createManagedUsersListIndexedByTypeAndId(Adherent $referent): array
     {
-        $users = $this->usersListBuilder->createManagedUsersCollectionFor($referent);
+        $users = $this->dataGridFactory->findUsersManagedBy($referent);
         $registry = [];
 
         foreach ($users as $user) {

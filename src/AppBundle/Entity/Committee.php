@@ -327,6 +327,11 @@ class Committee implements GeoPointInterface
         return mb_strtolower($name);
     }
 
+    public function getCreatorUuid()
+    {
+        return $this->createdBy;
+    }
+
     public function isCreatedBy(UuidInterface $uuid): bool
     {
         return $this->createdBy->equals($uuid);
