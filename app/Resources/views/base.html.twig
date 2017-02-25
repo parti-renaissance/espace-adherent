@@ -199,7 +199,43 @@
                             #}
                         </div>
                         <hr>
+                        {% if user_is_adherent %}
+                            <div class="text--medium-small">
+                                {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
+                                <hr>
+                            </div>
+                        {% endif %}
+
                         <ul class="list__links list__links--col list__links--no-decor list__links--nav">
+                            {% if user_is_adherent %}
+                                <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
+                                <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
+                                <li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte En Marche !</a></li>
+                                <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
+                                <li class="nav__user__menu__separator"></li>
+                                {% if is_granted('CREATE_COMMITTEE') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_REFERENT') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_referent_users') }}">Espace référent</a>
+                                    </li>
+                                {% endif %}
+                                <li class="text--small"><a href="{{ path('app_adherent_events') }}">Mes événements</a></li>
+                                <li class="text--small"><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
+                                {#<li class="text--small"><a href="#">Aide</a></li>#}
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_admin_impersonation_exit') }}">
+                                            Quitter l'impersonnification
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                <hr>
+                            {% endif %}
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Projet</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
