@@ -160,7 +160,7 @@ class ManagedUser
     public function getFullName(): ?string
     {
         if (!$this->firstName || !$this->lastName) {
-            return null;
+            return '(marcheur)';
         }
 
         return $this->firstName.' '.$this->lastName;
@@ -168,6 +168,14 @@ class ManagedUser
 
     public function getPartialName(): ?string
     {
+        if (!$this->firstName || !$this->lastName) {
+            return '(marcheur)';
+        }
+
+        if (!$this->lastName) {
+            return $this->firstName;
+        }
+
         return $this->firstName.' '.$this->lastName[0];
     }
 
@@ -176,17 +184,25 @@ class ManagedUser
         return $this->birthdate;
     }
 
-    public function getAge(): ?int
+    public function getAge(): ?string
     {
-        if (!$this->birthdate) {
-            return null;
+        if (!$this->firstName || !$this->lastName) {
+            return '(marcheur)';
         }
 
-        return $this->birthdate->diff(new \DateTime())->format('%y');
+        if (!$this->birthdate) {
+            return '';
+        }
+
+        return (string) $this->birthdate->diff(new \DateTime())->format('%y');
     }
 
     public function getCity(): ?string
     {
+        if (!$this->firstName || !$this->lastName) {
+            return '(marcheur)';
+        }
+
         return $this->city;
     }
 

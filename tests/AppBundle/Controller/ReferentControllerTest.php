@@ -50,15 +50,17 @@ class ReferentControllerTest extends SqliteWebTestCase
     public function providePages()
     {
         return [
-            ['/referent/utilisateurs'],
-            ['/referent/utilisateurs/envoyer-un-message/marcheurs'],
-            ['/referent/utilisateurs/envoyer-un-message/adherents'],
-            ['/referent/utilisateurs/envoyer-un-message/membres-comites'],
-            ['/referent/utilisateurs/envoyer-un-message/animateurs-comites'],
-            ['/referent/utilisateurs/envoyer-un-message/code-postal'],
-            ['/referent/evenements'],
-            ['/referent/evenements/creer'],
-            ['/referent/comites'],
+            ['/espace-referent/utilisateurs'],
+            ['/espace-referent/utilisateurs/envoyer-un-message/marcheurs'],
+            ['/espace-referent/utilisateurs/envoyer-un-message/adherents'],
+            ['/espace-referent/utilisateurs/envoyer-un-message/non-membres-comites'],
+            ['/espace-referent/utilisateurs/envoyer-un-message/membres-comites'],
+            ['/espace-referent/utilisateurs/envoyer-un-message/animateurs-comites'],
+
+            // TODO Implement
+            // ['/espace-referent/evenements'],
+            // ['/espace-referent/evenements/creer'],
+            // ['/espace-referent/comites'],
         ];
     }
 
@@ -71,30 +73,30 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_POST,
-            '/referent/utilisateurs/envoyer-un-message/selectionnes',
+            '/espace-referent/utilisateurs/envoyer-un-message/selectionnes',
             [
-                'selected' => [
+                'selected_users_json' => json_encode([
                     [
                         'id' => '1',
-                        'type' => 'adherent',
+                        'type' => 'a',
                     ],
                     [
                         'id' => '7',
-                        'type' => 'adherent',
+                        'type' => 'a',
                     ],
                     [
                         'id' => '4',
-                        'type' => 'newsletter_subscriber',
+                        'type' => 'n',
                     ],
                     [
                         'id' => '3',
-                        'type' => 'newsletter_subscriber',
+                        'type' => 'n',
                     ],
                     [
                         'id' => '5',
-                        'type' => 'adherent',
+                        'type' => 'a',
                     ],
-                ],
+                ]),
             ]
         );
 
@@ -105,7 +107,7 @@ class ReferentControllerTest extends SqliteWebTestCase
             'referent_message[content]' => 'Un superbe contenu de message !',
         ]));
 
-        $this->assertClientIsRedirectedTo('/referent/utilisateurs', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-referent/utilisateurs', $this->client);
 
         // 3 emails should have been sent: one for the referent and one for each subscriber
         $this->assertCount(3, $this->getMailjetEmailRepository()->findMessages(ReferentMessage::class));

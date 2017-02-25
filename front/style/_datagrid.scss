@@ -3,6 +3,14 @@
         float: right;
         margin-bottom: 10px;
 
+        &__count {
+            margin-right: 20px;
+
+            @media (max-width: $mobile) {
+                display: none;
+            }
+        }
+
         @media (max-width: $mobile) {
             display: none;
         }
@@ -13,6 +21,12 @@
             display: inline-block;
             margin-right: 10px;
         }
+    }
+    
+    &__loader {
+        position: absolute;
+        z-index: 99;
+        margin: 150px 0 0 200px;
     }
 
     &__table {
@@ -25,6 +39,10 @@
             @media (max-width: $mobile) {
                 display: none;
             }
+        }
+
+        &--loading {
+            opacity: 0.1;
         }
 
         th, td {

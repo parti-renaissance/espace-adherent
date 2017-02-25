@@ -1,10 +1,8 @@
 {% extends 'referent/layout.html.twig' %}
 
-{% block referent_menu_users_list 'class="active"' %}
-
 {% block referent_content %}
     <p>
-        <a href="{{ path('app_referent_users') }}" class="icon--with-text">
+        <a href="{{ path('app_referent_'~from) }}" class="icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour
         </a>
@@ -51,10 +49,7 @@
         </a>
 
         {# Selected users #}
-        {% for key, user in selected %}
-            <input type="hidden" name="selected[{{ key }}][type]" value="{{ user.type }}" />
-            <input type="hidden" name="selected[{{ key }}][id]" value="{{ user.id }}" />
-        {% endfor %}
+        <input type="hidden" name="selected_users_json" value="{{ selected|json_encode }}" />
 
         {{ form_end(form) }}
     </div>
