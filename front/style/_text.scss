@@ -72,6 +72,7 @@ $text--size-extra-large: 48px;
     letter-spacing: .3px;
     line-height: 1.5;
     font-size: $text--size-default;
+    overflow-wrap: break-word;
 }
 
 @mixin text--summary {

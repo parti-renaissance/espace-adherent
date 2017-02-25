@@ -35,14 +35,18 @@
         }
 
         select {
-            background: transparent;
             @include text--body;
-            color: white;
             border-radius: 0;
             -webkit-appearance: none;
             border: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
             margin: 0 10px;
+            color: white;
+            background: transparent;
+
+            option {
+                color: black;
+            }
         }
 
         .search-city {
@@ -87,6 +91,7 @@
                     color: white;
                     width: 100%;
                     box-sizing: border-box;
+                    padding: 16px 20px 14px;
 
                     @media (max-width: $tablet) {
                         justify-content: center;

@@ -39,14 +39,14 @@
         }
 
         input[type=checkbox]:checked ~ &--menu {
-            max-height: 500px;
+            height: auto;
             margin-top: 40px;
             opacity: 1;
         }
 
         &--menu {
             clear: both;
-            max-height: 0;
+            height: 0;
             overflow: hidden;
             float: left;
             width: 100%;
