@@ -210,5 +210,14 @@
             <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Campagne" />
         </service>
 
+        <!-- MailjetEmail -->
+        <service id="app.admin.mailjet_email" class="AppBundle\Admin\MailjetEmailAdmin">
+            <argument />
+            <argument>AppBundle\Entity\MailjetEmail</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Mailjet" group="Monitoring" />
+        </service>
+
     </services>
 </container>
