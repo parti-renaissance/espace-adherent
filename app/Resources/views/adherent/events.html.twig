@@ -11,8 +11,8 @@
 
         <div class="l__wrapper">
             {% if registrations|length == 0 %}
-                <div>
-                    Vous n'êtes inscrit à aucun événement pour le moment.
+                <div class="text--center b__nudge--bottom-60">
+                    Vous n'êtes inscrit à aucun événement pour le moment.<br />
                     <a href="{{ path('app_search_events') }}">Découvrez les événements proches de chez vous !</a>
                 </div>
             {% else %}
