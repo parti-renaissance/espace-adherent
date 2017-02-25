@@ -2,8 +2,67 @@
 
 {% block referent_menu_events_list 'class="active"' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runReferentList(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                        style: {
+                            width: 25
+                        }
+                    },
+                    {
+                        key: 'name',
+                        name: 'Nom',
+                        link: true
+                    },
+                    {
+                        key: 'category',
+                        name: 'Catégorie',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 300
+                        }
+                    },
+                    {
+                        key: 'postalCode',
+                        name: 'Code postal',
+                        style: {
+                            width: 100
+                        }
+                    },
+                    {
+                        key: 'organizer',
+                        name: 'Organisateur',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 150
+                        }
+                    },
+                    {
+                        key: 'participants',
+                        name: 'Participants',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 50
+                        }
+                    }
+                ],
+                {{ managedEventsJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi beatae consequuntur deleniti dolorem,
-    et harum laudantium molestias mollitia nihil quibusdam quidem repellendus tempore. Delectus dolore error
-    explicabo saepe voluptatum.
+    <h3>
+        Événements
+    </h3>
+
+    <hr />
+
+    <div id="datagrid"></div>
 {% endblock %}

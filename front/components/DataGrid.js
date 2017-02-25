@@ -198,13 +198,15 @@ export default class DataGrid extends React.Component {
     _buildColumns(columns) {
         const columnsList = [];
 
-        columnsList.push(
-            <th key={'column-select'} style={{ width: 25 }}>
-                <input type="checkbox"
-                       onChange={this.handleHeaderCheckboxChange}
-                       checked={this.state.headerCheckboxChecked} />
-            </th>
-        );
+        if (!this.props.disableSelect) {
+            columnsList.push(
+                <th key={'column-select'} style={{ width: 25 }}>
+                    <input type="checkbox"
+                           onChange={this.handleHeaderCheckboxChange}
+                           checked={this.state.headerCheckboxChecked} />
+                </th>
+            );
+        }
 
         Object.keys(columns).forEach((i) => {
             columnsList.push(
@@ -234,20 +236,30 @@ export default class DataGrid extends React.Component {
 
             const resultColumns = [];
 
-            resultColumns.push(
-                <td key={`result${i}-column-select`}>
-                    <input type="checkbox"
-                           onChange={(event) => { this.handleCheckboxChange(i, event); }}
-                           checked={'undefined' !== typeof selected[i] && selected[i]} />
-                </td>
-            );
+            if (!this.props.disableSelect) {
+                resultColumns.push(
+                    <td key={`result${i}-column-select`}>
+                        <input type="checkbox"
+                               onChange={(event) => {
+                                   this.handleCheckboxChange(i, event);
+                               }}
+                               checked={'undefined' !== typeof selected[i] && selected[i]} />
+                    </td>
+                );
+            }
 
             Object.keys(columns).forEach((j) => {
+                let value = result[columns[j].key];
+
+                if (typeof columns[j].link !== 'undefined' && columns[j].link) {
+                    value = <a href={result[columns[j].key].url}>{result[columns[j].key].label}</a>;
+                }
+
                 resultColumns.push(
                     <td key={`result${i}-column${j}`}
                         style={columns[j].style || null}
                         className={columns[j].className || ''}>
-                        {result[columns[j].key]}
+                        {value}
                     </td>
                 );
             });
@@ -283,4 +295,5 @@ DataGrid.propTypes = {
     tableClassName: PropTypes.string,
     pagerClassName: PropTypes.string,
     searchClassName: PropTypes.string,
+    disableSelect: PropTypes.bool,
 };

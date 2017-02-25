@@ -81,6 +81,12 @@ class App {
         });
     }
 
+    runReferentList(columns, items) {
+        System.import('pages/referent_list').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('slugifier'), columns, items);
+        });
+    }
+
     runJeMarche() {
         System.import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
             module.default();

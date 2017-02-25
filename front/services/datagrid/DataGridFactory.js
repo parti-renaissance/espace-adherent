@@ -19,7 +19,8 @@ export default class DataGridFactory
                 pagerClassName={classPrefix+"__pager"}
                 tableClassName={classPrefix+"__table"}
                 searchClassName={classPrefix+"__search"}
-                onSelectedChange={onSelectedChange}
+                onSelectedChange={onSelectedChange ? onSelectedChange : () => {}}
+                disableSelect={onSelectedChange === null}
             />
         );
     }
