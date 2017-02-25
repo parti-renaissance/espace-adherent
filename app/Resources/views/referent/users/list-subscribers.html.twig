@@ -1,0 +1,26 @@
+{% extends 'referent/users/_list.html.twig' %}
+
+{% block referent_menu_users_subscribers 'class="active"' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runReferentUsers(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                    },
+                    {
+                        key: 'postalCode',
+                        name: 'Code postal',
+                    },
+                ],
+                {{ managedUsersJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
+{% block referent_users_list_title 'Envoyer un message aux marcheurs' %}
+{% block referent_users_list_action path('app_referent_users_selected', { 'from': 'subscribers' }) %}

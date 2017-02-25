@@ -75,9 +75,9 @@ class App {
         });
     }
 
-    runReferentUsers(users) {
+    runReferentUsers(columns, users) {
         System.import('pages/referent_users').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('slugifier'), users);
+            module.default(this.get('slugifier'), columns, users);
         });
     }
 

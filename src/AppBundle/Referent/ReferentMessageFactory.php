@@ -22,11 +22,17 @@ class ReferentMessageFactory
         $selectedManagedUser = [];
 
         foreach ($selected as $user) {
-            if (!isset($allowedManagedUsers[$user['type']][(int) $user['id']])) {
+            if (!isset($user['type'], $user['id'])) {
                 continue;
             }
 
-            $selectedManagedUser[] = $allowedManagedUsers[$user['type']][(int) $user['id']];
+            $type = $user['type'] === 'a' ? ManagedUser::TYPE_ADHERENT : ManagedUser::TYPE_NEWSLETTER_SUBSCRIBER;
+
+            if (!isset($allowedManagedUsers[$type][(int) $user['id']])) {
+                continue;
+            }
+
+            $selectedManagedUser[] = $allowedManagedUsers[$type][(int) $user['id']];
         }
 
         return new ReferentMessage($referent, $selectedManagedUser);

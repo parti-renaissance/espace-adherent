@@ -107,8 +107,62 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
      */
     public function findAllManagedBy(Adherent $referent): array
     {
+        return $this->createManagedByQueryBuilder($referent)->getQuery()->getResult();
+    }
+
+    /**
+     * Finds the list of non-followers managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Adherent[]
+     */
+    public function findNonFollowersManagedBy(Adherent $referent): array
+    {
+        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
+            return $adherent->getMemberships()->count() === 0;
+        });
+    }
+
+    /**
+     * Finds the list of followers managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Adherent[]
+     */
+    public function findFollowersManagedBy(Adherent $referent): array
+    {
+        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
+            return $adherent->getMemberships()->count() > 0;
+        });
+    }
+
+    /**
+     * Finds the list of hosts managed by the given referent.
+     *
+     * @param Adherent $referent
+     *
+     * @return Adherent[]
+     */
+    public function findHostsManagedBy(Adherent $referent): array
+    {
+        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
+            foreach ($adherent->getMemberships() as $membership) {
+                if ($membership->isHostMember()) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+    }
+
+    private function createManagedByQueryBuilder(Adherent $referent)
+    {
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
+            ->select('a', 'm')
+            ->leftJoin('a.memberships', 'm')
             ->orderBy('a.emailAddress', 'ASC')
             ->addOrderBy('a.firstName', 'ASC')
             ->addOrderBy('a.lastName', 'ASC')
@@ -131,6 +185,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         $qb->andWhere($codesFilter);
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 }

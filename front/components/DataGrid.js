@@ -12,6 +12,7 @@ export default class DataGrid extends React.Component {
             selected: {},
             headerCheckboxChecked: false,
             page: 1,
+            loading: false,
         };
 
         this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
@@ -21,13 +22,22 @@ export default class DataGrid extends React.Component {
     }
 
     handleSearchInputChange(event) {
+        const term = event.target.value;
+
         this.setState({
-            term: event.target.value,
-            selected: {},
-            headerCheckboxChecked: false,
+            loading: true,
         });
 
-        this.props.onSelectedChange([]);
+        setTimeout(() => {
+            this.setState({
+                term,
+                selected: {},
+                headerCheckboxChecked: false,
+                loading: false,
+            });
+
+            this.props.onSelectedChange([]);
+        }, 100);
     }
 
     handlePagerClick(newPage) {
@@ -37,28 +47,33 @@ export default class DataGrid extends React.Component {
     }
 
     handleHeaderCheckboxChange(event) {
-        if (!event.target.checked) {
+        const checked = event.target.checked;
+
+        if (!checked) {
             this.setState({
                 selected: {},
                 headerCheckboxChecked: false,
             });
+
+            this.props.onSelectedChange([]);
+            return true;
         }
 
         const results = this._buildResultsCollection();
         const selected = {};
 
         Object.keys(results).forEach((i) => {
-            if (event.target.checked) {
-                selected[i] = results[i];
-            }
+            selected[i] = results[i];
         });
 
         this.setState({
             selected,
-            headerCheckboxChecked: event.target.checked,
+            headerCheckboxChecked: checked,
+            loading: false,
         });
 
         this.props.onSelectedChange(selected);
+        return true;
     }
 
     handleCheckboxChange(i, event) {
@@ -95,6 +110,9 @@ export default class DataGrid extends React.Component {
         return (
             <div className="datagrid">
                 <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
+                    <span className="datagrid__search__count">
+                        {totalCount} résultat(s)
+                    </span>
                     <input type="text"
                            placeholder="Recherche ..."
                            className="form form__field"
@@ -107,7 +125,13 @@ export default class DataGrid extends React.Component {
                     </ul>
                 </div>
 
-                <table className={`datagrid__table ${this.props.tableClassName || ''}`}>
+                {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
+
+                <table className={
+                    `datagrid__table
+                    ${this.props.tableClassName || ''}
+                    ${this.state.loading ? 'datagrid__table--loading' : ''}`
+                }>
                     <thead>
                     <tr>
                         {this._buildColumns(this.props.columns)}
@@ -133,17 +157,16 @@ export default class DataGrid extends React.Component {
 
         const pagesList = [];
 
-        if (1 !== from) {
-            pagesList.push(
-                <li key={`page-${position}-before`}>
-                    <button type="button"
-                            className={'btn btn--disabled'}
-                            disabled={true}>
-                        ...
-                    </button>
-                </li>
-            );
-        }
+        pagesList.push(
+            <li key={`page-${position}-prec`}>
+                <button type="button"
+                        className="btn"
+                        disabled={1 === current}
+                        onClick={() => this.handlePagerClick(Math.max(1, current - 1))}>
+                    Prec
+                </button>
+            </li>
+        );
 
         for (let i = from; i <= to; i += 1) {
             pagesList.push(
@@ -158,17 +181,16 @@ export default class DataGrid extends React.Component {
             );
         }
 
-        if (to !== pagesCount) {
-            pagesList.push(
-                <li key={`page-${position}-after`}>
-                    <button type="button"
-                            className={'btn btn--disabled'}
-                            disabled={true}>
-                        ...
-                    </button>
-                </li>
-            );
-        }
+        pagesList.push(
+            <li key={`page-${position}-suiv`}>
+                <button type="button"
+                        className="btn"
+                        disabled={pagesCount === current}
+                        onClick={() => this.handlePagerClick(Math.min(pagesCount, current + 1))}>
+                    Suiv
+                </button>
+            </li>
+        );
 
         return pagesList;
     }

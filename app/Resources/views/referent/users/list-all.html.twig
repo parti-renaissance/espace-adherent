@@ -1,0 +1,10 @@
+{% extends 'referent/users/_list.html.twig' %}
+
+{% block referent_menu_users_list 'class="active"' %}
+
+{% block referent_users_list_title 'Tous les utilisateurs' %}
+{% block referent_users_list_action path('app_referent_users_selected', { 'from': 'users' }) %}
+{% block referent_users_list_description %}
+    Inclus tous les marcheurs (tous les inscrits à la newsletter), tous les adhérents, tous les membres de comités
+    et tous les animateurs de comité.
+{% endblock %}

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/referent")
+ * @Route("/espace-referent")
  * @Security("is_granted('ROLE_REFERENT')")
  */
 class ReferentController extends Controller
@@ -23,10 +23,86 @@ class ReferentController extends Controller
     public function usersAction(): Response
     {
         $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedUsersCollectionFor($this->getUser());
         $exporter = $this->get('app.referent.managed_users.exporter');
 
-        return $this->render('referent/users/list.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($factory->createManagedUsersCollectionFor($this->getUser())),
+        return $this->render('referent/users/list-all.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/utilisateurs/envoyer-un-message/marcheurs", name="app_referent_subscribers")
+     * @Method("GET")
+     */
+    public function usersSendMessageSubscribersAction(): Response
+    {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedSubscribersCollectionFor($this->getUser());
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
+        return $this->render('referent/users/list-subscribers.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/utilisateurs/envoyer-un-message/adherents", name="app_referent_adherents")
+     * @Method("GET")
+     */
+    public function usersSendMessageAdherentsAction(): Response
+    {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedAdherentsCollectionFor($this->getUser());
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
+        return $this->render('referent/users/list-adherents.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/utilisateurs/envoyer-un-message/non-membres-comites", name="app_referent_nonfollowers")
+     * @Method("GET|POST")
+     */
+    public function usersSendMessageNonFollowersAction(): Response
+    {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedNonFollowersCollectionFor($this->getUser());
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
+        return $this->render('referent/users/list-nonfollowers.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/utilisateurs/envoyer-un-message/membres-comites", name="app_referent_followers")
+     * @Method("GET|POST")
+     */
+    public function usersSendMessageFollowersAction(): Response
+    {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedFollowersCollectionFor($this->getUser());
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
+        return $this->render('referent/users/list-followers.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/utilisateurs/envoyer-un-message/animateurs-comites", name="app_referent_hosts")
+     * @Method("GET|POST")
+     */
+    public function usersSendMessageHostsAction(): Response
+    {
+        $factory = $this->get('app.referent.managed_users.factory');
+        $list = $factory->createManagedHostsCollectionFor($this->getUser());
+        $exporter = $this->get('app.referent.managed_users.exporter');
+
+        return $this->render('referent/users/list-hosts.html.twig', [
+            'managedUsersJson' => $exporter->exportAsJson($list),
         ]);
     }
 
@@ -36,10 +112,17 @@ class ReferentController extends Controller
      */
     public function usersSendMessageSelectedAction(Request $request): Response
     {
-        $selected = $request->request->get('selected', []);
+        $from = $request->query->get('from', 'users');
+        $from = in_array($from, ['subscribers', 'adherents', 'followers', 'nonfollowers', 'hosts']) ? $from : 'users';
+
+        try {
+            $selected = \GuzzleHttp\json_decode($request->request->get('selected_users_json', '[]'), true);
+        } catch (\InvalidArgumentException $e) {
+            $selected = [];
+        }
 
         if (empty($selected)) {
-            return $this->redirectToRoute('app_referent_users');
+            return $this->redirectToRoute('app_referent_'.$from);
         }
 
         $factory = $this->get('app.referent.message_factory');
@@ -56,64 +139,15 @@ class ReferentController extends Controller
             $this->get('app.referent.message_handler')->handle($referentMessage);
             $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
 
-            return $this->redirectToRoute('app_referent_users');
+            return $this->redirectToRoute('app_referent_'.$from);
         }
 
-        return $this->render('referent/users/message-selected.html.twig', [
+        return $this->render('referent/users/message.html.twig', [
             'selected' => $selected,
             'referentMessage' => $referentMessage,
             'form' => $form->createView(),
+            'from' => $from,
         ]);
-    }
-
-    /**
-     * @Route("/utilisateurs/envoyer-un-message/marcheurs", name="app_referent_users_subscribers")
-     * @Method("GET")
-     */
-    public function usersSendMessageSubscribersAction(): Response
-    {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/message-subscribers.html.twig');
-    }
-
-    /**
-     * @Route("/utilisateurs/envoyer-un-message/adherents", name="app_referent_users_adherents")
-     * @Method("GET")
-     */
-    public function usersSendMessageAdherentsAction(): Response
-    {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/message-adherents.html.twig');
-    }
-
-    /**
-     * @Route("/utilisateurs/envoyer-un-message/membres-comites", name="app_referent_users_followers")
-     * @Method("GET|POST")
-     */
-    public function usersSendMessageFollowersAction(): Response
-    {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/message-followers.html.twig');
-    }
-
-    /**
-     * @Route("/utilisateurs/envoyer-un-message/animateurs-comites", name="app_referent_users_hosts")
-     * @Method("GET|POST")
-     */
-    public function usersSendMessageHostsAction(): Response
-    {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/message-hosts.html.twig');
-    }
-
-    /**
-     * @Route("/utilisateurs/envoyer-un-message/code-postal", name="app_referent_users_postal_code")
-     * @Method("GET|POST")
-     */
-    public function usersSendMessagePostalCodeAction(): Response
-    {
-        // TODO IMPLEMENT
-        return $this->render('referent/users/message-postal-code.html.twig');
     }
 
     /**

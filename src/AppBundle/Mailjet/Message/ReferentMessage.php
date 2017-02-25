@@ -25,11 +25,11 @@ final class ReferentMessage extends MailjetMessage
             $referent->getFullName(),
             $model->getSubject(),
             [
-                'referant_firstname' => self::escape($referent->getFullName()),
+                'referant_firstname' => self::escape($referent->getFirstName()),
                 'target_message' => nl2br(self::escape($model->getContent())),
             ],
             [
-                'target_firstname' => self::escape($referent->getFullName() ?: ''),
+                'target_firstname' => self::escape($referent->getFirstName() ?: ''),
             ],
             $referent->getEmailAddress(),
             $batchUuid
@@ -40,7 +40,7 @@ final class ReferentMessage extends MailjetMessage
                 $recipient->getEmail(),
                 $recipient->getFullName(),
                 [
-                    'target_firstname' => self::escape($recipient->getFullName() ?: ''),
+                    'target_firstname' => self::escape($recipient->getFirstName() ?: ''),
                 ]
             );
         }
