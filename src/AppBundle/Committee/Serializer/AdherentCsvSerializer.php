@@ -21,7 +21,7 @@ class AdherentCsvSerializer
         }
 
         $handle = fopen('php://memory', 'r+');
-        fputcsv($handle, ['Prénom', 'Nom', 'Age', 'Ville', 'Pays', 'Adresse email']);
+        fputcsv($handle, ['Prénom', 'Nom', 'Age', 'Code postal', 'Ville']);
 
         foreach ($adherents as $adherent) {
             if (!$adherent instanceof Adherent) {
@@ -32,9 +32,8 @@ class AdherentCsvSerializer
                 $adherent->getFirstName(),
                 $adherent->getLastNameInitial(),
                 $adherent->getAge(),
+                $adherent->getPostalCode(),
                 $adherent->getCityName(),
-                $adherent->getCountry(),
-                $adherent->getEmailAddress(),
             ]);
         }
 
