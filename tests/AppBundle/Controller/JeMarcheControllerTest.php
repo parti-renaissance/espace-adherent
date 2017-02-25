@@ -24,7 +24,6 @@ class JeMarcheControllerTest extends SqliteWebTestCase
      */
     public function testReportJeMarche()
     {
-        return;
         // There should not be any report at the moment
         $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
 
