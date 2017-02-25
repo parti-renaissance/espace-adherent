@@ -51,7 +51,6 @@
                                 </li>
                             </ul>
                         </li>
-                        {#
                         <li>
                             <h4>Événements</h4>
 
@@ -61,11 +60,13 @@
                                         Tous les événements
                                     </a>
                                 </li>
+                                {#
                                 <li {% block referent_menu_events_create %}{% endblock %}>
                                     <a href="{{ path('app_referent_events_create') }}">
                                         Créer un événement
                                     </a>
                                 </li>
+                                #}
                             </ul>
                         </li>
                         <li>
@@ -79,7 +80,6 @@
                                 </li>
                             </ul>
                         </li>
-                        #}
                     </ul>
                 </div>
                 <div class="referent__content">

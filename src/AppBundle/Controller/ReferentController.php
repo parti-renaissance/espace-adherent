@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Event;
 use AppBundle\Form\ReferentMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -156,8 +157,12 @@ class ReferentController extends Controller
      */
     public function eventsAction(): Response
     {
-        // TODO IMPLEMENT
-        return $this->render('referent/events/list.html.twig');
+        $list = $this->getDoctrine()->getRepository(Event::class)->findManagedBy($this->getUser());
+        $exporter = $this->get('app.referent.managed_events.exporter');
+
+        return $this->render('referent/events/list.html.twig', [
+            'managedEventsJson' => $exporter->exportAsJson($list),
+        ]);
     }
 
     /**

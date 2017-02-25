@@ -10,6 +10,10 @@
 
         <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter" />
 
+        <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
+            <argument type="service" id="router" />
+        </service>
+
         <service id="app.referent.message_factory" class="AppBundle\Referent\ReferentMessageFactory">
             <argument type="service" id="app.referent.managed_users.factory" />
         </service>
