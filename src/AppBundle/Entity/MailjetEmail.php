@@ -174,7 +174,7 @@ class MailjetEmail
 
     public function getMessageClass()
     {
-        return $this->messageClass;
+        return str_replace('AppBundle\\Mailjet\\Message\\', '', $this->messageClass);
     }
 
     public function getRequestPayload(): string
