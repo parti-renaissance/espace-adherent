@@ -63,5 +63,9 @@
             <tag name="form.type" />
         </service>
 
+        <service id="app.adherent.contact_message_handler" class="AppBundle\Contact\ContactMessageHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
     </services>
 </container>

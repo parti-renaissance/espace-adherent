@@ -37,4 +37,9 @@ class EventRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findOneByUuid(string $uuid): ?Event
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
 }

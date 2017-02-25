@@ -105,7 +105,9 @@
                     <a href="mailto:?subject=Rejoins cet événement En Marche !&amp;body=Je vais participer à l'événement {{ event.name }} ({{ event_url }}), rejoins moi !">Inviter des amis</a>
                 </li>
                 <li>
-                    <a href="mailto:{{ event.organizer.emailAddress }}">Contact</a>
+                    <a href="{{ path('app_adherent_contact', {'uuid': event.organizer.uuid, 'from': 'event', 'id': event.uuid.toString}) }}">
+                        Contact
+                    </a>
                 </li>
             </ul>
 
