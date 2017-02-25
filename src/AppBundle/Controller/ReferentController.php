@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Form\ReferentMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -181,7 +182,11 @@ class ReferentController extends Controller
      */
     public function commiteesAction(): Response
     {
-        // TODO IMPLEMENT
-        return $this->render('referent/commitees/list.html.twig');
+        $list = $this->getDoctrine()->getRepository(Committee::class)->findManagedBy($this->getUser());
+        $exporter = $this->get('app.referent.managed_committees.exporter');
+
+        return $this->render('referent/commitees/list.html.twig', [
+            'managedCommitteesJson' => $exporter->exportAsJson($list),
+        ]);
     }
 }

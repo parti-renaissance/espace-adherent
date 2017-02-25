@@ -2,8 +2,51 @@
 
 {% block referent_menu_commitees_list 'class="active"' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runReferentList(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                        style: {
+                            width: 25
+                        }
+                    },
+                    {
+                        key: 'name',
+                        name: 'Nom',
+                        link: true
+                    },
+                    {
+                        key: 'postalCode',
+                        name: 'Code postal',
+                        style: {
+                            width: 100
+                        }
+                    },
+                    {
+                        key: 'members',
+                        name: 'Suiveurs',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 50
+                        }
+                    }
+                ],
+                {{ managedCommitteesJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam animi beatae consequuntur deleniti dolorem,
-    et harum laudantium molestias mollitia nihil quibusdam quidem repellendus tempore. Delectus dolore error
-    explicabo saepe voluptatum.
+    <h3>
+        Comités
+    </h3>
+
+    <hr />
+
+    <div id="datagrid"></div>
 {% endblock %}

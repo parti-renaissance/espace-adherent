@@ -57,10 +57,10 @@ class ReferentControllerTest extends SqliteWebTestCase
             ['/espace-referent/utilisateurs/envoyer-un-message/membres-comites'],
             ['/espace-referent/utilisateurs/envoyer-un-message/animateurs-comites'],
             ['/espace-referent/evenements'],
+            ['/espace-referent/comites'],
 
             // TODO Implement
             // ['/espace-referent/evenements/creer'],
-            // ['/espace-referent/comites'],
         ];
     }
 

@@ -251,7 +251,7 @@ export default class DataGrid extends React.Component {
             Object.keys(columns).forEach((j) => {
                 let value = result[columns[j].key];
 
-                if (typeof columns[j].link !== 'undefined' && columns[j].link) {
+                if ('undefined' !== typeof columns[j].link && columns[j].link) {
                     value = <a href={result[columns[j].key].url}>{result[columns[j].key].label}</a>;
                 }
 
