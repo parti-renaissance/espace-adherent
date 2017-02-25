@@ -281,8 +281,8 @@ class AdherentControllerTest extends SqliteWebTestCase
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
-        $this->assertFalse($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 

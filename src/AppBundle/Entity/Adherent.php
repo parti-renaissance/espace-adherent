@@ -105,17 +105,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(type="boolean")
      */
-    private $mainEmailsSubscription = false;
+    private $mainEmailsSubscription = true;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $referentsEmailsSubscription = false;
+    private $referentsEmailsSubscription = true;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $localHostEmailsSubscription = false;
+    private $localHostEmailsSubscription = true;
 
     /**
      * @ORM\Embedded(class="ManagedArea", columnPrefix="managed_area_")
