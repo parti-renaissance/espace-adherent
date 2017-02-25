@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title "#{event.name} - #{event.beginAt|localizeddate('full', 'none')|capitalize} à #{event.beginAt|date('g\\hi')} - #{event.postalCode} #{event.cityName}" %}
+{% block page_title event.name %}
 
 {% block javascripts %}
     <script type="text/javascript">
