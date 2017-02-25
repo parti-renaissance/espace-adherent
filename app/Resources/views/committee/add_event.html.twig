@@ -24,7 +24,7 @@
             <div class="form__row" id="committee-event-name-field">
                 {{ form_errors(form.name) }}
                 {{ form_label(form.name, "Nom de l'événement") }}
-                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement" } }) }}
+                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
             </div>
 
             <div class="form__row" id="committee-event-description-field">
