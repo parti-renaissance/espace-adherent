@@ -101,7 +101,7 @@ class Event implements GeoPointInterface
         int $capacity = null,
         string $slug = null,
         string $createdAt = null,
-        int $participantsCount = 1
+        int $participantsCount = 0
     ) {
         $this->uuid = $uuid;
         $this->organizer = $organizer;

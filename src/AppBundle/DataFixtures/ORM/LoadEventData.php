@@ -10,6 +10,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event as EntityEvent;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Event\EventRegistrationFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -36,6 +38,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $committee5 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_5_UUID);
 
         $committeeEventFactory = $this->getEventFactory();
+        $registrationFactory = $this->getEventRegistrationFactory();
 
         $event1 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_1_UUID,
@@ -49,6 +52,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
             'capacity' => 50,
         ]);
+        $event1->incrementParticipantsCount();
 
         $event2 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_2_UUID,
@@ -62,6 +66,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
             'capacity' => 50,
         ]);
+        $event2->incrementParticipantsCount();
 
         $event3 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_3_UUID,
@@ -75,6 +80,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
             'capacity' => 50,
         ]);
+        $event3->incrementParticipantsCount();
 
         $event4 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_4_UUID,
@@ -88,11 +94,18 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
             'capacity' => 50,
         ]);
+        $event4->incrementParticipantsCount();
 
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
         $manager->persist($event4);
+
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event3, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event4, $author7)));
+
         $manager->flush();
 
         foreach ($this->getCommitteeMessageData($committee1) as $data) {
@@ -167,5 +180,10 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     private function getEventFactory(): EventFactory
     {
         return $this->container->get('app.event.factory');
+    }
+
+    private function getEventRegistrationFactory(): EventRegistrationFactory
+    {
+        return $this->container->get('app.event.registration_factory');
     }
 }

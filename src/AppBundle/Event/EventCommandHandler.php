@@ -36,5 +36,7 @@ class EventCommandHandler
             $command->getAuthor(),
             $event
         ));
+
+        return $event;
     }
 }
