@@ -59,10 +59,11 @@
         }
 
         &__gender {
+            display: flex;
+
             label {
                 @include text--small;
-                margin: 0 20px 0 8px;
-                font-family: $font-roboto;
+                margin: 0 20px 0 0;
             }
         }
 
