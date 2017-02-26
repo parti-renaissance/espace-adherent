@@ -74,7 +74,7 @@ class CommitteeManager
             $limit
         );
 
-        return $hostedCommittees + $followedCommittees;
+        return array_merge($hostedCommittees, $followedCommittees);
     }
 
     public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
