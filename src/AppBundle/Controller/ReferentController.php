@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Event\EventCommand;
+use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -179,7 +180,11 @@ class ReferentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.handler')->handle($command);
+            $event = $this->get('app.event.handler')->handle($command);
+
+            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
+            $this->get('app.event.registration_handler')->handle($registrationCommand);
+
             $this->addFlash('info', $this->get('translator')->trans('referent.event.creation.success'));
 
             return $this->redirectToRoute('app_committee_show_event', [
