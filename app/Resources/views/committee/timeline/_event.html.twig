@@ -13,7 +13,8 @@
     <div class="committee-event-details">
         <div>
             <h4 class="text--medium text--normal b__nudge--bottom-tiny">
-                <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}">
+                <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
+                   class="link--no-decor text--breakword">
                     {{ item.event.name }}
                 </a>
             </h4>
