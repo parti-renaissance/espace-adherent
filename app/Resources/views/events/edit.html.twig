@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title event.name %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+            {{ js.ckeditor('committee_event_description') }}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% set event_url = url('app_committee_show_event', {uuid: event.uuid.toString, slug: event.slug}) %}
+    <main class="committee__event__create">
+        <section class="commitee__event l__wrapper">
+            <div class="committee__event__header">
+
+                <div class="committee__event__header__titles">
+                    <h1 class="committee-event-name text--large text--white b__nudge--bottom-small">
+                        {{- event.name -}}
+                    </h1>
+                    <div class="committee-event-organizer text--body text--white">
+                        Organisé par <span class="text--bold">{{ event.organizer }}</span>
+                        {% if committee %}
+                            du comité
+                            <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
+                                {{- committee.name -}}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="committee__event__header__cta">
+                    <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
+                        {{ include('components/participants.html.twig') }}
+                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                    </div>
+                    <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
+                        <li class="head">Partagez</li>
+                        <li role="button" arial-label="Partagez sur Facebook"
+                            class=""
+                            onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}')">
+                            <i class="fa fa-facebook-square"></i>
+                        </li>
+                        <li role="button" arial-label="Partagez via Twitter"
+                            class=""
+                            onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }} :')">
+                            <i class="fa fa-twitter"></i>
+                        </li>
+                        <li role="button" arial-label="Partagez via email"
+                            class=""
+                            onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
+                            <i class="fa fa-envelope-o"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à l'événement</a>
+        </section>
+        <section class="l__wrapper--slim space--30-0 text--body">
+            <div class="b__nudge--bottom-huge">
+                <h2 class="b__nudge--bottom-small text--medium">
+                    Modifier l'événement
+                </h2>
+
+
+                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+                {{ form_errors(form) }}
+
+                <div class="form__row" id="committee-event-name-field">
+                    {{ form_errors(form.name) }}
+                    {{ form_label(form.name, "Nom de l'événement") }}
+                    {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
+                </div>
+
+                <div class="form__row" id="committee-event-description-field">
+                    {{ form_errors(form.category) }}
+                    {{ form_label(form.category, "Type") }}
+                    {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', 'placeholder': "Choisissez le type de l'événement" } }) }}
+                </div>
+
+                <div class="form__row" id="committee-event-beginat-field">
+                    {{ form_errors(form.beginAt) }}
+                    {{ form_label(form.beginAt, 'Début') }}
+                    {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at' } }) }}
+                </div>
+
+                <div class="form__row" id="committee-event-finishat-field">
+                    {{ form_errors(form.finishAt) }}
+                    {{ form_label(form.finishAt, 'Fin') }}
+                    {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at' } }) }}
+                </div>
+
+                <div id="committee-event-address">
+                    {{ form_errors(form.address) }}
+
+                    <div class="form__row committee_event__form--trunc" id="committee-event-address-address-field">
+                        {{ form_errors(form.address.address) }}
+                        {{ form_label(form.address.address, "Adresse") }}
+                        {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
+                    </div>
+
+                    <div class="event__address l__row l__row--h-stretch">
+                        <div class="form__row committee_event__form__zip_code" id="committee-event-address-zipcode-field">
+                            {{ form_label(form.address.postalCode, "Code postal") }}
+                            {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
+                        </div>
+
+                        <div class="form__row committee_event__form__city" id="committee-event-address-city-field">
+                            {{ form_errors(form.address.city) }}
+                            {{ form_label(form.address.cityName, "Ville") }}
+                            {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
+                            {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full committee_event__form__city_name', 'placeholder': 'Ville' } }) }}
+                        </div>
+
+                        <div class="form__row committee_event__form__country" id="committee-event-address-country-field">
+                            {{ form_errors(form.address.country) }}
+                            {{ form_label(form.address.country, "Pays") }}
+                            {{ form_widget(form.address.country, { attr: { class: 'form--full', 'placeholder': 'Choisissez le pays' } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form__row" id="committee-event-description-field">
+                    {{ form_errors(form.description) }}
+                    {{ form_label(form.description, 'À propos') }}
+                    {{ form_widget(form.description, { attr: {
+                        'class': 'event__description form--full form__field--textarea-300',
+                        'placeholder': 'Entrez un paragraphe afin de décrire cet événement.'
+                    } }) }}
+                </div>
+
+                <div class="form__row" id="committee-event-capacity-field">
+                    {{ form_errors(form.capacity) }}
+                    {{ form_label(form.capacity, 'Capacité') }}
+                    {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
+                </div>
+
+                <div class="form__row b__nudge--top">
+                    <button type="submit" class="btn btn--blue">Enregistrer</button>
+                    <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
+                        class="btn">
+                        Annuler
+                    </a>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Entity\Event;
+use AppBundle\Form\EventCommandType;
 use AppBundle\Form\EventRegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,6 +28,47 @@ class EventController extends Controller
         return $this->render('events/show.html.twig', [
             'event' => $event,
             'committee' => $event->getCommittee(),
+        ]);
+    }
+
+    /**
+     * @Route("/modifier", name="app_event_edit")
+     * @Method("GET|POST")
+     */
+    public function editAction(Request $request, Event $event): Response
+    {
+        $user = $this->getUser();
+        $organizer = $event->getOrganizer();
+        $committee = $event->getCommittee();
+
+        $authorized = $organizer && $user && $user->getId() === $organizer;
+        if (!$authorized) {
+            $authorized = $committee && $this->isGranted(CommitteePermissions::HOST, $committee);
+        }
+
+        if (!$authorized) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $command = EventCommand::createFromEvent($event);
+
+        $form = $this->createForm(EventCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.event.handler')->handleUpdate($event, $command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.update.success'));
+
+            return $this->redirectToRoute('app_committee_show_event', [
+                'uuid' => (string) $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        return $this->render('events/edit.html.twig', [
+            'event' => $event,
+            'committee' => $committee,
+            'form' => $form->createView(),
         ]);
     }
 

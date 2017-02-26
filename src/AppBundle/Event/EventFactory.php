@@ -54,4 +54,19 @@ class EventFactory
             $command->getCapacity()
         );
     }
+
+    public function updateFromEventCommand(Event $event, EventCommand $command): Event
+    {
+        $event->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getBeginAt()->format(DATE_ATOM),
+            $command->getFinishAt()->format(DATE_ATOM),
+            $command->getCapacity()
+        );
+
+        return $event;
+    }
 }
