@@ -114,7 +114,9 @@
                 <div id="committee-host-nav" class="committee__host__nav">
                     <ul class="list__links list__links--default list__links--row list__links--row-left">
                         <li>
-                            <a href="#" class="link--no-decor">Publier un message</a>
+                            <a href="{{ committee_path('app_committee_show', committee) }}" class="link--no-decor">
+                                Publier un message
+                            </a>
                         </li>
                         <li class="text--bold">
                             Gérer les membres
