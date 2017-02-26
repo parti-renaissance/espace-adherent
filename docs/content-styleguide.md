@@ -163,3 +163,12 @@ Comme ceci:
 </div>
 ```
 <img src="assets/CTA-custom.png" width="700">
+
+
+Pour ne pas limiter la largeur du texte:
+```
+<div class="action action--full-text">
+    <p>Participez à l'événement du 1er Janvier 2017.</p>
+    <a href="[votre lien]">Je m'inscris</a>
+</div>
+```

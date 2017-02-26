@@ -14,21 +14,23 @@
 
 {% block content %}
 <main class="content je-marche">
-    <section>
-        <header class="space--60-0 l__wrapper--slim text--center">
-            <h1 class="text--large b__nudge--bottom-small">
+    <section class="je-marche__header progressive-background"
+             data-sd="{{ static_asset('je-marche-hdr.jpg', {'w': 300, 'q': 20}) }}"
+             data-hd="{{ static_asset('je-marche-hdr.jpg', {'w': 2000, 'q': 70}) }}">
+        <header class="space--100-0 l__wrapper--slim text--center">
+            <h1 class="text--large b__nudge--bottom-small text--white">
                 {{ include('components/je-marche.html.twig') }}
             </h1>
-            <h2>Je choisis mes actions pour faire gagner le camp du progrès.</h2>
+            <h2 class="text--white text--large">Je choisis mes actions pour faire gagner le camp du progrès.</h2>
         </header>
         <hr class="l__wrapper" />
     </section>
 
-    <section class="l__wrapper--narrow space--30-0">
+    <section class="je-marche__action l__wrapper--medium">
         <article>
-            <div class="action green">
-                <p>Je m'inscris à une action collective proposée près de chez moi</p>
-                <a class="pink" href="{{ enable_platform ? path('app_search_events') : url_legacy }}">Voir les actions</a>
+            <div class="action blue action--full-text">
+                <p>Je m'inscris à une action collective près de chez moi</p>
+                <a href="{{ enable_platform ? path('app_search_events') : url_legacy }}">Voir les actions</a>
             </div>
         </article>
     </section>
