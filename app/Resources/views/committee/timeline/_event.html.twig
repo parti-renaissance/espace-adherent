@@ -25,8 +25,12 @@
         </div>
         <ul class="l__row l__row--h-stretch">
             <li>
+                {% if item.event.finishAt < date() %}
+                    Cet événement est terminé
+                {% else %}
                 <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
                    class="btn btn--blue">Je participe</a>
+                 {% endif %}
             </li>
             <li class="icon--with-text text--body">
                     {{ include('components/participants.html.twig') }}
