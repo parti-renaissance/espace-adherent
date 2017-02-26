@@ -41,7 +41,7 @@ class EventController extends Controller
         $organizer = $event->getOrganizer();
         $committee = $event->getCommittee();
 
-        $authorized = $organizer && $user && $user->getId() === $organizer;
+        $authorized = $organizer && $user && $user->getId() === $organizer->getId();
         if (!$authorized) {
             $authorized = $committee && $this->isGranted(CommitteePermissions::HOST, $committee);
         }
