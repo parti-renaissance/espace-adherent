@@ -22,5 +22,7 @@
     </script>
 {% endblock %}
 
-{% block referent_users_list_title 'Envoyer un message aux marcheurs' %}
 {% block referent_users_list_action path('app_referent_users_selected', { 'from': 'subscribers' }) %}
+{% block referent_users_list_description %}
+J’envoie un message à toutes les personnes <span class="text--bold">inscrites à la newsletter</span>.
+{% endblock %}

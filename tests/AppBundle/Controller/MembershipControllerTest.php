@@ -117,7 +117,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Cette ville n\'est pas une ville française valide.', $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
-        $this->assertSame('Cette adresse n\'est pas géolocalisable.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
     }
 
     /**

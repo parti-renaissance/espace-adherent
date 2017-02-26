@@ -2,5 +2,7 @@
 
 {% block referent_menu_users_nonfollowers 'class="active"' %}
 
-{% block referent_users_list_title 'Envoyer un message aux non-membres de comités' %}
 {% block referent_users_list_action path('app_referent_users_selected', { 'from': 'nonfollowers' }) %}
+{% block referent_users_list_description %}
+J’envoie un message uniquement aux <span class="text--bold">personnes adhérentes</span> et qui ne sont <span class="text--bold">pas membres d’un comité local</span>.
+{% endblock %}
