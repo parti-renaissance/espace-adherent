@@ -11,6 +11,7 @@ security:
 
     role_hierarchy:
         ROLE_WRITER:
+            - ROLE_ACCESS_DASHBOARD
             - ROLE_APP_ADMIN_ARTICLE_ALL
             - ROLE_APP_ADMIN_HOME_BLOCK_EDIT
             - ROLE_APP_ADMIN_HOME_BLOCK_LIST
@@ -22,6 +23,7 @@ security:
             - ROLE_APP_ADMIN_PROPOSAL_THEME_ALL
 
         ROLE_CAMPAIGN:
+            - ROLE_ACCESS_DASHBOARD
             - ROLE_APP_ADMIN_NEWSLETTER_SUBSCRIPTION_ALL
             - ROLE_APP_ADMIN_INVITE_EXPORT
             - ROLE_APP_ADMIN_INVITE_LIST
@@ -33,6 +35,7 @@ security:
             - ROLE_APP_ADMIN_JE_MARCHE_DELETE
 
         ROLE_TERRITORY:
+            - ROLE_ACCESS_DASHBOARD
             - ROLE_CAMPAIGN
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_APP_ADMIN_ADHERENT_ALL
@@ -118,4 +121,4 @@ security:
         - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
-        - { path: '^/admin', roles: [ROLE_WRITER] }
+        - { path: '^/admin', roles: [ROLE_ACCESS_DASHBOARD] }
