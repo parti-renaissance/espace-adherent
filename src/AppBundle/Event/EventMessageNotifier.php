@@ -33,6 +33,10 @@ class EventMessageNotifier implements EventSubscriberInterface
     {
         $committee = $event->getCommittee();
 
+        if (!$committee) {
+            return;
+        }
+
         $this->mailjet->sendMessage($this->createMessage(
             $this->manager->getOptinCommitteeFollowers($committee),
             $committee,

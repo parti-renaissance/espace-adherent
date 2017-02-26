@@ -28,13 +28,17 @@ class EventCommandHandler
         $command->setEvent($event = $this->factory->createFromEventCommand($command));
 
         $this->manager->persist($event);
-        $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
+
+        if ($event->getCommittee()) {
+            $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
+        }
+
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventCreatedEvent(
-            $command->getCommittee(),
             $command->getAuthor(),
-            $event
+            $event,
+            $command->getCommittee()
         ));
     }
 }

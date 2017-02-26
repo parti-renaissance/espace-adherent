@@ -134,6 +134,14 @@
                     display: none;
                 }
             }
+
+            &--referent-event {
+                background: #fcecc2;
+
+                &:hover {
+                    background: #e9dbb3;
+                }
+            }
         }
 
         &__info {

@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Event\EventCommand;
+use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -170,10 +172,25 @@ class ReferentController extends Controller
      * @Route("/evenements/creer", name="app_referent_events_create")
      * @Method("GET|POST")
      */
-    public function eventsCreateAction(): Response
+    public function eventsCreateAction(Request $request): Response
     {
-        // TODO IMPLEMENT
-        return $this->render('referent/events/create.html.twig');
+        $command = new EventCommand($this->getUser());
+        $form = $this->createForm(EventCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.event.handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('referent.event.creation.success'));
+
+            return $this->redirectToRoute('app_committee_show_event', [
+                'uuid' => (string) $command->getEvent()->getUuid(),
+                'slug' => (string) $command->getEvent()->getSlug(),
+            ]);
+        }
+
+        return $this->render('referent/events/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

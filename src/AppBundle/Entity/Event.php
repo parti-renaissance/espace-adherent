@@ -91,7 +91,7 @@ class Event implements GeoPointInterface
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
-        Committee $committee,
+        ?Committee $committee,
         string $name,
         string $category,
         string $description,

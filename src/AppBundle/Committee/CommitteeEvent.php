@@ -9,7 +9,7 @@ class CommitteeEvent extends Event
 {
     private $committee;
 
-    public function __construct(Committee $committee)
+    public function __construct(Committee $committee = null)
     {
         $this->committee = $committee;
     }

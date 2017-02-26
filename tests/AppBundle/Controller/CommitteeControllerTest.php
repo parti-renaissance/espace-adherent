@@ -257,7 +257,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame(7, $crawler->filter('#committee-event-form .form__errors > li')->count());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 5 caractères.', $crawler->filter('#committee-event-name-field .form__error')->text());
         $this->assertSame('Cette chaîne est trop courte. Elle doit avoir au minimum 10 caractères.', $crawler->filter('#committee-event-description-field .form__error')->text());
-        $this->assertSame('La capacité doit être un nombre entier valide.', $crawler->filter('#committee-event-capacity-field .form__error')->text());
+        $this->assertSame('Cette valeur n\'est pas valide.', $crawler->filter('#committee-event-capacity-field .form__error')->text());
         $this->assertSame("Cette valeur n'est pas un code postal français valide.", $crawler->filter('#committee-event-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("Cette adresse n'est pas géolocalisable.", $crawler->filter('#committee-event-address > .form__errors > li')->eq(1)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#committee-event-address-address-field > .form__errors > li')->text());
