@@ -261,6 +261,10 @@
             width: 200px;
             height: 200px;
             background: $gray;
+
+            @media (max-width: $mobile) {
+                display: none;
+            }
         }
 
         &-details {

@@ -120,6 +120,10 @@ $text--size-extra-large: 48px;
 }
 
 .text {
+    &--breakword {
+        @include breakword;
+    }
+    
     &--summary {
         @include text--summary;
     }
