@@ -21,7 +21,7 @@
                     {% if event.committee %}
                         <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                     {% elseif event.organizer and event.organizer.isReferent %}
-                        <div class="text--body">Organisé par un <span class="text--bold">référent En Marche</span> ({{ event.organizer.fullName }})</div>
+                        <div class="text--body">Organisé par un <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})</div>
                     {% elseif event.organizer %}
                         <div class="text--body">Organisé par <span class="text--bold">{{ event.organizer.fullName }}</span></div>
                     {% endif %}
