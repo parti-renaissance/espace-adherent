@@ -24,6 +24,3 @@ Pour commencer à contribuer, la meilleure manière est de suivre [le guide de c
 
 Pour installer le projet en local et comprendre son organisation technique, suivez 
 [la documentation pour développeurs](docs).
-
-Si vous avez besoin d'aide, nous sommes disponibles [sur Slack](https://slack.en-marche.fr) ou 
-[sur Twitter](https://twitter.com/enmarchefr) pour vous accompagner.
