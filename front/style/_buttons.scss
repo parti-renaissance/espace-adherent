@@ -123,6 +123,10 @@
         }
     }
 
+    &--no-wrap {
+        white-space: nowrap;
+    }
+
     &--full {
         margin: 0;
         width: 100%;

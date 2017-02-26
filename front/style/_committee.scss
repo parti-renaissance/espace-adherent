@@ -16,6 +16,14 @@
         @include breakword;
     }
 
+    &__header__titles {
+        margin-right: 25px;
+
+        @media (max-width: $mobile) {
+            margin: 0;
+        }
+    }
+
     &__host {
         &__nav {
             @include text--body;
