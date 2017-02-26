@@ -152,11 +152,13 @@
 
             @media (max-width: $mobile) {
                 margin-right: 0;
+                height: auto;
             }
         }
 
         &__cta {
             display: flex;
+            margin-top: 10px;
 
             .btn {
                 margin-right: 20px;
