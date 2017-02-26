@@ -39,6 +39,8 @@ trait NearbyTrait
             ->addSelect($this->getNearbyExpression().' as '.$hidden.' distance_between')
             ->setParameter('latitude', $coordinates->getLatitude())
             ->setParameter('longitude', $coordinates->getLongitude())
+            ->where('n.postAddress.latitude IS NOT NULL')
+            ->andWhere('n.postAddress.longitude IS NOT NULL')
             ->orderBy('distance_between', 'asc')
         ;
     }

@@ -113,15 +113,14 @@ class CommitteeRepository extends EntityRepository
      */
     public function findNearbyCommittees(int $count, Coordinates $coordinates)
     {
-        $query = $this
+        $qb = $this
             ->createNearbyQueryBuilder($coordinates)
-            ->where('n.status = :status')
+            ->andWhere('n.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->setMaxResults($count)
-            ->getQuery()
         ;
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**

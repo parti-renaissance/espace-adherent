@@ -44,7 +44,7 @@ class SearchResultsProvider
         if ($coordinates = $search->getCityCoordinates()) {
             $qb = $this->committee
                 ->createNearbyQueryBuilder($coordinates)
-                ->where($this->committee->getNearbyExpression().' < :distance_max')
+                ->andWhere($this->committee->getNearbyExpression().' < :distance_max')
                 ->setParameter('distance_max', $search->getRadius())
             ;
         } else {
@@ -73,7 +73,7 @@ class SearchResultsProvider
         if ($coordinates = $search->getCityCoordinates()) {
             $qb = $this->event
                 ->createNearbyQueryBuilder($coordinates)
-                ->where($this->committee->getNearbyExpression().' < :distance_max')
+                ->andWhere($this->committee->getNearbyExpression().' < :distance_max')
                 ->andWhere('n.beginAt > :now')
                 ->setParameter('distance_max', $search->getRadius())
                 ->setParameter('now', new \DateTime())
