@@ -1,6 +1,7 @@
 .referent {
+    font-family: $font-roboto;
+
     &__sidebar {
-        flex-grow: 1;
         min-width: 275px;
         border-right: 2px solid #f2f2f2;
         padding: 0 20px 20px 20px;
@@ -21,7 +22,7 @@
             text-decoration: none;
             transition: 0s;
             padding: 10px 15px;
-            
+
             &:hover {
                 color: black;
                 text-decoration: underline;
@@ -40,7 +41,7 @@
 
     &__content {
         padding: 20px;
-        flex-grow: 3;
+        flex-grow: 1;
 
         &__loader {
             width: 100%;

@@ -11,7 +11,7 @@ final class AdherentEmailSubscription
     const SUBSCRIPTIONS = [
         'Emails En Marche !' => self::SUBSCRIBED_EMAILS_MAIN,
         'Emails de vos référents' => self::SUBSCRIBED_EMAILS_REFERENTS,
-        'Emails de vôtre animateur local' => self::SUBSCRIBED_EMAILS_LOCAL_HOST,
+        'Emails de votre animateur local' => self::SUBSCRIBED_EMAILS_LOCAL_HOST,
     ];
 
     private function __construct()
