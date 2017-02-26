@@ -111,6 +111,40 @@
         margin: 0;
     }
 
+    &__radio-button {
+        label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+
+            &:before {
+                content: ' ';
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                margin-right: 10px;
+                border: 7px solid $gray--light;
+                transition: all .2s;
+                background: #fff;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+        }
+
+        input[type="radio"] {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+
+            &:checked + label:before {
+                border-color: $blue;
+                background: white;
+            }
+        }
+    }
+
     &__checkbox {
         display: flex;
         align-items: center;
@@ -130,16 +164,21 @@
 
             &:before {
                 content: ' ';
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 width: 20px;
                 height: 20px;
                 margin-right: 10px;
                 border: 1px solid $gray--light;
                 transition: all .2s;
                 background: #fff;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
+        }
+
+        &--large label:before {
+            width: 30px;
+            height: 30px;
         }
 
         &:hover {
