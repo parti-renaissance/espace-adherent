@@ -130,16 +130,21 @@
 
             &:before {
                 content: ' ';
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 width: 20px;
                 height: 20px;
                 margin-right: 10px;
                 border: 1px solid $gray--light;
                 transition: all .2s;
                 background: #fff;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
+        }
+
+        &--large label:before {
+            width: 30px;
+            height: 30px;
         }
 
         &:hover {
