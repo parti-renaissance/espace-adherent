@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Event\EventCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,7 @@ class EventCommandType extends AbstractType
                 'years' => $options['years'],
                 'minutes' => $options['minutes'],
             ])
-            ->add('capacity', TextType::class, [
+            ->add('capacity', IntegerType::class, [
                 'required' => false,
             ])
         ;

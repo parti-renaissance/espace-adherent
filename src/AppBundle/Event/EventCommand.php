@@ -68,7 +68,7 @@ class EventCommand
 
     public function __construct(
         Adherent $author,
-        Committee $committee,
+        Committee $committee = null,
         UuidInterface $uuid = null,
         Address $address = null,
         \DateTimeInterface $beginAt = null,
@@ -156,7 +156,7 @@ class EventCommand
         return $this->address;
     }
 
-    public function getCommittee(): Committee
+    public function getCommittee(): ?Committee
     {
         return $this->committee;
     }

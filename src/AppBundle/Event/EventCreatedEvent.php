@@ -12,7 +12,7 @@ class EventCreatedEvent extends BaseEvent
     private $author;
     private $event;
 
-    public function __construct(Committee $committee, Adherent $author, Event $event)
+    public function __construct(Adherent $author, Event $event, Committee $committee = null)
     {
         parent::__construct($committee);
 
