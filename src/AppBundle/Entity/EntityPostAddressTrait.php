@@ -34,7 +34,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getPostalCode();
     }
 
-    public function getCityName(): string
+    public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
     }
