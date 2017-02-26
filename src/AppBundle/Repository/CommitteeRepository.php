@@ -173,7 +173,10 @@ class CommitteeRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c')
-            ->orderBy('c.name', 'ASC');
+            ->where('c.status = :status')
+            ->setParameter('status', Committee::APPROVED)
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC');
 
         $codesFilter = $qb->expr()->orX();
 

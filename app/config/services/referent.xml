@@ -8,7 +8,9 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
-        <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter" />
+        <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter">
+            <argument type="service" id="app.repository.committee" />
+        </service>
 
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
             <argument type="service" id="router" />
