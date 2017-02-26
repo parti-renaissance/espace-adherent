@@ -65,11 +65,12 @@
 {% block committee_lcol %}
     {% if committee.isApproved %}
         {% if not is_granted('ROLE_ADHERENT') %}
-            <div class="btn btn--no-border btn--text-blue committee-link b__nudge--bottom-small committee-follow-disabled">Suivre ce comité</div>
-            <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="btn btn--no-border btn--text-blue ">Adhérer à En Marche!</a>
+            <div class="btn btn--no-border btn--text-blue committee-link b__nudge--bottom-small committee-follow-disabled  btn--no-wrap">Suivre ce comité</div>
+            <a href="{{ path('app_membership_register') }}" id="committee-register-link"
+               class="btn btn--no-border btn--text-blue btn--no-wrap">Adhérer à En Marche!</a>
         {% elseif can_follow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-follow"
+                    class="btn btn--no-border btn--text-blue committee-follow btn--no-wrap"
                     id="committee-toggle-membership"
                     data-action="rejoindre"
                     data-csrf-token="{{ csrf_token('committee.follow') }}">
@@ -78,7 +79,7 @@
             </button>
         {% elseif can_unfollow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-unfollow"
+                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap"
                     id="committee-toggle-membership"
                     data-action="quitter"
                     data-csrf-token="{{ csrf_token('committee.unfollow') }}">
