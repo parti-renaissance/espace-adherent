@@ -40,18 +40,19 @@
             {% if is_granted('ROLE_ADHERENT') %}
 
             var toggleMembershipButton = dom('#committee-toggle-membership');
+            var toggleMembershipLoader = dom('#committee-follow-btn-loader');
 
             toggleMembershipButton && on(toggleMembershipButton, 'click', function () {
+                toggleMembershipLoader.style.display = 'inline';
+                toggleMembershipButton.disabled = true;
+
                 di.get('api').toggleCommitteeMembership(
                     committeeUuid,
                     committeeSlug,
                     toggleMembershipButton.getAttribute('data-action'),
                     toggleMembershipButton.getAttribute('data-csrf-token'),
                     function (result) {
-                        toggleMembershipButton.setAttribute('class', 'rejoindre' == result.button.action ? 'btn committee-follow' : 'btn committee-unfollow');
-                        toggleMembershipButton.setAttribute('data-action', result.button.action);
-                        toggleMembershipButton.setAttribute('data-csrf-token', result.button.csrf_token);
-                        toggleMembershipButton.innerHTML = result.button.label;
+                        window.location.reload();
                     }
                 );
             });
@@ -68,16 +69,22 @@
             <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="btn btn--no-border btn--text-blue ">Adhérer à En Marche!</a>
         {% elseif can_follow(committee) %}
             <button role="button"
-                    class="btn committee-follow"
+                    class="btn btn--no-border btn--text-blue committee-follow"
                     id="committee-toggle-membership"
                     data-action="rejoindre"
-                    data-csrf-token="{{ csrf_token('committee.follow') }}">Suivre ce comité</button>
+                    data-csrf-token="{{ csrf_token('committee.follow') }}">
+                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                Suivre ce comité
+            </button>
         {% elseif can_unfollow(committee) %}
             <button role="button"
                     class="btn btn--no-border btn--text-blue committee-unfollow"
                     id="committee-toggle-membership"
                     data-action="quitter"
-                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">Quitter ce comité</button>
+                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">
+                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                Quitter ce comité
+            </button>
         {% endif %}
     {% endif %}
 {% endblock %}
