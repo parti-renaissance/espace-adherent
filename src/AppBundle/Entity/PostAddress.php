@@ -196,7 +196,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
             $parts[] = Intl::getRegionBundle()->getCountryName($this->country, $locale);
         }
 
-        return implode(', ', $parts);
+        return implode(', ', array_map('trim', $parts));
     }
 
     private function isFrenchAddress(): bool
