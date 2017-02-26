@@ -12,6 +12,12 @@ $text--size-extra-large: 48px;
     font-weight: 700;
 }
 
+@mixin breakword {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
 @mixin text--smallest {
     font-size: $text--size-smallest;
     line-height: 18px;
@@ -72,7 +78,7 @@ $text--size-extra-large: 48px;
     letter-spacing: .3px;
     line-height: 1.5;
     font-size: $text--size-default;
-    overflow-wrap: break-word;
+    @include breakword;
 }
 
 @mixin text--summary {
