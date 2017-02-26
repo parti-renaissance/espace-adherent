@@ -249,6 +249,12 @@
             }
         }
 
+        &--full-text {
+            p {
+                max-width: 100%;
+            }
+        }
+
         a {
             font-family: $font-gillsans;
             @include btn;
@@ -633,8 +639,39 @@
 }
 
 .content.je-marche {
-    header h2 {
-        @include text--body;
+    header {
+        position: relative;
+        z-index: 1;
+
+        svg {
+            width: 300px;
+            height: 120px;
+        }
+
+        h2 {
+            @include text--large;
+            @include text--bold;
+            font-family: $font-gillsans;
+        }
+    }
+
+    .je-marche {
+        &__header {
+            background-repeat: no-repeat;
+            background-position: center 45%;
+            background-size: cover;
+            @include gradient-container;
+
+            &:before {
+                @include classic-gradient($filter);
+            }
+        }
+
+        &__action {
+            margin-top: -50px;
+            z-index: 1;
+            position: relative;
+        }
     }
 
     .action__items {
