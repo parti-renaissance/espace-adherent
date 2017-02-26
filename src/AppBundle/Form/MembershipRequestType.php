@@ -26,8 +26,13 @@ class MembershipRequestType extends AbstractType
                 'empty_data' => '',
             ])
             ->add('birthdate', BirthdayType::class, [
-                'widget' => 'single_text',
-                'html5' => true,
+                'widget' => 'choice',
+                'years' => $options['years'],
+                'placeholder' => [
+                    'year' => 'AAAA',
+                    'month' => 'MM',
+                    'day' => 'JJ',
+                ],
             ])
             ->add('position', ActivityPositionType::class)
             ->add('address', AddressType::class)
@@ -46,10 +51,13 @@ class MembershipRequestType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $years = range((int) date('Y') - 15, (int) date('Y') - 120);
+
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
             'translation_domain' => false,
             'validation_groups' => ['Default', 'Registration'],
+            'years' => array_combine($years, $years),
         ]);
     }
 }

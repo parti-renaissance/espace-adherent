@@ -89,7 +89,9 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         $this->assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         $this->assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        $this->assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+        $this->assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
+        $this->assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
+        $this->assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -108,20 +110,18 @@ class AdherentControllerTest extends SqliteWebTestCase
                     'number' => '',
                 ],
                 'position' => 'student',
-                'birthdate' => '!',
             ],
         ]));
 
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(6, $errors->count());
+        $this->assertSame(5, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(3)->text());
         $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
-        $this->assertSame("Cette valeur n'est pas valide.", $errors->eq(5)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -141,7 +141,11 @@ class AdherentControllerTest extends SqliteWebTestCase
                     'number' => '04 01 02 03 04',
                 ],
                 'position' => 'student',
-                'birthdate' => '1985-10-27',
+                'birthdate' => [
+                    'year' => '1985',
+                    'month' => '10',
+                    'day' => '27',
+                ],
             ],
         ]));
 
