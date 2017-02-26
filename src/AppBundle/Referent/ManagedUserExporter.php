@@ -25,11 +25,17 @@ class ManagedUserExporter
         $data = [];
 
         foreach ($managedUsers as $user) {
+            $isHost = $user->isAdherent() && $user->getOriginal()->isHost();
+
             $data[] = [
                 'type' => $user->getType(),
                 'id' => $user->getId(),
                 'postalCode' => $user->getPostalCode(),
-                'email' => ($user->getEmail() && $user->isEmailVisible()) ?: '',
+                'email' => [
+                    'label' => $isHost ? $user->getEmail() : '',
+                    'url' => 'mailto:'.($isHost ? $user->getEmail() : ''),
+                ],
+                'phone' => $isHost ? (string) $user->getOriginal()->getPhone() : '',
                 'name' => $user->getPartialName() ?: '',
                 'age' => $user->getAge() ?: '',
                 'city' => $user->getCity() ?: '',
