@@ -23,11 +23,13 @@ class DocumentsController extends Controller
         $documents = [];
         $documents['adherent'] = $this->get('app.documents_repository')->listAdherentDirectory('/');
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_REFERENT')) {
+        $isHost = $this->get('app.committee.manager')->isCommitteeHost($this->getUser());
+
+        if ($this->getUser()->isReferent()) {
             $documents['referent'] = $this->get('app.documents_repository')->listReferentDirectory('/');
         }
 
-        if ($this->get('app.committee.manager')->isCommitteeHost($this->getUser())) {
+        if ($isHost || $this->getUser()->isReferent()) {
             $documents['host'] = $this->get('app.documents_repository')->listHostDirectory('/');
         }
 
@@ -81,13 +83,14 @@ class DocumentsController extends Controller
 
     private function checkDocumentTypeAccess(string $type)
     {
-        $committeeManager = $this->get('app.committee.manager');
-        if (DocumentRepository::DIRECTORY_HOSTS === $type && !$committeeManager->isCommitteeHost($this->getUser())) {
+        $isHost = $this->get('app.committee.manager')->isCommitteeHost($this->getUser());
+        $isReferent = $this->getUser()->isReferent();
+
+        if (DocumentRepository::DIRECTORY_HOSTS === $type && !$isHost && !$isReferent) {
             throw $this->createNotFoundException();
         }
 
-        $authChecker = $this->get('security.authorization_checker');
-        if (DocumentRepository::DIRECTORY_REFERENTS === $type && !$authChecker->isGranted('ROLE_REFERENT')) {
+        if (DocumentRepository::DIRECTORY_REFERENTS === $type && !$isReferent) {
             throw $this->createNotFoundException();
         }
     }
