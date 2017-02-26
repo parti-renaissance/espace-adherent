@@ -138,8 +138,14 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('postalCode', null, [
+                'label' => 'Code postal',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
@@ -155,11 +161,14 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->add('name', null, [
                 'label' => 'Nom',
             ])
             ->add('postalCode', null, [
-                'label' => 'Code Postal',
+                'label' => 'Code postal',
             ])
             ->add('cityName', null, [
                 'label' => 'Ville',
