@@ -50,6 +50,27 @@
             > div {
                 display: flex;
             }
+
+            @media(max-width: $mobile) {
+                flex-direction: column;
+
+                > a {
+                    margin-top: 10px;
+                }
+
+                > div {
+                    justify-content: space-between;
+
+                    form {
+                        width: 48%;
+
+                        button {
+                            margin: 0;
+                            width: 100%;
+                        }
+                    }
+                }
+            }
         }
 
         &__list {
@@ -66,6 +87,15 @@
 
                 th {
                     text-align: left;
+                }
+            }
+
+            @media (max-width: $mobile) {
+                th:nth-child(4),
+                th:nth-child(5),
+                td:nth-child(4),
+                td:nth-child(5) {
+                    display: none;
                 }
             }
         }
@@ -190,6 +220,8 @@
             padding: 30px;
             width: 100%;
             box-sizing: border-box;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
     }
 
@@ -274,6 +306,13 @@
             flex-direction: column;
             justify-content: space-between;
             width: 100%;
+            box-sizing: border-box;
+
+            @media (max-width: $mobile) {
+                > ul {
+                    margin-top: 10px;
+                }
+            }
         }
     }
 
