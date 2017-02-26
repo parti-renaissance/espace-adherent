@@ -80,13 +80,13 @@ class DocumentsControllerTest extends SqliteWebTestCase
 
         $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
         $this->assertCount(1, $crawler->filter('h2:contains("Documents adhérents")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Documents animateurs")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents animateurs")'));
         $this->assertCount(1, $crawler->filter('h2:contains("Documents référents")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir1")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir2")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-c.pdf")'));
-        $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("dir3")'));
-        $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-host-b.pdf")'));
+        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir3")'));
+        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-host-b.pdf")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir4")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-referent-a.pdf")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
@@ -144,7 +144,7 @@ class DocumentsControllerTest extends SqliteWebTestCase
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     /**
@@ -186,7 +186,7 @@ class DocumentsControllerTest extends SqliteWebTestCase
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     protected function setUp()
