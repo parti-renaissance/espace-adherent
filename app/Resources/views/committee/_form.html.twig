@@ -15,7 +15,7 @@
     {{ form_widget(form.description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Description du comité',
+            'placeholder': 'Description du comité (Max 140 caractères)',
         }
     }) }}
 </div>
@@ -57,7 +57,7 @@
     {{ form_errors(form.twitterNickname) }}
     {{ form_widget(form.twitterNickname, { 'attr': {
         'class': 'form--full',
-        'placeholder': 'URL du compte Twitter de votre comité (si vous en avez un)'
+        'placeholder': '@compte Twitter de votre comité (si vous en avez un)'
     } }) }}
 </div>
 

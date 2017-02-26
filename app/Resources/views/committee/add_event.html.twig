@@ -14,6 +14,13 @@
 {% block content %}
 <main class="committee__event__create l__wrapper l__row l__row--top l__row--h-stretch">
     <section class="l__wrapper--main l__wrapper--main-left">
+        <div class="text--summary b__nudge--bottom">
+            <a href="{{ path('app_committee_show', {'uuid': committee.uuid.toString, 'slug': committee.slug}) }}" class="back-to-list icon--with-text">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à mon comité local
+            </a>
+        </div>
+
         <div id="committee-event-form">
             <h2 class="text--large b__nudge--bottom-small">Créer mon événement</h2>
             <h3 class="text--body text--normal">Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
@@ -24,7 +31,7 @@
             <div class="form__row" id="committee-event-name-field">
                 {{ form_errors(form.name) }}
                 {{ form_label(form.name, "Nom de l'événement") }}
-                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement" } }) }}
+                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
             </div>
 
             <div class="form__row" id="committee-event-description-field">
