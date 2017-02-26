@@ -35,7 +35,7 @@
         </service>
 
         <service id="app.committee.contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">
-            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="app.mailjet.client.campaign" />
         </service>
 
         <service id="app.committee.feed_manager" class="AppBundle\Committee\Feed\CommitteeFeedManager">
