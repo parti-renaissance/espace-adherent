@@ -533,7 +533,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         // Authenticate as the committee animator
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les membres')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
     }
@@ -546,7 +546,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         // Authenticate as the committee animator
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les membres')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
@@ -589,7 +589,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         // Authenticate as the committee animator
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les membres')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
