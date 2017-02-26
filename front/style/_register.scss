@@ -102,11 +102,10 @@
         margin-bottom: 120px;
 
         &__list {
-            flex-grow: 2;
+            flex-grow: 1;
         }
 
         &__follow {
-            flex-grow: 1;
             max-width: 220px;
             display: flex;
             align-items: center;
