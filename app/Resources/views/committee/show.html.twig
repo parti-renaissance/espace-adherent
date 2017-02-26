@@ -3,13 +3,19 @@
 {% block page_title committee.name %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    {% if is_host %}
+        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    {% endif %}
+
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
             var committeeUuid = '{{ committee.uuid }}';
             var committeeSlug = '{{ committee.slug }}';
 
             {% if committee_timeline is defined and committee_timeline|length %}
-
             var page = 1;
             var limit = {{ committee_timeline_max_messages }};
             var moreButton = dom('#committee-timeline-more');
@@ -34,11 +40,9 @@
                     }
                 );
             });
-
             {% endif %}
 
             {% if is_granted('ROLE_ADHERENT') %}
-
             var toggleMembershipButton = dom('#committee-toggle-membership');
             var toggleMembershipLoader = dom('#committee-follow-btn-loader');
 
@@ -58,6 +62,9 @@
             });
             {% endif %}
 
+            {% if is_host %}
+                {{ js.ckeditor('committee_feed_message_content') }}
+            {% endif %}
         });
     </script>
 {% endblock %}

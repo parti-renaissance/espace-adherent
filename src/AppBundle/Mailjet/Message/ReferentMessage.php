@@ -26,7 +26,7 @@ final class ReferentMessage extends MailjetMessage
             $model->getSubject(),
             [
                 'referant_firstname' => self::escape($referent->getFirstName()),
-                'target_message' => nl2br(self::escape($model->getContent())),
+                'target_message' => $model->getContent(),
             ],
             [
                 'target_firstname' => self::escape($referent->getFirstName() ?: ''),

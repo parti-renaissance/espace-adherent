@@ -1,5 +1,17 @@
 {% extends 'referent/layout.html.twig' %}
 
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.ckeditor('referent_message_content') }}
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
     <p>
         <a href="{{ path('app_referent_'~from) }}" class="icon--with-text">

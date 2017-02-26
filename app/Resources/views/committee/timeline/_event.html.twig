@@ -1,4 +1,4 @@
-<p class="text--body">{{ item.content|nl2br }}</p>
+<p class="text--body">{{ item.content|raw }}</p>
 
 <div class="committee-event">
     {% if item.event.latitude and item.event.longitude %}

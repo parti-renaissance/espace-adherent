@@ -6,3 +6,19 @@ App.createAddressSelector(
     '{{ address.cityName.vars.id }}'
 );
 {% endmacro %}
+
+{% macro ckeditor(element) %}
+CKEDITOR.replace('{{ element }}', {
+    removePlugins: 'elementspath',
+    resize_enabled: false,
+    toolbar: [
+        { name: 'tools', items: [ 'Maximize' ] },
+        { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+        { name: 'styles', items: [ 'Format' ] },
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
+        { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+        { name: 'links', items: [ 'Link', 'Unlink', 'Image' ] }
+    ]
+});
+{% endmacro %}

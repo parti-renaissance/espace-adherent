@@ -54,7 +54,7 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
     {
         return [
             'animator_firstname' => self::escape($hostFirstName),
-            'animator_message' => nl2br(self::escape($hostMessage)),
+            'target_message' => $hostMessage,
         ];
     }
 
