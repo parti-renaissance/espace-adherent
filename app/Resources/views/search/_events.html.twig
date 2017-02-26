@@ -28,9 +28,15 @@
                 </div>
 
                 <div class="search__results__cta">
-                    <span class="btn btn--blue">
-                        Je Participe
-                    </span>
+                    {% if event.finishAt < date() %}
+                        <div class="text--body text--white">
+                            Cet événement est terminé
+                        </div>
+                    {% else %}
+                        <span class="btn btn--blue">
+                            Je Participe
+                        </span>
+                    {% endif %}
                     <div class="text--body icon--with-text l__row--center">
                         {{ include('components/participants.html.twig') }}
                         {{ 'event.participants_count'|transchoice(event.participantsCount) }}

@@ -30,7 +30,7 @@
     {% set event_url = url('app_committee_show_event', {uuid: event.uuid.toString, slug: event.slug}) %}
     <main>
         <section class="commitee__event l__wrapper">
-            <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text">
+            <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à la liste des événements</a>
 
@@ -52,10 +52,16 @@
                 </div>
 
                 <div class="committee__event__header__cta">
-                    <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    {% if event.finishAt < date() %}
+                        <div class="text--body text--white">
+                            Cet événement est terminé
+                        </div>
+                    {% else %}
+                        <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    {% endif %}
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                        {{ event.participantsCount }} / {{ 'event.capacity'|transchoice(event.capacity)  }}
                     </div>
                     <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                         <li class="head">Partagez</li>
