@@ -11,6 +11,11 @@ class ManagedUser
     const TYPE_NEWSLETTER_SUBSCRIBER = 'newsletter_subscriber';
 
     /**
+     * @var Adherent|NewsletterSubscription
+     */
+    private $original;
+
+    /**
      * @var string
      */
     private $type;
@@ -67,6 +72,7 @@ class ManagedUser
 
     public function __construct(
         string $type,
+        $original,
         int $id,
         string $email,
         string $postalCode,
@@ -83,6 +89,7 @@ class ManagedUser
         }
 
         $this->type = $type;
+        $this->original = $original;
         $this->id = $id;
         $this->email = $email;
         $this->emailVisible = $emailVisible;
@@ -99,6 +106,7 @@ class ManagedUser
     {
         return new self(
             self::TYPE_ADHERENT,
+            $adherent,
             $adherent->getId(),
             $adherent->getEmailAddress(),
             $adherent->getPostalCode(),
@@ -116,10 +124,26 @@ class ManagedUser
     {
         return new self(
             self::TYPE_NEWSLETTER_SUBSCRIBER,
+            $subscription,
             $subscription->getId(),
             $subscription->getEmail(),
             $subscription->getPostalCode()
         );
+    }
+
+    public function isNewsletterSubscription()
+    {
+        return $this->original instanceof NewsletterSubscription;
+    }
+
+    public function isAdherent()
+    {
+        return $this->original instanceof Adherent;
+    }
+
+    public function getOriginal()
+    {
+        return $this->original;
     }
 
     public function getType(): string

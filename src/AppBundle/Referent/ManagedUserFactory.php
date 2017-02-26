@@ -2,28 +2,24 @@
 
 namespace AppBundle\Referent;
 
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use AppBundle\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManager;
 
 class ManagedUserFactory
 {
-    /**
-     * @var AdherentRepository
-     */
     private $adherentsRepository;
-
-    /**
-     * @var NewsletterSubscriptionRepository
-     */
     private $newsletterSubscriptionsRepository;
+    private $committeesRepository;
 
     public function __construct(EntityManager $manager)
     {
         $this->adherentsRepository = $manager->getRepository(Adherent::class);
         $this->newsletterSubscriptionsRepository = $manager->getRepository(NewsletterSubscription::class);
+        $this->committeesRepository = $manager->getRepository(Committee::class);
     }
 
     /**
@@ -98,9 +94,22 @@ class ManagedUserFactory
      */
     public function createManagedHostsCollectionFor(Adherent $referent): array
     {
+        $committeesRepository = $this->committeesRepository;
+
+        $hosts = $this->adherentsRepository->findHostsManagedBy($referent);
+        $approvedHosts = array_filter($hosts, function (Adherent $adherent) use ($committeesRepository) {
+            $memberships = $adherent->getMemberships();
+            $memberships = is_array($memberships) ? $memberships : $memberships->toArray();
+            $memberships = new CommitteeMembershipCollection($memberships);
+
+            $uuids = $memberships->getCommitteeHostMemberships()->getCommitteeUuids();
+
+            return count($committeesRepository->findCommittees($uuids, CommitteeRepository::ONLY_APPROVED)) > 0;
+        });
+
         return $this->aggregate(
             [],
-            $this->adherentsRepository->findHostsManagedBy($referent)
+            $approvedHosts
         );
     }
 
