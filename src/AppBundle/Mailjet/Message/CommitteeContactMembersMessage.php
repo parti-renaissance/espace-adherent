@@ -24,7 +24,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
-                'target_message' => nl2br(self::escape($content)),
+                'animator_message' => nl2br(self::escape($content)),
             ],
             [
                 'target_firstname' => self::escape($host->getFirstName()),
