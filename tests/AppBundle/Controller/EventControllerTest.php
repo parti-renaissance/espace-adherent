@@ -111,6 +111,103 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testAnonymousUserCannotEditEvent()
+    {
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testRegisteredAdherentUserCannotEditEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testOrganizerCanEditEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'committee_event' => [
+                'name' => "Débat sur l'écologie",
+                'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
+                'category' => 'CE003',
+                'address' => [
+                    'address' => '6 rue Neyret',
+                    'country' => 'FR',
+                    'postalCode' => '69001',
+                    'city' => '69001-69381',
+                    'cityName' => '',
+                ],
+                'beginAt' => [
+                    'date' => [
+                        'year' => '2022',
+                        'month' => '3',
+                        'day' => '2',
+                    ],
+                    'time' => [
+                        'hour' => '9',
+                        'minute' => '30',
+                    ],
+                ],
+                'finishAt' => [
+                    'date' => [
+                        'year' => '2022',
+                        'month' => '3',
+                        'day' => '2',
+                    ],
+                    'time' => [
+                        'hour' => '19',
+                        'minute' => '0',
+                    ],
+                ],
+                'capacity' => '1500',
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        // Follow the redirect and check the adherent can see the committee page
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
+        $this->assertSame('Débat sur l\'écologie | En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Débat sur l\'écologie', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
+        $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testCommitteeHostCanEditEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
     {
         $flash = $crawler->filter('#notice-flashes');

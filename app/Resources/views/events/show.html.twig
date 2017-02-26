@@ -115,6 +115,13 @@
                         Contact
                     </a>
                 </li>
+                {% if app.user and (event.organizer and event.organizer.id == app.user.id) or (event.committee and is_host(event.committee)) %}
+                    <li>
+                        <a href="{{ path('app_event_edit', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                            Modifier l'événement
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
 
             <div class="committee-event-description b__nudge--bottom-huge">

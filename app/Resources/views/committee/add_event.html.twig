@@ -95,7 +95,7 @@
             <div class="form__row" id="committee-event-capacity-field">
                 {{ form_errors(form.capacity) }}
                 {{ form_label(form.capacity, 'Capacité') }}
-                {{ form_widget(form.capacity, { attr: { class: 'form--full committee_event__form__capacity', 'placeholder': 'Quel est le nombre maximum de participants à cet événement.' } }) }}
+                {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
             </div>
 
             <div class="form__row text--center b__nudge--top">

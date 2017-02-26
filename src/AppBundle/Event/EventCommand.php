@@ -68,7 +68,7 @@ class EventCommand
     private $event;
 
     public function __construct(
-        Adherent $author,
+        Adherent $author = null,
         Committee $committee = null,
         UuidInterface $uuid = null,
         Address $address = null,
@@ -81,6 +81,25 @@ class EventCommand
         $this->address = $address ?: new Address();
         $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
         $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
+    }
+
+    public static function createFromEvent(Event $event)
+    {
+        $command = new self(
+            $event->getOrganizer(),
+            $event->getCommittee(),
+            $event->getUuid(),
+            Address::createFromAddress($event->getPostAddressModel()),
+            $event->getBeginAt(),
+            $event->getFinishAt()
+        );
+
+        $command->name = $event->getName();
+        $command->category = $event->getCategory();
+        $command->description = $event->getDescription();
+        $command->capacity = $event->getCapacity();
+
+        return $command;
     }
 
     public function getName(): ?string

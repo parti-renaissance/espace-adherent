@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Entity\Event;
 use AppBundle\Events;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -36,6 +37,22 @@ class EventCommandHandler
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventCreatedEvent(
+            $command->getAuthor(),
+            $event,
+            $command->getCommittee()
+        ));
+
+        return $event;
+    }
+
+    public function handleUpdate(Event $event, EventCommand $command)
+    {
+        $this->factory->updateFromEventCommand($event, $command);
+
+        $this->manager->persist($event);
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventUpdatedEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Geocoder\Subscriber;
 
+use AppBundle\Event\EventUpdatedEvent;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Donation\DonationEvents;
@@ -56,6 +57,11 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($event->getEvent());
     }
 
+    public function onEventUpdated(EventUpdatedEvent $event)
+    {
+        $this->updateGeocodableEntity($event->getEvent());
+    }
+
     private function updateGeocodableEntity(GeoPointInterface $geocodable)
     {
         if ($coordinates = $this->geocode($geocodable->getGeocodableAddress())) {
@@ -82,6 +88,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
             Events::COMMITTEE_CREATED => ['onCommitteeCreated', -256],
             Events::EVENT_CREATED => ['onEventCreated', -256],
+            Events::EVENT_UPDATED => ['onEventUpdated', -256],
         ];
     }
 }

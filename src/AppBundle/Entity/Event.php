@@ -124,6 +124,27 @@ class Event implements GeoPointInterface
         return (string) $this->name;
     }
 
+    public function update(
+        string $name,
+        string $category,
+        string $description,
+        PostAddress $address,
+        string $beginAt,
+        string $finishAt,
+        int $capacity = null
+    ) {
+        $this->setName($name);
+        $this->category = $category;
+        $this->capacity = $capacity;
+        $this->beginAt = new \DateTime($beginAt);
+        $this->finishAt = new \DateTime($finishAt);
+        $this->description = EmojisRemover::remove($description);
+
+        if (!$this->postAddress->equals($address)) {
+            $this->postAddress = $address;
+        }
+    }
+
     private static function canonicalize(string $name)
     {
         return mb_strtolower($name);
