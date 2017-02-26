@@ -28,18 +28,20 @@
             {% endfor %}
         </ul>
     </div>
-    {% if committee.latitude and committee.longitude %}
     <div class="committee__card">
         <h5 class="icon--with-text svg--black">
             {{ include('components/location-pin.html.twig') }}
             Localisation
         </h5>
 
+        {% if committee.latitude and committee.longitude %}
         <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}"
              title="Carte d'accès au comité {{ committee.name }}"
              alt="{{ committee.inlineFormattedAddress }}" />
+        {% endif %}
+
+        {{ committee.inlineFormattedAddress }}
     </div>
-    {% endif %}
 
     {% if committee.socialNetworksLinks|length > 0 %}
     <div class="committee__card">
