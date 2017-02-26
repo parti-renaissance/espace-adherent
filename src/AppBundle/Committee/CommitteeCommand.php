@@ -24,7 +24,7 @@ class CommitteeCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=140)
+     * @Assert\Length(min=5, max=140, minMessage="committee.description.min_length", maxMessage="committee.description.max_length")
      */
     public $description;
 
