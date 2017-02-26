@@ -64,7 +64,11 @@
 
         <div class="l__col l__col--top register__form--third" id="field-birthdate">
             {{ form_label(form.birthdate, 'Date de naissance', { 'label_attr': {'class': 'text--gray'} }) }}
-            {{ form_widget(form.birthdate, { attr: { class: 'form--full', placeholder: 'Date de naissance JJ/MM/AAAA' } }) }}
+           <div class="l__row">
+               {% for field in form.birthdate|reverse %}
+                   {{ form_widget(field, {'attr': {'style': 'width: 80px;'}}) }}
+               {% endfor %}
+           </div>
             {{ form_errors(form.birthdate) }}
         </div>
     </div>

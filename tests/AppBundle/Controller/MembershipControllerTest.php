@@ -70,23 +70,6 @@ class MembershipControllerTest extends MysqlWebTestCase
     /**
      * @group functionnal
      */
-    public function testCannotCreateMembershipAccountIfAdherentIsUnder15YearsOld()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['membership_request']['birthdate'] = date('Y-m-d');
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame("Vous devez être âgé d'au moins 15 ans pour adhérer.", $crawler->filter('#field-birthdate > .form__errors > li')->text());
-    }
-
-    /**
-     * @group functionnal
-     */
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
@@ -441,7 +424,11 @@ class MembershipControllerTest extends MysqlWebTestCase
                     'number' => '0140998080',
                 ],
                 'position' => 'retired',
-                'birthdate' => '1950-01-20',
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
                 'conditions' => true,
             ],
         ];
