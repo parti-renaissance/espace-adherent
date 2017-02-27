@@ -4,6 +4,7 @@ import TaxReturnProvider from './services/donation/TaxReturnProvider';
 import ReqwestApiClient from './services/api/ReqwestApiClient';
 import AddressFormFactory from './services/address/AddressFormFactory';
 import Slugifier from './services/slugifier/Slugifier';
+import MapFactory from './services/map/MapFactory';
 
 /**
  * @param {Container} di
@@ -63,6 +64,13 @@ export default (di) => {
      */
     di.set('address.form_factory', () => {
         return new AddressFormFactory(di.get('api'));
+    });
+
+    /*
+     * Map factory
+     */
+    di.set('map_factory', () => {
+        return new MapFactory();
     });
 
 };
