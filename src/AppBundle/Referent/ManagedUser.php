@@ -200,7 +200,14 @@ class ManagedUser
             return $this->firstName;
         }
 
-        return $this->firstName.' '.$this->lastName[0];
+        return $this->firstName.' '.$this->getLastNameInitial();
+    }
+
+    public function getLastNameInitial()
+    {
+        $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
+
+        return strtoupper($normalized[0]).'.';
     }
 
     public function getBirthdate(): ?\DateTime
