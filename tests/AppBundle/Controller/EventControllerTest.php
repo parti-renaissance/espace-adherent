@@ -116,7 +116,7 @@ class EventControllerTest extends SqliteWebTestCase
      */
     public function testAnonymousUserCannotEditEvent()
     {
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
@@ -128,7 +128,7 @@ class EventControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -140,7 +140,7 @@ class EventControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -203,7 +203,7 @@ class EventControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/2017-02-27-reunion-de-reflexion-parisienne/modifier');
+        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
