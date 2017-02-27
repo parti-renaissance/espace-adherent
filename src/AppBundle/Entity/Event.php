@@ -15,7 +15,6 @@ use Ramsey\Uuid\UuidInterface;
  *   name="events",
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="event_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="event_canonical_name_unique", columns="canonical_name"),
  *     @ORM\UniqueConstraint(name="event_slug_unique", columns="slug")
  *   }
  * )
