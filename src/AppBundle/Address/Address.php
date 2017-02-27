@@ -55,7 +55,7 @@ class Address implements AddressInterface, GeocodableInterface
         return $this->address;
     }
 
-    public function setAddress($address)
+    public function setAddress(?string $address)
     {
         $this->address = $address;
     }
@@ -65,7 +65,7 @@ class Address implements AddressInterface, GeocodableInterface
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode)
+    public function setPostalCode(?string $postalCode)
     {
         $this->postalCode = $postalCode;
     }
@@ -75,7 +75,7 @@ class Address implements AddressInterface, GeocodableInterface
         return $this->city;
     }
 
-    public function setCity($city)
+    public function setCity(?string $city)
     {
         $parts = explode('-', $city);
         if (2 !== count($parts)) {
@@ -102,7 +102,7 @@ class Address implements AddressInterface, GeocodableInterface
         return $this->cityName;
     }
 
-    public function setCityName($cityName)
+    public function setCityName(?string $cityName)
     {
         $this->cityName = $cityName;
     }
