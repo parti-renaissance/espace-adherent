@@ -113,14 +113,14 @@
             <div class="form__row">
                 {{ form_label(form.convinced, 'Personnes convaincues') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite etre tenu informe de la campagne."</div>
-                {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une addresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.convinced) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(form.almostConvinced, 'Personnes encore indécises mais intéréssées') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter, je souhaite en savoir plus sur Emmanuel Macron."</div>
-                {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une addresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.almostConvinced) }}
             </div>
 
