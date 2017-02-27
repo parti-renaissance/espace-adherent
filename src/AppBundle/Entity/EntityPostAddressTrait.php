@@ -24,17 +24,17 @@ trait EntityPostAddressTrait
         return $this->postAddress->getInlineFormattedAddress($locale);
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->postAddress->getAddress();
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();
     }
