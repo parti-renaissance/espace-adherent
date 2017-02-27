@@ -67,7 +67,7 @@ class EventRegistration
         $this->postalCode = $postalCode;
         $this->newsletterSubscriber = $newsletterSubscriber;
         $this->adherentUuid = $adherentUuid;
-        $this->createdAt = new \DateTimeImmutable($createdAt);
+        $this->createdAt = new \DateTime($createdAt);
     }
 
     public function getEvent(): Event

@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -165,6 +166,38 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('postalCode', 'doctrine_orm_callback', [
+                'label' => 'Code postal',
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    /* @var QueryBuilder $qb */
+
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
+                    $qb->setParameter('postalCode', $value['value'].'%');
+
+                    return true;
+                },
+            ])
+            ->add('referent', 'doctrine_orm_callback', [
+                'show_filter' => true,
+                'label' => 'N\'afficher que les référents',
+                'field_type' => 'checkbox',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    /* @var QueryBuilder $qb */
+
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->andWhere(sprintf('%s.managedArea.codes', $alias).' IS NOT NULL');
+
+                    return true;
+                },
             ]);
     }
 
@@ -180,17 +213,17 @@ class AdherentAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('hasSubscribedMainEmails', 'boolean', [
-                'label' => 'Mails nationaux ?',
+            ->add('postAddress.postalCode', null, [
+                'label' => 'Code postal',
             ])
-            ->add('hasSubscribedReferentsEmails', 'boolean', [
-                'label' => 'Mails de référents ?',
-            ])
-            ->add('hasSubscribedLocalHostEmails', 'boolean', [
-                'label' => 'Mails de comités ?',
+            ->add('cityName', null, [
+                'label' => 'Ville',
             ])
             ->add('isEnabled', 'boolean', [
                 'label' => 'Activé ?',
+            ])
+            ->add('isHost', 'boolean', [
+                'label' => 'Animateur ?',
             ])
             ->add('isReferent', 'boolean', [
                 'label' => 'Référent ?',

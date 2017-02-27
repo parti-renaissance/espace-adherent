@@ -172,7 +172,7 @@ class Committee implements GeoPointInterface
             $description,
             $address
         );
-        $committee->createdAt = new \DateTimeImmutable($createdAt);
+        $committee->createdAt = new \DateTime($createdAt);
 
         return $committee;
     }
@@ -186,7 +186,7 @@ class Committee implements GeoPointInterface
             $description,
             $address
         );
-        $committee->createdAt = new \DateTimeImmutable($createdAt);
+        $committee->createdAt = new \DateTime($createdAt);
 
         return $committee;
     }
@@ -273,7 +273,7 @@ class Committee implements GeoPointInterface
         }
 
         $this->status = self::APPROVED;
-        $this->approvedAt = new \DateTimeImmutable($timestamp);
+        $this->approvedAt = new \DateTime($timestamp);
     }
 
     /**
@@ -288,7 +288,7 @@ class Committee implements GeoPointInterface
         }
 
         $this->status = self::REFUSED;
-        $this->refusedAt = new \DateTimeImmutable($timestamp);
+        $this->refusedAt = new \DateTime($timestamp);
     }
 
     public function setSocialNetworks(
@@ -327,6 +327,11 @@ class Committee implements GeoPointInterface
         return mb_strtolower($name);
     }
 
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy->toString();
+    }
+
     public function isCreatedBy(UuidInterface $uuid): bool
     {
         return $this->createdBy->equals($uuid);
@@ -335,17 +340,10 @@ class Committee implements GeoPointInterface
     /**
      * Returns the approval date and time.
      *
-     * @return \DateTimeImmutable|null
+     * @return \DateTime|null
      */
-    public function getApprovedAt(): ?\DateTimeImmutable
+    public function getApprovedAt(): ?\DateTime
     {
-        if ($this->approvedAt instanceof \DateTime) {
-            $this->approvedAt = new \DateTimeImmutable(
-                $this->approvedAt->format(DATE_ISO8601),
-                $this->approvedAt->getTimezone()
-            );
-        }
-
         return $this->approvedAt;
     }
 

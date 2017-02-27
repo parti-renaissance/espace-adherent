@@ -35,7 +35,7 @@ interface AdherentExpirableTokenInterface
     /**
      * Returns the date the token was used is any.
      *
-     * @return \DateTime|\DateTimeImmutable|null
+     * @return \DateTime|\DateTime|null
      */
     public function getUsageDate();
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Committee;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -144,8 +145,21 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('postalCode', null, [
+            ->add('postalCode', 'doctrine_orm_callback', [
                 'label' => 'Code postal',
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    /* @var QueryBuilder $qb */
+
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
+                    $qb->setParameter('postalCode', $value['value'].'%');
+
+                    return true;
+                },
             ])
             ->add('status', null, [
                 'label' => 'Statut',
@@ -167,7 +181,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('postalCode', null, [
+            ->add('postAddress.postalCode', null, [
                 'label' => 'Code postal',
             ])
             ->add('cityName', null, [

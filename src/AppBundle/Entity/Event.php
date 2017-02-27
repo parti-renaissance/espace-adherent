@@ -199,15 +199,8 @@ class Event implements GeoPointInterface
         return $this->organizer;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
-        if (!$this->createdAt instanceof \DateTimeImmutable) {
-            $this->createdAt = new \DateTimeImmutable(
-                $this->createdAt->format('Y-m-d H:i:s'),
-                $this->createdAt->getTimezone()
-            );
-        }
-
         return $this->createdAt;
     }
 

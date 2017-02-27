@@ -29,7 +29,7 @@ class AdherentLoginTimestampRecorderTest extends \PHPUnit_Framework_TestCase
 
         $recorder->onSecurityInteractiveLogin(new InteractiveLoginEvent($request, $token));
 
-        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
+        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
     }
 
     private function createAdherent()

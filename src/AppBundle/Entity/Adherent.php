@@ -156,7 +156,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->status = $status;
-        $this->registeredAt = new \DateTimeImmutable($registeredAt);
+        $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
     }
 
@@ -249,17 +249,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * Returns the activation date.
      *
-     * @return \DateTimeImmutable|null
+     * @return \DateTime|null
      */
     public function getActivatedAt()
     {
-        if ($this->activatedAt instanceof \DateTime) {
-            $this->activatedAt = new \DateTimeImmutable(
-                $this->activatedAt->format('Y-m-d H:i:s'),
-                $this->activatedAt->getTimezone()
-            );
-        }
-
         return $this->activatedAt;
     }
 
@@ -336,7 +329,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $token->consume($this);
 
         $this->status = self::ENABLED;
-        $this->activatedAt = new \DateTimeImmutable($timestamp);
+        $this->activatedAt = new \DateTime($timestamp);
     }
 
     public function resetPassword(AdherentResetPasswordToken $token)
@@ -367,23 +360,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     public function recordLastLoginTime($timestamp = 'now')
     {
-        $this->lastLoggedAt = new \DateTimeImmutable($timestamp);
+        $this->lastLoggedAt = new \DateTime($timestamp);
     }
 
     /**
      * Returns the last login date and time of this adherent.
      *
-     * @return \DateTimeImmutable|null
+     * @return \DateTime|null
      */
     public function getLastLoggedAt()
     {
-        if ($this->lastLoggedAt instanceof \DateTime) {
-            $this->lastLoggedAt = new \DateTimeImmutable(
-                $this->lastLoggedAt->format('Y-m-d H:i:s'),
-                $this->lastLoggedAt->getTimezone()
-            );
-        }
-
         return $this->lastLoggedAt;
     }
 

@@ -85,7 +85,7 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isWaitingForApproval());
-        $this->assertEquals(new \DateTimeImmutable($timestamp), $committee->getApprovedAt());
+        $this->assertEquals(new \DateTime($timestamp), $committee->getApprovedAt());
     }
 
     public function testApproveCommitteeTwice()

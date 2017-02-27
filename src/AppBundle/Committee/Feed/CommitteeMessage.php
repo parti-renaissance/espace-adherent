@@ -29,10 +29,10 @@ class CommitteeMessage
         $this->author = $author;
         $this->committee = $committee;
         $this->content = $content;
-        $this->createdAt = new \DateTimeImmutable($createdAt);
+        $this->createdAt = new \DateTime($createdAt);
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
