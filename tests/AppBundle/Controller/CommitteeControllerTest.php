@@ -356,6 +356,8 @@ class CommitteeControllerTest extends SqliteWebTestCase
             ['Jacques Picard', 'Lancement du comité !'],
         ]);
 
+        $this->logout($this->client);
+
         // Member
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
 
@@ -382,6 +384,8 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->logout($this->client);
 
         // Creator
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');

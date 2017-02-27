@@ -28,6 +28,10 @@ class AdherentSecurityController extends Controller
      */
     public function loginAction(): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_search_events');
+        }
+
         $securityUtils = $this->get('security.authentication_utils');
 
         $form = $this->get('form.factory')->createNamed('', LoginType::class, [
@@ -62,6 +66,10 @@ class AdherentSecurityController extends Controller
      */
     public function retrieveForgotPasswordAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_search_events');
+        }
+
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, ['constraints' => new NotBlank()])
             ->add('submit', SubmitType::class)
@@ -98,6 +106,10 @@ class AdherentSecurityController extends Controller
      */
     public function resetPasswordAction(Request $request, Adherent $adherent, AdherentResetPasswordToken $resetPasswordToken)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_search_events');
+        }
+
         if ($resetPasswordToken->getUsageDate()) {
             throw $this->createNotFoundException('No available reset password token.');
         }

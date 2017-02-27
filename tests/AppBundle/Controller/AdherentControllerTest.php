@@ -273,8 +273,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/changer-mot-de-passe', $this->client);
-
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'heaneaheah');
     }
 
     /**

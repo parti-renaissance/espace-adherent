@@ -133,14 +133,17 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/dir4');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/dir4');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
@@ -175,18 +178,22 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/document-host-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/document-referent-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->logout($this->client);
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->logout($this->client);
     }
 
     protected function setUp()

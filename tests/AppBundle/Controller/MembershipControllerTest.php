@@ -137,6 +137,11 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
+        $session = $this->client->getRequest()->getSession();
+
+        $this->assertInstanceOf(DonationRequest::class, $session->get(MembershipUtils::REGISTERING_DONATION));
+        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
+
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
@@ -153,6 +158,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('Événements', $crawler->filter('.search-title')->text());
 
         // Activate user account twice
+        $this->logout($this->client);
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client);
@@ -174,11 +180,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('http://localhost/evenements', $this->client);
 
         $this->client->followRedirect();
-
-        $session = $this->client->getRequest()->getSession();
-
-        $this->assertInstanceOf(DonationRequest::class, $session->get(MembershipUtils::REGISTERING_DONATION));
-        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
     }
 
     /**
