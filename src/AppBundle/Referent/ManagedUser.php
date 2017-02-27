@@ -156,7 +156,7 @@ class ManagedUser
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -166,7 +166,7 @@ class ManagedUser
         return $this->emailVisible;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
