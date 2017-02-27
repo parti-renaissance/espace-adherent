@@ -75,7 +75,7 @@ class ManagedUser
         $original,
         int $id,
         string $email,
-        string $postalCode,
+        string $postalCode = null,
         bool $emailVisible = false,
         string $firstName = null,
         string $lastName = null,
