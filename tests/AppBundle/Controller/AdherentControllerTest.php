@@ -185,7 +185,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $checkBoxPattern = '#app_adherent_pin_interests '.
                            'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
-        $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
+        $this->assertCount(17, $checkboxes = $crawler->filter($checkBoxPattern));
 
         $interests = $this->client->getContainer()->getParameter('adherent_interests');
         $interestsValues = array_keys($interests);
@@ -219,7 +219,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertCount(16, $checkboxes = $crawler->filter($checkBoxPattern));
+        $this->assertCount(17, $checkboxes = $crawler->filter($checkBoxPattern));
 
         foreach ($checkboxes as $i => $checkbox) {
             if (isset($chosenInterests[$i])) {
