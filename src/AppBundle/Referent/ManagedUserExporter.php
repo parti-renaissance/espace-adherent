@@ -4,6 +4,8 @@ namespace AppBundle\Referent;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\CommitteeRepository;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 class ManagedUserExporter
 {
@@ -21,11 +23,13 @@ class ManagedUserExporter
      */
     public function exportAsJson(array $managedUsers): string
     {
+        $phoneUtil = PhoneNumberUtil::getInstance();
         $registry = $this->createCommitteesRegistry();
         $data = [];
 
         foreach ($managedUsers as $user) {
             $isHost = $user->isAdherent() && $user->getOriginal()->isHost();
+            $phone = $user->isAdherent() ? $user->getOriginal()->getPhone() : null;
 
             $data[] = [
                 'type' => $user->getType(),
@@ -35,7 +39,7 @@ class ManagedUserExporter
                     'label' => $isHost ? $user->getEmail() : '',
                     'url' => 'mailto:'.($isHost ? $user->getEmail() : ''),
                 ],
-                'phone' => $isHost ? (string) $user->getOriginal()->getPhone() : '',
+                'phone' => $isHost && $phone ? $phoneUtil->format($phone, PhoneNumberFormat::INTERNATIONAL) : '',
                 'name' => $user->getPartialName() ?: '',
                 'age' => $user->getAge() ?: '',
                 'city' => $user->getCity() ?: '',
