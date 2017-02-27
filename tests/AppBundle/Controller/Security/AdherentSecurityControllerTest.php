@@ -42,7 +42,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
+        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

@@ -48,7 +48,7 @@ class CommitteeFeedItem
     private $content;
 
     /**
-     * @var \DateTimeImmutable|\DateTime|null
+     * @var \DateTime|\DateTime|null
      *
      * @ORM\Column(type="datetime")
      */
@@ -65,7 +65,7 @@ class CommitteeFeedItem
         $this->committee = $committee;
         $this->author = $author;
         $this->itemType = $type;
-        $this->createdAt = new \DateTimeImmutable($createdAt);
+        $this->createdAt = new \DateTime($createdAt);
     }
 
     public static function createMessage(

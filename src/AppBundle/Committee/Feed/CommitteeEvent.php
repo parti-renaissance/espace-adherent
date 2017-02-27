@@ -17,7 +17,7 @@ class CommitteeEvent
         $this->event = $event;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
         return $this->event->getCreatedAt();
     }

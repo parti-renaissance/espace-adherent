@@ -80,8 +80,8 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $adherent->activate($activationToken);
 
         $this->assertTrue($adherent->isEnabled());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getActivatedAt());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $activationToken->getUsageDate());
+        $this->assertInstanceOf(\DateTime::class, $adherent->getActivatedAt());
+        $this->assertInstanceOf(\DateTime::class, $activationToken->getUsageDate());
     }
 
     public function testActivateAdherentAccountTwice()
@@ -104,8 +104,8 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($adherent->getLastLoggedAt());
 
         $adherent->recordLastLoginTime('2016-01-01 13:30:00');
-        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
-        $this->assertEquals(new \DateTimeImmutable('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
+        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
+        $this->assertEquals(new \DateTime('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
     private function createAdherent($email = 'john.smith@example.org'): Adherent

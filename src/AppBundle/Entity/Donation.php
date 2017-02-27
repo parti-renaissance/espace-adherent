@@ -92,7 +92,7 @@ class Donation implements GeoPointInterface
         $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->finished = false;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
     }
 
     public function __toString()
@@ -121,7 +121,7 @@ class Donation implements GeoPointInterface
         }
 
         if ($this->payboxResultCode === '00000') {
-            $this->donatedAt = new \DateTimeImmutable();
+            $this->donatedAt = new \DateTime();
         }
     }
 

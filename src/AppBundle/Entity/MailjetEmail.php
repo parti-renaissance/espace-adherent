@@ -97,7 +97,7 @@ class MailjetEmail
     /**
      * The date and time when the email was sent.
      *
-     * @var \DateTimeImmutable
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
@@ -124,7 +124,7 @@ class MailjetEmail
         $this->setPayloads($requestPayload, $responsePayload);
         $this->messageClass = $messageClass;
         $this->delivered = $delivered;
-        $this->sentAt = new \DateTimeImmutable($sentAt);
+        $this->sentAt = new \DateTime($sentAt);
     }
 
     public static function createFromMessage(MailjetMessage $message, string $recipientEmailAddress, $requestPayload): self

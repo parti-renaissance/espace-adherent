@@ -67,7 +67,7 @@ abstract class AbstractAdherentTokenTest extends \PHPUnit_Framework_TestCase
 
         $token->consume($adherent);
 
-        $this->assertInstanceOf(\DateTimeImmutable::class, $token->getUsageDate());
+        $this->assertInstanceOf(\DateTime::class, $token->getUsageDate());
     }
 
     private function generateToken($adherent, string $lifetime = '+1 day')
