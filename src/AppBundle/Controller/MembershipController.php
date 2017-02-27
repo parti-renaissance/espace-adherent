@@ -61,6 +61,10 @@ class MembershipController extends Controller
      */
     public function donateAction(Request $request): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('donation_index');
+        }
+
         if (!$donationRequest = $this->get('app.membership_utils')->getRegisteringDonation()) {
             throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
         }
@@ -104,6 +108,10 @@ class MembershipController extends Controller
      */
     public function pinInterestsAction(Request $request): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_adherent_pin_interests');
+        }
+
         $membershipUtils = $this->get('app.membership_utils');
 
         if (!$id = $membershipUtils->getNewAdherentId()) {
@@ -142,6 +150,10 @@ class MembershipController extends Controller
      */
     public function chooseNearbyCommitteeAction(Request $request): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_search_committees');
+        }
+
         $membershipUtils = $this->get('app.membership_utils');
 
         if (!$id = $membershipUtils->getNewAdherentId()) {
@@ -176,6 +188,10 @@ class MembershipController extends Controller
      */
     public function completeAction(): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_search_events');
+        }
+
         $membershipUtils = $this->get('app.membership_utils');
 
         if (!$id = $membershipUtils->getNewAdherentId()) {
@@ -209,6 +225,10 @@ class MembershipController extends Controller
      */
     public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
     {
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_search_events');
+        }
+
         try {
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
