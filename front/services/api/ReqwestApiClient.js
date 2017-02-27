@@ -39,6 +39,13 @@ export default class ReqwestApiClient {
         });
     }
 
+    getCommittees(callback) {
+        this._createRequest(callback, {
+            url: '/api/committees',
+            type: 'json'
+        });
+    }
+
     toggleCommitteeMembership(committeeUuid, committeeSlug, action, token, callback) {
         let request = this._reqwest({
             url: '/comites/'+committeeUuid+'/'+committeeSlug+'/'+action,

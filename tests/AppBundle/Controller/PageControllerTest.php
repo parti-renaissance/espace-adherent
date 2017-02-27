@@ -27,7 +27,7 @@ class PageControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $crawler->filter('html:contains("Comités à proximité")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("La carte En Marche !")')->count());
     }
 
     public function providePages()
@@ -45,6 +45,7 @@ class PageControllerTest extends SqliteWebTestCase
             ['/le-mouvement/les-comites'],
             ['/le-mouvement/les-evenements'],
             ['/le-mouvement/devenez-benevole'],
+            ['/le-mouvement/la-carte'],
             ['/mentions-legales'],
         ];
     }

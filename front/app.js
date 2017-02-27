@@ -65,13 +65,13 @@ class App {
 
     runOrganisation() {
         System.import('pages/organisation').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
+            module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
-    runCommittees() {
+    runCommitteesMap() {
         System.import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
+            module.default(this.get('map_factory'), this.get('api'));
         });
     }
 

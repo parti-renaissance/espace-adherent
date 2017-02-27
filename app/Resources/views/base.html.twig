@@ -156,7 +156,7 @@
                                 <ul class="nav__user__menu__account">
                                     <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
                                     <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
-                                    {#<li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte En Marche !</a></li>#}
+                                    <li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte En Marche !</a></li>
                                     <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
                                     <li class="nav__user__menu__separator"></li>
                                     {% if is_granted('CREATE_COMMITTEE') %}
@@ -230,7 +230,7 @@
                             {% if user_is_adherent %}
                                 <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
                                 <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
-                                {#<li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte En Marche !</a></li>#}
+                                <li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte En Marche !</a></li>
                                 <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
                                 <li class="nav__user__menu__separator"></li>
                                 {% if is_granted('CREATE_COMMITTEE') %}
