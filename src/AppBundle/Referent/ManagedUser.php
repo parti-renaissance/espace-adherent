@@ -166,7 +166,7 @@ class ManagedUser
         return $this->emailVisible;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
