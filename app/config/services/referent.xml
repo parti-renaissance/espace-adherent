@@ -24,8 +24,10 @@
             <argument type="service" id="app.referent.managed_users.factory" />
         </service>
 
+        <service id="app.referent.message_handler.producer" alias="old_sound_rabbit_mq.mailjet_referent_producer" public="false" />
+
         <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
-            <argument type="service" id="app.mailjet.client.campaign" />
+            <argument type="service" id="app.referent.message_handler.producer" />
         </service>
 
     </services>

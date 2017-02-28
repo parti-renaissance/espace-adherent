@@ -6,13 +6,13 @@ use Ramsey\Uuid\UuidInterface;
 
 abstract class MailjetMessage
 {
-    private $uuid;
-    private $batch;
-    private $vars;
-    private $subject;
-    private $template;
-    private $recipients;
-    private $replyTo;
+    protected $uuid;
+    protected $batch;
+    protected $vars;
+    protected $subject;
+    protected $template;
+    protected $recipients;
+    protected $replyTo;
 
     /**
      * MailjetMessage constructor.

@@ -20,6 +20,7 @@ imports:
     - { resource: services/media.xml }
     - { resource: services/membership.xml }
     - { resource: services/newsletter.xml }
+    - { resource: services/rabbitmq.xml }
     - { resource: services/recaptcha.xml }
     - { resource: services/referent.xml }
     - { resource: services/search.xml }
@@ -196,3 +197,25 @@ snc_redis:
             dsn: "redis://%env(REDIS_HOST)%"
     session:
         client: default
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host: "%env(RABBITMQ_HOST)%"
+            vhost: '/'
+            lazy: false
+            connection_timeout: 3
+            read_write_timeout: 3
+
+    producers:
+        mailjet_referent:
+            connection:       default
+            exchange_options: { name: 'mailjet-referent', type: direct }
+            class:            AppBundle\Producer\Mailjet\ReferentMessageMailjetProducer
+
+    consumers:
+        mailjet_referent:
+            connection:        default
+            exchange_options:  { name: 'mailjet-referent', type: direct }
+            queue_options:     { name: 'mailjet-referent', durable: false }
+            callback:          app.consumer.mailjet.referent

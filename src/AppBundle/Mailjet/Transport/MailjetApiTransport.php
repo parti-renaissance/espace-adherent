@@ -5,7 +5,6 @@ namespace AppBundle\Mailjet\Transport;
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\MailjetTemplateEmail;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Request;
 
 class MailjetApiTransport implements MailjetMessageTransportInterface
 {

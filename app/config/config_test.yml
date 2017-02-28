@@ -13,6 +13,11 @@ services:
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
+    app.referent.message_handler.producer:
+        class: 'AppBundle\Producer\Mailjet\ReferentMessageNullProducer'
+        public: false
+
+
 parameters:
     env(PAYBOX_SITE): "1999888"
     env(PAYBOX_RANK): "32"
