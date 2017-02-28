@@ -1,13 +1,15 @@
-{% if object.waitingForApproval %}
-    <a href="{{ path('app_admin_committee_approve', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
-       title="Approuver" rel="noopener noreferrer">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Approuver
-    </a>
+{% if not object.isApproved %}
+<a href="{{ path('app_admin_committee_approve', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
+   title="Approuver" rel="noopener noreferrer">
+    <i class="fa fa-check" aria-hidden="true"></i>
+    Approuver
+</a>
+{% endif %}
 
-    <a href="{{ path('app_admin_committee_refuse', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
-       title="Refuser" rel="noopener noreferrer">
-        <i class="fa fa-ban" aria-hidden="true"></i>
-        Refuser
-    </a>
+{% if not object.isRefused %}
+<a href="{{ path('app_admin_committee_refuse', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
+   title="Refuser" rel="noopener noreferrer">
+    <i class="fa fa-ban" aria-hidden="true"></i>
+    Refuser
+</a>
 {% endif %}

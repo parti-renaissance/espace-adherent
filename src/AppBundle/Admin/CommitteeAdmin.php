@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -82,14 +81,6 @@ class CommitteeAdmin extends AbstractAdmin
             ->with('Comité', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
-                ])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Statut',
-                    'choices' => [
-                        'Approuvé' => Committee::APPROVED,
-                        'En attente d\'approbation' => Committee::PENDING,
-                        'Refusé' => Committee::REFUSED,
-                    ],
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
