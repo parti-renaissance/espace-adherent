@@ -90,6 +90,11 @@ class EventRegistration
         return $this->postalCode;
     }
 
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
     public function isNewsletterSubscriber(): bool
     {
         return $this->newsletterSubscriber;

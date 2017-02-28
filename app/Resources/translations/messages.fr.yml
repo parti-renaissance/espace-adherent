@@ -54,6 +54,8 @@ event.capacity: '1 inscrit|%count% inscrits'
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
 committee.event.update.success: L'événement a bien été modifié.
 
+committee.event.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
+committee.event.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
 committee.event.registration.success: Votre inscription à l'événement est confirmée.
 
 committee.contact_members.none: Vous n'avez sélectionné aucun adhérent à contacter.

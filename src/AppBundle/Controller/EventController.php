@@ -2,15 +2,19 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventCommand;
+use AppBundle\Event\EventContactMembersCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Entity\Event;
+use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\EventRegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,47 +32,6 @@ class EventController extends Controller
         return $this->render('events/show.html.twig', [
             'event' => $event,
             'committee' => $event->getCommittee(),
-        ]);
-    }
-
-    /**
-     * @Route("/modifier", name="app_event_edit")
-     * @Method("GET|POST")
-     */
-    public function editAction(Request $request, Event $event): Response
-    {
-        $user = $this->getUser();
-        $organizer = $event->getOrganizer();
-        $committee = $event->getCommittee();
-
-        $authorized = $organizer && $user && $user->getId() === $organizer->getId();
-        if (!$authorized) {
-            $authorized = $committee && $this->isGranted(CommitteePermissions::HOST, $committee);
-        }
-
-        if (!$authorized) {
-            throw $this->createAccessDeniedException();
-        }
-
-        $command = EventCommand::createFromEvent($event);
-
-        $form = $this->createForm(EventCommandType::class, $command);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.handler')->handleUpdate($event, $command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.update.success'));
-
-            return $this->redirectToRoute('app_committee_show_event', [
-                'uuid' => (string) $event->getUuid(),
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('events/edit.html.twig', [
-            'event' => $event,
-            'committee' => $committee,
-            'form' => $form->createView(),
         ]);
     }
 
@@ -126,6 +89,142 @@ class EventController extends Controller
             'committee_event' => $event,
             'committee' => $event->getCommittee(),
             'registration' => $registration,
+        ]);
+    }
+
+    /**
+     * @Route("/modifier", name="app_event_edit")
+     * @Method("GET|POST")
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function editAction(Request $request, Event $event): Response
+    {
+        $command = EventCommand::createFromEvent($event);
+
+        $form = $this->createForm(EventCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.event.handler')->handleUpdate($event, $command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.update.success'));
+
+            return $this->redirectToRoute('app_committee_show_event', [
+                'uuid' => (string) $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        return $this->render('events/edit.html.twig', [
+            'event' => $event,
+            'committee' => $event->getCommittee(),
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/inscrits", name="app_event_registrations")
+     * @Method("GET")
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function membersAction(Event $event): Response
+    {
+        $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEvent($event);
+
+        return $this->render('events/registrations.html.twig', [
+            'event' => $event,
+            'committee' => $event->getCommittee(),
+            'registrations' => $registrations,
+        ]);
+    }
+
+    /**
+     * @Route("/inscrits/exporter", name="app_event_export_members")
+     * @Method("POST")
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function exportMembersAction(Request $request, Event $event): Response
+    {
+        if (!$this->isCsrfTokenValid('event.export_members', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
+        }
+
+        $uuids = json_decode($request->request->get('exports'));
+
+        if (!$uuids) {
+            return $this->redirectToRoute('app_event_registrations', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+        $registrations = $repository->findByUuidAndEvent($event, $uuids);
+
+        if (!$registrations) {
+            return $this->redirectToRoute('app_event_registrations', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $exported = $this->get('app.event.registration_exporter')->export($registrations);
+
+        return new Response($exported, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="inscrits-a-l-evenement.csv"',
+        ]);
+    }
+
+    /**
+     * @Route("/inscrits/contacter", name="app_event_contact_members")
+     * @Method("POST")
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function contactMembersAction(Request $request, Event $event): Response
+    {
+        if (!$this->isCsrfTokenValid('event.contact_members', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
+        }
+
+        $uuids = json_decode($request->request->get('contacts', '[]'));
+
+        if (!$uuids) {
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
+
+            return $this->redirectToRoute('app_event_registrations', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+        $registrations = $repository->findByUuidAndEvent($event, $uuids);
+
+        $command = new EventContactMembersCommand($registrations, $this->getUser());
+
+        $form = $this->createForm(ContactMembersType::class, $command, ['csrf_token_id' => 'event.contact_members'])
+            ->add('submit', SubmitType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.event.contact_members_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.success'));
+
+            return $this->redirectToRoute('app_event_registrations', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $uuids = array_map(function (EventRegistration $registration) {
+            return $registration->getUuid()->toString();
+        }, $registrations);
+
+        return $this->render('events/contact.html.twig', [
+            'event' => $event,
+            'committee' => $event->getCommittee(),
+            'contacts' => $uuids,
+            'form' => $form->createView(),
         ]);
     }
 }
