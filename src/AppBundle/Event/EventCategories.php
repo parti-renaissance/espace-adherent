@@ -5,7 +5,7 @@ namespace AppBundle\Event;
 final class EventCategories
 {
     const CHOICES = [
-        'Atelier de restitution du diagnostic' => 'CE001',
+        'Kiosque' => 'CE001',
         'Réunion d\'équipe' => 'CE002',
         'Conférence-débat' => 'CE003',
         'Porte-à-porte' => 'CE004',
