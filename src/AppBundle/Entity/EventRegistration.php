@@ -55,7 +55,7 @@ class EventRegistration
         Event $event,
         string $firstName,
         string $emailAddress,
-        string $postalCode,
+        ?string $postalCode,
         bool $newsletterSubscriber = false,
         UuidInterface $adherentUuid = null,
         string $createdAt = 'now'
@@ -85,7 +85,7 @@ class EventRegistration
         return $this->emailAddress;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
