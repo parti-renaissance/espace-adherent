@@ -2,21 +2,28 @@
 
 namespace AppBundle\Referent;
 
-use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\ReferentMessage;
+use AppBundle\Producer\Mailjet\ReferentMessageProducerInterface;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 
 class ReferentMessageHandler
 {
-    private $mailjet;
+    private $producer;
 
-    public function __construct(MailjetService $mailjet)
+    public function __construct(ReferentMessageProducerInterface $producer)
     {
-        $this->mailjet = $mailjet;
+        $this->producer = $producer;
     }
 
-    public function handle(ReferentMessageModel $referentMessage)
+    public function handle(ReferentMessageModel $model)
     {
-        $this->mailjet->sendMessage(ReferentMessage::createFromModel($referentMessage));
+        $message = ReferentMessage::createFromModel($model);
+
+        // Split in chunks to avoid overloading Mailjet API
+        $chunks = array_chunk($message->getRecipients(), 100);
+
+        foreach ($chunks as $chunk) {
+            $this->producer->scheduleMessage(ReferentMessage::createChunk($chunk, $message));
+        }
     }
 }

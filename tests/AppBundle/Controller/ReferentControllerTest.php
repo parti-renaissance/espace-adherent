@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
-use AppBundle\Mailjet\Message\ReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
@@ -106,9 +105,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertClientIsRedirectedTo('/espace-referent/utilisateurs', $this->client);
-
-        // 6 emails should have been sent: one for the referent and one for each subscriber
-        $this->assertCount(6, $this->getMailjetEmailRepository()->findMessages(ReferentMessage::class));
     }
 
     protected function setUp()

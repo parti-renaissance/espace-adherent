@@ -47,4 +47,17 @@ final class ReferentMessage extends MailjetMessage
 
         return $message;
     }
+
+    public static function createChunk(array $recipients, ReferentMessage $original): self
+    {
+        if (!$recipients) {
+            throw new \InvalidArgumentException('At least one recipient is required.');
+        }
+
+        $chunk = clone $original;
+        $chunk->uuid = Uuid::uuid4();
+        $chunk->recipients = $recipients;
+
+        return $chunk;
+    }
 }

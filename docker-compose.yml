@@ -32,6 +32,9 @@ services:
     redis:
         image: redis:3.2
 
+    rabbitmq:
+        image: rabbitmq:3-management
+
     tools:
         build:
             context: .
