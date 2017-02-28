@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -22,6 +23,19 @@ class EventRegistrationRepository extends EntityRepository
         ;
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param Event $event
+     * @param array $uuids
+     *
+     * @return EventRegistration[]
+     */
+    public function findByUuidAndEvent(Event $event, array $uuids): array
+    {
+        return array_filter($this->findBy(['event' => $event]), function (EventRegistration $reg) use ($uuids) {
+            return in_array($reg->getUuid()->toString(), $uuids);
+        });
     }
 
     public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?EventRegistration

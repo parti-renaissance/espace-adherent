@@ -115,10 +115,15 @@
                         Contact
                     </a>
                 </li>
-                {% if app.user and (event.organizer and event.organizer.id == app.user.id) or (event.committee and is_host(event.committee)) %}
+                {% if is_granted('HOST_EVENT', event) %}
                     <li>
                         <a href="{{ path('app_event_edit', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
                             Modifier l'événement
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_registrations', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                            Gérer les participants
                         </a>
                     </li>
                 {% endif %}

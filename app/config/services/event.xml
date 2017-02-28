@@ -31,5 +31,16 @@
             <argument type="service" id="app.repository.event_registration"/>
         </service>
 
+        <service id="app.event.registration_exporter" class="AppBundle\Event\EventRegistrationExporter" />
+
+        <service id="app.event.contact_members_handler" class="AppBundle\Event\EventContactMembersCommandHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
+        <service id="app.voter.host_event_voter" class="AppBundle\Event\Voter\HostEventVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
     </services>
 </container>
