@@ -76,10 +76,10 @@ class ManagedUserExporter
 
         foreach ($user->getOriginal()->getMemberships() as $membership) {
             if (isset($registry[$membership->getCommitteeUuid()->toString()])) {
-                $committees[] = $registry[$membership->getCommitteeUuid()->toString()]->getName();
+                $committees[] = htmlspecialchars($registry[$membership->getCommitteeUuid()->toString()]->getName());
             }
         }
 
-        return implode(', ', $committees);
+        return implode('<br />', $committees);
     }
 }

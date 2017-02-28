@@ -258,8 +258,8 @@ export default class DataGrid extends React.Component {
                 resultColumns.push(
                     <td key={`result${i}-column${j}`}
                         style={columns[j].style || null}
-                        className={columns[j].className || ''}>
-                        {value}
+                        className={columns[j].className || ''}
+                        dangerouslySetInnerHTML={{ __html: value }}>
                     </td>
                 );
             });
