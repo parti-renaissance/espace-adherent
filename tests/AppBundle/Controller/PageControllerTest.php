@@ -38,9 +38,8 @@ class PageControllerTest extends SqliteWebTestCase
             // TODO Enable when Open Agenda is ready
             //['/emmanuel-macron/mon-agenda'],
             ['/emmanuel-macron/le-programme'],
-            // TODO Enable when the proposals are ready
-            //['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],
-            //['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'],
+            ['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],
+            ['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'],
             ['/le-mouvement'],
             ['/le-mouvement/notre-organisation'],
             ['/le-mouvement/les-comites'],
