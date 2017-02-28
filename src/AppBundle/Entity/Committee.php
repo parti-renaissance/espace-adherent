@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
-use AppBundle\Exception\CommitteeException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Utils\EmojisRemover;
 use AppBundle\ValueObject\Link;
@@ -274,6 +273,7 @@ class Committee implements GeoPointInterface
 
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
+        $this->refusedAt = null;
     }
 
     /**
@@ -283,12 +283,9 @@ class Committee implements GeoPointInterface
      */
     public function refused(string $timestamp = 'now')
     {
-        if (!$this->isWaitingForApproval()) {
-            throw new CommitteeException($this->uuid, 'Commitee must be pending in order to be refused.');
-        }
-
         $this->status = self::REFUSED;
         $this->refusedAt = new \DateTime($timestamp);
+        $this->approvedAt = null;
     }
 
     public function setSocialNetworks(
