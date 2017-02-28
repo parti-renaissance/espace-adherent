@@ -17,11 +17,12 @@
     <section class="je-marche__header progressive-background"
              data-sd="{{ static_asset('je-marche-hdr.jpg', {'w': 300, 'q': 20}) }}"
              data-hd="{{ static_asset('je-marche-hdr.jpg', {'w': 2000, 'q': 70}) }}">
-        <header class="space--100-0 l__wrapper--slim text--center">
+        <header class="space--60-0 l__wrapper--slim text--center">
             <h1 class="text--large b__nudge--bottom-small text--white">
                 {{ include('components/je-marche.html.twig') }}
             </h1>
             <h2 class="text--white text--large">Je choisis mes actions pour faire gagner le camp du progrès.</h2>
+            <a href="#actions" class="btn btn--green b__nudge--top-large">Je mène une action</a>
         </header>
         <hr class="l__wrapper" />
     </section>
@@ -35,7 +36,7 @@
         </article>
     </section>
 
-    <section class="l__wrapper--medium space--60-0">
+    <section class="l__wrapper--medium space--60-0" id="actions">
         <h1>Je choisis de mener une action de ma propre initiative</h1>
         <p class="text--body">Sélectionnez l'une des 6 actions que vous pouvez mener en toute autonomie.</p>
 
