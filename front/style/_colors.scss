@@ -86,8 +86,46 @@ $filter--gray: #585858;
     fill: rgba($color, 0.4);
 }
 
+@mixin color-stroke($color) {
+    stroke: rgba($color, 1);
+}
+
 @mixin hover-stroke($color) {
     stroke: rgba($color, 0.4);
+}
+
+@mixin link--white {
+    color: white;
+
+    path,
+    polygon {
+        @include color(white);
+
+        &.stroke {
+            @include color-stroke(white);
+        }
+    }
+
+    polyline {
+        @include color-stroke(white);
+    }
+
+    &:hover {
+        @include hover(white);
+
+        path,
+        polygon {
+            @include hover(white);
+
+            &.stroke {
+                @include hover-stroke(white);
+            }
+        }
+
+        polyline {
+            @include hover-stroke(white);
+        }
+    }    
 }
 
 .svg--black {

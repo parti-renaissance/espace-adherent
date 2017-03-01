@@ -53,6 +53,10 @@ a {
             @include hover($blue);
         }
     }
+
+    &.link--white {
+        @include link--white;
+    }
 }
 
 h1, h2, h3, h4 {

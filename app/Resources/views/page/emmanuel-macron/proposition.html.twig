@@ -19,7 +19,13 @@
 {% block content %}
 <main class="content">
     <section class="programme">
-        {{ include('page/emmanuel-macron/propositions__menu.html.twig') }}
+        <nav class="text--body">
+            <a class="l__wrapper space--20-0 icon--with-text"
+               href="{{ path('page_emmanuel_macron_programme') }}">
+                    {{ include('components/caret--left.html.twig') }}
+                    Retour aux propositions
+            </a>
+        </nav>
         <header class="space--60-0 l__wrapper--slim">
             <h1 class="text--large b__nudge--bottom-small">
                 {{ proposal.title }}
