@@ -32,6 +32,8 @@ $gradient: linear-gradient(20deg ,rgba(0, 0, 0, .6), rgba(0, 0, 0, 0));
 $gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, .2), rgba(0, 0, 0, .4));
 $filter: rgba(0, 0, 0, .3);
 $filter--gray: #585858;
+$gradient--program-left: linear-gradient(215deg, rgba(255, 255, 255, 0.0) 0, rgba(255, 255, 255, 0.0) 20%, #01b2fb 100%);
+$gradient--program-right: linear-gradient(to right, rgba(black, 0), black);
 
 @mixin gradient-container {
     top: 0;
@@ -125,7 +127,7 @@ $filter--gray: #585858;
         polyline {
             @include hover-stroke(white);
         }
-    }    
+    }
 }
 
 .svg--black {
