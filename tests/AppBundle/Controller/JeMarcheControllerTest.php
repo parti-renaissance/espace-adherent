@@ -78,7 +78,7 @@ class JeMarcheControllerTest extends SqliteWebTestCase
             'app_je_marche[convinced]' => '',
             'app_je_marche[almostConvinced]' => "xyz@en-marche.fr\ntuv@en-marche.fr",
             'app_je_marche[notConvinced]' => '',
-            'app_je_marche[reaction]' => 'Réaction des gens',
+            'app_je_marche[reaction]' => '',
             'app_je_marche[emailAddress]' => 'foobar@en-marche.fr',
         ]));
 
@@ -94,7 +94,7 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertNull($report->getNotConvinced());
         $this->assertSame([], $report->getConvinced());
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
-        $this->assertSame('Réaction des gens', $report->getReaction());
+        $this->assertNull($report->getReaction());
     }
 
     protected function setUp()

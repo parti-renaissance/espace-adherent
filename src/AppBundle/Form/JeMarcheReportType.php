@@ -36,7 +36,9 @@ class JeMarcheReportType extends AbstractType
             ->add($this->createEmailsListField($builder, 'convinced'))
             ->add($this->createEmailsListField($builder, 'almostConvinced'))
             ->add('notConvinced', IntegerType::class, ['required' => false])
-            ->add('reaction', TextareaType::class)
+            ->add('reaction', TextareaType::class, [
+                'required' => false,
+            ])
         ;
     }
 
