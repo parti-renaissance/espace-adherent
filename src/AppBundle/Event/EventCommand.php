@@ -127,7 +127,7 @@ class EventCommand
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(?string $description)
     {
         $this->description = HtmlPurifier::purify($description);
     }
