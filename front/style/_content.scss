@@ -514,7 +514,6 @@
             padding: 0;
         }
 
-
         &__proposal {
             list-style: none;
             padding: 20px 15px;
@@ -544,6 +543,7 @@
             h2 {
                 @include text--body;
                 font-size: 22px;
+                line-height: 1.1;
                 margin: 0;
             }
 
