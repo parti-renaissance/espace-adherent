@@ -1,14 +1,5 @@
 {% extends 'donation/layout.html.twig' %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
-        });
-    </script>
-{% endblock %}
-
 {% block donation_content %}
     <ul class="donation__form-steps">
         <li><a href="{{ path('donation_index', {'montant': donation.amount}) }}">Montant</a></li>
@@ -49,25 +40,24 @@
         {{ form_errors(form.address) }}
 
         <div class="form__row">
-            {{ form_errors(form.address.country) }}
-            {{ form_widget(form.address.country, { 'attr': { 'class': 'form--full' } }) }}
+            {{ form_errors(form.country) }}
+            {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
         </div>
 
         <div class="form__row form__row--stretch">
             <div class="form--mid">
-                {{ form_errors(form.address.postalCode) }}
-                {{ form_widget(form.address.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                {{ form_errors(form.postalCode) }}
+                {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
             </div>
             <div class="form--mid">
-                {{ form_errors(form.address.city) }}
-                {{ form_widget(form.address.city) }}
-                {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                {{ form_errors(form.cityName) }}
+                {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
             </div>
         </div>
 
         <div class="form__row">
-            {{ form_errors(form.address.address) }}
-            {{ form_widget(form.address.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+            {{ form_errors(form.address) }}
+            {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
         </div>
 
         <div class="form__row form__row--stretch">

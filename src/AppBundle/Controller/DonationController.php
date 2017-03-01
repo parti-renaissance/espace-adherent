@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationRequestType;
-use AppBundle\Intl\UnitedNationsBundle;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,7 +38,8 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request, $amount);
+        $factory = $this->get('app.donation_request.factory');
+        $donationRequest = $factory->createFromRequest($request, $amount, $this->getUser());
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -53,7 +53,6 @@ class DonationController extends Controller
         return $this->render('donation/informations.html.twig', [
             'form' => $form->createView(),
             'donation' => $donationRequest,
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
 
@@ -106,7 +105,7 @@ class DonationController extends Controller
             'em' => urlencode($donation->getEmailAddress()),
             'co' => $donation->getCountry(),
             'pc' => $donation->getPostalCode(),
-            'ci' => $donation->getCity(),
+            'ci' => $donation->getCityName(),
             'ad' => urlencode($donation->getAddress()),
         ];
 
