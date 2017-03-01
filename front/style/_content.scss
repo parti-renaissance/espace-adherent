@@ -562,6 +562,43 @@
     }
 }
 
+.programme__banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 53%;
+    background-size: 54%;
+    background-color: black;
+    @include gradient-container;
+
+    > div {
+        position: relative;
+        z-index: 1;
+    }
+
+    svg {
+        path {
+            @include color-stroke(white);
+        }
+
+        &:hover {
+            path {
+                @include hover-stroke(white);
+            }
+        }
+    }
+
+    &:before {
+        @include classic-gradient($gradient--program-left);
+        width: 528px;
+    }
+
+    &:after {
+        @include classic-gradient($gradient--program-right);
+        left: 60%;
+        width: 20%;
+    }
+}
+
 .content.emmanuel-macron {
     header {
         background-size: cover;
