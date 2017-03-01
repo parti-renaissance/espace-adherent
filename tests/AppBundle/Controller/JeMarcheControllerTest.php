@@ -24,7 +24,6 @@ class JeMarcheControllerTest extends SqliteWebTestCase
      */
     public function testReportJeMarche()
     {
-        return;
         // There should not be any report at the moment
         $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
 
@@ -55,6 +54,45 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertSame('foobar@en-marche.fr', $report->getEmailAddress());
         $this->assertSame(4, $report->getNotConvinced());
         $this->assertSame(['abc@en-marche.fr', 'def@en-marche.fr', 'ghi@en-marche.fr'], $report->getConvinced());
+        $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
+        $this->assertSame('Réaction des gens', $report->getReaction());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testReportJeMarchePartial()
+    {
+        // There should not be any report at the moment
+        $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_je_marche]')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_je_marche[type]' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
+            'app_je_marche[postalCode]' => '60200',
+            'app_je_marche[convinced]' => '',
+            'app_je_marche[almostConvinced]' => "xyz@en-marche.fr\ntuv@en-marche.fr",
+            'app_je_marche[notConvinced]' => '',
+            'app_je_marche[reaction]' => 'Réaction des gens',
+            'app_je_marche[emailAddress]' => 'foobar@en-marche.fr',
+        ]));
+
+        $this->assertClientIsRedirectedTo('/jemarche/merci', $this->client);
+
+        // Report should have been saved
+        /* @var JeMarcheReport $report */
+        $this->assertCount(1, $reports = $this->jeMarcheReportRepostitory->findAll());
+        $this->assertInstanceOf(JeMarcheReport::class, $report = $reports[0]);
+        $this->assertSame(JeMarcheReport::TYPE_DOOR_TO_DOOR, $report->getType());
+        $this->assertSame('60200', $report->getPostalCode());
+        $this->assertSame('foobar@en-marche.fr', $report->getEmailAddress());
+        $this->assertNull($report->getNotConvinced());
+        $this->assertSame([], $report->getConvinced());
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
         $this->assertSame('Réaction des gens', $report->getReaction());
     }
