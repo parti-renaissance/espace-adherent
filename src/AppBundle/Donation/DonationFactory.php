@@ -22,7 +22,12 @@ class DonationFactory
             $request->getFirstName(),
             $request->getLastName(),
             $request->getEmailAddress(),
-            $this->addressFactory->createFromAddress($request->getAddress()),
+            $this->addressFactory->createFlexible(
+                $request->getCountry(),
+                $request->getPostalCode(),
+                $request->getCityName(),
+                $request->getAddress()
+            ),
             $request->getPhone()
         );
     }

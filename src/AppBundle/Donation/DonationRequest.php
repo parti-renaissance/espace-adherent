@@ -2,10 +2,10 @@
 
 namespace AppBundle\Donation;
 
-use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest
@@ -56,11 +56,32 @@ class DonationRequest
     private $emailAddress;
 
     /**
-     * @Assert\Valid
-     *
-     * @var Address
+     * @Assert\NotBlank(message="common.address.required")
+     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     private $address;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max=15)
+     */
+    private $postalCode;
+
+    /**
+     * @Assert\Length(max=15)
+     */
+    private $city;
+
+    /**
+     * @Assert\Length(max=255)
+     */
+    private $cityName;
+
+    /**
+     * @Assert\NotBlank
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     */
+    private $country;
 
     /**
      * @AssertPhoneNumber(defaultRegion="FR")
@@ -70,7 +91,7 @@ class DonationRequest
     public function __construct(float $amount = 50.0)
     {
         $this->emailAddress = '';
-        $this->address = new Address();
+        $this->country = 'FR';
         $this->phone = static::createPhoneNumber();
 
         $this->setAmount($amount);
@@ -84,7 +105,11 @@ class DonationRequest
         $dto->lastName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
         $dto->emailAddress = $adherent->getEmailAddress();
-        $dto->address = Address::createFromAddress($adherent->getPostAddress());
+        $dto->address = $adherent->getAddress();
+        $dto->postalCode = $adherent->getPostalCode();
+        $dto->city = $adherent->getCity();
+        $dto->cityName = $adherent->getCityName();
+        $dto->country = $adherent->getCountry();
         $dto->phone = $adherent->getPhone();
 
         return $dto;
@@ -142,16 +167,6 @@ class DonationRequest
         $this->lastName = $lastName;
     }
 
-    public function setAddress(?Address $address)
-    {
-        $this->address = $address;
-    }
-
-    public function getAddress(): ?Address
-    {
-        return $this->address;
-    }
-
     public function setEmailAddress(?string $emailAddress)
     {
         $this->emailAddress = mb_strtolower($emailAddress);
@@ -160,6 +175,56 @@ class DonationRequest
     public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address)
+    {
+        $this->address = $address;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode)
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city)
+    {
+        $this->city = $city;
+    }
+
+    public function getCityName(): ?string
+    {
+        return $this->cityName;
+    }
+
+    public function setCityName(?string $cityName)
+    {
+        $this->cityName = $cityName;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country)
+    {
+        $this->country = $country;
     }
 
     public function setPhone(?PhoneNumber $phone)

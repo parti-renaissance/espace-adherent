@@ -5,8 +5,6 @@ namespace AppBundle\Geocoder\Subscriber;
 use AppBundle\Event\EventUpdatedEvent;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
-use AppBundle\Donation\DonationEvents;
-use AppBundle\Donation\DonationWasCreatedEvent;
 use AppBundle\Event\EventCreatedEvent;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Geocoder\GeocoderInterface;
@@ -26,11 +24,6 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     {
         $this->geocoder = $geocoder;
         $this->manager = $manager;
-    }
-
-    public function onDonationCreated(DonationWasCreatedEvent $event)
-    {
-        $this->updateGeocodableEntity($event->getDonation());
     }
 
     public function onAdherentAccountRegistrationCompleted(AdherentAccountWasCreatedEvent $event)
@@ -83,7 +76,6 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            DonationEvents::CREATED => ['onDonationCreated', -256],
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', -256],
             AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
             Events::COMMITTEE_CREATED => ['onCommitteeCreated', -256],

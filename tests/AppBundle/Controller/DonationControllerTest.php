@@ -46,13 +46,10 @@ class DonationControllerTest extends SqliteWebTestCase
                 'lastName' => 'Doe',
                 'firstName' => 'John',
                 'emailAddress' => 'test@paybox.com',
-                'address' => [
-                    'address' => '9 rue du Lycée',
-                    'country' => 'FR',
-                    'postalCode' => '06000',
-                    'city' => '06000-6088', // Nice
-                    'cityName' => '',
-                ],
+                'address' => '9 rue du Lycée',
+                'country' => 'FR',
+                'postalCode' => '06000',
+                'cityName' => 'Nice',
                 'phone' => [
                     'country' => 'FR',
                     'number' => '04 01 02 03 04',
@@ -72,7 +69,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame('test@paybox.com', $donation->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
-        $this->assertSame('06000-6088', $donation->getCity());
+        $this->assertSame('Nice', $donation->getCityName());
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
         $this->assertSame(33, $donation->getPhone()->getCountryCode());
         $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());

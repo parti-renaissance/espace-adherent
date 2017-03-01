@@ -8,9 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DonationRequestFactory
 {
-    public function createFromRequest(Request $request, float $amount): DonationRequest
+    public function createFromRequest(Request $request, float $amount, $currentUser = null): DonationRequest
     {
-        $donation = new DonationRequest($amount);
+        if ($currentUser instanceof Adherent) {
+            $donation = DonationRequest::createFromAdherent($currentUser);
+        } else {
+            $donation = new DonationRequest($amount);
+        }
 
         if (($gender = $request->query->get('ge')) && in_array($gender, ['male', 'female'], true)) {
             $donation->setGender($gender);
@@ -29,23 +33,23 @@ class DonationRequestFactory
         }
 
         if ($country = $request->query->get('co')) {
-            $donation->getAddress()->setCountry($country);
+            $donation->setCountry($country);
         }
 
         if ($postalCode = $request->query->get('pc')) {
-            $donation->getAddress()->setPostalCode($postalCode);
+            $donation->setPostalCode($postalCode);
         }
 
         if ($city = $request->query->get('ci')) {
-            $donation->getAddress()->setCity($city);
+            $donation->setCityName($city);
         }
 
         if ($cityName = $request->query->get('cn')) {
-            $donation->getAddress()->setCityName($cityName);
+            $donation->setCityName($cityName);
         }
 
         if ($address = $request->query->get('ad')) {
-            $donation->getAddress()->setAddress(urldecode($address));
+            $donation->setAddress(urldecode($address));
         }
 
         if (($phoneCode = $request->query->get('phc')) && ($phoneNumber = $request->query->get('phn'))) {

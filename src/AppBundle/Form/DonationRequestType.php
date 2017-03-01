@@ -31,7 +31,12 @@ class DonationRequestType extends AbstractType
                 ->add('emailAddress', EmailType::class, [
                     'empty_data' => '',
                 ])
-                ->add('address', AddressType::class)
+                ->add('address', TextType::class)
+                ->add('postalCode', TextType::class)
+                ->add('cityName', TextType::class, [
+                    'required' => false,
+                ])
+                ->add('country', UnitedNationsCountryType::class)
                 ->add('phone', PhoneNumberType::class, [
                     'required' => false,
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
