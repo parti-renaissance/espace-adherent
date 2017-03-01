@@ -204,8 +204,8 @@ old_sound_rabbit_mq:
             host: "%env(RABBITMQ_HOST)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 3
-            read_write_timeout: 3
+            connection_timeout: 120
+            read_write_timeout: 120
 
     producers:
         mailjet_referent:
