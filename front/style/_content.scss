@@ -159,7 +159,7 @@
 
         &.arrows {
             @include text--medium-small--bold;
-            padding-left: 20px;
+            padding-left: 15px;
 
             li {
                 list-style: disc outside url("/images/icon__arrow.svg");
@@ -429,136 +429,57 @@
 .content.programme {
     padding-bottom: 10px;
 
-    nav {
-        border: 0;
-        background: $darker;
+    header {
+        background-size: cover;
+        height: 370px;
         color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        box-sizing: border-box;
+        margin-bottom: 60px;
 
-        a {
-            color: white;
+        h1 {
+            max-width: 550px;
         }
     }
 
-    .programme {
-        &__header {
-            &__outer {
-                @include gradient-container;
-                background-size: cover;
-                color: white;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                box-sizing: border-box;
-                margin-bottom: 60px;
-                height: 370px;
-                background-color: $filter--gray;
-                background-blend-mode: multiply;
+    .programme-proposal {
+        border-bottom: 1px solid rgba(0, 35, 73, 0.15);
+        padding: 50px 0 10px;
 
-                > div {
-                    position: relative;
-                    z-index: 1;
-                }
-            }
-
-            &__inner {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-            }
+        a {
+            // Fix transition issue on MS Edge
+            transition: none;
         }
 
-        &__titles {
-            max-width: 400px;
-            align-self: center;
-
-            @media (max-width: $tablet - 200px) {
-                max-width: 100%;
-            }
+        h2 {
+            @include text--large;
+            max-width: 90%;
         }
 
-        &__download {
-            height: 57px;
-            font-family: $font-roboto;
-            font-size: 20px;
-            text-transform: inherit;
-            letter-spacing: 0.4px;
-            padding: 0 20px;
-            margin: 10px 0;
-
-            &:hover {
-                svg path {
-                    fill: white;
-                }
-            }
-
-            svg {
-                margin-right: 10px;
-            }
+        div {
+            @include text--body;
+            text-transform: uppercase;
+            margin-top: 5px;
         }
 
-        &__cover {
-            img {
-                width: 280px;
-            }
-
-            @media (max-width: $tablet - 200px) {
-                display: none;
-            }
+        h2,
+        div {
+            transition: margin-left .2s ease-out;
         }
 
-        &__proposals {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding: 0;
-        }
-
-
-        &__proposal {
-            list-style: none;
-            padding: 20px 15px;
-            background: $gray--lighter;
-            height: 150px;
-            width: 32%;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-            transition: all .2s;
-
-            @media (max-width: $tablet - 300px) {
-                width: 49%;
-            }
-
-            @media (max-width: $mobile - 150px) {
-                width: 100%;
-            }
-
-            a {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                height: 100%;
-                border: 0;
-            }
-
-            h2 {
-                @include text--body;
-                font-size: 22px;
-                margin: 0;
-            }
-
+        &:hover {
+            h2,
             div {
-                @include text--body;
+                margin-left: 20px;
+                color: $blue;
             }
+        }
 
-            &:hover {
-                background: $blue;
-
-                h2,
-                div {
-                    color: white;
-                }
-            }
+        span {
+            display: inline-block;
+            padding: 5px;
         }
     }
 }
