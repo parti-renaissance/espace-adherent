@@ -35,7 +35,7 @@ class JeMarcheReportType extends AbstractType
             ->add('postalCode', TextType::class)
             ->add($this->createEmailsListField($builder, 'convinced'))
             ->add($this->createEmailsListField($builder, 'almostConvinced'))
-            ->add('notConvinced', IntegerType::class)
+            ->add('notConvinced', IntegerType::class, ['required' => false])
             ->add('reaction', TextareaType::class)
         ;
     }
@@ -60,7 +60,7 @@ class JeMarcheReportType extends AbstractType
 
     private function createEmailsListField(FormBuilderInterface $builder, $fieldName): FormBuilderInterface
     {
-        $field = $builder->create($fieldName, TextareaType::class);
+        $field = $builder->create($fieldName, TextareaType::class, ['required' => false]);
         $field->addModelTransformer(new CallbackTransformer(
             function ($data) {
                 return implode("\n", array_map('trim', $data));
