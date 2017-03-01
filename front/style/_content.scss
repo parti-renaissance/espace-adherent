@@ -449,7 +449,7 @@
                 flex-direction: column;
                 justify-content: center;
                 box-sizing: border-box;
-                margin-bottom: 60px;
+                margin-bottom: 100px;
                 height: 370px;
                 background-color: $filter--gray;
                 background-blend-mode: multiply;
@@ -468,7 +468,7 @@
         }
 
         &__titles {
-            max-width: 400px;
+            max-width: 350px;
             align-self: center;
 
             @media (max-width: $tablet - 200px) {
@@ -498,7 +498,7 @@
 
         &__cover {
             img {
-                width: 280px;
+                width: 310px;
             }
 
             @media (max-width: $tablet - 200px) {
