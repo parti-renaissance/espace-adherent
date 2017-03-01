@@ -426,20 +426,19 @@
     }
 }
 
-.content.programme {
-    padding-bottom: 10px;
-
-    nav {
-        border: 0;
-        background: $darker;
-        color: white;
-
-        a {
-            color: white;
-        }
-    }
-
+.content {
     .programme {
+        padding-bottom: 10px;
+
+        nav {
+            border: 0;
+            background: $darker;
+            color: white;
+
+            a {
+                @include link--white;
+            }
+        }
         &__header {
             &__outer {
                 @include gradient-container;
