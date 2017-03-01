@@ -99,7 +99,7 @@ class JeMarcheReport
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(max=2500, maxMessage="jemarche.reaction.max_2500")
      */
@@ -233,12 +233,12 @@ class JeMarcheReport
         $this->notConvinced = $notConvinced;
     }
 
-    public function getReaction(): string
+    public function getReaction(): ?string
     {
         return $this->reaction;
     }
 
-    public function setReaction(string $reaction)
+    public function setReaction(?string $reaction)
     {
         $this->reaction = EmojisRemover::remove($reaction);
     }
