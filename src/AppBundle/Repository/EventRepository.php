@@ -56,7 +56,13 @@ class EventRepository extends EntityRepository
         foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
             if (is_numeric($code)) {
                 // Postal code prefix
-                $codesFilter->add($qb->expr()->like('e.postAddress.postalCode', ':code'.$key));
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        'e.postAddress.country = \'FR\'',
+                        $qb->expr()->like('e.postAddress.postalCode', ':code'.$key)
+                    )
+                );
+
                 $qb->setParameter('code'.$key, $code.'%');
             } else {
                 // Country
