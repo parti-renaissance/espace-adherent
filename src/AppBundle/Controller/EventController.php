@@ -148,7 +148,7 @@ class EventController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
 
-        $uuids = json_decode($request->request->get('exports'));
+        $uuids = json_decode($request->request->get('exports'), true);
 
         if (!$uuids) {
             return $this->redirectToRoute('app_event_registrations', [
@@ -186,7 +186,7 @@ class EventController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
         }
 
-        $uuids = json_decode($request->request->get('contacts', '[]'));
+        $uuids = json_decode($request->request->get('contacts', '[]'), true);
 
         if (!$uuids) {
             $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
