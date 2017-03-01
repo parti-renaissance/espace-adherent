@@ -13,46 +13,49 @@
 {% block content %}
 <main>
     <section class="content programme">
-        <header class="space--30-0 progressive-background"
-                data-sd="{{ static_asset('programme.jpg', {'w': 300, 'q': 20}) }}"
-                data-hd="{{ static_asset('programme.jpg', {'q': 70}) }}"
+        {{ include('page/emmanuel-macron/propositions__menu.html.twig') }}
+        <header class="programme__header__outer space--30-0 progressive-background"
+                data-sd="{{ static_asset('propositions.jpg', {'w': 300, 'q': 20}) }}"
+                data-hd="{{ static_asset('propositions.jpg', {'q': 70}) }}"
                 style="background-color: #2f2f39;">
-            <div class="l__wrapper--slim">
-                <h1 class="text--larger b__nudge--bottom-small">
-                    Les propositions d’Emmanuel Macron
-                </h1>
-                <p class="text--body">
-                    {{ page.description }}
-                </p>
+            <div class="programme__header__inner l__wrapper--slim">
+                <div class="programme__titles">
+                    <h1 class="text--large b__nudge--bottom-small">
+                        Le programme d’Emmanuel Macron
+                    </h1>
+                    <a href="#" class="programme__download icon--with-text text--white btn btn--blue">
+                        {{ include('components/arrow--down.html.twig') }}
+                        Télécharger le programme
+                    </a>
+                    <p class="text--body">
+                        {{ page.description }}
+                    </p>
+                </div>
+                <div class="programme__cover">
+                    <img src="{{ asset('images/couverture-programme.png') }}" />
+                </div>
             </div>
         </header>
 
-        <div class="l__wrapper--slim">
+        <article class="l__wrapper--slim">
             {{ page.content|markdown }}
 
-            <ul>
+            <h2 class="text--medium-large text--bold space--30-0">Nos propositions en détail :</h2>
+            <ul class="programme__proposals">
                 {% for proposal in proposals if proposal.published %}
-                <li class="programme-proposal">
+                <li class="programme__proposal">
                     <a href="{{ path('page_emmanuel_macron_proposition', {'slug': proposal.slug}) }}">
                         <h2>
-                            {{ proposal.title }}
-                        </h2>
-                        <div>
                             {% for theme in proposal.themes %}
-                                <span style="color: #{{ theme.color }};">
-                                    {{ theme.name }}
-                                </span>
+                                {{ theme.name }}
                             {% endfor %}
-                        </div>
+                        </h2>
+                        <div>En savoir plus</div>
                     </a>
                 </li>
                 {% endfor %}
             </ul>
-        </div>
-        <div class="l__wrapper-500 space--60-0 text--all-caps text--summary text--center text--light-gray">
-            Cet espace accueillera de nouvelles propositions dans les semaines qui viennent.
-        </div>
-
+        </article>
     </section>
 
 </main>
