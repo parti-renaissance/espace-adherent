@@ -163,7 +163,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
             ->leftJoin('a.memberships', 'm')
-            ->orderBy('a.emailAddress', 'ASC')
+            ->orderBy('a.registeredAt', 'DESC')
             ->addOrderBy('a.firstName', 'ASC')
             ->addOrderBy('a.lastName', 'ASC')
             ->where('a.id != :self')

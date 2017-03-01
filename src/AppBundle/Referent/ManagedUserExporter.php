@@ -28,8 +28,9 @@ class ManagedUserExporter
         $data = [];
 
         foreach ($managedUsers as $user) {
-            $isHost = $user->isAdherent() && $user->getOriginal()->isHost();
-            $phone = $user->isAdherent() ? $user->getOriginal()->getPhone() : null;
+            $original = $user->getOriginal();
+            $isHost = $user->isAdherent() && $original->isHost();
+            $phone = $user->isAdherent() ? $original->getPhone() : null;
 
             $data[] = [
                 'type' => $user->getType(),
@@ -44,6 +45,7 @@ class ManagedUserExporter
                 'age' => $user->getAge() ?: '',
                 'city' => $user->getCity() ?: '',
                 'country' => $user->getCountry() ?: '',
+                'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i'),
                 'committees' => $this->createCommitteesListFor($user, $registry),
                 'emailsSubscription' => $user->hasReferentsEmailsSubscription() ? 'Oui' : 'Non',
             ];

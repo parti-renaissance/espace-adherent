@@ -136,8 +136,8 @@ class ManagedUserFactory
 
         usort($managedUsers, function (ManagedUser $a, ManagedUser $b) {
             return strnatcmp(
-                $a->getPostalCode().'-'.strtolower($a->getFirstName()),
-                $b->getPostalCode().'-'.strtolower($b->getFirstName())
+                $b->getCreatedAt()->format('Y-m-d H:i'),
+                $a->getCreatedAt()->format('Y-m-d H:i')
             );
         });
 

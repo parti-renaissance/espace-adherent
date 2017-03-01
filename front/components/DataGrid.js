@@ -249,19 +249,25 @@ export default class DataGrid extends React.Component {
             }
 
             Object.keys(columns).forEach((j) => {
-                let value = result[columns[j].key];
-
                 if ('undefined' !== typeof columns[j].link && columns[j].link) {
-                    value = <a href={result[columns[j].key].url}>{result[columns[j].key].label}</a>;
+                    resultColumns.push(
+                        <td key={`result${i}-column${j}`}
+                            style={columns[j].style || null}
+                            className={columns[j].className || ''}>
+                            <a href={result[columns[j].key].url}
+                               dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
+                            </a>
+                        </td>
+                    );
+                } else {
+                    resultColumns.push(
+                        <td key={`result${i}-column${j}`}
+                            style={columns[j].style || null}
+                            className={columns[j].className || ''}
+                            dangerouslySetInnerHTML={{ __html: result[columns[j].key] }}>
+                        </td>
+                    );
                 }
-
-                resultColumns.push(
-                    <td key={`result${i}-column${j}`}
-                        style={columns[j].style || null}
-                        className={columns[j].className || ''}
-                        dangerouslySetInnerHTML={{ __html: value }}>
-                    </td>
-                );
             });
 
             resultsList.push(

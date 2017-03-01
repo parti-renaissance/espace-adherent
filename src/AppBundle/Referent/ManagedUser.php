@@ -246,4 +246,9 @@ class ManagedUser
     {
         return $this->referentsEmailsSubscription;
     }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->isAdherent() ? $this->original->getRegisteredAt() : $this->original->getCreatedAt();
+    }
 }

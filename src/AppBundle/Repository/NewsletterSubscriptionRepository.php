@@ -19,7 +19,7 @@ class NewsletterSubscriptionRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('n')
             ->select('n')
-            ->orderBy('n.email', 'ASC')
+            ->orderBy('n.createdAt', 'DESC')
             ->where('n.email != :self')
             ->setParameter('self', $referent->getEmailAddress())
             ->andWhere('LENGTH(n.postalCode) = 5');
