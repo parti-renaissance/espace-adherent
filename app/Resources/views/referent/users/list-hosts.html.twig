@@ -48,6 +48,14 @@
                         className: 'datagrid__table__col--hide-mobile'
                     },
                     {
+                        key: 'createdAt',
+                        name: 'Inscription',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 150
+                        }
+                    },
+                    {
                         key: 'emailsSubscription',
                         name: 'Abonné aux mails ?',
                         className: 'datagrid__table__col--hide-mobile',
@@ -68,5 +76,3 @@
 {% block referent_users_list_description %}
 J’envoie un message uniquement aux <span class="text--bold">animateurs de comités</span>.
 {% endblock %}
-
-{#Nom | Prenom | date de création | email | numéro de telephone | nom du comite [url]#}

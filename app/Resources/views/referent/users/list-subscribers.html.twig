@@ -15,6 +15,14 @@
                         key: 'postalCode',
                         name: 'Code postal',
                     },
+                    {
+                        key: 'createdAt',
+                        name: 'Inscription',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 150
+                        }
+                    }
                 ],
                 {{ managedUsersJson|raw }}
             );
