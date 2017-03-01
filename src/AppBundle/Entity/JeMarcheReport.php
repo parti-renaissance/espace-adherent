@@ -68,7 +68,7 @@ class JeMarcheReport
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
      *      @Assert\Email(message="jemarche.email.invalid")
@@ -79,7 +79,7 @@ class JeMarcheReport
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
      *      @Assert\Email(message="jemarche.email.invalid")
@@ -90,7 +90,7 @@ class JeMarcheReport
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", nullable=true)
      *
      * @Assert\GreaterThanOrEqual(value=0, message="jemarche.not_conviced.greater_than_or_equal_0")
      */

@@ -18,7 +18,6 @@ class JeMarcheController extends Controller
      */
     public function indexAction(Request $request): Response
     {
-        throw $this->createNotFoundException();
         $jeMarcheReport = JeMarcheReport::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
 
         $form = $this->createForm(JeMarcheReportType::class, $jeMarcheReport);
@@ -43,7 +42,6 @@ class JeMarcheController extends Controller
      */
     public function thanksAction(): Response
     {
-        throw $this->createNotFoundException();
         return $this->render('jemarche/thanks.html.twig');
     }
 
@@ -53,7 +51,6 @@ class JeMarcheController extends Controller
      */
     public function redirectAction(): Response
     {
-        throw $this->createNotFoundException();
         return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 }

@@ -60,13 +60,16 @@ class JeMarcheReportType extends AbstractType
 
     private function createEmailsListField(FormBuilderInterface $builder, $fieldName): FormBuilderInterface
     {
-        $field = $builder->create($fieldName, TextareaType::class, ['required' => false]);
+        $field = $builder->create($fieldName, TextareaType::class, [
+            'required' => false,
+        ]);
+
         $field->addModelTransformer(new CallbackTransformer(
             function ($data) {
                 return implode("\n", array_map('trim', $data));
             },
             function ($value) {
-                return array_map('trim', explode("\n", $value));
+                return array_filter(array_map('trim', explode("\n", $value)));
             }
         ));
 
