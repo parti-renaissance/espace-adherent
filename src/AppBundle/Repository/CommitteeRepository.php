@@ -193,7 +193,13 @@ class CommitteeRepository extends EntityRepository
         foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
             if (is_numeric($code)) {
                 // Postal code prefix
-                $codesFilter->add($qb->expr()->like('c.postAddress.postalCode', ':code'.$key));
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        'c.postAddress.country = \'FR\'',
+                        $qb->expr()->like('c.postAddress.postalCode', ':code'.$key)
+                    )
+                );
+
                 $qb->setParameter('code'.$key, $code.'%');
             } else {
                 // Country
