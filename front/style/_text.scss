@@ -202,6 +202,10 @@ $text--size-extra-large: 48px;
     &--limited {
         max-width: 500px;
 
+        &-extra {
+            max-width: 400px;
+        }
+
         @media (max-width: $mobile) {
             width: 100%;
         }
