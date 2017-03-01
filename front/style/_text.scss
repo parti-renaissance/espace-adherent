@@ -15,6 +15,7 @@ $text--size-extra-large: 48px;
 @mixin breakword {
     overflow-wrap: break-word;
     word-wrap: break-word;
+    hyphens: auto;
 }
 
 @mixin text--smallest {
