@@ -11,6 +11,15 @@ class EventRepository extends EntityRepository
 {
     use NearbyTrait;
 
+    public function count(): int
+    {
+        return (int) $this
+            ->createQueryBuilder('e')
+            ->select('COUNT(e)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function findOneBySlug(string $slug): ?Event
     {
         $query = $this

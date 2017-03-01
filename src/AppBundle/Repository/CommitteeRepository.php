@@ -15,6 +15,17 @@ class CommitteeRepository extends EntityRepository
     const ONLY_APPROVED = 1;
     const INCLUDE_UNAPPROVED = 2;
 
+    public function count(): int
+    {
+        return (int) $this
+            ->createQueryBuilder('c')
+            ->select('COUNT(c)')
+            ->where('c.status = :approved')
+            ->setParameter('approved', Committee::APPROVED)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     /**
      * Finds a Committee instance by its unique canonical name.
      *

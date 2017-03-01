@@ -10,6 +10,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class AdherentRepository extends EntityRepository implements UserLoaderInterface
 {
+    public function count(): int
+    {
+        return (int) $this
+            ->createQueryBuilder('a')
+            ->select('COUNT(a)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     /**
      * Finds an Adherent instance by its email address.
      *
