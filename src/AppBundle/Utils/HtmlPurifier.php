@@ -4,8 +4,12 @@ namespace AppBundle\Utils;
 
 class HtmlPurifier
 {
-    public static function purify(string $string)
+    public static function purify(?string $string)
     {
+        if (!$string) {
+            return $string;
+        }
+
         $replacements = [];
 
         foreach (self::$allowed as $from => $to) {
