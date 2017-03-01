@@ -31,8 +31,8 @@
     <section class="je-marche__action l__wrapper--medium">
         <article>
             <div class="action blue action--full-text">
-                <p>Je m'inscris à une action collective près de chez moi</p>
-                <a href="{{ enable_platform ? path('app_search_events') : url_legacy }}">Voir les actions</a>
+                <p>Je participe à un événement près de chez moi</p>
+                <a href="{{ enable_platform ? path('app_search_events') : url_legacy }}">Voir les événements</a>
             </div>
         </article>
     </section>
@@ -41,13 +41,13 @@
         <div class="b__nudge--bottom-60 text--large text--green text--bold text--center text--body">
             Bientôt 2 500 actions réalisées
         </div>
-        <h1>Je choisis de mener une action de ma propre initiative</h1>
-        <p class="text--body">Sélectionnez l'une des 6 actions que vous pouvez mener en toute autonomie.</p>
+        <h1>Je choisis de mener une action</h1>
+        <p class="text--body">Sélectionnez l'une des 6 actions à mener en toute autonomie.</p>
 
         <div class="action__items l__row l__row--h-stretch l__row--top l__tablet--col">
             <ul class="action__menu">
                 <li><a class="action__menu__item action__menu__item--active" href="javascript:void(0)" onclick="openAction('action__one')">Le porte-à-porte</a></li>
-                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__two')">L'atelier</a></li>
+                <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__two')">L'atelier du projet</a></li>
                 <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__three')">La marche</a></li>
                 <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__four')">La conversation</a></li>
                 <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__five')">L'action qui vous ressemble</a></li>
@@ -80,7 +80,7 @@
 
             <div id="action__five" class="action__item" style="display:none">
               <h4>L'action qui vous ressemble</h4>
-              <p>Pour  cela, nous vous invitons à imaginer et réaliser votre propre action en rejoignant ou en organisant un événement citoyen, solidaire, écologique, sportif ou culturel !</p>
+              <p>Pour cela, nous vous invitons à imaginer et réaliser votre propre action en rejoignant ou en organisant un événement citoyen, solidaire, écologique, sportif ou culturel !</p>
               <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-action.pdf">Télécharger le guide de l'action</a>
             </div>
 
@@ -93,8 +93,8 @@
     </section>
 
     <section class="l__wrapper--medium space--60-0">
-        <h1>J'ai récupéré des emails suite à mon action</h1>
-        <p class="text--body">Saisissez les emails des personnes rencontrées souhaitant recevoir la lettre d'Emmanuel Macron.</p>
+        <h1>Compte rendu de mon action</h1>
+        <p class="text--body">Saisissez les emails des personnes rencontrées souhaitant avoir plus d’informations.</p>
 
 
         <div class="text--body">
@@ -103,7 +103,7 @@
             {{ form_errors(form) }}
 
             <div class="form__row">
-                {{ form_label(form.type, 'Quelle action avez-vous réalisé ?') }}
+                {{ form_label(form.type, 'Quelle action avez-vous réalisée ?') }}
                 {{ form_widget(form.type, { attr: { 'class': 'b__nudge--top-10 form--full' } }) }}
                 {{ form_errors(form.type) }}
             </div>
@@ -117,34 +117,34 @@
 
             <div class="form__row">
                 {{ form_label(form.convinced, 'Personnes convaincues') }}
-                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite etre tenu informe de la campagne."</div>
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite être tenu(e) informé(e) de la campagne et/ou m'engager".</div>
                 {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.convinced) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.almostConvinced, 'Personnes encore indécises mais intéréssées') }}
-                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter, je souhaite en savoir plus sur Emmanuel Macron."</div>
+                {{ form_label(form.almostConvinced, 'Personnes réceptives') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter et je souhaite en savoir davantage sur Emmanuel Macron".</div>
                 {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.almostConvinced) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.notConvinced, 'Nombre de personnes pas (encore) convaincues') }}
-                <div class="text--small text--gray b__nudge--bottom-small">Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne voteront pas pour lui.</div>
+                {{ form_label(form.notConvinced, 'Personnes acquises à un autre candidat ou n\'ayant pas souhaité échanger (nombre de personnes)') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne voteront pas pour lui ou n’ont pas souhaité poursuivre la discussion.</div>
                 {{ form_widget(form.notConvinced) }}
                 {{ form_errors(form.notConvinced) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.reaction, 'Réaction des personnes recontrées') }}
+                {{ form_label(form.reaction, 'Réaction des personnes rencontrées / commentaires') }}
                 {{ form_widget(form.reaction, { attr: { placeholder: 'Décrivez ici les réactions des personnes avec lesquelles vous avez échangé', 'class': 'b__nudge--top-10 form--full form__field--textarea-120' } }) }}
                 {{ form_errors(form.reaction) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(form.emailAddress, 'Votre email') }}
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre email', 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_label(form.emailAddress, 'Votre e-mail') }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre e-mail', 'class': 'b__nudge--top-10 form--full' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 
@@ -156,7 +156,7 @@
             {{ form_rest(form) }}
 
             <button type="submit" class="b__nudge--top btn btn--blue">
-                J'envoie le rapport
+                J'envoie le compte rendu
             </button>
 
             {{ form_end(form) }}

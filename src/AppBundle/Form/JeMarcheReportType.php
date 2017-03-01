@@ -23,12 +23,12 @@ class JeMarcheReportType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    'J\'ai organisé une marche' => JeMarcheReport::TYPE_WALK,
-                    'J\'ai effectué du porte a porte' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
-                    'J\'ai organisé un diner' => JeMarcheReport::TYPE_DINNER,
-                    'J\'ai discuté avec quelqu\'un' => JeMarcheReport::TYPE_CONVERSATION,
-                    'J\'ai organisé un atelier du projet' => JeMarcheReport::TYPE_WORKSHOP,
-                    'J\'ai effectué une action qui me ressemble' => JeMarcheReport::TYPE_ACTION,
+                    'Une marche' => JeMarcheReport::TYPE_WALK,
+                    'un porte-à-porte' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
+                    'Un dîner' => JeMarcheReport::TYPE_DINNER,
+                    'Une conversation' => JeMarcheReport::TYPE_CONVERSATION,
+                    'Un atelier du projet' => JeMarcheReport::TYPE_WORKSHOP,
+                    'Une action qui me ressemble' => JeMarcheReport::TYPE_ACTION,
                 ],
             ])
             ->add('emailAddress', EmailType::class)
