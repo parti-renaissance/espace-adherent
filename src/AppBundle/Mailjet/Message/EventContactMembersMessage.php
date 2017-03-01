@@ -17,7 +17,7 @@ final class EventContactMembersMessage extends MailjetMessage
      */
     public static function create(array $recipients, Adherent $organizer, string $content): self
     {
-        $recipient = $recipients[0];
+        $recipient = array_shift(array_values($recipients));
 
         $message = new self(
             Uuid::uuid4(),
