@@ -35,7 +35,7 @@ test:
 
 deployment:
     staging:
-        branch: feat/reapply-program
+        branch: master
         owner: EnMarche
         commands:
             # Check packages security
