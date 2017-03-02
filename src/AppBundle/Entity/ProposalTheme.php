@@ -36,7 +36,7 @@ class ProposalTheme
 
     public function __construct(string $name = '', string $color = '000000')
     {
-        $this->name = EmojisRemover::remove($name);
+        $this->name = EmojisRemover::remove($name) ?? '';
         $this->color = $color;
     }
 
@@ -50,24 +50,24 @@ class ProposalTheme
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): ProposalTheme
+    public function setName(?string $name): ProposalTheme
     {
         $this->name = EmojisRemover::remove($name);
 
         return $this;
     }
 
-    public function getColor(): string
+    public function getColor(): ?string
     {
         return $this->color;
     }
 
-    public function setColor(string $color): ProposalTheme
+    public function setColor(?string $color): ProposalTheme
     {
         $this->color = $color;
 
