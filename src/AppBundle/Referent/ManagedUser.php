@@ -3,17 +3,14 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\NewsletterSubscription;
+use libphonenumber\PhoneNumber;
 
 class ManagedUser
 {
     const TYPE_ADHERENT = 'adherent';
     const TYPE_NEWSLETTER_SUBSCRIBER = 'newsletter_subscriber';
-
-    /**
-     * @var Adherent|NewsletterSubscription
-     */
-    private $original;
 
     /**
      * @var string
@@ -66,15 +63,35 @@ class ManagedUser
     private $country;
 
     /**
+     * @var PhoneNumber|null
+     */
+    private $phone;
+
+    /**
+     * @var array
+     */
+    private $committees;
+
+    /**
+     * @var \DateTime|null
+     */
+    private $createdAt;
+
+    /**
+     * @var bool
+     */
+    private $isHost;
+
+    /**
      * @var bool
      */
     private $referentsEmailsSubscription;
 
     public function __construct(
         string $type,
-        $original,
         int $id,
         string $email,
+        \DateTime $createdAt = null,
         string $postalCode = null,
         bool $emailVisible = false,
         string $firstName = null,
@@ -82,6 +99,9 @@ class ManagedUser
         \DateTime $birthdate = null,
         string $city = null,
         string $country = null,
+        PhoneNumber $phone = null,
+        bool $isHost = false,
+        array $committeesUuid = [],
         bool $referentsEmailsSubscription = true
     ) {
         if (!in_array($type, [self::TYPE_ADHERENT, self::TYPE_NEWSLETTER_SUBSCRIBER], true)) {
@@ -89,16 +109,19 @@ class ManagedUser
         }
 
         $this->type = $type;
-        $this->original = $original;
         $this->id = $id;
         $this->email = $email;
         $this->emailVisible = $emailVisible;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->birthdate = $birthdate;
+        $this->createdAt = $createdAt;
         $this->postalCode = $postalCode;
         $this->city = $city;
         $this->country = $country;
+        $this->phone = $phone;
+        $this->isHost = $isHost;
+        $this->committees = $committeesUuid;
         $this->referentsEmailsSubscription = $referentsEmailsSubscription;
     }
 
@@ -106,9 +129,9 @@ class ManagedUser
     {
         return new self(
             self::TYPE_ADHERENT,
-            $adherent,
             $adherent->getId(),
             $adherent->getEmailAddress(),
+            $adherent->getRegisteredAt(),
             $adherent->getPostalCode(),
             $adherent->isHost(),
             $adherent->getFirstName(),
@@ -116,6 +139,11 @@ class ManagedUser
             $adherent->getBirthdate(),
             $adherent->getCityName(),
             $adherent->getCountry(),
+            $adherent->getPhone(),
+            $adherent->isHost(),
+            array_map(function (CommitteeMembership $membership) {
+                return $membership->getCommitteeUuid()->toString();
+            }, $adherent->getMemberships()->toArray()),
             $adherent->hasSubscribedReferentsEmails()
         );
     }
@@ -124,26 +152,21 @@ class ManagedUser
     {
         return new self(
             self::TYPE_NEWSLETTER_SUBSCRIBER,
-            $subscription,
             $subscription->getId(),
             $subscription->getEmail(),
+            $subscription->getCreatedAt(),
             $subscription->getPostalCode()
         );
     }
 
     public function isNewsletterSubscription()
     {
-        return $this->original instanceof NewsletterSubscription;
+        return self::TYPE_NEWSLETTER_SUBSCRIBER === $this->type;
     }
 
     public function isAdherent()
     {
-        return $this->original instanceof Adherent;
-    }
-
-    public function getOriginal()
-    {
-        return $this->original;
+        return self::TYPE_ADHERENT === $this->type;
     }
 
     public function getType(): string
@@ -207,7 +230,7 @@ class ManagedUser
     {
         $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
 
-        return strtoupper($normalized[0]).'.';
+        return strlen($normalized) > 0 ? strtoupper($normalized[0]).'.' : '';
     }
 
     public function getBirthdate(): ?\DateTime
@@ -242,13 +265,28 @@ class ManagedUser
         return $this->country;
     }
 
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function isHost(): bool
+    {
+        return $this->isHost;
+    }
+
     public function hasReferentsEmailsSubscription(): bool
     {
         return $this->referentsEmailsSubscription;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
-        return $this->isAdherent() ? $this->original->getRegisteredAt() : $this->original->getCreatedAt();
+        return $this->createdAt;
+    }
+
+    public function getCommittees(): array
+    {
+        return $this->committees;
     }
 }

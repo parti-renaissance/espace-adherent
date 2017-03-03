@@ -8,6 +8,8 @@ use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
+use AppBundle\Referent\ManagedUser;
+use libphonenumber\PhoneNumber;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -27,12 +29,8 @@ class ReferentController extends Controller
      */
     public function usersAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedUsersCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-all.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('all') ?? '[]',
         ]);
     }
 
@@ -42,12 +40,8 @@ class ReferentController extends Controller
      */
     public function usersSendMessageSubscribersAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedSubscribersCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-subscribers.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('subscribers') ?? '[]',
         ]);
     }
 
@@ -57,12 +51,8 @@ class ReferentController extends Controller
      */
     public function usersSendMessageAdherentsAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedAdherentsCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-adherents.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('adherents') ?? '[]',
         ]);
     }
 
@@ -72,12 +62,8 @@ class ReferentController extends Controller
      */
     public function usersSendMessageNonFollowersAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedNonFollowersCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-nonfollowers.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('non_followers') ?? '[]',
         ]);
     }
 
@@ -87,12 +73,8 @@ class ReferentController extends Controller
      */
     public function usersSendMessageFollowersAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedFollowersCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-followers.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('followers') ?? '[]',
         ]);
     }
 
@@ -102,12 +84,8 @@ class ReferentController extends Controller
      */
     public function usersSendMessageHostsAction(): Response
     {
-        $factory = $this->get('app.referent.managed_users.factory');
-        $list = $factory->createManagedHostsCollectionFor($this->getUser());
-        $exporter = $this->get('app.referent.managed_users.exporter');
-
         return $this->render('referent/users/list-hosts.html.twig', [
-            'managedUsersJson' => $exporter->exportAsJson($list),
+            'managedUsersJson' => $this->readDumpedUsersList('hosts') ?? '[]',
         ]);
     }
 
@@ -130,8 +108,16 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_'.$from);
         }
 
+        $allowedUsers = @unserialize($this->readDumpedUsersList('serialized') ?? 'a:0:{}', [
+            'allowed_classes' => [
+                ManagedUser::class,
+                PhoneNumber::class,
+                \DateTime::class,
+            ],
+        ]);
+
         $factory = $this->get('app.referent.message_factory');
-        $referentMessage = $factory->createReferentMessageFor($this->getUser(), $selected);
+        $referentMessage = $factory->createReferentMessageFor($this->getUser(), $allowedUsers, $selected);
 
         if (empty($referentMessage->getTo())) {
             return $this->redirectToRoute('app_referent_users');
@@ -210,5 +196,16 @@ class ReferentController extends Controller
         return $this->render('referent/commitees/list.html.twig', [
             'managedCommitteesJson' => $exporter->exportAsJson($list),
         ]);
+    }
+
+    private function readDumpedUsersList(string $type)
+    {
+        $filename = 'dumped_referents_users/'.$this->getUser()->getUuid()->toString().'_'.$type.'.data';
+
+        if (!$this->get('app.storage')->has($filename)) {
+            return null;
+        }
+
+        return $this->get('app.storage')->read($filename);
     }
 }

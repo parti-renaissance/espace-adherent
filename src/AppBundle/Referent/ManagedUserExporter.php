@@ -28,9 +28,8 @@ class ManagedUserExporter
         $data = [];
 
         foreach ($managedUsers as $user) {
-            $original = $user->getOriginal();
-            $isHost = $user->isAdherent() && $original->isHost();
-            $phone = $user->isAdherent() ? $original->getPhone() : null;
+            $isHost = $user->isHost();
+            $phone = $user->getPhone();
 
             $data[] = [
                 'type' => $user->getType(),
@@ -80,9 +79,9 @@ class ManagedUserExporter
 
         $committees = [];
 
-        foreach ($user->getOriginal()->getMemberships() as $membership) {
-            if (isset($registry[$membership->getCommitteeUuid()->toString()])) {
-                $committees[] = htmlspecialchars($registry[$membership->getCommitteeUuid()->toString()]->getName());
+        foreach ($user->getCommittees() as $uuid) {
+            if (isset($registry[$uuid])) {
+                $committees[] = htmlspecialchars($registry[$uuid]->getName());
             }
         }
 

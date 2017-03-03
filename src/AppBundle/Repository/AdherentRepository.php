@@ -108,6 +108,20 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     }
 
     /**
+     * Finds the list of referents.
+     *
+     * @return Adherent[]
+     */
+    public function findReferents(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.managedArea.codes IS NOT NULL')
+            ->andWhere('LENGTH(a.managedArea.codes) > 0')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Finds the list of adherents managed by the given referent.
      *
      * @param Adherent $referent

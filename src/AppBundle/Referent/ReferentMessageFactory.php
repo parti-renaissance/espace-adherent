@@ -16,9 +16,8 @@ class ReferentMessageFactory
         $this->usersListBuilder = $usersListBuilder;
     }
 
-    public function createReferentMessageFor(Adherent $referent, array $selected): ReferentMessage
+    public function createReferentMessageFor(Adherent $referent, array $allowedManagedUsers, array $selected): ReferentMessage
     {
-        $allowedManagedUsers = $this->createManagedUsersListIndexedByTypeAndId($referent);
         $selectedManagedUser = [];
 
         foreach ($selected as $user) {
@@ -36,19 +35,5 @@ class ReferentMessageFactory
         }
 
         return new ReferentMessage($referent, $selectedManagedUser);
-    }
-
-    private function createManagedUsersListIndexedByTypeAndId(Adherent $referent): array
-    {
-        $users = $this->usersListBuilder->createManagedUsersCollectionFor($referent);
-        $registry = [];
-
-        foreach ($users as $user) {
-            if ($user->hasReferentsEmailsSubscription()) {
-                $registry[$user->getType()][$user->getId()] = $user;
-            }
-        }
-
-        return $registry;
     }
 }

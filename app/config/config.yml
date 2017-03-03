@@ -213,10 +213,22 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'mailjet-referent', type: direct }
             class:            AppBundle\Producer\Mailjet\ReferentMessageMailjetProducer
 
+        referent_managed_users_dumper:
+            connection:       default
+            exchange_options: { name: 'referent-managed-users-dumper', type: direct }
+            class:            AppBundle\Producer\ReferentManagedUsersDumperProducer
+
     consumers:
         mailjet_referent:
             connection:        default
             exchange_options:  { name: 'mailjet-referent', type: direct }
             queue_options:     { name: 'mailjet-referent', durable: false }
             callback:          app.consumer.mailjet.referent
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        referent_managed_users_dumper:
+            connection:        default
+            exchange_options:  { name: 'referent-managed-users-dumper', type: direct }
+            queue_options:     { name: 'referent-managed-users-dumper', durable: false }
+            callback:          app.consumer.referent_managed_users_dumper
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
