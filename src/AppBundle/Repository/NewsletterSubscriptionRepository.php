@@ -15,8 +15,19 @@ class NewsletterSubscriptionRepository extends EntityRepository
      *
      * @return NewsletterSubscription[]
      */
-    public function findAllManagedBy(Adherent $referent): array
+    public function findAllManagedBy(Adherent $referent)
     {
+        $hasFranceManagedArea = false;
+        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+            if (is_numeric($code)) {
+                $hasFranceManagedArea = true;
+            }
+        }
+
+        if (!$hasFranceManagedArea) {
+            return [];
+        }
+
         $qb = $this->createQueryBuilder('n')
             ->select('n')
             ->orderBy('n.createdAt', 'DESC')

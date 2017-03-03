@@ -27,6 +27,25 @@ class ManagedUserFactory
      *
      * @return ManagedUser[]
      */
+    public function createManagedUsersListIndexedByTypeAndId(Adherent $referent): array
+    {
+        $users = $this->createManagedUsersCollectionFor($referent);
+        $registry = [];
+
+        foreach ($users as $user) {
+            if ($user->hasReferentsEmailsSubscription()) {
+                $registry[$user->getType()][$user->getId()] = $user;
+            }
+        }
+
+        return $registry;
+    }
+
+    /**
+     * @param Adherent $referent
+     *
+     * @return ManagedUser[]
+     */
     public function createManagedUsersCollectionFor(Adherent $referent): array
     {
         return $this->aggregate(
@@ -122,7 +141,7 @@ class ManagedUserFactory
      *
      * @return array
      */
-    private function aggregate(array $newsletterSubscriptions, array $adherents)
+    private function aggregate($newsletterSubscriptions, $adherents)
     {
         $managedUsers = [];
 
