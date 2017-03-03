@@ -27,7 +27,7 @@ class JeMarcheReportType extends AbstractType
                     'un porte-à-porte' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
                     'Un dîner' => JeMarcheReport::TYPE_DINNER,
                     'Une conversation' => JeMarcheReport::TYPE_CONVERSATION,
-                    'Un atelier du projet' => JeMarcheReport::TYPE_WORKSHOP,
+                    'Un atelier du programme' => JeMarcheReport::TYPE_WORKSHOP,
                     'Une action qui me ressemble' => JeMarcheReport::TYPE_ACTION,
                 ],
             ])
