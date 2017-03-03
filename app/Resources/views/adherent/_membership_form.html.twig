@@ -89,8 +89,9 @@
                 {{ form_errors(form.password.first) }}
             </div>
             <div class="l__col l__col--top register__form--mid">
-                {{ form_widget(form.password.second, { attr: { placeholder: 'Ré-entrez votre mot de passe' } }) }}
+                {{ form_widget(form.password.second, { attr: { placeholder: 'Ré-entrez votre mot de passe', onkeyup: 'checkPass(); return false;' } }) }}
                 {{ form_errors(form.password.second) }}
+                <span id="confirmMessage" class="confirmMessage"></span>
             </div>
         </div>
     {% endif %}
@@ -111,7 +112,7 @@
     {% endif %}
 
     <div class="register__form">
-        {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
+        {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top', disabled :'true' }}) }}
     </div>
 
     {{ form_end(form) }}
