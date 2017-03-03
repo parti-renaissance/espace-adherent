@@ -11,7 +11,7 @@ class DonationRequestFactory
     public function createFromRequest(Request $request, float $amount, $currentUser = null): DonationRequest
     {
         if ($currentUser instanceof Adherent) {
-            $donation = DonationRequest::createFromAdherent($currentUser);
+            $donation = DonationRequest::createFromAdherent($currentUser, $amount);
         } else {
             $donation = new DonationRequest($amount);
         }
