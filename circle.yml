@@ -35,7 +35,7 @@ test:
 
 deployment:
     staging:
-        branch: fix/referents-access
+        branch: master
         owner: EnMarche
         commands:
             # Check packages security
@@ -60,7 +60,8 @@ deployment:
             - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/worker-referents-users-dumper:$CIRCLE_SHA1
 
             # Deploy to staging
-            #- sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-            #- sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
-            #- sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            #- sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-mailjet enmarche=eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1
+            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
+            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-mailjet enmarche=eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1
+            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-referents-users-dumper enmarche=eu.gcr.io/$GCLOUD_PROJECT/worker-referents-users-dumper:$CIRCLE_SHA1
