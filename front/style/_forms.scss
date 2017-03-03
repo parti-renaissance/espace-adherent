@@ -121,6 +121,8 @@
                 content: ' ';
                 width: 20px;
                 height: 20px;
+                min-width: 20px;
+                min-height: 20px;
                 border-radius: 50px;
                 margin-right: 10px;
                 border: 7px solid $gray--light;
@@ -166,6 +168,8 @@
                 content: ' ';
                 width: 20px;
                 height: 20px;
+                min-width: 20px;
+                min-height: 20px;
                 margin-right: 10px;
                 border: 1px solid $gray--light;
                 transition: all .2s;
@@ -179,6 +183,8 @@
         &--large label:before {
             width: 30px;
             height: 30px;
+            min-width: 30px;
+            min-height: 30px;
         }
 
         &:hover {
