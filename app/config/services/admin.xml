@@ -161,6 +161,7 @@
             <argument />
             <argument>AppBundle\Entity\Committee</argument>
             <argument />
+            <argument type="service" id="app.committee.manager" />
 
             <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoire" />
         </service>

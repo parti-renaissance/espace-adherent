@@ -248,7 +248,7 @@ class CommitteeMembershipRepository extends EntityRepository
         $qb = $this->createQueryBuilder('cm');
 
         $query = $qb
-            ->select('cm')
+            ->select('cm', 'adherent')
             ->leftJoin('cm.adherent', 'adherent')
             ->where('cm.committeeUuid = :committee')
             ->andWhere($qb->expr()->in('cm.privilege', $privileges))

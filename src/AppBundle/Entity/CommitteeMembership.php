@@ -189,4 +189,9 @@ class CommitteeMembership
     {
         return $this->committeeUuid;
     }
+
+    public function setPrivilege(string $privilege)
+    {
+        $this->privilege = $privilege;
+    }
 }

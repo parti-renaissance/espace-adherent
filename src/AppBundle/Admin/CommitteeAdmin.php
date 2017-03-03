@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Committee;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -14,6 +15,35 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CommitteeAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
+    private $manager;
+    private $cachedDatagrid;
+
+    public function __construct($code, $class, $baseControllerName, CommitteeManager $manager)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->manager = $manager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagrid()
+    {
+        if (!$this->cachedDatagrid) {
+            $this->cachedDatagrid = new CommitteeDatagrid(parent::getDatagrid(), $this->manager);
+        }
+
+        return $this->cachedDatagrid;
+    }
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -169,7 +199,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('name', null, [
+            ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
             ->add('postAddress.postalCode', null, [
@@ -178,24 +208,23 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('cityName', null, [
                 'label' => 'Ville',
             ])
-            ->add('isWaitingForApproval', 'boolean', [
-                'label' => 'En attente ?',
+            ->add('membersCounts', null, [
+                'label' => 'Membres',
             ])
-            ->add('isApproved', 'boolean', [
-                'label' => 'Approuvé ?',
+            ->add('createdAt', null, [
+                'label' => 'Date de création',
             ])
-            ->add('isRefused', 'boolean', [
-                'label' => 'Refusé ?',
+            ->add('hosts', TextType::class, [
+                'label' => 'Animateur(s)',
+                'template' => 'admin/committee_hosts.html.twig',
+            ])
+            ->add('status', TextType::class, [
+                'label' => 'Statut',
+                'template' => 'admin/committee_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'approve' => [
-                        'template' => 'admin/committee_approve.html.twig',
-                    ],
-                    'show' => [],
-                    'edit' => [],
-                ],
+                'template' => 'admin/committee_actions.html.twig',
             ])
         ;
     }
