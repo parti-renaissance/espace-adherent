@@ -1,0 +1,88 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Gérer les membres du comité "{{ committee.name }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <p>
+        <a href="{{ path('admin_app_committee_list') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Retour à la liste
+        </a>
+    </p>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        <thead>
+                        <tr>
+                            <th>
+                                Membre
+                            </th>
+                            <th>
+                                Rôle
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                        {% for host in hosts %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', {'id': host.id}) }}">
+                                        {{ host.fullName }}
+                                    </a>
+                                    <br />
+                                    {{ host.emailAddress }}
+                                </td>
+                                <td>
+                                    <span class="label label-primary">Animateur</span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_admin_committee_change_role', {'id': committee.id, 'userId': host.id, 'role': 'follower'}) }}"
+                                       class="btn btn-default btn-sm">
+                                        Transformer en membre normal
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for member in members %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', {'id': member.id}) }}">
+                                        {{ member.fullName }}
+                                    </a>
+                                    <br />
+                                    {{ member.emailAddress }}
+                                </td>
+                                <td>
+                                    <span class="label label-default">Membre</span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_admin_committee_change_role', {'id': committee.id, 'userId': member.id, 'role': 'host'}) }}"
+                                       class="btn btn-default btn-sm">
+                                        Transformer en animateur
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

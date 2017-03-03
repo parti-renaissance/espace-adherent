@@ -124,6 +124,11 @@ class Committee implements GeoPointInterface
      */
     private $membersCounts;
 
+    /**
+     * A cached list of the hosts (for admin).
+     */
+    public $hosts = [];
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,

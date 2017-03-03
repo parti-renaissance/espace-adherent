@@ -558,4 +558,18 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function isHostOf(Committee $committee): bool
+    {
+        foreach ($this->memberships as $membership) {
+            if ($membership->isHostMember() && $membership->getCommitteeUuid() === $committee->getUuid()->toString()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
