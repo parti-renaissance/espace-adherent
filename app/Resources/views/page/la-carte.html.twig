@@ -26,11 +26,24 @@
 
 {% block content %}
     <main class="content committees-map">
-        <header class="l__wrapper--slim text--center b__nudge--bottom-medium">
+        <header class="l__wrapper--slim text--center committees-map__header">
             <h1 class="text--large">
                 La carte En Marche !
             </h1>
         </header>
+        <section class="l__wrapper-500 b__nudge--bottom-medium">
+            <div class="l__row l__row--h-stretch l__mobile--col">
+                <div class="committees-map__counter">
+                    <h4>{{ userCount|number_format(0, ',', ' ') }}</h4> adhérents
+                </div>
+                <div class="committees-map__counter">
+                    <h4>{{ committeeCount|number_format(0, ',', ' ') }}</h4> comités
+                </div>
+                <div class="committees-map__counter">
+                    <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements
+                </div>
+            </div>
+        </section>
         <section class="committees-map__container">
              <article class="text--center">
                  <div id="map" style="height: 100%"></div>
