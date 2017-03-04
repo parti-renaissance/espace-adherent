@@ -9,6 +9,10 @@
                 </a>
                 <br />
                 {{ host.emailAddress }}
+                {% if host.phone %}
+                    <br />
+                    {{ host.phone|phone_number_format }}
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

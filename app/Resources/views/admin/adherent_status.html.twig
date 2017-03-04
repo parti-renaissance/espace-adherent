@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {% if object.isReferent %}
+        <span class="label label-primary">Référent</span>
+    {% elseif object.isHost %}
+        <span class="label label-info">Animateur</span>
+    {% else %}
+        <span class="label label-default">Adhérent</span>
+    {% endif %}
+{% endblock %}

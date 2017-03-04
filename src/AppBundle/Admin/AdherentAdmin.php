@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
+use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +19,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdherentAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -158,6 +166,9 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
@@ -166,6 +177,10 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('registeredAt', 'doctrine_orm_date_range', [
+                'label' => 'Date d\'adhésion',
+                'field_type' => 'sonata_type_date_range_picker',
             ])
             ->add('postalCode', 'doctrine_orm_callback', [
                 'label' => 'Code postal',
@@ -179,6 +194,41 @@ class AdherentAdmin extends AbstractAdmin
 
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
+
+                    return true;
+                },
+            ])
+            ->add('city', 'doctrine_orm_callback', [
+                'label' => 'Ville',
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    /* @var QueryBuilder $qb */
+
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+
+                    return true;
+                },
+            ])
+            ->add('country', 'doctrine_orm_callback', [
+                'label' => 'Pays',
+                'field_type' => 'choice',
+                'field_options' => [
+                    'choices' => array_flip(UnitedNationsBundle::getCountries()),
+                ],
+                'callback' => function ($qb, $alias, $field, $value) {
+                    /* @var QueryBuilder $qb */
+
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
+                    $qb->setParameter('country', strtolower($value['value']));
 
                     return true;
                 },
@@ -204,6 +254,9 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
@@ -213,30 +266,30 @@ class AdherentAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
+            ->add('phone', null, [
+                'label' => 'Téléphone',
+                'template' => 'admin/adherent_phone.html.twig',
+            ])
             ->add('postAddress.postalCode', null, [
                 'label' => 'Code postal',
             ])
-            ->add('cityName', null, [
+            ->add('postAddress.cityName', null, [
                 'label' => 'Ville',
             ])
-            ->add('isEnabled', 'boolean', [
-                'label' => 'Activé ?',
+            ->add('postAddress.country', null, [
+                'label' => 'Pays',
             ])
-            ->add('isHost', 'boolean', [
-                'label' => 'Animateur ?',
+            ->add('registeredAt', null, [
+                'label' => 'Date d\'adhésion',
             ])
-            ->add('isReferent', 'boolean', [
-                'label' => 'Référent ?',
+            ->add('type', TextType::class, [
+                'label' => 'Type',
+                'template' => 'admin/adherent_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'impersonate' => [
-                        'template' => 'admin/adherent_impersonate.html.twig',
-                    ],
-                    'show' => [],
-                    'edit' => [],
-                ],
-            ]);
+                'template' => 'admin/adherent_actions.html.twig',
+            ])
+        ;
     }
 }
