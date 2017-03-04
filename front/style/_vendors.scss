@@ -49,3 +49,14 @@
         }
     }
 }
+
+.gm-style-iw a {
+    border: 0;
+    display: inline-block;
+    margin: 0 10px;
+    color: #009ac4;
+    
+    &:hover {
+        text-decoration: underline;
+    }
+}
