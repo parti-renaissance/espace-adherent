@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -113,7 +116,11 @@ class PageController extends Controller
      */
     public function mouvementCarteAction()
     {
-        return $this->render('page/la-carte.html.twig');
+        return $this->render('page/la-carte.html.twig', [
+            'userCount' => $this->getDoctrine()->getRepository(Adherent::class)->count(),
+            'eventCount' => $this->getDoctrine()->getRepository(Event::class)->count(),
+            'committeeCount' => $this->getDoctrine()->getRepository(Committee::class)->count(),
+        ]);
     }
 
     /**

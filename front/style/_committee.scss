@@ -426,8 +426,8 @@
     flex-direction: column;
     height: 100%;
 
-    header {
-        margin-bottom: 0;
+    &__header {
+        margin-bottom: 15px !important;
     }
 
     &__container {
@@ -451,6 +451,12 @@
         article {
             background: url('/images/loader-sm.gif') 50% 50% no-repeat;
             width: 100%;
+        }
+    }
+    
+    &__counter {
+        h4 {
+            display: inline;
         }
     }
 }
