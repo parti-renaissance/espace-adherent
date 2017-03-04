@@ -162,6 +162,7 @@
             <argument>AppBundle\Entity\Committee</argument>
             <argument />
             <argument type="service" id="app.committee.manager" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
 
             <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoire" />
         </service>

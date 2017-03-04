@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class CommitteeMembershipRepository extends EntityRepository
 {
@@ -295,5 +296,53 @@ class CommitteeMembershipRepository extends EntityRepository
                 $query->getResult()
             )
         );
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return array
+     */
+    public function findCommitteesUuidByHostFirstName(string $firstName): array
+    {
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
+            ->select('cm.committeeUuid')
+            ->leftJoin('cm.adherent', 'a')
+            ->where('LOWER(a.firstName) LIKE :firstName')
+            ->andWhere('cm.privilege = :host')
+            ->setParameter('firstName', '%'.strtolower($firstName).'%')
+            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'committeeUuid'));
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return array
+     */
+    public function findCommitteesUuidByHostLastName(string $lastName): array
+    {
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
+            ->select('cm.committeeUuid')
+            ->leftJoin('cm.adherent', 'a')
+            ->where('LOWER(a.lastName) LIKE :lastName')
+            ->andWhere('cm.privilege = :host')
+            ->setParameter('lastName', '%'.strtolower($lastName).'%')
+            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'committeeUuid'));
     }
 }

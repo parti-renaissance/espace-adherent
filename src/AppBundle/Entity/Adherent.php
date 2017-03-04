@@ -176,6 +176,19 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $roles;
     }
 
+    public function getType(): string
+    {
+        if ($this->isReferent()) {
+            return 'REFERENT';
+        }
+
+        if ($this->isHost()) {
+            return 'HOST';
+        }
+
+        return 'ADHERENT';
+    }
+
     public function getPassword()
     {
         return !$this->password ? $this->oldPassword : $this->password;
