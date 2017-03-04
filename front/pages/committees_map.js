@@ -23,7 +23,7 @@ export default (mapFactory, api) => {
                 }
 
                 infowindow = new google.maps.InfoWindow({
-                    content: committee.name,
+                    content: `<a href="${committee.url}" target="_blank">${committee.name}</a>`,
                     position: committee.position,
                     pixelOffset: new google.maps.Size(0, -8),
                 });

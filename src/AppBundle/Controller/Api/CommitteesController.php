@@ -31,6 +31,10 @@ class CommitteesController extends Controller
                 'uuid' => $committee->getUuid()->toString(),
                 'slug' => $committee->getSlug(),
                 'name' => $committee->getName(),
+                'url' => $this->generateUrl('app_committee_show', [
+                    'uuid' => $committee->getUuid()->toString(),
+                    'slug' => $committee->getSlug(),
+                ]),
                 'position' => [
                     'lat' => (float) $committee->getLatitude(),
                     'lng' => (float) $committee->getLongitude(),
