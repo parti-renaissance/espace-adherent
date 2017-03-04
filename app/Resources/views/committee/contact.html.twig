@@ -33,6 +33,10 @@
                 <div class="text--body">{{ 'Votre message sera envoyé par e-mail à %s de votre comité.'|format('committee.members_count'|transchoice(contacts|length)) }}</div>
             {% endif %}
 
+            <div class="text--body b__nudge--bottom-small">
+                Vous serez systématiquement mis en copie des messages que vous envoyez.
+            </div>
+
             {{ form_start(form) }}
                 {{ form_errors(form.message) }}
                 <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
