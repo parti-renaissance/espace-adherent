@@ -6,6 +6,7 @@
 
         <service id="app.committee.manager" class="AppBundle\Committee\CommitteeManager">
             <argument type="service" id="doctrine"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
         </service>
 
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
