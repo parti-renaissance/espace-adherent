@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% if object.responsePayload %}
+        <pre style="max-height: 400px; overflow: scroll;">
+            {{- object.responsePayload|json_encode(128) -}}
+        </pre>
+    {% else %}
+        Aucune réponse
+    {% endif %}
+{% endblock %}

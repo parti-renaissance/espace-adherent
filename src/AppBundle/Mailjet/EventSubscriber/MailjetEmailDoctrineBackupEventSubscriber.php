@@ -5,7 +5,6 @@ namespace AppBundle\Mailjet\EventSubscriber;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
-use AppBundle\Mailjet\MailjetUtils;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,14 +33,7 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         $email = $event->getEmail();
         $message = $event->getMessage();
 
-        foreach ($message->getRecipients() as $recipient) {
-            $this->manager->persist(MailjetEmail::createFromMessage(
-                $message,
-                $recipient->getEmailAddress(),
-                $email->getHttpRequestPayload()
-            ));
-        }
-
+        $this->manager->persist(MailjetEmail::createFromMessage($message, $email->getHttpRequestPayload()));
         $this->manager->flush();
     }
 
@@ -54,19 +46,13 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         }
 
         $message = $event->getMessage();
-        if (empty($emails = $this->repository->findByMessageBatchUuid($message->getBatch()))) {
+        if (!$email = $this->repository->findOneByUuid($message->getBatch()->toString())) {
             return;
         }
 
-        $recipients = MailjetUtils::getSuccessfulRecipientsFromJson($responsePayload, true);
+        $email->delivered($responsePayload);
 
-        foreach ($emails as $email) {
-            $recipient = MailjetUtils::canonicalize($email->getRecipient());
-            if (isset($recipients[$recipient])) {
-                $email->delivered($responsePayload);
-            }
-        }
-
+        $this->manager->persist($email);
         $this->manager->flush();
     }
 }

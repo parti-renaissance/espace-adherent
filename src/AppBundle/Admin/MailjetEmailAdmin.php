@@ -12,60 +12,62 @@ class MailjetEmailAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('subject', null, [
-                'label' => 'Destinataire',
-            ])
-            ->add('recipient', null, [
-                'label' => 'Destinataire',
-            ])
-            ->add('template', null, [
-                'label' => 'Template',
+            ->add('id', null, [
+                'label' => 'ID',
             ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
             ])
-            ->add('messageBatchUuid', null, [
-                'label' => 'ID de batch',
+            ->add('sender', null, [
+                'label' => 'Expéditeur',
             ])
-                ->add('delivered', 'boolean', [
-                'label' => 'Delivered',
+            ->add('createdAt', null, [
+                'label' => 'Date de création',
             ])
-            ->add('sentAt', null, [
-                'label' => 'Date d\'envoi',
+            ->add('updatedAt', null, [
+                'label' => 'Date de traitement',
+            ])
+            ->add('recipientsAsString', null, [
+                'label' => 'Destinataires',
             ])
             ->add('requestPayload', null, [
                 'label' => 'Requête',
+                'template' => 'admin/mailjet_request.html.twig',
             ])
             ->add('responsePayload', null, [
                 'label' => 'Réponse',
+                'template' => 'admin/mailjet_response.html.twig',
             ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('recipient', null, [
-                'label' => 'Destinataire',
-            ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
+            ])
+            ->add('sender', null, [
+                'label' => 'Expéditeur',
             ]);
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
             ])
-            ->add('recipient', null, [
-                'label' => 'Destinataire',
+            ->add('sender', null, [
+                'label' => 'Expéditeur',
             ])
-            ->add('delivered', 'boolean', [
-                'label' => 'Delivered',
+            ->add('createdAt', null, [
+                'label' => 'Date de création',
             ])
-            ->add('sentAt', null, [
-                'label' => 'Date d\'envoi',
+            ->add('updatedAt', null, [
+                'label' => 'Date de traitement',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

@@ -304,11 +304,10 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
         $this->assertSame("Débat sur l'écologie", $event->getName());
-        $this->assertCount(3, $this->emailRepository->findMessages(EventNotificationMessage::class, (string) $event->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'gisele-berthoux@caramail.com'));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'luciole1989@spambox.fr'));
-        $this->assertCount(0, $this->emailRepository->findRecipientMessages(EventNotificationMessage::class, 'carl999@example.fr'));
+        $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
@@ -523,9 +522,10 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
-        $this->assertCount(
+        $this->assertMailCountRecipients(
             $this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID),
-            $this->emailRepository->findMessages(CommitteeMessageNotificationMessage::class, $message->getUuid())
+            CommitteeMessageNotificationMessage::class,
+            $message->getUuid()
         );
     }
 
