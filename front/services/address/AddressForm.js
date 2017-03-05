@@ -11,7 +11,7 @@ export default class AddressForm {
 
         this._state = {
             country: this._country.value,
-            postalCode: this._postalCode.value,
+            postalCode: this._postalCode.value.replace(' ', ''),
             cities: null,
             loading: false
         };
@@ -24,23 +24,20 @@ export default class AddressForm {
     }
 
     attachEvents() {
+        const resetCityAndRefresh = () => {
+            this._state.cities = null;
+            this.loadCities();
+            this.refresh();
+        };
+
         on(this._country, 'change', (event) => {
             this._state.country = event.target.value;
-            this._state.cities = null;
-            this.loadCities();
-            this.refresh();
+            resetCityAndRefresh();
         });
 
-        on(this._postalCode, 'keyup', (event) => {
-            if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
-                // Ignore non alpha-numeric characters
-                return;
-            }
-
-            this._state.postalCode = event.target.value;
-            this._state.cities = null;
-            this.loadCities();
-            this.refresh();
+        on(this._postalCode, 'input', (event) => {
+            this._state.postalCode = event.target.value.replace(' ', '');
+            resetCityAndRefresh();
         });
     }
 
