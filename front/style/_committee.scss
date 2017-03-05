@@ -383,6 +383,7 @@
 
     &__schedule {
         padding: 30px;
+        border-bottom: 1px solid $gray--light;
 
         .fa {
             margin-right: 8px;
@@ -453,7 +454,7 @@
             width: 100%;
         }
     }
-    
+
     &__counter {
         h4 {
             display: inline;
