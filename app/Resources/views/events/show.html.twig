@@ -100,9 +100,6 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="committee__event__map" id="map"></div>
-            <hr>
         </section>
         <section class="l__wrapper--slim space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
@@ -132,6 +129,9 @@
             <div class="committee-event-description b__nudge--bottom-huge">
                 {{- event.description|raw -}}
             </div>
+        </section>
+        <section class="l__wrapper">
+            <div class="committee__event__map" id="map"></div>
         </section>
     </main>
 {% endblock %}
