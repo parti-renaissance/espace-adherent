@@ -244,7 +244,10 @@
     text-align: center;
 }
 
-.security, .login, .forgot-password {
+.security,
+.login,
+.forgot-password,
+.reset-password {
     &--box {
         margin: 20px auto 0;
         background-color: white;
