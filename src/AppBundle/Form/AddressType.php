@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Address\Address;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,9 +16,6 @@ class AddressType extends AbstractType
     {
         $builder
             ->add('address', TextType::class)
-            ->add('postalCode', TextType::class, [
-                'error_bubbling' => true,
-            ])
             ->add('city', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,
@@ -27,6 +25,21 @@ class AddressType extends AbstractType
             ])
             ->add('country', UnitedNationsCountryType::class)
         ;
+
+        $field = $builder->create('postalCode', TextType::class, [
+            'error_bubbling' => true,
+        ]);
+
+        $field->addModelTransformer(new CallbackTransformer(
+            function ($data) {
+                return $data;
+            },
+            function ($value) {
+                return str_replace(' ', '', $value);
+            }
+        ));
+
+        $builder->add($field);
     }
 
     public function configureOptions(OptionsResolver $resolver)
