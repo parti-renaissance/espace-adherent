@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\EventRepository;
@@ -74,6 +75,9 @@ class CommitteeControllerTest extends SqliteWebTestCase
         // Emulate POST request to follow the committee.
         $token = $crawler->selectButton('Suivre ce comité')->attr('data-csrf-token');
         $this->client->request(Request::METHOD_POST, $committeeUrl.'/rejoindre', ['token' => $token]);
+
+        // Email sent to the host
+        $this->assertCountMails(1, CommitteeNewFollowerMessage::class, 'francis.brioul@yahoo.com');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

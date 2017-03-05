@@ -8,6 +8,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
@@ -23,10 +25,12 @@ class CommitteeManager
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $registry;
+    private $mailjet;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, MailjetService $mailjet = null)
     {
         $this->registry = $registry;
+        $this->mailjet = $mailjet;
     }
 
     public function isCommitteeHost(Adherent $adherent): bool
@@ -192,6 +196,14 @@ class CommitteeManager
     {
         $manager = $this->getManager();
         $manager->persist($adherent->followCommittee($committee));
+
+        if ($this->mailjet) {
+            $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
+                $committee,
+                $this->getCommitteeHosts($committee)->toArray(),
+                $adherent
+            ));
+        }
 
         if ($flush) {
             $manager->flush();
