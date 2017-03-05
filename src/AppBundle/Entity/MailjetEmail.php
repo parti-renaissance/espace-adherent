@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="mailjet_emails")
+ * @ORM\Table(name="mailjet_logs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MailjetEmailRepository")
  */
 class MailjetEmail
