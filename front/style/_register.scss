@@ -56,6 +56,10 @@
                 width: 49%;
                 margin-right: 0;
             }
+
+            select {
+                font-size: $text--size-smallest;
+            }
         }
 
         &__gender {
