@@ -6,6 +6,7 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
@@ -33,10 +34,6 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $author = $this->committeeMembershipRepository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID)->first();
 
-        $subscribersCount = $this->committeeMembershipRepository->findFollowers(LoadAdherentData::COMMITTEE_1_UUID)
-            ->getCommitteesNotificationsSubscribers()
-            ->count();
-
         $messageContent = 'Bienvenue !';
 
         $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, $messageContent));
@@ -44,7 +41,10 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
 
-        $this->assertCount($subscribersCount, $this->getMailjetEmailRepository()->findAll());
+        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
     }
 
     public function setUp()

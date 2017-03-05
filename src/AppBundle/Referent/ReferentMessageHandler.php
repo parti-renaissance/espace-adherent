@@ -20,7 +20,7 @@ class ReferentMessageHandler
         $message = ReferentMessage::createFromModel($model);
 
         // Split in chunks to avoid overloading Mailjet API
-        $chunks = array_chunk($message->getRecipients(), 100);
+        $chunks = array_chunk($message->getRecipients(), 200);
 
         foreach ($chunks as $chunk) {
             $this->producer->scheduleMessage(ReferentMessage::createChunk($chunk, $message));

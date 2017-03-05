@@ -21,43 +21,43 @@ class MailjetEmailRepository extends EntityRepository
     }
 
     /**
-     * Finds a list of MailjetEmail instances having the same message batch UUID.
-     *
-     * @param string $uuid
+     * @param string $messageClass
+     * @param string $recipient
      *
      * @return MailjetEmail[]
      */
-    public function findByMessageBatchUuid(string $uuid): array
-    {
-        return $this->findBy(['messageBatchUuid' => Uuid::fromString($uuid)->toString()]);
-    }
-
     public function findRecipientMessages(string $messageClass, string $recipient): array
     {
         $query = $this
             ->createQueryBuilder('e')
             ->where('e.messageClass = :class')
-            ->andWhere('e.recipient = :recipient')
-            ->orderBy('e.sentAt', 'DESC')
-            ->setParameter('class', $messageClass)
-            ->setParameter('recipient', $recipient)
+            ->andWhere('e.recipients LIKE :recipient')
+            ->orderBy('e.createdAt', 'DESC')
+            ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass))
+            ->setParameter('recipient', '%'.$recipient.'%')
             ->getQuery()
         ;
 
         return $query->getResult();
     }
 
+    /**
+     * @param string      $messageClass
+     * @param string|null $batch
+     *
+     * @return MailjetEmail[]
+     */
     public function findMessages(string $messageClass, string $batch = null): array
     {
         $qb = $this
             ->createQueryBuilder('e')
             ->where('e.messageClass = :class')
-            ->orderBy('e.sentAt', 'DESC')
-            ->setParameter('class', $messageClass);
+            ->orderBy('e.createdAt', 'DESC')
+            ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass));
 
         if ($batch) {
             $qb
-                ->andWhere('e.messageBatchUuid = :batch')
+                ->andWhere('e.uuid = :batch')
                 ->setParameter('batch', $batch);
         }
 

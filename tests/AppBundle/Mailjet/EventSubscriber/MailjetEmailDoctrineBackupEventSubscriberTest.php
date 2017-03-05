@@ -23,7 +23,7 @@ class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_T
 
     public function testOnMailjetDeliveryMessage()
     {
-        $this->manager->expects($this->exactly(2))->method('persist');
+        $this->manager->expects($this->exactly(1))->method('persist');
         $this->manager->expects($this->once())->method('flush');
 
         $adherents[] = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
@@ -39,7 +39,7 @@ class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_T
 
     public function testOnMailjetDeliverySuccessWithEmptyJsonResponsePayload()
     {
-        $this->repository->expects($this->never())->method('findByMessageBatchUuid');
+        $this->repository->expects($this->never())->method('findOneByUuid');
         $this->manager->expects($this->never())->method('flush');
 
         $this->subscriber->onMailjetDeliverySuccess(new MailjetEvent(
@@ -62,7 +62,7 @@ EOF;
         $email = MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr');
         $email->delivered($responsePayload, $email->getHttpRequestPayload());
 
-        $this->repository->expects($this->once())->method('findByMessageBatchUuid')->willReturn([]);
+        $this->repository->expects($this->once())->method('findOneByUuid')->willReturn(null);
         $this->manager->expects($this->never())->method('flush');
 
         $this->subscriber->onMailjetDeliverySuccess(new MailjetEvent($message, $email));
@@ -85,23 +85,18 @@ EOF;
         $email = MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr');
         $email->delivered($responsePayload, $requestPayload = $email->getHttpRequestPayload());
 
-        $this->repository->expects($this->once())->method('findByMessageBatchUuid')->willReturn([
-            $message1 = MailjetEmail::createFromMessage($message, 'dummy@example.tld', $requestPayload),
-            $message2 = MailjetEmail::createFromMessage($message, 'vincent777h@example.tld', $requestPayload),
-        ]);
+        $this->repository
+            ->expects($this->once())
+            ->method('findOneByUuid')
+            ->willReturn($message1 = MailjetEmail::createFromMessage($message, $requestPayload));
 
         $this->manager->expects($this->once())->method('flush');
 
         $this->subscriber->onMailjetDeliverySuccess(new MailjetEvent($message, $email));
 
         $this->assertTrue($message1->isDelivered());
-        $this->assertTrue($message2->isDelivered());
-
-        $this->assertSame($requestPayload, $message1->getRequestPayload());
-        $this->assertSame($requestPayload, $message2->getRequestPayload());
-
-        $this->assertSame($responsePayload, $message1->getResponsePayload());
-        $this->assertSame($responsePayload, $message2->getResponsePayload());
+        $this->assertSame($requestPayload, $message1->getRequestPayloadJson());
+        $this->assertSame($responsePayload, $message1->getResponsePayloadJson());
     }
 
     private function createAdherentMock(string $emailAddress, string $firstName, string $lastName)

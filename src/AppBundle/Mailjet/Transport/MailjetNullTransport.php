@@ -21,5 +21,7 @@ class MailjetNullTransport implements MailjetMessageTransportInterface
                 'message' => $email->getBody(),
             ]);
         }
+
+        $email->delivered('Delivered using NULL transport');
     }
 }

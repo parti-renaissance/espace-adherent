@@ -35,6 +35,7 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -51,6 +52,30 @@ trait TestHelperTrait
     public function get($id)
     {
         return $this->container->get($id);
+    }
+
+    public function assertMailExists(string $type, UuidInterface $batch)
+    {
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages($type, $batch->toString()));
+    }
+
+    public function assertMailCountRecipients(int $count, string $type, UuidInterface $batch)
+    {
+        $repository = $this->getMailjetEmailRepository();
+
+        $this->assertCount(1, $messages = $repository->findMessages($type, $batch->toString()));
+        $this->assertCount($count, $messages[0]->getRecipients());
+    }
+
+    public function assertCountMails(int $count, string $type, ?string $recipient = null)
+    {
+        $repository = $this->getMailjetEmailRepository();
+
+        if ($recipient) {
+            $this->assertCount($count, $repository->findRecipientMessages($type, $recipient));
+        } else {
+            $this->assertCount($count, $repository->findMessages($type));
+        }
     }
 
     public function getManagerRegistry(): ManagerRegistry
