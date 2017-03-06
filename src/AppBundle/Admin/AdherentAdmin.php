@@ -7,12 +7,12 @@ use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,9 +29,9 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Adhérent', array('class' => 'col-md-8'))
-                ->add('isEnabled', 'boolean', [
-                    'label' => 'Compte activé ?',
+            ->with('Informations personnelles', array('class' => 'col-md-8'))
+                ->add('gender', null, [
+                    'label' => 'Genre',
                 ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
@@ -42,62 +42,44 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
                 ])
-                ->add('gender', null, [
-                    'label' => 'Genre',
-                ])
                 ->add('phone', null, [
                     'label' => 'Téléphone',
                 ])
-                ->add('birthdate', null, [
+                ->add('birthdate', 'sonata_type_date_picker', [
                     'label' => 'Date de naissance',
                 ])
                 ->add('position', null, [
                     'label' => 'Statut',
                 ])
-                ->add('hasSubscribedMainEmails', 'boolean', [
-                    'label' => 'Abonné aux mails nationaux ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedReferentsEmails', 'boolean', [
-                    'label' => 'Abonné aux mails de référents ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedLocalHostEmails', 'boolean', [
-                    'label' => 'Abonné aux mails de comités ?',
-                    'required' => false,
-                ])
-                ->add('interestsAsJson', null, [
-                    'label' => 'Centres d\'intérêts',
-                ])
-                ->add('registeredAt', null, [
-                    'label' => 'Date d\'enregistrement',
-                ])
-                ->add('activatedAt', null, [
-                    'label' => 'Date d\'activation du compte',
-                ])
-                ->add('lastLoggedAt', null, [
-                    'label' => 'Date de dernière connexion',
-                ])
-                ->add('updatedAt', null, [
-                    'label' => 'Date de dernière mise à jour',
-                ])
             ->end()
             ->with('Référent', array('class' => 'col-md-4'))
                 ->add('isReferent', 'boolean', [
                     'label' => 'Est référent ?',
-                    'required' => false,
                 ])
                 ->add('managedAreaCodesAsString', null, [
                     'label' => 'Codes des zones gérés',
-                    'required' => false,
                 ])
                 ->add('managedAreaMarkerLatitude', null, [
                     'label' => 'Latitude du point sur la carte',
-                    'required' => false,
                 ])
                 ->add('managedAreaMarkerLongitude', null, [
                     'label' => 'Longitude du point sur la carte',
-                    'required' => false,
+                ])
+            ->end()
+            ->with('Préférences des e-mails', array('class' => 'col-md-8'))
+                ->add('hasSubscribedMainEmails', 'boolean', [
+                    'label' => 'Abonné aux mails nationaux ?',
+                ])
+                ->add('hasSubscribedReferentsEmails', 'boolean', [
+                    'label' => 'Abonné aux mails de référents ?',
+                ])
+                ->add('hasSubscribedLocalHostEmails', 'boolean', [
+                    'label' => 'Abonné aux mails de comités ?',
+                ])
+            ->end()
+            ->with('Compte', array('class' => 'col-md-4'))
+                ->add('status', null, [
+                    'label' => 'Etat du compte',
                 ])
             ->end();
     }
@@ -105,7 +87,10 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Adhérent', array('class' => 'col-md-8'))
+            ->with('Informations personnelles', array('class' => 'col-md-8'))
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
+                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -115,16 +100,18 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
                 ])
-                ->add('gender', GenderType::class)
-                ->add('phone', null, [
+                ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
+                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                    'required' => false,
                 ])
-                ->add('birthdate', BirthdayType::class, [
+                ->add('birthdate', 'sonata_type_date_picker', [
                     'label' => 'Date de naissance',
-                    'format' => 'dd/MM/yyyy',
-                    'widget' => 'single_text',
+                    'required' => false,
                 ])
                 ->add('position', ActivityPositionType::class)
+            ->end()
+            ->with('Compte', array('class' => 'col-md-4'))
                 ->add('status', ChoiceType::class, [
                     'label' => 'Etat du compte',
                     'choices' => [
@@ -132,6 +119,8 @@ class AdherentAdmin extends AbstractAdmin
                         'Désactivé' => Adherent::DISABLED,
                     ],
                 ])
+            ->end()
+            ->with('Préférences des e-mails', array('class' => 'col-md-4'))
                 ->add('hasSubscribedMainEmails', CheckboxType::class, [
                     'label' => 'Abonné aux mails nationaux ?',
                     'required' => false,
@@ -150,7 +139,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Codes des zones gérés',
                     'required' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas référent. '.
-                              'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
                 ->add('managedArea.markerLatitude', TextType::class, [
                     'label' => 'Latitude du point sur la carte des référents',

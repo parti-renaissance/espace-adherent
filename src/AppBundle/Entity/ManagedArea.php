@@ -43,9 +43,9 @@ class ManagedArea
         return implode(', ', $this->codes);
     }
 
-    public function setCodesAsString(string $codes)
+    public function setCodesAsString(?string $codes)
     {
-        $this->codes = array_map('trim', explode(',', $codes));
+        $this->codes = $codes ? array_map('trim', explode(',', $codes)) : [];
     }
 
     public function getMarkerLatitude()

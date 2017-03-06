@@ -24,7 +24,7 @@ class UniqueMembershipValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, UniqueMembership::class);
         }
 
-        if (!$value instanceof MembershipRequest) {
+        if (!$value instanceof MembershipRequest && !$value instanceof Adherent) {
             throw new UnexpectedTypeException($value, MembershipRequest::class);
         }
 
