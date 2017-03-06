@@ -16,6 +16,7 @@ class JeMarcheReport
 {
     use EntityTimestampableTrait;
 
+    const TYPE_KIOSQUE = 'kiosque';
     const TYPE_WALK = 'la-marche';
     const TYPE_DOOR_TO_DOOR = 'porte-a-porte';
     const TYPE_DINNER = 'diner';
@@ -139,6 +140,7 @@ class JeMarcheReport
     public static function getTypes()
     {
         return [
+            self::TYPE_KIOSQUE,
             self::TYPE_WALK,
             self::TYPE_DOOR_TO_DOOR,
             self::TYPE_DINNER,
