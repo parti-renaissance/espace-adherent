@@ -1,1 +1,0 @@
-0 3 * * * root php /app/bin/console app:produce:referent-managed-users-dump -e prod >> /var/log/cron.log 2>&1
