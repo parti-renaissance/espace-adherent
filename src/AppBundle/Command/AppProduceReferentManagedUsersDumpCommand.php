@@ -31,6 +31,8 @@ class AppProduceReferentManagedUsersDumpCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('Starting on '.date('d/m/Y H:i:s'));
+
         /** @var ReferentManagedUsersDumperProducer $producer */
         $producer = $this->getContainer()->get('old_sound_rabbit_mq.referent_managed_users_dumper_producer');
 

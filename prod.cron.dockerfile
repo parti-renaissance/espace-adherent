@@ -1,6 +1,9 @@
 FROM enmarche-common
 
-COPY docker/prod/crontab /etc/cron.d/enmarche
-RUN chmod 0644 /etc/cron.d/enmarche && touch /var/log/cron.log
+COPY docker/prod/supervisord_cron.conf /etc/supervisor/conf.d/supervisord_cron.conf
 
-CMD cron && tail -f /var/log/cron.log
+RUN echo "* * * * * php /app/bin/console app:produce:referent-managed-users-dump -e prod >> /var/log/cron.log 2>&1" >> enmarcheCron && \
+    crontab enmarcheCron && \
+    rm enmarcheCron
+
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord_cron.conf"]
