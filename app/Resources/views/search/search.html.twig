@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Comités' %}
+{% block canonical_url url('app_search_committees') %}
 
 {% block javascripts %}
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
