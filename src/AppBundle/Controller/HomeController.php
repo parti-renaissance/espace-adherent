@@ -41,28 +41,40 @@ class HomeController extends Controller
     public function sitemapIndexAction()
     {
         $sitemapIndex = new SitemapIndex();
-        $sitemapIndex->add($this->generateUrl('app_sitemap_main', [], UrlGeneratorInterface::ABSOLUTE_URL), null);
-        $sitemapIndex->add($this->generateUrl('app_sitemap_content', [], UrlGeneratorInterface::ABSOLUTE_URL), null);
+
+        foreach (['main', 'content', 'committees', 'events'] as $type) {
+            $sitemapIndex->add(
+                $this->generateUrl('app_sitemap', ['type' => $type], UrlGeneratorInterface::ABSOLUTE_URL),
+                null
+            );
+        }
 
         return $this->createXmlResponse((string) $sitemapIndex);
     }
 
     /**
-     * @Route("/sitemap_main.xml", name="app_sitemap_main")
+     * @Route(
+     *     "/sitemap_{type}.xml",
+     *     requirements={"type"="main|content|committees|events"},
+     *     name="app_sitemap"
+     * )
      * @Method("GET")
      */
-    public function sitemapMainAction()
+    public function sitemapAction($type): Response
     {
-        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createMainSitemap());
-    }
+        $sitemap = '';
 
-    /**
-     * @Route("/sitemap_content.xml", name="app_sitemap_content")
-     * @Method("GET")
-     */
-    public function sitemapContentAction()
-    {
-        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createContentSitemap());
+        if ('main' === $type) {
+            $sitemap = $this->get('app.content.sitemap_factory')->createMainSitemap();
+        } elseif ('content' === $type) {
+            $sitemap = $this->get('app.content.sitemap_factory')->createContentSitemap();
+        } elseif ('committees' === $type) {
+            $sitemap = $this->get('app.content.sitemap_factory')->createCommitteesSitemap();
+        } elseif ('events' === $type) {
+            $sitemap = $this->get('app.content.sitemap_factory')->createEventsSitemap();
+        }
+
+        return $this->createXmlResponse($sitemap);
     }
 
     private function createXmlResponse(string $content)
