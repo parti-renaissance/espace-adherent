@@ -23,6 +23,7 @@ class JeMarcheReportType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => [
+                    'Un kiosque' => JeMarcheReport::TYPE_KIOSQUE,
                     'Une marche' => JeMarcheReport::TYPE_WALK,
                     'un porte-à-porte' => JeMarcheReport::TYPE_DOOR_TO_DOOR,
                     'Un dîner' => JeMarcheReport::TYPE_DINNER,
