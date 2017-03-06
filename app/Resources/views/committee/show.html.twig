@@ -1,6 +1,37 @@
 {% extends 'committee/_layout.html.twig' %}
 
 {% block page_title committee.name %}
+{% block canonical_url committee_url('app_committee_show', committee) %}
+
+{% block json_ld %}
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "{{ committee.name }}",
+        "url": "{{ block('open_graph_url') }}",
+        "image": "{{ block('open_graph_image') }}",
+        "description": "{{ committee.description }}",
+        "funder": {
+            "@type": "Person",
+            "givenName": "Emmanuel",
+            "familyName": "Macron"
+        },
+        "parentOrganization": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ url('homepage') }}"
+        },
+        "location": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ committee.address }}",
+            "addressLocality": "{{ committee.cityName }}",
+            "postalCode": "{{ committee.postalCode }}",
+            "addressCountry": "{{ committee.country }}"
+        }
+    }
+    </script>
+{% endblock %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
