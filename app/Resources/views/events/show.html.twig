@@ -14,6 +14,7 @@
         "description": "{{ event.description }}",
         "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
         "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
+        "eventStatus": "http://schema.org/EventScheduled",
         "organizer": {
             {% if committee %}
             "@type": "Organization",
@@ -37,6 +38,7 @@
         },
         "location": {
             "@type": "PostalAddress",
+            "name": "{{ event.inlineFormattedAddress }}",
             "streetAddress": "{{ event.address }}",
             "addressLocality": "{{ event.cityName }}",
             "postalCode": "{{ event.postalCode }}",
