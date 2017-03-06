@@ -26,7 +26,8 @@ final class CommitteeNewFollowerMessage extends MailjetMessage
             $host->getFullName(),
             'Un nouveau membre vient de suivre votre comité',
             self::getTemplateVars($committee, $newFollower),
-            self::getRecipientVars($host)
+            self::getRecipientVars($host),
+            $newFollower->getEmailAddress()
         );
 
         foreach ($hosts as $host) {
