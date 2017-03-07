@@ -168,16 +168,16 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/bot-testing", name="page_bot_testing")
+     * @Route("/bot", name="page_bot")
      * @Method("GET")
      */
-    public function botTestingAction()
+    public function botAction()
     {
         if ($this->getParameter('env(ENABLE_PLATFORM)') !== '1') {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('page/bot-testing.html.twig');
+        return $this->render('page/bot.html.twig');
     }
 
     /**
