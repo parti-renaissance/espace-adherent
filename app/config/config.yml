@@ -35,6 +35,7 @@ parameters:
     pattern_coordinate:    '-?\d+(\.\d{1,7})?'
     timeline_max_messages: 30
     search_max_results:    30
+    enable_canary:         "%env(ENABLE_CANARY)%"
     transactional_sender_email:  'contact@en-marche.fr'
     transactional_sender_name:   'En Marche !'
     campaign_sender_email:       'jemarche@en-marche.fr'

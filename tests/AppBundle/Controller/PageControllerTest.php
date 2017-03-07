@@ -35,8 +35,6 @@ class PageControllerTest extends SqliteWebTestCase
         return [
             ['/emmanuel-macron'],
             ['/emmanuel-macron/revolution'],
-            // TODO Enable when Open Agenda is ready
-            //['/emmanuel-macron/mon-agenda'],
             ['/emmanuel-macron/le-programme'],
             ['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],
             ['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'],
@@ -46,6 +44,8 @@ class PageControllerTest extends SqliteWebTestCase
             ['/le-mouvement/les-evenements'],
             ['/le-mouvement/devenez-benevole'],
             ['/le-mouvement/la-carte'],
+            ['/bot'],
+            ['/elles-marchent'],
             ['/mentions-legales'],
         ];
     }
