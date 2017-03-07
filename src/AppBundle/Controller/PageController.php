@@ -173,7 +173,7 @@ class PageController extends Controller
      */
     public function botAction()
     {
-        if (!$this->getParameter('env(ENABLE_CANARY)')) {
+        if (!((bool) $this->getParameter('enable_canary'))) {
             throw $this->createNotFoundException();
         }
 
@@ -186,7 +186,7 @@ class PageController extends Controller
      */
     public function ellesMarchentAction()
     {
-        if (!$this->getParameter('env(ENABLE_CANARY)')) {
+        if (!((bool) $this->getParameter('enable_canary'))) {
             throw $this->createNotFoundException();
         }
 
