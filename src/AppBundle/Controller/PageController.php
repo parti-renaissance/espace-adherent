@@ -173,6 +173,10 @@ class PageController extends Controller
      */
     public function botAction()
     {
+        if (!$this->getParameter('env(ENABLE_CANARY)')) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('page/bot.html.twig');
     }
 
@@ -182,6 +186,10 @@ class PageController extends Controller
      */
     public function ellesMarchentAction()
     {
+        if (!$this->getParameter('env(ENABLE_CANARY)')) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('page/elles-marchent.html.twig');
     }
 }
