@@ -179,4 +179,13 @@ class PageController extends Controller
 
         return $this->render('page/bot-testing.html.twig');
     }
+
+    /**
+     * @Route("/elles-marchent", name="page_elles_marchent")
+     * @Method("GET")
+     */
+    public function EllesMarchentAction()
+    {
+        return $this->render('page/elles-marchent.html.twig');
+    }
 }

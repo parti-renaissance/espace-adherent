@@ -894,3 +894,70 @@
         padding: 15px 10px;
     }
 }
+
+.content .elles-marchent {
+    &__videos {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+
+        li {
+            width: 32%;
+            height: 300px;
+            list-style: none;
+            border: 1px solid $gray--light;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+
+            &:last-child {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
+    &__demarches {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+
+        li {
+            width: 30%;
+
+            h3 {
+                text-align: center;
+            }
+
+            p {
+                @include text--summary;
+            }
+        }
+    }
+
+    &__photos {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        li {
+            width: 32%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid $gray--light;
+            margin-bottom: 20px;
+            padding: 30px;
+            box-sizing: border-box;
+
+            &:last-child {
+                width: 66%;
+                background: $blue;
+                color: white;
+            }
+        }
+    }
+}
