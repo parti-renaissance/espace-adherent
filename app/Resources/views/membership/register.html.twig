@@ -19,39 +19,8 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
+            App.runRegistration();
         });
-        if (document.getElementById('membership_request_password_first').value != document.getElementById('membership_request_password_second').value) {
-            alert("Passwords do not match.");
-        }
-
-        function checkPass()
-        {
-            //On met le champ validation button dans une variable
-            var sendButton = document.getElementById('membership_request_submit');
-            //On met les champs mdp dans des variables
-            var pass1 = document.getElementById('membership_request_password_first');
-            var pass2 = document.getElementById('membership_request_password_second');
-            //On met le champ de confirmation dans une variable
-            var message = document.getElementById('confirmMessage');
-            // On définis les couleurs qu'on utilise et les mets dans des variables
-            var okColor = "#01B2FB";
-            var notOkColor = "#EE001D";
-            //On compare les deux valeurs des champs mots de passe
-            if(pass1.value == pass2.value){
-                // Si les mdp correspondent => OK
-                pass2.style.backgroundColor = okColor;
-                message.style.color = okColor;
-                message.innerHTML = "Les mots de passe correspondent!"
-                //On active le bouton de validation du form
-                sendButton.disabled=false;
-            }else{
-                // Sinon => Pas ok
-                pass2.style.backgroundColor = notOkColor;
-                message.style.color = notOkColor;
-                message.innerHTML = "Les mots de passe ne correspondent pas !"
-            }
-        }
-
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}

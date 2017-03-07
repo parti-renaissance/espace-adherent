@@ -40,6 +40,7 @@ parameters:
     campaign_sender_email:       'jemarche@en-marche.fr'
     campaign_sender_name:        'En Marche !'
 
+
 framework:
     translator:      { fallbacks: ["%locale%"] }
     secret:          "%env(SECRET)%"
@@ -197,6 +198,7 @@ snc_redis:
             dsn: "redis://%env(REDIS_HOST)%"
     session:
         client: default
+
 
 old_sound_rabbit_mq:
     connections:

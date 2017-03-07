@@ -92,6 +92,12 @@ class App {
             module.default();
         });
     }
+
+    runRegistration() {
+        System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        })
+    }
 }
 
 window.App = new App();
