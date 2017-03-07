@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
@@ -33,6 +34,24 @@ class EventController extends Controller
             'event' => $event,
             'committee' => $event->getCommittee(),
         ]);
+    }
+
+    /**
+     * @Route(
+     *   path="/ical",
+     *   name="app_committee_event_export_ical"
+     * )
+     * @Method("GET")
+     */
+    public function exportIcalAction(Event $event): Response
+    {
+        return new Response(
+            $this->get('jms_serializer')->serialize($event, 'ical'),
+            Response::HTTP_OK, [
+                'Content-Type' => 'text/calendar',
+                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics',
+            ]
+        );
     }
 
     /**

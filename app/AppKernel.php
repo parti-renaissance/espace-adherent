@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
 
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
