@@ -4,12 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.feature_flag.enable_platform_subscriber" class="AppBundle\FeatureFlag\EnablePlatformSubscriber">
-            <argument>%env(ENABLE_PLATFORM)%</argument>
-
-            <tag name="kernel.event_subscriber" />
-        </service>
-
         <service id="app.feature_flag.redirections_subscriber" class="AppBundle\FeatureFlag\RedirectionSubscriber">
             <tag name="kernel.event_subscriber" />
         </service>

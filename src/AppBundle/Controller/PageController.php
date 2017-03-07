@@ -173,10 +173,6 @@ class PageController extends Controller
      */
     public function botAction()
     {
-        if ($this->getParameter('env(ENABLE_PLATFORM)') !== '1') {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('page/bot.html.twig');
     }
 
@@ -184,7 +180,7 @@ class PageController extends Controller
      * @Route("/elles-marchent", name="page_elles_marchent")
      * @Method("GET")
      */
-    public function EllesMarchentAction()
+    public function ellesMarchentAction()
     {
         return $this->render('page/elles-marchent.html.twig');
     }
