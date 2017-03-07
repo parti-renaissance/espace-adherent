@@ -25,6 +25,7 @@ imports:
     - { resource: services/referent.xml }
     - { resource: services/search.xml }
     - { resource: services/security.xml }
+    - { resource: services/serializer.xml }
     - { resource: services/storage.xml }
     - { resource: services/twig.xml }
 

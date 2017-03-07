@@ -54,7 +54,9 @@
         "beberlei/DoctrineExtensions": "^1.0",
         "knplabs/knp-time-bundle": "^1.7",
         "tackk/cartographer": "^1.1",
-        "php-amqplib/rabbitmq-bundle": "^1.12"
+        "php-amqplib/rabbitmq-bundle": "^1.12",
+        "sabre/dav": "^3.2",
+        "jms-serializer/serializer-bundle": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
