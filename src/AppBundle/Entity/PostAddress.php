@@ -152,6 +152,16 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->longitude;
     }
 
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
+
     /**
      * Returns the french national INSEE code from the city code.
      *
