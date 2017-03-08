@@ -896,6 +896,10 @@
 }
 
 .content .elles-marchent {
+    a {
+        color: white !important;
+    }
+
     &__header {
         background-position: center 25%;
         background-repeat: no-repeat;
@@ -956,6 +960,11 @@
                 justify-content: center;
                 align-items: center;
 
+                a {
+                    color: white;
+                    border-color: white;
+                }
+
                 &:before,
                 &:after {
                     content: none;
@@ -989,6 +998,10 @@
 
             p {
                 @include text--summary;
+            }
+
+            @media (max-width: $mobile) {
+                width: 100%;
             }
         }
     }
