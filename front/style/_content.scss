@@ -965,7 +965,7 @@
             &.no-video {
                 background-size: cover;
                 background-position: center;
-                
+
                 &:before,
                 &:after {
                     content: none;
@@ -1010,6 +1010,7 @@
             padding: 30px;
             box-sizing: border-box;
             background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
             color: white;
 
@@ -1029,6 +1030,33 @@
                 &:after {
                     content: none;
                 }
+            }
+        }
+    }
+
+    @media (max-width: $tablet) {
+        &__videos {
+            li {
+                width: 48%;
+            }
+        }
+
+        &__photos {
+            li {
+                width: 48%;
+
+                &:last-child {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $mobile) {
+        &__photos,
+        &__videos {
+            li {
+                width: 100%;
             }
         }
     }
