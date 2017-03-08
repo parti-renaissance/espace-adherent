@@ -918,17 +918,48 @@
         padding: 0;
 
         li {
+            @include gradient-container;
             width: 32%;
             height: 300px;
             list-style: none;
             border: 1px solid $gray--light;
             margin-bottom: 20px;
             box-sizing: border-box;
+            background-size: 200%;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+
+            > a {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                z-index: 2;
+            }
+
+            &:before {
+                content: $play-icon;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                position: relative;
+            }
+
+            &:after {
+                @include classic-gradient($filter);
+            }
 
             &:last-child {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
+                &:before,
+                &:after {
+                    content: none;
+                }
             }
         }
     }
