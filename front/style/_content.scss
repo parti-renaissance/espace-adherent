@@ -961,6 +961,16 @@
                     content: none;
                 }
             }
+
+            &.no-video {
+                background-size: cover;
+                background-position: center;
+                
+                &:before,
+                &:after {
+                    content: none;
+                }
+            }
         }
     }
 
