@@ -558,6 +558,23 @@
                     color: white;
                 }
             }
+
+            &--category {
+                background: #4a4a4a;
+
+                a {
+                    color: white;
+                }
+
+                &:hover {
+                    background: $gray--lighter;
+
+                    h2,
+                    div {
+                        color: black;
+                    }
+                }
+            }
         }
     }
 }
