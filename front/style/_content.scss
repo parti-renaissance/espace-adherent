@@ -963,7 +963,7 @@
             }
 
             &.no-video {
-                background-size: cover;
+                background-size: cover !important;
                 background-position: center;
 
                 &:before,
@@ -1031,6 +1031,14 @@
                     content: none;
                 }
             }
+        }
+    }
+
+    &__videos li {
+        transition: all 0.2s;
+
+        &:hover {
+            background-size: 220%;
         }
     }
 
