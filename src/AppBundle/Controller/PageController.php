@@ -186,10 +186,6 @@ class PageController extends Controller
      */
     public function ellesMarchentAction()
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('page/elles-marchent.html.twig');
     }
 }
