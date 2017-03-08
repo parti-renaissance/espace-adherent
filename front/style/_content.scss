@@ -939,6 +939,7 @@
                 position: absolute;
                 top: 0;
                 z-index: 2;
+                border: 0;
             }
 
             &:before {
@@ -1002,6 +1003,7 @@
 
             @media (max-width: $mobile) {
                 width: 100%;
+                text-align: center;
             }
         }
     }
