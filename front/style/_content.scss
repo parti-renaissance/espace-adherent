@@ -896,6 +896,21 @@
 }
 
 .content .elles-marchent {
+    &__header {
+        background-position: center 25%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @include gradient-container;
+
+        header {
+            position: relative;
+        }
+
+        &:before {
+            @include classic-gradient($filter);
+        }
+    }
+
     &__videos {
         display: flex;
         justify-content: space-between;

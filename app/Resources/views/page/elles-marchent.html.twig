@@ -5,14 +5,18 @@
 
 {% block content %}
     <main class="content elles-marchent">
-        <header class="space--60-0 l__wrapper--slim text--center">
-            <h1 class="text--large b__nudge--bottom-small">
-                Elles Marchent
-            </h1>
-            <h2 class="bigger">
-                « La loi a changé, maintenant la vie doit changer »
-            </h2>
-        </header>
+        <section class="elles-marchent__header progressive-background"
+                 data-sd="{{ static_asset('elles-marchent.jpg', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('elles-marchent.jpg', {'w': 2000, 'q': 70}) }}">
+            <header class="space--100-0 l__wrapper--slim text--center text--white">
+                <h1 class="text--larger b__nudge--bottom-small">
+                    Elles Marchent
+                </h1>
+                <h2 class="bigger">
+                    « La loi a changé, maintenant la vie doit changer »
+                </h2>
+            </header>
+        </section>
 
         <section class="l__wrapper--medium">
             <article>
