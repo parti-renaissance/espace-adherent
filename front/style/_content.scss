@@ -958,20 +958,36 @@
         flex-wrap: wrap;
 
         li {
+            @include gradient-container;
             width: 32%;
             height: 300px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
             border: 1px solid $gray--light;
             margin-bottom: 20px;
             padding: 30px;
             box-sizing: border-box;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white;
+
+            > div {
+                z-index: 1;
+            }
+
+            &:after {
+                @include classic-gradient($gradient);
+            }
 
             &:last-child {
                 width: 66%;
                 background: $blue;
-                color: white;
+                align-items: center;
+
+                &:after {
+                    content: none;
+                }
             }
         }
     }
