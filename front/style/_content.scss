@@ -896,6 +896,21 @@
 }
 
 .content .elles-marchent {
+    &__header {
+        background-position: center 25%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @include gradient-container;
+
+        header {
+            position: relative;
+        }
+
+        &:before {
+            @include classic-gradient($filter);
+        }
+    }
+
     &__videos {
         display: flex;
         justify-content: space-between;
@@ -903,17 +918,58 @@
         padding: 0;
 
         li {
+            @include gradient-container;
             width: 32%;
             height: 300px;
             list-style: none;
             border: 1px solid $gray--light;
             margin-bottom: 20px;
             box-sizing: border-box;
+            background-size: 200%;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+
+            > a {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                z-index: 2;
+            }
+
+            &:before {
+                content: $play-icon;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                position: relative;
+            }
+
+            &:after {
+                @include classic-gradient($filter);
+            }
 
             &:last-child {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
+                &:before,
+                &:after {
+                    content: none;
+                }
+            }
+
+            &.no-video {
+                background-size: cover !important;
+                background-position: center;
+
+                &:before,
+                &:after {
+                    content: none;
+                }
             }
         }
     }
@@ -943,20 +999,72 @@
         flex-wrap: wrap;
 
         li {
+            @include gradient-container;
             width: 32%;
             height: 300px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
             border: 1px solid $gray--light;
             margin-bottom: 20px;
             padding: 30px;
             box-sizing: border-box;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+
+            > div {
+                z-index: 1;
+            }
+
+            &:after {
+                @include classic-gradient($gradient);
+            }
 
             &:last-child {
                 width: 66%;
                 background: $blue;
-                color: white;
+                align-items: center;
+
+                &:after {
+                    content: none;
+                }
+            }
+        }
+    }
+
+    &__videos li {
+        transition: all 0.2s;
+
+        &:hover {
+            background-size: 220%;
+        }
+    }
+
+    @media (max-width: $tablet) {
+        &__videos {
+            li {
+                width: 48%;
+            }
+        }
+
+        &__photos {
+            li {
+                width: 48%;
+
+                &:last-child {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $mobile) {
+        &__photos,
+        &__videos {
+            li {
+                width: 100%;
             }
         }
     }
