@@ -1,19 +1,27 @@
 {% extends 'base.html.twig' %}
 
+{% block banner '' %}
 {% block page_title 'Diago, le Bot En Marche !' %}
 {% block canonical_url url('page_bot') %}
+{% block stylesheets %}
+    <style type="text/css">
+        footer {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
+
 
 {% block content %}
-    <main>
-        <section class="content">
-            <header class="space--60-0 l__wrapper--medium text--center">
-                <h1 class="text--large">
+    <main class="bot">
+        <section>
+            <header class="l__wrapper--medium text--center">
+                <h1>
                     Découvrez Diago, votre assistant <em>En Marche !</em>
                 </h1>
             </header>
-            <hr class="l__wrapper">
-            <article class="l__wrapper--slim b__nudge--bottom-80">
-                <iframe style="border: 0; width: 100%; height: 400px;" src="https://api.motion.ai/webchat/31537?sendBtn=SEND&inputBox=Type+something...&token=c68d9fdda1d82f895dcba59e9d14cf38"></iframe>
+            <article class="l__wrapper--slim">
+                <iframe  src="https://api.motion.ai/webchat/31537?sendBtn=SEND&inputBox=Type+something...&token=c68d9fdda1d82f895dcba59e9d14cf38"></iframe>
             </article>
         </section>
     </main>
