@@ -8,7 +8,7 @@ export default () => {
         if (passOne.value === passTwo.value) {
             passTwo.setCustomValidity('');
         } else {
-            passTwo.setCustomValidity('Le mot de passe et sa confirmation sont différents !');
+            passTwo.setCustomValidity('Le mot de passe et sa confirmation sont différents');
         }
     };
     on(passOne, 'input', checkPass);
