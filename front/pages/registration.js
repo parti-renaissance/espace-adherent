@@ -4,10 +4,9 @@
 export default () => {
     const passTwo = dom('#membership_request_password_second');
     const passOne = dom('#membership_request_password_first');
-    const message = dom('#confirmMessage');
+    const message = dom('#confirm-message');
     const okColor = '#016ea2';
     const notOkColor = '#90100c';
-
 
     on(passOne, 'input', (event) => {
         if ('' !== passTwo.value) {
