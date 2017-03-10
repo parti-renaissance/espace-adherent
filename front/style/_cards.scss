@@ -583,6 +583,10 @@
         font-weight: bold;
         font-size: 22px;
         padding: 15px 0;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+        }
     }
 
     a {
@@ -593,6 +597,10 @@
         width: 25%;
         border-left: 1px solid black;
         padding: 7px 15px;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
     }
 
     &--one {

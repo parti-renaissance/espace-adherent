@@ -784,6 +784,10 @@
         svg {
             width: 300px;
             height: 120px;
+
+            @media (max-width: $mobile) {
+                width: 280px;
+            }
         }
 
         h2 {
