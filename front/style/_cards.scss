@@ -597,6 +597,7 @@
         width: 25%;
         border-left: 1px solid black;
         padding: 7px 15px;
+        box-sizing: border-box;
 
         @media (max-width: $mobile) {
             width: 100%;
