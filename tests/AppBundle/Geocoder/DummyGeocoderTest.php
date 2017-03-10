@@ -13,7 +13,7 @@ class DummyGeocoderTest extends \PHPUnit_Framework_TestCase
     public function testGeocodeAddressFails()
     {
         $geocoder = new DummyGeocoder();
-        $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, France');
+        $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, FR');
     }
 
     /**
@@ -33,22 +33,22 @@ class DummyGeocoderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                '6 rue neyret, 69001 lyon 1er, france',
+                '6 rue neyret, 69001 lyon 1er, fr',
                 45.7713288,
                 4.8288758,
             ],
             [
-                '6 rue Neyret, 69001 Lyon 1er, France',
+                '6 rue Neyret, 69001 Lyon 1er, fr',
                 45.7713288,
                 4.8288758,
             ],
             [
-                '92 boulevard victor hugo, 92110 clichy, france',
+                '92 boulevard victor hugo, 92110 clichy, fr',
                 48.901058,
                 2.318325,
             ],
             [
-                '92 Bld Victor Hugo, 92110 Clichy, France',
+                '92 Bld Victor Hugo, 92110 Clichy, FR',
                 48.901058,
                 2.318325,
             ],
