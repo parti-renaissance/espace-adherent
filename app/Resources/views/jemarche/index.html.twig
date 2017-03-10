@@ -4,6 +4,14 @@
 {% block page_title 'Je Marche !' %}
 {% block canonical_url url('app_je_marche') %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        body > header {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="text/javascript">
@@ -15,36 +23,59 @@
 
 {% block content %}
 <main class="content je-marche">
-    <section class="je-marche__header progressive-background"
-             data-sd="{{ static_asset('je-marche-hdr.jpg', {'w': 300, 'q': 20}) }}"
-             data-hd="{{ static_asset('je-marche-hdr.jpg', {'w': 2000, 'q': 70}) }}">
-        <header class="space--60-0 l__wrapper--slim text--center">
+    <section class="header__main background--blue">
+        <div class="l__wrapper space--30-0">
+            <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">En Marche !</a>
+        </div>
+    </section>
+    <section class="je-marche__header background--blue">
+        <header class="l__wrapper--slim text--center">
             <h1 class="text--large b__nudge--bottom-small text--white">
                 {{ include('components/je-marche.html.twig') }}
             </h1>
-            <h2 class="text--white text--large">Mes actions pour faire gagner le camp du progrès.</h2>
-            <a href="#actions" class="btn btn--green b__nudge--top-large">Je mène une action</a>
+            <h2 class="text--white">Emmanuel Macron<br>a besoin de vous pour convaincre les indécis</h2>
+            <h3 class="text--white text--body text--normal">Convaincre 10 personnes, collecter 10 emails ou donner 10 euros, chacun peut aider à sa façon pour faire gagner les idées du progrès</h2>
         </header>
-        <hr class="l__wrapper" />
     </section>
 
-    <section class="je-marche__action l__wrapper--medium">
-        <article>
-            <div class="action blue action--full-text">
-                <p>Je participe à un événement près de chez moi</p>
-                <a href="{{ path('app_search_events') }}">Voir les événements</a>
-            </div>
-        </article>
-    </section>
-
-    <section class="l__wrapper--medium space--60-0" id="actions">
-        <div class="b__nudge--bottom-60 text--large text--green text--bold text--center text--body">
-            Bientôt 2 500 actions réalisées
+    <section>
+        <div class="bandeau bandeau--pink">
+            <ul>
+                <li class="text--white">Je parraine  mes amis à la newsletter
+                    <div class="text--small">Bientôt disponible</div></li>
+                <li><a href="{{ path('donation_index') }}">
+                    Je donne en ligne maintenant
+                </a></li>
+                <li><a href="{{ path('page_emmanuel_macron_programme') }}">
+                    Je partage une proposition du programme
+                </a></li>
+            </ul>
         </div>
-        <h1>Je choisis de mener une action</h1>
-        <p class="text--body">Sélectionnez l'une des 6 actions à mener en toute autonomie.</p>
+        <div class="bandeau bandeau--yellow">
+            <ul>
+                <li><a href="http://teamlove.ghost.io/teammarcheurs/">
+                    Je convaincs sur les réseaux sociaux
+                </a></li>
+                <li><a href="{{ path('app_search_events') }}">
+                    Je rejoins une équipe de volontaires
+                </a></li>
+                <li><a href="https://enmarche.typeform.com/to/JGyz8W">
+                    Je deviens relai du programme
+                </a></li>
+            </ul>
+        </div>
+        <div class="bandeau bandeau--green bandeau--one">
+            <ul>
+                <li>
+                    J'organise ma propre action
+                    <div>Sélectionnez l'une des 6 actions à mener en toute autonomie et collecter les adresses emails des convaincus et des des réceptifs</div>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-        <div class="action__items l__row l__row--h-stretch l__row--top l__tablet--col">
+    <section class="action__block background--green" id="actions">
+        <div class="l__wrapper--slim action__items l__row l__row--h-stretch l__row--top l__tablet--col">
             <ul class="action__menu">
                 <li><a class="action__menu__item action__menu__item--active" href="javascript:void(0)" onclick="openAction('action__one')">Le porte-à-porte</a></li>
                 <li><a class="action__menu__item" href="javascript:void(0)" onclick="openAction('action__two')">L'atelier du programme</a></li>
@@ -57,44 +88,44 @@
             <div id="action__one" class="action__item">
               <h4>Le porte à porte</h4>
               <p>Le porte-à-porte, c’est pour nous le moyen le plus efficace  d’aller au-devant des citoyens et en particulier de ceux qui habituellement ne donnent pas de la voix. Et pour y parvenir, le maillon clé, c’est vous !</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-porte-a-porte.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-porte-a-porte.pdf">Télécharger le guide</a>
             </div>
 
             <div id="action__two" class="action__item" style="display:none">
               <h4>L'atelier</h4>
               <p>Organisez des ateliers pour débattre sur des thématiques du  projet d’Emmanuel MACRON. Ouvert à tous, ces ateliers sont un temps d’écoute, de partage et de conviction autour des sujets que vous aurez choisis.</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-atelier.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-atelier.pdf">Télécharger le guide</a>
             </div>
 
             <div id="action__three" class="action__item" style="display:none">
               <h4>La Marche</h4>
               <p>Marcher à la rencontre de nos concitoyens est un acte fondateur de notre mouvement. En abordant les passants dans la rue et en vous rendant chez les commerçants de votre quartier, vous créez un moment d’échange original sur les raisons de  voter pour Emmanuel MACRON.</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-marche.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-marche.pdf">Télécharger le guide</a>
             </div>
 
             <div id="action__four" class="action__item" style="display:none">
               <h4>La conversation</h4>
               <p>Agir c’est d’abord convaincre nos proches, nos amis, nos collègues, notre famille de voter Emmanuel MACRON en leur parlant de sujets qui les intéressent. Une simple conversation, un appel ou un e-mail peuvent suffire !</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-conversation.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-la-conversation.pdf">Télécharger le guide</a>
             </div>
 
             <div id="action__five" class="action__item" style="display:none">
               <h4>L'action qui vous ressemble</h4>
               <p>Pour cela, nous vous invitons à imaginer et réaliser votre propre action en rejoignant ou en organisant un événement citoyen, solidaire, écologique, sportif ou culturel !</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-action.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-action.pdf">Télécharger le guide</a>
             </div>
 
             <div id="action__six" class="action__item" style="display:none">
               <h4>Le dîner</h4>
               <p>Nous vous invitons à organiser un moment convivial  avec vos proches, comme un dîner, un apéritif ou un thé, pour parler de la  présidentielle, écouter leurs préoccupations et partager vos convictions. Quoi  de mieux que de convaincre autour d’un délicieux repas ?</p>
-              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-diner.pdf">Télécharger le guide de l'action</a>
+              <a href="https://storage.googleapis.com/en-marche-prod/je-marche/je-marche-diner.pdf">Télécharger le guide</a>
             </div>
         </div>
     </section>
 
     <section class="l__wrapper--medium space--60-0">
-        <h1>Compte rendu de mon action</h1>
-        <p class="text--body">Saisissez les e-mails des personnes rencontrées souhaitant avoir plus d’informations.</p>
+        <h1 class="text--body text--medium text--center b__nudge--bottom-large">Compte rendu de mon action</h1>
+        <p class="text--body">Saisissez les e-mails ... et faîtes remonter les réactions.</p>
 
 
         <div class="text--body">

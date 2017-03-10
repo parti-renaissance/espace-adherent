@@ -572,3 +572,67 @@
         }
     }
 }
+
+.bandeau {
+    ul {
+        @include wrapper--slim;
+        display: flex;
+        justify-content: space-between;
+        @include text--medium;
+        font-family: $font-roboto;
+        font-weight: bold;
+        font-size: 22px;
+        padding: 15px 0;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+        }
+    }
+
+    a {
+        border: 0;
+    }
+
+    li {
+        width: 25%;
+        border-left: 1px solid black;
+        padding: 7px 15px;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+    }
+
+    &--one {
+        li {
+            width: 100%;
+            padding: 15px;
+        }
+
+        div {
+            @include text--body;
+            font-weight: normal;
+        }
+    }
+
+    &--green {
+        background-color: $green;
+    }
+
+    &--yellow {
+        background-color: $yellow;
+    }
+
+    &--pink {
+        background-color: $pink;
+
+        a {
+            @include link--white;
+        }
+
+        li {
+            border-color: white;
+        }
+    }
+
+}
