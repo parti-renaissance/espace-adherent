@@ -24,6 +24,35 @@ class FranceCitiesBundle
         return self::$cities[$postalCode][$inseeCode] ?? null;
     }
 
+    /**
+     * Returns the country ISO code for the given french postal code (FR by default).
+     *
+     * @return string
+     */
+    public static function getCountryISOCode(string $postalCode)
+    {
+        foreach (self::$countries as $prefix => $country) {
+            if (0 === strpos($postalCode, (string) $prefix)) {
+                return $country;
+            }
+        }
+
+        return 'FR';
+    }
+
+    public static $countries = [
+        '98000' => 'MC', // Monaco
+        '971' => 'GP', // Guadeloupe
+        '972' => 'MQ', // Martinique
+        '973' => 'GF', // Guyane
+        '974' => 'RE', // Réunion
+        '975' => 'PM', // Saint-Pierre-et-Miquelon
+        '976' => 'YT', // Mayotte
+        '986' => 'WF', // Wallis-et-Futuna
+        '987' => 'PF', // Polynésie
+        '988' => 'NC', // Nouvelle Calédonie
+    ];
+
     public static $cities =[
             '01000' => [
                 '1053' => 'Bourg-en-Bresse',

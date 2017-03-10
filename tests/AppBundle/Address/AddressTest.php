@@ -19,7 +19,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($address->getCity());
         $this->assertSame('8057', $address->getPostalCode());
         $this->assertSame('Zürich', $address->getCityName());
-        $this->assertSame('36 Zeppelinstrasse, 8057 Zürich, Switzerland', $address->getGeocodableAddress());
+        $this->assertSame('36 Zeppelinstrasse, 8057 Zürich, CH', $address->getGeocodableAddress());
         $this->assertFalse($address->isFrenchAddress());
     }
 
@@ -35,7 +35,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('69001-69381', $address->getCity());
         $this->assertSame('69001', $address->getPostalCode());
         $this->assertSame('Lyon 1er', $address->getCityName());
-        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, France', $address->getGeocodableAddress());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, FR', $address->getGeocodableAddress());
         $this->assertTrue($address->isFrenchAddress());
     }
 
