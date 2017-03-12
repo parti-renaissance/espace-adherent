@@ -57,6 +57,17 @@
     }
 }
 
+@mixin btn--dark {
+    color: white;
+    background: $dark;
+    border-color: $dark;
+
+    &:hover {
+        background: $darker;
+        border-color: $darker;
+    }
+}
+
 @mixin btn--yellow {
     background: $yellow;
     border-color: $yellow;

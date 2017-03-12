@@ -188,6 +188,10 @@ $text--size-extra-large: 48px;
         @include text--bold;
     }
 
+    &--half-opacity {
+        opacity: 0.5;
+    }
+
     &--on-white {
         background: white;
         padding: 0 5px;

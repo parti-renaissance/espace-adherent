@@ -2,7 +2,7 @@
 
 namespace AppBundle\Address;
 
-use Symfony\Component\Intl\Intl;
+use AppBundle\Intl\FranceCitiesBundle;
 
 final class GeocodableAddress
 {
@@ -40,7 +40,11 @@ final class GeocodableAddress
             $address[] = sprintf('%s %s', $this->postalCode, $this->cityName);
         }
 
-        $address[] = Intl::getRegionBundle()->getCountryName($this->countryCode, 'en');
+        $countryCode = $this->countryCode;
+        if ('FR' === $countryCode) {
+            $countryCode = FranceCitiesBundle::getCountryISOCode($this->postalCode);
+        }
+        $address[] = $countryCode;
 
         return implode(', ', $address);
     }

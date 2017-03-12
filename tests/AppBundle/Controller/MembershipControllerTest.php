@@ -184,8 +184,9 @@ class MembershipControllerTest extends MysqlWebTestCase
 
     /**
      * @group functionnal
+     * @dataProvider provideSuccessfulMembershipRequests
      */
-    public function testCreateMembershipAccountForSwissAdherentIsSuccessful()
+    public function testCreateMembershipAccountIsSuccessful($country, $city, $cityName, $postalCode, $address)
     {
         $client = $this->client;
         $client->request(Request::METHOD_GET, '/inscription');
@@ -197,11 +198,11 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['address']['country'] = 'CH';
-        $data['membership_request']['address']['city'] = '';
-        $data['membership_request']['address']['cityName'] = 'Zürich';
-        $data['membership_request']['address']['postalCode'] = '8057';
-        $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
+        $data['membership_request']['address']['country'] = $country;
+        $data['membership_request']['address']['city'] = $city;
+        $data['membership_request']['address']['cityName'] = $cityName;
+        $data['membership_request']['address']['postalCode'] = $postalCode;
+        $data['membership_request']['address']['address'] = $address;
 
         $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
@@ -217,6 +218,16 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertInstanceOf(DonationRequest::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
         $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
         $this->assertSame('Dupont', $donation->getLastName());
+    }
+
+    public function provideSuccessfulMembershipRequests()
+    {
+        return [
+            'Foreign' => ['CH', '', 'Zürich', '8057', '36 Zeppelinstrasse'],
+            'DOM-TOM Réunion' => ['FR', '97437-97410', '', '97437', '20 Rue Francois Vitry'],
+            'DOM-TOM Guadeloupe' => ['FR', '97110-97120', '', '97110', '18 Rue Roby Petreluzzi'],
+            'DOM-TOM Polynésie' => ['FR', '98714-98735', '', '98714', '45 Avenue du Maréchal Foch'],
+        ];
     }
 
     /**
