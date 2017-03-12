@@ -23,6 +23,17 @@ class EventControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
+    public function testExportIcalEvent()
+    {
+        $url = '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne/ical';
+        $this->client->request('GET', $url);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
+     */
     public function testAnonymousUserCanRegisterToEvent()
     {
         $committeeUrl = sprintf('/comites/%s/en-marche-paris-8', LoadAdherentData::COMMITTEE_1_UUID);

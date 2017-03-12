@@ -126,6 +126,12 @@
                             onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
                             <i class="fa fa-envelope-o"></i>
                         </li>
+                        <li role="button" arial-label="{{ 'committee.event.show.share.download_ical'|trans }}">
+                            <a href="{{ path('app_committee_event_export_ical', {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
+                                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                                <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

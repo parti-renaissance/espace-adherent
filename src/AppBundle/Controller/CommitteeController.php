@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -244,7 +245,7 @@ class CommitteeController extends Controller
 
         $this->get('app.committee.manager')->followCommittee($this->getUser(), $committee);
 
-        return $this->json([
+        return new JsonResponse([
             'button' => [
                 'label' => 'Quitter ce comité',
                 'action' => 'quitter',
@@ -266,7 +267,7 @@ class CommitteeController extends Controller
 
         $this->get('app.committee.manager')->unfollowCommittee($this->getUser(), $committee);
 
-        return $this->json([
+        return new JsonResponse([
             'button' => [
                 'label' => 'Suivre ce comité',
                 'action' => 'rejoindre',
