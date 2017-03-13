@@ -625,7 +625,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
-            'message' => 'Hello!',
+            'message' => 'Hello à tous, j\'espère que vous allez bien!',
         ]);
 
         $this->assertClientIsRedirectedTo($membersUrl, $this->client);
@@ -649,7 +649,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => json_encode($uuids),
-            'message' => 'Hello!',
+            'message' => 'Hello à tous, j\'espère que vous allez bien!',
         ]);
 
         $this->assertClientIsRedirectedTo($membersUrl, $this->client);

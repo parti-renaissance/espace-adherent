@@ -16,6 +16,12 @@ class CommitteeContactMembersCommand
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(
+     *     min=10,
+     *     max=1500,
+     *     minMessage="committee.message.min_length",
+     *     maxMessage="committee.message.max_length",
+     * )
      */
     private $message;
 
