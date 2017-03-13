@@ -358,6 +358,20 @@
                         opacity: .5;
                     }
                 }
+
+                li a {
+                    border-bottom: 0;
+                    -webkit-transform: none;
+                    -moz-transform: none;
+                    -ms-transform: none;
+                    -o-transform: none;
+                    transform: none;
+
+                    &:hover {
+                        opacity: .5;
+                        color: white;
+                    }
+                }
             }
         }
 
