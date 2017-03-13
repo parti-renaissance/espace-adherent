@@ -502,14 +502,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir au moins 10 caractères.']));
         $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
 
-        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
-            'committee_feed_message' => ['content' => str_repeat('h', 1501)],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir moins de 1500 caractères.']));
-        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
-
         $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
             'committee_feed_message' => ['content' => 'Bienvenue !'],
         ]));
