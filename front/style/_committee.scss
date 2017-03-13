@@ -3,6 +3,14 @@
     margin-right: 7px;
 }
 
+.committee-follow--anonymous {
+    text-align: right;
+
+    &__link {
+        padding-top: 3px;
+    }
+}
+
 .committee {
     margin: 0 0 100px 0;
 

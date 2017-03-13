@@ -672,7 +672,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
     {
-        $this->assertCount($nb, $crawler->filter('.committee-follow-disabled'));
+        $this->assertCount($nb, $crawler->filter('.committee-follow--disabled'));
 
         return 1 === count($crawler->filter('#committee-register-link'));
     }
