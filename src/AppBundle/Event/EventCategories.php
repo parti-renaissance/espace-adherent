@@ -9,10 +9,10 @@ final class EventCategories
         'Réunion d\'équipe' => 'CE002',
         'Conférence-débat' => 'CE003',
         'Porte-à-porte' => 'CE004',
-        'Atelier de réflexion' => 'CE005',
+        'Atelier du programme' => 'CE005',
         'Action de terrain' => 'CE006',
         'Convivialité' => 'CE007',
-        'Initiative citoyenne' => 'CE008',
+        'Action ciblée' => 'CE008',
         'Événement innovant' => 'CE009',
         'Atelier de plan de transformation' => 'CE010',
     ];
