@@ -2,10 +2,14 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\ProcurationCitySelectorType;
+use AppBundle\Form\ProcurationAddressType;
+use AppBundle\Form\ProcurationElectionsType;
+use AppBundle\Form\ProcurationVoteType;
+use AppBundle\Procuration\ProcurationRequestCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,7 +26,10 @@ class ProcurationController extends Controller
         $forms = [];
 
         foreach (['header', 'footer'] as $type) {
-            $forms[$type] = $this->createForm(ProcurationCitySelectorType::class, ['country' => 'FR'])->createView();
+            $forms[$type] = $this
+                ->createForm(ProcurationVoteType::class, new ProcurationRequestCommand())
+                ->createView()
+            ;
         }
 
         return $this->render('procuration/index.html.twig', [
@@ -31,11 +38,68 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/mon-adresse", name="app_procuration_request_address")
-     * @Method("GET")
+     * @Route("/je-demande/adresse", name="app_procuration_request_address")
+     * @Method("POST")
      */
-    public function startAction(): Response
+    public function addressAction(Request $request): Response
     {
-        // TODO
+        $procurationRequestCommand = new ProcurationRequestCommand();
+
+        $form = $this->createForm(ProcurationVoteType::class, $procurationRequestCommand);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->redirectToRoute('app_procuration_index');
+        }
+
+        return $this->render('procuration/address.html.twig', [
+            'form' => $this->createForm(ProcurationAddressType::class, $procurationRequestCommand)->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/je-demande/elections", name="app_procuration_request_elections")
+     * @Method("POST")
+     */
+    public function electionsAction(Request $request): Response
+    {
+        $procurationRequestCommand = new ProcurationRequestCommand();
+
+        $form = $this->createForm(ProcurationAddressType::class, $procurationRequestCommand);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->redirectToRoute('app_procuration_index');
+        }
+
+        return $this->render('procuration/elections.html.twig', [
+            'form' => $this->createForm(ProcurationElectionsType::class, $procurationRequestCommand)->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/je-demande/coordonnees", name="app_procuration_request_profile")
+     * @Method("POST")
+     */
+    public function profileAction(Request $request): Response
+    {
+        $procurationRequestCommand = new ProcurationRequestCommand();
+
+        $form = $this->createForm(ProcurationElectionsType::class, $procurationRequestCommand);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+
+            dump($form);
+            exit;
+            return $this->redirectToRoute('app_procuration_index');
+        }
+
+        dump($procurationRequestCommand);
+        exit;
+
+        return $this->render('procuration/index.html.twig', [
+            'form' => $this->createForm(ProcurationAddressType::class, $procurationRequestCommand)->createView(),
+        ]);
     }
 }

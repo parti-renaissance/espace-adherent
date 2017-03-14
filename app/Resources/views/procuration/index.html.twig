@@ -5,25 +5,27 @@
         <div class="procuration__banner__form">
             <h4>Mon lieu de vote</h4>
 
-            <form method="get" action="{{ path('app_procuration_request_address') }}">
+            <form method="post" action="{{ path('app_procuration_request_address') }}">
                 <div class="form__row">
-                    {{ form_label(form, 'Le pays de mon lieu de vote') }}
-                    {{ form_errors(form.country) }}
-                    {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
+                    {{ form_errors(form.voteCountry) }}
+                    {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form, 'Le code postal de mon lieu de vote') }}
-                    {{ form_errors(form.postalCode) }}
-                    {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                    {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
+                    {{ form_errors(form.votePostalCode) }}
+                    {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form, 'La ville dans laquelle je vote') }}
-                    {{ form_widget(form.city) }}
-                    {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
-                    {{ form_errors(form.city) }}
+                    {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
+                    {{ form_widget(form.voteCity) }}
+                    {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                    {{ form_errors(form.voteCity) }}
                 </div>
+
+                {{ form_rest(form) }}
 
                 <div class="text--center">
                     <button type="submit" class="btn btn--primary btn--medium">
@@ -44,10 +46,10 @@
         Kernel.onLoad(function() {
             {% for form in forms %}
                 App.createAddressSelector(
-                    '{{ form.country.vars.id }}',
-                    '{{ form.postalCode.vars.id }}',
-                    '{{ form.city.vars.id }}',
-                    '{{ form.cityName.vars.id }}'
+                    '{{ form.voteCountry.vars.id }}',
+                    '{{ form.votePostalCode.vars.id }}',
+                    '{{ form.voteCity.vars.id }}',
+                    '{{ form.voteCityName.vars.id }}'
                 );
             {% endfor %}
         });

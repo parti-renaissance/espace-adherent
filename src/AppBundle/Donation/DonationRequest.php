@@ -102,7 +102,6 @@ class DonationRequest
         $dto = new self($amount);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
-        $dto->lastName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
         $dto->emailAddress = $adherent->getEmailAddress();
         $dto->address = $adherent->getAddress();
