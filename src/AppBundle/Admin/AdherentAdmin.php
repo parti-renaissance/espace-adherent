@@ -45,7 +45,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('phone', null, [
                     'label' => 'Téléphone',
                 ])
-                ->add('birthdate', 'sonata_type_date_picker', [
+                ->add('birthdate', null, [
                     'label' => 'Date de naissance',
                 ])
                 ->add('position', null, [
