@@ -78,17 +78,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/mon-agenda", name="page_emmanuel_macron_mon_agenda")
-     * @Method("GET")
-     */
-    public function emmanuelMacronMonAgendaAction()
-    {
-        // TODO Enable when Open Agenda is ready
-        throw $this->createNotFoundException();
-        return $this->render('page/emmanuel-macron/mon-agenda.html.twig');
-    }
-
-    /**
      * @Route("/le-mouvement", name="page_le_mouvement")
      * @Method("GET")
      */
@@ -173,10 +162,6 @@ class PageController extends Controller
      */
     public function botAction()
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('page/bot.html.twig');
     }
 
