@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% macro start_form(form) %}
+    <section class="l__wrapper">
+        <div class="procuration__banner__form">
+            <h4>Mon lieu de vote</h4>
+
+            <form method="get" action="{{ path('app_procuration_request_address') }}">
+                <div class="form__row">
+                    {{ form_label(form, 'Le pays de mon lieu de vote') }}
+                    {{ form_errors(form.country) }}
+                    {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form, 'Le code postal de mon lieu de vote') }}
+                    {{ form_errors(form.postalCode) }}
+                    {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(form, 'La ville dans laquelle je vote') }}
+                    {{ form_widget(form.city) }}
+                    {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                    {{ form_errors(form.city) }}
+                </div>
+
+                <div class="text--center">
+                    <button type="submit" class="btn btn--primary btn--medium">
+                        Je continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endmacro %}
+
+{% import _self as procuration %}
+
+{% block page_title 'Procuration' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {% for form in forms %}
+                App.createAddressSelector(
+                    '{{ form.country.vars.id }}',
+                    '{{ form.postalCode.vars.id }}',
+                    '{{ form.city.vars.id }}',
+                    '{{ form.cityName.vars.id }}'
+                );
+            {% endfor %}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="procuration">
+    <section class="l__wrapper">
+        <header class="procuration__header text--center">
+            <h2 class="procuration__header__title">
+                Ne gâchez pas votre vote
+            </h2>
+            <h3 class="procuration__header__subtitle">
+                Faîtes procuration
+            </h3>
+        </header>
+    </section>
+
+    <section class="procuration__banner procuration__banner--form-right progressive-background"
+             data-sd="{{ static_asset('procuration/banner-header.jpg', {'w': 300, 'q': 20}) }}"
+             data-hd="{{ static_asset('procuration/banner-header.jpg', {'w': 2000, 'q': 70}) }}">
+        {{ procuration.start_form(forms.header) }}
+    </section>
+
+    <section class="l__wrapper procuration__explaination">
+        <!-- TODO -->
+    </section>
+
+    <section class="procuration__banner procuration__banner--form-left progressive-background"
+             data-sd="{{ static_asset('procuration/banner-footer.jpg', {'w': 300, 'q': 20}) }}"
+             data-hd="{{ static_asset('procuration/banner-footer.jpg', {'w': 2000, 'q': 70}) }}">
+        {{ procuration.start_form(forms.footer) }}
+    </section>
+</main>
+
+{% endblock %}
