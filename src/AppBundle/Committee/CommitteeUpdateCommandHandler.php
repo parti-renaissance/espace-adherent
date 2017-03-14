@@ -3,15 +3,22 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Events;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeUpdateCommandHandler
 {
+    private $dispatcher;
     private $addressFactory;
     private $manager;
 
-    public function __construct(ObjectManager $manager, PostAddressFactory $addressFactory)
-    {
+    public function __construct(
+        EventDispatcherInterface $dispatcher,
+        ObjectManager $manager,
+        PostAddressFactory $addressFactory
+    ) {
+        $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->addressFactory = $addressFactory;
     }
@@ -34,6 +41,9 @@ class CommitteeUpdateCommandHandler
             $command->googlePlusPageUrl
         );
 
+        $this->manager->persist($committee);
         $this->manager->flush();
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeWasUpdatedEvent($committee));
     }
 }

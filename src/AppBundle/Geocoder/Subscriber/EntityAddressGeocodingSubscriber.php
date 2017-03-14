@@ -2,6 +2,7 @@
 
 namespace AppBundle\Geocoder\Subscriber;
 
+use AppBundle\Committee\CommitteeWasUpdatedEvent;
 use AppBundle\Event\EventUpdatedEvent;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
@@ -45,6 +46,11 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($event->getCommittee());
     }
 
+    public function onCommitteeUpdated(CommitteeWasUpdatedEvent $event)
+    {
+        $this->updateGeocodableEntity($event->getCommittee());
+    }
+
     public function onEventCreated(EventCreatedEvent $event)
     {
         $this->updateGeocodableEntity($event->getEvent());
@@ -79,6 +85,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', -256],
             AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
             Events::COMMITTEE_CREATED => ['onCommitteeCreated', -256],
+            Events::COMMITTEE_UPDATED => ['onCommitteeUpdated', -256],
             Events::EVENT_CREATED => ['onEventCreated', -256],
             Events::EVENT_UPDATED => ['onEventUpdated', -256],
         ];
