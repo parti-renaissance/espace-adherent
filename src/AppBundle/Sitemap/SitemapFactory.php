@@ -143,7 +143,7 @@ class SitemapFactory
 
     private function createEventsSitemap(int $page): string
     {
-        $events = $this->cache->getItem('sitemap_events');
+        $events = $this->cache->getItem('sitemap_events_'.$page);
 
         if (!$events->isHit()) {
             $sitemap = new Sitemap();
