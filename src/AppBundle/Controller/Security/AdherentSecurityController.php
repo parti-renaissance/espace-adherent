@@ -87,6 +87,7 @@ class AdherentSecurityController extends Controller
         }
 
         return $this->render('security/adherent_forgot_password.html.twig', [
+            'legacy' => $request->query->getBoolean('legacy'),
             'form' => $form->createView(),
         ]);
     }
