@@ -12,9 +12,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tackk\Cartographer\ChangeFrequency;
 use Tackk\Cartographer\Sitemap;
+use Tackk\Cartographer\SitemapIndex;
 
 class SitemapFactory
 {
+    const PER_PAGE = 1000;
+
     private $manager;
     private $router;
     private $cache;
@@ -26,7 +29,62 @@ class SitemapFactory
         $this->cache = $cache;
     }
 
-    public function createMainSitemap(): string
+    public function createSitemapIndex(): string
+    {
+        $index = $this->cache->getItem('sitemap_index');
+
+        if (!$index->isHit()) {
+            $sitemapIndex = new SitemapIndex();
+            $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => 'main', 'page' => 1]), null);
+            $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => 'content', 'page' => 1]), null);
+
+            // Committees
+            $totalCount = $this->manager->getRepository(Committee::class)->countSitemapCommittees();
+            $pagesCount = ceil($totalCount / self::PER_PAGE);
+
+            for ($i = 1; $i <= $pagesCount; ++$i) {
+                $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => 'committees', 'page' => $i]), null);
+            }
+
+            // Events
+            $totalCount = $this->manager->getRepository(Event::class)->countSitemapEvents();
+            $pagesCount = ceil($totalCount / self::PER_PAGE);
+
+            for ($i = 1; $i <= $pagesCount; ++$i) {
+                $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => 'events', 'page' => $i]), null);
+            }
+
+            $index->set((string) $sitemapIndex);
+            $index->expiresAfter(3600);
+
+            $this->cache->save($index);
+        }
+
+        return $index->get();
+    }
+
+    public function createSitemap(string $type, int $page): string
+    {
+        if ('main' === $type) {
+            return $this->createMainSitemap();
+        }
+
+        if ('content' === $type) {
+            return $this->createContentSitemap();
+        }
+
+        if ('committees' === $type) {
+            return $this->createCommitteesSitemap($page);
+        }
+
+        if ('events' === $type) {
+            return $this->createEventsSitemap($page);
+        }
+
+        return '';
+    }
+
+    private function createMainSitemap(): string
     {
         $main = $this->cache->getItem('sitemap_main');
 
@@ -47,7 +105,7 @@ class SitemapFactory
         return $main->get();
     }
 
-    public function createContentSitemap(): string
+    private function createContentSitemap(): string
     {
         $content = $this->cache->getItem('sitemap_content');
 
@@ -66,13 +124,13 @@ class SitemapFactory
         return $content->get();
     }
 
-    public function createCommitteesSitemap(): string
+    private function createCommitteesSitemap(int $page): string
     {
-        $committees = $this->cache->getItem('sitemap_committees');
+        $committees = $this->cache->getItem('sitemap_committees_'.$page);
 
         if (!$committees->isHit()) {
             $sitemap = new Sitemap();
-            $this->addCommittees($sitemap);
+            $this->addCommittees($sitemap, $page, self::PER_PAGE);
 
             $committees->set((string) $sitemap);
             $committees->expiresAfter(3600);
@@ -83,13 +141,13 @@ class SitemapFactory
         return $committees->get();
     }
 
-    public function createEventsSitemap(): string
+    private function createEventsSitemap(int $page): string
     {
         $events = $this->cache->getItem('sitemap_events');
 
         if (!$events->isHit()) {
             $sitemap = new Sitemap();
-            $this->addEvents($sitemap);
+            $this->addEvents($sitemap, $page, self::PER_PAGE);
 
             $events->set((string) $sitemap);
             $events->expiresAfter(3600);
@@ -142,16 +200,13 @@ class SitemapFactory
         }
     }
 
-    private function addCommittees(Sitemap $sitemap)
+    private function addCommittees(Sitemap $sitemap, int $page, int $perPage)
     {
-        $committees = $this->manager->getRepository(Committee::class)->findApprovedCommittees();
+        $committees = $this->manager->getRepository(Committee::class)->findSitemapCommittees($page, $perPage);
 
         foreach ($committees as $committee) {
             $sitemap->add(
-                $this->generateUrl('app_committee_show', [
-                    'uuid' => $committee->getUuid()->toString(),
-                    'slug' => $committee->getSlug(),
-                ]),
+                $this->generateUrl('app_committee_show', $committee),
                 null,
                 ChangeFrequency::WEEKLY,
                 0.6
@@ -159,17 +214,17 @@ class SitemapFactory
         }
     }
 
-    private function addEvents(Sitemap $sitemap)
+    private function addEvents(Sitemap $sitemap, int $page, int $perPage)
     {
-        $events = $this->manager->getRepository(Event::class)->findAll();
+        $events = $this->manager->getRepository(Event::class)->findSitemapEvents($page, $perPage);
 
         foreach ($events as $event) {
             $sitemap->add(
                 $this->generateUrl('app_committee_show_event', [
-                    'uuid' => $event->getUuid()->toString(),
-                    'slug' => $event->getSlug(),
+                    'uuid' => $event['uuid'],
+                    'slug' => $event['slug'],
                 ]),
-                $event->getUpdatedAt()->format(\DATE_ATOM),
+                $event['updatedAt']->format(\DATE_ATOM),
                 ChangeFrequency::WEEKLY,
                 0.6
             );

@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeRepository extends EntityRepository
@@ -211,5 +212,44 @@ class CommitteeRepository extends EntityRepository
         $qb->andWhere($codesFilter);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return int
+     */
+    public function countSitemapCommittees(): int
+    {
+        return (int) $this->createSitemapQb()
+            ->select('COUNT(c) AS nb')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return array
+     */
+    public function findSitemapCommittees(int $page, int $perPage): array
+    {
+        return $this->createSitemapQb()
+            ->select('c.uuid', 'c.slug')
+            ->orderBy('c.id')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    private function createSitemapQb(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->where('c.status = :status')
+            ->setParameter('status', Committee::APPROVED);
     }
 }

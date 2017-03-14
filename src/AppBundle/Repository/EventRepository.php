@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class EventRepository extends EntityRepository
 {
@@ -83,5 +84,45 @@ class EventRepository extends EntityRepository
         $qb->andWhere($codesFilter);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return int
+     */
+    public function countSitemapEvents(): int
+    {
+        return (int) $this->createSitemapQb()
+            ->select('COUNT(c) AS nb')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return array
+     */
+    public function findSitemapEvents(int $page, int $perPage): array
+    {
+        return $this->createSitemapQb()
+            ->select('e.uuid', 'e.slug', 'e.updatedAt')
+            ->orderBy('e.id')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    private function createSitemapQb(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('e')
+            ->leftJoin('e.committee', 'c')
+            ->where('c.status = :status')
+            ->setParameter('status', Committee::APPROVED);
     }
 }
