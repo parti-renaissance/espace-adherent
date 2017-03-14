@@ -7,8 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Tackk\Cartographer\SitemapIndex;
 
 class HomeController extends Controller
 {
@@ -40,41 +38,21 @@ class HomeController extends Controller
      */
     public function sitemapIndexAction()
     {
-        $sitemapIndex = new SitemapIndex();
-
-        foreach (['main', 'content', 'committees', 'events'] as $type) {
-            $sitemapIndex->add(
-                $this->generateUrl('app_sitemap', ['type' => $type], UrlGeneratorInterface::ABSOLUTE_URL),
-                null
-            );
-        }
-
-        return $this->createXmlResponse((string) $sitemapIndex);
+        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemapIndex());
     }
 
     /**
      * @Route(
-     *     "/sitemap_{type}.xml",
-     *     requirements={"type"="main|content|committees|events"},
+     *     "/sitemap_{type}_{page}.xml",
+     *     requirements={"type"="main|content|committees|events", "page"="\d+"},
+     *     defaults={"page"="1"},
      *     name="app_sitemap"
      * )
      * @Method("GET")
      */
-    public function sitemapAction($type): Response
+    public function sitemapAction($type, $page): Response
     {
-        $sitemap = '';
-
-        if ('main' === $type) {
-            $sitemap = $this->get('app.content.sitemap_factory')->createMainSitemap();
-        } elseif ('content' === $type) {
-            $sitemap = $this->get('app.content.sitemap_factory')->createContentSitemap();
-        } elseif ('committees' === $type) {
-            $sitemap = $this->get('app.content.sitemap_factory')->createCommitteesSitemap();
-        } elseif ('events' === $type) {
-            $sitemap = $this->get('app.content.sitemap_factory')->createEventsSitemap();
-        }
-
-        return $this->createXmlResponse($sitemap);
+        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemap($type, (int) $page));
     }
 
     private function createXmlResponse(string $content)
