@@ -1,12 +1,14 @@
 <?php
 
 namespace AppBundle\Form;
+use AppBundle\Procuration\ProcurationRequestCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProcurationCitySelectorType extends AbstractType
+class ProcurationAddressType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -23,7 +25,20 @@ class ProcurationCitySelectorType extends AbstractType
             ->add('cityName', TextType::class, [
                 'required' => false,
             ])
+            ->add('address', TextType::class)
+            ->add('voteCountry', HiddenType::class)
+            ->add('votePostalCode', HiddenType::class)
+            ->add('voteCity', HiddenType::class)
+            ->add('voteCityName', HiddenType::class)
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => ProcurationRequestCommand::class,
+            'validation_groups' => ['vote', 'address'],
+        ]);
     }
 
     /**
@@ -31,6 +46,6 @@ class ProcurationCitySelectorType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'procuration';
+        return 'app_procuration_address';
     }
 }

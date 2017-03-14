@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon adresse - Procuration' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form) }}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="l__wrapper">
+        <form method="post" action="{{ path('app_procuration_request_elections') }}">
+            <div class="form__row">
+                {{ form_label(form.country, 'Mon pays de résidence') }}
+                {{ form_errors(form.country) }}
+                {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.postalCode, 'Le code postal de mon lieu de résidence') }}
+                {{ form_errors(form.postalCode) }}
+                {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.city, 'La ville dans laquelle je réside') }}
+                {{ form_widget(form.city) }}
+                {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                {{ form_errors(form.city) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.address, 'L\'adresse à laquelle je réside') }}
+                {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse' } }) }}
+                {{ form_errors(form.address) }}
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="text--center">
+                <button type="submit" class="btn btn--primary btn--medium">
+                    Je continue
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock %}
