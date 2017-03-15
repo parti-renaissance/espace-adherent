@@ -17,47 +17,24 @@
 
 {% block procuration_content %}
     <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__mobile--col space--60-0">
-        <div>
-            {% if has_error %}
-                <div class="committee__waiting-for-approval b__nudge--bottom-large">
-                    Une erreur s'est produite lors de votre demande.
-                    Pourriez-vous réessayer s'il vous plait ?
-                </div>
-            {% endif %}
-
-            <div class="text--body text--medium-small">
-                Vous pouvez demander une procuration jusqu'à la veille du scrutin, soit le 22 avril pour le 1er
-                tour de la présidentielle. Mais il faut que le bureau de vote soit prévenu à temps, ce qui peut
-                prendre de 3 à 7 jours. Effectuez donc votre démarche le plus tôt possible !
-            </div>
-            <div class="text--body b__nudge--top-50">
-                <strong>Comment ça marche ?</strong>
-                <ol>
-                    <li>Remplissez ce formulaire avec vos coordonnées et votre bureau de vote</li>
-                    <li>Vous recevrez votre "CERFA", faites le tamponner au commissariat</li>
-                    <li>Le jour de l'élection, un volontaire <em>En Marche !</em> vote en votre nom</li>
-                </ol>
-            </div>
-            <div class="text--body b__nudge--top">
-                Besoin de plus d'informations ?
-                <a href="#">En savoir plus</a>
-            </div>
-        </div>
-
         <div class="procuration__banner__form">
             <ul class="procuration__steps">
                 <li class="active"><span>Mon lieu de vote</span></li>
                 <li>Mes coordonnées</li>
                 <li>Ma procuration</li>
             </ul>
-            <form method="post" action="{{ path('app_procuration_request_vote') }}">
+            <form method="post">
+                {{ form_errors(form) }}
+
                 <div class="form__row">
                     {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
+                    {{ form_errors(form.voteCountry) }}
                     {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
+                    {{ form_errors(form.votePostalCode) }}
                     {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
                 </div>
 
@@ -65,6 +42,7 @@
                     {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
                     {{ form_widget(form.voteCity) }}
                     {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                    {{ form_errors(form.voteCity) }}
                 </div>
 
                 {{ form_rest(form) }}

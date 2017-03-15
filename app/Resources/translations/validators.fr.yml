@@ -112,3 +112,9 @@ jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.
 jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre positif ou zéro.
 jemarche.postal_code.not_blank: Vous devez entrer un code postal.
 jemarche.postal_code.invalid: Ce code postal n'est pas valide.
+
+#
+# Procuration
+#
+procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
