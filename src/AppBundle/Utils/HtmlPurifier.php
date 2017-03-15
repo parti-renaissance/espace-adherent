@@ -70,5 +70,8 @@ class HtmlPurifier
         '/ul' => '</ul>',
         'li' => '<li>',
         '/li' => '</li>',
+        'br' => '<br>',
+        'br/' => '<br/>',
+        'br /' => '<br />',
     ];
 }
