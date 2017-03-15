@@ -1,45 +1,58 @@
 {% extends 'base.html.twig' %}
 
 {% macro start_form(form) %}
-    <section class="l__wrapper">
-        <div class="procuration__banner__form">
-            <h4>Mon lieu de vote</h4>
+    <div class="procuration__banner__form">
+        <ul class="procuration__steps">
+            <li class="active"><span>Mon lieu de vote</span></li>
+            <li>Mes coordonnées</li>
+            <li>Ma procuration</li>
+        </ul>
+        <form method="get" action="{{ path('app_procuration_request_address') }}">
+            <div class="form__row">
+                {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
+                {{ form_errors(form.voteCountry) }}
+                {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
 
-            <form method="post" action="{{ path('app_procuration_request_address') }}">
-                <div class="form__row">
-                    {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
-                    {{ form_errors(form.voteCountry) }}
-                    {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
-                </div>
+            <div class="form__row">
+                {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
+                {{ form_errors(form.votePostalCode) }}
+                {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+            </div>
 
-                <div class="form__row">
-                    {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
-                    {{ form_errors(form.votePostalCode) }}
-                    {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
-                </div>
+            <div class="form__row">
+                {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
+                {{ form_widget(form.voteCity) }}
+                {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+                {{ form_errors(form.voteCity) }}
+            </div>
 
-                <div class="form__row">
-                    {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
-                    {{ form_widget(form.voteCity) }}
-                    {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
-                    {{ form_errors(form.voteCity) }}
-                </div>
+            {{ form_rest(form) }}
 
-                {{ form_rest(form) }}
-
-                <div class="text--center">
-                    <button type="submit" class="btn btn--primary btn--medium">
-                        Je continue
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
+            <div class="text--center b__nudge--top-large">
+                <button type="submit" class="btn btn--blue">
+                    Je continue
+                </button>
+            </div>
+        </form>
+    </div>
 {% endmacro %}
 
 {% import _self as procuration %}
 
 {% block page_title 'Procuration' %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        footer.footer--slim {
+            display: block;
+        }
+    </style>
+{% endblock %}
+
+{% block banner '' %}
+{% block header '' %}
+{% block footer '' %}
 
 {% block javascripts %}
     <script type="text/javascript">
@@ -57,33 +70,39 @@
 {% endblock %}
 
 {% block content %}
-<main class="procuration">
-    <section class="l__wrapper">
-        <header class="procuration__header text--center">
-            <h2 class="procuration__header__title">
-                Ne gâchez pas votre vote
-            </h2>
-            <h3 class="procuration__header__subtitle">
-                Faîtes procuration
-            </h3>
-        </header>
-    </section>
+<main>
+    <div class="procuration">
+        <div>
+            <section class="procuration__header l__row l__row--h-stretch list__links--nav progressive-background text--center text--white"
+                     data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
+                     data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
+                <h1 class="l__wrapper--slim text--larger "><span class="text--larger">Chaque vote compte.</h1>
+                <h2 class="text--large b__nudge--top-10">Faîtes une procuration avec <em>En Marche !</em></h2>
+            </section>
 
-    <section class="procuration__banner procuration__banner--form-right progressive-background"
-             data-sd="{{ static_asset('procuration/banner-header.jpg', {'w': 300, 'q': 20}) }}"
-             data-hd="{{ static_asset('procuration/banner-header.jpg', {'w': 2000, 'q': 70}) }}">
-        {{ procuration.start_form(forms.header) }}
-    </section>
+            <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__mobile--col space--60-0">
+                <div>
 
-    <section class="l__wrapper procuration__explaination">
-        <!-- TODO -->
-    </section>
-
-    <section class="procuration__banner procuration__banner--form-left progressive-background"
-             data-sd="{{ static_asset('procuration/banner-footer.jpg', {'w': 300, 'q': 20}) }}"
-             data-hd="{{ static_asset('procuration/banner-footer.jpg', {'w': 2000, 'q': 70}) }}">
-        {{ procuration.start_form(forms.footer) }}
-    </section>
+                    <div class="text--body text--medium-small">Vous pouvez demander une procuration jusqu'à la veille du scrutin, soit le 22 avril pour le 1er tour de la présidentielle. Mais il faut que le bureau de vote soit prévenu à temps, ce qui peut prendre de 3 à 7 jours. Effectuez donc votre démarche le plus tôt possible !</div>
+                    <div class="text--body b__nudge--top-50">
+                        <strong>Comment ça marche?</strong>
+                        <ol>
+                            <li>Remplissez ce formulaire avec vos coordonnées et votre bureau de vote</li>
+                            <li>Vous recevrez votre "CERFA": faîtes le tamponner au commissariat</li>
+                            <li>Le jour de l'élection, un volontaire <em>En Marche !</em> vote en votre nom</li>
+                        </ol>
+                    </div>
+                    <div class="text--body b__nudge--top">
+                        Besoin de plus d'informations ? <a href="#">En savoir plus</a>.
+                    </div>
+                </div>
+                {{ procuration.start_form(forms.header) }}
+            </section>
+        </div>
+        {{ include('components/footer--slim.html.twig') }}
+    </div>
 </main>
+
+
 
 {% endblock %}
