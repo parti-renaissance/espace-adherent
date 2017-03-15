@@ -330,6 +330,17 @@
                 }
             }
         }
+
+        &-description {
+            ul {
+                padding-left: 40px;
+                list-style-type: disc;
+            }
+
+            li {
+                list-style-type: inherit;
+            }
+        }
     }
 
     @media (max-width: $mobile) {
