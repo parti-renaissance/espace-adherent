@@ -26,6 +26,9 @@ class ProcurationVoteType extends AbstractType
             ->add('voteCityName', TextType::class, [
                 'required' => false,
             ])
+            ->add('voteOffice', TextType::class, [
+                'required' => false,
+            ])
         ;
     }
 

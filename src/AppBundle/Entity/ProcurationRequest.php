@@ -195,6 +195,13 @@ class ProcurationRequest
     private $voteCountry = 'FR';
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=50, nullable=true)
+     */
+    private $voteOffice;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -475,6 +482,16 @@ class ProcurationRequest
     public function setVoteCountry(string $voteCountry)
     {
         $this->voteCountry = $voteCountry;
+    }
+
+    public function getVoteOffice()
+    {
+        return $this->voteOffice;
+    }
+
+    public function setVoteOffice($voteOffice)
+    {
+        $this->voteOffice = $voteOffice;
     }
 
     public function hasElectionPresidentialFirstRound(): bool
