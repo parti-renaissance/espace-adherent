@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\ProcurationAddressType;
+use AppBundle\Entity\Adherent;
+use AppBundle\Form\ProcurationProfileType;
 use AppBundle\Form\ProcurationElectionsType;
 use AppBundle\Form\ProcurationVoteType;
 use AppBundle\Procuration\ProcurationRequestCommand;
+use AppBundle\Procuration\ProcurationRequestFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,85 +23,97 @@ class ProcurationController extends Controller
      * @Route("", name="app_procuration_index")
      * @Method("GET")
      */
-    public function indexAction(): Response
+    public function indexAction(Request $request): Response
     {
-        $forms = [];
-
-        foreach (['header', 'footer'] as $type) {
-            $forms[$type] = $this
-                ->createForm(ProcurationVoteType::class, new ProcurationRequestCommand())
-                ->createView()
-            ;
-        }
+        $this->getProcurationFlow()->reset();
 
         return $this->render('procuration/index.html.twig', [
-            'forms' => $forms,
+            'has_error' => $request->query->getBoolean('has_error'),
+            'form' => $this->createForm(ProcurationVoteType::class, new ProcurationRequestCommand())->createView(),
         ]);
     }
 
     /**
-     * @Route("/je-demande/adresse", name="app_procuration_request_address")
-     * @Method("POST")
+     * @Route("/je-demande/mon-lieu-de-vote", name="app_procuration_request_vote")
+     * @Method("GET|POST")
      */
-    public function addressAction(Request $request): Response
+    public function voteAction(Request $request): Response
     {
-        $procurationRequestCommand = new ProcurationRequestCommand();
+        $command = $this->getProcurationFlow()->getCurrentModel();
 
-        $form = $this->createForm(ProcurationVoteType::class, $procurationRequestCommand);
+        $form = $this->createForm(ProcurationVoteType::class, $command);
         $form->handleRequest($request);
 
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            return $this->redirectToRoute('app_procuration_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getProcurationFlow()->save($command);
+
+            return $this->redirectToRoute('app_procuration_request_profile');
         }
 
-        return $this->render('procuration/address.html.twig', [
-            'form' => $this->createForm(ProcurationAddressType::class, $procurationRequestCommand)->createView(),
+        return $this->render('procuration/vote.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/je-demande/elections", name="app_procuration_request_elections")
-     * @Method("POST")
-     */
-    public function electionsAction(Request $request): Response
-    {
-        $procurationRequestCommand = new ProcurationRequestCommand();
-
-        $form = $this->createForm(ProcurationAddressType::class, $procurationRequestCommand);
-        $form->handleRequest($request);
-
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            return $this->redirectToRoute('app_procuration_index');
-        }
-
-        return $this->render('procuration/elections.html.twig', [
-            'form' => $this->createForm(ProcurationElectionsType::class, $procurationRequestCommand)->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/je-demande/coordonnees", name="app_procuration_request_profile")
-     * @Method("POST")
+     * @Route("/je-demande/mes-coordonnees", name="app_procuration_request_profile")
+     * @Method("GET|POST")
      */
     public function profileAction(Request $request): Response
     {
-        $procurationRequestCommand = new ProcurationRequestCommand();
+        $command = $this->getProcurationFlow()->getCurrentModel();
 
-        $form = $this->createForm(ProcurationElectionsType::class, $procurationRequestCommand);
-        $form->handleRequest($request);
-
-        if (!$form->isSubmitted() || !$form->isValid()) {
-
-            dump($form);
-            exit;
-            return $this->redirectToRoute('app_procuration_index');
+        if ($this->getUser() instanceof Adherent) {
+            $command->importAdherentData($this->getUser());
         }
 
-        dump($procurationRequestCommand);
-        exit;
+        $form = $this->createForm(ProcurationProfileType::class, $command);
+        $form->handleRequest($request);
 
-        return $this->render('procuration/index.html.twig', [
-            'form' => $this->createForm(ProcurationAddressType::class, $procurationRequestCommand)->createView(),
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getProcurationFlow()->save($command);
+
+            return $this->redirectToRoute('app_procuration_request_elections');
+        }
+
+        return $this->render('procuration/profile.html.twig', [
+            'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/je-demande/ma-procuration", name="app_procuration_request_elections")
+     * @Method("GET|POST")
+     */
+    public function electionsAction(Request $request): Response
+    {
+        $command = $this->getProcurationFlow()->getCurrentModel();
+
+        $form = $this->createForm(ProcurationElectionsType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getProcurationFlow()->reset();
+
+            return $this->redirectToRoute('app_procuration_request_thanks');
+        }
+
+        return $this->render('procuration/elections.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/je-demande/merci", name="app_procuration_request_thanks")
+     * @Method("GET")
+     */
+    public function thanksAction(): Response
+    {
+        return $this->render('procuration/thanks.html.twig');
+    }
+
+    private function getProcurationFlow(): ProcurationRequestFlow
+    {
+        return $this->get('app.procuration.request_flow');
     }
 }

@@ -34,30 +34,30 @@ class ProcurationRequestCommand
     public $voteCountry;
 
     /**
-     * @Assert\NotBlank(message="common.address.required", groups={"address"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"address"})
+     * @Assert\NotBlank(message="common.address.required", groups={"profile"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"profile"})
      */
     public $address;
 
     /**
-     * @Assert\NotBlank(groups={"address"})
-     * @Assert\Length(max=15, groups={"address"})
+     * @Assert\NotBlank(groups={"profile"})
+     * @Assert\Length(max=15, groups={"profile"})
      */
     public $postalCode;
 
     /**
-     * @Assert\Length(max=15, groups={"address"})
+     * @Assert\Length(max=15, groups={"profile"})
      */
     public $city;
 
     /**
-     * @Assert\Length(max=255, groups={"address"})
+     * @Assert\Length(max=255, groups={"profile"})
      */
     public $cityName;
 
     /**
-     * @Assert\NotBlank(groups={"address"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"address"})
+     * @Assert\NotBlank(groups={"profile"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"profile"})
      */
     public $country;
 
@@ -97,6 +97,12 @@ class ProcurationRequestCommand
     public $lastName;
 
     /**
+     * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"profile"})
+     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age", groups={"profile"})
+     */
+    public $birthdate;
+
+    /**
      * @Assert\NotBlank(message="common.email.not_blank", groups={"profile"})
      * @Assert\Email(message="common.email.invalid", groups={"profile"})
      */
@@ -107,10 +113,10 @@ class ProcurationRequestCommand
      */
     public $phone;
 
-    public $electionPresidentialFirstRound;
-    public $electionPresidentialSecondRound;
-    public $electionLegislativeFirstRound;
-    public $electionLegislativeSecondRound;
+    public $electionPresidentialFirstRound = true;
+    public $electionPresidentialSecondRound = true;
+    public $electionLegislativeFirstRound = true;
+    public $electionLegislativeSecondRound = true;
 
     public function __construct()
     {
@@ -156,5 +162,20 @@ class ProcurationRequestCommand
         }
 
         $context->addViolation('Vous devez choisir au moins une élection');
+    }
+
+    public function importAdherentData(Adherent $adherent)
+    {
+        $this->gender = $adherent->getGender();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->emailAddress = $adherent->getEmailAddress();
+        $this->address = $adherent->getAddress();
+        $this->postalCode = $adherent->getPostalCode();
+        $this->city = $adherent->getCity();
+        $this->cityName = $adherent->getCityName();
+        $this->country = $adherent->getCountry();
+        $this->phone = $adherent->getPhone();
+        $this->birthdate = $adherent->getBirthdate();
     }
 }

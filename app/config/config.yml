@@ -20,6 +20,7 @@ imports:
     - { resource: services/media.xml }
     - { resource: services/membership.xml }
     - { resource: services/newsletter.xml }
+    - { resource: services/procuration.xml }
     - { resource: services/rabbitmq.xml }
     - { resource: services/recaptcha.xml }
     - { resource: services/referent.xml }

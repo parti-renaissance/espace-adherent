@@ -32,7 +32,7 @@ class ProcurationVoteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProcurationRequestCommand::class,
-            'validation_groups' => 'vote',
+            'validation_groups' => ['vote'],
         ]);
     }
 
