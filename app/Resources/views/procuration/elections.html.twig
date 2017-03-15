@@ -2,36 +2,80 @@
 
 {% block page_title 'Ma procuration - Procuration' %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
 {% block procuration_content %}
     <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__mobile--col space--60-0">
         <div class="procuration__banner__form">
             <ul class="procuration__steps">
                 <li><a href="{{ path('app_procuration_request_vote') }}">Mon lieu de vote</a></li>
-                <li><a href="{{ path('app_procuration_request_vote') }}">Mes coordonnées</a></li>
+                <li><a href="{{ path('app_procuration_request_profile') }}">Mes coordonnées</a></li>
                 <li class="active">Ma procuration</li>
             </ul>
             <form method="post">
                 {{ form_errors(form) }}
 
-                <div class="form__checkbox">
-                    {{ form_widget(form.electionPresidentialFirstRound) }}
-                    {{ form_label(form.electionPresidentialFirstRound, 'Pour le premier tour de l\'élection présidentielle') }}
+                <h5 class="procuration__title-elections">
+                    Je fais procuration ...
+                </h5>
+
+                <div class="procuration__choose-election">
+                    <div class="form__checkbox">
+                        {{ form_widget(form.electionPresidentialFirstRound) }}
+                        {{ form_label(form.electionPresidentialFirstRound, 'Pour le premier tour de l\'élection présidentielle') }}
+                    </div>
+                    <div class="procuration__choose-election__day">
+                        Dimanche 23 avril 2017
+                    </div>
                 </div>
 
-                <div class="form__checkbox">
-                    {{ form_widget(form.electionPresidentialSecondRound) }}
-                    {{ form_label(form.electionPresidentialSecondRound, 'Pour le second tour de l\'élection présidentielle') }}
+                <div class="procuration__choose-election">
+                    <div class="form__checkbox">
+                        {{ form_widget(form.electionPresidentialSecondRound) }}
+                        {{ form_label(form.electionPresidentialSecondRound, 'Pour le second tour de l\'élection présidentielle') }}
+                    </div>
+                    <div class="procuration__choose-election__day">
+                        Dimanche 7 mai 2017
+                    </div>
                 </div>
 
-                <div class="form__checkbox">
-                    {{ form_widget(form.electionLegislativeFirstRound) }}
-                    {{ form_label(form.electionLegislativeFirstRound, 'Pour le premier tour des élections législatives') }}
+                <div class="procuration__choose-election">
+                    <div class="form__checkbox">
+                        {{ form_widget(form.electionLegislativeFirstRound) }}
+                        {{ form_label(form.electionLegislativeFirstRound, 'Pour le premier tour des élections législatives') }}
+                    </div>
+                    <div class="procuration__choose-election__day">
+                        Dimanche 11 juin 2017
+                    </div>
                 </div>
 
-                <div class="form__checkbox">
-                    {{ form_widget(form.electionLegislativeSecondRound) }}
-                    {{ form_label(form.electionLegislativeSecondRound, 'Pour le second tour des élections législatives') }}
+                <div class="procuration__choose-election">
+                    <div class="form__checkbox">
+                        {{ form_widget(form.electionLegislativeSecondRound) }}
+                        {{ form_label(form.electionLegislativeSecondRound, 'Pour le second tour des élections législatives') }}
+                    </div>
+                    <div class="procuration__choose-election__day">
+                        Dimanche 18 juin 2017
+                    </div>
                 </div>
+
+                <div class="form__row b__nudge--top-40">
+                    {{ form_label(form.reason, 'Pour quelle raison vous est-il impossible de voter ?') }}
+                    {{ form_errors(form.reason) }}
+                    {{ form_widget(form.reason, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row b__nudge--top-40">
+                    {{ form_errors(form.reason) }}
+                    {{ form_widget(form.reason, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                {% if recaptcha_public_key is not empty %}
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+                {% endif %}
 
                 {{ form_rest(form) }}
 
@@ -39,6 +83,11 @@
                     <button type="submit" class="btn btn--blue">
                         Je continue
                     </button>
+                </div>
+
+                <div class="text--small b__nudge--top-large">
+                    La procuration peut être établie pour une durée maximale d’un an sur le territoire national et de trois
+                    ans dans les ambassades ou postes consulaires pour les Français établis à l’étranger.
                 </div>
             </form>
         </div>

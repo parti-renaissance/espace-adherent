@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Form\ProcurationProfileType;
 use AppBundle\Form\ProcurationElectionsType;
 use AppBundle\Form\ProcurationVoteType;
-use AppBundle\Procuration\ProcurationRequestCommand;
+use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\ProcurationRequestFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,11 +25,15 @@ class ProcurationController extends Controller
      */
     public function indexAction(Request $request): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $this->getProcurationFlow()->reset();
 
         return $this->render('procuration/index.html.twig', [
             'has_error' => $request->query->getBoolean('has_error'),
-            'form' => $this->createForm(ProcurationVoteType::class, new ProcurationRequestCommand())->createView(),
+            'form' => $this->createForm(ProcurationVoteType::class, new ProcurationRequest())->createView(),
         ]);
     }
 
@@ -39,6 +43,10 @@ class ProcurationController extends Controller
      */
     public function voteAction(Request $request): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $command = $this->getProcurationFlow()->getCurrentModel();
 
         $form = $this->createForm(ProcurationVoteType::class, $command);
@@ -61,6 +69,10 @@ class ProcurationController extends Controller
      */
     public function profileAction(Request $request): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $command = $this->getProcurationFlow()->getCurrentModel();
 
         if ($this->getUser() instanceof Adherent) {
@@ -87,7 +99,12 @@ class ProcurationController extends Controller
      */
     public function electionsAction(Request $request): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $command = $this->getProcurationFlow()->getCurrentModel();
+        $command->recaptcha = (string) $request->request->get('g-recaptcha-response');
 
         $form = $this->createForm(ProcurationElectionsType::class, $command);
         $form->handleRequest($request);
@@ -109,6 +126,10 @@ class ProcurationController extends Controller
      */
     public function thanksAction(): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('procuration/thanks.html.twig');
     }
 

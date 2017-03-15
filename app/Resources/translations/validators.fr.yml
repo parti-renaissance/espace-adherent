@@ -116,5 +116,16 @@ jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 #
 # Procuration
 #
+procuration.last_name.not_blank: Votre nom de naissance est requis.
+procuration.last_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
+procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+
+procuration.first_names.not_blank: Cette valeur ne doit pas être vide.
+procuration.first_names.min_length: Votre prénom doit comporter au moins 2 caractères.
+procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
+
 procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
+
+procuration.reason.not_blank: Vous devez spécifier une raison.
+procuration.reason.invalid: Cette raison n'est pas valide.

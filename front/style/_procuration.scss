@@ -90,4 +90,26 @@
             }
         }
     }
+
+    &__title-elections {
+        font-family: $font-gillsans;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: 0.3px;
+        margin: 0 0 20px 0;
+    }
+
+    &__choose-election {
+        margin-bottom: 15px;
+
+        .form__checkbox label:before {
+            margin-top: -3px;
+        }
+
+        &__day {
+            color: $gray--dark;
+            margin: -5px 0 0 31px;
+        }
+    }
 }
