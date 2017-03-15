@@ -2,6 +2,7 @@
 
 namespace AppBundle\Procuration;
 
+use AppBundle\Entity\ProcurationRequest;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProcurationRequestFlow
@@ -22,15 +23,15 @@ class ProcurationRequestFlow
 
     public function reset()
     {
-        $this->session->set(self::SESSION_KEY, new ProcurationRequestCommand());
+        $this->session->set(self::SESSION_KEY, new ProcurationRequest());
     }
 
-    public function getCurrentModel(): ProcurationRequestCommand
+    public function getCurrentModel(): ProcurationRequest
     {
-        return $this->session->get(self::SESSION_KEY, new ProcurationRequestCommand());
+        return $this->session->get(self::SESSION_KEY, new ProcurationRequest());
     }
 
-    public function save(ProcurationRequestCommand $command)
+    public function save(ProcurationRequest $command)
     {
         $this->session->set(self::SESSION_KEY, $command);
     }

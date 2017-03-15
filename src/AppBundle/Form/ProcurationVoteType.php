@@ -1,7 +1,8 @@
 <?php
 
 namespace AppBundle\Form;
-use AppBundle\Procuration\ProcurationRequestCommand;
+
+use AppBundle\Entity\ProcurationRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,7 +32,7 @@ class ProcurationVoteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProcurationRequestCommand::class,
+            'data_class' => ProcurationRequest::class,
             'validation_groups' => ['vote'],
         ]);
     }
