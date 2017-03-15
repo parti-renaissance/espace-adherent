@@ -3,6 +3,9 @@ $mobile: 650px;
 $h-iphone5: 570px;
 $h-iphone6: 670px;
 
+$zIndex__overlay-menu: 2;
+$zIndex__overlay-caret: 3;
+
 @mixin wrapper {
     width: 90%;
     max-width: 1200px;
@@ -16,6 +19,59 @@ $h-iphone6: 670px;
     margin-right: auto;
 }
 
+@mixin steps {
+    counter-reset: step;
+    width: 340px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    justify-content: space-between;
 
-$zIndex__overlay-menu: 2;
-$zIndex__overlay-caret: 3;
+    @media (max-width: $mobile) {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    li {
+        @include text--summary;
+        display: inline-block;
+        opacity: 0.3;
+        text-align: center;
+
+        @media (max-width: $mobile - 200px) {
+            font-size: $text--size-smallest;
+        }
+
+        &:before {
+            content: counter(step);
+            counter-increment: step;
+            width: 30px;
+            height: 30px;
+            background: #808080;
+            color: rgba(0, 0, 0, 1);
+            display: block;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 5px auto;
+        }
+
+        &.active {
+            opacity: 1;
+
+            &:before {
+                color: white;
+            }
+        }
+
+        &.clickable {
+            text-decoration: none;
+            border: 0;
+            cursor: pointer;
+
+            &:hover span {
+                text-decoration: underline;
+            }
+        }
+    }
+}
