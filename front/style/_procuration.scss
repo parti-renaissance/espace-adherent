@@ -20,13 +20,22 @@
     }
 
     &__header {
-        padding: 80px 0;
-        background-position: center 62%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        @include gradient-container;
-        background-color: $filter--gray;
-        background-blend-mode: multiply;
+        &--outer {
+            background-position: center 62%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            @include gradient-container;
+            background-color: $filter--gray;
+            background-blend-mode: multiply;
+
+            a.text--logo:hover {
+                color: $blue;
+            }
+        }
+
+        &--inner {
+            padding: 20px 0 80px;
+        }
 
         > * {
             position: relative;
@@ -35,15 +44,25 @@
 
     &__steps {
         @include steps;
+        width: 360px;
     }
 
     &__content {
-        > div:first-child {
-            width: 48%;
-
-            @media (max-width: $mobile) {
+        > div {
+            @media (max-width: $tablet) {
                 width: 100%;
                 margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            padding: 0;
+
+            > div:first-child {
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
             }
         }
     }
@@ -69,10 +88,20 @@
             margin: 0 0 0 25px;
             text-align: left;
             box-sizing: border-box;
+            min-width: 480px;
+            max-width: 650px;
+
+            @media (max-width: $tablet) {
+                margin: 0 auto;
+                width: 100% !important;
+            }
 
             @media (max-width: $mobile) {
                 margin: 0;
-                width: 100%;
+                border-left: 0;
+                border-right: 0;
+                padding: 30px 10px;
+                min-width: auto;
             }
 
             h4 {
@@ -110,6 +139,31 @@
         &__day {
             color: $gray--dark;
             margin: -5px 0 0 31px;
+        }
+    }
+
+    &__copy-link {
+        display: flex;
+        justify-content: center;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+        }
+
+        input {
+            font-size: 18px;
+            width: 290px;
+            border: 1px solid $gray--light;
+            border-right: 0;
+            padding: 0 20px;
+            box-sizing: border-box;
+            height: 40px;
+            background: $gray--lighter;
+            text-align: center;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
         }
     }
 }

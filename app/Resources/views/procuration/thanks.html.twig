@@ -1,9 +1,73 @@
 {% extends 'procuration/_layout.html.twig' %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+    (function() {
+
+      'use strict';
+
+      // click events
+      document.body.addEventListener('click', copy, true);
+
+      // event handler
+      function copy(e) {
+
+        // find target element
+        var
+          t = e.target,
+          c = t.dataset.copytarget,
+          inp = (c ? document.querySelector(c) : null);
+
+        // is element selectable?
+        if (inp && inp.select) {
+
+          // select text
+          inp.select();
+
+          try {
+            // copy text
+            document.execCommand('copy');
+            inp.blur();
+          }
+          catch (err) {
+            alert('please press Ctrl/Cmd+C to copy');
+          }
+
+        }
+
+      }
+
+    })();
+    </script>
+{% endblock %}
+
 {% block page_title 'Merci de votre confiance ! - Procuration' %}
 
 {% block procuration_content %}
-    <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__mobile--col space--60-0">
-        Merci de votre confiance !
+    <section class="procuration__thanks l__wrapper--slim text--center space--60-0">
+        <h1 class="text--large">Merci. Nous vous remercions de votre confiance !</h1>
+        <p class="text--body b__nudge--bottom-larger">Votre demande de procuration a bien été enregistrée.<br>Un mandataire vous contactera dans les 3 jours pour finaliser la procuration.</p>
+
+        <p class="text--body b__nudge--top-large">En attendant, partagez ce dispositif auprès de vos proches:</p>
+        <div class="procuration__copy-link">
+            <input type="text" id="website" value="www.procuration-macron.fr" />
+            <button class="btn btn--blue" data-copytarget="#website">Copier le lien</button>
+        </div>
+        <ul class="space--20-0">
+            <li role="button" arial-label="Partagez sur Facebook"
+                class="btn btn--social btn--facebook"
+                onclick="App.share('facebook', 'http://procuration-macron.fr', 'Chaque vote compte. Faîtes une procuration avec En Marche !')">
+                <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+            </li>
+            <li role="button" arial-label="Partagez via Twitter"
+                class="btn btn--social btn--twitter"
+                onclick="App.share('twitter', 'http://procuration-macron.fr', 'Chaque vote compte. Faîtes une procuration avec En Marche !')">
+                <i class="fa fa-twitter"></i> <span>Tweetez</span>
+            </li>
+        </ul>
+
+        <p class="text--summary b__nudge--top-50">En cas de question, n’hésitez pas à nous contacter au <a href="tel:+33193939437">01 93 93 94 37</a> ou à <a href="mailto:procuration@en-marche.fr">procuration@en-marche.fr</a>.</p>
+
+
     </section>
 {% endblock %}

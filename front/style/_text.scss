@@ -131,6 +131,10 @@ $text--size-extra-large: 48px;
         @include text--body;
     }
 
+    &--smallest {
+        @include text--smallest;
+    }
+
     &--small {
         @include text--small;
     }
