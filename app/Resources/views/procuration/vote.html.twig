@@ -49,10 +49,10 @@
                     {{ form_label(form.voteOffice, 'Le nom de mon bureau de vote (optionnel)') }}
                     {{ form_errors(form.voteOffice) }}
                     {{ form_widget(form.voteOffice, { 'attr': { 'class': 'form--full', 'placeholder': 'Bureau de vote' } }) }}
-                    <span class="text--small">
+                    <div class="text--body text--small b__nudge--top-10">
                         Le nom de votre bureau de vote sera utilisé par nos équipe afin de trouver
                         la personne la plus adaptée pour voter à votre place.
-                    </span>
+                    </div>
                 </div>
 
                 {{ form_rest(form) }}
