@@ -98,6 +98,12 @@ class App {
             module.default();
         })
     }
+
+    runProcurationThanks() {
+        System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        })
+    }
 }
 
 window.App = new App();
