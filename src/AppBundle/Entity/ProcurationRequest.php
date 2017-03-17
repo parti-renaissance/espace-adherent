@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Intl\FranceCitiesBundle;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -24,6 +25,8 @@ class ProcurationRequest
     const REASON_TRAINING = 'training';
     const REASON_HOLIDAYS = 'holidays';
     const REASON_RESIDENCY = 'residency';
+
+    use EntityTimestampableTrait;
 
     /**
      * @ORM\Column(type="integer")
@@ -316,7 +319,7 @@ class ProcurationRequest
         $this->emailAddress = $adherent->getEmailAddress();
         $this->setAddress($adherent->getAddress());
         $this->postalCode = $adherent->getPostalCode();
-        $this->city = $adherent->getCity();
+        $this->setCity($adherent->getCity());
         $this->setCityName($adherent->getCityName());
         $this->country = $adherent->getCountry();
 
@@ -389,9 +392,14 @@ class ProcurationRequest
         return $this->city;
     }
 
-    public function setCity($city)
+    public function setCity($cityCode)
     {
-        $this->city = $city;
+        $this->city = $cityCode;
+
+        if ($cityCode && false !== strpos($cityCode, '-')) {
+            list($postalCode, $inseeCode) = explode('-', $cityCode);
+            $this->cityName = (string) FranceCitiesBundle::getCity($postalCode, $inseeCode);
+        }
     }
 
     public function getCityName()
@@ -401,7 +409,9 @@ class ProcurationRequest
 
     public function setCityName($cityName)
     {
-        $this->cityName = EmojisRemover::remove($cityName);
+        if ($cityName) {
+            $this->cityName = EmojisRemover::remove($cityName);
+        }
     }
 
     public function getCountry(): string
@@ -459,9 +469,14 @@ class ProcurationRequest
         return $this->voteCity;
     }
 
-    public function setVoteCity($voteCity)
+    public function setVoteCity($cityCode)
     {
-        $this->voteCity = $voteCity;
+        $this->voteCity = $cityCode;
+
+        if ($cityCode && false !== strpos($cityCode, '-')) {
+            list($postalCode, $inseeCode) = explode('-', $cityCode);
+            $this->voteCityName = (string) FranceCitiesBundle::getCity($postalCode, $inseeCode);
+        }
     }
 
     public function getVoteCityName()
@@ -471,7 +486,9 @@ class ProcurationRequest
 
     public function setVoteCityName($voteCityName)
     {
-        $this->voteCityName = EmojisRemover::remove($voteCityName);
+        if ($voteCityName) {
+            $this->voteCityName = EmojisRemover::remove($voteCityName);
+        }
     }
 
     public function getVoteCountry(): string
@@ -494,7 +511,7 @@ class ProcurationRequest
         $this->voteOffice = $voteOffice;
     }
 
-    public function hasElectionPresidentialFirstRound(): bool
+    public function getElectionPresidentialFirstRound(): bool
     {
         return $this->electionPresidentialFirstRound;
     }
@@ -504,7 +521,7 @@ class ProcurationRequest
         $this->electionPresidentialFirstRound = $electionPresidentialFirstRound;
     }
 
-    public function hasElectionPresidentialSecondRound(): bool
+    public function getElectionPresidentialSecondRound(): bool
     {
         return $this->electionPresidentialSecondRound;
     }
@@ -514,7 +531,7 @@ class ProcurationRequest
         $this->electionPresidentialSecondRound = $electionPresidentialSecondRound;
     }
 
-    public function hasElectionLegislativeFirstRound(): bool
+    public function getElectionLegislativeFirstRound(): bool
     {
         return $this->electionLegislativeFirstRound;
     }
@@ -524,7 +541,7 @@ class ProcurationRequest
         $this->electionLegislativeFirstRound = $electionLegislativeFirstRound;
     }
 
-    public function hasElectionLegislativeSecondRound(): bool
+    public function getElectionLegislativeSecondRound(): bool
     {
         return $this->electionLegislativeSecondRound;
     }

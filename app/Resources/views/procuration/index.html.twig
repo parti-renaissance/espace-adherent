@@ -50,7 +50,7 @@
                 <li>Mes coordonnées</li>
                 <li>Ma procuration</li>
             </ul>
-            <form method="post" action="{{ path('app_procuration_request_vote') }}">
+            <form method="post" action="{{ path('app_procuration_request_vote') }}" name="app_procuration_vote">
                 <div class="form__row">
                     {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
                     {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}

@@ -110,6 +110,10 @@ class ProcurationController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($command);
+            $manager->flush();
+
             $this->getProcurationFlow()->reset();
 
             return $this->redirectToRoute('app_procuration_request_thanks');
