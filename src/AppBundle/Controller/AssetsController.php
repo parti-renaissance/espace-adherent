@@ -53,7 +53,7 @@ class AssetsController extends Controller
     {
         $coordinates = new Coordinates($latitude, $longitude);
 
-        if (!$contents = $this->get('app.asset.google_maps_static_provider')->get($coordinates)) {
+        if (!$contents = $this->get('app.map.google_maps_static_provider')->get($coordinates)) {
             throw $this->createNotFoundException('Unable to retrieve the requested static map file');
         }
 

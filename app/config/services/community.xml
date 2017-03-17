@@ -4,6 +4,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Donation -->
         <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
 
         <service id="app.donation_request.factory" class="AppBundle\Donation\DonationRequestFactory" />
@@ -32,6 +33,32 @@
             <argument type="service" id="router" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
+        </service>
+
+        <!-- Newsletter -->
+        <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
+
+        <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.transactional" />
+        </service>
+
+        <!-- Invitation -->
+        <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
+        <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="property_accessor" />
+
+            <tag name="validator.constraint_validator" />
+        </service>
+
+        <!-- Procuration -->
+        <service id="app.procuration.request_flow" class="AppBundle\Procuration\ProcurationRequestFlow">
+            <argument type="service" id="session" />
         </service>
 
     </services>

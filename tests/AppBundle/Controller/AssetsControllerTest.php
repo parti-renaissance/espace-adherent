@@ -76,13 +76,6 @@ class AssetsControllerTest extends SqliteWebTestCase
             'Exactly same queries should have exactly same image data responses'
         );
 
-        $client->request(Request::METHOD_GET, '/maps/47.3950813,9.3361425');
-        $this->assertNotEquals(
-            $tag,
-            md5($client->getResponse()->getContent()),
-            'Different queries should not have exactly same image data responses'
-        );
-
         $client->request(Request::METHOD_GET, '/maps/-47.3950813,-8.3361425');
         $this->assertResponseStatusCode(
             Response::HTTP_OK,

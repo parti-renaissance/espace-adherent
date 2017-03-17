@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Markdown -->
+        <service id="app.content.markdown_parser" class="League\CommonMark\CommonMarkConverter" />
+
+        <service id="app.twig.markdown" class="AppBundle\Twig\MarkdownExtension" public="false">
+            <argument type="service" id="app.content.markdown_parser" />
+
+            <tag name="twig.extension" />
+        </service>
+
+        <!-- Content -->
+        <service id="app.content.media_factory" class="AppBundle\Content\MediaFactory" />
+
+        <service id="app.content.home_block_factory" class="AppBundle\Content\HomeBlockFactory" />
+
+        <service id="app.content.live_link_factory" class="AppBundle\Content\LiveLinkFactory" />
+
+        <service id="app.content.article_factory" class="AppBundle\Content\ArticleFactory" />
+
+        <service id="app.content.page_factory" class="AppBundle\Content\PageFactory" />
+
+        <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
+
+        <!-- Sitemap -->
+        <service id="app.content.sitemap_factory" class="AppBundle\Sitemap\SitemapFactory">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <!-- Documents -->
+        <service id="app.documents_repository" class="AppBundle\Documents\DocumentRepository">
+            <argument type="service" id="app.storage" />
+        </service>
+
+        <!-- Filesystem -->
+        <service id="app.storage" class="League\Flysystem\Filesystem">
+            <argument type="service">
+                <service class="League\Flysystem\Adapter\AdapterInterface">
+                    <factory class="AppBundle\Storage\FilesystemAdapterFactory" method="createAdapter" />
+                    <argument>%kernel.environment%</argument>
+                    <argument>%kernel.root_dir%/data</argument>
+                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
+                    <argument>%kernel.root_dir%/../gcloud-service-key.json</argument>
+                    <argument>%env(GCLOUD_BUCKET)%</argument>
+                </service>
+            </argument>
+        </service>
+
+        <!-- Medias -->
+        <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false">
+            <argument type="service" id="snc_redis.default" />
+        </service>
+
+        <service id="app.glide" class="League\Glide\Server">
+            <factory class="League\Glide\ServerFactory" method="create" />
+
+            <argument type="collection">
+                <argument key="source" type="service" id="app.storage" />
+                <argument key="cache" type="service">
+                    <service class="League\Flysystem\Filesystem">
+                        <argument type="service" id="app.glide.cache_adapter" />
+                    </service>
+                </argument>
+
+                <!-- Max image size in numer of pixels (2000x2000) -->
+                <argument key="max_image_size">4000000</argument>
+            </argument>
+        </service>
+
+        <service id="app.twig.media_asset_extension" class="AppBundle\Twig\AssetExtension" public="false">
+            <argument type="service" id="router" />
+            <argument type="service" id="twig.extension.assets" />
+            <argument>%kernel.secret%</argument>
+            <argument>%kernel.environment%</argument>
+            <argument>%assets_hash%</argument>
+
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>

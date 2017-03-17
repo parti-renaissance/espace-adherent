@@ -3,32 +3,13 @@ imports:
     - { resource: security.yml }
     - { resource: adherent.yml }
     - { resource: assets_version.yml }
-    - { resource: services/address.xml }
     - { resource: services/admin.xml }
-    - { resource: services/asset.xml }
-    - { resource: services/cache.xml }
-    - { resource: services/committee.xml }
-    - { resource: services/content.xml }
-    - { resource: services/doctrine.xml }
-    - { resource: services/documents.xml }
-    - { resource: services/donation.xml }
-    - { resource: services/event.xml }
-    - { resource: services/feature_flag.xml }
-    - { resource: services/geocoder.xml }
-    - { resource: services/invitation.xml }
-    - { resource: services/mailjet.xml }
-    - { resource: services/media.xml }
-    - { resource: services/membership.xml }
-    - { resource: services/newsletter.xml }
-    - { resource: services/procuration.xml }
-    - { resource: services/rabbitmq.xml }
-    - { resource: services/recaptcha.xml }
-    - { resource: services/referent.xml }
-    - { resource: services/search.xml }
-    - { resource: services/security.xml }
-    - { resource: services/serializer.xml }
-    - { resource: services/storage.xml }
-    - { resource: services/twig.xml }
+    - { resource: services/cms.xml }
+    - { resource: services/community.xml }
+    - { resource: services/external_services.xml }
+    - { resource: services/platform.xml }
+    - { resource: services/repositories.xml }
+    - { resource: services/system.xml }
 
 parameters:
     locale:                fr

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Asset;
+namespace AppBundle\Map;
 
 use AppBundle\Geocoder\Coordinates;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
-class GoogleMapsStaticProvider
+class GoogleStaticMapProvider implements StaticMapProviderInterface
 {
     const MAPS_ZOOM_LEVEL = 15;
     const MAPS_API_ENDPOINT = '/maps/api/staticmap';
@@ -27,37 +27,25 @@ class GoogleMapsStaticProvider
     }
 
     /**
-     * @param Coordinates $coordinates
-     *
-     * @return string|false
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function get(Coordinates $coordinates)
     {
-        $id = self::CACHE_KEY_PREFIX.md5(serialize($coordinates));
+        $id = self::CACHE_KEY_PREFIX.md5($coordinates->getLatitude().'-'.$coordinates->getLongitude());
         $item = $this->cache->getItem($id);
 
-        // An image should always have contents
-        if ($item->isHit() && $item->get()) {
-            return $item->get();
+        if (!$item->isHit()) {
+            if (!$contents = $this->fetch($coordinates)) {
+                return false;
+            }
+
+            $item->set($contents);
+            $this->cache->save($item);
         }
 
-        if (!$contents = $this->fetch($coordinates)) {
-            return false;
-        }
-
-        $item->set($contents);
-        $this->cache->save($item);
-
-        return $contents;
+        return $item->get();
     }
 
-    /**
-     * @param Coordinates $coordinates
-     *
-     * @return string|false
-     */
     private function fetch(Coordinates $coordinates)
     {
         $parameters = http_build_query([
@@ -69,17 +57,9 @@ class GoogleMapsStaticProvider
         ], null, '&', PHP_QUERY_RFC3986);
 
         try {
-            $client = $this->client->request('GET', self::MAPS_API_ENDPOINT.'?'.$parameters);
-
-            if (200 !== $client->getStatusCode()) {
-                throw new \Exception(
-                    sprintf('Guzzle client status error: "%s" was returned', $client->getStatusCode())
-                );
-            }
-
-            return $client->getBody()->getContents();
+            return $this->client->request('GET', self::MAPS_API_ENDPOINT.'?'.$parameters)->getBody()->getContents();
         } catch (\Exception $e) {
-            $this->logger->error('GoogleMapsStaticProvider was unable to retrieve the map: '.$e->getMessage());
+            $this->logger->error('Unable to retrieve the map', ['exception' => $e]);
         }
 
         return false;
