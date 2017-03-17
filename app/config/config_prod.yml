@@ -1,6 +1,5 @@
 imports:
     - { resource: config.yml }
-    - { resource: services/sentry.xml }
 
 monolog:
     handlers:
