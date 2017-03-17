@@ -2,6 +2,9 @@
     &__bar {
         display: flex;
         justify-content: space-between;
+        margin-top: 15px;
+        margin-bottom: 60px;
+        background: $gray;
 
         &__options {
             display: flex;
@@ -14,22 +17,7 @@
 
             &__options {
                 flex-direction: column;
-            }
-        }
-
-        .search-box {
-            width: 285px;
-            height: 55px;
-            border: 0;
-            box-sizing: border-box;
-            padding: 0 20px;
-            margin-right: 25px;
-            @include text--body;
-
-            @media (max-width: $tablet) {
                 margin-bottom: 20px;
-                margin-right: 0;
-                width: 100%;
             }
         }
 
@@ -62,11 +50,10 @@
         }
 
         &__toggle {
-            border: 1px solid white;
-            color: white;
+            border-bottom: 1px solid $gray--light;
             display: flex;
             @include text--body;
-            @include text--bold;
+            font-size: 18px;
 
             @media (max-width: $tablet) {
                 margin-top: 20px;
@@ -87,7 +74,6 @@
                     align-items: center;
                     height: 100%;
                     padding: 0 20px;
-                    color: white;
                     width: 100%;
                     box-sizing: border-box;
                     padding: 16px 20px 14px;
@@ -99,8 +85,8 @@
             }
 
             li.active a {
-                background: white;
-                color: black;
+                color: $blue;
+                border-bottom: 3px solid $blue;
             }
         }
     }
