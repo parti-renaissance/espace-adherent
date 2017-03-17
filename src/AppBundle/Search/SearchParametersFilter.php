@@ -35,6 +35,7 @@ class SearchParametersFilter
         self::TYPE_EVENTS,
     ];
 
+    const RADIUS_1 = 1;
     const RADIUS_5 = 5;
     const RADIUS_10 = 10;
     const RADIUS_25 = 25;
@@ -43,6 +44,7 @@ class SearchParametersFilter
     const RADIUS_150 = 150;
 
     const RADII = [
+        self::RADIUS_1,
         self::RADIUS_5,
         self::RADIUS_10,
         self::RADIUS_25,
