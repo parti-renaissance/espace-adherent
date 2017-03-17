@@ -163,6 +163,7 @@
             display: flex;
             align-items: center;
             margin: 5px 0;
+            text-align: left;
 
             &:before {
                 content: ' ';
@@ -171,7 +172,7 @@
                 min-width: 20px;
                 min-height: 20px;
                 margin-right: 10px;
-                border: 1px solid $gray--light;
+                border: 1px solid $gray;
                 transition: all .2s;
                 background: #fff;
                 display: inline-flex;
@@ -185,6 +186,8 @@
             height: 30px;
             min-width: 30px;
             min-height: 30px;
+            margin-right: 15px;
+            border-width: 2px;
         }
 
         &:hover {
