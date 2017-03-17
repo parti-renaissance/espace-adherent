@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewFollowerMessage extends MailjetMessage
 {
-    public static function create(Committee $committee, array $hosts, Adherent $newFollower): self
+    public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
     {
         if (!$hosts) {
             throw new \InvalidArgumentException('At least one Adherent recipients is required.');
@@ -25,7 +25,7 @@ final class CommitteeNewFollowerMessage extends MailjetMessage
             $host->getEmailAddress(),
             $host->getFullName(),
             'Un nouveau membre vient de suivre votre comité',
-            self::getTemplateVars($committee, $newFollower),
+            self::getTemplateVars($committee, $newFollower, $hostUrl),
             self::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
@@ -41,10 +41,11 @@ final class CommitteeNewFollowerMessage extends MailjetMessage
         return $message;
     }
 
-    private static function getTemplateVars(Committee $committee, Adherent $newFollower): array
+    private static function getTemplateVars(Committee $committee, Adherent $newFollower, string $hostUrl): array
     {
         return [
             'committee_name' => self::escape($committee->getName()),
+            'committee_admin_url' => $hostUrl,
             'member_firstname' => self::escape($newFollower->getFirstName()),
             'member_lastname' => $newFollower->getLastNameInitial(),
             'member_age' => $newFollower->getAge(),
