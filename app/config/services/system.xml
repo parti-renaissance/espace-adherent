@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- RabbitMQ -->
+        <service id="app.consumer.mailjet.referent" class="AppBundle\Consumer\Mailjet\ReferentMessageMailjetConsumer">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="app.consumer.referent_managed_users_dumper" class="AppBundle\Consumer\ReferentManagedUsersDumperConsumer">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <!-- Redirections from old website -->
+        <service id="app.feature_flag.redirections_subscriber" class="AppBundle\FeatureFlag\RedirectionSubscriber">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <!-- Security -->
+        <service id="app.security.adherent_login_timestamp_recorder" class="AppBundle\Security\AdherentLoginTimestampRecorder">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.security.2fa_qr_code_factory" class="AppBundle\Security\TwoFactorAuthenticationQrCodeFactory">
+            <argument type="service" id="csa_guzzle.client.google_charts_api" />
+            <argument type="service" id="scheb_two_factor.security.google_authenticator" />
+        </service>
+
+        <service id="app.security.authentication_utils" class="AppBundle\Security\AuthenticationUtils">
+            <argument type="service" id="security.token_storage" />
+        </service>
+
+        <service id="app.security.legacy_migration_listener" class="AppBundle\Security\LegacyMigrationListener">
+            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+
+            <tag name="kernel.event_listener" event="security.interactive_login" method="onSecurityInteractiveLogin" />
+        </service>
+
+        <!-- Cache -->
+        <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
+            <argument/>
+            <argument/>
+            <argument/>
+        </service>
+
+        <service id="cache.redis_doctrine_provider" class="Symfony\Component\Cache\DoctrineProvider">
+            <argument type="service">
+                <service class="Symfony\Component\Cache\Adapter\RedisAdapter">
+                    <argument type="service" id="snc_redis.default" />
+                </service>
+            </argument>
+        </service>
+
+        <!-- Twig -->
+        <service id="app.twig.intl_extension" class="AppBundle\Twig\AppIntlExtension" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="twig.extension.intl" class="Twig_Extensions_Extension_Intl" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <!-- Sentry -->
+        <service id="app.logging.sentry_handler" class="AppBundle\Logging\SentryHandler" public="false">
+            <argument type="service">
+                <service class="Raven_Client">
+                    <argument>%env(SENTRY_DSN)%</argument>
+                </service>
+            </argument>
+        </service>
+
+        <service id="app.logging.activation_strategy" class="AppBundle\Logging\ActivationStrategy" public="false">
+            <argument type="constant">Monolog\Logger::ERROR</argument>
+            <argument type="collection">
+                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND</argument>
+                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN</argument>
+                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_METHOD_NOT_ALLOWED</argument>
+            </argument>
+        </service>
+
+        <service id="app.logging.user_process" class="AppBundle\Logging\CurrentUserProcessor" public="false">
+            <argument type="service" id="service_container" />
+
+            <tag name="monolog.processor" method="processRecord" />
+        </service>
+
+        <!-- Serializer -->
+        <service id="app.serializer_visitor.ical_serialization_visitor" class="AppBundle\Serializer\IcalSerializationVisitor" public="false">
+            <tag name="jms_serializer.serialization_visitor" format="ical"/>
+
+            <argument type="service" id="jms_serializer.naming_strategy" />
+        </service>
+
+        <service id="app.committee_serializer.committee_event_ical_handler" class="AppBundle\Serializer\EventICalHandler">
+            <tag name="jms_serializer.subscribing_handler" />
+        </service>
+
+    </services>
+</container>

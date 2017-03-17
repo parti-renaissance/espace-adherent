@@ -4,14 +4,22 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Events subscriber to save API calls into the database -->
-        <service id="app.mailjet.mailjet_email_doctrine_backup_subscriber" class="AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.repository.mailjet_email"/>
-            <tag name="kernel.event_subscriber"/>
+        <!-- Recaptcha -->
+        <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
+            <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
+            <argument type="collection">
+                <argument key="timeout">2.0</argument>
+                <argument key="environment">%kernel.environment%</argument>
+            </argument>
+            <argument type="service" id="request_stack"/>
         </service>
 
-        <!-- Mailjet client for transactional e-mails -->
+        <service id="app.validator.recaptcha" class="AppBundle\Validator\RecaptchaValidator">
+            <argument type="service" id="app.recaptcha.api_client"/>
+            <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
+        </service>
+
+        <!-- Mailjet (transactionnal) -->
         <service id="app.mailjet.client.transactional" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport.transactional"/>
@@ -29,7 +37,7 @@
             <argument>%transactional_sender_name%</argument>
         </service>
 
-        <!-- Mailjet client for campaign e-mails -->
+        <!-- Mailjet (campaign) -->
         <service id="app.mailjet.client.campaign" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport.campaign"/>
@@ -45,6 +53,12 @@
         <service id="app.mailjet.message_factory.campaign" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
+        </service>
+
+        <service id="app.mailjet.mailjet_email_doctrine_backup_subscriber" class="AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.mailjet_email"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
     </services>

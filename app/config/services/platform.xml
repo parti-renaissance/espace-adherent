@@ -1,0 +1,260 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Addresses -->
+        <service id="app.address.post_address_factory" class="AppBundle\Address\PostAddressFactory" public="false" />
+
+        <!-- Geocoder -->
+        <service id="app.geocoder" class="AppBundle\Geocoder\Geocoder" public="false">
+            <argument type="service" id="geocoder"/>
+        </service>
+
+        <service id="app.geocoder.cache_adapter" alias="cache.redis_doctrine_provider" />
+
+        <service id="app.geocoder.coordinates_factory" class="AppBundle\Geocoder\CoordinatesFactory" />
+
+        <service id="app.geocoder.entity_address_geocoding_subscriber" class="AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
+            <argument type="service" id="app.geocoder"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.validator.geocodable_address" class="AppBundle\Validator\GeocodableAddressValidator">
+            <argument type="service" id="app.geocoder"/>
+            <tag name="validator.constraint_validator" alias="app.validator.geocodable_address"/>
+        </service>
+
+        <!-- Map -->
+        <service id="app.map.google_maps_static_provider" class="AppBundle\Map\GoogleStaticMapProvider">
+            <argument type="service" id="csa_guzzle.client.google_maps_static_api" />
+            <argument type="service" id="cache.app" />
+            <argument type="service" id="monolog.logger" />
+            <argument>%env(GMAPS_API_KEY)%</argument>
+        </service>
+
+        <!-- Adherents -->
+        <service id="app.adherent_manager" class="AppBundle\Membership\AdherentManager">
+            <argument type="service" id="app.repository.adherent"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.membership.adherent_factory"/>
+            <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="security.password_encoder"/>
+        </service>
+
+        <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
+            <argument type="service" id="router"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="security.encoder_factory"/>
+        </service>
+
+        <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
+            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="app.security.authentication_utils"/>
+        </service>
+
+        <service id="app.membership.adherent_factory" class="AppBundle\Membership\AdherentFactory">
+            <argument type="service" id="security.encoder_factory"/>
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
+            <argument type="service" id="app.donation_request.factory"/>
+            <argument type="service" id="session"/>
+        </service>
+
+        <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
+            <argument type="service" id="app.repository.adherent"/>
+            <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
+        </service>
+
+        <service id="app.membership.adherent_interests_type" class="AppBundle\Form\AdherentInterestsFormType">
+            <argument type="string">%adherent_interests%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="app.membership.membership_choose_nearby_committee_type" class="AppBundle\Form\MembershipChooseNearbyCommitteeType">
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.geocoder.coordinates_factory"/>
+            <tag name="form.type" />
+        </service>
+
+        <service id="app.adherent.contact_message_handler" class="AppBundle\Contact\ContactMessageHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
+        <!-- Committees -->
+        <service id="app.committee.manager" class="AppBundle\Committee\CommitteeManager">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+        </service>
+
+        <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.committee.url_generator"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+        </service>
+
+        <service id="app.committee.factory" class="AppBundle\Committee\CommitteeFactory">
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.committee.url_generator" class="AppBundle\Committee\CommitteeUrlGenerator">
+            <argument type="service" id="router"/>
+        </service>
+
+        <service id="app.committee.update_handler" class="AppBundle\Committee\CommitteeUpdateCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.committee.creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.committee.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+        </service>
+
+        <service id="app.committee.contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
+        <service id="app.committee.feed_manager" class="AppBundle\Committee\Feed\CommitteeFeedManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.mailjet.client.campaign"/>
+        </service>
+
+        <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">
+            <argument type="service" id="app.repository.committee"/>
+            <tag name="validator.constraint_validator" alias="app.validator.unique_committee"/>
+        </service>
+
+        <service id="app.voter.create_committee_voter" class="AppBundle\Committee\Voter\CreateCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <argument type="service" id="app.repository.committee"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.show_committee_voter" class="AppBundle\Committee\Voter\ShowCommitteeVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.follow_committee_voter" class="AppBundle\Committee\Voter\FollowCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.host_committee_voter" class="AppBundle\Committee\Voter\HostCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.voter.post_message_voter" class="AppBundle\Committee\Voter\PostMessageCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="app.committee.url_generator"/>
+            <tag name="twig.extension"/>
+        </service>
+
+        <!-- Events -->
+        <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
+
+        <service id="app.event.registration_factory" class="AppBundle\Event\EventRegistrationFactory"/>
+
+        <service id="app.event.handler" class="AppBundle\Event\EventCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.event.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
+            <argument type="service" id="app.event.registration_factory"/>
+            <argument type="service" id="app.event.registration_manager"/>
+        </service>
+
+        <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.event.registration_manager" class="AppBundle\Event\EventRegistrationManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.event_registration"/>
+        </service>
+
+        <service id="app.event.registration_exporter" class="AppBundle\Event\EventRegistrationExporter" />
+
+        <service id="app.event.contact_members_handler" class="AppBundle\Event\EventContactMembersCommandHandler">
+            <argument type="service" id="app.mailjet.client.campaign" />
+        </service>
+
+        <service id="app.voter.host_event_voter" class="AppBundle\Event\Voter\HostEventVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter"/>
+        </service>
+
+        <!-- Referents -->
+        <service id="app.referent.managed_users.factory" class="AppBundle\Referent\ManagedUserFactory">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter">
+            <argument type="service" id="app.repository.committee" />
+        </service>
+
+        <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
+            <argument type="service" id="router" />
+        </service>
+
+        <service id="app.referent.managed_committees.exporter" class="AppBundle\Referent\ManagedCommitteesExporter">
+            <argument type="service" id="router" />
+        </service>
+
+        <service id="app.referent.message_factory" class="AppBundle\Referent\ReferentMessageFactory">
+            <argument type="service" id="app.referent.managed_users.factory" />
+        </service>
+
+        <service id="app.referent.message_handler.producer" alias="old_sound_rabbit_mq.mailjet_referent_producer" public="false" />
+
+        <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
+            <argument type="service" id="app.referent.message_handler.producer" />
+        </service>
+
+        <!-- Search -->
+        <service id="app.search.search_results_filter" class="AppBundle\Search\SearchParametersFilter">
+            <argument type="service" id="app.geocoder"/>
+            <argument type="service" id="cache.app"/>
+        </service>
+
+        <service id="app.search.search_results_provider" class="AppBundle\Search\SearchResultsProvider">
+            <argument type="service" id="app.repository.committee"/>
+            <argument type="service" id="app.repository.committee_membership"/>
+            <argument type="service" id="app.repository.event"/>
+        </service>
+
+    </services>
+</container>
