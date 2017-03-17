@@ -16,6 +16,7 @@ use AppBundle\Repository\CommitteeRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManager
 {
@@ -26,11 +27,13 @@ class CommitteeManager
 
     private $registry;
     private $mailjet;
+    private $router;
 
-    public function __construct(ManagerRegistry $registry, MailjetService $mailjet = null)
+    public function __construct(ManagerRegistry $registry, MailjetService $mailjet = null, UrlGeneratorInterface $router = null)
     {
         $this->registry = $registry;
         $this->mailjet = $mailjet;
+        $this->router = $router;
     }
 
     public function isCommitteeHost(Adherent $adherent): bool
@@ -201,7 +204,11 @@ class CommitteeManager
             $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
                 $committee,
                 $this->getCommitteeHosts($committee)->toArray(),
-                $adherent
+                $adherent,
+                !$this->router ? '' : $this->router->generate('app_commitee_list_members', [
+                    'uuid' => $committee->getUuid()->toString(),
+                    'slug' => $committee->getSlug(),
+                ])
             ));
         }
 
