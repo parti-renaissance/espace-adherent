@@ -18,6 +18,7 @@ use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -32,6 +33,7 @@ use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
+use AppBundle\Repository\ProcurationRequestRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use libphonenumber\PhoneNumber;
@@ -151,6 +153,11 @@ trait TestHelperTrait
     public function getJeMarcheReportRepository(): JeMarcheReportRepository
     {
         return $this->getRepository(JeMarcheReport::class);
+    }
+
+    public function getProcurationRequestRepository(): ProcurationRequestRepository
+    {
+        return $this->getRepository(ProcurationRequest::class);
     }
 
     public function getMailjetEmailRepository(): MailjetEmailRepository

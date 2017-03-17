@@ -221,5 +221,14 @@
             <tag name="sonata.admin" manager-type="orm" label="Mailjet" group="Monitoring" />
         </service>
 
+        <!-- ProcurationRequest -->
+        <service id="app.admin.procuration_request" class="AppBundle\Admin\ProcurationRequestAdmin">
+            <argument />
+            <argument>AppBundle\Entity\ProcurationRequest</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Demandes" group="Procurations" />
+        </service>
+
     </services>
 </container>
