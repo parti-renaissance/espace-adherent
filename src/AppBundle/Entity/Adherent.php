@@ -353,6 +353,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         $token->consume($this);
 
+        $this->clearOldPassword();
         $this->password = $newPassword;
     }
 
