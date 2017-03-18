@@ -13,19 +13,11 @@ use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 
 /**
- * @ORM\Table(name="procuration_requests")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationRequestRepository")
+ * @ORM\Table(name="procuration_proxies")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationProxyRepository")
  */
-class ProcurationRequest
+class ProcurationProxy
 {
-    const REASON_PROFESIONNAL = 'profesionnal';
-    const REASON_HANDICAP = 'handicap';
-    const REASON_HEALTH = 'health';
-    const REASON_HELP = 'help';
-    const REASON_TRAINING = 'training';
-    const REASON_HOLIDAYS = 'holidays';
-    const REASON_RESIDENCY = 'residency';
-
     use EntityTimestampableTrait;
 
     /**
@@ -36,16 +28,23 @@ class ProcurationRequest
     private $id;
 
     /**
+     * The referent who invited this proxy.
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $referent;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=6)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
+     * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *      callback={"AppBundle\ValueObject\Genders", "all"},
      *      message="common.gender.invalid_choice",
-     *      strict=true,
-     *      groups={"profile"}
+     *      strict=true
      * )
      */
     private $gender;
@@ -55,13 +54,12 @@ class ProcurationRequest
      *
      * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"profile"})
+     * @Assert\NotBlank(message="procuration.last_name.not_blank")
      * @Assert\Length(
      *      min=2,
      *      max=50,
      *      minMessage="procuration.last_name.min_length",
-     *      maxMessage="procuration.last_name.max_length",
-     *      groups={"profile"}
+     *      maxMessage="procuration.last_name.max_length"
      * )
      */
     private $lastName = '';
@@ -71,13 +69,12 @@ class ProcurationRequest
      *
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="procuration.first_names.not_blank", groups={"profile"})
+     * @Assert\NotBlank(message="procuration.first_names.not_blank")
      * @Assert\Length(
      *      min=2,
      *      max=100,
      *      minMessage="procuration.first_names.min_length",
-     *      maxMessage="procuration.first_names.max_length",
-     *      groups={"profile"}
+     *      maxMessage="procuration.first_names.max_length"
      * )
      */
     private $firstNames = '';
@@ -87,8 +84,8 @@ class ProcurationRequest
      *
      * @ORM\Column(length=150)
      *
-     * @Assert\NotBlank(message="common.address.required", groups={"profile"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"profile"})
+     * @Assert\NotBlank(message="common.address.required")
+     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     private $address = '';
 
@@ -97,8 +94,8 @@ class ProcurationRequest
      *
      * @ORM\Column(length=15)
      *
-     * @Assert\NotBlank(groups={"profile"})
-     * @Assert\Length(max=15, groups={"profile"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=15)
      */
     private $postalCode = '';
 
@@ -107,7 +104,7 @@ class ProcurationRequest
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
-     * @Assert\Length(max=15, groups={"profile"})
+     * @Assert\Length(max=15)
      */
     private $city;
 
@@ -116,7 +113,7 @@ class ProcurationRequest
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255, groups={"profile"})
+     * @Assert\Length(max=255)
      */
     private $cityName;
 
@@ -125,8 +122,8 @@ class ProcurationRequest
      *
      * @ORM\Column(length=2)
      *
-     * @Assert\NotBlank(groups={"profile"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"profile"})
+     * @Assert\NotBlank
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $country = 'FR';
 
@@ -135,7 +132,7 @@ class ProcurationRequest
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @AssertPhoneNumber(defaultRegion="FR", groups={"profile"})
+     * @AssertPhoneNumber(defaultRegion="FR")
      */
     private $phone;
 
@@ -144,8 +141,8 @@ class ProcurationRequest
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"profile"})
-     * @Assert\Email(message="common.email.invalid", groups={"profile"})
+     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
      */
     private $emailAddress = '';
 
@@ -154,8 +151,8 @@ class ProcurationRequest
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"profile"})
-     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age", groups={"profile"})
+     * @Assert\NotBlank(message="procuration.birthdate.not_blank")
+     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age")
      */
     private $birthdate;
 
@@ -164,8 +161,8 @@ class ProcurationRequest
      *
      * @ORM\Column(length=15)
      *
-     * @Assert\NotBlank(groups={"vote"})
-     * @Assert\Length(max=15, groups={"vote"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=15)
      */
     private $votePostalCode = '';
 
@@ -174,7 +171,7 @@ class ProcurationRequest
      *
      * @ORM\Column(length=15, nullable=true, name="vote_city_insee")
      *
-     * @Assert\Length(max=15, groups={"vote"})
+     * @Assert\Length(max=15)
      */
     private $voteCity;
 
@@ -183,7 +180,7 @@ class ProcurationRequest
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255, groups={"vote"})
+     * @Assert\Length(max=255)
      */
     private $voteCityName;
 
@@ -192,8 +189,8 @@ class ProcurationRequest
      *
      * @ORM\Column(length=2)
      *
-     * @Assert\NotBlank(groups={"vote"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"vote"})
+     * @Assert\NotBlank
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $voteCountry = 'FR';
 
@@ -235,47 +232,28 @@ class ProcurationRequest
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"elections"})
-     * @Assert\Choice(
-     *      callback={"AppBundle\Entity\ProcurationRequest", "getReasons"},
-     *      message="common.gender.invalid_choice",
-     *      strict=true,
-     *      groups={"profile"}
-     * )
-     */
-    private $reason = self::REASON_RESIDENCY;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"elections"})
-     * @AssertRecaptcha(groups={"elections"})
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
+     * @AssertRecaptcha
      */
     public $recaptcha = '';
 
-    public function __construct()
+    /**
+     * @var bool
+     *
+     * @Assert\NotBlank(message="procuration.proposal_conditions.required")
+     * @Assert\IsTrue(message="procuration.proposal_conditions.required")
+     */
+    public $conditions;
+
+    public function __construct(Adherent $referent)
     {
+        $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
     }
 
     public function __toString()
     {
-        return 'Demande de procuration de '.$this->lastName.' '.$this->firstNames;
-    }
-
-    public static function getReasons(): array
-    {
-        return [
-            self::REASON_HANDICAP,
-            self::REASON_HEALTH,
-            self::REASON_HELP,
-            self::REASON_HOLIDAYS,
-            self::REASON_PROFESIONNAL,
-            self::REASON_RESIDENCY,
-            self::REASON_TRAINING,
-        ];
+        return 'Proposition de procuration de '.$this->lastName.' '.$this->firstNames;
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null)
@@ -324,7 +302,7 @@ class ProcurationRequest
         $this->emailAddress = $adherent->getEmailAddress();
         $this->setAddress($adherent->getAddress());
         $this->postalCode = $adherent->getPostalCode();
-        $this->setCity($adherent->getCity());
+        $this->city = $adherent->getCity();
         $this->setCityName($adherent->getCityName());
         $this->country = $adherent->getCountry();
 
@@ -340,6 +318,16 @@ class ProcurationRequest
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getReferent(): ?Adherent
+    {
+        return $this->referent;
+    }
+
+    public function setReferent(Adherent $referent = null)
+    {
+        $this->referent = $referent;
     }
 
     public function getGender()
@@ -554,15 +542,5 @@ class ProcurationRequest
     public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound)
     {
         $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
-    }
-
-    public function getReason(): string
-    {
-        return $this->reason;
-    }
-
-    public function setReason(string $reason)
-    {
-        $this->reason = $reason;
     }
 }

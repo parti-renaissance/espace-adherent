@@ -1,0 +1,34 @@
+{% extends 'procuration/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runProcurationThanks();
+        });
+    </script>
+{% endblock %}
+
+{% block page_title 'Merci de votre participation ! - Procuration' %}
+
+{% block procuration_content %}
+    <section class="procuration__thanks l__wrapper--slim text--center space--60-0">
+        <h1 class="text--large">
+            Merci de votre participation à Procuration Macron.
+        </h1>
+        <p class="text--body b__nudge--bottom-larger">
+            Votre formulaire a bien été envoyé.<br />
+            En cas de demande de procuration ayant lieu dans votre commune, votre responsable local vous contactera.
+        </p>
+
+        <p>
+            <a href="{{ path('homepage') }}" class="btn">
+                Retourner à l'accueil
+            </a>
+        </p>
+
+        <p class="text--summary b__nudge--top-50">
+            En cas de question, n’hésitez pas à nous contacter au <a href="tel:+33193939437">01 93 93 94 37</a>
+            ou à <a href="mailto:procurations@en-marche.fr">procurations@en-marche.fr</a>.
+        </p>
+    </section>
+{% endblock %}

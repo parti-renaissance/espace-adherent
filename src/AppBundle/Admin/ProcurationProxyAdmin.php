@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ProcurationRequestAdmin extends AbstractAdmin
+class ProcurationProxyAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -65,7 +65,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     'label' => 'Bureau de vote',
                 ])
             ->end()
-            ->with('Procuration', array('class' => 'col-md-4'))
+            ->with('Disponibilités', array('class' => 'col-md-4'))
                 ->add('electionPresidentialFirstRound', null, [
                     'label' => 'Présidentielle - 1er tour',
                 ])
@@ -77,9 +77,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
                 ->add('electionLegislativeSecondRound', null, [
                     'label' => 'Législatives - 2ème tour',
-                ])
-                ->add('reason', null, [
-                    'label' => 'Raison',
                 ])
             ->end();
     }
@@ -99,6 +96,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
+            ->add('referent', null, [
+                'label' => 'Invité par',
+            ])
             ->add('createdAt', 'doctrine_orm_date_range', [
                 'label' => 'Date',
                 'field_type' => 'sonata_type_date_range_picker',
@@ -116,6 +116,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ])
             ->add('firstNames', null, [
                 'label' => 'Prénom(s)',
+            ])
+            ->add('referent', null, [
+                'label' => 'Invité par',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
