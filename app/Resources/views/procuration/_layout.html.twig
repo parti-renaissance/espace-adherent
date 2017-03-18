@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Procuration' %}
+{% block meta_description 'Chaque vote compte. Donnez procuration avec En Marche !' %}
+{% block canonical_url url('app_procuration_index') %}
+{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('procuration-sharer.jpg', {'q': 70}))|raw %}
+{% block open_graph_image_width 1200 %}
+{% block open_graph_image_height 630 %}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -27,7 +32,7 @@
                             Chaque vote compte.
                         </h1>
                         <h1 class="text--large b__nudge--top-10 l__hide--on-mobile">
-                            Faîtes une procuration avec <em>En Marche !</em>
+                            Donnez procuration avec <em>En Marche !</em>
                         </h1>
                     </div>
             </section>

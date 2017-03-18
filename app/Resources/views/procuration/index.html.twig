@@ -26,22 +26,40 @@
             {% endif %}
 
             <div class="text--body text--medium-small">
-                Vous pouvez demander une procuration jusqu'à la veille du scrutin, soit le 22 avril pour le 1er
-                tour de la présidentielle. Mais il faut que le bureau de vote soit prévenu à temps, ce qui peut
-                prendre de 3 à 7 jours. Effectuez donc votre démarche le plus tôt possible !
+                L’élection présidentielle a lieu les 23 avril et 7 mai. Les législatives ont lieu les 11 et 18 juin 2017.
+                Vous serez absent(e) à une des quatre dates ? Pensez à donner procuration !
+            </div>
+            <div class="text--body text--medium-small b__nudge--top-large">
+                Si vous n’avez pas de proche de confiance qui pourrait voter pour vous dans votre commune, nous
+                pouvons trouver quelqu’un qui portera votre voix. Remplissez simplement le formulaire.
+                Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours.
+                Effectuez donc votre démarche rapidement !
             </div>
             <div class="text--body b__nudge--top-50">
                 <strong>Comment ça marche ?</strong>
                 <ol>
-                    <li>Remplissez ce formulaire avec vos coordonnées et votre bureau de vote</li>
-                    <li>Vous recevrez votre "CERFA", faites le tamponner au commissariat</li>
-                    <li>Le jour de l'élection, un volontaire <em>En Marche !</em> vote en votre nom</li>
+                    <li>
+                        Remplissez ce formulaire en indiquant vos coordonnées et votre bureau de vote
+                    </li>
+                    <li>
+                        En Marche recherche une personne de confiance dans votre commune disponible le jour du vote
+                    </li>
+                    <li>
+                        Vous recevrez d’ici quelques jours toutes les informations pour compléter le formulaire à
+                        déposer au commissariat, à la gendarmerie ou au tribunal, avec les coordonnées de la personne
+                        qui votera pour vous.
+                    </li>
+                    <li>
+                        Le jour de l'élection, un électeur <em>En Marche !</em> vote en votre nom.
+                    </li>
                 </ol>
             </div>
+            {#
             <div class="text--body b__nudge--top">
                 Besoin de plus d'informations ?
-                <a href="#">En savoir plus</a>.
+                <a href="#">En savoir plus</a>
             </div>
+            #}
         </div>
 
         <div class="procuration__banner__form">
@@ -51,13 +69,17 @@
                 <li>Ma procuration</li>
             </ul>
             <form method="post" action="{{ path('app_procuration_request_vote') }}" name="app_procuration_vote">
+                <div class="text--body text--small b__nudge--bottom-medium">
+                    Attention : votre lieu de vote n’est pas forcément le même que votre lieu de résidence.
+                </div>
+
                 <div class="form__row">
-                    {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
+                    {{ form_label(form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
                     {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
+                    {{ form_label(form.votePostalCode, 'Le code postal de là où je suis inscrit sur les listes électorales') }}
                     {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
                 </div>
 
@@ -68,12 +90,11 @@
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.voteOffice, 'Le nom de mon bureau de vote (optionnel)') }}
+                    {{ form_label(form.voteOffice, 'Nom de votre bureau de vote') }}
                     {{ form_errors(form.voteOffice) }}
                     {{ form_widget(form.voteOffice, { 'attr': { 'class': 'form--full', 'placeholder': 'Bureau de vote' } }) }}
                     <div class="text--body text--small b__nudge--top-10">
-                        Le nom de votre bureau de vote sera utilisé par nos équipe afin de trouver
-                        la personne la plus adaptée pour voter à votre place.
+                        Connaître votre bureau de vote nous permettra de trouver une personne qui pourra s’y rendre.
                     </div>
                 </div>
 
