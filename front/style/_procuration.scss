@@ -101,7 +101,7 @@
                 border-left: 0;
                 border-right: 0;
                 padding: 30px 10px;
-                min-width: auto;
+                min-width: 0;
             }
 
             h4 {
@@ -116,6 +116,15 @@
 
             label {
                 font-weight: bold;
+            }
+
+            &--large {
+                min-width: 650px;
+                max-width: 650px;
+
+                @media (max-width: $tablet) {
+                    min-width: 0;
+                }
             }
         }
     }

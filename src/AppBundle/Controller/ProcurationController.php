@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Form\ProcurationProfileType;
 use AppBundle\Form\ProcurationElectionsType;
+use AppBundle\Form\ProcurationProxyType;
 use AppBundle\Form\ProcurationVoteType;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\ProcurationRequestFlow;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -112,9 +115,59 @@ class ProcurationController extends Controller
      * @Route("/je-demande/merci", name="app_procuration_request_thanks")
      * @Method("GET")
      */
-    public function thanksAction(): Response
+    public function requestThanksAction(): Response
     {
         return $this->render('procuration/thanks.html.twig');
+    }
+
+    /**
+     * @Route("/je-propose", name="app_procuration_proxy_proposal")
+     * @Method("GET|POST")
+     */
+    public function proxyProposalAction(Request $request): Response
+    {
+        $referentUuid = $request->query->get('uuid');
+
+        if (!$referentUuid || !Uuid::isValid($referentUuid)) {
+            throw $this->createNotFoundException();
+        }
+
+        $referent = $this->getDoctrine()->getRepository(Adherent::class)->findOneBy(['uuid' => $referentUuid]);
+
+        if (!$referent || !$referent->isReferent()) {
+            throw $this->createNotFoundException();
+        }
+
+        $proposal = new ProcurationProxy($referent);
+        $proposal->recaptcha = (string) $request->request->get('g-recaptcha-response');
+
+        if ($this->getUser() instanceof Adherent) {
+            $proposal->importAdherentData($this->getUser());
+        }
+
+        $form = $this->createForm(ProcurationProxyType::class, $proposal);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($proposal);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_procuration_proposal_thanks');
+        }
+
+        return $this->render('procuration/proposal.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/je-propose/merci", name="app_procuration_proposal_thanks")
+     * @Method("GET")
+     */
+    public function proposalThanksAction(): Response
+    {
+        return $this->render('procuration/proposal_thanks.html.twig');
     }
 
     private function getProcurationFlow(): ProcurationRequestFlow

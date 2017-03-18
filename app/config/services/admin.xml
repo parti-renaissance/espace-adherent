@@ -212,15 +212,6 @@
             <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Campagne" />
         </service>
 
-        <!-- MailjetEmail -->
-        <service id="app.admin.mailjet_email" class="AppBundle\Admin\MailjetEmailAdmin">
-            <argument />
-            <argument>AppBundle\Entity\MailjetEmail</argument>
-            <argument />
-
-            <tag name="sonata.admin" manager-type="orm" label="Mailjet" group="Monitoring" />
-        </service>
-
         <!-- ProcurationRequest -->
         <service id="app.admin.procuration_request" class="AppBundle\Admin\ProcurationRequestAdmin">
             <argument />
@@ -228,6 +219,29 @@
             <argument />
 
             <tag name="sonata.admin" manager-type="orm" label="Demandes" group="Procurations" />
+        </service>
+
+        <!-- ProcurationProxy -->
+        <service id="app.admin.procuration_proxy" class="AppBundle\Admin\ProcurationProxyAdmin">
+            <argument />
+            <argument>AppBundle\Entity\ProcurationProxy</argument>
+            <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/procuration_list.html.twig</argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Procurations" />
+        </service>
+
+        <!-- MailjetEmail -->
+        <service id="app.admin.mailjet_email" class="AppBundle\Admin\MailjetEmailAdmin">
+            <argument />
+            <argument>AppBundle\Entity\MailjetEmail</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Mailjet" group="Monitoring" />
         </service>
 
     </services>
