@@ -24,16 +24,20 @@
                 <li>Ma procuration</li>
             </ul>
             <form method="post" name="app_procuration_vote">
+                <div class="text--body text--small b__nudge--bottom-medium">
+                    Attention : votre lieu de vote n’est pas forcément le même que votre lieu de résidence.
+                </div>
+
                 {{ form_errors(form) }}
 
                 <div class="form__row">
-                    {{ form_label(form.voteCountry, 'Le pays de mon lieu de vote') }}
+                    {{ form_label(form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
                     {{ form_errors(form.voteCountry) }}
                     {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.votePostalCode, 'Le code postal de mon lieu de vote') }}
+                    {{ form_label(form.votePostalCode, 'Le code postal de là où je suis inscrit sur les listes électorales') }}
                     {{ form_errors(form.votePostalCode) }}
                     {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
                 </div>
@@ -46,12 +50,11 @@
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.voteOffice, 'Le nom de mon bureau de vote (optionnel)') }}
+                    {{ form_label(form.voteOffice, 'Nom de votre bureau de vote') }}
                     {{ form_errors(form.voteOffice) }}
                     {{ form_widget(form.voteOffice, { 'attr': { 'class': 'form--full', 'placeholder': 'Bureau de vote' } }) }}
                     <div class="text--body text--small b__nudge--top-10">
-                        Le nom de votre bureau de vote sera utilisé par nos équipe afin de trouver
-                        la personne la plus adaptée pour voter à votre place.
+                        Connaître votre bureau de vote nous permettra de trouver une personne qui pourra s’y rendre.
                     </div>
                 </div>
 

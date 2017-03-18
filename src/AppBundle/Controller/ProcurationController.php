@@ -25,10 +25,6 @@ class ProcurationController extends Controller
      */
     public function indexAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $this->getProcurationFlow()->reset();
 
         return $this->render('procuration/index.html.twig', [
@@ -43,10 +39,6 @@ class ProcurationController extends Controller
      */
     public function voteAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $command = $this->getProcurationFlow()->getCurrentModel();
 
         $form = $this->createForm(ProcurationVoteType::class, $command);
@@ -69,10 +61,6 @@ class ProcurationController extends Controller
      */
     public function profileAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $command = $this->getProcurationFlow()->getCurrentModel();
 
         if ($this->getUser() instanceof Adherent) {
@@ -99,10 +87,6 @@ class ProcurationController extends Controller
      */
     public function electionsAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $command = $this->getProcurationFlow()->getCurrentModel();
         $command->recaptcha = (string) $request->request->get('g-recaptcha-response');
 
@@ -130,10 +114,6 @@ class ProcurationController extends Controller
      */
     public function thanksAction(): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('procuration/thanks.html.twig');
     }
 
