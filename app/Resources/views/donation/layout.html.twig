@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Je donne' %}
-{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
+{% block meta_description 'Si la démocratie n’a pas de prix, elle a un coût! Aidez-nous à faire gagner vos idées' %}
 {% block canonical_url url('donation_index') %}
+{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/donation-sharer.jpg') }}{% endblock %}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -46,10 +47,9 @@
 
                 <div class="donation__form-note">
                     <div class="donation__form-quote">
-                        « Pour mettre la France en marche, nous avons besoin de votre soutien car notre mouvement ne
-                        bénéficie d’aucun financement public. Nous avons besoin de vos dons pour organiser des meetings,
-                        vous rencontrer dans toutes les régions de France… Aidez nous à gagner, aidez nous à faire gagner
-                        vos idées ! »
+                        « Pour faire avancer vos idées nous avons besoin de vous ! En Marche est un mouvement indépendant qui ne reçoit aucun financement public. Nous dépendons uniquement de votre soutien: meetings, affiches, tracts...<br>
+                        Si la démocratie n’a pas de prix, elle a un coût !<br>
+                        Je compte sur vous. »
                     </div>
                     <img src="{{ asset('images/donation-signature.png') }}"
                          title="Signature d'Emmanuel Macron"
