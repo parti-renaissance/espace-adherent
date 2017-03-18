@@ -969,7 +969,7 @@
                 @include classic-gradient($filter);
             }
 
-            &:last-child {
+            &.info {
                 display: flex;
                 justify-content: center;
                 align-items: center;
