@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Je donne' %}
-{% block meta_description 'En Marche est un mouvement indépendant, qui ne reçoit pas un seul euro de subvention de l’Etat ni d’aucun parti politique. Notre réussite repose uniquement sur votre générosité.' %}
+{% block meta_description 'Si la démocratie n’a pas de prix, elle a un coût! Aidez-nous à faire gagner vos idées' %}
 {% block canonical_url url('donation_index') %}
+{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/donation-sharer.jpg') }}{% endblock %}
 
 {% block stylesheets %}
     <style type="text/css">
