@@ -56,7 +56,8 @@
         "tackk/cartographer": "^1.1",
         "php-amqplib/rabbitmq-bundle": "^1.12",
         "sabre/dav": "^3.2",
-        "jms-serializer/serializer-bundle": "^1.1"
+        "jms-serializer/serializer-bundle": "^1.1",
+        "suin/php-rss-writer": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

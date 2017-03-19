@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fc317e0bf39f212c90dc8f18b4ef742",
+    "content-hash": "38e7233f1e2b9718d1a5d32cdaf201cb",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -5310,6 +5310,55 @@
                 "tree"
             ],
             "time": "2016-01-26T23:58:32+00:00"
+        },
+        {
+            "name": "suin/php-rss-writer",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/suin/php-rss-writer.git",
+                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/suin/php-rss-writer/zipball/938b067ba0f3a4d494edbdb1241d054e7d15b633",
+                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "eher/phpunit": ">=1.6",
+                "mockery/mockery": ">=0.7.2",
+                "suin/xoopsunit": ">=1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Suin\\RSSWriter": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hidehito Nozawa aka Suin",
+                    "email": "suinyeze@gmail.com"
+                }
+            ],
+            "description": "Yet another simple RSS writer library for PHP 5.4 or later.",
+            "homepage": "https://github.com/suin/php-rss-writer",
+            "keywords": [
+                "feed",
+                "generator",
+                "php",
+                "rss",
+                "writer"
+            ],
+            "time": "2016-07-21T14:05:32+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
