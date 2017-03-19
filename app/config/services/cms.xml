@@ -26,6 +26,13 @@
 
         <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
 
+        <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">
+            <argument>%locale%</argument>
+            <argument>%feed_ttl%</argument>
+            <argument type="service" id="router" />
+            <argument type="service" id="app.content.markdown_parser" />
+        </service>
+
         <!-- Sitemap -->
         <service id="app.content.sitemap_factory" class="AppBundle\Sitemap\SitemapFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
