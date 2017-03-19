@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Je Marche !' %}
+{% block canonical_url url('app_je_marche_action') %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runJeMarche();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="content">
+    <section class="je-marche__header background--blue space--60-0 text--center">
+        <h1 class="text--larger b__nudge--bottom-small text--white">
+            Je Marche !
+        </h1>
+    </section>
+
+    <section class="l__wrapper--slim space--60-0">
+        <h1 class="text--body text--medium text--center b__nudge--bottom-large">Compte rendu de mon action</h1>
+        <p class="text--body">Saisissez les e-mails ... et faites remonter les réactions.</p>
+
+
+        <div class="text--body">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.type, 'Quelle action avez-vous réalisée ?') }}
+                {{ form_widget(form.type, { attr: { 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_errors(form.type) }}
+            </div>
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.postalCode, 'Où l\'avez-vous réalisée (code postal) ?') }}
+                <br />
+                {{ form_widget(form.postalCode, { attr: { 'class': 'b__nudge--top-10', 'placeholder': 'Code postal' } }) }}
+                {{ form_errors(form.postalCode) }}
+            </div>
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.convinced, 'Personnes convaincues') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite être tenu(e) informé(e) de la campagne et/ou m'engager".</div>
+                {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_errors(form.convinced) }}
+                <div class="text--small"><a href="https://enmarche.typeform.com/to/OjHb7I">
+                    Saisissez ici une ou plusieurs adresses postales
+                </a></div>
+            </div>
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.almostConvinced, 'Personnes réceptives') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter et je souhaite en savoir davantage sur Emmanuel Macron".</div>
+                {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une adresse e-mail par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_errors(form.almostConvinced) }}
+                <div class="text--small"><a href="https://enmarche.typeform.com/to/wRRu15">
+                    Saisissez ici une ou plusieurs adresses postales
+                </a></div>
+            </div>
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.notConvinced, 'Personnes acquises à un autre candidat ou n\'ayant pas souhaité échanger (nombre de personnes)') }}
+                <div class="text--small text--gray b__nudge--bottom-small">Je leur ai parlé du projet d'Emmanuel Macron, mais elles ne voteront pas pour lui ou n’ont pas souhaité poursuivre la discussion.</div>
+                {{ form_widget(form.notConvinced) }}
+                {{ form_errors(form.notConvinced) }}
+            </div>
+
+            <div class="form__row b__nudge--bottom-large">
+                {{ form_label(form.reaction, 'Réaction des personnes rencontrées / commentaires') }}
+                {{ form_widget(form.reaction, { attr: { placeholder: 'Décrivez ici les réactions des personnes avec lesquelles vous avez échangé', 'class': 'b__nudge--top-10 form--full form__field--textarea-120' } }) }}
+                {{ form_errors(form.reaction) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.emailAddress, 'Votre e-mail') }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre e-mail', 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+            {% endif %}
+
+            {{ form_rest(form) }}
+
+            <button type="submit" class="b__nudge--top btn btn--blue">
+                J'envoie le compte rendu
+            </button>
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+</main>
+{% endblock %}
