@@ -14,9 +14,18 @@ class JeMarcheController extends Controller
 {
     /**
      * @Route("/jemarche", name="app_je_marche")
+     * @Method("GET")
+     */
+    public function indexAction(): Response
+    {
+        return $this->render('jemarche/index.html.twig');
+    }
+
+    /**
+     * @Route("/jemarche/action", name="app_je_marche_action")
      * @Method("GET|POST")
      */
-    public function indexAction(Request $request): Response
+    public function actionAction(Request $request): Response
     {
         $jeMarcheReport = JeMarcheReport::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
 
@@ -31,7 +40,7 @@ class JeMarcheController extends Controller
             return $this->redirectToRoute('app_je_marche_thanks');
         }
 
-        return $this->render('jemarche/index.html.twig', [
+        return $this->render('jemarche/action.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -50,6 +59,15 @@ class JeMarcheController extends Controller
      * @Method("GET")
      */
     public function redirectAction(): Response
+    {
+        return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
+    }
+
+    /**
+     * @Route("/jagis", name="app_je_marche_redirect_jagis")
+     * @Method("GET")
+     */
+    public function redirectJagisAction(): Response
     {
         return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
     }
