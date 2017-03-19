@@ -205,7 +205,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertFalse($proposal->getElectionLegislativeSecondRound());
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci', $this->client);
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

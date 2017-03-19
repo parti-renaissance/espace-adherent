@@ -153,7 +153,9 @@ class ProcurationController extends Controller
             $manager->persist($proposal);
             $manager->flush();
 
-            return $this->redirectToRoute('app_procuration_proposal_thanks');
+            return $this->redirectToRoute('app_procuration_proposal_thanks', [
+                'uuid' => $referentUuid,
+            ]);
         }
 
         return $this->render('procuration/proposal.html.twig', [
@@ -165,9 +167,11 @@ class ProcurationController extends Controller
      * @Route("/je-propose/merci", name="app_procuration_proposal_thanks")
      * @Method("GET")
      */
-    public function proposalThanksAction(): Response
+    public function proposalThanksAction(Request $request): Response
     {
-        return $this->render('procuration/proposal_thanks.html.twig');
+        return $this->render('procuration/proposal_thanks.html.twig', [
+            'uuid' => (string) $request->query->get('uuid'),
+        ]);
     }
 
     private function getProcurationFlow(): ProcurationRequestFlow
