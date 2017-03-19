@@ -21,10 +21,20 @@
         </h1>
     </section>
 
-    <section class="l__wrapper--slim space--60-0">
-        <h1 class="text--body text--medium text--center b__nudge--bottom-large">Compte rendu de mon action</h1>
-        <p class="text--body">Saisissez les e-mails ... et faites remonter les réactions.</p>
+    <section class="l__wrapper--slim space--30-0">
+        <div class="text--summary b__nudge--bottom">
+            <a href="{{ path('app_je_marche') }}" class="back-to-list icon--with-text">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à J'agis
+            </a>
+        </div>
 
+        <h1 class="text--body text--medium text--center b__nudge--bottom-large">
+            Compte rendu de mon action
+        </h1>
+        <p class="text--body">
+            Saisissez les e-mails ... et faites remonter les réactions.
+        </p>
 
         <div class="text--body">
             {{ form_start(form) }}
