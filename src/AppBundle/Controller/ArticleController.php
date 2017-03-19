@@ -24,8 +24,6 @@ class ArticleController extends Controller
     public function actualitesAction($category, $page)
     {
         $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
-        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
-
         $category = $categoriesRepo->findOneBySlug($category);
 
         if (!$category) {
@@ -35,17 +33,17 @@ class ArticleController extends Controller
         $page = (int) $page;
 
         $categories = $categoriesRepo->findAll();
+        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
         $articlesCount = $articlesRepo->countAllByCategory($category);
-        $articles = $articlesRepo->findByCategoryPaginated($category, $page, self::PER_PAGE);
 
-        if (empty($articles)) {
+        if (!$this->isPaginationValid($articlesCount, $page)) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('article/actualites.html.twig', [
             'current' => $category,
             'categories' => $categories,
-            'articles' => $articles,
+            'articles' => $articlesRepo->findByCategoryPaginated($category, $page, self::PER_PAGE),
             'currentPage' => $page,
             'totalPages' => ceil($articlesCount / self::PER_PAGE),
         ]);
@@ -66,5 +64,21 @@ class ArticleController extends Controller
         return $this->render('article/article.html.twig', [
             'article' => $article,
         ]);
+    }
+
+    /**
+     * @param int $articlesCount
+     * @param int $requestedPageNumber
+     * @param int $itemsPerPage
+     *
+     * @return bool
+     */
+    private function isPaginationValid(int $articlesCount, int $requestedPageNumber, int $itemsPerPage = self::PER_PAGE): bool
+    {
+        if (!$articlesCount) {
+            return false;
+        }
+
+        return $requestedPageNumber <= (int) ceil($articlesCount / $itemsPerPage);
     }
 }

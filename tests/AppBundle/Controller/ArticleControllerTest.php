@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Controller\ArticleController;
 use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
@@ -44,6 +45,42 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/article/brouillon');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * For this test, the pagination size is forced to ease understanding.
+     *
+     * @dataProvider dataProviderIsPaginationValid
+     *
+     * @param bool $expected
+     * @param int  $articlesCount
+     * @param int  $requestedPageNumber
+     */
+    public function testIsPaginationValid(bool $expected, int $articlesCount, int $requestedPageNumber)
+    {
+        $reflectionMethod = new \ReflectionMethod(ArticleController::class, 'isPaginationValid');
+        $reflectionMethod->setAccessible(true);
+
+        $articleController = $this->getMockBuilder(ArticleController::class)
+            ->setMethods(['isPaginationValid'])
+            ->getMock();
+
+        $this->assertEquals($expected, $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderIsPaginationValid(): array
+    {
+        return [
+            [false,  0,  1],
+            [true,   1,  1],
+            [true,   5,  1],
+            [false,  5,  2],
+            [true,   6,  1],
+            [true,   6,  2],
+        ];
     }
 
     protected function setUp()
