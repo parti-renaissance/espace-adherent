@@ -7,6 +7,7 @@ imports:
     - { resource: services/cms.xml }
     - { resource: services/community.xml }
     - { resource: services/external_services.xml }
+    - { resource: services/feed_generator.xml }
     - { resource: services/platform.xml }
     - { resource: services/repositories.xml }
     - { resource: services/system.xml }
