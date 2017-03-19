@@ -96,9 +96,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('referent', null, [
-                'label' => 'Invité par',
-            ])
             ->add('createdAt', 'doctrine_orm_date_range', [
                 'label' => 'Date',
                 'field_type' => 'sonata_type_date_range_picker',

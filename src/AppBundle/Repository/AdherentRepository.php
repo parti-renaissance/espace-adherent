@@ -117,6 +117,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->createQueryBuilder('a')
             ->where('a.managedArea.codes IS NOT NULL')
             ->andWhere('LENGTH(a.managedArea.codes) > 0')
+            ->orderBy('LOWER(a.managedArea.codes)', 'ASC')
             ->getQuery()
             ->getResult();
     }
