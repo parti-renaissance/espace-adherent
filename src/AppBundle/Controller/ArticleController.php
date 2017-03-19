@@ -6,64 +6,23 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Suin\RSSWriter\Channel;
-use Suin\RSSWriter\Feed;
-use Suin\RSSWriter\Item;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ArticleController extends Controller
 {
     const PER_PAGE = 12;
 
     /**
-     * @Route(
-     *     "/feed",
-     *     name="articles_feed"
-     * )
+     * @Route("/feed", name="articles_feed")
      * @Method("GET")
      */
     public function feedAction()
     {
-        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
-
-        $articles = $articlesRepo->findAllForFeed();
-
-        if (empty($articles)) {
-            throw $this->createNotFoundException();
-        }
-
-        $mostRecentArticleDateTimestamp = $articles[0]->getPublishedAt()->format('U');
-
-        $feed = new Feed();
-        $channel = new Channel();
-        $channel->title('En Marche!')
-            ->url($this->get('router')->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->language($this->getParameter('locale'))
-            ->copyright(sprintf('Copyright %d, En Marche!', date('Y')))
-            ->pubDate($mostRecentArticleDateTimestamp)
-            ->lastBuildDate($mostRecentArticleDateTimestamp)
-            ->ttl(120) // Move to a parameter?
-            ->appendTo($feed);
-
-        $urlGenerator = $this->get('router');
-        $markDownParser = $this->get('app.content.markdown_parser');
-
-        foreach ($articles as $article) {
-            $articleUrl = $urlGenerator->generate('article_view', ['slug' => $article->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-            $item = new Item();
-            $item->title($article->getTitle())
-                ->url($articleUrl)
-                ->description($markDownParser->convertToHtml($article->getContent()))
-                ->category($article->getCategory()->getName())
-                ->guid($articleUrl, true)
-                ->preferCdata(true)
-                ->appendTo($channel);
-        }
-
         return new Response(
-            $feed->render(),
+            $this->get('app.feed_generator.article')->buildFeed(
+                $this->getDoctrine()->getRepository(Article::class)->findAllForFeed()
+            )->render(),
             Response::HTTP_OK,
             [
                 'Content-Type' => 'application/rss+xml; charset=UTF-8',
