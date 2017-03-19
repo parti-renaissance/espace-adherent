@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class JeMarcheController extends Controller
 {
     /**
-     * @Route("/jemarche", name="app_je_marche")
+     * @Route("/jagis", name="app_je_marche")
      * @Method("GET")
      */
     public function indexAction(): Response
@@ -22,7 +22,7 @@ class JeMarcheController extends Controller
     }
 
     /**
-     * @Route("/jemarche/action", name="app_je_marche_action")
+     * @Route("/jemarche", name="app_je_marche_action")
      * @Method("GET|POST")
      */
     public function actionAction(Request $request): Response
@@ -60,15 +60,6 @@ class JeMarcheController extends Controller
      */
     public function redirectAction(): Response
     {
-        return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
-    }
-
-    /**
-     * @Route("/jagis", name="app_je_marche_redirect_jagis")
-     * @Method("GET")
-     */
-    public function redirectJagisAction(): Response
-    {
-        return $this->redirectToRoute('app_je_marche', [], Response::HTTP_MOVED_PERMANENTLY);
+        return $this->redirectToRoute('app_je_marche_action', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 }
