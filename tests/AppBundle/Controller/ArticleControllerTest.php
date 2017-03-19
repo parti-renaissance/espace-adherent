@@ -13,6 +13,13 @@ class ArticleControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    public function testFeed()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/feed');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->assertSame('application/rss+xml; charset=UTF-8', $response->headers->get('Content-Type'));
+    }
+
     /**
      * @group functionnal
      */

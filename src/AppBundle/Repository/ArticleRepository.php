@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -68,17 +69,38 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
-     * @return Article[]
+     * @return Article[]|ArrayCollection
      */
     public function findAllPublished()
+    {
+        return $this->getQueryBuilderFindAll()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Article[]|ArrayCollection
+     */
+    public function findAllForFeed()
+    {
+        return $this->getQueryBuilderFindAll()
+            ->orderBy('a.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get the query builder to find all articles.
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getQueryBuilderFindAll()
     {
         return $this->createQueryBuilder('a')
             ->select('a', 'm', 'c')
             ->leftJoin('a.media', 'm')
             ->leftJoin('a.category', 'c')
             ->andWhere('a.published = :published')
-            ->setParameter('published', true)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('published', true);
     }
 }
