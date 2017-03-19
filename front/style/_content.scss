@@ -1119,7 +1119,8 @@
           transition: all 0.2s;
         }
 
-        &:hover .videos {
+        &:hover .videos,
+        &:hover {
             background-size: 220%;
         }
     }

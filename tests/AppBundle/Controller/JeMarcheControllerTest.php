@@ -28,7 +28,7 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche/action');
+        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -67,7 +67,7 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertEmpty($this->jeMarcheReportRepostitory->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche/action');
+        $crawler = $this->client->request(Request::METHOD_GET, '/jemarche');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
