@@ -20,7 +20,7 @@ rendez-vous sur [le site officiel (en anglais)](https://git-scm.com).
 
 2. Récupérez le code de votre fork.
 
-3. Installez ensuite le projet en suivant [les instructions d'installation](docs/1. Installer le projet en local.md).
+3. Installez ensuite le projet en suivant [les instructions d'installation](docs/1-Installer-le-projet-en-local.md).
 
 4. Lorsque nous travaillons avec Git, nous utilisons un processus de développement basé sur "une branche par fonctionnalité/bug".
    La première chose à faire une fois que votre projet est installé est donc de créer une branche pour votre travail.
