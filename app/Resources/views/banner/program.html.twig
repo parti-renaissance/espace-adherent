@@ -1,0 +1,18 @@
+<div class="programme__banner background--dark l__hide--on-tablet progressive-background" id="header-banner"
+     style="display: none;"
+     data-sd="{{ static_asset('propositions-banner.jpg', {'w': 300, 'q': 20}) }}"
+     data-hd="{{ static_asset('propositions-banner.jpg', {'w': 2000, 'q': 70}) }}">
+    <div class="l__wrapper l__row l__row--h-stretch space--30-0">
+        <div class="text--large text--bold text--white text--limited-extra text--italic">
+            Le programme d'Emmanuel Macron
+        </div>
+        <div class="l__row">
+            <a href="{{ path('page_emmanuel_macron_programme') }}" class="btn btn--large btn--no-border b__nudge--right-large">
+                En savoir plus
+            </a>
+            <a href="javascript:void(0)" class="btn__icon btn__icon--dark" id="header-banner-close-btn">
+                {{ include('components/close.html.twig') }}
+            </a>
+        </div>
+    </div>
+</div>

@@ -616,6 +616,32 @@
     }
 }
 
+.newsletter__banner {
+    background-color: #ffee00;
+    color: black;
+
+    > div {
+        position: relative;
+        z-index: 1;
+    }
+
+    svg {
+        path {
+            @include color-stroke(black);
+        }
+
+        &:hover {
+            path {
+                @include hover-stroke(black);
+            }
+        }
+    }
+
+    &__btn {
+        margin: 7px 0 0 20px;
+    }
+}
+
 .content.emmanuel-macron {
     header {
         background-size: cover;
