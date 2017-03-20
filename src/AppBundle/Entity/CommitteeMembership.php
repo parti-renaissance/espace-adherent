@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Exception\CommitteeMembershipException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -29,6 +30,7 @@ class CommitteeMembership
 {
     const COMMITTEE_HOST = 'HOST';
     const COMMITTEE_FOLLOWER = 'FOLLOWER';
+    const COMMITTEE_SUPERVISOR = 'SUPERVISOR';
 
     use EntityIdentityTrait;
 
@@ -89,6 +91,28 @@ class CommitteeMembership
         $this->joinedAt = new \DateTime();
     }
 
+    /**
+     * Returns the list of committee host privileges.
+     *
+     * @return array
+     */
+    final public static function getHostPrivileges(): array
+    {
+        return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
+    }
+
+    public static function createForSupervisor(UuidInterface $committeeUuid, Adherent $supervisor): self
+    {
+        $committeeUuid = clone $committeeUuid;
+
+        return new self(
+            self::createUuid($supervisor->getUuid(), $committeeUuid),
+            $committeeUuid,
+            $supervisor,
+            self::COMMITTEE_SUPERVISOR
+        );
+    }
+
     public static function createForHost(UuidInterface $committeeUuid, Adherent $host): self
     {
         $committeeUuid = clone $committeeUuid;
@@ -104,18 +128,18 @@ class CommitteeMembership
     /**
      * Creates a new membership relationship between an adherent and a committee.
      *
-     * @param Adherent  $adherent
-     * @param Committee $committee
-     * @param string    $privilege
+     * @param UuidInterface $committeeUuid
+     * @param Adherent      $adherent
+     * @param string        $privilege
      *
      * @return CommitteeMembership
      */
     public static function createForAdherent(
+        UuidInterface $committeeUuid,
         Adherent $adherent,
-        Committee $committee,
         string $privilege = self::COMMITTEE_FOLLOWER
     ): self {
-        $committeeUuid = clone $committee->getUuid();
+        $committeeUuid = clone $committeeUuid;
 
         return new self(
             self::createUuid($adherent->getUuid(), $committeeUuid),
@@ -129,15 +153,25 @@ class CommitteeMembership
      * Computes a unique UUID with the provided adherent and committee UUIDs.
      *
      * @param UuidInterface $adherentUuid
-     * @param UuidInterface $committeUuid
+     * @param UuidInterface $committeeUuid
      *
      * @return UuidInterface
      */
-    private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeUuid): UuidInterface
+    private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
     {
-        $key = sha1(sprintf('%s|%s', $adherentUuid, $committeUuid));
+        $key = sha1(sprintf('%s|%s', $adherentUuid, $committeeUuid));
 
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
+    }
+
+    /**
+     * Returns whether or not this membership is a supervisor priviledged membership.
+     *
+     * @return bool
+     */
+    public function isSupervisor(): bool
+    {
+        return self::COMMITTEE_SUPERVISOR === $this->privilege;
     }
 
     /**
@@ -158,6 +192,17 @@ class CommitteeMembership
     public function isFollower(): bool
     {
         return self::COMMITTEE_FOLLOWER === $this->privilege;
+    }
+
+    /**
+     * Returns whether or not this memberships enables the adherent
+     * to host a committee.
+     *
+     * @return bool
+     */
+    public function canHostCommittee(): bool
+    {
+        return in_array($this->privilege, self::getHostPrivileges(), true);
     }
 
     /**
@@ -190,8 +235,17 @@ class CommitteeMembership
         return $this->committeeUuid;
     }
 
-    public function setPrivilege(string $privilege)
+    public function setPrivilege(string $privilege): void
     {
         $this->privilege = $privilege;
+    }
+
+    public function promote(): void
+    {
+        if (!$this->isFollower()) {
+            throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($this->uuid);
+        }
+
+        $this->privilege = self::COMMITTEE_HOST;
     }
 }

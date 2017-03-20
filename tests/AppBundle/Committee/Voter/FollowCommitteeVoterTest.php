@@ -115,7 +115,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->expects($this->once())
             ->method('findMembership')
             ->with($adherent, (string) $committee->getUuid())
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this
             ->repository
@@ -305,7 +305,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     {
         parent::setUp();
 
-        $this->repository = $this->getMockBuilder(CommitteeMembershipRepository::class)->disableOriginalConstructor()->getMock();
+        $this->repository = $this->createMock(CommitteeMembershipRepository::class);
         $this->voter = new FollowCommitteeVoter($this->repository);
     }
 

@@ -63,6 +63,8 @@ committee.event.registration.success: Votre inscription à l'événement est con
 committee.contact_members.none: Vous n'avez sélectionné aucun adhérent à contacter.
 committee.contact_members.success: Félicitations, votre message a bien été envoyé aux membres sélectionnés.
 
+committee.promote_host.success: Le membre a été promu animateur du comité avec succès.
+
 #
 # Search
 #

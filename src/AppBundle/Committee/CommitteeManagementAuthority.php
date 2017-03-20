@@ -2,9 +2,11 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 
 class CommitteeManagementAuthority
 {
@@ -36,5 +38,17 @@ class CommitteeManagementAuthority
     public function refuse(Committee $committee)
     {
         $this->manager->refuseCommittee($committee);
+    }
+
+    public function followCommittee(Adherent $adherent, Committee $committee)
+    {
+        $this->manager->followCommittee($adherent, $committee);
+
+        $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
+            $committee,
+            $this->manager->getCommitteeHosts($committee)->toArray(),
+            $adherent,
+            $this->urlGenerator->getUrl('app_commitee_list_members', $committee)
+        ));
     }
 }

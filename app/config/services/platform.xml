@@ -102,8 +102,6 @@
         <!-- Committees -->
         <service id="app.committee.manager" class="AppBundle\Committee\CommitteeManager">
             <argument type="service" id="doctrine"/>
-            <argument type="service" id="app.mailjet.client.transactional"/>
-            <argument type="service" id="router"/>
         </service>
 
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
@@ -148,6 +146,11 @@
             <tag name="validator.constraint_validator" alias="app.validator.unique_committee"/>
         </service>
 
+        <service id="app.voter.supervise_committee_voter" class="AppBundle\Committee\Voter\SuperviseCommitteeVoter" public="false">
+            <argument type="service" id="app.repository.committee_membership"/>
+            <tag name="security.voter" priority="-1000"/>
+        </service>
+
         <service id="app.voter.create_committee_voter" class="AppBundle\Committee\Voter\CreateCommitteeVoter" public="false">
             <argument type="service" id="app.repository.committee_membership"/>
             <argument type="service" id="app.repository.committee"/>
@@ -176,6 +179,7 @@
         <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="app.committee.url_generator"/>
+            <argument type="service" id="app.committee.manager"/>
             <tag name="twig.extension"/>
         </service>
 
