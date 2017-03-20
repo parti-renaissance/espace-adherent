@@ -28,14 +28,18 @@
                 </div>
 
                 <div class="search__results__cta">
-                    {% if event.finishAt < date() %}
-                        <div class="text--body text--white">
+                    {% if event.finished %}
+                        <div class="text--body">
                             Cet événement est terminé
                         </div>
-                    {% else %}
+                    {% elseif not event.full %}
                         <span class="btn btn--blue">
                             Je Participe
                         </span>
+                    {% else %}
+                        <div class="text--body">
+                            Cet événement est complet
+                        </div>
                     {% endif %}
                     <div class="text--body icon--with-text l__row--center">
                         {{ include('components/participants.html.twig') }}

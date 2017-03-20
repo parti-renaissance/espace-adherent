@@ -120,4 +120,12 @@ class EventRegistrationCommand
     {
         return $this->adherent ? $this->adherent->getUuid() : null;
     }
+
+    /**
+     * @Assert\IsTrue(message = "event.full")
+     */
+    public function isNotFull(): bool
+    {
+        return !$this->event->isFull();
+    }
 }

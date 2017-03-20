@@ -113,6 +113,32 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
+    public function testCantRegisterToAFullEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $eventUrl = '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-marseillaise';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $headerText = $crawler->filter('.committee__event__header__cta')->text();
+        $this->assertContains('1 / 1 inscrit', $headerText);
+        $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
+
+        $crawler = $this->client->request('GET', $eventUrl.'/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+
+        $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains("L'événement est complet.", $crawler->filter('.form__errors')->text());
+    }
+
     /**
      * @group functionnal
      * @dataProvider provideHostProtectedPages

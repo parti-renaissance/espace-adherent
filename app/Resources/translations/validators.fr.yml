@@ -131,3 +131,8 @@ procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
 
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
+
+#
+# Event
+#
+event.full: L'événement est complet.
