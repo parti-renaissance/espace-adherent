@@ -236,4 +236,18 @@ class Event implements GeoPointInterface
     {
         return $this->uuid->equals($other->getUuid());
     }
+
+    public function isFinished(): bool
+    {
+        return $this->finishAt < new \DateTime();
+    }
+
+    public function isFull(): bool
+    {
+        if (!$this->capacity) {
+            return false;
+        }
+
+        return $this->participantsCount >= $this->capacity;
+    }
 }

@@ -23,6 +23,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
     const EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
     const EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
+    const EVENT_5_UUID = '24a01f4f-94ea-43eb-8601-579385c59a82';
 
     use ContainerAwareTrait;
 
@@ -96,15 +97,31 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
         $event4->incrementParticipantsCount();
 
+        $event5 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_5_UUID,
+            'organizer' => $author7,
+            'committee' => $committee2,
+            'name' => 'Réunion de réflexion marseillaise',
+            'category' => 'CE006',
+            'description' => 'Nous allons échanger autour de différents sujets',
+            'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', 43.2984913, 5.3623771),
+            'begin_at' => date('Y-m-d', strtotime('tomorrow')).' 09:30:00',
+            'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
+            'capacity' => 1,
+        ]);
+        $event5->incrementParticipantsCount();
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
         $manager->persist($event4);
+        $manager->persist($event5);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event3, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event4, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event5, $author7)));
 
         $manager->flush();
 
