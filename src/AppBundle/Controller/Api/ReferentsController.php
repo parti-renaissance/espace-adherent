@@ -423,7 +423,7 @@ class ReferentsController extends Controller
             'coordinates' => [5.55, 46.6667],
         ],
         [
-            'postalCode' => '97400',
+            'postalCode' => '974',
             'name' => 'Carine Garcia',
             'coordinates' => [55.386398, -21.130311],
         ],
@@ -541,6 +541,31 @@ class ReferentsController extends Controller
             'postalCode' => '76000',
             'name' => 'Damien Adam',
             'coordinates' => [1.0215152, 49.4412454],
+        ],
+        [
+            'postalCode' => '31000-31500',
+            'name' => 'Mickael Nogal',
+            'coordinates' => [1.444209, 43.604652],
+        ],
+        [
+            'postalCode' => '987',
+            'name' => 'Heilama Gabert',
+            'coordinates' => [-149.406843, -17.679742],
+        ],
+        [
+            'postalCode' => '976',
+            'name' => 'Sarah Mouhoussoune',
+            'coordinates' => [45.166244, -12.8275],
+        ],
+        [
+            'postalCode' => '971',
+            'name' => 'Bernard Pancrel',
+            'coordinates' => [-61.6298815, 16.2193115],
+        ],
+        [
+            'postalCode' => '973',
+            'name' => 'Isabelle Patient',
+            'coordinates' => [-52.635498046875, 5.101887070062333],
         ],
     ];
 }

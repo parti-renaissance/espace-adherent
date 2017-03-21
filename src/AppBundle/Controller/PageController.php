@@ -55,7 +55,6 @@ class PageController extends Controller
     {
         return $this->render('page/emmanuel-macron/propositions.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-propositions'),
-
             'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
         ]);
     }
