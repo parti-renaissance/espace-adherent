@@ -67,6 +67,9 @@
         {% endblock %}
 
         <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
+        {% if enable_canary %}
+        <link href="https://api.motion.ai/sdk/webchat.css" rel="stylesheet" type="text/css">
+        {% endif %}
     </head>
     <body>
         {% for message in app.session.flashbag.get('info') %}
@@ -349,5 +352,12 @@
                 Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }});
             });
         </script>
+        
+        {% if enable_canary %}
+        <script src="https://api.motion.ai/sdk/webchat.js"></script>
+        <script>
+            motionAI_Init('31537?color=62a8ea&sendBtn=SEND&inputBox=Tapez%20quelque%20chose%20...&token=c68d9fdda1d82f895dcba59e9d14cf38',true,400,470,'https://api.motion.ai/sdk/botbtn.png');
+        </script>
+        {% endif %}
     </body>
 </html>
