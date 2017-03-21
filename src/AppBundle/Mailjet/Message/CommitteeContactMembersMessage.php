@@ -33,6 +33,8 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             Uuid::uuid4()
         );
 
+        $message->setSenderName('Votre comité En Marche !');
+
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
                 throw new \InvalidArgumentException('This message builder requires a collection of Adherent instances');

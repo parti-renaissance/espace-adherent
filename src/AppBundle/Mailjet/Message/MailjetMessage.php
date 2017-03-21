@@ -13,6 +13,8 @@ abstract class MailjetMessage
     protected $template;
     protected $recipients;
     protected $replyTo;
+    protected $senderEmail;
+    protected $senderName;
 
     /**
      * MailjetMessage constructor.
@@ -131,5 +133,25 @@ abstract class MailjetMessage
     final protected static function escape(string $string): string
     {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8', false);
+    }
+
+    public function getSenderEmail(): ?string
+    {
+        return $this->senderEmail;
+    }
+
+    public function setSenderEmail(?string $senderEmail)
+    {
+        $this->senderEmail = $senderEmail;
+    }
+
+    public function getSenderName(): ?string
+    {
+        return $this->senderName;
+    }
+
+    public function setSenderName(?string $senderName)
+    {
+        $this->senderName = $senderName;
     }
 }

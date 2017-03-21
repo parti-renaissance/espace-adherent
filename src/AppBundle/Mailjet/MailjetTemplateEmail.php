@@ -31,8 +31,11 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $this->recipients = [];
     }
 
-    public static function createWithMailjetMessage(MailjetMessage $message, string $senderEmail, string $senderName = null): self
+    public static function createWithMailjetMessage(MailjetMessage $message, string $defaultSenderEmail, string $defaultSenderName = null): self
     {
+        $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
+        $senderName = $message->getSenderName() ?: $defaultSenderName;
+
         $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo());
 
         foreach ($message->getRecipients() as $recipient) {

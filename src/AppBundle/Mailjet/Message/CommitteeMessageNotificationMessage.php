@@ -39,6 +39,8 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             $feedItem->getUuid()
         );
 
+        $message->setSenderName('Votre comité En Marche !');
+
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
