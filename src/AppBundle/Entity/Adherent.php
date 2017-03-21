@@ -341,7 +341,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     public function activate(AdherentActivationToken $token, string $timestamp = 'now')
     {
-        if (self::ENABLED === $this->status) {
+        if ($this->activatedAt) {
             throw new AdherentAlreadyEnabledException($this->uuid);
         }
 
