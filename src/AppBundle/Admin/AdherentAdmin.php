@@ -30,6 +30,9 @@ class AdherentAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Informations personnelles', array('class' => 'col-md-8'))
+                ->add('status', null, [
+                    'label' => 'Etat du compte',
+                ])
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
@@ -77,9 +80,12 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Abonné aux mails de comités ?',
                 ])
             ->end()
-            ->with('Compte', array('class' => 'col-md-4'))
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
+            ->with('Responsable procuration', array('class' => 'col-md-4'))
+                ->add('isProcurationManager', 'boolean', [
+                    'label' => 'Est responsable procuration ?',
+                ])
+                ->add('procurationManagedAreaCodesAsString', null, [
+                    'label' => 'Codes des zones gérés',
                 ])
             ->end();
     }
@@ -88,6 +94,13 @@ class AdherentAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations personnelles', array('class' => 'col-md-8'))
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Etat du compte',
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
@@ -109,29 +122,8 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Date de naissance',
                     'required' => false,
                 ])
-                ->add('position', ActivityPositionType::class)
-            ->end()
-            ->with('Compte', array('class' => 'col-md-4'))
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Etat du compte',
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
-                ])
-            ->end()
-            ->with('Préférences des e-mails', array('class' => 'col-md-4'))
-                ->add('hasSubscribedMainEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails nationaux ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedReferentsEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails de référents ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedLocalHostEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails de comités ?',
-                    'required' => false,
+                ->add('position', ActivityPositionType::class, [
+                    'label' => 'Statut',
                 ])
             ->end()
             ->with('Référent', array('class' => 'col-md-4'))
@@ -147,6 +139,28 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('managedArea.markerLongitude', TextType::class, [
                     'label' => 'Longitude du point sur la carte des référents',
+                    'required' => false,
+                ])
+            ->end()
+            ->with('Responsable procuration', array('class' => 'col-md-4'))
+                ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'Codes des zones gérés',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                ])
+            ->end()
+            ->with('Préférences des e-mails', array('class' => 'col-md-4'))
+                ->add('hasSubscribedMainEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails nationaux ?',
+                    'required' => false,
+                ])
+                ->add('hasSubscribedReferentsEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails de référents ?',
+                    'required' => false,
+                ])
+                ->add('hasSubscribedLocalHostEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails de comités ?',
                     'required' => false,
                 ])
             ->end();

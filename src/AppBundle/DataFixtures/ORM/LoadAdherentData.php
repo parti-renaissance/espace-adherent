@@ -95,6 +95,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'registered_at' => '2017-01-18 13:15:28',
         ]);
         $adherent4->enableCommitteesNotifications();
+        $adherent4->setProcurationManagedAreaCodesAsString('75, GB, 92130');
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,

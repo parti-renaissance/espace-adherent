@@ -126,6 +126,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $managedArea;
 
     /**
+     * @var ProcurationManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"persist"})
+     */
+    private $procurationManagedArea;
+
+    /**
      * @var CommitteeMembership[]|Collection
      *
      * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent")
@@ -172,6 +179,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
+        }
+
+        if ($this->isProcurationManager()) {
+            $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
         return $roles;
@@ -541,6 +552,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->managedArea = $managedArea;
     }
 
+    public function getProcurationManagedArea(): ?ProcurationManagedArea
+    {
+        return $this->procurationManagedArea;
+    }
+
+    public function setProcurationManagedArea(ProcurationManagedArea $procurationManagedArea = null)
+    {
+        $this->procurationManagedArea = $procurationManagedArea;
+    }
+
     public function setReferent(array $codes, string $markerLatitude, string $markerLongitude)
     {
         $this->managedArea = new ManagedArea();
@@ -567,6 +588,30 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getManagedAreaMarkerLongitude(): ?string
     {
         return $this->managedArea->getMarkerLongitude();
+    }
+
+    public function isProcurationManager()
+    {
+        return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
+    }
+
+    public function getProcurationManagedAreaCodesAsString(): ?string
+    {
+        if (!$this->procurationManagedArea) {
+            return '';
+        }
+
+        return $this->procurationManagedArea->getCodesAsString();
+    }
+
+    public function setProcurationManagedAreaCodesAsString(string $codes = null)
+    {
+        if ($codes && !$this->procurationManagedArea) {
+            $this->procurationManagedArea = new ProcurationManagedArea();
+            $this->procurationManagedArea->setAdherent($this);
+        }
+
+        $this->procurationManagedArea->setCodesAsString((string) $codes);
     }
 
     /**
