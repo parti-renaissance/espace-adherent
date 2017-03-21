@@ -54,7 +54,7 @@ class CommitteeManager
         return count($hostedCommittees) >= 1;
     }
 
-    public function getAdherentCommittees(Adherent $adherent, int $limit = 5): array
+    public function getAdherentCommittees(Adherent $adherent, int $limit = 1000): array
     {
         $memberships = $this->getMembershipRepository()->findMemberships($adherent);
 

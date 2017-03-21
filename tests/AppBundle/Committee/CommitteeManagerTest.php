@@ -27,7 +27,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         );
         // Approved committees
         $this->assertCount(2, $hosts);
-        $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+        $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID)));
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
 
@@ -38,25 +38,26 @@ class CommitteeManagerTest extends MysqlWebTestCase
     public function testGetCommitteeFollowers()
     {
         $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
-        $this->assertInstanceOf(
-            AdherentCollection::class,
-            $hosts = $this->committeeManager->getCommitteeFollowers($committee)
-        );
+        $this->assertInstanceOf(AdherentCollection::class, $hosts = $this->committeeManager->getCommitteeFollowers($committee));
+
         // Approved committees
         $this->assertCount(4, $hosts);
         $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
 
-        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee));
+        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID);
+        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee));
         $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
 
+        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
+        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee));
+        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
+
         $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID);
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
+        $this->assertCount(3, $this->committeeManager->getCommitteeFollowers($committee));
+        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
 
         // Unapproved committees
         $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
     }
 
     public function testGetOptinCommitteeFollowers()
@@ -65,19 +66,13 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_1_UUID);
 
         $this->assertInstanceOf(AdherentCollection::class, $followers = $this->committeeManager->getOptinCommitteeFollowers($committee));
-        $this->assertCount(3, $followers);
-
-        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID);
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
-
-        $committee = $this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID);
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
+        $this->assertCount(3, $followers, 'One follower has disabled the committees notifications');
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_4_UUID)));
+        $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_3_UUID)));
+        $this->assertCount(1, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
     }
 
     public function testGetNearbyCommittees()
@@ -125,13 +120,30 @@ class CommitteeManagerTest extends MysqlWebTestCase
         }
     }
 
+    public function testGetAdherentCommittees()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+
+        // Without any fixed limit.
+        $this->assertCount(6, $committees = $this->committeeManager->getAdherentCommittees($adherent));
+        $this->assertSame('En Marche Paris 8', (string) $committees[0], 'Supervised committee must come first');
+        $this->assertSame('En Marche Dammarie-les-Lys', (string) $committees[1], 'Hosted committee must come after supervised committees');
+        $this->assertSame('En Marche - Comité de Évry', (string) $committees[2], 'Followed committee - most popular one first');
+        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[3]);
+        $this->assertSame('En Marche - Comité de Rouen', (string) $committees[4]);
+        $this->assertSame('En Marche - Comité de Berlin', (string) $committees[5], 'Followed committee - least popular one last');
+
+        // With a fixed limit of 4 committees maximum.
+        $this->assertCount(4, $this->committeeManager->getAdherentCommittees($adherent, 4));
+        $this->assertSame('En Marche Paris 8', (string) $committees[0], 'Supervised committee must come first');
+        $this->assertSame('En Marche Dammarie-les-Lys', (string) $committees[1], 'Hosted committee must come after supervised committees');
+        $this->assertSame('En Marche - Comité de Évry', (string) $committees[2], 'Followed committee - most popular of the list must come first');
+        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[3], 'Followed committee - least popular of the list must come last');
+    }
+
     private function getCommitteeMock(string $uuid)
     {
-        $mock = $this
-            ->getMockBuilder(Committee::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $mock = $this->createMock(Committee::class);
         $mock
             ->expects($this->any())
             ->method('getUuid')
