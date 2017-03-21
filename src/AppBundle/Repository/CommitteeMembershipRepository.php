@@ -25,13 +25,45 @@ class CommitteeMembershipRepository extends EntityRepository
      */
     public function hostCommittee(Adherent $adherent, string $committeeUuid = null): bool
     {
-        $qb = $this
-            ->createQueryBuilder('cm')
+        $qb = $this->createQueryBuilder('cm');
+
+        $qb
             ->select('COUNT(cm.uuid)')
-            ->where('cm.privilege = :privilege')
+            ->where($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
             ->andWhere('cm.adherent = :adherent')
             ->setParameter('adherent', $adherent)
-            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
+        ;
+
+        if ($committeeUuid) {
+            $committeeUuid = Uuid::fromString($committeeUuid);
+            $qb
+                ->andWhere('cm.committeeUuid = :committee')
+                ->setParameter('committee', (string) $committeeUuid)
+            ;
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
+    }
+
+    /**
+     * Returns whether or not the given adherent is already the supervisor of at
+     * least one committee.
+     *
+     * @param Adherent $adherent
+     * @param string   $committeeUuid
+     *
+     * @return bool
+     */
+    public function superviseCommittee(Adherent $adherent, string $committeeUuid = null)
+    {
+        $qb = $this->createQueryBuilder('cm');
+
+        $qb
+            ->select('COUNT(cm.uuid)')
+            ->where('cm.privilege = :supervisor')
+            ->andWhere('cm.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
         ;
 
         if ($committeeUuid) {
@@ -69,7 +101,7 @@ class CommitteeMembershipRepository extends EntityRepository
      *
      * @param Adherent $adherent
      *
-     * @return CommitteeMembershipCollection|CommitteeMembership[]
+     * @return CommitteeMembershipCollection
      */
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
     {
@@ -91,7 +123,7 @@ class CommitteeMembershipRepository extends EntityRepository
      *
      * @return CommitteeMembership|null
      */
-    public function findMembership(Adherent $adherent, string $committeeUuid)
+    public function findMembership(Adherent $adherent, string $committeeUuid): ?CommitteeMembership
     {
         $query = $this
             ->createMembershipQueryBuilder($adherent, $committeeUuid)
@@ -136,13 +168,13 @@ class CommitteeMembershipRepository extends EntityRepository
     {
         $committeeUuid = Uuid::fromString($committeeUuid);
 
-        $query = $this
-            ->createQueryBuilder('cm')
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
             ->select('COUNT(cm.uuid)')
             ->where('cm.committeeUuid = :committee')
-            ->andWhere('cm.privilege = :privilege')
+            ->andWhere($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
             ->setParameter('committee', (string) $committeeUuid)
-            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
             ->getQuery()
         ;
 
@@ -170,7 +202,7 @@ class CommitteeMembershipRepository extends EntityRepository
      */
     public function findHostMembers(string $committeeUuid): AdherentCollection
     {
-        return $this->findPriviledgedMembers($committeeUuid, [CommitteeMembership::COMMITTEE_HOST]);
+        return $this->findPriviledgedMembers($committeeUuid, CommitteeMembership::getHostPrivileges());
     }
 
     /**
@@ -185,7 +217,7 @@ class CommitteeMembershipRepository extends EntityRepository
     {
         $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
         if ($includeHosts) {
-            $privileges[] = CommitteeMembership::COMMITTEE_HOST;
+            $privileges = array_merge($privileges, CommitteeMembership::getHostPrivileges());
         }
 
         return $this->findPriviledgedMemberships($committeeUuid, $privileges);
@@ -203,7 +235,7 @@ class CommitteeMembershipRepository extends EntityRepository
     {
         $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
         if ($includeHosts) {
-            $privileges[] = CommitteeMembership::COMMITTEE_HOST;
+            $privileges = array_merge($privileges, CommitteeMembership::getHostPrivileges());
         }
 
         return $this->findPriviledgedMembers($committeeUuid, $privileges);
@@ -311,9 +343,8 @@ class CommitteeMembershipRepository extends EntityRepository
             ->select('cm.committeeUuid')
             ->leftJoin('cm.adherent', 'a')
             ->where('LOWER(a.firstName) LIKE :firstName')
-            ->andWhere('cm.privilege = :host')
+            ->andWhere($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
             ->setParameter('firstName', '%'.strtolower($firstName).'%')
-            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
             ->getQuery()
         ;
 
@@ -335,9 +366,8 @@ class CommitteeMembershipRepository extends EntityRepository
             ->select('cm.committeeUuid')
             ->leftJoin('cm.adherent', 'a')
             ->where('LOWER(a.lastName) LIKE :lastName')
-            ->andWhere('cm.privilege = :host')
+            ->andWhere($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
             ->setParameter('lastName', '%'.strtolower($lastName).'%')
-            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
             ->getQuery()
         ;
 

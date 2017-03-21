@@ -6,20 +6,22 @@ use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\CommitteeUtils;
+use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\CommitteeFeedMessageType;
 use AppBundle\Form\ContactMembersType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -151,12 +153,10 @@ class CommitteeController extends Controller
     {
         $committeeManager = $this->get('app.committee.manager');
 
-        $members = $this->getDoctrine()->getRepository(CommitteeMembership::class)->findMembers($committee->getUuid());
-
         return $this->render('committee/members.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'members' => $members,
+            'members' => $committeeManager->getCommitteeMembers($committee),
         ]);
     }
 
@@ -233,6 +233,44 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host")
+     * @Method("GET|POST")
+     * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
+     * @Entity("member", expr="repository.findByUuid(member_uuid)")
+     */
+    public function promoteHost(Request $request, Committee $committee, Adherent $member): Response
+    {
+        $committeeManager = $this->get('app.committee.manager');
+        if (!$committeeManager->isPromotableHost($member, $committee)) {
+            throw $this->createNotFoundException(sprintf(
+                'Member "%s" of committee "%s" can not be promoted as a host priviledged person.',
+                $member->getUuid(),
+                $committee->getUuid()
+            ));
+        }
+
+        $form = $this->createForm(FormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $committeeManager->promote($member, $committee);
+            $this->addFlash('info', $this->get('translator')->trans('committee.promote_host.success'));
+
+            return $this->redirectToRoute('app_commitee_list_members', [
+                'uuid' => $committee->getUuid(),
+                'slug' => $committee->getSlug(),
+            ]);
+        }
+
+        return $this->render('committee/promote_host.html.twig', [
+            'member' => $member,
+            'committee' => $committee,
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')")
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
@@ -243,7 +281,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
         }
 
-        $this->get('app.committee.manager')->followCommittee($this->getUser(), $committee);
+        $this->get('app.committee.authority')->followCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [

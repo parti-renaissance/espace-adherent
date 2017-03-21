@@ -90,6 +90,7 @@
 
 {% block content %}
     {% set is_host = is_host(committee) %}
+    {% set is_supervisor = is_supervisor(committee) %}
 
     <main class="committee">
 
@@ -143,6 +144,7 @@
                 <table class="committee__members__list" cellpadding="10">
                     <tr>
                         <th><input type="checkbox" id="members-check-all" /></th>
+                        {% if is_supervisor %}<th></th>{% endif %}
                         <th>Prénom</th>
                         <th>Nom</th>
                         <th>Age</th>
@@ -152,6 +154,17 @@
                     {% for member in members %}
                         <tr>
                             <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+                            {% if is_supervisor %}
+                                <td>
+                                    {% if is_promotable_host(member, committee) %}
+                                        <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
+                                           title="Promouvoir en tant qu'animateur suppléant"
+                                           class="promote-host-link">
+                                            <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                             <td>{{ member.firstName|capitalize }}</td>
                             <td>{{ member.lastNameInitial|upper }}</td>
                             <td>{{ member.age }}</td>

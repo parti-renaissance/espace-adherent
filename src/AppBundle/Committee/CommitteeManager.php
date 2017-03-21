@@ -8,15 +8,12 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManager
 {
@@ -26,14 +23,19 @@ class CommitteeManager
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $registry;
-    private $mailjet;
-    private $router;
 
-    public function __construct(ManagerRegistry $registry, MailjetService $mailjet = null, UrlGeneratorInterface $router = null)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
-        $this->mailjet = $mailjet;
-        $this->router = $router;
+    }
+
+    public function isPromotableHost(Adherent $adherent, Committee $committee): bool
+    {
+        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid())) {
+            return false;
+        }
+
+        return $membership->isFollower();
     }
 
     public function isCommitteeHost(Adherent $adherent): bool
@@ -117,7 +119,15 @@ class CommitteeManager
         ;
     }
 
-    public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT)
+    /**
+     * Returns the list of committees that are located near a point of origin.
+     *
+     * @param Coordinates $coordinates
+     * @param int         $limit
+     *
+     * @return Committee[]
+     */
+    public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT): array
     {
         $data = [];
         $committees = $this->getCommitteeRepository()->findNearbyCommittees($limit, $coordinates);
@@ -140,12 +150,29 @@ class CommitteeManager
     }
 
     /**
+     * Promotes an adherent to be a host of a committee.
+     *
+     * @param Adherent  $adherent
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function promote(Adherent $adherent, Committee $committee, bool $flush = true): void
+    {
+        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        $membership->promote();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+    }
+
+    /**
      * Approves one committee.
      *
      * @param Committee $committee
      * @param bool      $flush
      */
-    public function approveCommittee(Committee $committee, bool $flush = true)
+    public function approveCommittee(Committee $committee, bool $flush = true): void
     {
         $committee->approved();
 
@@ -160,7 +187,7 @@ class CommitteeManager
      * @param Committee $committee
      * @param bool      $flush
      */
-    public function refuseCommittee(Committee $committee, bool $flush = true)
+    public function refuseCommittee(Committee $committee, bool $flush = true): void
     {
         $committee->refused();
 
@@ -175,7 +202,7 @@ class CommitteeManager
      * @param Adherent $adherent   The follower
      * @param string[] $committees An array of committee UUIDs
      */
-    public function followCommittees(Adherent $adherent, array $committees)
+    public function followCommittees(Adherent $adherent, array $committees): void
     {
         if (empty($committees)) {
             return;
@@ -195,22 +222,10 @@ class CommitteeManager
      * @param Committee $committee The committee to follow
      * @param bool      $flush     Whether or not to flush the transaction
      */
-    public function followCommittee(Adherent $adherent, Committee $committee, $flush = true)
+    public function followCommittee(Adherent $adherent, Committee $committee, $flush = true): void
     {
         $manager = $this->getManager();
         $manager->persist($adherent->followCommittee($committee));
-
-        if ($this->mailjet) {
-            $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
-                $committee,
-                $this->getCommitteeHosts($committee)->toArray(),
-                $adherent,
-                !$this->router ? '' : $this->router->generate('app_commitee_list_members', [
-                    'uuid' => $committee->getUuid()->toString(),
-                    'slug' => $committee->getSlug(),
-                ])
-            ));
-        }
 
         if ($flush) {
             $manager->flush();
@@ -224,16 +239,16 @@ class CommitteeManager
      * @param Committee $committee The committee to follow
      * @param bool      $flush     Whether or not to flush the transaction
      */
-    public function unfollowCommittee(Adherent $adherent, Committee $committee, bool $flush = true)
+    public function unfollowCommittee(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, (string) $committee->getUuid());
+        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
 
         if ($membership) {
             $this->doUnfollowCommittee($membership, $committee, $flush);
         }
     }
 
-    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee, bool $flush = true)
+    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee, bool $flush = true): void
     {
         $manager = $this->getManager();
 

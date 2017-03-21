@@ -426,13 +426,25 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     }
 
     /**
+     * Joins a committee as a SUPERVISOR priviledged person.
+     *
+     * @param Committee $committee
+     *
+     * @return CommitteeMembership
+     */
+    public function superviseCommittee(Committee $committee): CommitteeMembership
+    {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+    }
+
+    /**
      * Joins a committee as a HOST priviledged person.
      *
      * @param Committee $committee
      *
      * @return CommitteeMembership
      */
-    public function hostCommittee(Committee $committee)
+    public function hostCommittee(Committee $committee): CommitteeMembership
     {
         return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST);
     }
@@ -444,7 +456,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      *
      * @return CommitteeMembership
      */
-    public function followCommittee(Committee $committee)
+    public function followCommittee(Committee $committee): CommitteeMembership
     {
         return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER);
     }
@@ -453,7 +465,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         $committee->incrementMembersCount();
 
-        return CommitteeMembership::createForAdherent($this, $committee, $privilege);
+        return CommitteeMembership::createForAdherent($committee->getUuid(), $this, $privilege);
     }
 
     /**

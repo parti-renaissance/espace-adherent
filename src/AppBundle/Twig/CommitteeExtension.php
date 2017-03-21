@@ -2,22 +2,27 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\CommitteeUrlGenerator;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeExtension extends \Twig_Extension
 {
     private $authorizationChecker;
+    private $committeeManager;
     private $urlGenerator;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CommitteeUrlGenerator $urlGenerator
+        CommitteeUrlGenerator $urlGenerator,
+        CommitteeManager $committeeManager = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
+        $this->committeeManager = $committeeManager;
     }
 
     public function getFunctions()
@@ -25,6 +30,8 @@ class CommitteeExtension extends \Twig_Extension
         return [
             // Permissions
             new \Twig_SimpleFunction('is_host', [$this, 'isHost']),
+            new \Twig_SimpleFunction('is_supervisor', [$this, 'isSupervisor']),
+            new \Twig_SimpleFunction('is_promotable_host', [$this, 'isPromotableHost']),
             new \Twig_SimpleFunction('can_follow', [$this, 'canFollow']),
             new \Twig_SimpleFunction('can_unfollow', [$this, 'canUnfollow']),
             new \Twig_SimpleFunction('can_create', [$this, 'canCreate']),
@@ -36,9 +43,23 @@ class CommitteeExtension extends \Twig_Extension
         ];
     }
 
+    public function isPromotableHost(Adherent $adherent, Committee $committee): bool
+    {
+        if (!$this->committeeManager) {
+            return false;
+        }
+
+        return $this->committeeManager->isPromotableHost($adherent, $committee);
+    }
+
     public function isHost(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissions::HOST, $committee);
+    }
+
+    public function isSupervisor(Committee $committee): bool
+    {
+        return $this->authorizationChecker->isGranted(CommitteePermissions::SUPERVISE, $committee);
     }
 
     public function canFollow(Committee $committee): bool

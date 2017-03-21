@@ -527,15 +527,79 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     /**
      * @group functionnal
+     * @dataProvider provideFollowerCredentials
      */
-    public function testCommitteeMembers()
+    public function testAuthenticatedFollowerCannotSeeCommitteeMembers(string $username, string $password)
     {
-        // Authenticate as the committee animator
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        // Authenticate as a committee follower
+        $crawler = $this->authenticateAsAdherent($this->client, $username, $password);
+        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->client->request(Request::METHOD_GET, sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    public function provideFollowerCredentials()
+    {
+        return [
+            'follower 1' => ['carl999@example.fr', 'secret!12345'],
+            'follower 2' => ['luciole1989@spambox.fr', 'EnMarche2017'],
+        ];
+    }
+
+    /**
+     * @group functionnal
+     * @dataProvider provideHostCredentials
+     */
+    public function testAuthenticatedHostCanSeeCommitteeMembers(string $username, string $password)
+    {
+        // Authenticate as the committee supervisor
+        $crawler = $this->authenticateAsAdherent($this->client, $username, $password);
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
+    }
+
+    public function provideHostCredentials()
+    {
+        return [
+            'supervisor' => ['jacques.picard@en-marche.fr', 'changeme1337'],
+            'host' => ['gisele-berthoux@caramail.com', 'ILoveYouManu'],
+        ];
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testAuthenticatedCommitteeSupervisorCanPromoteNewHostsAmongMembers()
+    {
+        // Authenticate as the committee supervisor
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+
+        $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
+        $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
+
+        $this->client->submit($crawler->selectButton("Promouvoir l'adhérent")->form());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('.promote-host-link')->count());
+        $this->assertContains('Le membre a été promu animateur du comité avec succès.', $crawler->filter('#notice-flashes')->text());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testAuthenticatedCommitteeHostCannotPromoteNewHostsAmongMembers()
+    {
+        // Authenticate as the committee supervisor
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+
+        $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
     }
 
     /**
@@ -543,7 +607,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
      */
     public function testCommitteeExportMembers()
     {
-        // Authenticate as the committee animator
+        // Authenticate as the committee supervisor
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
@@ -586,7 +650,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
      */
     public function testCommitteeContactMembers()
     {
-        // Authenticate as the committee animator
+        // Authenticate as the committee supervisor
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());

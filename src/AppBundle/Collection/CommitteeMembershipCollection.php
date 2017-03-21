@@ -30,7 +30,7 @@ class CommitteeMembershipCollection extends ArrayCollection
     public function getCommitteeHostMemberships(): self
     {
         return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->isHostMember();
+            return $membership->canHostCommittee();
         });
     }
 
