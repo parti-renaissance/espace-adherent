@@ -22,12 +22,16 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
     const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
     const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
+    const ADHERENT_9_UUID = '93de5d98-383a-4863-9f47-eb7a348873a8';
+    const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
     const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
     const COMMITTEE_4_UUID = 'd648d486-fbb3-4394-b4b3-016fac3658af';
     const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-8674-a43910da6419';
+    const COMMITTEE_6_UUID = '508d4ac0-27d6-4635-8953-4cc8600018f9';
+    const COMMITTEE_7_UUID = '40b6e2e5-2499-438b-93ab-ef08860a1845';
 
     use ContainerAwareTrait;
 
@@ -153,6 +157,36 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $referent->setReferent(['CH', '92', '77000'], -1.6743, 48.112);
         $referent->enableCommitteesNotifications();
 
+        $adherent9 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_9_UUID,
+            'password' => 'password12345',
+            'email' => 'laura@deloche.com',
+            'gender' => 'female',
+            'first_name' => 'Laura',
+            'last_name' => 'Deloche',
+            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', 49.443232, 1.099971),
+            'birthdate' => '1973-04-11',
+            'position' => 'employed',
+            'phone' => '33 234823644',
+            'registered_at' => '2017-02-16 17:12:08',
+        ]);
+        $adherent9->enableCommitteesNotifications();
+
+        $adherent10 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_10_UUID,
+            'password' => 'politique2017',
+            'email' => 'martine.lindt@gmail.com',
+            'gender' => 'female',
+            'first_name' => 'Martine',
+            'last_name' => 'Lindt',
+            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', 52.5330939, 13.4662418),
+            'birthdate' => '2000-11-14',
+            'position' => 'student',
+            'phone' => '49 2211653540',
+            'registered_at' => '2017-02-23 13:56:12',
+        ]);
+        $adherent10->enableCommitteesNotifications();
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -162,6 +196,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $key6 = AdherentActivationToken::generate($adherent6);
         $key7 = AdherentActivationToken::generate($adherent7);
         $key8 = AdherentActivationToken::generate($referent);
+        $key9 = AdherentActivationToken::generate($adherent9);
+        $key10 = AdherentActivationToken::generate($adherent10);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -171,6 +207,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $adherent6->activate($key6, '2017-01-17 08:07:45');
         $adherent7->activate($key7, '2017-01-25 19:34:02');
         $referent->activate($key8, '2017-02-07 13:20:45');
+        $adherent9->activate($key9, '2017-02-16 17:23:15');
+        $adherent10->activate($key10, '2017-02-23 14:02:18');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -228,6 +266,26 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         ]);
         $committee5->approved();
 
+        $committee6 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_6_UUID,
+            'created_by' => (string) $adherent9->getUuid(),
+            'created_at' => '2017-03-18 20:12:33',
+            'name' => 'En Marche - Comité de Rouen',
+            'description' => 'En Marche pour la France et la ville de Rouen.',
+            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', 49.443232, 1.099971),
+        ]);
+        $committee6->approved('2017-03-19 09:17:24');
+
+        $committee7 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_7_UUID,
+            'created_by' => (string) $adherent10->getUuid(),
+            'created_at' => '2017-03-19 08:14:45',
+            'name' => 'En Marche - Comité de Berlin',
+            'description' => 'En Marche pour la France et nos partenaires Allemands.',
+            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', 52.5330939, 13.4662418),
+        ]);
+        $committee7->approved('2017-03-19 13:43:26');
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -240,6 +298,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent6);
         $manager->persist($adherent7);
         $manager->persist($referent);
+        $manager->persist($adherent9);
+        $manager->persist($adherent10);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -247,6 +307,10 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($key4);
         $manager->persist($key5);
         $manager->persist($key6);
+        $manager->persist($key7);
+        $manager->persist($key8);
+        $manager->persist($key9);
+        $manager->persist($key10);
 
         $manager->persist($resetPasswordToken);
 
@@ -255,16 +319,24 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee3);
         $manager->persist($committee4);
         $manager->persist($committee5);
+        $manager->persist($committee6);
+        $manager->persist($committee7);
 
         // Make adherents join committees
         $manager->persist($adherent3->superviseCommittee($committee1));
         $manager->persist($adherent7->superviseCommittee($committee3));
-        $manager->persist($adherent7->superviseCommittee($committee4)); // Need to be changed
-        $manager->persist($adherent7->superviseCommittee($committee5)); // Need to be changed
+        $manager->persist($adherent7->superviseCommittee($committee4));
+        $manager->persist($adherent7->superviseCommittee($committee5));
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
         $manager->persist($adherent6->superviseCommittee($committee2));
+        $manager->persist($adherent3->followCommittee($committee4));
+        $manager->persist($adherent3->followCommittee($committee5));
+        $manager->persist($adherent3->followCommittee($committee6));
+        $manager->persist($adherent3->followCommittee($committee7));
+        $manager->persist($adherent3->hostCommittee($committee3));
+        $manager->persist($adherent9->followCommittee($committee5));
 
         $manager->flush();
     }

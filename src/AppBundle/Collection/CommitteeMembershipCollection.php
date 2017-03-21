@@ -29,9 +29,17 @@ class CommitteeMembershipCollection extends ArrayCollection
 
     public function getCommitteeHostMemberships(): self
     {
-        return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->canHostCommittee();
+        // Supervised committees must have top priority in the list.
+        $committees = $this->filter(function (CommitteeMembership $membership) {
+            return $membership->isSupervisor();
         });
+
+        // Hosted committees must have medium priority in the list.
+        $committees->merge($this->filter(function (CommitteeMembership $membership) {
+            return $membership->isHostMember();
+        }));
+
+        return $committees;
     }
 
     public function getCommitteeFollowerMemberships(): self
@@ -39,5 +47,14 @@ class CommitteeMembershipCollection extends ArrayCollection
         return $this->filter(function (CommitteeMembership $membership) {
             return $membership->isFollower();
         });
+    }
+
+    private function merge(self $other): void
+    {
+        foreach ($other as $element) {
+            if (!$this->contains($element)) {
+                $this->add($element);
+            }
+        }
     }
 }

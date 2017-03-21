@@ -20,10 +20,10 @@ class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
     public function testFindCommitteeHostMembersList()
     {
         // Approved committees
-        $this->assertCount(2, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID));
-        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_3_UUID));
-        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_4_UUID));
-        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_5_UUID));
+        $this->assertCount(2, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID), '1 supervisor + 1 host');
+        $this->assertCount(2, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_3_UUID), '1 supervisor + 1 host');
+        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_4_UUID), '1 supervisor');
+        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_5_UUID), '1 supervisor');
 
         // Unapproved committees
         $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_2_UUID));
@@ -32,6 +32,8 @@ class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
     public function testCountHostMembersInCommittee()
     {
         $this->assertSame(2, $this->repository->countHostMembers(LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertSame(2, $this->repository->countHostMembers(LoadAdherentData::COMMITTEE_3_UUID));
+        $this->assertSame(1, $this->repository->countHostMembers(LoadAdherentData::COMMITTEE_4_UUID));
     }
 
     public function testFindCommitteeMembersMemberships()
