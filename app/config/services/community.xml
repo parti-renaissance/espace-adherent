@@ -61,5 +61,7 @@
             <argument type="service" id="session" />
         </service>
 
+        <service id="app.procuration.factory" class="AppBundle\Procuration\ProcurationFactory" />
+
     </services>
 </container>

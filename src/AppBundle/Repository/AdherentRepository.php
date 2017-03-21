@@ -56,6 +56,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         $query = $this
             ->createQueryBuilder('a')
+            ->addSelect('pma')
+            ->leftJoin('a.procurationManagedArea', 'pma')
             ->where('a.emailAddress = :username')
             ->andWhere('a.status = :status')
             ->setParameter('username', $username)

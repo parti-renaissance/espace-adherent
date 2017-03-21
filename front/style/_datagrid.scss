@@ -35,12 +35,6 @@
         clear: both;
         width: 100%;
 
-        &__col--hide-mobile {
-            @media (max-width: $mobile) {
-                display: none;
-            }
-        }
-
         &--loading {
             opacity: 0.1;
         }
@@ -59,6 +53,18 @@
 
         tbody tr:hover {
             background: #eaeaea;
+        }
+
+        &__col {
+            &--left {
+                text-align: left !important;
+            }
+
+            &--hide-mobile {
+                @media (max-width: $mobile) {
+                    display: none;
+                }
+            }
         }
     }
 }

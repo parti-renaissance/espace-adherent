@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace responsable procuration' %}
+{% block canonical_url url('app_procuration_manager_index') %}
+
+{% block content %}
+    <main>
+        <section class="procuration-manager">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    Espace responsable procuration
+                </h1>
+                <p class="text--center">
+                    Zones gérées : {{ app.user.procurationManagedAreaCodesAsString }}
+                </p>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content">
+                {% block procuration_manager_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -3,8 +3,10 @@
 {% block field%}
     {% if object.isReferent %}
         <span class="label label-primary">Référent</span>
+    {% elseif object.isProcurationManager %}
+        <span class="label label-primary">Procuration</span>
     {% elseif object.isHost %}
-        <span class="label label-info">Animateur</span>
+        <span class="label label-primary" style="background-color: #90ade6 !important;">Animateur</span>
     {% else %}
         <span class="label label-default">Adhérent</span>
     {% endif %}

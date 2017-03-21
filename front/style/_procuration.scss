@@ -176,3 +176,41 @@
         }
     }
 }
+
+.procuration-manager {
+    &__content {
+        min-height: 300px;
+    }
+
+    &__request {
+        &__col-left {
+            flex-basis: 400px;
+            margin-right: 75px;
+
+            .profile-label {
+                font-weight: 600;
+                font-family: $font-roboto;
+                font-size: 13px;
+                padding: 0 0 0 20px;
+            }
+
+            .profile-value {
+                padding: 0 20px 10px 20px;
+                margin-bottom: 10px;
+                border-bottom: 1px solid #e3e3e3;
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
+
+        &__col-right {
+            flex-grow: 1;
+
+            th, td {
+                padding: 5px 10px;
+            }
+        }
+    }
+}

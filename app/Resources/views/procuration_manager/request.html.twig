@@ -1,0 +1,156 @@
+{% extends 'procuration_manager/_layout.html.twig' %}
+
+{% block procuration_manager_content %}
+    <div class="text--summary b__nudge--bottom-large">
+        <a href="{{ path('app_procuration_manager_index') }}" class="back-to-list icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la liste
+        </a>
+    </div>
+
+    <h3 class="text--center b__nudge--bottom-large">
+        Demande de procuration n°{{ request.id }}
+    </h3>
+
+    <hr />
+
+    <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom-60">
+        <div class="procuration-manager__request__col-left">
+            <h4 class="b__nudge--bottom">
+                Demande
+            </h4>
+
+            <div class="profile-label">
+                Auteur
+            </div>
+            <div class="profile-value">
+                {{ request.gender == 'male' ? 'Monsieur' : 'Madame' }}
+                {{ request.firstNames }} {{ request.lastName }}
+            </div>
+
+            <div class="profile-label">
+                Coordonnées
+            </div>
+            <div class="profile-value">
+                Email :
+                <a href="mailto:{{ request.emailAddress }}">
+                    {{ request.emailAddress }}
+                </a>
+                <br />
+                Téléphone :
+                <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                    {{ request.phone|phone_number_format }}
+                </a>
+            </div>
+
+            <div class="profile-label">
+                Lieu de vote
+            </div>
+            <div class="profile-value">
+                {{ request.votePostalCode }} {{ request.voteCityName }} {{ request.voteCountry }}
+                {% if request.voteOffice %}
+                    <br />
+                    Bureau : {{ request.voteOffice }}
+                {% endif %}
+            </div>
+
+            <div class="profile-label">
+                Lieu de résidence
+            </div>
+            <div class="profile-value">
+                {{ request.address }}<br />
+                {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
+            </div>
+
+            <div class="profile-label">
+                Scrutins concernés
+            </div>
+            <div class="profile-value">
+                1er tour - Pésidentielle : {{ request.electionPresidentialFirstRound ? 'Oui' : 'Non' }}<br />
+                2nd tour - Pésidentielle : {{ request.electionPresidentialSecondRound ? 'Oui' : 'Non' }}<br />
+                1er tour - Législatives : {{ request.electionLegislativeFirstRound ? 'Oui' : 'Non' }}<br />
+                2nd tour - Législatives : {{ request.electionLegislativeSecondRound ? 'Oui' : 'Non' }}
+            </div>
+
+            <div class="profile-label">
+                Raison de la demande
+            </div>
+            <div class="profile-value">
+                {% if request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_RESIDENCY') %}
+                    En raison de mon lieu de résidence
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HOLIDAYS') %}
+                    Vacances
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_PROFESIONNAL') %}
+                    Obligations professionnelles
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HANDICAP') %}
+                    En raison d'un handicap
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HEALTH') %}
+                    Pour raison de santé
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HELP') %}
+                    Assistance apportée à une personne
+                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_TRAINING') %}
+                    Obligations de formation
+                {% endif %}
+            </div>
+        </div>
+        <div class="procuration-manager__request__col-right">
+            <h4 class="b__nudge--bottom">
+                Mandataires trouvés avec le même code postal
+            </h4>
+
+            {% if matchingProxies|length  == 0 %}
+                <div class="text--body b__nudge--bottom-large">
+                    Aucun mandataire trouvé pour cette demande.
+                </div>
+            {% else %}
+                <div class="text--body b__nudge--bottom-large">
+                    {% if matchingProxies|length == 1 %}
+                        1 mandataire semble correspondre à cette demande.<br />
+                        N'hésitez pas à le contacter pour confirmer sa disponibilité.
+                    {% else %}
+                        {{ matchingProxies|length }} mandataires semblent correspondre à cette demande.<br />
+                        N'hésitez pas à les contacter pour confirmer leur disponibilité.
+                    {% endif %}
+                </div>
+
+                <table class="datagrid__table">
+                    <thead>
+                    <tr>
+                        <th class="datagrid__table__col--left">Mandataire</th>
+                        <th class="datagrid__table__col--left">Coordonnées</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for proxy in matchingProxies %}
+                        <tr>
+                            <td class="datagrid__table__col--left">
+                                {{ proxy.firstNames }} {{ proxy.lastName }}
+                                <br />
+                                <em>Lieu de vote :</em>
+                                {{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}
+                            </td>
+                            <td class="datagrid__table__col--left">
+                                Email :
+                                <a href="mailto:{{ proxy.emailAddress }}">
+                                    {{ proxy.emailAddress }}
+                                </a>
+                                <br />
+                                Téléphone :
+                                <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                                    {{ proxy.phone|phone_number_format }}
+                                </a>
+                            </td>
+                            <td class="datagrid__table__col--hide-mobile">
+                                <a href="">
+                                    Associer
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
