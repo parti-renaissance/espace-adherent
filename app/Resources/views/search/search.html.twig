@@ -72,10 +72,12 @@
         {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
         {% set currentRoute = app.request.attributes.get('_route') %}
 
+        {% block banner_large_button %}
         <a href="{{ path('page_le_mouvement_la_carte') }}"
            class="text--center space--10-0 b__nudge--bottom background--green text--white text--medium link--no-decor link--block">
-           Voir la carte des comités
+            Voir la carte des comités
         </a>
+        {% endblock %}
 
         <div class="search__results {{ currentRoute }}" id="search-results"></div>
     </div>

@@ -30,9 +30,9 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('Je participe')->link());
+        $crawler = $this->client->click($crawler->selectLink('En savoir plus')->link());
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -69,7 +69,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
     }
 
     /**
@@ -84,9 +84,9 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('Je participe')->link());
+        $crawler = $this->client->click($crawler->selectLink('En savoir plus')->link());
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -108,7 +108,7 @@ class EventControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
+        $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 

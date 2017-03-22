@@ -19,49 +19,7 @@
     {% set event_url = url('app_committee_show_event', {uuid: event.uuid.toString, slug: event.slug}) %}
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
-            <div class="committee__event__header">
-
-                <div class="committee__event__header__titles">
-                    <h1 class="committee-event-name text--large text--white b__nudge--bottom-small">
-                        {{- event.name -}}
-                    </h1>
-                    <div class="committee-event-organizer text--body text--white">
-                        Organisé par <span class="text--bold">{{ event.organizer }}</span>
-                        {% if committee %}
-                            du comité
-                            <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
-                                {{- committee.name -}}
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="committee__event__header__cta">
-                    <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
-                    <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
-                        {{ include('components/participants.html.twig') }}
-                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
-                    </div>
-                    <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
-                        <li class="head">Partagez</li>
-                        <li role="button" arial-label="Partagez sur Facebook"
-                            class=""
-                            onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}')">
-                            <i class="fa fa-facebook-square"></i>
-                        </li>
-                        <li role="button" arial-label="Partagez via Twitter"
-                            class=""
-                            onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }} :')">
-                            <i class="fa fa-twitter"></i>
-                        </li>
-                        <li role="button" arial-label="Partagez via email"
-                            class=""
-                            onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
-                            <i class="fa fa-envelope-o"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            {{ include('events/_header.html.twig') }}
 
             <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
@@ -72,7 +30,6 @@
                 <h2 class="b__nudge--bottom-small text--medium">
                     Modifier l'événement
                 </h2>
-
 
                 {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
                 {{ form_errors(form) }}

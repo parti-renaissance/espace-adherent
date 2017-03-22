@@ -14,7 +14,7 @@
         <div>
             <h4 class="text--medium text--normal b__nudge--bottom-tiny">
                 <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
-                   class="link--no-decor text--breakword">
+                   class="link--no-decor text--breakword" target="_blank" rel="noopener noreferrer">
                     {{ item.event.name }}
                 </a>
             </h4>
@@ -29,18 +29,18 @@
                     Cet événement est terminé
                 {% elseif not item.event.full %}
                     <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
-                       class="btn btn--blue">
-                        Je participe
+                       class="btn btn--blue" target="_blank" rel="noopener noreferrer">
+                        En savoir plus
                     </a>
                 {% else %}
                     Cet événement est complet
                 {% endif %}
             </li>
             <li class="icon--with-text text--body">
-                    {{ include('components/participants.html.twig') }}
-                    <span class="committee-event-attendees">
-                        {{- 'event.participants_count'|transchoice(item.event.participantsCount) -}}
-                    </span>
+                {{ include('components/participants.html.twig') }}
+                <span class="committee-event-attendees">
+                    {{ item.event.participantsCount }} / {{ 'event.capacity'|transchoice(item.event.capacity)  }}
+                </span>
             </li>
         </ul>
     </div>
