@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use Psr\Cache\CacheItemPoolInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,23 +15,6 @@ class ArticleController extends Controller
     const PER_PAGE = 12;
 
     /**
-     * @Route("/feed", name="articles_feed")
-     * @Method("GET")
-     */
-    public function feedAction()
-    {
-        return new Response(
-            $this->get('app.feed_generator.article')->buildFeed(
-                $this->getDoctrine()->getRepository(Article::class)->findAllForFeed()
-            )->render(),
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'application/rss+xml; charset=UTF-8',
-            ]
-        );
-    }
-
-    /**
      * @Route(
      *     "/articles/{category}/{page}",
      *     requirements={"page"="\d+"},
@@ -39,7 +23,7 @@ class ArticleController extends Controller
      * )
      * @Method("GET")
      */
-    public function actualitesAction($category, $page)
+    public function actualitesAction($category, $page): Response
     {
         $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
         $category = $categoriesRepo->findOneBySlug($category);
@@ -71,7 +55,7 @@ class ArticleController extends Controller
      * @Route("/article/{slug}", name="article_view")
      * @Method("GET")
      */
-    public function articleAction($slug)
+    public function articleAction($slug): Response
     {
         $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBySlug($slug);
 
@@ -82,6 +66,29 @@ class ArticleController extends Controller
         return $this->render('article/article.html.twig', [
             'article' => $article,
         ]);
+    }
+
+    /**
+     * @Route("/feed.xml", name="articles_feed")
+     * @Method("GET")
+     */
+    public function feedAction(): Response
+    {
+        /** @var CacheItemPoolInterface $cache */
+        $cache = $this->get('cache.app');
+        $cachedRenderedFeed = $cache->getItem('rss_feed');
+
+        if (!$cachedRenderedFeed->isHit()) {
+            $generator = $this->get('app.feed_generator.article');
+            $feed = $generator->buildFeed($this->getDoctrine()->getRepository(Article::class)->findAllForFeed());
+
+            $cachedRenderedFeed->set($feed->render());
+            $cachedRenderedFeed->expiresAfter($this->getParameter('feed_ttl') * 60);
+
+            $cache->save($cachedRenderedFeed);
+        }
+
+        return new Response($cachedRenderedFeed->get(), Response::HTTP_OK, ['Content-Type' => 'application/rss+xml']);
     }
 
     /**
