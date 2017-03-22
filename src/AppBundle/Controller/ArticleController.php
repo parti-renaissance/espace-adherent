@@ -7,10 +7,28 @@ use AppBundle\Entity\ArticleCategory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
 {
     const PER_PAGE = 12;
+
+    /**
+     * @Route("/feed", name="articles_feed")
+     * @Method("GET")
+     */
+    public function feedAction()
+    {
+        return new Response(
+            $this->get('app.feed_generator.article')->buildFeed(
+                $this->getDoctrine()->getRepository(Article::class)->findAllForFeed()
+            )->render(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/rss+xml; charset=UTF-8',
+            ]
+        );
+    }
 
     /**
      * @Route(

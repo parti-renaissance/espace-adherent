@@ -44,6 +44,8 @@
         <meta name="twitter:description" content="{{ block('open_graph_description') }}" />
         <meta name="twitter:image:src" content="{{ block('open_graph_image') }}" />
 
+        <link rel="alternate" type="application/rss+xml" title="En Marche!" href="{{ url('articles_feed') }}" />
+
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets %}{% endblock %}

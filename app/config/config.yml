@@ -23,6 +23,7 @@ parameters:
     transactional_sender_name:   'En Marche !'
     campaign_sender_email:       'jemarche@en-marche.fr'
     campaign_sender_name:        'En Marche !'
+    feed_ttl: 120 # in minutes
 
 framework:
     translator:      { fallbacks: ["%locale%"] }
