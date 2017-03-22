@@ -33,7 +33,8 @@ class AdherentFactory
             clone $request->getBirthdate(),
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
-            $request->getPhone()
+            $request->getPhone(),
+            Adherent::ENABLED
         );
     }
 

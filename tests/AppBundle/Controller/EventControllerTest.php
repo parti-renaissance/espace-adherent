@@ -72,6 +72,9 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertSame('2 inscrits', $crawler->filter('.committee-event-attendees')->text());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
@@ -113,6 +116,9 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @group functionnal
+     */
     public function testCantRegisterToAFullEvent()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
