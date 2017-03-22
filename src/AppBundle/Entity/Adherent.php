@@ -9,6 +9,7 @@ use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Utils\EmojisRemover;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -237,6 +238,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getGender()
     {
         return $this->gender;
+    }
+
+    public function isFemale(): bool
+    {
+        return Genders::FEMALE === $this->gender;
     }
 
     public function getBirthdate()

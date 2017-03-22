@@ -3,7 +3,6 @@
 namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
-use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 final class ReferentMessage extends MailjetMessage
@@ -36,11 +35,7 @@ final class ReferentMessage extends MailjetMessage
             $batchUuid
         );
 
-        if (Genders::FEMALE === $referent->getGender()) {
-            $message->setSenderName('Votre référente En Marche !');
-        } else {
-            $message->setSenderName('Votre référent En Marche !');
-        }
+        $message->setSenderName(sprintf('Votre référent%s En Marche !', $referent->isFemale() ? 'e' : ''));
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
