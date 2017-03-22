@@ -29,14 +29,24 @@
             </a>
         </div>
 
-        <h1 class="text--body text--medium text--center b__nudge--bottom-large">
+        <h1 class="text--body text--large text--center b__nudge--bottom">
             Compte rendu de mon action
         </h1>
-        <p class="text--body">
-            Saisissez les e-mails ... et faites remonter les réactions.
-        </p>
-
-        <div class="text--body">
+        <h2 class="text--body text--medium text--center text--normal">
+            Saisissez les e-mails ... et faites remonter les réactions.<br>
+            Pour ce faire, téléchargez notre applications mobile, ou bien remplissez le formulaire ci-dessous.
+        </h2>
+        <div class="l__row l__row--center b__nudge--top-10 l__mobile--col">
+            <a href="https://appsto.re/fr/og3Hib.i"
+               class="link--no-decor">
+                <img height="54" src="{{ asset('images/download-jemarche-ios.svg') }}"/>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=fr.en_marche.jemarche123"
+               class="link--no-decor">
+                <img height="80" src="{{ asset('images/download-jemarche-google.png') }}"/>
+            </a>
+        </div>
+        <div class="text--body b__nudge--top">
             {{ form_start(form) }}
 
             {{ form_errors(form) }}
