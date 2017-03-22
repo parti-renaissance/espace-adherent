@@ -2,8 +2,10 @@
 
 {% block title 'En Marche !' %}
 
-{% block content %}
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
 
+{% block content %}
 <main>
     <section class="l__wrapper">
         <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
