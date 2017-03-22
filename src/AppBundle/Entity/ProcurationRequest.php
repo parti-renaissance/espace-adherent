@@ -209,28 +209,28 @@ class ProcurationRequest
      *
      * @ORM\Column(type="boolean")
      */
-    private $electionPresidentialFirstRound = true;
+    private $electionPresidentialFirstRound = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    private $electionPresidentialSecondRound = true;
+    private $electionPresidentialSecondRound = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    private $electionLegislativeFirstRound = true;
+    private $electionLegislativeFirstRound = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    private $electionLegislativeSecondRound = true;
+    private $electionLegislativeSecondRound = false;
 
     /**
      * @var string
