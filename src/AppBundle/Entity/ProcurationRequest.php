@@ -201,6 +201,8 @@ class ProcurationRequest
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Assert\Length(max=50, groups={"vote"})
      */
     private $voteOffice;
 
