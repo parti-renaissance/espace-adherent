@@ -25,7 +25,9 @@ class ProcurationProxyType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('firstNames', TextType::class)
             ->add('country', UnitedNationsCountryType::class)
-            ->add('postalCode', TextType::class)
+            ->add('postalCode', TextType::class, [
+                'required' => false,
+            ])
             ->add('city', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,
@@ -51,7 +53,9 @@ class ProcurationProxyType extends AbstractType
                 ],
             ])
             ->add('voteCountry', UnitedNationsCountryType::class)
-            ->add('votePostalCode', TextType::class)
+            ->add('votePostalCode', TextType::class, [
+                'required' => false,
+            ])
             ->add('voteCity', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,
