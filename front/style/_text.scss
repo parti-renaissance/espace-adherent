@@ -145,6 +145,10 @@ $text--size-extra-large: 48px;
 
     &--medium {
         @include text--medium;
+
+        @media (max-width: $mobile) {
+            @include text--medium-small;
+        }
     }
 
     &--medium-large {
