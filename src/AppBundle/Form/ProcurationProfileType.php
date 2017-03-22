@@ -24,7 +24,9 @@ class ProcurationProfileType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('firstNames', TextType::class)
             ->add('country', UnitedNationsCountryType::class)
-            ->add('postalCode', TextType::class)
+            ->add('postalCode', TextType::class, [
+                'required' => false,
+            ])
             ->add('city', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,

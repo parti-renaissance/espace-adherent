@@ -92,9 +92,8 @@ class ProcurationProxy
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\NotBlank
      * @Assert\Length(max=15)
      */
     private $postalCode = '';
@@ -159,9 +158,8 @@ class ProcurationProxy
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\NotBlank
      * @Assert\Length(max=15)
      */
     private $votePostalCode = '';
@@ -340,42 +338,42 @@ class ProcurationProxy
         $this->gender = $gender;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName)
+    public function setLastName(?string $lastName)
     {
         $this->lastName = EmojisRemover::remove($lastName);
     }
 
-    public function getFirstNames(): string
+    public function getFirstNames(): ?string
     {
         return $this->firstNames;
     }
 
-    public function setFirstNames(string $firstNames)
+    public function setFirstNames(?string $firstNames)
     {
         $this->firstNames = EmojisRemover::remove($firstNames);
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function setAddress(string $address)
+    public function setAddress(?string $address)
     {
         $this->address = EmojisRemover::remove($address);
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode)
+    public function setPostalCode(?string $postalCode)
     {
         $this->postalCode = $postalCode;
     }
@@ -385,7 +383,7 @@ class ProcurationProxy
         return $this->city;
     }
 
-    public function setCity($cityCode)
+    public function setCity(?string $cityCode)
     {
         $this->city = $cityCode;
 
@@ -400,19 +398,19 @@ class ProcurationProxy
         return $this->cityName;
     }
 
-    public function setCityName($cityName)
+    public function setCityName(?string $cityName)
     {
         if ($cityName) {
             $this->cityName = EmojisRemover::remove($cityName);
         }
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country)
+    public function setCountry(?string $country)
     {
         $this->country = $country;
     }
@@ -427,12 +425,12 @@ class ProcurationProxy
         $this->phone = $phone;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress(?string $emailAddress)
     {
         $this->emailAddress = $emailAddress;
     }
@@ -447,12 +445,12 @@ class ProcurationProxy
         $this->birthdate = $birthdate;
     }
 
-    public function getVotePostalCode(): string
+    public function getVotePostalCode(): ?string
     {
         return $this->votePostalCode;
     }
 
-    public function setVotePostalCode(string $votePostalCode)
+    public function setVotePostalCode(?string $votePostalCode)
     {
         $this->votePostalCode = $votePostalCode;
     }
@@ -462,7 +460,7 @@ class ProcurationProxy
         return $this->voteCity;
     }
 
-    public function setVoteCity($cityCode)
+    public function setVoteCity(?string $cityCode)
     {
         $this->voteCity = $cityCode;
 
@@ -477,29 +475,29 @@ class ProcurationProxy
         return $this->voteCityName;
     }
 
-    public function setVoteCityName($voteCityName)
+    public function setVoteCityName(?string $voteCityName)
     {
         if ($voteCityName) {
             $this->voteCityName = EmojisRemover::remove($voteCityName);
         }
     }
 
-    public function getVoteCountry(): string
+    public function getVoteCountry(): ?string
     {
         return $this->voteCountry;
     }
 
-    public function setVoteCountry(string $voteCountry)
+    public function setVoteCountry(?string $voteCountry)
     {
         $this->voteCountry = $voteCountry;
     }
 
-    public function getVoteOffice()
+    public function getVoteOffice(): ?string
     {
         return $this->voteOffice;
     }
 
-    public function setVoteOffice($voteOffice)
+    public function setVoteOffice(?string $voteOffice)
     {
         $this->voteOffice = $voteOffice;
     }
