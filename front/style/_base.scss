@@ -45,6 +45,10 @@ a {
         border: none;
     }
 
+    &.link--block {
+        display: block;
+    }
+
     &.link--blue {
         color: $blue;
         border-color: $blue;
