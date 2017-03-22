@@ -138,8 +138,18 @@
                                             <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                         </li>
                                     {% endif %}
-                                    <li class="text--small"><a href="{{ path('app_adherent_events') }}">Mes événements</a></li>
-                                    <li class="text--small"><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
+                                    <li class="text--small">
+                                        <a href="{{ path('app_adherent_events') }}">Mes événements</a>
+                                    </li>
+                                    <li class="text--small">
+                                        <a href="{{ path('app_je_marche') }}">J'agis</a>
+                                    </li>
+                                    <li class="text--small">
+                                        <a href="{{ path('app_je_marche_action') }}">Je Marche</a>
+                                    </li>
+                                    <li class="text--small">
+                                        <a href="{{ path('app_adherent_profile') }}">Profil</a>
+                                    </li>
                                     {#<li class="text--small"><a href="#">Aide</a></li>#}
                                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                         <li class="text--small">
@@ -207,8 +217,18 @@
                                         <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                     </li>
                                 {% endif %}
-                                <li class="text--small"><a href="{{ path('app_adherent_events') }}">Mes événements</a></li>
-                                <li class="text--small"><a href="{{ path('app_adherent_profile') }}">Profil</a></li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_adherent_events') }}">Mes événements</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_je_marche') }}">J'agis</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_je_marche_action') }}">Je Marche</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_adherent_profile') }}">Profil</a>
+                                </li>
                                 {#<li class="text--small"><a href="#">Aide</a></li>#}
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                     <li class="text--small">
