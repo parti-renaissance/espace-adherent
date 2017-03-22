@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -62,7 +63,7 @@ class EventRegistration
     ) {
         $this->uuid = $uuid;
         $this->event = $event;
-        $this->firstName = $firstName;
+        $this->firstName = EmojisRemover::remove($firstName);
         $this->emailAddress = $emailAddress;
         $this->postalCode = $postalCode;
         $this->newsletterSubscriber = $newsletterSubscriber;
