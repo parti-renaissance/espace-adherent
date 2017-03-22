@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
 use AppBundle\Repository\EventRegistrationRepository;
 use Ramsey\Uuid\Uuid;
@@ -157,6 +158,17 @@ class EventControllerTest extends SqliteWebTestCase
 
     /**
      * @group functionnal
+     * @dataProvider provideCancelledInaccessiblePages
+     */
+    public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->client->request(Request::METHOD_GET, $path);
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * @group functionnal
      * @dataProvider provideHostProtectedPages
      */
     public function testRegisteredAdherentUserCannotEditEvent($path)
@@ -174,6 +186,18 @@ class EventControllerTest extends SqliteWebTestCase
         return [
             ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
             ['/evenements/'.$uuid.'/'.$slug.'/inscrits'],
+        ];
+    }
+
+    public function provideCancelledInaccessiblePages()
+    {
+        $uuid = LoadEventData::EVENT_6_UUID;
+        $slug = date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-parisienne-annule';
+
+        return [
+            ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
+            ['/evenements/'.$uuid.'/'.$slug.'/inscription'],
+            ['/evenements/'.$uuid.'/'.$slug.'/annuler'],
         ];
     }
 
@@ -238,6 +262,34 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testOrganizerCanCancelEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_2_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-reunion-de-reflexion-dammarienne/annuler');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Valider')->form());
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        // Follow the redirect and check the adherent can see the committee page
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        static::assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
+
+        $messages = $this->getMailjetEmailRepository()->findMessages(EventCancellationMessage::class);
+        /** @var EventCancellationMessage $message */
+        $message = array_shift($messages);
+
+        // Two mails have been sent
+        static::assertCount(2, $message->getRecipients());
     }
 
     /**

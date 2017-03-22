@@ -54,6 +54,18 @@ class EventRepository extends EntityRepository
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
+    public function findOneActiveByUuid(string $uuid): ?Event
+    {
+        $query = $this->createQueryBuilder('e')
+            ->where('e.uuid = :uuid')
+            ->andWhere('e.status IN (:statuses)')
+            ->setParameter('uuid', $uuid)
+            ->setParameter('statuses', Event::ACTIVE_STATUSES)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
     public function findManagedBy(Adherent $referent)
     {
         $qb = $this->createQueryBuilder('e')

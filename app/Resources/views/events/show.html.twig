@@ -14,7 +14,7 @@
         "description": "{{ event.description }}",
         "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
         "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
-        "eventStatus": "http://schema.org/EventScheduled",
+        "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
         "organizer": {
             {% if committee %}
             "@type": "Organization",
@@ -99,23 +99,32 @@
                 </ul>
             </div>
         </section>
-        <section class="l__wrapper--slim space--30-0 text--body">
+        <section class="l__wrapper--medium space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
                 <li class="text--bold">À propos</li>
-                <li>
-                    <a href="mailto:?subject=Rejoins cet événement En Marche !&amp;body=Je vais participer à l'événement {{ event.name }} ({{ event_url }}), rejoins moi !">Inviter des amis</a>
-                </li>
+                {% if event.active %}
+                    <li>
+                        <a href="mailto:?subject=Rejoins cet événement En Marche !&amp;body=Je vais participer à l'événement {{ event.name }} ({{ event_url }}), rejoins moi !">Inviter des amis</a>
+                    </li>
+                {% endif %}
                 <li>
                     <a href="{{ path('app_adherent_contact', {'uuid': event.organizer.uuid, 'from': 'event', 'id': event.uuid.toString}) }}">
                         Contact
                     </a>
                 </li>
                 {% if is_granted('HOST_EVENT', event) %}
-                    <li>
-                        <a href="{{ path('app_event_edit', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
-                            Modifier l'événement
-                        </a>
-                    </li>
+                    {% if event.active %}
+                        <li>
+                            <a href="{{ path('app_event_edit', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                                Modifier l'événement
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_cancel', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                                Annuler l'événement
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{{ path('app_event_registrations', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
                             Gérer les participants

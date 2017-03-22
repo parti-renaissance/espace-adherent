@@ -202,6 +202,7 @@
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailjet.client.transactional"/>
             <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.adherent_manager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>

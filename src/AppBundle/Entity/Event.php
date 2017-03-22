@@ -21,6 +21,18 @@ use Ramsey\Uuid\UuidInterface;
  */
 class Event implements GeoPointInterface
 {
+    const STATUS_SCHEDULED = 'SCHEDULED';
+    const STATUS_CANCELLED = 'CANCELLED';
+
+    const STATUSES = [
+        self::STATUS_SCHEDULED,
+        self::STATUS_CANCELLED,
+    ];
+
+    const ACTIVE_STATUSES = [
+        self::STATUS_SCHEDULED,
+    ];
+
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
@@ -87,6 +99,11 @@ class Event implements GeoPointInterface
      */
     private $committee;
 
+    /**
+     * @ORM\Column(length=20)
+     */
+    private $status;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
@@ -116,6 +133,7 @@ class Event implements GeoPointInterface
         $this->finishAt = new \DateTime($finishAt);
         $this->createdAt = new \DateTime($createdAt ?: 'now');
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
+        $this->status = self::STATUS_SCHEDULED;
     }
 
     public function __toString(): string
@@ -249,5 +267,34 @@ class Event implements GeoPointInterface
         }
 
         return $this->participantsCount >= $this->capacity;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status)
+    {
+        if (!in_array($status, self::STATUSES, true)) {
+            throw new \InvalidArgumentException('Invalid status "%" given.', $status);
+        }
+
+        $this->status = $status;
+    }
+
+    public function cancel()
+    {
+        $this->status = self::STATUS_CANCELLED;
+    }
+
+    public function isActive(): bool
+    {
+        return in_array($this->status, self::ACTIVE_STATUSES, true);
+    }
+
+    public function isCancelled(): bool
+    {
+        return self::STATUS_CANCELLED === $this->status;
     }
 }

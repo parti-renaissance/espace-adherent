@@ -6,40 +6,58 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
+use AppBundle\Membership\AdherentManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventMessageNotifier implements EventSubscriberInterface
 {
     private $mailjet;
-    private $manager;
+    private $committeeManager;
+    private $adherentManager;
     private $urlGenerator;
 
     public function __construct(
         MailjetService $mailjet,
-        CommitteeManager $manager,
+        CommitteeManager $committeeManager,
+        AdherentManager $adherentManager,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->mailjet = $mailjet;
-        $this->manager = $manager;
+        $this->committeeManager = $committeeManager;
+        $this->adherentManager = $adherentManager;
         $this->urlGenerator = $urlGenerator;
     }
 
     public function onEventCreated(EventCreatedEvent $event)
     {
-        $committee = $event->getCommittee();
-
-        if (!$committee) {
+        if (!$committee = $event->getCommittee()) {
             return;
         }
 
         $this->mailjet->sendMessage($this->createMessage(
-            $this->manager->getOptinCommitteeFollowers($committee),
-            $committee,
+            $this->committeeManager->getOptinCommitteeFollowers($committee),
+            $event->getEvent(),
+            $event->getAuthor()
+        ));
+    }
+
+    public function onEventCancelled(EventCancelledEvent $event)
+    {
+        if (!$committee = $event->getCommittee()) {
+            return;
+        }
+
+        if (!$event->getEvent()->isCancelled()) {
+            return;
+        }
+
+        $this->mailjet->sendMessage($this->createCancellationMessage(
+            $this->adherentManager->findByEvent($event->getEvent()),
             $event->getEvent(),
             $event->getAuthor()
         ));
@@ -47,7 +65,6 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     private function createMessage(
         AdherentCollection $followers,
-        Committee $committee,
         Event $event,
         Adherent $host
     ): EventNotificationMessage {
@@ -68,6 +85,22 @@ class EventMessageNotifier implements EventSubscriberInterface
         );
     }
 
+    private function createCancellationMessage(
+        AdherentCollection $registeredAdherents,
+        Event $event,
+        Adherent $host
+    ): EventCancellationMessage {
+        return EventCancellationMessage::create(
+            $registeredAdherents->toArray(),
+            $host,
+            $event,
+            $this->generateUrl('app_search_events'),
+            function (Adherent $adherent) {
+                return EventCancellationMessage::getRecipientVars($adherent->getFirstName());
+            }
+        );
+    }
+
     private function generateUrl(string $route, array $params = []): string
     {
         return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
@@ -77,6 +110,7 @@ class EventMessageNotifier implements EventSubscriberInterface
     {
         return [
             Events::EVENT_CREATED => ['onEventCreated', -128],
+            Events::EVENT_CANCELLED => ['onEventCancelled', -128],
         ];
     }
 }

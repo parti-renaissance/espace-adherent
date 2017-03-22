@@ -20,6 +20,13 @@
             <div class="text--body text--white">
                 Cet événement est terminé
             </div>
+        {% elseif event.cancelled %}
+            <button class="btn btn--no-border btn--full btn--text-blue btn--disabled" disabled="disabled">
+                Je veux participer
+            </button>
+            <div class="text--white text--center">
+                L'événement à été annulé
+            </div>
         {% elseif not event.full %}
             <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
         {% else %}
