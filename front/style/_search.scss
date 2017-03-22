@@ -118,13 +118,19 @@
         &__row {
             margin: 10px 0;
             background-color: $gray--lighter;
+            position: relative;
 
             &:hover {
                 background-color: $gray--light;
             }
 
-            &__link:hover {
-                color: black;
+            &__link {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                font-size: 0;
             }
 
             .search-map {
@@ -162,6 +168,7 @@
 
             .btn {
                 margin-right: 20px;
+                z-index: 1;
             }
         }
     }
