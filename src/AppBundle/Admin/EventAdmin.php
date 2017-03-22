@@ -137,6 +137,10 @@ class EventAdmin extends AbstractAdmin
             ->add('committee', null, [
                 'label' => 'Comité organisateur',
             ])
+            ->add('organizer', null, [
+                'label' => 'Organisateur',
+                'template' => 'admin/event_organizer.html.twig',
+            ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',
             ])
