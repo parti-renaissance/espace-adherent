@@ -85,6 +85,7 @@ class ArticleRepository extends EntityRepository
     {
         return $this->getQueryBuilderFindAll()
             ->orderBy('a.publishedAt', 'DESC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
     }
