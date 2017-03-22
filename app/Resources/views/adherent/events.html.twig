@@ -28,35 +28,63 @@
                         </div>
                     {% endif %}
 
-                    <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}" class="search__results__row__link">
-                        <div class="search__results__row l__row l__row--h-stretch l__row--v-center">
-                            <div class="search__results__info l__col l__col--v-stretch l__col--left">
-                                <div class="search__results__meta">
-                                    <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
+                    <div class="search__results__row l__row l__row--h-stretch l__row--v-center {{ event.organizer and event.organizer.isReferent ? 'search__results__row--referent-event' : '' }}">
+                        <div class="search__results__info l__col l__col--v-stretch l__col--left">
+                            <div class="search__results__meta">
+                                <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
+                                    <a class="link--no-decor"
+                                       href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">
                                         {{ event.name }}
-                                    </h2>
-                                    <div class="text--body">
-                                        {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}
-                                    </div>
-                                    {% if event.committee %}
-                                    <div class="text--body">Organisé par <span class="text--bold">{{ event.committee.name }}</span></div>
-                                    {% endif %}
+                                    </a>
+                                </h2>
+                                <div class="text--body">
+                                    {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
-
-                                <div class="search__results__cta">
-                                    <div class="text--body icon--with-text l__row--center">
-                                        {{ include('components/participants.html.twig') }}
-                                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
-                                    </div>
-                                </div>
+                                {% if event.committee %}
+                                    <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
+                                {% elseif event.organizer and event.organizer.isReferent %}
+                                    <div class="text--body">Organisé par un <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})</div>
+                                {% elseif event.organizer %}
+                                    <div class="text--body">Organisé par <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                                {% endif %}
                             </div>
 
-                            <img class="search-map"
-                                 src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
-                                 title="Carte d'accès à l'événement {{ event.name }}"
-                                 alt="{{ event.inlineFormattedAddress }}" />
+                            <div class="search__results__cta">
+                                {% if event.finished %}
+                                    <div class="text--body search__results__cta__text">
+                                        Cet événement est terminé
+                                    </div>
+                                {% elseif not event.full %}
+                                    <a href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}"
+                                       class="btn btn--blue" target="_blank" rel="noopener noreferrer">
+                                        Je participe
+                                    </a>
+                                {% else %}
+                                    <div class="text--body search__results__cta__text">
+                                        Cet événement est complet
+                                    </div>
+                                {% endif %}
+                                <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+                                   class="btn" target="_blank" rel="noopener noreferrer">
+                                    En savoir plus
+                                </a>
+                                <div class="text--body icon--with-text l__row--center">
+                                    {{ include('components/participants.html.twig') }}
+                                    {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                                </div>
+                            </div>
                         </div>
-                    </a>
+
+                        <img class="search-map"
+                             src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
+                             title="Carte d'accès à l'événement {{ event.name }}"
+                             alt="{{ event.inlineFormattedAddress }}" />
+
+                        <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+                           class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
+                            En savoir plus
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
             {% endif %}
