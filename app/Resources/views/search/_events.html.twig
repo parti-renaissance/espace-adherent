@@ -31,21 +31,21 @@
 
             <div class="search__results__cta">
                 {% if event.finished %}
-                    <div class="text--body">
+                    <div class="text--body search__results__cta__text">
                         Cet événement est terminé
                     </div>
                 {% elseif not event.full %}
-                    <a class="btn btn--blue"
-                       href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">
-                        Je Participe
+                    <a href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}"
+                       class="btn btn--blue" target="_blank" rel="noopener noreferrer">
+                        Je participe
                     </a>
                 {% else %}
-                    <div class="text--body">
+                    <div class="text--body search__results__cta__text">
                         Cet événement est complet
                     </div>
                 {% endif %}
-                <a class="btn" target="_blank"
-                   href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">
+                <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+                   class="btn" target="_blank" rel="noopener noreferrer">
                     En savoir plus
                 </a>
                 <div class="text--body icon--with-text l__row--center">
@@ -60,8 +60,8 @@
              title="Carte d'accès à l'événement {{ event.name }}"
              alt="{{ event.inlineFormattedAddress }}" />
 
-        <a class="search__results__row__link link--no-decor"
-           href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">
+        <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+           class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
             En savoir plus
         </a>
     </div>
