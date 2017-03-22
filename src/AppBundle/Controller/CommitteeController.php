@@ -240,6 +240,10 @@ class CommitteeController extends Controller
      */
     public function promoteHost(Request $request, Committee $committee, Adherent $member): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isPromotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf(
