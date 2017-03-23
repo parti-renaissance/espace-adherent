@@ -26,7 +26,7 @@ class LegacyController extends Controller
         return $this->redirectToRoute('app_committee_show_event', [
             'uuid' => $event->getUuid()->toString(),
             'slug' => $event->getSlug(),
-        ]);
+        ], Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**
@@ -44,6 +44,6 @@ class LegacyController extends Controller
         return $this->redirectToRoute('app_committee_show', [
             'uuid' => $committee->getUuid()->toString(),
             'slug' => $committee->getSlug(),
-        ]);
+        ], Response::HTTP_MOVED_PERMANENTLY);
     }
 }
