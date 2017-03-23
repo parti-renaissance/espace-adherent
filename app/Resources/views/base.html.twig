@@ -145,18 +145,20 @@
                                         </li>
                                     {% endif %}
                                     <li class="text--small">
+                                        <a href="{{ path('app_je_marche') }}" target="_blank" rel="noopener noreferrer">J'agis</a>
+                                    </li>
+                                    <li class="text--small">
+                                        <a href="{{ path('app_je_marche_action') }}" target="_blank" rel="noopener noreferrer">Je Marche</a>
+                                    </li>
+                                    <li class="text--small">
                                         <a href="{{ path('app_adherent_events') }}">Mes événements</a>
                                     </li>
                                     <li class="text--small">
-                                        <a href="{{ path('app_je_marche') }}" target="_blank">J'agis</a>
+                                        <a href="{{ path('app_adherent_profile') }}">Mon profil</a>
                                     </li>
                                     <li class="text--small">
-                                        <a href="{{ path('app_je_marche_action') }}" target="_blank">Je Marche</a>
+                                        <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
                                     </li>
-                                    <li class="text--small">
-                                        <a href="{{ path('app_adherent_profile') }}">Profil</a>
-                                    </li>
-                                    {#<li class="text--small"><a href="#">Aide</a></li>#}
                                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                         <li class="text--small">
                                             <a href="{{ path('app_admin_impersonation_exit') }}">
@@ -224,18 +226,20 @@
                                     </li>
                                 {% endif %}
                                 <li class="text--small">
+                                    <a href="{{ path('app_je_marche') }}" target="_blank" rel="noopener noreferrer">J'agis</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_je_marche_action') }}" target="_blank" rel="noopener noreferrer">Je Marche</a>
+                                </li>
+                                <li class="text--small">
                                     <a href="{{ path('app_adherent_events') }}">Mes événements</a>
                                 </li>
                                 <li class="text--small">
-                                    <a href="{{ path('app_je_marche') }}" target="_blank">J'agis</a>
+                                    <a href="{{ path('app_adherent_profile') }}">Mon profil</a>
                                 </li>
                                 <li class="text--small">
-                                    <a href="{{ path('app_je_marche_action') }}" target="_blank">Je Marche</a>
+                                    <a href="https://aide.en-marche.fr/" target="_blank" rel="noopener noreferrer">Aide</a>
                                 </li>
-                                <li class="text--small">
-                                    <a href="{{ path('app_adherent_profile') }}">Profil</a>
-                                </li>
-                                {#<li class="text--small"><a href="#">Aide</a></li>#}
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                     <li class="text--small">
                                         <a href="{{ path('app_admin_impersonation_exit') }}">
@@ -360,7 +364,8 @@
                         <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="text--bold" target="_blank" rel="noopener noreferrer">téléchargeant ce bulletin</a>.
                     </div>
                     <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
-                        <li><a href="mailto:contact@en-marche.fr">Écrivez-nous</a></li>
+                        <li><a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a></li>
+                        <li><a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">Écrivez-nous</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Presse</a></li>
                         <li><a href="{{ path('page_mentions_legales') }}">Mentions Légales</a></li>
                         <li>En Marche &copy;</li>
