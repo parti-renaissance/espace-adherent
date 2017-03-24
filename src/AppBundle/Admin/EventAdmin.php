@@ -8,6 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -125,14 +128,14 @@ class EventAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('createdAt', 'doctrine_orm_date_range', [
+            ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
-                'field_type' => 'sonata_type_date_range_picker',
+                'field_type' => DateRangePickerType::class,
             ])
-            ->add('hostFirstName', 'doctrine_orm_callback', [
+            ->add('hostFirstName', CallbackFilter::class, [
                 'label' => 'Prénom de l\'organisateur',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;
@@ -146,10 +149,10 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('hostLastName', 'doctrine_orm_callback', [
+            ->add('hostLastName', CallbackFilter::class, [
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;
@@ -163,10 +166,10 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('postalCode', 'doctrine_orm_callback', [
+            ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;
@@ -179,9 +182,9 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('city', 'doctrine_orm_callback', [
+            ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;

@@ -13,6 +13,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -167,72 +170,68 @@ class AdherentAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('registeredAt', 'doctrine_orm_date_range', [
+            ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date d\'adhésion',
-                'field_type' => 'sonata_type_date_range_picker',
+                'field_type' => DateRangePickerType::class,
             ])
             ->add('postalCode', 'doctrine_orm_callback', [
                 'label' => 'Code postal',
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
 
                     return true;
                 },
             ])
-            ->add('city', 'doctrine_orm_callback', [
+            ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 
                     return true;
                 },
             ])
-            ->add('country', 'doctrine_orm_callback', [
+            ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
-                'field_type' => 'choice',
+                'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => array_flip(UnitedNationsBundle::getCountries()),
                 ],
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
                     $qb->setParameter('country', strtolower($value['value']));
 
                     return true;
                 },
             ])
-            ->add('referent', 'doctrine_orm_callback', [
+            ->add('referent', CallbackFilter::class, [
                 'show_filter' => true,
                 'label' => 'N\'afficher que les référents',
-                'field_type' => 'checkbox',
+                'field_type' => CheckboxType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.managedArea.codes', $alias).' IS NOT NULL');
 
                     return true;

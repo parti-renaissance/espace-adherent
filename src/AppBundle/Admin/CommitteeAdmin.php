@@ -13,8 +13,12 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class CommitteeAdmin extends AbstractAdmin
 {
@@ -65,13 +69,13 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
-                ->add('facebookPageUrl', 'url', [
+                ->add('facebookPageUrl', UrlType::class, [
                     'label' => 'Facebook',
                 ])
                 ->add('twitterNickname', null, [
                     'label' => 'Twitter',
                 ])
-                ->add('googlePlusPageUrl', 'url', [
+                ->add('googlePlusPageUrl', UrlType::class, [
                     'label' => 'Google+',
                 ])
                 ->add('status', null, [
@@ -126,7 +130,7 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
-                ->add('facebookPageUrl', 'url', [
+                ->add('facebookPageUrl', UrlType::class, [
                     'label' => 'Facebook',
                     'required' => false,
                 ])
@@ -134,7 +138,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Twitter',
                     'required' => false,
                 ])
-                ->add('googlePlusPageUrl', 'url', [
+                ->add('googlePlusPageUrl', UrlType::class, [
                     'label' => 'Google+',
                     'required' => false,
                 ])
@@ -163,23 +167,22 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('createdAt', 'doctrine_orm_date_range', [
+            ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
                 'field_type' => 'sonata_type_date_range_picker',
             ])
-            ->add('hostFirstName', 'doctrine_orm_callback', [
+            ->add('hostFirstName', CallbackFilter::class, [
                 'label' => 'Prénom de l\'animateur',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
                     $ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value']);
 
+                    /* @var QueryBuilder $qb */
                     if (!$ids) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -192,19 +195,18 @@ class CommitteeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('hostLastName', 'doctrine_orm_callback', [
+            ->add('hostLastName', CallbackFilter::class, [
                 'label' => 'Nom de l\'animateur',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
                     $ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value']);
 
+                    /* @var QueryBuilder $qb */
                     if (!$ids) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -217,53 +219,50 @@ class CommitteeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('postalCode', 'doctrine_orm_callback', [
+            ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal',
                 'show_filter' => true,
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
 
                     return true;
                 },
             ])
-            ->add('city', 'doctrine_orm_callback', [
+            ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
-                'field_type' => 'text',
+                'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 
                     return true;
                 },
             ])
-            ->add('country', 'doctrine_orm_callback', [
+            ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
                 'show_filter' => true,
-                'field_type' => 'choice',
+                'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => array_flip(UnitedNationsBundle::getCountries()),
                 ],
                 'callback' => function ($qb, $alias, $field, $value) {
-                    /* @var QueryBuilder $qb */
-
                     if (!$value['value']) {
                         return;
                     }
 
+                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
                     $qb->setParameter('country', strtolower($value['value']));
 
@@ -273,7 +272,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'Statut',
                 'show_filter' => true,
-                'field_type' => 'choice',
+                'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
                         'En attente' => Committee::PENDING,

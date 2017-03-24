@@ -6,6 +6,8 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 
 class ProcurationProxyAdmin extends AbstractAdmin
 {
@@ -96,9 +98,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('createdAt', 'doctrine_orm_date_range', [
+            ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
-                'field_type' => 'sonata_type_date_range_picker',
+                'field_type' => DateRangePickerType::class,
             ]);
     }
 
