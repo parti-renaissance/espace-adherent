@@ -187,6 +187,10 @@
             flex-basis: 400px;
             margin-right: 75px;
 
+            .profile-btn {
+                float: right;
+            }
+
             .profile-label {
                 font-weight: 600;
                 font-family: $font-roboto;

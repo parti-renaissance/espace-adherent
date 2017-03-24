@@ -248,6 +248,20 @@ class ProcurationRequest
     private $reason = self::REASON_RESIDENCY;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $processed = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $processedAt;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"elections"})
@@ -335,6 +349,18 @@ class ProcurationRequest
         if ($adherent->getBirthdate()) {
             $this->birthdate = $adherent->getBirthdate();
         }
+    }
+
+    public function process()
+    {
+        $this->processed = true;
+        $this->processedAt = new \DateTime();
+    }
+
+    public function unprocess()
+    {
+        $this->processed = false;
+        $this->processedAt = null;
     }
 
     public function getId()
@@ -564,5 +590,15 @@ class ProcurationRequest
     public function setReason(?string $reason)
     {
         $this->reason = $reason;
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->processed;
+    }
+
+    public function getProcessedAt(): \DateTime
+    {
+        return $this->processedAt;
     }
 }

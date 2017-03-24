@@ -64,6 +64,29 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createRequestFromArray([
+            'gender' => 'female',
+            'first_names' => 'Fleur',
+            'last_name' => 'Paré',
+            'email' => 'FleurPare@armyspy.com',
+            'address' => '13, rue Reine Elisabeth',
+            'postalCode' => '77000',
+            'city' => '77000-77288',
+            'cityName' => null,
+            'phone' => '33 169641061',
+            'birthdate' => '1945-01-29',
+            'voteCountry' => 'FR',
+            'votePostalCode' => '75018',
+            'voteCity' => '75018-75118',
+            'voteCityName' => null,
+            'voteOffice' => 'Aquarius',
+            'electionPresidentialFirstRound' => false,
+            'electionPresidentialSecondRound' => true,
+            'electionLegislativeFirstRound' => false,
+            'electionLegislativeSecondRound' => true,
+            'reason' => ProcurationRequest::REASON_HEALTH,
+        ]));
+
+        $manager->persist($factory->createRequestFromArray([
             'gender' => 'male',
             'first_names' => 'Kevin',
             'last_name' => 'Delcroix',

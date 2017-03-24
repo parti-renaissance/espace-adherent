@@ -16,8 +16,20 @@
 
     <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom-60">
         <div class="procuration-manager__request__col-left">
+            {% if request.processed %}
+                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter'}) }}"
+                   class="btn btn--small profile-btn">
+                    Marquer en attente
+                </a>
+            {% else %}
+                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter'}) }}"
+                   class="btn btn--small profile-btn">
+                    Marquer traitée
+                </a>
+            {% endif %}
+
             <h4 class="b__nudge--bottom">
-                Demande
+                Demande {{ request.processed ? 'traitée' : 'en attente' }}
             </h4>
 
             <div class="profile-label">
@@ -66,10 +78,21 @@
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                1er tour - Pésidentielle : {{ request.electionPresidentialFirstRound ? 'Oui' : 'Non' }}<br />
-                2nd tour - Pésidentielle : {{ request.electionPresidentialSecondRound ? 'Oui' : 'Non' }}<br />
-                1er tour - Législatives : {{ request.electionLegislativeFirstRound ? 'Oui' : 'Non' }}<br />
-                2nd tour - Législatives : {{ request.electionLegislativeSecondRound ? 'Oui' : 'Non' }}
+                {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
+                    Pésidentielle : 1er et 2nd tour<br />
+                {% elseif request.electionPresidentialFirstRound %}
+                    Pésidentielle : 1er tour<br />
+                {% elseif request.electionPresidentialSecondRound %}
+                    Pésidentielle : 2nd tour<br />
+                {% endif %}
+
+                {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
+                    Législatives : 1er et 2nd tour<br />
+                {% elseif request.electionLegislativeFirstRound %}
+                    Législatives : 1er tour<br />
+                {% elseif request.electionLegislativeSecondRound %}
+                    Législatives : 2nd tour<br />
+                {% endif %}
             </div>
 
             <div class="profile-label">
@@ -106,10 +129,10 @@
                 <div class="text--body b__nudge--bottom-large">
                     {% if matchingProxies|length == 1 %}
                         1 mandataire semble correspondre à cette demande.<br />
-                        N'hésitez pas à le contacter pour confirmer sa disponibilité.
+                        N'hésitez pas à le contacter pour confirmer ses disponibilités.
                     {% else %}
                         {{ matchingProxies|length }} mandataires semblent correspondre à cette demande.<br />
-                        N'hésitez pas à les contacter pour confirmer leur disponibilité.
+                        N'hésitez pas à les contacter pour confirmer leurs disponibilités.
                     {% endif %}
                 </div>
 
@@ -117,34 +140,52 @@
                     <thead>
                     <tr>
                         <th class="datagrid__table__col--left">Mandataire</th>
-                        <th class="datagrid__table__col--left">Coordonnées</th>
-                        <th>Actions</th>
+                        <th class="datagrid__table__col--left">Lieu de vote</th>
+                        <th class="datagrid__table__col--left">Lieu de résidence</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for proxy in matchingProxies %}
                         <tr>
                             <td class="datagrid__table__col--left">
-                                {{ proxy.firstNames }} {{ proxy.lastName }}
+                                <strong>{{ proxy.firstNames }} {{ proxy.lastName }}</strong>
                                 <br />
-                                <em>Lieu de vote :</em>
-                                {{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}
-                            </td>
-                            <td class="datagrid__table__col--left">
-                                Email :
+                                <em>Email :</em>
                                 <a href="mailto:{{ proxy.emailAddress }}">
                                     {{ proxy.emailAddress }}
                                 </a>
                                 <br />
-                                Téléphone :
+                                <em>Téléphone :</em>
                                 <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
                                     {{ proxy.phone|phone_number_format }}
                                 </a>
+                                <br />
+                                <em>Disponibilités :</em><br />
+                                {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
+                                    Pésidentielle : 1er et 2nd tour<br />
+                                {% elseif proxy.electionPresidentialFirstRound %}
+                                    Pésidentielle : 1er tour<br />
+                                {% elseif proxy.electionPresidentialSecondRound %}
+                                    Pésidentielle : 2nd tour<br />
+                                {% endif %}
+
+                                {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
+                                    Législatives : 1er et 2nd tour<br />
+                                {% elseif proxy.electionLegislativeFirstRound %}
+                                    Législatives : 1er tour<br />
+                                {% elseif proxy.electionLegislativeSecondRound %}
+                                    Législatives : 2nd tour<br />
+                                {% endif %}
                             </td>
-                            <td class="datagrid__table__col--hide-mobile">
-                                <a href="">
-                                    Associer
-                                </a>
+                            <td class="datagrid__table__col--left">
+                                {{ proxy.votePostalCode }} {{ proxy.voteCityName }}, {{ proxy.voteCountry }}
+                                {% if proxy.voteOffice %}
+                                    <br />{{ proxy.voteOffice }}
+                                {% endif %}
+                            </td>
+                            <td class="datagrid__table__col--left">
+                                {{ proxy.address }}<br />
+                                {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
                             </td>
                         </tr>
                     {% endfor %}

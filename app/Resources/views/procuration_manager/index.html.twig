@@ -7,7 +7,7 @@
         </div>
     {% else %}
         <div class="text--body text--center b__nudge--bottom-large">
-            Vous avez {{ requests|length }} demande(s) de procuration à traiter.
+            Vous avez {{ countToProcess }} demande(s) de procuration à traiter.
         </div>
 
         <table class="datagrid__table">
@@ -15,7 +15,9 @@
             <tr>
                 <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
                 <th class="datagrid__table__col--left">Coordonnées du demandeur</th>
-                <th>Mandataires possibles</th>
+                <th>Statut de la demande</th>
+                <th>Mandataires</th>
+                <th class="datagrid__table__col--left">Scrutins concernés</th>
                 <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
                 <th>Actions</th>
             </tr>
@@ -34,7 +36,31 @@
                     </span>
                 </td>
                 <td>
+                    {% if not request.data.processed %}
+                        <strong>En attente</strong>
+                    {% else %}
+                        Traitée
+                    {% endif %}
+                </td>
+                <td>
                     {{ request.matchingProxiesCount }}
+                </td>
+                <td class="datagrid__table__col--left">
+                    {% if request.data.electionPresidentialFirstRound and request.data.electionPresidentialSecondRound %}
+                        Pésidentielle : 1er et 2nd tour<br />
+                    {% elseif request.data.electionPresidentialFirstRound %}
+                        Pésidentielle : 1er tour<br />
+                    {% elseif request.data.electionPresidentialSecondRound %}
+                        Pésidentielle : 2nd tour<br />
+                    {% endif %}
+
+                    {% if request.data.electionLegislativeFirstRound and request.data.electionLegislativeSecondRound %}
+                        Législatives : 1er et 2nd tour<br />
+                    {% elseif request.data.electionLegislativeFirstRound %}
+                        Législatives : 1er tour<br />
+                    {% elseif request.data.electionLegislativeSecondRound %}
+                        Législatives : 2nd tour<br />
+                    {% endif %}
                 </td>
                 <td class="datagrid__table__col--hide-mobile">
                     {{ request.data.createdAt|date('d/m/Y H:i') }}

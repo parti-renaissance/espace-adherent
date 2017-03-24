@@ -62,8 +62,8 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/demande/3');
-        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+        $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/demande/4');
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
     }
 
     protected function setUp()

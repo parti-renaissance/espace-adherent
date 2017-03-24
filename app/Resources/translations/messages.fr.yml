@@ -75,3 +75,9 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 #
 referent.message.success: Votre message a été envoyé avec succès.
 referent.event.creation.success: Le nouvel événement a bien été créé.
+
+#
+# Procuration
+#
+procuration_manager.process.success: La demande de procuration a bien été marquée comme "Traitée".
+procuration_manager.unprocess.success: La demande de procuration a bien été marquée comme "En attente".
