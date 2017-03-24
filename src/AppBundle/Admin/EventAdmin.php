@@ -125,6 +125,75 @@ class EventAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('createdAt', 'doctrine_orm_date_range', [
+                'label' => 'Date de création',
+                'field_type' => 'sonata_type_date_range_picker',
+            ])
+            ->add('hostFirstName', 'doctrine_orm_callback', [
+                'label' => 'Prénom de l\'organisateur',
+                'show_filter' => true,
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
+                    $qb->andWhere('organizer.firstName LIKE :firstname');
+                    $qb->setParameter('firstname', $value['value']);
+
+                    return true;
+                },
+            ])
+            ->add('hostLastName', 'doctrine_orm_callback', [
+                'label' => 'Nom de l\'organisateur',
+                'show_filter' => true,
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
+                    $qb->andWhere('organizer.lastName LIKE :lastName');
+                    $qb->setParameter('lastName', $value['value']);
+
+                    return true;
+                },
+            ])
+            ->add('postalCode', 'doctrine_orm_callback', [
+                'label' => 'Code postal',
+                'show_filter' => true,
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
+                    $qb->setParameter('postalCode', $value['value'].'%');
+
+                    return true;
+                },
+            ])
+            ->add('city', 'doctrine_orm_callback', [
+                'label' => 'Ville',
+                'field_type' => 'text',
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+
+                    return true;
+                },
+            ])
         ;
     }
 
