@@ -24,6 +24,15 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
+    public static function createNotDemotableFollowerPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
+    {
+        return new self(
+            $membershipUuid,
+            sprintf('Committee membership "%s" cannot be demoted to the simple follower.', $membershipUuid),
+            $previous
+        );
+    }
+
     public function getMembershipUuid(): UuidInterface
     {
         return $this->membershipUuid;

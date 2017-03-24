@@ -38,6 +38,15 @@ class CommitteeManager
         return $membership->isFollower();
     }
 
+    public function isDemotableHost(Adherent $adherent, Committee $committee): bool
+    {
+        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid())) {
+            return false;
+        }
+
+        return $membership->isHostMember();
+    }
+
     public function isCommitteeHost(Adherent $adherent): bool
     {
         $memberships = $this->getMembershipRepository()->findMemberships($adherent);
@@ -142,7 +151,7 @@ class CommitteeManager
     /**
      * @param Committee $committee
      *
-     * @return AdherentCollection
+     * @return AdherentCollection|Adherent[]
      */
     public function getCommitteeMembers(Committee $committee): AdherentCollection
     {
@@ -160,6 +169,23 @@ class CommitteeManager
     {
         $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
         $membership->promote();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+    }
+
+    /**
+     * Promotes an adherent to be a host of a committee.
+     *
+     * @param Adherent  $adherent
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function demote(Adherent $adherent, Committee $committee, bool $flush = true): void
+    {
+        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        $membership->demote();
 
         if ($flush) {
             $this->getManager()->flush();

@@ -144,32 +144,63 @@
                 <table class="committee__members__list" cellpadding="10">
                     <tr>
                         <th><input type="checkbox" id="members-check-all" /></th>
-                        {% if enable_canary and is_supervisor %}<th></th>{% endif %}
                         <th>Prénom</th>
                         <th>Nom</th>
                         <th>Age</th>
                         <th>CP</th>
                         <th>Ville</th>
+                        <th>Rôle</th>
+                        {% if is_supervisor %}
+                            <th>Actions</th>
+                        {% endif %}
                     </tr>
                     {% for member in members %}
-                        <tr>
+                        {% set isPromotableHost = is_promotable_host(member, committee) %}
+                        {% set isDemotableHost = false %}
+
+                        {% if not isPromotableHost %}
+                            {% set isDemotableHost = is_demotable_host(member, committee) %}
+                        {% endif %}
+
+                        <tr{{ not isPromotableHost ? ' class="committee__members__list__host"' : '' }}>
                             <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                            {% if enable_canary and is_supervisor %}
-                                <td>
-                                    {% if is_promotable_host(member, committee) %}
-                                        <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
-                                           title="Promouvoir en tant qu'animateur suppléant"
-                                           class="promote-host-link">
-                                            <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                        </a>
-                                    {% endif %}
-                                </td>
-                            {% endif %}
                             <td>{{ member.firstName|capitalize }}</td>
                             <td>{{ member.lastNameInitial|upper }}</td>
                             <td>{{ member.age }}</td>
                             <td>{{ member.postalCode }}</td>
                             <td>{{ member.cityName }}</td>
+                            <td>
+                                {% if not isPromotableHost %}
+                                    {% if member.gender == 'female' %}
+                                        Animatrice{{ isDemotableHost ? ' suppléante' : '' }}
+                                    {% else %}
+                                        Animateur{{ isDemotableHost ? ' suppléant' : '' }}
+                                    {% endif %}
+                                {% else %}
+                                    Membre
+                                {% endif %}
+                            </td>
+                            {% if is_supervisor %}
+                                <td>
+                                    {% if isPromotableHost %}
+                                        <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
+                                           title="Promouvoir en tant qu'animateur suppléant"
+                                           class="promote-host-link btn btn--small">
+                                            {% if member.gender == 'female' %}
+                                                Définir animatrice
+                                            {% else %}
+                                                Définir animateur
+                                            {% endif %}
+                                        </a>
+                                    {% elseif isDemotableHost %}
+                                        <a href="{{ committee_path('app_committee_demote_host', committee, {'member_uuid': member.uuid}) }}"
+                                           title="Promouvoir en tant qu'animateur suppléant"
+                                           class="demote-host-link btn btn--small">
+                                            Définir membre
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </table>

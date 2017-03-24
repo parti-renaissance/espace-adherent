@@ -106,6 +106,10 @@
                 }
             }
 
+            &__host {
+                background: #fcecc2;
+            }
+
             @media (max-width: $mobile) {
                 th:nth-child(4),
                 th:nth-child(5),

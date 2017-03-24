@@ -582,7 +582,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
 
-        $this->client->submit($crawler->selectButton("Promouvoir l'adhérent")->form());
+        $this->client->submit($crawler->selectButton("Oui, promouvoir l'adhérent")->form());
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(1, $crawler->filter('.promote-host-link')->count());
