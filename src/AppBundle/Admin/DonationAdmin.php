@@ -7,16 +7,17 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\BooleanType;
 
 class DonationAdmin extends AbstractAdmin
 {
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('isFinished', 'boolean', [
+            ->add('isFinished', BooleanType::class, [
                 'label' => 'Don terminé ?',
             ])
-            ->add('isSuccessful', 'boolean', [
+            ->add('isSuccessful', BooleanType::class, [
                 'label' => 'Don réussi ?',
             ])
             ->add('amountInEuros', null, [
@@ -92,10 +93,10 @@ class DonationAdmin extends AbstractAdmin
             ->add('amountInEuros', NumberType::class, [
                 'label' => 'Montant',
             ])
-            ->add('isFinished', 'boolean', [
+            ->add('isFinished', BooleanType::class, [
                 'label' => 'Don terminé ?',
             ])
-            ->add('isSuccessful', 'boolean', [
+            ->add('isSuccessful', BooleanType::class, [
                 'label' => 'Don réussi ?',
             ])
             ->add('createdAt', null, [

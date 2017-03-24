@@ -8,6 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -124,6 +127,75 @@ class EventAdmin extends AbstractAdmin
         $datagridMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('createdAt', DateRangeFilter::class, [
+                'label' => 'Date de création',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('hostFirstName', CallbackFilter::class, [
+                'label' => 'Prénom de l\'organisateur',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
+                    $qb->andWhere('organizer.firstName LIKE :firstname');
+                    $qb->setParameter('firstname', $value['value']);
+
+                    return true;
+                },
+            ])
+            ->add('hostLastName', CallbackFilter::class, [
+                'label' => 'Nom de l\'organisateur',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
+                    $qb->andWhere('organizer.lastName LIKE :lastName');
+                    $qb->setParameter('lastName', $value['value']);
+
+                    return true;
+                },
+            ])
+            ->add('postalCode', CallbackFilter::class, [
+                'label' => 'Code postal',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
+                    $qb->setParameter('postalCode', $value['value'].'%');
+
+                    return true;
+                },
+            ])
+            ->add('city', CallbackFilter::class, [
+                'label' => 'Ville',
+                'field_type' => TextType::class,
+                'callback' => function ($qb, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var QueryBuilder $qb */
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+
+                    return true;
+                },
             ])
         ;
     }
