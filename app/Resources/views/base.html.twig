@@ -139,7 +139,7 @@
                                             <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                         </li>
                                     {% endif %}
-                                    {% if enable_canary and is_granted('ROLE_PROCURATION_MANAGER') %}
+                                    {% if is_granted('ROLE_PROCURATION_MANAGER') %}
                                         <li class="text--small">
                                             <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
                                         </li>

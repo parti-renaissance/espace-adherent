@@ -22,10 +22,6 @@ class ProcurationManagerController extends Controller
      */
     public function indexAction(): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
         $requests = $requestsRepository->findManagedBy($this->getUser());
 
@@ -47,10 +43,6 @@ class ProcurationManagerController extends Controller
      */
     public function requestAction(ProcurationRequest $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         if (!$this->getDoctrine()->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
             throw $this->createNotFoundException();
         }
@@ -73,10 +65,6 @@ class ProcurationManagerController extends Controller
      */
     public function requestTransformAction(ProcurationRequest $request, $action): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $manager = $this->getDoctrine()->getManager();
 
         if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
