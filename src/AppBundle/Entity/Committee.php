@@ -272,7 +272,7 @@ class Committee implements GeoPointInterface
      */
     public function approved(string $timestamp = 'now')
     {
-        if (self::APPROVED === $this->status) {
+        if ($this->isApproved()) {
             throw new CommitteeAlreadyApprovedException($this->uuid);
         }
 
