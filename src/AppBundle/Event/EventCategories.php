@@ -10,11 +10,11 @@ final class EventCategories
         'Conférence-débat' => 'CE003',
         'Porte-à-porte' => 'CE004',
         'Atelier du programme' => 'CE005',
-        'Action de terrain' => 'CE006',
+        'Tractage' => 'CE006',
         'Convivialité' => 'CE007',
         'Action ciblée' => 'CE008',
         'Événement innovant' => 'CE009',
-        'Atelier de plan de transformation' => 'CE010',
+        'Marche' => 'CE010',
     ];
 
     const ALL = [
