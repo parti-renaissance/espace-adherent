@@ -44,8 +44,6 @@ final class MembershipUtils
 
     /**
      * Returns the id of the new adherent during registration's steps.
-     *
-     * @return int|null
      */
     public function getNewAdherentId(): ?int
     {
@@ -54,8 +52,6 @@ final class MembershipUtils
 
     /**
      * If true, the current user has started the subscription process but hasn't finished yet.
-     *
-     * @return bool
      */
     public function isInSubscriptionProcess(): bool
     {

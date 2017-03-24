@@ -116,14 +116,12 @@ class DonationController extends Controller
 
         $retryUrl = $this->generateUrl('donation_informations', $parameters);
 
-        $membershipUtils = $this->get('app.membership_utils');
-
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),
             'error_code' => $request->query->get('code'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
-            'isInSubscriptionProcess' => $membershipUtils->isInSubscriptionProcess(),
+            'is_in_subscription_process' => $this->get('app.membership_utils')->isInSubscriptionProcess(),
         ]);
     }
 }
