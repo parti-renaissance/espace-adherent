@@ -279,7 +279,8 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
     {
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 'wrong id');
+        // Set a wrong id
+        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1234);
 
         $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
 
