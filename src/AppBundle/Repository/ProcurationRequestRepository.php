@@ -30,7 +30,8 @@ class ProcurationRequestRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('pr')
             ->select('pr AS data', '('.$proxiesCountSubRequest.') as matchingProxiesCount')
-            ->orderBy('pr.createdAt', 'DESC')
+            ->orderBy('pr.processed', 'ASC')
+            ->addOrderBy('pr.createdAt', 'DESC')
             ->addOrderBy('pr.lastName', 'ASC');
 
         $this->addAndWhereManagedBy($qb, $procurationManager);

@@ -105,6 +105,12 @@
 .btn {
     @include btn;
 
+    &--small {
+        font-size: $text--size-smallest;
+        height: 30px;
+        padding: 7px 10px;
+    }
+
     &--medium {
         font-size: $text--size-medium--small;
         height: 47px;
