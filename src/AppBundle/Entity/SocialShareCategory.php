@@ -24,6 +24,7 @@ class SocialShareCategory
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max = 100)
      */
     private $name;
 
@@ -60,7 +61,7 @@ class SocialShareCategory
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(?string $name)
     {
         $this->name = EmojisRemover::remove($name);
     }
@@ -75,7 +76,7 @@ class SocialShareCategory
         return $this->position;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(?int $position)
     {
         $this->position = $position;
     }

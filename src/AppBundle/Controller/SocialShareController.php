@@ -17,9 +17,15 @@ class SocialShareController extends Controller
      */
     public function listAction(): Response
     {
-        return $this->render('social/list.html.twig', [
-            'socialShareCategories' => $this->getDoctrine()->getRepository(SocialShareCategory::class)->findBy([], ['position' => 'ASC']),
-            'socialShares' => $this->getDoctrine()->getRepository(SocialShare::class)->findBy(['published' => true], ['position' => 'ASC', 'createdAt' => 'DESC']),
+        $socialShareCategoryRepository = $this->getDoctrine()->getRepository(SocialShareCategory::class);
+        $socialShareRepository = $this->getDoctrine()->getRepository(SocialShare::class);
+
+        return $this->render('social_share/list.html.twig', [
+            'socialShareCategories' => $socialShareCategoryRepository->findBy([], ['position' => 'ASC']),
+            'socialShares' => $socialShareRepository->findBy(
+                ['published' => true],
+                ['position' => 'ASC', 'createdAt' => 'DESC']
+            ),
         ]);
     }
 
@@ -29,9 +35,14 @@ class SocialShareController extends Controller
      */
     public function showAction(SocialShareCategory $socialShareCategory): Response
     {
-        return $this->render('social/show.html.twig', [
+        $socialShareRepository = $this->getDoctrine()->getRepository(SocialShare::class);
+
+        return $this->render('social_share/show.html.twig', [
             'socialShareCategory' => $socialShareCategory,
-            'socialShares' => $this->getDoctrine()->getRepository(SocialShare::class)->findBy(['socialShareCategory' => $socialShareCategory, 'published' => true], ['position' => 'ASC', 'createdAt' => 'DESC'])
+            'socialShares' => $socialShareRepository->findBy(
+                ['socialShareCategory' => $socialShareCategory, 'published' => true],
+                ['position' => 'ASC', 'createdAt' => 'DESC']
+            ),
         ]);
     }
 }

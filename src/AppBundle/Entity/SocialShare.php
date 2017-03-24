@@ -13,11 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SocialShare
 {
-    CONST TYPE_IMAGE = 'image';
-    CONST TYPE_VIDEO = 'video';
-    CONST TYPE_PDF = 'pdf';
+    const TYPE_IMAGE = 'image';
+    const TYPE_VIDEO = 'video';
+    const TYPE_PDF = 'pdf';
 
-    CONST TYPES = [
+    const TYPES = [
         self::TYPE_IMAGE,
         self::TYPE_VIDEO,
         self::TYPE_PDF,
@@ -36,6 +36,7 @@ class SocialShare
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max = 100)
      */
     private $name;
 
@@ -63,6 +64,7 @@ class SocialShare
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
+     * @Assert\Length(max = 200)
      */
     private $description;
 
@@ -125,7 +127,7 @@ class SocialShare
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(?string $name)
     {
         $this->name = EmojisRemover::remove($name);
     }
@@ -140,7 +142,7 @@ class SocialShare
         return $this->position;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(?int $position)
     {
         $this->position = $position;
     }
@@ -150,7 +152,7 @@ class SocialShare
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
     }
@@ -160,7 +162,7 @@ class SocialShare
         return $this->defaultUrl;
     }
 
-    public function setDefaultUrl(string $defaultUrl)
+    public function setDefaultUrl(?string $defaultUrl)
     {
         $this->defaultUrl = $defaultUrl;
     }
@@ -170,7 +172,7 @@ class SocialShare
         return $this->facebookUrl;
     }
 
-    public function setFacebookUrl(string $facebookUrl)
+    public function setFacebookUrl(?string $facebookUrl)
     {
         $this->facebookUrl = $facebookUrl;
     }
@@ -180,7 +182,7 @@ class SocialShare
         return $this->twitterUrl;
     }
 
-    public function setTwitterUrl(string $twitterUrl)
+    public function setTwitterUrl(?string $twitterUrl)
     {
         $this->twitterUrl = $twitterUrl;
     }
@@ -190,7 +192,7 @@ class SocialShare
         return $this->type;
     }
 
-    public function setType(string $type)
+    public function setType(?string $type)
     {
         $this->type = $type;
     }
@@ -200,7 +202,7 @@ class SocialShare
         return $this->socialShareCategory;
     }
 
-    public function setSocialShareCategory(SocialShareCategory $socialShareCategory)
+    public function setSocialShareCategory(?SocialShareCategory $socialShareCategory)
     {
         $this->socialShareCategory = $socialShareCategory;
     }
@@ -210,7 +212,7 @@ class SocialShare
         return $this->media;
     }
 
-    public function setMedia(Media $media)
+    public function setMedia(?Media $media)
     {
         $this->media = $media;
     }
@@ -220,7 +222,7 @@ class SocialShare
         return $this->published;
     }
 
-    public function setPublished(bool $published)
+    public function setPublished(?bool $published)
     {
         $this->published = $published;
     }

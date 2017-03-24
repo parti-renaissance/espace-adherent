@@ -6,6 +6,7 @@ use AppBundle\Entity\SocialShare;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SocialShareAdmin extends AbstractAdmin
 {
@@ -15,9 +16,9 @@ class SocialShareAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('type', 'choice', [
+            ->add('type', ChoiceType::class, [
                 'label' => 'Type',
-                'choices' => array_combine(SocialShare::TYPES, SocialShare::TYPES)
+                'choices' => array_combine(SocialShare::TYPES, SocialShare::TYPES),
             ])
             ->add('socialShareCategory', null, [
                 'label' => 'Catégorie',
