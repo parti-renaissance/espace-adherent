@@ -248,4 +248,13 @@ class CommitteeMembership
 
         $this->privilege = self::COMMITTEE_HOST;
     }
+
+    public function demote(): void
+    {
+        if (!$this->isHostMember()) {
+            throw CommitteeMembershipException::createNotDemotableFollowerPrivilegeException($this->uuid);
+        }
+
+        $this->privilege = self::COMMITTEE_FOLLOWER;
+    }
 }

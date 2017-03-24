@@ -32,6 +32,7 @@ class CommitteeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('is_host', [$this, 'isHost']),
             new \Twig_SimpleFunction('is_supervisor', [$this, 'isSupervisor']),
             new \Twig_SimpleFunction('is_promotable_host', [$this, 'isPromotableHost']),
+            new \Twig_SimpleFunction('is_demotable_host', [$this, 'isDemotableHost']),
             new \Twig_SimpleFunction('can_follow', [$this, 'canFollow']),
             new \Twig_SimpleFunction('can_unfollow', [$this, 'canUnfollow']),
             new \Twig_SimpleFunction('can_create', [$this, 'canCreate']),
@@ -50,6 +51,15 @@ class CommitteeExtension extends \Twig_Extension
         }
 
         return $this->committeeManager->isPromotableHost($adherent, $committee);
+    }
+
+    public function isDemotableHost(Adherent $adherent, Committee $committee): bool
+    {
+        if (!$this->committeeManager) {
+            return false;
+        }
+
+        return $this->committeeManager->isDemotableHost($adherent, $committee);
     }
 
     public function isHost(Committee $committee): bool

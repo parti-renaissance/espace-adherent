@@ -161,7 +161,7 @@ class PageController extends Controller
      */
     public function botAction()
     {
-        return $this->render('page/bot.html.twig');
+        return $this->render('bot/page.html.twig');
     }
 
     /**

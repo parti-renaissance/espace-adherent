@@ -275,6 +275,48 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @Route("/retirer-suppleant/{member_uuid}", name="app_committee_demote_host")
+     * @Method("GET|POST")
+     * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
+     * @Entity("member", expr="repository.findByUuid(member_uuid)")
+     */
+    public function demoteHost(Request $request, Committee $committee, Adherent $member): Response
+    {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
+        $committeeManager = $this->get('app.committee.manager');
+        if (!$committeeManager->isDemotableHost($member, $committee)) {
+            throw $this->createNotFoundException(sprintf(
+                'Member "%s" of committee "%s" can not be demoted as a simple follower.',
+                $member->getUuid(),
+                $committee->getUuid()
+            ));
+        }
+
+        $form = $this->createForm(FormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $committeeManager->demote($member, $committee);
+            $this->addFlash('info', $this->get('translator')->trans('committee.demote_host.success'));
+
+            return $this->redirectToRoute('app_commitee_list_members', [
+                'uuid' => $committee->getUuid(),
+                'slug' => $committee->getSlug(),
+            ]);
+        }
+
+        return $this->render('committee/demote_host.html.twig', [
+            'member' => $member,
+            'committee' => $committee,
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')")
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")

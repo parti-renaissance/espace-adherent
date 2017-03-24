@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Promouvoir un membre' %}
+{% block page_title 'Définir un animateur comme simple membre' %}
 
 {% block content %}
     {% set is_host = is_host(committee) %}
@@ -31,23 +31,22 @@
                 </a>
                 <header class="space--30-0">
                     <h1 class="b__nudge--bottom-small text--medium">
-                        Promouvoir un adhérent
+                        Définir un animateur comme simple membre
                     </h1>
                 </header>
 
                 <div class="text--body b__nudge--bottom-large">
-                    Voulez-vous vraiment définir <strong>{{ member.fullName }}</strong>
-                    comme {% if member.gender == 'female' %}animatrice suppléante{% else %}animateur suppléant{% endif %}
-                    du comité <strong>{{ committee.name }}</strong> ?
+                    Voulez-vous vraiment redéfinir <strong>{{ member.fullName }}</strong>
+                    comme simple membre du comité <strong>{{ committee.name }}</strong> ?
                 </div>
 
                 <div class="committee__members__nav">
                     <div>
-                        <form method="post" action="">
+                        <form method="post">
                             {{ form_widget(form) }}
 
                             <button type="submit" id="members-promote-button" class="btn btn--primary b__nudge--right">
-                                Oui, promouvoir l'adhérent
+                                Oui, définir comme simple membre
                             </button>
                             <a href="{{ committee_path('app_commitee_list_members', committee) }}" class="btn">
                                 Non, annuler
