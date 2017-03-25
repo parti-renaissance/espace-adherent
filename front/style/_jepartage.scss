@@ -1,0 +1,76 @@
+.content.je-partage {
+    header {
+        margin-bottom: 0;
+    }
+
+    .je-partage__graphics > div {
+        flex: 1;
+        display: flex;
+        position: relative;
+
+        @media (max-width: $mobile) {
+            flex: initial;
+            width: 100%;
+        }
+
+        > img {
+            flex: 1;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+        }
+
+        &:hover .je-partage__social {
+            opacity: 1;
+        }
+    }
+
+    .je-partage__social {
+        @include gradient-container;
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity .2s;
+
+        &--inner {
+            width: 200px;
+            z-index: 2;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;        }
+
+        &:before {
+            @include classic-gradient($filter--dark);
+        }
+
+        a {
+            text-align: center;
+            color: white;
+            border: 0;
+            margin: 7px 0;
+            border: 4px solid white;
+            border-radius: 50px;
+            height: 40px;
+            width: 40px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                color: $blue;
+                border-color: $blue;
+            }
+        }
+
+        .fa {
+            font-size: 30px;
+        }
+    }
+}
