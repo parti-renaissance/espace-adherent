@@ -172,9 +172,9 @@
                             <td>
                                 {% if not isPromotableHost %}
                                     {% if member.gender == 'female' %}
-                                        Animatrice{{ isDemotableHost ? ' suppléante' : '' }}
+                                        {{ isDemotableHost ? 'Co-animatrice' : 'Animatrice' }}
                                     {% else %}
-                                        Animateur{{ isDemotableHost ? ' suppléant' : '' }}
+                                        {{ isDemotableHost ? 'Co-animateur' : 'Animateur' }}
                                     {% endif %}
                                 {% else %}
                                     Membre
@@ -184,17 +184,13 @@
                                 <td>
                                     {% if isPromotableHost %}
                                         <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
-                                           title="Promouvoir en tant qu'animateur suppléant"
+                                           title="Définir {{ member.gender ? 'co-animatrice' : 'co-animateur' }}"
                                            class="promote-host-link btn btn--small">
-                                            {% if member.gender == 'female' %}
-                                                Définir animatrice
-                                            {% else %}
-                                                Définir animateur
-                                            {% endif %}
+                                            Définir {{ member.gender ? 'co-animatrice' : 'co-animateur' }}
                                         </a>
                                     {% elseif isDemotableHost %}
                                         <a href="{{ committee_path('app_committee_demote_host', committee, {'member_uuid': member.uuid}) }}"
-                                           title="Promouvoir en tant qu'animateur suppléant"
+                                           title="Définir membre"
                                            class="demote-host-link btn btn--small">
                                             Définir membre
                                         </a>
