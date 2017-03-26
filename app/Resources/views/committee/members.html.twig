@@ -186,7 +186,7 @@
                                         <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
                                            title="Définir {{ member.gender ? 'co-animatrice' : 'co-animateur' }}"
                                            class="promote-host-link btn btn--small">
-                                            Définir {{ member.gender ? 'co-animatrice' : 'co-animateur' }}
+                                            Définir {{ member.gender == 'female' ? 'co-animatrice' : 'co-animateur' }}
                                         </a>
                                     {% elseif isDemotableHost %}
                                         <a href="{{ committee_path('app_committee_demote_host', committee, {'member_uuid': member.uuid}) }}"
