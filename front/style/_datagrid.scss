@@ -51,6 +51,10 @@
             border-bottom: 2px solid #f2f2f2;
         }
 
+        &--bordered-rows td {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
         tbody tr:hover {
             background: #eaeaea;
         }
@@ -58,6 +62,10 @@
         &__col {
             &--left {
                 text-align: left !important;
+            }
+
+            &--top {
+                vertical-align: top !important;
             }
 
             &--hide-mobile {

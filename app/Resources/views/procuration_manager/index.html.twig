@@ -10,14 +10,14 @@
             Vous avez {{ countToProcess }} demande(s) de procuration à traiter.
         </div>
 
-        <table class="datagrid__table">
+        <table class="datagrid__table ">
             <thead>
             <tr>
                 <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
                 <th class="datagrid__table__col--left">Coordonnées du demandeur</th>
                 <th>Statut de la demande</th>
-                <th>Mandataires</th>
                 <th class="datagrid__table__col--left">Scrutins concernés</th>
+                <th>Mandataires</th>
                 <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
                 <th>Actions</th>
             </tr>
@@ -39,11 +39,9 @@
                     {% if not request.data.processed %}
                         <strong>En attente</strong>
                     {% else %}
-                        Traitée
+                        Traitée<br />
+                        (le {{ request.data.processedAt|date('d/m/Y à H:i') }})
                     {% endif %}
-                </td>
-                <td>
-                    {{ request.matchingProxiesCount }}
                 </td>
                 <td class="datagrid__table__col--left">
                     {% if request.data.electionPresidentialFirstRound and request.data.electionPresidentialSecondRound %}
@@ -61,6 +59,9 @@
                     {% elseif request.data.electionLegislativeSecondRound %}
                         Législatives : 2nd tour<br />
                     {% endif %}
+                </td>
+                <td>
+                    {{ request.matchingProxiesCount }}
                 </td>
                 <td class="datagrid__table__col--hide-mobile">
                     {{ request.data.createdAt|date('d/m/Y H:i') }}

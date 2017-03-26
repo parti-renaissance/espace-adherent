@@ -20,11 +20,16 @@ class ProcurationRequestRepository extends EntityRepository
             return [];
         }
 
-        $proxiesCountSubRequest = $this->_em->createQueryBuilder()
+        $qb = $this->_em->createQueryBuilder();
+
+        $proxiesCountSubRequest = $qb
             ->select('COUNT(pp)')
             ->from('AppBundle:ProcurationProxy', 'pp')
-            ->where('pp.voteCountry = \'FR\' AND pp.votePostalCode = pr.votePostalCode')
-            ->orWhere('pp.voteCountry != \'FR\' AND pp.voteCountry = pr.voteCountry')
+            ->where($qb->expr()->orX(
+                'pp.voteCountry = \'FR\' AND pp.votePostalCode = pr.votePostalCode',
+                'pp.voteCountry != \'FR\' AND pp.voteCountry = pr.voteCountry'
+            ))
+            ->andWhere($this->createNotMatchingCount().' = 0')
             ->getQuery()
             ->getDQL();
 
@@ -78,5 +83,23 @@ class ProcurationRequestRepository extends EntityRepository
         }
 
         $qb->andWhere($codesFilter);
+    }
+
+    private function createNotMatchingCount()
+    {
+        $elections = [
+            'electionPresidentialFirstRound',
+            'electionPresidentialSecondRound',
+            'electionLegislativeFirstRound',
+            'electionLegislativeSecondRound',
+        ];
+
+        $notMatchingCount = [];
+
+        foreach ($elections as $election) {
+            $notMatchingCount[] = sprintf('(CASE WHEN (pr.%s = TRUE AND pp.%s = FALSE) THEN 1 ELSE 0 END)', $election, $election);
+        }
+
+        return implode(' + ', $notMatchingCount);
     }
 }

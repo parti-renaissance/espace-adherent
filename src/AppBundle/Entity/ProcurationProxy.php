@@ -36,6 +36,14 @@ class ProcurationProxy
     private $referent;
 
     /**
+     * The associated found request.
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationRequest", inversedBy="foundProxy")
+     * @ORM\JoinColumn(name="procuration_request_id", referencedColumnName="id")
+     */
+    private $foundRequest;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=6)
@@ -540,5 +548,15 @@ class ProcurationProxy
     public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound)
     {
         $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
+    }
+
+    public function getFoundRequest(): ?ProcurationRequest
+    {
+        return $this->foundRequest;
+    }
+
+    public function setFoundRequest(ProcurationRequest $foundRequest = null)
+    {
+        $this->foundRequest = $foundRequest;
     }
 }
