@@ -163,6 +163,7 @@ class CommitteeAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id', null, [
                 'label' => 'ID',
+                'show_filter' => true,
             ])
             ->add('name', null, [
                 'label' => 'Nom',
