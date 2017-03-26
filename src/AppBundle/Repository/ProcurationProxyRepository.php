@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use Doctrine\ORM\EntityRepository;
@@ -9,6 +10,26 @@ use Doctrine\ORM\QueryBuilder;
 
 class ProcurationProxyRepository extends EntityRepository
 {
+    /**
+     * @param Adherent $procurationManager
+     *
+     * @return ProcurationProxy[]
+     */
+    public function findManagedBy(Adherent $procurationManager)
+    {
+        if (!$procurationManager->isProcurationManager()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('pp')
+            ->addOrderBy('pp.createdAt', 'DESC')
+            ->addOrderBy('pp.lastName', 'ASC');
+
+        $this->addAndWhereManagedBy($qb, $procurationManager);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param ProcurationRequest $procurationRequest
      *
@@ -18,8 +39,11 @@ class ProcurationProxyRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' AS score')
-            ->where('pp.voteCountry = \'FR\' AND pp.votePostalCode = :votePostalCode')
-            ->orWhere('pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry')
+            ->where($qb->expr()->orX(
+                'pp.voteCountry = \'FR\' AND pp.votePostalCode = :votePostalCode',
+                'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
+            ))
+            ->andWhere('pp.foundRequest IS NULL')
             ->setParameter('votePostalCode', $procurationRequest->getVotePostalCode())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
@@ -53,8 +77,11 @@ class ProcurationProxyRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' AS score')
-            ->where('pp.voteCountry = \'FR\' AND pp.votePostalCode = :votePostalCode')
-            ->orWhere('pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry')
+            ->where($qb->expr()->orX(
+                'pp.voteCountry = \'FR\' AND pp.votePostalCode = :votePostalCode',
+                'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
+            ))
+            ->andWhere('pp.foundRequest IS NULL')
             ->setParameter('votePostalCode', $procurationRequest->getVotePostalCode())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
@@ -77,6 +104,31 @@ class ProcurationProxyRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager)
+    {
+        $codesFilter = $qb->expr()->orX();
+
+        foreach ($procurationManager->getProcurationManagedArea()->getCodes() as $key => $code) {
+            if (is_numeric($code)) {
+                // Postal code prefix
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        'pp.voteCountry = \'FR\'',
+                        $qb->expr()->like('pp.votePostalCode', ':code'.$key)
+                    )
+                );
+
+                $qb->setParameter('code'.$key, $code.'%');
+            } else {
+                // Country
+                $codesFilter->add($qb->expr()->eq('pp.voteCountry', ':code'.$key));
+                $qb->setParameter('code'.$key, $code);
+            }
+        }
+
+        $qb->andWhere($codesFilter);
     }
 
     private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest)

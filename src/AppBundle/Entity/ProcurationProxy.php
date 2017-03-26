@@ -40,6 +40,8 @@ class ProcurationProxy
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationRequest", inversedBy="foundProxy")
      * @ORM\JoinColumn(name="procuration_request_id", referencedColumnName="id")
+     *
+     * @var ProcurationRequest
      */
     private $foundRequest;
 
@@ -319,6 +321,44 @@ class ProcurationProxy
         if ($adherent->getBirthdate()) {
             $this->birthdate = $adherent->getBirthdate();
         }
+    }
+
+    public function getRemainingAvailabilities(): array
+    {
+        $availabilities = [
+            'presidential' => [
+                'first' => $this->getElectionPresidentialFirstRound(),
+                'second' => $this->getElectionPresidentialSecondRound(),
+            ],
+            'legislatives' => [
+                'first' => $this->getElectionLegislativeFirstRound(),
+                'second' => $this->getElectionLegislativeSecondRound(),
+            ],
+        ];
+
+        $request = $this->getFoundRequest();
+
+        if (!$request) {
+            return $availabilities;
+        }
+
+        if ($request->getElectionPresidentialFirstRound()) {
+            $availabilities['presidential']['first'] = false;
+        }
+
+        if ($request->getElectionPresidentialSecondRound()) {
+            $availabilities['presidential']['second'] = false;
+        }
+
+        if ($request->getElectionLegislativeFirstRound()) {
+            $availabilities['legislatives']['first'] = false;
+        }
+
+        if ($request->getElectionLegislativeSecondRound()) {
+            $availabilities['legislatives']['second'] = false;
+        }
+
+        return $availabilities;
     }
 
     public function getId()
