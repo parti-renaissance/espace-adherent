@@ -9,6 +9,12 @@
 
     <hr />
 
+    Votre lien d'invitation (à partager uniquement aux mandataires de confiance) :<br />
+    <input type="text" class="form form--full form__field"
+           value="{{ url('app_procuration_proxy_proposal', {'uuid': app.user.uuid.toString}) }}" />
+
+    <hr />
+
     {% if proxies|length == 0 %}
         <div class="text--body text--center">
             Vous n'avez aucune propositon de mandataire.
