@@ -1,6 +1,14 @@
 {% extends 'procuration_manager/_layout.html.twig' %}
 
 {% block procuration_manager_content %}
+    <div class="text--center">
+        <strong>Demandes</strong>
+        -
+        <a href="{{ path('app_procuration_manager_proposals') }}">Mandataires</a>
+    </div>
+
+    <hr />
+
     {% if requests|length == 0 %}
         <div class="text--body text--center">
             Vous n'avez aucune demande(s) de procuration à traiter.
@@ -10,7 +18,7 @@
             Vous avez {{ countToProcess }} demande(s) de procuration à traiter.
         </div>
 
-        <table class="datagrid__table ">
+        <table class="datagrid__table datagrid__table--bordered-rows">
             <thead>
             <tr>
                 <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>

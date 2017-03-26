@@ -1,0 +1,79 @@
+{% extends 'procuration_manager/_layout.html.twig' %}
+
+{% block procuration_manager_content %}
+    <div class="text--center">
+        <a href="{{ path('app_procuration_manager_index') }}">Demandes</a>
+        -
+        <strong>Mandataires</strong>
+    </div>
+
+    <hr />
+
+    {% if proxies|length == 0 %}
+        <div class="text--body text--center">
+            Vous n'avez aucune propositon de mandataire.
+        </div>
+    {% else %}
+        <div class="text--body text--center b__nudge--bottom-large">
+            Vous avez {{ proxies|length }} propositon(s) de mandataire.
+        </div>
+
+        <table class="datagrid__table datagrid__table--bordered-rows">
+            <thead>
+            <tr>
+                <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
+                <th class="datagrid__table__col--left">Coordonnées du mandataire</th>
+                <th>Statut</th>
+                <th class="datagrid__table__col--left">Disponibilités restantes</th>
+                <th class="datagrid__table__col--hide-mobile">Date de la proposition</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for proxy in proxies %}
+                <tr>
+                    <td class="datagrid__table__col--hide-mobile">
+                        {{ proxy.id }}
+                    </td>
+                    <td class="datagrid__table__col--left">
+                        {{ proxy.firstNames }} {{ proxy.lastName }}<br />
+                        <span class="datagrid__table__col--hide-mobile">
+                            <em>Lieu de vote :</em>
+                            {{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}
+                        </span>
+                    </td>
+                    <td class="datagrid__table__col--hide-mobile">
+                        {% if proxy.foundRequest %}
+                            Associé à la demande
+                            n°<a href="{{ path('app_procuration_manager_request', {'id': proxy.foundRequest.id}) }}">{{ proxy.foundRequest.id }}</a>
+                        {% else %}
+                            Disponible
+                        {% endif %}
+                    </td>
+                    <td class="datagrid__table__col--left">
+                        {% set remainingAvailabilities = proxy.remainingAvailabilities %}
+
+                        {% if remainingAvailabilities.presidential.first and remainingAvailabilities.presidential.second %}
+                            Pésidentielle : 1er et 2nd tour<br />
+                        {% elseif remainingAvailabilities.presidential.first %}
+                            Pésidentielle : 1er tour<br />
+                        {% elseif remainingAvailabilities.presidential.second %}
+                            Pésidentielle : 2nd tour<br />
+                        {% endif %}
+
+                        {% if remainingAvailabilities.legislatives.first and remainingAvailabilities.legislatives.second %}
+                            Législatives : 1er et 2nd tour<br />
+                        {% elseif remainingAvailabilities.legislatives.first %}
+                            Législatives : 1er tour<br />
+                        {% elseif remainingAvailabilities.legislatives.second %}
+                            Législatives : 2nd tour<br />
+                        {% endif %}
+                    </td>
+                    <td class="datagrid__table__col--hide-mobile">
+                        {{ proxy.createdAt|date('d/m/Y H:i') }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

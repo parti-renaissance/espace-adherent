@@ -37,6 +37,19 @@ class ProcurationManagerController extends Controller
     }
 
     /**
+     * @Route("/mandataires", name="app_procuration_manager_proposals")
+     * @Method("GET")
+     */
+    public function proposalsAction(): Response
+    {
+        $proxiesRepository = $this->getDoctrine()->getRepository(ProcurationProxy::class);
+
+        return $this->render('procuration_manager/proposals.html.twig', [
+            'proxies' => $proxiesRepository->findManagedBy($this->getUser()),
+        ]);
+    }
+
+    /**
      * @Route(
      *     "/demande/{id}",
      *     requirements={"id"="\d+"},
