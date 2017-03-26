@@ -134,7 +134,7 @@ class ProcurationController extends Controller
 
         $referent = $this->getDoctrine()->getRepository(Adherent::class)->findOneBy(['uuid' => $referentUuid]);
 
-        if (!$referent || !$referent->isReferent()) {
+        if (!$referent || (!$referent->isReferent() && !$referent->isProcurationManager())) {
             throw $this->createNotFoundException();
         }
 

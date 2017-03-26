@@ -26,7 +26,7 @@ class ProcurationRequestRepository extends EntityRepository
             ->select('COUNT(pp)')
             ->from('AppBundle:ProcurationProxy', 'pp')
             ->where($qb->expr()->orX(
-                'pp.voteCountry = \'FR\' AND pp.votePostalCode = pr.votePostalCode',
+                'pp.voteCountry = \'FR\' AND pp.voteCity = pr.voteCity',
                 'pp.voteCountry != \'FR\' AND pp.voteCountry = pr.voteCountry'
             ))
             ->andWhere('pp.foundRequest IS NULL')
