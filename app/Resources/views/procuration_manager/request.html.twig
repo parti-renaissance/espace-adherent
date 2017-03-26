@@ -8,28 +8,34 @@
         </a>
     </div>
 
-    <h3 class="text--center b__nudge--bottom-large">
+    <h3 class="b__nudge--bottom-large">
         Demande de procuration n°{{ request.id }}
+
+        {% if not request.hasFoundProxy %}
+            {% if request.processed %}
+                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter', 'token': csrfToken}) }}"
+                   class="btn btn--small procuration-manager__request__process">
+                    Marquer "En attente"
+                </a>
+            {% else %}
+                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter', 'token': csrfToken}) }}"
+                   class="btn btn--small procuration-manager__request__process">
+                    Marquer "Traitée manuellement"
+                </a>
+            {% endif %}
+        {% endif %}
     </h3>
 
     <hr />
 
-    <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom-60">
+    <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom-60 procuration-manager__request">
         <div class="procuration-manager__request__col-left">
-            {% if request.processed %}
-                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter'}) }}"
-                   class="btn btn--small profile-btn">
-                    Marquer en attente
-                </a>
-            {% else %}
-                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter'}) }}"
-                   class="btn btn--small profile-btn">
-                    Marquer traitée
-                </a>
-            {% endif %}
-
             <h4 class="b__nudge--bottom">
-                Demande {{ request.processed ? 'traitée' : 'en attente' }}
+                {% if request.processedAt %}
+                    Demande traitée le {{ request.processedAt|date('d/m/Y à H:i') }}
+                {% else %}
+                    Demande en attente
+                {% endif %}
             </h4>
 
             <div class="profile-label">
@@ -48,11 +54,13 @@
                 <a href="mailto:{{ request.emailAddress }}">
                     {{ request.emailAddress }}
                 </a>
+                {% if request.phone %}
                 <br />
                 Téléphone :
                 <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
                     {{ request.phone|phone_number_format }}
                 </a>
+                {% endif %}
             </div>
 
             <div class="profile-label">
@@ -116,81 +124,171 @@
                 {% endif %}
             </div>
         </div>
+
         <div class="procuration-manager__request__col-right">
-            <h4 class="b__nudge--bottom">
-                Mandataires trouvés avec le même code postal
-            </h4>
+            {% if request.processedAt %}
+                {% if not request.hasFoundProxy %}
+                    <h4 class="b__nudge--bottom">
+                        Demande traitée manuellement
+                    </h4>
+                {% else %}
+                    <h4 class="b__nudge--bottom">
+                        Demande associée à {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
+                    </h4>
 
-            {% if matchingProxies|length  == 0 %}
-                <div class="text--body b__nudge--bottom-large">
-                    Aucun mandataire trouvé pour cette demande.
-                </div>
+                    <div class="profile-label">
+                        Auteur
+                    </div>
+                    <div class="profile-value">
+                        {{ request.foundProxy.gender == 'male' ? 'Monsieur' : 'Madame' }}
+                        {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
+                    </div>
+
+                    <div class="profile-label">
+                        Coordonnées
+                    </div>
+                    <div class="profile-value">
+                        Email :
+                        <a href="mailto:{{ request.foundProxy.emailAddress }}">
+                            {{ request.foundProxy.emailAddress }}
+                        </a>
+                        {% if request.foundProxy.phone %}
+                            <br />
+                            Téléphone :
+                            <a href="tel:{{ request.foundProxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                                {{ request.foundProxy.phone|phone_number_format }}
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-label">
+                        Lieu de vote
+                    </div>
+                    <div class="profile-value">
+                        {{ request.foundProxy.votePostalCode }} {{ request.foundProxy.voteCityName }} {{ request.foundProxy.voteCountry }}
+                        {% if request.foundProxy.voteOffice %}
+                            <br />
+                            Bureau : {{ request.foundProxy.voteOffice }}
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-label">
+                        Lieu de résidence
+                    </div>
+                    <div class="profile-value">
+                        {{ request.foundProxy.address }}<br />
+                        {{ request.foundProxy.postalCode }} {{ request.foundProxy.cityName }} {{ request.foundProxy.country }}
+                    </div>
+
+                    <div class="profile-label">
+                        Disponibilités
+                    </div>
+                    <div class="profile-value">
+                        {% if request.foundProxy.electionPresidentialFirstRound and request.foundProxy.electionPresidentialSecondRound %}
+                            Pésidentielle : 1er et 2nd tour<br />
+                        {% elseif request.foundProxy.electionPresidentialFirstRound %}
+                            Pésidentielle : 1er tour<br />
+                        {% elseif request.foundProxy.electionPresidentialSecondRound %}
+                            Pésidentielle : 2nd tour<br />
+                        {% endif %}
+
+                        {% if request.foundProxy.electionLegislativeFirstRound and request.foundProxy.electionLegislativeSecondRound %}
+                            Législatives : 1er et 2nd tour<br />
+                        {% elseif request.foundProxy.electionLegislativeFirstRound %}
+                            Législatives : 1er tour<br />
+                        {% elseif request.foundProxy.electionLegislativeSecondRound %}
+                            Législatives : 2nd tour<br />
+                        {% endif %}
+                    </div>
+                {% endif %}
             {% else %}
-                <div class="text--body b__nudge--bottom-large">
-                    {% if matchingProxies|length == 1 %}
-                        1 mandataire semble correspondre à cette demande.<br />
-                        N'hésitez pas à le contacter pour confirmer ses disponibilités.
-                    {% else %}
-                        {{ matchingProxies|length }} mandataires semblent correspondre à cette demande.<br />
-                        N'hésitez pas à les contacter pour confirmer leurs disponibilités.
-                    {% endif %}
-                </div>
+                <h4 class="b__nudge--bottom">
+                    Mandataires trouvés avec le même code postal
+                </h4>
 
-                <table class="datagrid__table">
-                    <thead>
-                    <tr>
-                        <th class="datagrid__table__col--left">Mandataire</th>
-                        <th class="datagrid__table__col--left">Lieu de vote</th>
-                        <th class="datagrid__table__col--left">Lieu de résidence</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for proxy in matchingProxies %}
+                {% if matchingProxies|length  == 0 %}
+                    <div class="text--body b__nudge--bottom-large">
+                        Aucun mandataire trouvé pour cette demande.
+                    </div>
+                {% else %}
+                    <div class="text--body b__nudge--bottom-large">
+                        {% if matchingProxies|length == 1 %}
+                            1 mandataire semble correspondre à cette demande.<br />
+                            N'hésitez pas à le contacter pour confirmer ses disponibilités.
+                        {% else %}
+                            {{ matchingProxies|length }} mandataires semblent correspondre à cette demande.<br />
+                            N'hésitez pas à les contacter pour confirmer leurs disponibilités.
+                        {% endif %}
+                    </div>
+
+                    <table class="datagrid__table datagrid__table--bordered-rows">
+                        <thead>
                         <tr>
-                            <td class="datagrid__table__col--left">
-                                <strong>{{ proxy.firstNames }} {{ proxy.lastName }}</strong>
-                                <br />
-                                <em>Email :</em>
-                                <a href="mailto:{{ proxy.emailAddress }}">
-                                    {{ proxy.emailAddress }}
-                                </a>
-                                <br />
-                                <em>Téléphone :</em>
-                                <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
-                                    {{ proxy.phone|phone_number_format }}
-                                </a>
-                                <br />
-                                <em>Disponibilités :</em><br />
-                                {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                                    Pésidentielle : 1er et 2nd tour<br />
-                                {% elseif proxy.electionPresidentialFirstRound %}
-                                    Pésidentielle : 1er tour<br />
-                                {% elseif proxy.electionPresidentialSecondRound %}
-                                    Pésidentielle : 2nd tour<br />
-                                {% endif %}
-
-                                {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
-                                    Législatives : 1er et 2nd tour<br />
-                                {% elseif proxy.electionLegislativeFirstRound %}
-                                    Législatives : 1er tour<br />
-                                {% elseif proxy.electionLegislativeSecondRound %}
-                                    Législatives : 2nd tour<br />
-                                {% endif %}
-                            </td>
-                            <td class="datagrid__table__col--left">
-                                {{ proxy.votePostalCode }} {{ proxy.voteCityName }}, {{ proxy.voteCountry }}
-                                {% if proxy.voteOffice %}
-                                    <br />{{ proxy.voteOffice }}
-                                {% endif %}
-                            </td>
-                            <td class="datagrid__table__col--left">
-                                {{ proxy.address }}<br />
-                                {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
-                            </td>
+                            <th>Score</th>
+                            <th class="datagrid__table__col--left " colspan="2">Mandataire</th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for proxy in matchingProxies %}
+                            {% set score = proxy.score %}
+                            {% set proxy = proxy.data %}
+
+                            <tr>
+                                <td>{{ score }}</td>
+                                <td class="datagrid__table__col--left datagrid__table__col--top">
+                                    <strong>{{ proxy.firstNames }} {{ proxy.lastName }}</strong>
+                                    <br />
+                                    <em>Email :</em>
+                                    <a href="mailto:{{ proxy.emailAddress }}">
+                                        {{ proxy.emailAddress }}
+                                    </a>
+                                    {% if proxy.phone %}
+                                    <br />
+                                    <em>Téléphone :</em>
+                                    <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                                        {{ proxy.phone|phone_number_format }}
+                                    </a>
+                                    {% endif %}
+                                    <br />
+                                    <em>Disponibilités :</em><br />
+                                    {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
+                                        Pésidentielle : 1er et 2nd tour<br />
+                                    {% elseif proxy.electionPresidentialFirstRound %}
+                                        Pésidentielle : 1er tour<br />
+                                    {% elseif proxy.electionPresidentialSecondRound %}
+                                        Pésidentielle : 2nd tour<br />
+                                    {% endif %}
+
+                                    {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
+                                        Législatives : 1er et 2nd tour<br />
+                                    {% elseif proxy.electionLegislativeFirstRound %}
+                                        Législatives : 1er tour<br />
+                                    {% elseif proxy.electionLegislativeSecondRound %}
+                                        Législatives : 2nd tour<br />
+                                    {% endif %}
+                                </td>
+                                <td class="datagrid__table__col--left">
+                                    <br />
+                                    <em>Lieu de vote :</em><br />
+                                    {{ proxy.votePostalCode }} {{ proxy.voteCityName }}, {{ proxy.voteCountry }}
+                                    {% if proxy.voteOffice %}
+                                        <br />(bureau : {{ proxy.voteOffice }})
+                                    {% endif %}
+                                    <br />
+                                    <em>Lieu de résidence :</em><br />
+                                    {{ proxy.address }}, {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_procuration_manager_request_associate', {'id': request.id, 'proxyId': proxy.id}) }}">
+                                        Associer
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
             {% endif %}
         </div>
     </div>

@@ -81,3 +81,4 @@ referent.event.creation.success: Le nouvel événement a bien été créé.
 #
 procuration_manager.process.success: La demande de procuration a bien été marquée comme "Traitée".
 procuration_manager.unprocess.success: La demande de procuration a bien été marquée comme "En attente".
+procuration_manager.associate.success: La demande de procuration a bien été associée au mandataire.

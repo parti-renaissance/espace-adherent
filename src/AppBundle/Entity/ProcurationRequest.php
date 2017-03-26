@@ -36,6 +36,13 @@ class ProcurationRequest
     private $id;
 
     /**
+     * The associated found proxy.
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationProxy", mappedBy="foundRequest")
+     */
+    private $foundProxy;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=6)
@@ -351,8 +358,9 @@ class ProcurationRequest
         }
     }
 
-    public function process()
+    public function process(ProcurationProxy $procurationProxy = null)
     {
+        $this->foundProxy = $procurationProxy;
         $this->processed = true;
         $this->processedAt = new \DateTime();
     }
@@ -361,6 +369,35 @@ class ProcurationRequest
     {
         $this->processed = false;
         $this->processedAt = null;
+    }
+
+    public function isProxyMatching(ProcurationProxy $proxy): bool
+    {
+        if ($this->getVoteCountry() !== $proxy->getVoteCountry()) {
+            return false;
+        }
+
+        if ($this->voteCountry === 'FR' && $this->getVotePostalCode() !== $proxy->getVotePostalCode()) {
+            return false;
+        }
+
+        if ($this->getElectionPresidentialFirstRound() && !$proxy->getElectionPresidentialFirstRound()) {
+            return false;
+        }
+
+        if ($this->getElectionPresidentialSecondRound() && !$proxy->getElectionPresidentialSecondRound()) {
+            return false;
+        }
+
+        if ($this->getElectionLegislativeFirstRound() && !$proxy->getElectionLegislativeFirstRound()) {
+            return false;
+        }
+
+        if ($this->getElectionLegislativeSecondRound() && !$proxy->getElectionLegislativeSecondRound()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getId()
@@ -597,8 +634,23 @@ class ProcurationRequest
         return $this->processed;
     }
 
-    public function getProcessedAt(): \DateTime
+    public function getProcessedAt(): ?\DateTime
     {
         return $this->processedAt;
+    }
+
+    public function hasFoundProxy(): bool
+    {
+        return $this->foundProxy instanceof ProcurationProxy;
+    }
+
+    public function getFoundProxy(): ?ProcurationProxy
+    {
+        return $this->foundProxy;
+    }
+
+    public function setFoundProxy(?ProcurationProxy $procurationProxy)
+    {
+        $this->foundProxy = $procurationProxy;
     }
 }

@@ -183,30 +183,15 @@
     }
 
     &__request {
+        &__process {
+            float: right;
+            font-weight: 400;
+            margin-left: 10px;
+        }
+
         &__col-left {
             flex-basis: 400px;
             margin-right: 75px;
-
-            .profile-btn {
-                float: right;
-            }
-
-            .profile-label {
-                font-weight: 600;
-                font-family: $font-roboto;
-                font-size: 13px;
-                padding: 0 0 0 20px;
-            }
-
-            .profile-value {
-                padding: 0 20px 10px 20px;
-                margin-bottom: 10px;
-                border-bottom: 1px solid #e3e3e3;
-
-                &:last-child {
-                    border-bottom: 0;
-                }
-            }
         }
 
         &__col-right {
@@ -214,6 +199,45 @@
 
             th, td {
                 padding: 5px 10px;
+            }
+        }
+
+        .profile-label {
+            font-weight: 600;
+            font-family: $font-roboto;
+            font-size: 13px;
+            padding: 0 0 0 20px;
+        }
+
+        .profile-value {
+            padding: 0 20px 10px 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e3e3e3;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+    }
+
+    &__associate__col {
+        flex-basis: 400px;
+        margin: 0 30px;
+
+        .profile-label {
+            font-weight: 600;
+            font-family: $font-roboto;
+            font-size: 13px;
+            padding: 0 0 0 20px;
+        }
+
+        .profile-value {
+            padding: 0 20px 10px 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e3e3e3;
+
+            &:last-child {
+                border-bottom: 0;
             }
         }
     }
