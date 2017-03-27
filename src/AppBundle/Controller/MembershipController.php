@@ -202,6 +202,8 @@ class MembershipController extends Controller
             throw $this->createNotFoundException('New adherent id not found.');
         }
 
+        $membershipUtils->clearNewAdherentId();
+
         return $this->render('membership/complete.html.twig', [
             'name' => $adherent->getFirstName(),
         ]);

@@ -53,6 +53,13 @@
                     <i class="fa fa-twitter"></i> <span>Je tweete</span>
                 </li>
             </ul>
+
+            {% if is_in_subscription_process %}
+                <p>
+                    <a href="{{ path('app_membership_pin_interests') }}" class="btn btn--primary">Continuer l'inscription</a>
+                </p>
+            {% endif %}
+
             <p>
                 <a href="{{ path('homepage') }}" class="btn btn-medium">
                     Retour à l'accueil

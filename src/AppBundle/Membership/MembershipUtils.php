@@ -44,12 +44,18 @@ final class MembershipUtils
 
     /**
      * Returns the id of the new adherent during registration's steps.
-     *
-     * @return int|null
      */
-    public function getNewAdherentId()
+    public function getNewAdherentId(): ?int
     {
         return $this->session->get(self::NEW_ADHERENT_ID);
+    }
+
+    /**
+     * If true, the current user has started the subscription process but hasn't finished yet.
+     */
+    public function isInSubscriptionProcess(): bool
+    {
+        return (bool) $this->getNewAdherentId();
     }
 
     public function clearNewAdherentId()
