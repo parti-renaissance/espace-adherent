@@ -46,6 +46,13 @@
             </div>
 
             <div class="profile-label">
+                Date de naissance
+            </div>
+            <div class="profile-value">
+                {{ request.birthdate|date('d/m/Y') }}
+            </div>
+
+            <div class="profile-label">
                 Lieu de vote
             </div>
             <div class="profile-value">
@@ -69,11 +76,11 @@
             </div>
             <div class="profile-value">
                 {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                    Pésidentielle : 1er et 2nd tour<br />
+                    Présidentielle : 1er et 2nd tour<br />
                 {% elseif request.electionPresidentialFirstRound %}
-                    Pésidentielle : 1er tour<br />
+                    Présidentielle : 1er tour<br />
                 {% elseif request.electionPresidentialSecondRound %}
-                    Pésidentielle : 2nd tour<br />
+                    Présidentielle : 2nd tour<br />
                 {% endif %}
 
                 {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
@@ -138,6 +145,13 @@
             </div>
 
             <div class="profile-label">
+                Date de naissance
+            </div>
+            <div class="profile-value">
+                {{ proxy.birthdate|date('d/m/Y') }}
+            </div>
+
+            <div class="profile-label">
                 Lieu de vote
             </div>
             <div class="profile-value">
@@ -161,11 +175,11 @@
             </div>
             <div class="profile-value">
                 {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                    Pésidentielle : 1er et 2nd tour<br />
+                    Présidentielle : 1er et 2nd tour<br />
                 {% elseif proxy.electionPresidentialFirstRound %}
-                    Pésidentielle : 1er tour<br />
+                    Présidentielle : 1er tour<br />
                 {% elseif proxy.electionPresidentialSecondRound %}
-                    Pésidentielle : 2nd tour<br />
+                    Présidentielle : 2nd tour<br />
                 {% endif %}
 
                 {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}

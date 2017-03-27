@@ -11,6 +11,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
     private $senderName;
     private $replyTo;
     private $subject;
+    private $cc;
     private $recipients;
     private $template;
     private $httpRequestPayload;
@@ -21,13 +22,15 @@ final class MailjetTemplateEmail implements \JsonSerializable
         string $subject,
         string $senderEmail,
         string $senderName = null,
-        string $replyTo = null
+        string $replyTo = null,
+        array $cc = []
     ) {
         $this->template = $template;
         $this->subject = $subject;
         $this->senderEmail = $senderEmail;
         $this->senderName = $senderName;
         $this->replyTo = $replyTo;
+        $this->cc = $cc;
         $this->recipients = [];
     }
 
@@ -36,7 +39,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;
 
-        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo());
+        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
 
         foreach ($message->getRecipients() as $recipient) {
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
@@ -74,7 +77,26 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $body['Subject'] = $this->subject;
         $body['MJ-TemplateID'] = $this->template;
         $body['MJ-TemplateLanguage'] = true;
-        $body['Recipients'] = $this->recipients;
+
+        if ($this->cc) {
+            $to = [];
+
+            if ($this->recipients) {
+                $body['Vars'] = $this->recipients[0]['Vars'];
+
+                foreach ($this->recipients as $recipient) {
+                    $to[] = sprintf('"%s" <%s>', $recipient['Name'], $recipient['Email']);
+                }
+            }
+
+            foreach ($this->cc as $cc) {
+                $to[] = $cc;
+            }
+
+            $body['To'] = implode(', ', $to);
+        } else {
+            $body['Recipients'] = $this->recipients;
+        }
 
         if ($this->replyTo) {
             $body['Headers'] = [

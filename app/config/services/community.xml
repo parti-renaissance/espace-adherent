@@ -63,5 +63,11 @@
 
         <service id="app.procuration.factory" class="AppBundle\Procuration\ProcurationFactory" />
 
+        <service id="app.procuration.process_handler" class="AppBundle\Procuration\ProcurationProcessHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="router" />
+        </service>
+
     </services>
 </container>
