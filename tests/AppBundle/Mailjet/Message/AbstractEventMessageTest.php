@@ -3,12 +3,13 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\PostAddress;
 
 abstract class AbstractEventMessageTest extends \PHPUnit_Framework_TestCase
 {
-    protected function createEventMock(string $name, string $beginAt, string $street, string $cityCode): Event
+    protected function createEventMock(string $name, string $beginAt, string $street, string $cityCode, ?string $committeeName = null): Event
     {
         $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
@@ -16,6 +17,13 @@ abstract class AbstractEventMessageTest extends \PHPUnit_Framework_TestCase
         $event->expects(static::any())->method('getName')->willReturn($name);
         $event->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
         $event->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
+
+        if ($committeeName) {
+            $committee = $this->createMock(Committee::class);
+            $committee->expects(static::any())->method('getName')->willReturn($committeeName);
+
+            $event->expects(static::any())->method('getCommittee')->willReturn($committee);
+        }
 
         return $event;
     }
