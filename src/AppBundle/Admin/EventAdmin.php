@@ -132,6 +132,11 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Date de création',
                 'field_type' => DateRangePickerType::class,
             ])
+            ->add('beginAt', DateRangeFilter::class, [
+                'label' => 'Date de début',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('hostFirstName', CallbackFilter::class, [
                 'label' => 'Prénom de l\'organisateur',
                 'show_filter' => true,
@@ -167,7 +172,7 @@ class EventAdmin extends AbstractAdmin
                 },
             ])
             ->add('postalCode', CallbackFilter::class, [
-                'label' => 'Code postal',
+                'label' => 'Code postal (préfixe)',
                 'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function ($qb, $alias, $field, $value) {
