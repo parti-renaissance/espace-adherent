@@ -17,6 +17,10 @@ class SocialShareController extends Controller
      */
     public function listAction(): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $socialShareCategoryRepository = $this->getDoctrine()->getRepository(SocialShareCategory::class);
         $socialShareRepository = $this->getDoctrine()->getRepository(SocialShare::class);
 
@@ -35,6 +39,10 @@ class SocialShareController extends Controller
      */
     public function showAction(SocialShareCategory $socialShareCategory): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $socialShareRepository = $this->getDoctrine()->getRepository(SocialShare::class);
 
         return $this->render('social_share/show.html.twig', [

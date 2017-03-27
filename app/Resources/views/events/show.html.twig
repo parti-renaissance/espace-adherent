@@ -119,11 +119,13 @@
                                 Modifier l'événement
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ path('app_event_cancel', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
-                                Annuler l'événement
-                            </a>
-                        </li>
+                        {% if enable_canary %}
+                            <li>
+                                <a href="{{ path('app_event_cancel', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                                    Annuler l'événement
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endif %}
                     <li>
                         <a href="{{ path('app_event_registrations', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
