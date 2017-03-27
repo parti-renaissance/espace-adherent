@@ -15,6 +15,7 @@ abstract class MailjetMessage
     protected $replyTo;
     protected $senderEmail;
     protected $senderName;
+    protected $cc;
 
     /**
      * MailjetMessage constructor.
@@ -47,6 +48,7 @@ abstract class MailjetMessage
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->batch = $batch ?? $uuid;
+        $this->cc = [];
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -153,5 +155,15 @@ abstract class MailjetMessage
     public function setSenderName(?string $senderName)
     {
         $this->senderName = $senderName;
+    }
+
+    public function getCC(): array
+    {
+        return $this->cc;
+    }
+
+    public function addCC(string $cc)
+    {
+        $this->cc[] = $cc;
     }
 }

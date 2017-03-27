@@ -135,13 +135,7 @@ class ProcurationManagerController extends Controller
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $request->process($proxy);
-            $proxy->setFoundRequest($request);
-
-            $manager->persist($request);
-            $manager->persist($proxy);
-            $manager->flush();
-
+            $this->get('app.procuration.process_handler')->process($this->getUser(), $request, $proxy);
             $this->addFlash('info', $this->get('translator')->trans('procuration_manager.associate.success'));
 
             return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);

@@ -53,11 +53,11 @@
                 </td>
                 <td class="datagrid__table__col--left">
                     {% if request.data.electionPresidentialFirstRound and request.data.electionPresidentialSecondRound %}
-                        Pésidentielle : 1er et 2nd tour<br />
+                        Présidentielle : 1er et 2nd tour<br />
                     {% elseif request.data.electionPresidentialFirstRound %}
-                        Pésidentielle : 1er tour<br />
+                        Présidentielle : 1er tour<br />
                     {% elseif request.data.electionPresidentialSecondRound %}
-                        Pésidentielle : 2nd tour<br />
+                        Présidentielle : 2nd tour<br />
                     {% endif %}
 
                     {% if request.data.electionLegislativeFirstRound and request.data.electionLegislativeSecondRound %}

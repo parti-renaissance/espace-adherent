@@ -6,6 +6,7 @@ use AppBundle\Intl\FranceCitiesBundle;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -398,6 +399,17 @@ class ProcurationRequest
         }
 
         return true;
+    }
+
+    public function generatePrivateToken(): string
+    {
+        if (!$this->processed || !$this->foundProxy) {
+            return null;
+        }
+
+        $token = Uuid::uuid5(Uuid::NAMESPACE_OID, $this->processedAt->format('Y-m-d H:i:s').$this->foundProxy->getId());
+
+        return $token->toString();
     }
 
     public function getId()

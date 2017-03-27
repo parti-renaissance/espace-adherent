@@ -174,6 +174,22 @@ class ProcurationController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/ma-demande/{id}/{token}", name="app_procuration_my_request")
+     * @Method("GET")
+     */
+    public function myRequestAction(ProcurationRequest $request, string $token): Response
+    {
+        if (!$request->isProcessed() || !$request->hasFoundProxy() || $token !== $request->generatePrivateToken()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('procuration/my_request.html.twig', [
+            'request' => $request,
+            'proxy' => $request->getFoundProxy(),
+        ]);
+    }
+
     private function getProcurationFlow(): ProcurationRequestFlow
     {
         return $this->get('app.procuration.request_flow');

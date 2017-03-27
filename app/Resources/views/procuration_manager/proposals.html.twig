@@ -59,11 +59,11 @@
                         {% set remainingAvailabilities = proxy.remainingAvailabilities %}
 
                         {% if remainingAvailabilities.presidential.first and remainingAvailabilities.presidential.second %}
-                            Pésidentielle : 1er et 2nd tour<br />
+                            Présidentielle : 1er et 2nd tour<br />
                         {% elseif remainingAvailabilities.presidential.first %}
-                            Pésidentielle : 1er tour<br />
+                            Présidentielle : 1er tour<br />
                         {% elseif remainingAvailabilities.presidential.second %}
-                            Pésidentielle : 2nd tour<br />
+                            Présidentielle : 2nd tour<br />
                         {% endif %}
 
                         {% if remainingAvailabilities.legislatives.first and remainingAvailabilities.legislatives.second %}
