@@ -150,6 +150,10 @@ class EventController extends Controller
      */
     public function cancelAction(Request $request, Event $event): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $command = EventCommand::createFromEvent($event);
 
         $form = $this->createForm(FormType::class);
