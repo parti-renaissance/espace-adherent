@@ -79,6 +79,24 @@
             <tag name="sonata.admin" manager-type="orm" label="Articles" group="Actualités" />
         </service>
 
+        <!-- SocialShareCategory -->
+        <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
+            <argument />
+            <argument>AppBundle\Entity\SocialShareCategory</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Catégories" group="Partage social" />
+        </service>
+
+        <!-- SocialShare -->
+        <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
+            <argument />
+            <argument>AppBundle\Entity\SocialShare</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Contenus sociaux" group="Partage social" />
+        </service>
+
         <!-- ProposalTheme -->
         <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
             <argument />
