@@ -21,7 +21,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $message = EventNotificationMessage::create(
             $recipients,
             $recipients[0],
-            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
+            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386', 'EM Lyon'),
             self::SHOW_EVENT_URL,
             self::ATTEND_EVENT_URL,
             function (Adherent $adherent) {
@@ -32,7 +32,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $this->assertInstanceOf(EventNotificationMessage::class, $message);
         $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('Un événement a lieu dans un comité que vous suivez', $message->getSubject());
+        $this->assertSame('1 février - 15h30 : Nouvel événement de EM Lyon : En Marche Lyon', $message->getSubject());
         $this->assertCount(10, $message->getVars());
         $this->assertSame(
             [

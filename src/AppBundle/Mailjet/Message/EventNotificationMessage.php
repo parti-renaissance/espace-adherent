@@ -56,7 +56,13 @@ class EventNotificationMessage extends MailjetMessage
             '54917',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Un événement a lieu dans un comité que vous suivez',
+            sprintf(
+                '%s - %s : Nouvel événement de %s : %s',
+                static::formatDate($event->getBeginAt(), 'd MMMM'),
+                $vars['event_hour'],
+                $event->getCommittee()->getName(),
+                $vars['event_name']
+            ),
             $vars,
             $recipientVarsGenerator($recipient),
             $host->getEmailAddress(),
