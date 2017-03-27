@@ -17,24 +17,29 @@ class ArticleController extends Controller
     /**
      * @Route(
      *     "/articles/{category}/{page}",
-     *     requirements={"page"="\d+"},
-     *     defaults={"page"=1},
+     *     requirements={"category"="\w+", "page"="\d+"},
+     *     defaults={"category"=ArticleCategory::DEFAULT_CATEGORY, "page"=1},
      *     name="articles_list"
      * )
      * @Method("GET")
      */
-    public function actualitesAction($category, $page): Response
+    public function actualitesAction(string $category, int $page): Response
     {
-        $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
-        $category = $categoriesRepo->findOneBySlug($category);
+        $noFilterByCategory = new ArticleCategory('Toutes les actualités', ArticleCategory::DEFAULT_CATEGORY);
 
-        if (!$category) {
+        $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
+        $articleCategory = !ArticleCategory::isDefault($category)
+            ? $categoriesRepo->findOneBySlug($category)
+            : $noFilterByCategory;
+
+        if (!$articleCategory) {
             throw $this->createNotFoundException();
         }
 
         $page = (int) $page;
 
         $categories = $categoriesRepo->findAll();
+        $categories[] = $noFilterByCategory;
         $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
         $articlesCount = $articlesRepo->countAllByCategory($category);
 
@@ -43,7 +48,7 @@ class ArticleController extends Controller
         }
 
         return $this->render('article/actualites.html.twig', [
-            'current' => $category,
+            'current' => $articleCategory,
             'categories' => $categories,
             'articles' => $articlesRepo->findByCategoryPaginated($category, $page, self::PER_PAGE),
             'currentPage' => $page,

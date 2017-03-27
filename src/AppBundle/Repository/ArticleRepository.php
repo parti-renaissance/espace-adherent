@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -14,15 +15,20 @@ class ArticleRepository extends EntityRepository
      *
      * @return int
      */
-    public function countAllByCategory(string $category)
+    public function countAllByCategory(string $category): int
     {
-        return (int) $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->select('COUNT(a)')
-            ->leftJoin('a.category', 'c')
-            ->where('c.slug = :category')
-            ->setParameter('category', $category)
             ->andWhere('a.published = :published')
-            ->setParameter('published', true)
+            ->setParameter('published', true);
+
+        if (!ArticleCategory::isDefault($category)) {
+            $qb->leftJoin('a.category', 'c');
+            $qb->andWhere('c.slug = :category');
+            $qb->setParameter('category', $category);
+        }
+
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -36,17 +42,24 @@ class ArticleRepository extends EntityRepository
      */
     public function findByCategoryPaginated(string $category, int $page, int $perPage)
     {
-        return $this->createQueryBuilder('a')
-            ->select('a', 'm', 'c')
+        $qb = $this->createQueryBuilder('a')
+            ->select('a', 'm')
             ->leftJoin('a.media', 'm')
-            ->leftJoin('a.category', 'c')
-            ->where('c.slug = :category')
-            ->setParameter('category', $category)
             ->andWhere('a.published = :published')
             ->setParameter('published', true)
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($perPage)
-            ->setFirstResult(($page - 1) * $perPage)
+            ->setFirstResult(($page - 1) * $perPage);
+
+        if (!ArticleCategory::isDefault($category)) {
+            $qb
+                ->addSelect('c')
+                ->leftJoin('a.category', 'c')
+                ->andWhere('c.slug = :category')
+                ->setParameter('category', $category);
+        }
+
+        return $qb
             ->getQuery()
             ->getResult();
     }

@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ArticleCategory
 {
+    const DEFAULT_CATEGORY = 'tout';
+
     /**
      * @var int
      *
@@ -89,23 +91,20 @@ class ArticleCategory
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @param null|string $slug
-     *
-     * @return ArticleCategory
-     */
-    public function setSlug($slug): ArticleCategory
+    public function setSlug(?string $slug): ArticleCategory
     {
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public static function isDefault(string $category): bool
+    {
+        return $category === self::DEFAULT_CATEGORY;
     }
 }
