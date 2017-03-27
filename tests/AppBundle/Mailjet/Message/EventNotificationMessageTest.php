@@ -3,12 +3,10 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\PostAddress;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
-class EventNotificationMessageTest extends \PHPUnit_Framework_TestCase
+class EventNotificationMessageTest extends AbstractEventMessageTest
 {
     const SHOW_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
     const ATTEND_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
@@ -91,28 +89,5 @@ class EventNotificationMessageTest extends \PHPUnit_Framework_TestCase
             ],
             $recipient->getVars()
         );
-    }
-
-    private function createEventMock(string $name, string $beginAt, string $street, string $cityCode): Event
-    {
-        $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
-
-        $event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
-        $event->expects($this->any())->method('getName')->willReturn($name);
-        $event->expects($this->any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
-        $event->expects($this->any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
-
-        return $event;
-    }
-
-    private function createAdherentMock(string $emailAddress, string $firstName, string $lastName): Adherent
-    {
-        $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
-        $adherent->expects($this->any())->method('getEmailAddress')->willReturn($emailAddress);
-        $adherent->expects($this->any())->method('getFirstName')->willReturn($firstName);
-        $adherent->expects($this->any())->method('getLastName')->willReturn($lastName);
-        $adherent->expects($this->any())->method('getFullName')->willReturn($firstName.' '.$lastName);
-
-        return $adherent;
     }
 }

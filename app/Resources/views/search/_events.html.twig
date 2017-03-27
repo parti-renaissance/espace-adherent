@@ -34,6 +34,10 @@
                     <div class="text--body search__results__cta__text">
                         Cet événement est terminé
                     </div>
+                {% elseif event.cancelled %}
+                    <div class="text--body">
+                        Cet événement est annulé
+                    </div>
                 {% elseif not event.full %}
                     <a href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}"
                        class="btn btn--blue" target="_blank" rel="noopener noreferrer">

@@ -27,6 +27,8 @@
             <li>
                 {% if item.event.finished %}
                     Cet événement est terminé
+                {% elseif item.event.cancelled %}
+                    Cet événement est annulé
                 {% elseif not item.event.full %}
                     <a href="{{ path('app_committee_show_event', {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
                        class="btn btn--blue" target="_blank" rel="noopener noreferrer">

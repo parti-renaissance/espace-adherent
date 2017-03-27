@@ -12,8 +12,10 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Form\EventRegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,6 +57,7 @@ class EventController extends Controller
     /**
      * @Route("/inscription", name="app_committee_attend_event")
      * @Method("GET|POST")
+     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
      */
     public function attendAction(Request $request, Event $event): Response
     {
@@ -112,6 +115,7 @@ class EventController extends Controller
     /**
      * @Route("/modifier", name="app_event_edit")
      * @Method("GET|POST")
+     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
      * @Security("is_granted('HOST_EVENT', event)")
      */
     public function editAction(Request $request, Event $event): Response
@@ -132,6 +136,36 @@ class EventController extends Controller
         }
 
         return $this->render('events/edit.html.twig', [
+            'event' => $event,
+            'committee' => $event->getCommittee(),
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/annuler", name="app_event_cancel")
+     * @Method("GET|POST")
+     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function cancelAction(Request $request, Event $event): Response
+    {
+        $command = EventCommand::createFromEvent($event);
+
+        $form = $this->createForm(FormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.event.handler')->handleCancel($event, $command);
+            $this->addFlash('info', $this->get('translator')->trans('committee.event.cancel.success'));
+
+            return $this->redirectToRoute('app_committee_show_event', [
+                'uuid' => (string) $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        return $this->render('events/cancel.html.twig', [
             'event' => $event,
             'committee' => $event->getCommittee(),
             'form' => $form->createView(),

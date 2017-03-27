@@ -4,6 +4,8 @@ namespace AppBundle\Repository;
 
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -218,5 +220,27 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $qb->andWhere($codesFilter);
 
         return $qb;
+    }
+
+    /**
+     * Finds a collection of adherents registered for a given event.
+     *
+     * @param Event $event
+     *
+     * @return AdherentCollection
+     */
+    public function findByEvent(Event $event): AdherentCollection
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->join(EventRegistration::class, 'er', 'WITH', 'er.adherentUuid = a.uuid')
+            ->join('er.event', 'e')
+            ->where('e.id = :eventId')
+            ->setParameter('eventId', $event->getId())
+            ->getQuery()
+        ;
+
+        return new AdherentCollection($query->getResult());
     }
 }

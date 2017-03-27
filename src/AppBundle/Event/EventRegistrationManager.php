@@ -24,6 +24,11 @@ class EventRegistrationManager
         return $this->repository->findOneByUuid($uuid);
     }
 
+    public function findRegistrations(Event $event): array
+    {
+        return $this->repository->findByEvent($event);
+    }
+
     public function searchRegistration(
         Event $event,
         string $emailAddress,

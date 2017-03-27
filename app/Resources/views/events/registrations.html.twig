@@ -112,7 +112,16 @@
                 </div>
 
                 <div class="committee__event__header__cta">
-                    <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    {% if event.cancelled %}
+                        <button class="btn btn--no-border btn--full btn--text-blue btn--disabled" disabled="disabled">
+                            Je veux participer
+                        </button>
+                        <div class="text--white text--center">
+                            L'événement à été annulé
+                        </div>
+                    {% else %}
+                        <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    {% endif %}
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
                         {{ 'event.participants_count'|transchoice(event.participantsCount) }}

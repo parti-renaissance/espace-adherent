@@ -49,10 +49,24 @@ class EventCommandHandler
     {
         $this->factory->updateFromEventCommand($event, $command);
 
-        $this->manager->persist($event);
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventUpdatedEvent(
+            $command->getAuthor(),
+            $event,
+            $command->getCommittee()
+        ));
+
+        return $event;
+    }
+
+    public function handleCancel(Event $event, EventCommand $command)
+    {
+        $event->cancel();
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(Events::EVENT_CANCELLED, new EventCancelledEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()

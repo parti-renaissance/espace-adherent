@@ -24,6 +24,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     const EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
     const EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
     const EVENT_5_UUID = '24a01f4f-94ea-43eb-8601-579385c59a82';
+    const EVENT_6_UUID = '5ba0daee-d9a7-47a8-8dbb-454500284af8';
 
     use ContainerAwareTrait;
 
@@ -68,6 +69,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'capacity' => 50,
         ]);
         $event2->incrementParticipantsCount();
+        $event2->incrementParticipantsCount();
 
         $event3 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_3_UUID,
@@ -111,17 +113,35 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
         $event5->incrementParticipantsCount();
 
+        $event6 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_6_UUID,
+            'organizer' => $author3,
+            'committee' => $committee1,
+            'name' => 'Réunion de réflexion parisienne annulé',
+            'category' => 'CE005',
+            'description' => 'Nous allons échanger autour de différents sujets',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
+            'begin_at' => date('Y-m-d', strtotime('tomorrow')).' 09:30:00',
+            'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
+            'capacity' => 50,
+        ]);
+        $event6->cancel();
+        $event6->incrementParticipantsCount();
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
         $manager->persist($event4);
         $manager->persist($event5);
+        $manager->persist($event6);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event3, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event4, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event5, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event6, $author3)));
 
         $manager->flush();
 
