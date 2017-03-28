@@ -177,7 +177,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
             foreach ($adherent->getMemberships() as $membership) {
-                if ($membership->isHostMember()) {
+                if ($membership->canHostCommittee()) {
                     return true;
                 }
             }
