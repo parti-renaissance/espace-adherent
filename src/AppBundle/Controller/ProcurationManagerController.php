@@ -51,6 +51,37 @@ class ProcurationManagerController extends Controller
 
     /**
      * @Route(
+     *     "/mandataires/{id}/{action}",
+     *     requirements={"id"="\d+", "action"="activer|desactiver"},
+     *     name="app_procuration_manager_proposal_transform"
+     * )
+     * @Method("GET")
+     */
+    public function proposalTransformAction(ProcurationProxy $proxy, $action): Response
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $proxiesRepository = $manager->getRepository(ProcurationProxy::class);
+
+        if (!$proxiesRepository->isManagedBy($this->getUser(), $proxy)) {
+            throw $this->createNotFoundException();
+        }
+
+        if ('desactiver' === $action) {
+            $proxy->setDisabled(true);
+            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.disabled.success'));
+        } else {
+            $proxy->setDisabled(false);
+            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.enabled.success'));
+        }
+
+        $manager->persist($proxy);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_procuration_manager_proposals');
+    }
+
+    /**
+     * @Route(
      *     "/demande/{id}",
      *     requirements={"id"="\d+"},
      *     name="app_procuration_manager_request"
@@ -127,7 +158,7 @@ class ProcurationManagerController extends Controller
             throw $this->createNotFoundException();
         }
 
-        if (!$request->isProxyMatching($proxy)) {
+        if ($proxy->isDisabled() || !$request->isProxyMatching($proxy)) {
             throw $this->createNotFoundException();
         }
 

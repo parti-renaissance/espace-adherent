@@ -254,6 +254,13 @@ class ProcurationProxy
     private $electionLegislativeSecondRound = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $disabled = false;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message")
@@ -624,5 +631,15 @@ class ProcurationProxy
     public function setFoundRequest(ProcurationRequest $foundRequest = null)
     {
         $this->foundRequest = $foundRequest;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled)
+    {
+        $this->disabled = $disabled;
     }
 }

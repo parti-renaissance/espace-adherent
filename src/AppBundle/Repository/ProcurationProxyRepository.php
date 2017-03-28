@@ -15,7 +15,7 @@ class ProcurationProxyRepository extends EntityRepository
      *
      * @return ProcurationProxy[]
      */
-    public function findManagedBy(Adherent $procurationManager)
+    public function findManagedBy(Adherent $procurationManager): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -28,6 +28,22 @@ class ProcurationProxyRepository extends EntityRepository
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function isManagedBy(Adherent $procurationManager, ProcurationProxy $proxy): bool
+    {
+        if (!$procurationManager->isProcurationManager()) {
+            return false;
+        }
+
+        $qb = $this->createQueryBuilder('pp')
+            ->select('COUNT(pp)')
+            ->where('pp.id = :id')
+            ->setParameter('id', $proxy->getId());
+
+        $this->addAndWhereManagedBy($qb, $procurationManager);
+
+        return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -44,6 +60,7 @@ class ProcurationProxyRepository extends EntityRepository
                 'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
             ))
             ->andWhere('pp.foundRequest IS NULL')
+            ->andWhere('pp.disabled = 0')
             ->setParameter('voteCity', $procurationRequest->getVoteCity())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
