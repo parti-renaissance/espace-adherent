@@ -210,6 +210,8 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    // myRequestAction is tested in ProcurationManagerControllerTest
+
     protected function setUp()
     {
         parent::setUp();

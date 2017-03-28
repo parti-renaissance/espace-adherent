@@ -122,9 +122,8 @@
             <div class="profile-label">
                 Auteur
             </div>
-            <div class="profile-value">
-                {{ proxy.gender == 'male' ? 'Monsieur' : 'Madame' }}
-                {{ proxy.firstNames }} {{ proxy.lastName }}
+            <div class="profile-value" id="proxy-author">
+                {{ proxy.gender == 'male' ? 'Monsieur' : 'Madame' }} {{ proxy.firstNames }} {{ proxy.lastName }}
             </div>
 
             <div class="profile-label">
@@ -132,13 +131,13 @@
             </div>
             <div class="profile-value">
                 Email :
-                <a href="mailto:{{ proxy.emailAddress }}">
+                <a href="mailto:{{ proxy.emailAddress }}" id="proxy-email">
                     {{ proxy.emailAddress }}
                 </a>
                 {% if proxy.phone %}
                     <br />
                     Téléphone :
-                    <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                    <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="proxy-phone">
                         {{ proxy.phone|phone_number_format }}
                     </a>
                 {% endif %}
@@ -147,7 +146,7 @@
             <div class="profile-label">
                 Date de naissance
             </div>
-            <div class="profile-value">
+            <div class="profile-value" id="proxy-birthdate">
                 {{ proxy.birthdate|date('d/m/Y') }}
             </div>
 
@@ -155,10 +154,10 @@
                 Lieu de vote
             </div>
             <div class="profile-value">
-                {{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}
+                <span id="proxy-vote-city">{{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}</span>
                 {% if proxy.voteOffice %}
                     <br />
-                    Bureau : {{ proxy.voteOffice }}
+                    Bureau : <span id="proxy-vote-office">{{ proxy.voteOffice }}</span>
                 {% endif %}
             </div>
 
@@ -166,29 +165,33 @@
                 Lieu de résidence
             </div>
             <div class="profile-value">
-                {{ proxy.address }}<br />
-                {{ proxy.postalCode }} {{ proxy.cityName }} {{ proxy.country }}
+                <span id="proxy-address">{{ proxy.address }}</span><br />
+                <span id="proxy-city">{{ proxy.postalCode }} {{ proxy.cityName }} {{ proxy.country }}</span>
             </div>
 
             <div class="profile-label">
                 Disponibilités
             </div>
             <div class="profile-value">
-                {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                    Présidentielle : 1er et 2nd tour<br />
-                {% elseif proxy.electionPresidentialFirstRound %}
-                    Présidentielle : 1er tour<br />
-                {% elseif proxy.electionPresidentialSecondRound %}
-                    Présidentielle : 2nd tour<br />
-                {% endif %}
+                <span id="proxy-election-presidential">
+                    {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
+                        Présidentielle : 1er et 2nd tour<br />
+                    {% elseif proxy.electionPresidentialFirstRound %}
+                        Présidentielle : 1er tour<br />
+                    {% elseif proxy.electionPresidentialSecondRound %}
+                        Présidentielle : 2nd tour<br />
+                    {% endif %}
+                </span>
 
-                {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
-                    Législatives : 1er et 2nd tour<br />
-                {% elseif proxy.electionLegislativeFirstRound %}
-                    Législatives : 1er tour<br />
-                {% elseif proxy.electionLegislativeSecondRound %}
-                    Législatives : 2nd tour<br />
-                {% endif %}
+                <span id="proxy-election-legislatives">
+                    {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
+                        Législatives : 1er et 2nd tour<br />
+                    {% elseif proxy.electionLegislativeFirstRound %}
+                        Législatives : 1er tour<br />
+                    {% elseif proxy.electionLegislativeSecondRound %}
+                        Législatives : 2nd tour<br />
+                    {% endif %}
+                </span>
             </div>
         </div>
     </div>
@@ -196,7 +199,7 @@
     <hr />
 
     <div class="text--center b__nudge--bottom-60">
-        <form method="post">
+        <form method="post" name="app_associate">
             {{ form_rest(form) }}
 
             <button type="submit" class="btn btn--primary">
