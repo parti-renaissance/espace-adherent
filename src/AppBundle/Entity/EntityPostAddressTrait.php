@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,6 +20,9 @@ trait EntityPostAddressTrait
         return $this->postAddress;
     }
 
+    /**
+     * @Algolia\Attribute(algoliaName="address")
+     */
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
     {
         return $this->postAddress->getInlineFormattedAddress($locale);
@@ -64,6 +68,9 @@ trait EntityPostAddressTrait
         return $this->postAddress->getLongitude();
     }
 
+    /**
+     * @Algolia\IndexIf
+     */
     public function isGeocoded(): bool
     {
         return $this->getLatitude() && $this->getLongitude();
@@ -77,5 +84,16 @@ trait EntityPostAddressTrait
     public function updateCoordinates(Coordinates $coordinates)
     {
         $this->postAddress->updateCoordinates($coordinates);
+    }
+
+    /**
+     * @Algolia\Attribute(algoliaName="_geoloc")
+     */
+    public function getGeolocalisation()
+    {
+        return [
+            'lng' => $this->getLongitude(),
+            'lat' => $this->getLatitude(),
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Utils\EmojisRemover;
@@ -42,6 +43,8 @@ class Committee implements GeoPointInterface
      * The committee name.
      *
      * @ORM\Column
+     *
+     * @Algolia\Attribute
      */
     private $name;
 
@@ -49,6 +52,8 @@ class Committee implements GeoPointInterface
      * The committee name.
      *
      * @ORM\Column
+     *
+     * @Algolia\Attribute
      */
     private $canonicalName;
 
@@ -58,6 +63,8 @@ class Committee implements GeoPointInterface
      * @ORM\Column
      *
      * @Gedmo\Slug(fields={"canonicalName"})
+     *
+     * @Algolia\Attribute
      */
     private $slug;
 
@@ -65,6 +72,8 @@ class Committee implements GeoPointInterface
      * The committee description.
      *
      * @ORM\Column(type="text")
+     *
+     * @Algolia\Attribute
      */
     private $description;
 
@@ -121,6 +130,8 @@ class Committee implements GeoPointInterface
      * The cached number of members (followers and hosts).
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @Algolia\Attribute
      */
     private $membersCounts;
 
@@ -240,6 +251,9 @@ class Committee implements GeoPointInterface
         return self::PENDING === $this->status && !$this->approvedAt;
     }
 
+    /**
+     * @Algolia\IndexIf
+     */
     public function isApproved(): bool
     {
         return self::APPROVED === $this->status && $this->approvedAt;

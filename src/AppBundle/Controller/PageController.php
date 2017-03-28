@@ -14,6 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Each time you add or update a custom url with an harcorded slug in the controller code, you must update the
+ * AppBundle\Search\Algolia\PageSlugToUrl::URLS constant and reindex algolia's page index.
+ */
 class PageController extends Controller
 {
     /**

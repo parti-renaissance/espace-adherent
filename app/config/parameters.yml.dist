@@ -38,3 +38,7 @@ parameters:
     env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
 
     env(GMAPS_API_KEY):         ''
+
+    env(ALGOLIA_APP_ID):        ~
+    env(ALGOLIA_FRONT_API_KEY): ~
+    env(ALGOLIA_BACK_API_KEY):  ~

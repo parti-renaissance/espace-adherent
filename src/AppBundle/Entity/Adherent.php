@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
@@ -27,6 +28,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *   @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface
 {
