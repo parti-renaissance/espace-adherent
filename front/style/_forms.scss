@@ -314,3 +314,29 @@ input[type=date]::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
 }
+
+.select__styled {
+    width: 285px;
+    height: 50px;
+    position: relative;
+
+    &:before {
+        content: $caret--down;
+        top: 14px;
+        right: 20px;
+        position: absolute;
+        z-index: 1;
+    }
+
+    &--inner {
+        position: absolute;
+        font-size: $text--size-default;
+        width: 285px;
+        -webkit-appearance: inherit;
+        border-radius: 0;
+        color: rgba(black, 0.5);
+        padding: 15px 20px;
+        border: 0;
+        border-bottom: 1px solid $gray--light;
+    }
+}
