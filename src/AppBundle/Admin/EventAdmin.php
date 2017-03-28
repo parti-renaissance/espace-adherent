@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Event;
 use AppBundle\Event\EventCategories;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -47,6 +48,11 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('participantsCount', null, [
                     'label' => 'Nombre de participants',
+                ])
+                ->add('status', 'choice', [
+                    'label' => 'Statut',
+                    'choices' => array_combine(Event::STATUSES, Event::STATUSES),
+                    'catalogue' => 'forms',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -97,6 +103,11 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('finishAt', null, [
                     'label' => 'Date de fin',
+                ])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Statut',
+                    'choices' => array_combine(Event::STATUSES, Event::STATUSES),
+                    'choice_translation_domain' => 'forms',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -229,6 +240,11 @@ class EventAdmin extends AbstractAdmin
             ])
             ->add('participantsCount', null, [
                 'label' => 'Participants',
+            ])
+            ->add('status', 'choice', [
+                'label' => 'Statut',
+                'choices' => array_combine(Event::STATUSES, Event::STATUSES),
+                'catalogue' => 'forms',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
