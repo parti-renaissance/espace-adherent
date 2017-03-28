@@ -130,6 +130,9 @@ procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17
 procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
 
+procuration.request.unique: Vous semblez déjà avoir demandé procuration. Vous devriez bientôt être contacté(e) par un responsable procuration En Marche.
+procuration.proposal.unique: Vous semblez déjà avoir proposé d'être mandataire. Merci de votre aide ! Vous devriez bientôt être contacté(e) par un responsable procuration En Marche.
+
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
 
 #
