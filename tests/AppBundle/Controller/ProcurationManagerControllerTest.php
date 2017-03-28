@@ -36,27 +36,6 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
 
     /**
      * @group functionnal
-     * @dataProvider providePages
-     */
-    public function testProcurationManagerBackendIsAccessibleAsReferent($path)
-    {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
-
-        $this->client->request(Request::METHOD_GET, $path);
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
-    public function providePages()
-    {
-        return [
-            ['/espace-responsable-procuration'],
-            ['/espace-responsable-procuration/demande/1'],
-            ['/espace-responsable-procuration/demande/2'],
-        ];
-    }
-
-    /**
-     * @group functionnal
      */
     public function testProcurationManagerNotManagedRequestIsForbidden()
     {
@@ -144,6 +123,21 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
 
         $this->assertSame('Demande en attente', trim($crawler->filter('.procuration-manager__request__col-left h4')->text()));
         $this->assertSame('Jean-Michel Carbonneau', trim($crawler->filter('.datagrid__table tbody tr td strong')->text()));
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testProcurationManagerProxiesList()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Michel Carbonneau")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Maxime Michaux")'));
     }
 
     protected function setUp()

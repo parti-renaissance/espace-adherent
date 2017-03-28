@@ -210,6 +210,15 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testProcurationProposalManagerUuid()
+    {
+        $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_4_UUID);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
     // myRequestAction is tested in ProcurationManagerControllerTest
 
     protected function setUp()
