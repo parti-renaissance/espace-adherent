@@ -85,3 +85,5 @@ procuration_manager.process.success: La demande de procuration a bien été marq
 procuration_manager.unprocess.success: La demande de procuration a bien été marquée comme "En attente".
 procuration_manager.associate.success: La demande de procuration a bien été associée au mandataire.
 procuration_manager.deassociate.success: La demande de procuration a bien été désassociée du mandataire.
+procuration_manager.disabled.success: La proposition du mandataire a bien été désactivée.
+procuration_manager.enabled.success: La proposition du mandataire a bien été réactivée.

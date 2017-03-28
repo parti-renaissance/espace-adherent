@@ -30,6 +30,7 @@ class ProcurationRequestRepository extends EntityRepository
                 'pp.voteCountry != \'FR\' AND pp.voteCountry = pr.voteCountry'
             ))
             ->andWhere('pp.foundRequest IS NULL')
+            ->andWhere('pp.disabled = 0')
             ->andWhere($this->createNotMatchingCount().' = 0')
             ->getQuery()
             ->getDQL();
