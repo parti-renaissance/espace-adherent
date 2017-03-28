@@ -110,6 +110,8 @@ class CommitteeMembershipTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
         $this->assertTrue($membership->canHostCommittee());
+        $this->assertFalse($membership->isPromotableHost());
+        $this->assertFalse($membership->isDemotableHost());
 
         $membership->setPrivilege(CommitteeMembership::COMMITTEE_HOST);
 
@@ -117,6 +119,8 @@ class CommitteeMembershipTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
         $this->assertTrue($membership->canHostCommittee());
+        $this->assertFalse($membership->isPromotableHost());
+        $this->assertTrue($membership->isDemotableHost());
 
         $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
 
@@ -124,6 +128,8 @@ class CommitteeMembershipTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($membership->isHostMember());
         $this->assertTrue($membership->isFollower());
         $this->assertFalse($membership->canHostCommittee());
+        $this->assertTrue($membership->isPromotableHost());
+        $this->assertFalse($membership->isDemotableHost());
     }
 
     private function createAdherent(): Adherent

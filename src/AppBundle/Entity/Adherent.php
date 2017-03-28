@@ -351,6 +351,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->activatedAt = new \DateTime($timestamp);
     }
 
+    /**
+     * Resets the Adherent password using a reset pasword token.
+     *
+     * @throws \InvalidArgumentException
+     * @throws AdherentException
+     * @throws AdherentTokenException
+     */
     public function resetPassword(AdherentResetPasswordToken $token): void
     {
         if (!$newPassword = $token->getNewPassword()) {

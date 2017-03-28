@@ -204,18 +204,28 @@ class CommitteeMembership
         $this->privilege = $privilege;
     }
 
+    public function isPromotableHost(): bool
+    {
+        return $this->isFollower();
+    }
+
     public function promote(): void
     {
-        if (!$this->isFollower()) {
+        if (!$this->isPromotableHost()) {
             throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($this->uuid);
         }
 
         $this->privilege = self::COMMITTEE_HOST;
     }
 
+    public function isDemotableHost(): bool
+    {
+        return $this->isHostMember();
+    }
+
     public function demote(): void
     {
-        if (!$this->isHostMember()) {
+        if (!$this->isDemotableHost()) {
             throw CommitteeMembershipException::createNotDemotableFollowerPrivilegeException($this->uuid);
         }
 
