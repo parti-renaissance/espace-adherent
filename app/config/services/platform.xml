@@ -224,6 +224,13 @@
         </service>
 
         <!-- Referents -->
+        <service id="app.referent.database_dumper" class="AppBundle\Referent\ReferentDatabaseDumper">
+            <argument type="service" id="app.repository.adherent"/>
+            <argument type="service" id="app.referent.managed_users.factory"/>
+            <argument type="service" id="app.referent.managed_users.exporter"/>
+            <argument type="service" id="app.storage"/>
+        </service>
+
         <service id="app.referent.managed_users.factory" class="AppBundle\Referent\ManagedUserFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>

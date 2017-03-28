@@ -29,10 +29,8 @@ class ManagedUserFactory
      */
     public function createManagedUsersListIndexedByTypeAndId(Adherent $referent): array
     {
-        $users = $this->createManagedUsersCollectionFor($referent);
         $registry = [];
-
-        foreach ($users as $user) {
+        foreach ($this->createManagedUsersCollectionFor($referent) as $user) {
             if ($user->hasReferentsEmailsSubscription()) {
                 $registry[$user->getType()][$user->getId()] = $user;
             }
