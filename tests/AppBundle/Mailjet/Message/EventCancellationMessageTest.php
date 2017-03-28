@@ -31,7 +31,7 @@ class EventCancellationMessageTest extends AbstractEventMessageTest
         $this->assertInstanceOf(EventCancellationMessage::class, $message);
         $this->assertSame('78678', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('L\'événement "En Marche Lyon" à été annulé.', $message->getSubject());
+        $this->assertSame('L\'événement "En Marche Lyon" a été annulé.', $message->getSubject());
         $this->assertCount(2, $message->getVars());
         $this->assertSame(
             [
