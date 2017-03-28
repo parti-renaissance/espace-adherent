@@ -4,11 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Form\ProcurationManagerAssociateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -110,7 +110,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/associer/{proxyId}",
-     *     requirements={"id"="\d+", "action"="traiter|detraiter"},
+     *     requirements={"id"="\d+"},
      *     name="app_procuration_manager_request_associate"
      * )
      * @Method("GET|POST")
@@ -131,7 +131,7 @@ class ProcurationManagerController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(ProcurationManagerAssociateType::class);
+        $form = $this->createForm(FormType::class);
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -145,6 +145,43 @@ class ProcurationManagerController extends Controller
             'form' => $form->createView(),
             'request' => $request,
             'proxy' => $proxy,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/demande/{id}/desassocier",
+     *     requirements={"id"="\d+"},
+     *     name="app_procuration_manager_request_deassociate"
+     * )
+     * @Method("GET|POST")
+     */
+    public function requestDessociateAction(Request $sfRequest, ProcurationRequest $request): Response
+    {
+        if (!$request->hasFoundProxy()) {
+            throw $this->createNotFoundException();
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+
+        if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(FormType::class);
+        $form->handleRequest($sfRequest);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.procuration.process_handler')->unprocess($this->getUser(), $request);
+            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.deassociate.success'));
+
+            return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+        }
+
+        return $this->render('procuration_manager/deassociate.html.twig', [
+            'form' => $form->createView(),
+            'request' => $request,
+            'proxy' => $request->getFoundProxy(),
         ]);
     }
 }

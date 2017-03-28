@@ -11,18 +11,21 @@
     <h3 class="b__nudge--bottom-large">
         Demande de procuration n°{{ request.id }}
 
-        {% if not request.hasFoundProxy %}
-            {% if request.processed %}
-                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter', 'token': csrfToken}) }}"
-                   class="btn btn--small procuration-manager__request__process">
-                    Marquer "En attente"
-                </a>
-            {% else %}
-                <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter', 'token': csrfToken}) }}"
-                   class="btn btn--small procuration-manager__request__process">
-                    Marquer "Traitée manuellement"
-                </a>
-            {% endif %}
+        {% if request.hasFoundProxy %}
+            <a href="{{ path('app_procuration_manager_request_deassociate', {'id': request.id}) }}"
+               class="btn btn--small procuration-manager__request__process">
+                Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
+            </a>
+        {% elseif request.processed %}
+            <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter', 'token': csrfToken}) }}"
+               class="btn btn--small procuration-manager__request__process">
+                Marquer "En attente"
+            </a>
+        {% else %}
+            <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter', 'token': csrfToken}) }}"
+               class="btn btn--small procuration-manager__request__process">
+                Marquer "Traitée manuellement"
+            </a>
         {% endif %}
     </h3>
 
