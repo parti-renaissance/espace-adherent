@@ -57,190 +57,32 @@
     </section>
 
     <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap">
+        {% for story in socialShares if story.socialShareCategory == 'Culture' %}
         <div>
-            <img src="https://unsplash.it/300/300?random" alt="something"/>
+            <img src="{{ media_asset(story.media, {'w': 402}) }}" alt="{{ story.name }}"/>
             <div class="je-partage__social">
                 <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
+                    <a download="{{ story.media }}" href="{{ media_asset(story.media) }}"
+                       title="Téléchargez {{ story.name }}"
+                       arial-label="Téléchargez {{ story.name }}">
                         <i class="fa fa-download"></i>
                     </a>
                     <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
+                       onclick="App.share('email', '{{ story.defaultUrl }}', '{{ story.name }}')">
                         <i class="fa fa-envelope-o"></i>
                     </a>
                     <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
+                       onclick="App.share('facebook', '{{ story.defaultUrl }}', '{{ story.name }}')">
                         <i class="fa fa-facebook"></i>
                     </a>
                     <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
+                       onclick="App.share('twitter', '{{ story.defaultUrl }}', '{{ story.name }}')">
                         <i class="fa fa-twitter"></i>
                     </a>
                 </div>
             </div>
         </div>
-        <div>
-            <img src="https://unsplash.it/400/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/350/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/420/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/310/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/440/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/320/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="https://unsplash.it/220/300?random" alt="something"/>
-            <div class="je-partage__social">
-                <div class="je-partage__social--inner">
-                    <a download="404.jpg" href="images/404.jpg" title="Téléchargez [title]"
-                       arial-label="Téléchargez">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', 'http://en-marche.fr', 'title')">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </section>
 
 </main>
