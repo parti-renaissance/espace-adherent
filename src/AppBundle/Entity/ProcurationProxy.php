@@ -261,6 +261,15 @@ class ProcurationProxy
     private $disabled = false;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, nullable=true)
+     *
+     * @Assert\Length(max=100)
+     */
+    private $inviteSourceName = '';
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message")
@@ -641,5 +650,15 @@ class ProcurationProxy
     public function setDisabled(bool $disabled)
     {
         $this->disabled = $disabled;
+    }
+
+    public function getInviteSourceName(): ?string
+    {
+        return $this->inviteSourceName;
+    }
+
+    public function setInviteSourceName(string $inviteSourceName = null)
+    {
+        $this->inviteSourceName = $inviteSourceName;
     }
 }

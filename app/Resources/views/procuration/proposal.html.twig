@@ -224,6 +224,12 @@
                         </div>
                     </div>
 
+                    <div class="form__row">
+                        {{ form_label(form.inviteSourceName, 'Qui vous a invité à devenir mandantaire ? (optionnel)') }}
+                        {{ form_errors(form.inviteSourceName) }}
+                        {{ form_widget(form.inviteSourceName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom et prénom de la personne qui vous a invité' } }) }}
+                    </div>
+
                     <div class="b__nudge--top-40">
                         {{ form_errors(form.conditions) }}
                         <div class="form__row form__checkbox form__checkbox--large">

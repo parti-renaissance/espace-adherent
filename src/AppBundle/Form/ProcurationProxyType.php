@@ -81,6 +81,9 @@ class ProcurationProxyType extends AbstractType
             ->add('electionLegislativeSecondRound', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('inviteSourceName', TextType::class, [
+                'required' => false,
+            ])
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
