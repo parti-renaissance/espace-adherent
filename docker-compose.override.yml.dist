@@ -18,3 +18,15 @@ services:
     pma:
         ports:
             - "8080:80"
+
+#    tools:
+#        environment:
+#            BLACKFIRE_CLIENT_ID:
+#            BLACKFIRE_CLIENT_TOKEN:
+
+#    blackfire:
+#        image: blackfire/blackfire
+#        environment:
+#            BLACKFIRE_LOG_LEVEL: 4
+#            BLACKFIRE_SERVER_ID:
+#            BLACKFIRE_SERVER_TOKEN:
