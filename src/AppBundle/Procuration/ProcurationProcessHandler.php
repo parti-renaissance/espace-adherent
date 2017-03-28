@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -41,5 +42,21 @@ class ProcurationProcessHandler
                 'token' => $request->generatePrivateToken(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
+    }
+
+    public function unprocess(Adherent $procurationManager, ProcurationRequest $request)
+    {
+        $proxy = $request->getFoundProxy();
+
+        $request->unprocess();
+        $proxy->setFoundRequest(null);
+
+        $this->manager->persist($request);
+        $this->manager->persist($proxy);
+        $this->manager->flush();
+
+        if ($proxy) {
+            $this->mailjet->sendMessage(ProcurationProxyCancelledMessage::create($procurationManager, $request, $proxy));
+        }
     }
 }
