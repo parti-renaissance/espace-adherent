@@ -148,13 +148,13 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'birthdate' => '1974-01-17',
             'voteCountry' => 'FR',
             'votePostalCode' => '75018',
-            'voteCity' => '75020-75120',
+            'voteCity' => '75018-75118',
             'voteCityName' => null,
             'voteOffice' => 'Lycée général Zola',
             'electionPresidentialFirstRound' => true,
-            'electionPresidentialSecondRound' => false,
+            'electionPresidentialSecondRound' => true,
             'electionLegislativeFirstRound' => true,
-            'electionLegislativeSecondRound' => false,
+            'electionLegislativeSecondRound' => true,
         ]));
 
         $manager->flush();
