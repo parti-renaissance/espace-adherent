@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +41,8 @@ class Article
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $category;
 

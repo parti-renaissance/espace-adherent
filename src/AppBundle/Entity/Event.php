@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Event\EventCategories;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Utils\EmojisRemover;
@@ -40,6 +41,8 @@ class Event implements GeoPointInterface
 
     /**
      * @ORM\Column(length=100)
+     *
+     * @Algolia\Attribute
      */
     private $name;
 
@@ -47,22 +50,30 @@ class Event implements GeoPointInterface
      * The event canonical name.
      *
      * @ORM\Column(length=100)
+     *
+     * @Algolia\Attribute
      */
     private $canonicalName;
 
     /**
      * @ORM\Column(length=130)
      * @Gedmo\Slug(fields={"beginAt", "canonicalName"}, dateFormat="Y-m-d")
+     *
+     * @Algolia\Attribute
      */
     private $slug;
 
     /**
      * @ORM\Column(length=5)
+     *
+     * @Algolia\Attribute
      */
     private $category;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Algolia\Attribute
      */
     private $description;
 
@@ -96,6 +107,8 @@ class Event implements GeoPointInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @Algolia\Attribute
      */
     private $committee;
 
@@ -301,5 +314,21 @@ class Event implements GeoPointInterface
     public function isCancelled(): bool
     {
         return self::STATUS_CANCELLED === $this->status;
+    }
+
+    /**
+     * @Algolia\Attribute(algoliaName="begin_at")
+     */
+    public function getReadableCreatedAt(): string
+    {
+        return $this->beginAt->format('d/m/Y H:i');
+    }
+
+    /**
+     * @Algolia\Attribute(algoliaName="finish_at")
+     */
+    public function getReadableUpdatedAt(): string
+    {
+        return $this->finishAt->format('d/m/Y H:i');
     }
 }

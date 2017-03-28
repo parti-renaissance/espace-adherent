@@ -44,3 +44,7 @@ parameters:
     env(FACEBOOK_GRAPH_API_HOST): 'https://graph.facebook.com'
 
     env(WATERMARKS_PATH):         '%kernel.root_dir%/../web/watermarks'
+
+    env(ALGOLIA_APP_ID):        ~
+    env(ALGOLIA_FRONT_API_KEY): ~
+    env(ALGOLIA_BACK_API_KEY):  ~

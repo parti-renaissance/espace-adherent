@@ -95,11 +95,9 @@
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Programme</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
-                    {#
                     <li><a href="#">
                         {{ include('components/search.html.twig') }}
                     </a></li>
-                    #}
                 </ul>
                 <div class="l__row">
                     {% if not user_is_adherent %}
@@ -402,8 +400,51 @@
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
         {% block javascripts '' %}
+        <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
         <script type="text/javascript">
             on(window, 'load', function() {
+                Kernel.onLoad(function () {
+                    var client = algoliasearch('{{ algolia_app_id|e('js') }}', '{{ algolia_api_key|e('js') }}');
+                    var articles = client.initIndex('Article_dev');
+                    var pages = client.initIndex('Page_dev');
+                    var proposals = client.initIndex('Proposal_dev');
+                    autocomplete('#aa-search-input', {}, [
+                        {
+                            source: autocomplete.sources.hits(articles, {hitsPerPage: 3}),
+                            displayKey: 'title',
+                            templates: {
+                                header: '<div class="aa-suggestions-category">Articles:</div>',
+                                suggestion: function (suggestion) {
+                                    return '<a href="/article/' + suggestion.slug + '">' +
+                                        suggestion._highlightResult.title.value + '</a>';
+                                }
+                            }
+                        },
+                        {
+                            source: autocomplete.sources.hits(pages, {hitsPerPage: 3}),
+                            displayKey: 'title',
+                            templates: {
+                                header: '<div class="aa-suggestions-category">Pages:</div>',
+                                suggestion: function (suggestion) {
+                                    return '<a href="#">' +
+                                        suggestion._highlightResult.title.value + '</a>';
+                                }
+                            }
+                        },
+                        {
+                            source: autocomplete.sources.hits(proposals, {hitsPerPage: 3}),
+                            displayKey: 'title',
+                            templates: {
+                                header: '<div class="aa-suggestions-category">Propositions:</div>',
+                                suggestion: function (suggestion) {
+                                    return '<a href="/emmanuel-macron/le-programme/' + suggestion.slug + '">' +
+                                        suggestion._highlightResult.title.value + '</a>';
+                                }
+                            }
+                        }
+                    ]);
+                });
+
                 Kernel.boot('{{ app.debug ? 'debug' : assets_hash }}', {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }});
             });
         </script>

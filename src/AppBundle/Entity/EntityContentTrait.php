@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,6 +15,8 @@ trait EntityContentTrait
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $title;
 
@@ -23,6 +26,8 @@ trait EntityContentTrait
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $slug;
 
@@ -33,6 +38,8 @@ trait EntityContentTrait
      *
      * @Assert\Length(min=10, max=255)
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $description;
 
@@ -42,6 +49,8 @@ trait EntityContentTrait
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $content;
 

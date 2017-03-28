@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 trait EntityPublishableTrait
@@ -13,6 +14,9 @@ trait EntityPublishableTrait
      */
     private $published = false;
 
+    /**
+     * @Algolia\IndexIf
+     */
     public function isPublished(): bool
     {
         return $this->published;

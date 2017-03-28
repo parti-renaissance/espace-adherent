@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="articles_categories")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleCategoryRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ArticleCategory
 {
@@ -38,6 +41,8 @@ class ArticleCategory
      * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $name;
 
@@ -47,6 +52,8 @@ class ArticleCategory
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
      */
     private $slug;
 
