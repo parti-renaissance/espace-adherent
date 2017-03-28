@@ -75,7 +75,8 @@
                     {{ request.data.createdAt|date('d/m/Y H:i') }}
                 </td>
                 <td>
-                    <a href="{{ path('app_procuration_manager_request', {'id': request.data.id}) }}">
+                    <a href="{{ path('app_procuration_manager_request', {'id': request.data.id}) }}"
+                       id="request-link-{{ request.data.id }}">
                         Afficher
                     </a>
                 </td>

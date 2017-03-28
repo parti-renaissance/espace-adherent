@@ -9,11 +9,11 @@
     </div>
 
     <h3 class="b__nudge--bottom-large">
-        Demande de procuration n°{{ request.id }}
+        <span id="request-title">Demande de procuration n°{{ request.id }}</span>
 
         {% if request.hasFoundProxy %}
             <a href="{{ path('app_procuration_manager_request_deassociate', {'id': request.id}) }}"
-               class="btn btn--small procuration-manager__request__process">
+               class="btn btn--small procuration-manager__request__process" id="request-deassociate">
                 Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
             </a>
         {% elseif request.processed %}
@@ -44,9 +44,8 @@
             <div class="profile-label">
                 Auteur
             </div>
-            <div class="profile-value">
-                {{ request.gender == 'male' ? 'Monsieur' : 'Madame' }}
-                {{ request.firstNames }} {{ request.lastName }}
+            <div class="profile-value" id="request-author">
+                {{ request.gender == 'male' ? 'Monsieur' : 'Madame' }} {{ request.firstNames }} {{ request.lastName }}
             </div>
 
             <div class="profile-label">
@@ -54,13 +53,13 @@
             </div>
             <div class="profile-value">
                 Email :
-                <a href="mailto:{{ request.emailAddress }}">
+                <a href="mailto:{{ request.emailAddress }}" id="request-email">
                     {{ request.emailAddress }}
                 </a>
                 {% if request.phone %}
                 <br />
                 Téléphone :
-                <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="request-phone">
                     {{ request.phone|phone_number_format }}
                 </a>
                 {% endif %}
@@ -69,7 +68,7 @@
             <div class="profile-label">
                 Date de naissance
             </div>
-            <div class="profile-value">
+            <div class="profile-value" id="request-birthdate">
                 {{ request.birthdate|date('d/m/Y') }}
             </div>
 
@@ -77,10 +76,10 @@
                 Lieu de vote
             </div>
             <div class="profile-value">
-                {{ request.votePostalCode }} {{ request.voteCityName }} {{ request.voteCountry }}
+                <span id="request-vote-city">{{ request.votePostalCode }} {{ request.voteCityName }} {{ request.voteCountry }}</span>
                 {% if request.voteOffice %}
                     <br />
-                    Bureau : {{ request.voteOffice }}
+                    Bureau : <span id="request-vote-office">{{ request.voteOffice }}</span>
                 {% endif %}
             </div>
 
@@ -88,35 +87,39 @@
                 Lieu de résidence
             </div>
             <div class="profile-value">
-                {{ request.address }}<br />
-                {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
+                <span id="request-address">{{ request.address }}</span><br />
+                <span id="request-city">{{ request.postalCode }} {{ request.cityName }} {{ request.country }}</span>
             </div>
 
             <div class="profile-label">
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                    Présidentielle : 1er et 2nd tour<br />
-                {% elseif request.electionPresidentialFirstRound %}
-                    Présidentielle : 1er tour<br />
-                {% elseif request.electionPresidentialSecondRound %}
-                    Présidentielle : 2nd tour<br />
-                {% endif %}
+                <span id="request-election-presidential">
+                    {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
+                        Présidentielle : 1er et 2nd tour<br />
+                    {% elseif request.electionPresidentialFirstRound %}
+                        Présidentielle : 1er tour<br />
+                    {% elseif request.electionPresidentialSecondRound %}
+                        Présidentielle : 2nd tour<br />
+                    {% endif %}
+                </span>
 
-                {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                    Législatives : 1er et 2nd tour<br />
-                {% elseif request.electionLegislativeFirstRound %}
-                    Législatives : 1er tour<br />
-                {% elseif request.electionLegislativeSecondRound %}
-                    Législatives : 2nd tour<br />
-                {% endif %}
+                <span id="request-election-legislatives">
+                    {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
+                        Législatives : 1er et 2nd tour
+                    {% elseif request.electionLegislativeFirstRound %}
+                        Législatives : 1er tour
+                    {% elseif request.electionLegislativeSecondRound %}
+                        Législatives : 2nd tour
+                    {% endif %}
+                </span>
             </div>
 
             <div class="profile-label">
                 Raison de la demande
             </div>
-            <div class="profile-value">
+            <div class="profile-value" id="request-reason">
                 {% if request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_RESIDENCY') %}
                     En raison de mon lieu de résidence
                 {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HOLIDAYS') %}
@@ -297,7 +300,8 @@
                                     {{ proxy.address }}, {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_procuration_manager_request_associate', {'id': request.id, 'proxyId': proxy.id}) }}">
+                                    <a href="{{ path('app_procuration_manager_request_associate', {'id': request.id, 'proxyId': proxy.id}) }}"
+                                       id="associate-link-{{ proxy.id }}">
                                         Associer
                                     </a>
                                 </td>
