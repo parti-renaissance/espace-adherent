@@ -25,7 +25,7 @@ class ArticleController extends Controller
      */
     public function actualitesAction(string $category, int $page): Response
     {
-        $noFilterByCategory = new ArticleCategory('Toutes les actualités', ArticleCategory::DEFAULT_CATEGORY);
+        $noFilterByCategory = new ArticleCategory('Toute l\'actualité', ArticleCategory::DEFAULT_CATEGORY);
 
         $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
         $articleCategory = !ArticleCategory::isDefault($category)
@@ -39,7 +39,7 @@ class ArticleController extends Controller
         $page = (int) $page;
 
         $categories = $categoriesRepo->findAll();
-        $categories[] = $noFilterByCategory;
+        array_unshift($categories, $noFilterByCategory);
         $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
         $articlesCount = $articlesRepo->countAllByCategory($category);
 
