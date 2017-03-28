@@ -302,22 +302,60 @@ class CommitteeMembershipRepository extends EntityRepository
      */
     public function findMembers(string $committeeUuid): AdherentCollection
     {
-        $committeeUuid = Uuid::fromString($committeeUuid);
+        return $this->createAdherentCollection($this->createCommitteeMembershipsQueryBuilder($committeeUuid)->getQuery());
+    }
 
-        $qb = $this->createQueryBuilder('cm');
-
-        $query = $qb
-            ->select('cm')
-            ->leftJoin('cm.adherent', 'adherent')
-            ->where('cm.committeeUuid = :committee')
-            ->orderBy('adherent.firstName', 'ASC')
-            ->setParameter('committee', (string) $committeeUuid)
+    /**
+     * Returns the list of all committee memberships of a committee.
+     *
+     * @param string $committeeUuid The committee UUID
+     *
+     * @return CommitteeMembershipCollection
+     */
+    public function findCommitteeMemberships(string $committeeUuid): CommitteeMembershipCollection
+    {
+        $query = $this
+            ->createCommitteeMembershipsQueryBuilder($committeeUuid)
+            ->addSelect('a')
             ->getQuery()
         ;
 
-        return $this->createAdherentCollection($query);
+        return new CommitteeMembershipCollection($query->getResult());
     }
 
+    /**
+     * Creates a QueryBuilder instance to fetch memberships of a committee.
+     *
+     * @param string $committeeUuid The committee UUID for which the memberships to fetch belong
+     * @param string $alias         The custom root alias for the query
+     *
+     * @return QueryBuilder
+     */
+    private function createCommitteeMembershipsQueryBuilder(string $committeeUuid, string $alias = 'cm'): QueryBuilder
+    {
+        $committeeUuid = Uuid::fromString($committeeUuid);
+
+        $qb = $this->createQueryBuilder($alias);
+
+        $qb
+            ->leftJoin($alias.'.adherent', 'a')
+            ->where($alias.'.committeeUuid = :committee')
+            ->orderBy('a.firstName', 'ASC')
+            ->setParameter('committee', (string) $committeeUuid)
+        ;
+
+        return $qb;
+    }
+
+    /**
+     * Creates an AdherentCollection instance with the results of a Query.
+     *
+     * The query must return a list of CommitteeMembership entities.
+     *
+     * @param Query $query The query to execute
+     *
+     * @return AdherentCollection
+     */
     private function createAdherentCollection(Query $query): AdherentCollection
     {
         return new AdherentCollection(

@@ -156,7 +156,7 @@ class CommitteeController extends Controller
         return $this->render('committee/members.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'members' => $committeeManager->getCommitteeMembers($committee),
+            'members' => $committeeManager->getCommitteeMemberships($committee),
         ]);
     }
 

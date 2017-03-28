@@ -2,6 +2,7 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
@@ -148,14 +149,14 @@ class CommitteeManager
         return $data;
     }
 
-    /**
-     * @param Committee $committee
-     *
-     * @return AdherentCollection|Adherent[]
-     */
     public function getCommitteeMembers(Committee $committee): AdherentCollection
     {
         return $this->getMembershipRepository()->findMembers($committee->getUuid());
+    }
+
+    public function getCommitteeMemberships(Committee $committee): CommitteeMembershipCollection
+    {
+        return $this->getMembershipRepository()->findCommitteeMemberships($committee->getUuid());
     }
 
     /**

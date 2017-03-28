@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
+use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
@@ -168,7 +168,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->memberships = new ArrayCollection();
     }
 
-    public static function createUuid(string $email)
+    public static function createUuid(string $email): UuidInterface
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
     }
@@ -201,7 +201,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return 'ADHERENT';
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return !$this->password ? $this->oldPassword : $this->password;
     }
@@ -211,10 +211,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return null !== $this->oldPassword;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEncoderName()
+    public function getEncoderName(): ?string
     {
         if ($this->hasLegacyPassword()) {
             return 'legacy_encoder';
@@ -232,21 +229,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->emailAddress;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
-    public function getEmailAddress()
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    public function getPhone()
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
 
-    public function getGender()
+    public function getGender(): string
     {
         return $this->gender;
     }
@@ -256,7 +253,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return Genders::FEMALE === $this->gender;
     }
 
-    public function getBirthdate()
+    public function getBirthdate(): \DateTime
     {
         return $this->birthdate;
     }
@@ -266,27 +263,22 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->birthdate ? ($this->birthdate->diff(new \DateTime()))->y : null;
     }
 
-    public function getPosition()
+    public function getPosition(): ?string
     {
         return $this->position;
     }
 
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return self::ENABLED === $this->status;
     }
 
-    /**
-     * Returns the activation date.
-     *
-     * @return \DateTime|null
-     */
-    public function getActivatedAt()
+    public function getActivatedAt(): ?\DateTime
     {
         return $this->activatedAt;
     }
 
-    public function changePassword(string $newPassword)
+    public function changePassword(string $newPassword): void
     {
         $this->password = $newPassword;
     }
@@ -309,7 +301,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $subscriptions;
     }
 
-    public function setEmailsSubscriptions(array $emailsSubscriptions)
+    public function setEmailsSubscriptions(array $emailsSubscriptions): void
     {
         $this->mainEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN, $emailsSubscriptions, true);
         $this->referentsEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS, $emailsSubscriptions, true);
@@ -331,12 +323,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->localHostEmailsSubscription;
     }
 
-    public function enableCommitteesNotifications()
+    public function enableCommitteesNotifications(): void
     {
         $this->localHostEmailsSubscription = true;
     }
 
-    public function disableCommitteesNotifications()
+    public function disableCommitteesNotifications(): void
     {
         $this->localHostEmailsSubscription = false;
     }
@@ -344,13 +336,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * Activates the Adherent account with the provided activation token.
      *
-     * @param AdherentActivationToken $token
-     * @param string                  $timestamp
-     *
      * @throws AdherentException
      * @throws AdherentTokenException
      */
-    public function activate(AdherentActivationToken $token, string $timestamp = 'now')
+    public function activate(AdherentActivationToken $token, string $timestamp = 'now'): void
     {
         if ($this->activatedAt) {
             throw new AdherentAlreadyEnabledException($this->uuid);
@@ -362,7 +351,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->activatedAt = new \DateTime($timestamp);
     }
 
-    public function resetPassword(AdherentResetPasswordToken $token)
+    /**
+     * Resets the Adherent password using a reset pasword token.
+     *
+     * @throws \InvalidArgumentException
+     * @throws AdherentException
+     * @throws AdherentTokenException
+     */
+    public function resetPassword(AdherentResetPasswordToken $token): void
     {
         if (!$newPassword = $token->getNewPassword()) {
             throw new \InvalidArgumentException('Token must have a new password.');
@@ -374,12 +370,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->password = $newPassword;
     }
 
-    public function clearOldPassword()
+    public function clearOldPassword(): void
     {
         $this->oldPassword = null;
     }
 
-    public function migratePassword(string $newEncodedPassword)
+    public function migratePassword(string $newEncodedPassword): void
     {
         $this->password = $newEncodedPassword;
     }
@@ -389,17 +385,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      *
      * @param string|int $timestamp a valid date representation as a string or integer
      */
-    public function recordLastLoginTime($timestamp = 'now')
+    public function recordLastLoginTime($timestamp = 'now'): void
     {
         $this->lastLoggedAt = new \DateTime($timestamp);
     }
 
     /**
      * Returns the last login date and time of this adherent.
-     *
-     * @return \DateTime|null
      */
-    public function getLastLoggedAt()
+    public function getLastLoggedAt(): ?\DateTime
     {
         return $this->lastLoggedAt;
     }
@@ -407,15 +401,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @return array|null
      */
-    public function getInterests()
+    public function getInterests(): ?array
     {
         return $this->interests;
     }
 
-    /**
-     * @return string
-     */
-    public function getInterestsAsJson()
+    public function getInterestsAsJson(): ?string
     {
         return \GuzzleHttp\json_encode($this->interests, JSON_PRETTY_PRINT);
     }
@@ -423,12 +414,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @param array|null $interests
      */
-    public function setInterests(array $interests = null)
+    public function setInterests(array $interests = null): void
     {
         $this->interests = $interests;
     }
 
-    public function updateMembership(MembershipRequest $membership, PostAddress $postAddress)
+    public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
     {
         $this->gender = $membership->gender;
         $this->firstName = $membership->firstName;
@@ -443,53 +434,36 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     }
 
     /**
-     * Joins a committee as a SUPERVISOR priviledged person.
-     *
-     * @param Committee $committee
-     *
-     * @return CommitteeMembership
+     * Joins a committee as a SUPERVISOR privileged person.
      */
-    public function superviseCommittee(Committee $committee): CommitteeMembership
+    public function superviseCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
     {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate);
     }
 
     /**
-     * Joins a committee as a HOST priviledged person.
-     *
-     * @param Committee $committee
-     *
-     * @return CommitteeMembership
+     * Joins a committee as a HOST privileged person.
      */
-    public function hostCommittee(Committee $committee): CommitteeMembership
+    public function hostCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
     {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST);
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate);
     }
 
     /**
-     * Joins a committee as a simple FOLLOWER priviledged person.
-     *
-     * @param Committee $committee
-     *
-     * @return CommitteeMembership
+     * Joins a committee as a simple FOLLOWER privileged person.
      */
-    public function followCommittee(Committee $committee): CommitteeMembership
+    public function followCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
     {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER);
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate);
     }
 
-    private function joinCommittee(Committee $committee, string $privilege): CommitteeMembership
+    private function joinCommittee(Committee $committee, string $privilege, string $subscriptionDate): CommitteeMembership
     {
         $committee->incrementMembersCount();
 
-        return CommitteeMembership::createForAdherent($committee->getUuid(), $this, $privilege);
+        return CommitteeMembership::createForAdherent($committee->getUuid(), $this, $privilege, $subscriptionDate);
     }
 
-    /**
-     * Returns the adherent post address.
-     *
-     * @return PostAddress
-     */
     public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
@@ -497,47 +471,43 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     /**
      * Returns whether or not the current adherent is the same as the given one.
-     *
-     * @param Adherent $other
-     *
-     * @return bool
      */
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
     }
 
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus($status)
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    public function getRegisteredAt()
+    public function getRegisteredAt(): \DateTime
     {
         return $this->registeredAt;
     }
 
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setHasSubscribedMainEmails($mainEmailsSubscription)
+    public function setHasSubscribedMainEmails($mainEmailsSubscription): void
     {
         $this->mainEmailsSubscription = $mainEmailsSubscription;
     }
 
-    public function setHasSubscribedReferentsEmails($referentsEmailsSubscription)
+    public function setHasSubscribedReferentsEmails($referentsEmailsSubscription): void
     {
         $this->referentsEmailsSubscription = $referentsEmailsSubscription;
     }
 
-    public function setHasSubscribedLocalHostEmails($localHostEmailsSubscription)
+    public function setHasSubscribedLocalHostEmails($localHostEmailsSubscription): void
     {
         $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
@@ -547,7 +517,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->managedArea;
     }
 
-    public function setManagedArea(ManagedArea $managedArea)
+    public function setManagedArea(ManagedArea $managedArea): void
     {
         $this->managedArea = $managedArea;
     }
@@ -557,12 +527,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->procurationManagedArea;
     }
 
-    public function setProcurationManagedArea(ProcurationManagedArea $procurationManagedArea = null)
+    public function setProcurationManagedArea(ProcurationManagedArea $procurationManagedArea = null): void
     {
         $this->procurationManagedArea = $procurationManagedArea;
     }
 
-    public function setReferent(array $codes, string $markerLatitude, string $markerLongitude)
+    public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void
     {
         $this->managedArea = new ManagedArea();
         $this->managedArea->setCodes($codes);
@@ -570,7 +540,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->managedArea->setMarkerLongitude($markerLongitude);
     }
 
-    public function isReferent()
+    public function isReferent(): bool
     {
         return $this->managedArea instanceof ManagedArea && !empty($this->managedArea->getCodes());
     }
@@ -590,7 +560,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->managedArea->getMarkerLongitude();
     }
 
-    public function isProcurationManager()
+    public function isProcurationManager(): bool
     {
         return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
     }
@@ -604,7 +574,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->procurationManagedArea->getCodesAsString();
     }
 
-    public function setProcurationManagedAreaCodesAsString(string $codes = null)
+    public function setProcurationManagedAreaCodesAsString(string $codes = null): void
     {
         if (!$codes) {
             return;
@@ -626,9 +596,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->memberships;
     }
 
-    /**
-     * @return bool
-     */
     public function isHost(): bool
     {
         foreach ($this->memberships as $membership) {
@@ -640,9 +607,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function isHostOf(Committee $committee): bool
     {
         foreach ($this->memberships as $membership) {

@@ -239,13 +239,13 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $committee3 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_3_UUID,
             'created_by' => (string) $adherent7->getUuid(),
-            'created_at' => '2017-01-15 16:08:24',
+            'created_at' => '2017-01-26 16:08:24',
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
         ]);
-        $committee3->approved('2017-01-16 09:18:33');
+        $committee3->approved('2017-01-27 09:18:33');
 
         $committee4 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,
@@ -324,8 +324,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee7);
 
         // Make adherents join committees
-        $manager->persist($adherent3->superviseCommittee($committee1));
-        $manager->persist($adherent7->superviseCommittee($committee3));
+        $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
+        $manager->persist($adherent7->superviseCommittee($committee3, '2017-01-26 16:08:24'));
         $manager->persist($adherent7->superviseCommittee($committee4));
         $manager->persist($adherent7->superviseCommittee($committee5));
         $manager->persist($adherent2->followCommittee($committee1));
