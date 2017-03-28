@@ -193,6 +193,19 @@
         background: $pink;
         margin: 20px 0;
 
+        &__home {
+            flex: 1;
+            margin: 0 0 20px 0;
+
+            @media (max-width: $tablet) {
+                margin: 0;
+
+                &:last-child {
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
         &.blue {
             background: $blue;
         }
@@ -267,6 +280,19 @@
 
             &.pink {
                 @include btn--primary;
+            }
+
+            &.pink-yellow {
+                @include btn--primary;
+                color: $yellow;
+            }
+
+            &.white-blue {
+                color: $blue;
+
+                &:hover {
+                    color: white;
+                }
             }
 
             &.blue {

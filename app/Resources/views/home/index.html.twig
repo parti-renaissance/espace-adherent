@@ -8,7 +8,8 @@
 {% block content %}
 <main>
     <section class="l__wrapper">
-        <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom">
+        <div class="l__row l__tablet--col l__row--v-stretch
+                    {% if not enable_canary %} b__nudge--bottom{% endif %}">
             <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
                style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}');">
                 <div class="background">
@@ -41,6 +42,21 @@
                 </div>
             </a>
         </div>
+
+        {% if enable_canary %}
+        <div class="content">
+            <article class="l__row l__row--v-stretch l__tablet--col">
+                <div class="action action__home yellow">
+                    <p class="pink">J'agis pour la campagne !</p>
+                    <a href="{{ path('app_je_marche') }}" class="pink-yellow">Voir les actions</a>
+                </div>
+                <div class="action action__home blue">
+                    <p>2000 événements cette semaine !</p>
+                    <a href="{{ path('app_search_events') }}" class="white-blue">Je participe</a>
+                </div>
+            </article>
+        </div>
+        {% endif %}
 
         <div class="newsletter l__row l__row--h-stretch background--light space--20-30 l__row--wrap l__tablet--col">
             <div class="text--small text--all-caps space--10-0">Recevez la newsletter du mouvement</div>
