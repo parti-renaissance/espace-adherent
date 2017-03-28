@@ -27,7 +27,7 @@ class JeMarcheReport
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
     private $id;
 
@@ -54,14 +54,14 @@ class JeMarcheReport
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=11)
+     * @ORM\Column(length=11)
      *
      * @Assert\NotBlank(message="jemarche.postal_code.not_blank")
      * @Assert\Length(
-     *     min=2,
-     *     max=11,
-     *     minMessage="jemarche.postal_code.invalid",
-     *     maxMessage="jemarche.postal_code.invalid"
+     *   min=2,
+     *   max=11,
+     *   minMessage="jemarche.postal_code.invalid",
+     *   maxMessage="jemarche.postal_code.invalid"
      * )
      */
     private $postalCode = '';
@@ -72,7 +72,7 @@ class JeMarcheReport
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
-     *      @Assert\Email(message="jemarche.email.invalid")
+     *    @Assert\Email(message="jemarche.email.invalid")
      * })
      */
     private $convinced = [];
@@ -83,7 +83,7 @@ class JeMarcheReport
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
-     *      @Assert\Email(message="jemarche.email.invalid")
+     *    @Assert\Email(message="jemarche.email.invalid")
      * })
      */
     private $almostConvinced = [];
@@ -190,6 +190,11 @@ class JeMarcheReport
         return $this->convinced;
     }
 
+    public function getConvincedList(string $glue = '|'): string
+    {
+        return implode($glue, (array) $this->convinced);
+    }
+
     public function getConvincedAsString(): string
     {
         return implode("\n", $this->convinced);
@@ -208,6 +213,11 @@ class JeMarcheReport
     public function getAlmostConvinced(): array
     {
         return $this->almostConvinced;
+    }
+
+    public function getAlmostConvincedList(string $glue = '|'): string
+    {
+        return implode($glue, (array) $this->almostConvinced);
     }
 
     public function getAlmostConvincedAsString(): string

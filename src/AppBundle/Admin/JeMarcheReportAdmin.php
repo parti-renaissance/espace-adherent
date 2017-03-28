@@ -36,7 +36,8 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -50,7 +51,8 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -83,6 +85,22 @@ class JeMarcheReportAdmin extends AbstractAdmin
                     'show' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'id',
+            'type',
+            'emailAddress',
+            'postalCode',
+            'convincedList',
+            'almostConvincedList',
+            'notConvinced',
+            'reaction',
+            'createdAt',
+        ];
     }
 }
