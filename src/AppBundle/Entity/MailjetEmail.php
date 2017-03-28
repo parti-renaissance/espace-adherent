@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Mailjet\Message\MailjetMessage;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -9,6 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Table(name="mailjet_logs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MailjetEmailRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class MailjetEmail
 {

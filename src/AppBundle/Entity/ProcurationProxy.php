@@ -2,19 +2,22 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
-use libphonenumber\PhoneNumber;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationProxyRepository")
+
+ * @Algolia\Index(autoIndex=false)
  */
 class ProcurationProxy
 {

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+
 trait EntitySoftDeletableTrait
 {
     /**
@@ -17,5 +19,18 @@ trait EntitySoftDeletableTrait
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    public function isDeleted(): bool
+    {
+        return isset($this->deletedAt);
+    }
+
+    /**
+     * @Algolia\IndexIf
+     */
+    public function isNotDeleted(): bool
+    {
+        return !$this->isDeleted();
     }
 }
