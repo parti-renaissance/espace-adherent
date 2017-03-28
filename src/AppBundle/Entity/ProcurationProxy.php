@@ -46,6 +46,17 @@ class ProcurationProxy
     private $foundRequest;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="smallint")
+     *
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(value=0)
+     * @Assert\LessThanOrEqual(value=5)
+     */
+    private $reliability = 0;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=6)
@@ -374,6 +385,16 @@ class ProcurationProxy
     public function setReferent(Adherent $referent = null)
     {
         $this->referent = $referent;
+    }
+
+    public function getReliability(): ?int
+    {
+        return $this->reliability;
+    }
+
+    public function setReliability(?int $reliability)
+    {
+        $this->reliability = $reliability;
     }
 
     public function getGender()

@@ -38,45 +38,7 @@ class ProcurationProxyRepository extends EntityRepository
     public function findMatchingProxies(ProcurationRequest $procurationRequest)
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' AS score')
-            ->where($qb->expr()->orX(
-                'pp.voteCountry = \'FR\' AND pp.voteCity = :voteCity',
-                'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
-            ))
-            ->andWhere('pp.foundRequest IS NULL')
-            ->setParameter('voteCity', $procurationRequest->getVoteCity())
-            ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
-            ->orderBy('score', 'DESC')
-            ->addOrderBy('pp.lastName', 'ASC');
-
-        if ($procurationRequest->getElectionPresidentialFirstRound()) {
-            $qb->andWhere('pp.electionPresidentialFirstRound = TRUE');
-        }
-
-        if ($procurationRequest->getElectionPresidentialSecondRound()) {
-            $qb->andWhere('pp.electionPresidentialSecondRound = TRUE');
-        }
-
-        if ($procurationRequest->getElectionLegislativeFirstRound()) {
-            $qb->andWhere('pp.electionLegislativeFirstRound = TRUE');
-        }
-
-        if ($procurationRequest->getElectionLegislativeSecondRound()) {
-            $qb->andWhere('pp.electionLegislativeSecondRound = TRUE');
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param ProcurationRequest $procurationRequest
-     *
-     * @return array
-     */
-    public function isMatching(ProcurationRequest $procurationRequest, ProcurationProxy $procurationProxy)
-    {
-        $qb = $this->createQueryBuilder('pp');
-        $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' AS score')
+        $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
             ->where($qb->expr()->orX(
                 'pp.voteCountry = \'FR\' AND pp.voteCity = :voteCity',
                 'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
