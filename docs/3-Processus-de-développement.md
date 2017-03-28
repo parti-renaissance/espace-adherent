@@ -86,4 +86,21 @@ $ cd /dossier/du/projet
 $ make deps
 ```
 
+## Profiling avec Blackfire
+
+Uncomment the `tools` and `blackfire` services in docker-compose.override.yml
+
+Set the environment variables BLACKFIRE_CLIENT_* AND BLACKFIRE_SERVER_*, which are available in [https://blackfire.io/account](https://blackfire.io/account).
+
+Download the companion [here](https://chrome.google.com/webstore/detail/blackfire-companion/miefikpgahefdbcgoiicnmpbeeomffld) and start profiling !
+
+You can profile CLI commands like this:
+
+`docker-compose run --rm app blackfire run **You command**`
+
+For example, profiling phpunit:
+
+`docker-compose run --rm app blackfire run vendor/bin/phpunit`
+
+
 [Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)

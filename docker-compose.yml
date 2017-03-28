@@ -4,7 +4,6 @@ services:
     app:
         build:
             context: .
-            dockerfile: dev.dockerfile
         depends_on:
             - db
             - redis
@@ -38,7 +37,7 @@ services:
     tools:
         build:
             context: .
-            dockerfile: tools.dockerfile
+        command: sleep infinity
         depends_on:
             - db
         volumes_from:
