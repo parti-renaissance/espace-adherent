@@ -77,31 +77,28 @@ class CommitteeMembership
      * @param UuidInterface $committeeUuid
      * @param Adherent      $adherent
      * @param string        $privilege
+     * @param string        $subscriptionDate
      */
     private function __construct(
         UuidInterface $uuid,
         UuidInterface $committeeUuid,
         Adherent $adherent,
-        string $privilege = self::COMMITTEE_FOLLOWER
+        string $privilege = self::COMMITTEE_FOLLOWER,
+        string $subscriptionDate = 'now'
     ) {
         $this->uuid = $uuid;
         $this->committeeUuid = $committeeUuid;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
-        $this->joinedAt = new \DateTime();
+        $this->joinedAt = new \DateTime($subscriptionDate);
     }
 
-    /**
-     * Returns the list of committee host privileges.
-     *
-     * @return array
-     */
     final public static function getHostPrivileges(): array
     {
         return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
     }
 
-    public static function createForSupervisor(UuidInterface $committeeUuid, Adherent $supervisor): self
+    public static function createForSupervisor(UuidInterface $committeeUuid, Adherent $supervisor, string $subscriptionDate = 'now'): self
     {
         $committeeUuid = clone $committeeUuid;
 
@@ -109,11 +106,12 @@ class CommitteeMembership
             self::createUuid($supervisor->getUuid(), $committeeUuid),
             $committeeUuid,
             $supervisor,
-            self::COMMITTEE_SUPERVISOR
+            self::COMMITTEE_SUPERVISOR,
+            $subscriptionDate
         );
     }
 
-    public static function createForHost(UuidInterface $committeeUuid, Adherent $host): self
+    public static function createForHost(UuidInterface $committeeUuid, Adherent $host, string $subscriptionDate = 'now'): self
     {
         $committeeUuid = clone $committeeUuid;
 
@@ -121,23 +119,19 @@ class CommitteeMembership
             self::createUuid($host->getUuid(), $committeeUuid),
             $committeeUuid,
             $host,
-            self::COMMITTEE_HOST
+            self::COMMITTEE_HOST,
+            $subscriptionDate
         );
     }
 
     /**
      * Creates a new membership relationship between an adherent and a committee.
-     *
-     * @param UuidInterface $committeeUuid
-     * @param Adherent      $adherent
-     * @param string        $privilege
-     *
-     * @return CommitteeMembership
      */
     public static function createForAdherent(
         UuidInterface $committeeUuid,
         Adherent $adherent,
-        string $privilege = self::COMMITTEE_FOLLOWER
+        string $privilege = self::COMMITTEE_FOLLOWER,
+        string $subscriptionDate = 'now'
     ): self {
         $committeeUuid = clone $committeeUuid;
 
@@ -145,18 +139,11 @@ class CommitteeMembership
             self::createUuid($adherent->getUuid(), $committeeUuid),
             $committeeUuid,
             $adherent,
-            $privilege
+            $privilege,
+            $subscriptionDate
         );
     }
 
-    /**
-     * Computes a unique UUID with the provided adherent and committee UUIDs.
-     *
-     * @param UuidInterface $adherentUuid
-     * @param UuidInterface $committeeUuid
-     *
-     * @return UuidInterface
-     */
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
     {
         $key = sha1(sprintf('%s|%s', $adherentUuid, $committeeUuid));
@@ -165,9 +152,7 @@ class CommitteeMembership
     }
 
     /**
-     * Returns whether or not this membership is a supervisor priviledged membership.
-     *
-     * @return bool
+     * Returns whether or not this membership is a supervisor privileged membership.
      */
     public function isSupervisor(): bool
     {
@@ -175,9 +160,7 @@ class CommitteeMembership
     }
 
     /**
-     * Returns whether or not this membership is a host priviledged membership.
-     *
-     * @return bool
+     * Returns whether or not this membership is a host privileged membership.
      */
     public function isHostMember(): bool
     {
@@ -185,9 +168,7 @@ class CommitteeMembership
     }
 
     /**
-     * Returns whether or not this membership is a follower priviledged membership.
-     *
-     * @return bool
+     * Returns whether or not this membership is a follower privileged membership.
      */
     public function isFollower(): bool
     {
@@ -195,41 +176,24 @@ class CommitteeMembership
     }
 
     /**
-     * Returns whether or not this memberships enables the adherent
-     * to host a committee.
-     *
-     * @return bool
+     * Returns whether or not this membership enables the adherent to host a
+     * committee.
      */
     public function canHostCommittee(): bool
     {
         return in_array($this->privilege, self::getHostPrivileges(), true);
     }
 
-    /**
-     * Returns the adherent.
-     *
-     * @return Adherent|null
-     */
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
     }
 
-    /**
-     * Returns the adherent UUID.
-     *
-     * @return UuidInterface
-     */
     public function getAdherentUuid(): UuidInterface
     {
         return $this->adherent->getUuid();
     }
 
-    /**
-     * Returns the adherent UUID.
-     *
-     * @return UuidInterface
-     */
     public function getCommitteeUuid(): UuidInterface
     {
         return $this->committeeUuid;
@@ -256,5 +220,10 @@ class CommitteeMembership
         }
 
         $this->privilege = self::COMMITTEE_FOLLOWER;
+    }
+
+    public function getSubscriptionDate(): \DateTimeImmutable
+    {
+        return new \DateTimeImmutable($this->joinedAt->format(DATE_RFC822), $this->joinedAt->getTimezone());
     }
 }

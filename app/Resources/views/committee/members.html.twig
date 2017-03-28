@@ -150,11 +150,13 @@
                         <th>CP</th>
                         <th>Ville</th>
                         <th>Rôle</th>
+                        <th>Adhésion</th>
                         {% if is_supervisor %}
                             <th style="min-width: 200px;">Actions</th>
                         {% endif %}
                     </tr>
-                    {% for member in members %}
+                    {% for membership in members %}
+                        {% set member = membership.adherent %}
                         {% set isPromotableHost = is_promotable_host(member, committee) %}
                         {% set isDemotableHost = false %}
 
@@ -164,14 +166,14 @@
 
                         <tr{{ not isPromotableHost ? ' class="committee__members__list__host"' : '' }}>
                             <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                            <td>{{ member.firstName|capitalize }}</td>
-                            <td>{{ member.lastNameInitial|upper }}</td>
-                            <td>{{ member.age }}</td>
-                            <td>{{ member.postalCode }}</td>
-                            <td>{{ member.cityName }}</td>
+                            <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                            <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
+                            <td class="member-age">{{ member.age }}</td>
+                            <td class="member-postal-code">{{ member.postalCode }}</td>
+                            <td class="member-city-name">{{ member.cityName }}</td>
                             <td>
                                 {% if not isPromotableHost %}
-                                    {% if member.gender == 'female' %}
+                                    {% if member.female %}
                                         {{ isDemotableHost ? 'Co-animatrice' : 'Animatrice' }}
                                     {% else %}
                                         {{ isDemotableHost ? 'Co-animateur' : 'Animateur' }}
@@ -179,6 +181,9 @@
                                 {% else %}
                                     Membre
                                 {% endif %}
+                            </td>
+                            <td class="member-subscription-date">
+                                {{- membership.subscriptionDate|date('d/m/Y') -}}
                             </td>
                             {% if is_supervisor %}
                                 <td>
