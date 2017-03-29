@@ -98,7 +98,7 @@ class SocialShare
     private $socialShareCategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
      *
      * @Assert\NotBlank
      */

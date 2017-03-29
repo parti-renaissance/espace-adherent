@@ -6,6 +6,7 @@ use AppBundle\Entity\SocialShare;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\AdminType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SocialShareAdmin extends AbstractAdmin
@@ -13,37 +14,41 @@ class SocialShareAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', null, [
-                'label' => 'Nom',
-            ])
-            ->add('type', ChoiceType::class, [
-                'label' => 'Type',
-                'choices' => array_combine(SocialShare::TYPES, SocialShare::TYPES),
-            ])
-            ->add('socialShareCategory', null, [
-                'label' => 'Catégorie',
-            ])
-            ->add('media', null, [
-                'label' => 'Média',
-            ])
-            ->add('defaultUrl', null, [
-                'label' => 'URL par défaut ',
-            ])
-            ->add('description', null, [
-                'label' => 'Description',
-            ])
-            ->add('twitterUrl', null, [
-                'label' => 'Url Twitter',
-            ])
-            ->add('facebookUrl', null, [
-                'label' => 'Url Facebook',
-            ])
-            ->add('position', null, [
-                'label' => 'Position',
-            ])
-            ->add('published', null, [
-                'label' => 'Publié ?',
-            ])
+            ->with('Média', ['class' => 'col-md-6'])
+                ->add('media', AdminType::class, [
+                    'label' => 'Média',
+                ])
+            ->end()
+            ->with('Données sociales', ['class' => 'col-md-6'])
+                ->add('name', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('type', ChoiceType::class, [
+                    'label' => 'Type',
+                    'choices' => array_combine(SocialShare::TYPES, SocialShare::TYPES),
+                ])
+                ->add('socialShareCategory', null, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('defaultUrl', null, [
+                    'label' => 'URL par défaut ',
+                ])
+                ->add('description', null, [
+                    'label' => 'Description',
+                ])
+                ->add('twitterUrl', null, [
+                    'label' => 'Url Twitter',
+                ])
+                ->add('facebookUrl', null, [
+                    'label' => 'Url Facebook',
+                ])
+                ->add('position', null, [
+                    'label' => 'Position',
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié ?',
+                ])
+            ->end()
         ;
     }
 

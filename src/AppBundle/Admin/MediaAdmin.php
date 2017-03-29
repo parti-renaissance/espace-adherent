@@ -74,7 +74,7 @@ class MediaAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $isCreation = $this->getSubject()->getSize() === null;
+        $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
 
         $formMapper
             ->add('name', null, [
