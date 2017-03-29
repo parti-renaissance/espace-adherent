@@ -15,7 +15,7 @@ final class ProcurationProxyFoundMessage extends MailjetMessage
         ProcurationProxy $proxy,
         string $infosUrl
     ): self {
-        $message = new self(
+        $message = new static(
             Uuid::uuid4(),
             '120187',
             $request->getEmailAddress(),

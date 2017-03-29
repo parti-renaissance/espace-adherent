@@ -9,7 +9,7 @@ final class AdherentResetPasswordMessage extends MailjetMessage
 {
     public static function createFromAdherent(Adherent $adherent, string $resetPasswordLink): self
     {
-        $message = new static(
+        return new static(
             Uuid::uuid4(),
             '54686',
             $adherent->getEmailAddress(),
@@ -20,7 +20,5 @@ final class AdherentResetPasswordMessage extends MailjetMessage
                 'reset_link' => $resetPasswordLink,
             ]
         );
-
-        return $message;
     }
 }

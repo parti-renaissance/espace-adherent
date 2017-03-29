@@ -11,7 +11,7 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
 {
     public static function create(Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy): self
     {
-        $message = new self(
+        $message = new static(
             Uuid::uuid4(),
             '120189',
             $request->getEmailAddress(),
