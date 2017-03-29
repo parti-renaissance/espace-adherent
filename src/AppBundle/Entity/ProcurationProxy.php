@@ -270,6 +270,15 @@ class ProcurationProxy
     private $inviteSourceName = '';
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, nullable=true)
+     *
+     * @Assert\Length(max=100)
+     */
+    private $inviteSourceFirstName = '';
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message")
@@ -660,5 +669,15 @@ class ProcurationProxy
     public function setInviteSourceName(string $inviteSourceName = null)
     {
         $this->inviteSourceName = $inviteSourceName;
+    }
+
+    public function getInviteSourceFirstName(): ?string
+    {
+        return $this->inviteSourceFirstName;
+    }
+
+    public function setInviteSourceFirstName(string $inviteSourceFirstName = null)
+    {
+        $this->inviteSourceFirstName = $inviteSourceFirstName;
     }
 }
