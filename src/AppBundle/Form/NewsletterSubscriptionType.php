@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\NewsletterSubscription;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +22,8 @@ class NewsletterSubscriptionType extends AbstractType
             ])
             ->add('postalCode', TextType::class, [
                 'required' => false,
-            ]);
+            ])
+        ;
     }
 
     /**
@@ -30,7 +32,7 @@ class NewsletterSubscriptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\NewsletterSubscription',
+            'data_class' => NewsletterSubscription::class,
             'csrf_protection' => false,
         ]);
     }

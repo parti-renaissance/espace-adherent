@@ -6,26 +6,33 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterSubscriptionHandler
 {
-    private $entityManager;
+    private $manager;
     private $mailjet;
 
-    public function __construct(EntityManager $entityManager, MailjetService $mailjet)
+    public function __construct(EntityManager $manager, MailjetService $mailjet)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $manager;
         $this->mailjet = $mailjet;
     }
 
-    public function handle(NewsletterSubscription $subscription, Request $request)
+    public function subscribe(NewsletterSubscription $subscription)
     {
-        $subscription->setClientIp($request->getClientIp());
-
-        $this->entityManager->persist($subscription);
-        $this->entityManager->flush();
+        $this->manager->persist($subscription);
+        $this->manager->flush();
 
         $this->mailjet->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+    }
+
+    public function unsubscribe(?string $email)
+    {
+        $subscription = $this->manager->getRepository(NewsletterSubscription::class)->findOneBy(['email' => $email]);
+
+        if ($subscription) {
+            $this->manager->remove($subscription);
+            $this->manager->flush();
+        }
     }
 }

@@ -98,7 +98,7 @@ class MediaAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('path', null, [
-                'label' => 'Nom',
+                'label' => 'Chemin',
             ])
             ->add('mimeType', null, [
                 'label' => 'Type de fichier',

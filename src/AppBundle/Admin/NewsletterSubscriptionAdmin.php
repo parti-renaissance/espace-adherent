@@ -19,9 +19,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
             ->add('postalCode', null, [
                 'label' => 'Code postal',
             ])
-            ->add('clientIp', null, [
-                'label' => 'IP du client',
-            ]);
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show)
@@ -33,12 +31,10 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
             ->add('postalCode', null, [
                 'label' => 'Code postal',
             ])
-            ->add('clientIp', null, [
-                'label' => 'IP du client',
-            ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -46,10 +42,12 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         $datagridMapper
             ->add('email', null, [
                 'label' => 'Adresse e-mail',
+                'show_filter' => true,
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -60,9 +58,6 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
-            ])
-            ->add('clientIp', null, [
-                'label' => 'IP du client',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
