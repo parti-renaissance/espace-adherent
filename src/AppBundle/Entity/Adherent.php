@@ -253,7 +253,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return Genders::FEMALE === $this->gender;
     }
 
-    public function getBirthdate(): \DateTime
+    public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
     }
@@ -487,7 +487,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->status = $status;
     }
 
-    public function getRegisteredAt(): \DateTime
+    public function getRegisteredAt(): ?\DateTime
     {
         return $this->registeredAt;
     }
@@ -512,7 +512,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
 
-    public function getManagedArea(): ManagedArea
+    public function getManagedArea(): ?ManagedArea
     {
         return $this->managedArea;
     }
