@@ -4,6 +4,17 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Api -->
+        <service id="app.api.committee_provider" class="AppBundle\Api\CommitteeProvider">
+            <argument type="service" id="app.repository.committee"/>
+            <argument type="service" id="app.committee.url_generator"/>
+        </service>
+
+        <service id="app.api.event_provider" class="AppBundle\Api\EventProvider">
+            <argument type="service" id="app.repository.event"/>
+            <argument type="service" id="router"/>
+        </service>
+
         <!-- Addresses -->
         <service id="app.address.post_address_factory" class="AppBundle\Address\PostAddressFactory" public="false" />
 

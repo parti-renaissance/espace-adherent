@@ -64,6 +64,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getLongitude();
     }
 
+    public function isGeocoded(): bool
+    {
+        return $this->getLatitude() && $this->getLongitude();
+    }
+
     public function getGeocodableAddress(): string
     {
         return $this->postAddress->getGeocodableAddress();

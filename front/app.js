@@ -75,6 +75,12 @@ class App {
         });
     }
 
+    runEventsMap() {
+        System.import('pages/events_map').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('map_factory'), this.get('api'));
+        });
+    }
+
     runReferentUsers(columns, users) {
         System.import('pages/referent_users').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('slugifier'), columns, users);

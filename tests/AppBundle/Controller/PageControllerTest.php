@@ -2,32 +2,48 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class PageControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
-    public function testPages($path)
+    public function testPages(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
     }
 
-    public function testMap()
+    public function testCommitteesMap()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte En Marche !")')->count());
+        $this->assertContains('10 adhérents', $crawler->filter('.committees-map__counter')->first()->text());
+        $this->assertContains('6 comités', $crawler->filter('.committees-map__counter')->eq(1)->text());
+        $this->assertContains('6 événements', $crawler->filter('.committees-map__counter')->last()->text());
+    }
+
+    public function testCommitteesEventsMap()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/la-carte');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('html:contains("Les événements En Marche !")')->count());
+        $this->assertContains('4 événements', $crawler->filter('.committees-map__counter')->first()->text());
     }
 
     public function providePages()
@@ -50,9 +66,6 @@ class PageControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testProposalDraft()
     {
         $this->client->request(Request::METHOD_GET, '/emmanuel-macron/le-programme/mieux-vivre-de-son-travail');
@@ -64,6 +77,8 @@ class PageControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadAdherentData::class,
+            LoadEventData::class,
             LoadPageData::class,
             LoadProposalData::class,
         ]);

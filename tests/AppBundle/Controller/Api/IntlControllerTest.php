@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class IntlControllerTest extends SqliteWebTestCase
 {
-    /**
-     * @group functionnal
-     */
     public function testGetPostalCode()
     {
         $client = $this->makeClient();

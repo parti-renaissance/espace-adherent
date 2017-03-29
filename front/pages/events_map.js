@@ -1,8 +1,8 @@
 /*
- * Commitees map
+ * Upcoming events map
  */
 export default (mapFactory, api) => {
-    api.getCommittees((committees) => {
+    api.getUpcomingEvents((events) => {
         const map = mapFactory.createMap(dom('#map'), {
             center: { lat: 46.7699, lng: 2.4279 }, // France coordinates
             streetViewControl: false,
@@ -11,10 +11,10 @@ export default (mapFactory, api) => {
 
         let infowindow = null;
 
-        committees.forEach((committee) => {
+        events.forEach((event) => {
             const marker = mapFactory.addMarker(map, {
-                title: committee.name,
-                position: committee.position,
+                title: event.name,
+                position: event.position,
             });
 
             google.maps.event.addListener(marker, 'click', () => {
@@ -23,8 +23,8 @@ export default (mapFactory, api) => {
                 }
 
                 infowindow = new google.maps.InfoWindow({
-                    content: `<a href="${committee.url}" target="_blank">${committee.name}</a>`,
-                    position: committee.position,
+                    content: `<a href="${event.url}" target="_blank">${event.name}</a>`,
+                    position: event.position,
                     pixelOffset: new google.maps.Size(0, -8),
                 });
 
