@@ -51,7 +51,7 @@ class EventNotificationMessage extends MailjetMessage
             $eventOkLink
         );
 
-        $message = new self(
+        $message = new static(
             Uuid::uuid4(),
             '54917',
             $recipient->getEmailAddress(),

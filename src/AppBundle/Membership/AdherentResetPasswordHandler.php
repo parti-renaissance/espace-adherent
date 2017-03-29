@@ -5,6 +5,7 @@ namespace AppBundle\Membership;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\AdherentResetPasswordConfirmationMessage;
 use AppBundle\Mailjet\Message\AdherentResetPasswordMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -51,6 +52,8 @@ class AdherentResetPasswordHandler
         $adherent->resetPassword($token);
 
         $this->manager->flush();
+
+        $this->mailjet->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
     }
 
     private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token)
