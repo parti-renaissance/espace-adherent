@@ -70,6 +70,7 @@ class ArticleController extends Controller
 
         return $this->render('article/article.html.twig', [
             'article' => $article,
+            'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
         ]);
     }
 
