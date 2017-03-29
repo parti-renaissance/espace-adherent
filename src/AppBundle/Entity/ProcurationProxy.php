@@ -221,7 +221,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=50, nullable=true)
      *
-     * @Assert\Length(max=50, groups={"vote"})
+     * @Assert\Length(max=50)
      */
     private $voteOffice;
 
