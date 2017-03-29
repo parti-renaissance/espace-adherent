@@ -26,7 +26,7 @@
                 <div class="committee__event__header__cta">
                     <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
-                        {{ include('components/participants.html.twig') }}
+                        {{ include('icons/participants.html.twig') }}
                         {{ 'event.participants_count'|transchoice(event.participantsCount) }}
                     </div>
                     <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
@@ -51,7 +51,7 @@
             </div>
 
             <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
-                {{ include('components/caret--left.html.twig') }}
+                {{ include('icons/caret--left.html.twig') }}
                 Retour à l'événement</a>
         </section>
         <section class="l__wrapper--slim space--30-0 text--body">
