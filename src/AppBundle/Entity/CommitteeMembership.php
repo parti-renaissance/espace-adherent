@@ -236,4 +236,9 @@ class CommitteeMembership
     {
         return new \DateTimeImmutable($this->joinedAt->format(DATE_RFC822), $this->joinedAt->getTimezone());
     }
+
+    public function matches(Adherent $adherent, Committee $committee): bool
+    {
+        return $adherent->equals($this->getAdherent()) && $this->committeeUuid->equals($committee->getUuid());
+    }
 }

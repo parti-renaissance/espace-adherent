@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @group functional
+ * @group functionnal
  */
 class IntlControllerTest extends SqliteWebTestCase
 {

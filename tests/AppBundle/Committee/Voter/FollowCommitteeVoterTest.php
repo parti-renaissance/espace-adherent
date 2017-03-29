@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Voter\FollowCommitteeVoter;
-use AppBundle\Repository\CommitteeMembershipRepository;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
 
@@ -12,7 +12,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
 {
     /* @var FollowCommitteeVoter */
     private $voter;
-    private $repository;
+    private $manager;
 
     public function testCommitteeHostAdherentIsNotAllowedToUnfollowCommittee()
     {
@@ -25,10 +25,10 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('findMembership')
-            ->with($adherent, (string) $committee->getUuid())
+            ->method('getCommitteeMembership')
+            ->with($adherent, $committee)
             ->willReturn($membership);
 
         $this->assertSame(
@@ -48,10 +48,10 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('findMembership')
-            ->with($adherent, (string) $committee->getUuid())
+            ->method('getCommitteeMembership')
+            ->with($adherent, $committee)
             ->willReturn($membership);
 
         $this->assertSame(
@@ -69,10 +69,10 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('findMembership')
-            ->with($adherent, (string) $committee->getUuid())
+            ->method('getCommitteeMembership')
+            ->with($adherent, $committee)
             ->willReturn(null);
 
         $this->assertSame(
@@ -83,7 +83,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testAdherentIsNotAllowedToUnfollowAnUnapprovedCommittee()
     {
-        $this->repository->expects($this->never())->method('findMembership');
+        $this->manager->expects($this->never())->method('getCommitteeMembership');
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
@@ -96,7 +96,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testAdherentIsNotAllowedToFollowAnUnapprovedCommittee()
     {
-        $this->repository->expects($this->never())->method('isMemberOf');
+        $this->manager->expects($this->never())->method('isFollowingCommittee');
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
@@ -115,10 +115,10 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('isMemberOf')
-            ->with($adherent, (string) $committee->getUuid())
+            ->method('isFollowingCommittee')
+            ->with($adherent, $committee)
             ->willReturn(true);
 
         $token = $this->createAuthenticatedToken($adherent);
@@ -137,10 +137,10 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('isMemberOf')
-            ->with($adherent, (string) $committee->getUuid())
+            ->method('isFollowingCommittee')
+            ->with($adherent, $committee)
             ->willReturn(false);
 
         $token = $this->createAuthenticatedToken($adherent);
@@ -209,7 +209,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         );
     }
 
-    public function testAdherentIsDeniedToFollowCommitteeThatHeAlreadyFollows()
+    public function testAdherentIsDeniedToFollowCommitteeTwice()
     {
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $committee->approved();
@@ -218,12 +218,11 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('isMemberOf')
-            ->with($adherent, $committee->getUuid()->toString())
-            ->willReturn(true)
-        ;
+            ->method('isFollowingCommittee')
+            ->with($adherent, $committee)
+            ->willReturn(true);
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -240,12 +239,11 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
-            ->method('isMemberOf')
-            ->with($adherent, $committee->getUuid()->toString())
-            ->willReturn(false)
-        ;
+            ->method('isFollowingCommittee')
+            ->with($adherent, $committee)
+            ->willReturn(false);
 
         $this->assertSame(
             VoterInterface::ACCESS_GRANTED,
@@ -257,14 +255,14 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     {
         parent::setUp();
 
-        $this->repository = $this->createMock(CommitteeMembershipRepository::class);
-        $this->voter = new FollowCommitteeVoter($this->repository);
+        $this->manager = $this->createMock(CommitteeManager::class);
+        $this->voter = new FollowCommitteeVoter($this->manager);
     }
 
     protected function tearDown()
     {
         $this->voter = null;
-        $this->repository = null;
+        $this->manager = null;
 
         parent::tearDown();
     }

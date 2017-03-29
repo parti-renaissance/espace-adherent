@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Voter\SuperviseCommitteeVoter;
-use AppBundle\Repository\CommitteeMembershipRepository;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
 
@@ -12,15 +12,14 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
 {
     /* @var SuperviseCommitteeVoter */
     private $voter;
-
-    private $repository;
+    private $manager;
 
     public function testUnsupportedAdherentType()
     {
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $token = $this->createAuthenticatedToken(new User('foobar', 'password', ['ROLE_ADHERENT']));
 
-        $this->repository->expects($this->never())->method('superviseCommittee');
+        $this->manager->expects($this->never())->method('superviseCommittee');
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -32,7 +31,7 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
     {
         $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID));
 
-        $this->repository->expects($this->never())->method('superviseCommittee');
+        $this->manager->expects($this->never())->method('superviseCommittee');
 
         $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -46,7 +45,7 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
         $committee = $this->createCommittee(self::ADHERENT_1_UUID);
         $token = $this->createAuthenticatedToken($adherent);
 
-        $this->repository->expects($this->never())->method('superviseCommittee');
+        $this->manager->expects($this->never())->method('superviseCommittee');
 
         $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -61,7 +60,7 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
 
         $token = $this->createAnonymousToken();
 
-        $this->repository->expects($this->never())->method('superviseCommittee');
+        $this->manager->expects($this->never())->method('superviseCommittee');
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
@@ -79,10 +78,10 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
             ->method('superviseCommittee')
-            ->with($adherent, (string) $committee->getUuid())
+            ->with($adherent, $committee)
             ->willReturn(false);
 
         $this->assertSame(
@@ -98,10 +97,10 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
         $token = $this->createAuthenticatedToken($adherent);
 
         $this
-            ->repository
+            ->manager
             ->expects($this->once())
             ->method('superviseCommittee')
-            ->with($adherent, (string) $committee->getUuid())
+            ->with($adherent, $committee)
             ->willReturn(true);
 
         $this->assertSame(
@@ -114,13 +113,13 @@ class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
     {
         parent::setUp();
 
-        $this->repository = $this->createMock(CommitteeMembershipRepository::class);
-        $this->voter = new SuperviseCommitteeVoter($this->repository);
+        $this->manager = $this->createMock(CommitteeManager::class);
+        $this->voter = new SuperviseCommitteeVoter($this->manager);
     }
 
     protected function tearDown()
     {
-        $this->repository = null;
+        $this->manager = null;
         $this->voter = null;
 
         parent::tearDown();

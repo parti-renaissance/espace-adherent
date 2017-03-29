@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
@@ -588,34 +589,50 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->procurationManagedArea->setCodesAsString((string) $codes);
     }
 
-    /**
-     * @return CommitteeMembership[]|Collection
-     */
-    public function getMemberships()
+    final public function getMemberships(): CommitteeMembershipCollection
     {
+        if ($this->memberships instanceof Collection) {
+            if (!$this->memberships instanceof CommitteeMembershipCollection) {
+                $this->memberships = new CommitteeMembershipCollection($this->memberships->toArray());
+            }
+        } else {
+            $this->memberships = new CommitteeMembershipCollection((array) $this->memberships);
+        }
+
         return $this->memberships;
+    }
+
+    public function getMembershipFor(Committee $committee): ?CommitteeMembership
+    {
+        foreach ($this->memberships as $membership) {
+            if ($membership->matches($this, $committee)) {
+                return $membership;
+            }
+        }
+
+        return null;
     }
 
     public function isHost(): bool
     {
-        foreach ($this->memberships as $membership) {
-            if ($membership->canHostCommittee()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getMemberships()->countCommitteeHostMemberships() >= 1;
     }
 
     public function isHostOf(Committee $committee): bool
     {
-        foreach ($this->memberships as $membership) {
-            if (($membership->isSupervisor() || $membership->isHostMember())
-                && $membership->getCommitteeUuid() === $committee->getUuid()->toString()) {
-                return true;
-            }
+        if (!$membership = $this->getMembershipFor($committee)) {
+            return false;
         }
 
-        return false;
+        return $membership->canHostCommittee();
+    }
+
+    public function isSupervisorOf(Committee $committee): bool
+    {
+        if (!$membership = $this->getMembershipFor($committee)) {
+            return false;
+        }
+
+        return $membership->isSupervisor();
     }
 }

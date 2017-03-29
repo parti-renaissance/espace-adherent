@@ -16,16 +16,6 @@ class CommitteeRepositoryTest extends SqliteWebTestCase
 
     use ControllerTestTrait;
 
-    public function testAdherentHasWaitingForApprovalCommittees()
-    {
-        $this->assertFalse($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_1_UUID));
-        $this->assertFalse($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_2_UUID));
-        $this->assertFalse($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_3_UUID));
-        $this->assertFalse($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_4_UUID));
-        $this->assertFalse($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_5_UUID));
-        $this->assertTrue($this->repository->hasWaitingForApprovalCommittees(LoadAdherentData::ADHERENT_6_UUID));
-    }
-
     public function testCountApprovedCommittees()
     {
         $this->assertSame(6, $this->repository->countApprovedCommittees());

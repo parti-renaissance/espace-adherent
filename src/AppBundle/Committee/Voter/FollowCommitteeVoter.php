@@ -2,18 +2,18 @@
 
 namespace AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeMembershipRepository;
 
 class FollowCommitteeVoter extends AbstractCommitteeVoter
 {
-    private $repository;
+    private $manager;
 
-    public function __construct(CommitteeMembershipRepository $repository)
+    public function __construct(CommitteeManager $manager)
     {
-        $this->repository = $repository;
+        $this->manager = $manager;
     }
 
     protected function supports($attribute, $subject)
@@ -33,17 +33,22 @@ class FollowCommitteeVoter extends AbstractCommitteeVoter
         }
 
         if (CommitteePermissions::FOLLOW === $attribute) {
-            return !$this->repository->isMemberOf($adherent, (string) $committee->getUuid());
+            return $this->voteOnFollowCommitteeAttribute($adherent, $committee);
         }
 
         return $this->voteOnUnfollowCommitteeAttribute($adherent, $committee);
+    }
+
+    private function voteOnFollowCommitteeAttribute(Adherent $adherent, Committee $committee): bool
+    {
+        return !$this->manager->isFollowingCommittee($adherent, $committee);
     }
 
     private function voteOnUnfollowCommitteeAttribute(Adherent $adherent, Committee $committee): bool
     {
         // An adherent who isn't already following (or hosting) a committee
         // cannot unfollow (or leave) it.
-        if (!$membership = $this->repository->findMembership($adherent, $committee->getUuid())) {
+        if (!$membership = $this->manager->getCommitteeMembership($adherent, $committee)) {
             return false;
         }
 

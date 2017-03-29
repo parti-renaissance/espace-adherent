@@ -2,21 +2,21 @@
 
 namespace AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeMembershipRepository;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class SuperviseCommitteeVoter extends Voter
 {
-    private $committeeMembershipRepository;
+    private $manager;
 
-    public function __construct(CommitteeMembershipRepository $committeeMembershipRepository)
+    public function __construct(CommitteeManager $manager)
     {
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
+        $this->manager = $manager;
     }
 
     protected function supports($attribute, $subject): bool
@@ -43,6 +43,6 @@ class SuperviseCommitteeVoter extends Voter
             return false;
         }
 
-        return $this->committeeMembershipRepository->superviseCommittee($supervisor, $committee->getUuid());
+        return $this->manager->superviseCommittee($supervisor, $committee);
     }
 }

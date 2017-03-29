@@ -50,50 +50,62 @@ class CommitteeManager
 
     public function isCommitteeHost(Adherent $adherent): bool
     {
-        $memberships = $this->getMembershipRepository()->findMemberships($adherent);
-
-        if (!$memberships->count()) {
-            return false;
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($adherent->isHost()) {
+            return true;
         }
 
-        $hostedCommittees = $this->getCommitteeRepository()->findCommittees(
-            $memberships->getCommitteeHostMemberships()->getCommitteeUuids(),
-            CommitteeRepository::ONLY_APPROVED
-        );
-
-        return count($hostedCommittees) >= 1;
+        return $this->getMembershipRepository()->hostCommittee($adherent);
     }
 
-    public function getAdherentCommittees(Adherent $adherent, int $limit = 1000): array
+    public function hostCommittee(Adherent $adherent, Committee $committee): bool
     {
-        $memberships = $this->getMembershipRepository()->findMemberships($adherent);
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($adherent->isHostOf($committee)) {
+            return true;
+        }
 
-        if (!$memberships->count()) {
+        return $this->getMembershipRepository()->hostCommittee($adherent, $committee->getUuid());
+    }
+
+    public function superviseCommittee(Adherent $adherent, Committee $committee): bool
+    {
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($adherent->isSupervisorOf($committee)) {
+            return true;
+        }
+
+        return $this->getMembershipRepository()->superviseCommittee($adherent, $committee->getUuid());
+    }
+
+    public function getAdherentCommittees(Adherent $adherent): array
+    {
+        // Prevent SQL query if the adherent doesn't follow any committees yet.
+        if (!count($memberships = $adherent->getMemberships())) {
             return [];
         }
 
-        // We want the hosted committees first.
-        $repository = $this->getCommitteeRepository();
+        $committees = $this
+            ->getCommitteeRepository()
+            ->findCommittees($memberships->getCommitteeUuids(), CommitteeRepository::INCLUDE_UNAPPROVED)
+            ->getOrderedCommittees($adherent->getMemberships())
+            ->filter(function (Committee $committee) use ($adherent) {
+                // Any approved committee is kept.
+                if ($committee->isApproved()) {
+                    return $committee;
+                }
 
-        $hostedCommittees = $repository->findCommittees(
-            $memberships->getCommitteeHostMemberships()->getCommitteeUuids(),
-            CommitteeRepository::INCLUDE_UNAPPROVED,
-            $limit
-        );
+                // However, an unapproved committee is kept only if it was created by the adherent.
+                if ($committee->isCreatedBy($adherent->getUuid())) {
+                    return $committee;
+                }
+            })
+        ;
 
-        if ($limit === $hostedCommitteesCount = count($hostedCommittees)) {
-            return $hostedCommittees;
-        }
-
-        // Then, the followed committees.
-        $limit -= $hostedCommitteesCount;
-        $followedCommittees = $repository->findCommittees(
-            $memberships->getCommitteeFollowerMemberships()->getCommitteeUuids(),
-            CommitteeRepository::ONLY_APPROVED,
-            $limit
-        );
-
-        return array_merge($hostedCommittees, $followedCommittees);
+        return $committees->toArray();
     }
 
     public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
@@ -104,9 +116,14 @@ class CommitteeManager
         ;
     }
 
+    public function countCommitteeHosts(Committee $committee): int
+    {
+        return $this->getMembershipRepository()->countHostMembers($committee->getUuid());
+    }
+
     public function getCommitteeHosts(Committee $committee): AdherentCollection
     {
-        return $this->getMembershipRepository()->findHostMembers($committee->getUuid()->toString());
+        return $this->getMembershipRepository()->findHostMembers($committee->getUuid());
     }
 
     public function getCommitteeCreator(Committee $committee): Adherent
@@ -116,7 +133,7 @@ class CommitteeManager
 
     public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
-        return $this->getMembershipRepository()->findFollowers($committee->getUuid()->toString(), $withHosts);
+        return $this->getMembershipRepository()->findFollowers($committee->getUuid(), $withHosts);
     }
 
     public function getOptinCommitteeFollowers(Committee $committee): AdherentCollection
@@ -157,6 +174,17 @@ class CommitteeManager
     public function getCommitteeMemberships(Committee $committee): CommitteeMembershipCollection
     {
         return $this->getMembershipRepository()->findCommitteeMemberships($committee->getUuid());
+    }
+
+    public function getCommitteeMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    {
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($membership = $adherent->getMembershipFor($committee)) {
+            return $membership;
+        }
+
+        return $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
     }
 
     /**
@@ -221,6 +249,11 @@ class CommitteeManager
         if ($flush) {
             $this->getManager()->flush();
         }
+    }
+
+    public function isFollowingCommittee(Adherent $adherent, Committee $committee): bool
+    {
+        return $this->getCommitteeMembership($adherent, $committee) instanceof CommitteeMembership;
     }
 
     /**

@@ -332,9 +332,9 @@ class AdherentControllerTest extends SqliteWebTestCase
      * @group functionnal
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
-    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emaiLAddress, string $password)
+    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress, string $password)
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emaiLAddress, $password);
+        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress, $password);
         $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
 
         // Try to cheat the system with a direct URL access.

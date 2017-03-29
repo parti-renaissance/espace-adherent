@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
@@ -76,31 +77,6 @@ class CommitteeRepository extends EntityRepository
     }
 
     /**
-     * Returns whether or not the given adherent has "waiting for approval"
-     * committees.
-     *
-     * @param string $adherentUuid
-     *
-     * @return bool
-     */
-    public function hasWaitingForApprovalCommittees(string $adherentUuid): bool
-    {
-        $adherentUuid = Uuid::fromString($adherentUuid);
-
-        $query = $this
-            ->createQueryBuilder('c')
-            ->select('COUNT(c.uuid)')
-            ->where('c.createdBy = :adherent')
-            ->andWhere('c.status = :status')
-            ->setParameter('adherent', (string) $adherentUuid)
-            ->setParameter('status', Committee::PENDING)
-            ->getQuery()
-        ;
-
-        return (int) $query->getSingleScalarResult() >= 1;
-    }
-
-    /**
      * Returns the most recent created Committee.
      *
      * @return Committee|null
@@ -153,31 +129,30 @@ class CommitteeRepository extends EntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): array
+    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): CommitteeCollection
     {
         if (!$uuids) {
-            return [];
+            return new CommitteeCollection();
+        }
+
+        $statuses[] = Committee::APPROVED;
+        if (self::INCLUDE_UNAPPROVED === $statusFilter) {
+            $statuses[] = Committee::PENDING;
         }
 
         $qb = $this->createQueryBuilder('c');
 
         $qb
             ->where($qb->expr()->in('c.uuid', $uuids))
+            ->andWhere($qb->expr()->in('c.status', $statuses))
             ->orderBy('c.membersCounts', 'DESC')
         ;
-
-        if (self::ONLY_APPROVED === $statusFilter) {
-            $qb
-                ->andWhere('c.status = :status')
-                ->setParameter('status', Committee::APPROVED)
-            ;
-        }
 
         if ($limit >= 1) {
             $qb->setMaxResults($limit);
         }
 
-        return $qb->getQuery()->getResult();
+        return new CommitteeCollection($qb->getQuery()->getResult());
     }
 
     public function findManagedBy(Adherent $referent)

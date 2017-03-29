@@ -2,24 +2,19 @@
 
 namespace AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\CommitteeRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CreateCommitteeVoter implements VoterInterface
 {
-    private $committeeRepository;
-    private $committeeMembershipRepository;
+    private $manager;
 
-    public function __construct(
-        CommitteeMembershipRepository $committeeMembershipRepository,
-        CommitteeRepository $committeeRepository
-    ) {
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
-        $this->committeeRepository = $committeeRepository;
+    public function __construct(CommitteeManager $manager)
+    {
+        $this->manager = $manager;
     }
 
     public function vote(TokenInterface $token, $subject, array $attributes)
@@ -42,16 +37,6 @@ class CreateCommitteeVoter implements VoterInterface
             return self::ACCESS_DENIED;
         }
 
-        $adherentUuid = (string) $adherent->getUuid();
-
-        if ($this->committeeMembershipRepository->hostCommittee($adherent)) {
-            return self::ACCESS_DENIED;
-        }
-
-        if ($this->committeeRepository->hasWaitingForApprovalCommittees($adherentUuid)) {
-            return self::ACCESS_DENIED;
-        }
-
-        return self::ACCESS_GRANTED;
+        return $this->manager->isCommitteeHost($adherent) ? self::ACCESS_DENIED : self::ACCESS_GRANTED;
     }
 }

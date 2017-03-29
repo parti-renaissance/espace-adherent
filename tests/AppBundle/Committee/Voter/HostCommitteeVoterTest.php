@@ -2,11 +2,10 @@
 
 namespace Tests\AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\Voter\HostCommitteeVoter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -17,7 +16,7 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     private $token;
     private $adherent;
     private $committee;
-    private $committeeMembershipRepository;
+    private $committeeManager;
 
     /* @var HostCommitteeVoter */
     private $voter;
@@ -25,17 +24,11 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     public function testHostCommitteePermissionIsGranted()
     {
         $this
-            ->committeeMembershipRepository
+            ->committeeManager
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with($this->adherent, self::COMMITTEE_UUID)
+            ->with($this->adherent, $this->committee)
             ->willReturn(true);
-
-        $this
-            ->committee
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::COMMITTEE_UUID));
 
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, ['HOST_COMMITTEE']));
     }
@@ -43,25 +36,18 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     public function testHostCommitteePermissionIsDenied()
     {
         $this
-            ->committeeMembershipRepository
+            ->committeeManager
             ->expects($this->once())
             ->method('hostCommittee')
-            ->with($this->adherent, self::COMMITTEE_UUID)
+            ->with($this->adherent, $this->committee)
             ->willReturn(false);
-
-        $this
-            ->committee
-            ->expects($this->once())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString(self::COMMITTEE_UUID));
 
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, ['HOST_COMMITTEE']));
     }
 
     public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
-        $this->committee->expects($this->never())->method('getUuid');
+        $this->committeeManager->expects($this->never())->method('hostCommittee');
 
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($this->token, $this->committee, ['CREATE_FOOBAR']));
     }
@@ -70,25 +56,11 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->committeeMembershipRepository = $this
-            ->getMockBuilder(CommitteeMembershipRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->adherent = $this
-            ->getMockBuilder(Adherent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->committee = $this
-            ->getMockBuilder(Committee::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->committeeManager = $this->createMock(CommitteeManager::class);
+        $this->adherent = $this->createMock(Adherent::class);
+        $this->committee = $this->createMock(Committee::class);
         $this->token = new UsernamePasswordToken($this->adherent, 'password', 'users_db');
-
-        $this->voter = new HostCommitteeVoter($this->committeeMembershipRepository);
+        $this->voter = new HostCommitteeVoter($this->committeeManager);
     }
 
     protected function tearDown()
@@ -96,7 +68,7 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
         $this->token = null;
         $this->adherent = null;
         $this->committee = null;
-        $this->committeeMembershipRepository = null;
+        $this->committeeManager = null;
         $this->voter = null;
 
         parent::tearDown();

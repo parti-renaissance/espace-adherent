@@ -2,9 +2,8 @@
 
 namespace Tests\AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\Voter\CreateCommitteeVoter;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\CommitteeRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
@@ -16,8 +15,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     private $adherent;
     private $referent;
-    private $committeeRepository;
-    private $committeeMembershipRepository;
+    private $committeeManager;
 
     /* @var CreateCommitteeVoter */
     private $voter;
@@ -25,17 +23,10 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
     public function testCreateCommitteePermissionIsGranted()
     {
         $this
-            ->committeeMembershipRepository
+            ->committeeManager
             ->expects($this->once())
-            ->method('hostCommittee')
+            ->method('isCommitteeHost')
             ->with($this->adherent)
-            ->willReturn(false);
-
-        $this
-            ->committeeRepository
-            ->expects($this->once())
-            ->method('hasWaitingForApprovalCommittees')
-            ->with($this->adherent->getUuid()->toString())
             ->willReturn(false);
 
         $token = $this->createAuthenticationToken($this->adherent);
@@ -43,39 +34,13 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
 
-    public function testCreateCommitteePermissionIsDeniedWhenHost()
+    public function testCreateCommitteePermissionIsDeniedWhenAdherentIsAlreadyHost()
     {
         $this
-            ->committeeMembershipRepository
+            ->committeeManager
             ->expects($this->once())
-            ->method('hostCommittee')
+            ->method('isCommitteeHost')
             ->with($this->adherent)
-            ->willReturn(true);
-
-        $this
-            ->committeeRepository
-            ->expects($this->never())
-            ->method('hasWaitingForApprovalCommittees');
-
-        $token = $this->createAuthenticationToken($this->adherent);
-
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
-    }
-
-    public function testCreateCommitteePermissionIsDeniedWhenHostWaitingForApproval()
-    {
-        $this
-            ->committeeMembershipRepository
-            ->expects($this->once())
-            ->method('hostCommittee')
-            ->with($this->adherent)
-            ->willReturn(false);
-
-        $this
-            ->committeeRepository
-            ->expects($this->once())
-            ->method('hasWaitingForApprovalCommittees')
-            ->with($this->adherent->getUuid()->toString())
             ->willReturn(true);
 
         $token = $this->createAuthenticationToken($this->adherent);
@@ -83,17 +48,9 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
 
-    public function testCreateCommitteePermissionIsDeniedWhenReferent()
+    public function testCreateCommitteePermissionIsDeniedWhenAdherentIsAlsoReferent()
     {
-        $this
-            ->committeeMembershipRepository
-            ->expects($this->never())
-            ->method('hostCommittee');
-
-        $this
-            ->committeeRepository
-            ->expects($this->never())
-            ->method('hasWaitingForApprovalCommittees');
+        $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken($this->referent);
 
@@ -102,8 +59,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
-        $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
+        $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken($this->adherent);
 
@@ -112,8 +68,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testCreateCommitteePermissionWithUnsupportedAdherentIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
-        $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
+        $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken(new User('foobar', 'barfoo'));
 
@@ -122,8 +77,7 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 
     public function testCreateCommitteePermissionWithExplicitSubjectIsAbstain()
     {
-        $this->committeeMembershipRepository->expects($this->never())->method('hostCommittee');
-        $this->committeeRepository->expects($this->never())->method('hasWaitingForApprovalCommittees');
+        $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken(new User('foobar', 'barfoo'));
 
@@ -141,31 +95,16 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
 
         $this->adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_UUID);
         $this->referent = $this->createReferentFromUuidAndEmail(self::ADHERENT_UUID);
+        $this->committeeManager = $this->createMock(CommitteeManager::class);
 
-        $this->committeeMembershipRepository = $this
-            ->getMockBuilder(CommitteeMembershipRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->committeeRepository = $this
-            ->getMockBuilder(CommitteeRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->voter = new CreateCommitteeVoter(
-            $this->committeeMembershipRepository,
-            $this->committeeRepository
-        );
+        $this->voter = new CreateCommitteeVoter($this->committeeManager);
     }
 
     protected function tearDown()
     {
         $this->adherent = null;
         $this->referent = null;
-        $this->committeeRepository = null;
-        $this->committeeMembershipRepository = null;
+        $this->committeeManager = null;
         $this->voter = null;
 
         parent::tearDown();
