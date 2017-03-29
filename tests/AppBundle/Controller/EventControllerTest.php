@@ -275,7 +275,7 @@ class EventControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Valider')->form());
+        $this->client->submit($crawler->selectButton('Oui, annuler l\'événement')->form());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
