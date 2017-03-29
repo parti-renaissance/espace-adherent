@@ -67,7 +67,7 @@ class Administrator implements UserInterface, TwoFactorInterface
 
     public function __toString()
     {
-        return $this->emailAddress;
+        return $this->emailAddress ?: '';
     }
 
     /**

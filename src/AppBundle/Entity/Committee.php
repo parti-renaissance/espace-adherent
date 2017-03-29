@@ -164,7 +164,7 @@ class Committee implements GeoPointInterface
 
     public function __toString()
     {
-        return $this->name;
+        return $this->name ?: '';
     }
 
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self

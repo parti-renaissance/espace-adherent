@@ -117,6 +117,11 @@ class SocialShare
         $this->type = self::TYPE_IMAGE;
     }
 
+    public function __toString()
+    {
+        return $this->name ?: '';
+    }
+
     public function getId(): int
     {
         return $this->id;

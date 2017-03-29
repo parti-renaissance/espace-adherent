@@ -69,7 +69,7 @@ class NewsletterSubscription
 
     public function __toString()
     {
-        return $this->email;
+        return $this->email ?: '';
     }
 
     public function getId(): int

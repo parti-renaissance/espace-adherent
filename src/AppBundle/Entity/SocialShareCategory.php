@@ -40,15 +40,15 @@ class SocialShareCategory
      */
     private $position;
 
-    public function __toString()
-    {
-        return $this->name;
-    }
-
     public function __construct(string $name = '', int $position = 1)
     {
         $this->name = EmojisRemover::remove($name);
         $this->position = $position;
+    }
+
+    public function __toString()
+    {
+        return $this->name ?: '';
     }
 
     public function getId(): int

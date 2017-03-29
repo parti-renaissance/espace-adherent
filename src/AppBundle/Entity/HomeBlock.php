@@ -106,7 +106,7 @@ class HomeBlock
 
     public function __toString()
     {
-        return $this->positionName;
+        return $this->positionName ?: '';
     }
 
     public function getId()
