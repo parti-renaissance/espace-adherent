@@ -84,6 +84,9 @@ class ProcurationProxyType extends AbstractType
             ->add('inviteSourceName', TextType::class, [
                 'required' => false,
             ])
+            ->add('inviteSourceFirstName', TextType::class, [
+                'required' => false,
+            ])
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
