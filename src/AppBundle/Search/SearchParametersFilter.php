@@ -53,6 +53,8 @@ class SearchParametersFilter
         self::RADIUS_150,
     ];
 
+    const POSTAL_CODES_PATTERN = '/(([0-9]{5})|(2A)|(2B),?)+,?/';
+
     private $geocoder;
     private $query;
     private $type;
@@ -60,6 +62,7 @@ class SearchParametersFilter
     private $city;
     private $offset;
     private $maxResults;
+    private $containsPostalCodes;
 
     public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
     {
@@ -71,6 +74,7 @@ class SearchParametersFilter
         $this->city = self::DEFAULT_CITY;
         $this->offset = 0;
         $this->maxResults = self::DEFAULT_MAX_RESULTS;
+        $this->containsPostalCodes = false;
     }
 
     /**
@@ -153,6 +157,8 @@ class SearchParametersFilter
     {
         $this->query = trim($query);
 
+        $this->containsPostalCodes = (bool) preg_match(self::POSTAL_CODES_PATTERN, $query);
+
         return $this;
     }
 
@@ -183,5 +189,10 @@ class SearchParametersFilter
     public function getMaxResults()
     {
         return $this->maxResults;
+    }
+
+    public function containsPostalCodes(): bool
+    {
+        return $this->containsPostalCodes;
     }
 }
