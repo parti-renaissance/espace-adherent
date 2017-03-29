@@ -51,10 +51,11 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
         $managedByReferent = $this->repository->findAllManagedBy($referent);
 
-        $this->assertCount(3, $managedByReferent, 'Referent should manage 3 adherents in his area.');
+        $this->assertCount(4, $managedByReferent, 'Referent should manage 3 adherents + himself in his area.');
         $this->assertSame('Michelle Dufour', $managedByReferent[0]->getFullName());
         $this->assertSame('Francis Brioul', $managedByReferent[1]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[2]->getFullName());
+        $this->assertSame('Referent Referent', $managedByReferent[2]->getFullName());
+        $this->assertSame('Gisele Berthoux', $managedByReferent[3]->getFullName());
     }
 
     public function testFindByEvent()

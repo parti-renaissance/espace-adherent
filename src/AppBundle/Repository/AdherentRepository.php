@@ -7,6 +7,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -118,12 +120,39 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
      */
     public function findReferents(): array
     {
-        return $this->createQueryBuilder('a')
+        return $this
+            ->createReferentQueryBuilder()
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findReferent(string $identifier): ?Adherent
+    {
+        $qb = $this->createReferentQueryBuilder();
+
+        if (Uuid::isValid($identifier)) {
+            $qb
+                ->andWhere('a.uuid = :uuid')
+                ->setParameter('uuid', Uuid::fromString($identifier)->toString())
+            ;
+        } else {
+            $qb
+                ->andWhere('LOWER(a.emailAddress) = :email')
+                ->setParameter('email', $identifier)
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    private function createReferentQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('a')
             ->where('a.managedArea.codes IS NOT NULL')
             ->andWhere('LENGTH(a.managedArea.codes) > 0')
             ->orderBy('LOWER(a.managedArea.codes)', 'ASC')
-            ->getQuery()
-            ->getResult();
+        ;
     }
 
     /**
@@ -148,7 +177,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     public function findNonFollowersManagedBy(Adherent $referent): array
     {
         return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
-            return $adherent->getMemberships()->count() === 0;
+            return 0 === $adherent->getMemberships()->count();
         });
     }
 
@@ -176,13 +205,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     public function findHostsManagedBy(Adherent $referent): array
     {
         return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
-            foreach ($adherent->getMemberships() as $membership) {
-                if ($membership->canHostCommittee()) {
-                    return true;
-                }
-            }
-
-            return false;
+            return $adherent->isHost();
         });
     }
 
@@ -194,8 +217,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->orderBy('a.registeredAt', 'DESC')
             ->addOrderBy('a.firstName', 'ASC')
             ->addOrderBy('a.lastName', 'ASC')
-            ->where('a.id != :self')
-            ->setParameter('self', $referent->getId());
+        ;
 
         $codesFilter = $qb->expr()->orX();
 

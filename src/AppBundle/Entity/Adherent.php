@@ -599,7 +599,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function isHost(): bool
     {
         foreach ($this->memberships as $membership) {
-            if ($membership->isSupervisor() || $membership->isHostMember()) {
+            if ($membership->canHostCommittee()) {
                 return true;
             }
         }
