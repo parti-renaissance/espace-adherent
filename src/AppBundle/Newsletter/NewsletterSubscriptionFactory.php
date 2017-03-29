@@ -6,12 +6,11 @@ use AppBundle\Entity\NewsletterSubscription;
 
 class NewsletterSubscriptionFactory
 {
-    public function create(string $email, string $postalCode, string $clientIp = null): NewsletterSubscription
+    public function create(string $email, string $postalCode): NewsletterSubscription
     {
         $subscription = new NewsletterSubscription();
         $subscription->setEmail($email);
         $subscription->setPostalCode($postalCode);
-        $subscription->setClientIp($clientIp);
 
         return $subscription;
     }

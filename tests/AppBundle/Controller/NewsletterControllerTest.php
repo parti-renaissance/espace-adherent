@@ -47,7 +47,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
 
         $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
         $this->assertSame('10000', $subscription->getPostalCode());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(NewsletterSubscriptionMessage::class));

@@ -12,15 +12,12 @@
         <section>
             <div class="newsletter-page">
                 <h2 class="text--large b__nudge--top-large text--center l__wrapper--slim">
-                    Je m'inscris à la newsletter<br>
+                    Je me désinscris de la newsletter<br />
                     de la campagne
                 </h2>
-                <p class="text--body l__wrapper--medium b__nudge--top b__nudge--bottom-large">
-                    Quelques secondes suffisent pour s'inscrire gratuitement à la newsletter de la campagne.
-                    Vous serez alors les premiers à recevoir des détails sur nos propositions, des moyens d'agir,
-                    des invitations aux événements près de chez vous, des appels signés par Emmanuel Macron ainsi que
-                    des exclusiviteés sur la campagne.<br />
-                    N'attendez plus.
+                <p class="text--body text--center l__wrapper--medium b__nudge--top b__nudge--bottom-large">
+                    Souhaitez-vous vraiment vous désinscrire de la newsletter En Marche ?<br />
+                    Vous ne recevrez plus d'informations sur la campagne et le mouvement.
                 </p>
 
                 <div class="newsletter-page__form l__wrapper-500">
@@ -29,20 +26,18 @@
                     {{ form_errors(form) }}
 
                     <div class="form__row">
-                        {{ form_label(form.email, 'Votre adresse e-mail') }}
+                        {{ form_label(form.email, 'L\'adresse e-mail à laquelle vous recevez la newsletter') }}
                         {{ form_errors(form.email) }}
                         {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
                     </div>
 
-                    <div class="form__row">
-                        {{ form_label(form.postalCode, 'Votre code postal') }}
-                        {{ form_errors(form.postalCode) }}
-                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full' } }) }}
-                    </div>
+                    <p class="text--small">
+                        Attention : l'adresse e-mail est sensible à la casse.
+                    </p>
 
                     <div class="l__row l__row--center b__nudge--top">
                         <button type="submit" class="btn btn--blue">
-                            Je m'inscris
+                            Oui, je souhaite me désinscrire
                         </button>
                     </div>
 
