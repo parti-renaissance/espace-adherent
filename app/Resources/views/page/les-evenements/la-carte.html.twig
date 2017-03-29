@@ -1,0 +1,19 @@
+{% extends 'page/la-carte.html.twig' %}
+
+{% block page_title 'Les événements En Marche !' %}
+{% block canonical_url url('page_les_evenements_la_carte') %}
+
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runEventsMap();
+        });
+    </script>
+{% endblock %}
+
+{% block map_chapo %}
+    <div class="committees-map__counter">
+        <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements
+    </div>
+{% endblock %}

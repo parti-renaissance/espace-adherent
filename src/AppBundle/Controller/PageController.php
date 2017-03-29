@@ -102,12 +102,23 @@ class PageController extends Controller
      * @Route("/le-mouvement/la-carte", name="page_le_mouvement_la_carte")
      * @Method("GET")
      */
-    public function mouvementCarteAction()
+    public function mouvementCarteComitesAction()
     {
         return $this->render('page/la-carte.html.twig', [
             'userCount' => $this->getDoctrine()->getRepository(Adherent::class)->count(),
             'eventCount' => $this->getDoctrine()->getRepository(Event::class)->count(),
             'committeeCount' => $this->getDoctrine()->getRepository(Committee::class)->count(),
+        ]);
+    }
+
+    /**
+     * @Route("/evenements/la-carte", name="page_les_evenements_la_carte")
+     * @Method("GET")
+     */
+    public function mouvementCarteEvenementsAction()
+    {
+        return $this->render('page/les-evenements/la-carte.html.twig', [
+            'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
         ]);
     }
 

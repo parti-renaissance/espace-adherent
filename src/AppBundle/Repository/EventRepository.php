@@ -66,7 +66,10 @@ class EventRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findManagedBy(Adherent $referent)
+    /**
+     * @return Event[]
+     */
+    public function findManagedBy(Adherent $referent): array
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e')
@@ -99,25 +102,55 @@ class EventRepository extends EntityRepository
     }
 
     /**
-     * @return int
+     * @return Event[]
      */
+    public function findUpcomingEvents(): array
+    {
+        return $this
+            ->createUpcomingEventsQueryBuilder()
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function countUpcomingEvents(): int
+    {
+        return (int) $this
+            ->createUpcomingEventsQueryBuilder()
+            ->select('COUNT(e.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function createUpcomingEventsQueryBuilder(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        return $qb
+            ->leftJoin('e.committee', 'c')
+            ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
+            ->andWhere('c.status = :committee_status')
+            ->andWhere('e.beginAt >= :today')
+            ->orderBy('e.beginAt', 'ASC')
+            ->setParameter('today', date('Y-m-d'))
+            ->setParameter('committee_status', Committee::APPROVED)
+        ;
+    }
+
     public function countSitemapEvents(): int
     {
-        return (int) $this->createSitemapQb()
+        return (int) $this
+            ->createSitemapQueryBuilder()
             ->select('COUNT(c) AS nb')
             ->getQuery()
             ->getSingleScalarResult();
     }
 
-    /**
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return array
-     */
     public function findSitemapEvents(int $page, int $perPage): array
     {
-        return $this->createSitemapQb()
+        return $this
+            ->createSitemapQueryBuilder()
             ->select('e.uuid', 'e.slug', 'e.updatedAt')
             ->orderBy('e.id')
             ->setFirstResult(($page - 1) * $perPage)
@@ -126,10 +159,7 @@ class EventRepository extends EntityRepository
             ->getArrayResult();
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function createSitemapQb(): QueryBuilder
+    private function createSitemapQueryBuilder(): QueryBuilder
     {
         return $this
             ->createQueryBuilder('e')

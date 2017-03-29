@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\Committee;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,31 +16,17 @@ class CommitteesController extends Controller
      * @Route("/committees", name="api_committees")
      * @Method("GET")
      */
-    public function indexAction()
+    public function getApprovedCommitteesAction()
     {
-        $data = [];
-        $committees = $this->getDoctrine()->getRepository(Committee::class)->findApprovedCommittees();
+        return new JsonResponse($this->get('app.api.committee_provider')->getApprovedCommittees());
+    }
 
-        foreach ($committees as $committee) {
-            if (!$committee->getLatitude() || !$committee->getLongitude()) {
-                continue;
-            }
-
-            $data[] = [
-                'uuid' => $committee->getUuid()->toString(),
-                'slug' => $committee->getSlug(),
-                'name' => $committee->getName(),
-                'url' => $this->generateUrl('app_committee_show', [
-                    'uuid' => $committee->getUuid()->toString(),
-                    'slug' => $committee->getSlug(),
-                ]),
-                'position' => [
-                    'lat' => (float) $committee->getLatitude(),
-                    'lng' => (float) $committee->getLongitude(),
-                ],
-            ];
-        }
-
-        return new JsonResponse($data);
+    /**
+     * @Route("/events", name="api_committees_events")
+     * @Method("GET")
+     */
+    public function getUpcomingCommitteesEventsAction()
+    {
+        return new JsonResponse($this->get('app.api.event_provider')->getUpcomingEvents());
     }
 }
