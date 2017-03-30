@@ -3,8 +3,8 @@ parameters:
     env(DATABASE_PORT):         3306
     env(DATABASE_SOCKET):       ~
     env(DATABASE_NAME):         enmarche
-    env(DATABASE_USER):         enmarche
-    env(DATABASE_PASSWORD):     enmarche
+    env(DATABASE_USER):         root
+    env(DATABASE_PASSWORD):     root
 
     env(REDIS_HOST):            redis
 
