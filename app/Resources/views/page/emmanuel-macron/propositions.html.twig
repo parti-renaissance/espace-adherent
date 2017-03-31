@@ -40,12 +40,14 @@
                         Télécharger le programme
                     </a>
                 </li>
+                {% if enable_canary %}
                 <li>
                     <a href="{{ path('app_social_share_list') }}"
                        target="_blank" rel="noopener noreferrer">
                         Partagez
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </nav>
 
