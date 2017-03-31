@@ -10,6 +10,7 @@ use AppBundle\Entity\Proposal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController extends Controller
 {
@@ -44,7 +45,7 @@ class PageController extends Controller
      */
     public function redirectProgrammeAction()
     {
-        return $this->redirectToRoute('page_emmanuel_macron_programme');
+        return $this->redirectToRoute('page_emmanuel_macron_programme', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**
