@@ -75,19 +75,11 @@
             "contentUrl": "{{ (url('homepage')|trim('/')~media_asset(story.media, {'w': 1050, 'q': 70}))|raw }}",
             "dateCreated": "{{ story.createdAt|date(constant('\DATE_ATOM')) }}",
             "potentialAction": {
-                "@type": "WatchAction",
-                "target": [
-                    {
-                        "@type": "EntryPoint",
-                        "urlTemplate": "urbanspoon://r/6/92204",
-                        "application": {
-                            "@type": "SoftwareApplication",
-                            "@id": "284708449",
-                            "name": "Urbanspoon iPhone and iPad App",
-                            "operatingSystem": "iOS"
-                        }
-                    }
-                ]
+                "@type": "ShareAction",
+                "object": {
+                    "@type": "CreativeWork",
+                    "url": "{{ story.defaultUrl }}"
+                }
             }
         }
         </script>
