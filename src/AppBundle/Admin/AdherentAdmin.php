@@ -58,7 +58,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Statut',
                 ])
             ->end()
-            ->with('Référent', array('class' => 'col-md-4'))
+            ->with('Référent', ['class' => 'col-md-4'])
                 ->add('isReferent', 'boolean', [
                     'label' => 'Est référent ?',
                 ])
@@ -83,7 +83,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Abonné aux mails de comités ?',
                 ])
             ->end()
-            ->with('Responsable procuration', array('class' => 'col-md-4'))
+            ->with('Responsable procuration', ['class' => 'col-md-4'])
                 ->add('isProcurationManager', 'boolean', [
                     'label' => 'Est responsable procuration ?',
                 ])
@@ -129,7 +129,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Statut',
                 ])
             ->end()
-            ->with('Référent', array('class' => 'col-md-4'))
+            ->with('Référent', ['class' => 'col-md-4'])
                 ->add('managedArea.codesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
                     'required' => false,
@@ -145,7 +145,7 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Responsable procuration', array('class' => 'col-md-4'))
+            ->with('Responsable procuration', ['class' => 'col-md-4'])
                 ->add('procurationManagedAreaCodesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
                     'required' => false,
@@ -153,7 +153,7 @@ class AdherentAdmin extends AbstractAdmin
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
-            ->with('Préférences des e-mails', array('class' => 'col-md-4'))
+            ->with('Préférences des e-mails', ['class' => 'col-md-4'])
                 ->add('hasSubscribedMainEmails', CheckboxType::class, [
                     'label' => 'Abonné aux mails nationaux ?',
                     'required' => false,

@@ -1,0 +1,26 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="width: 160px;">
+        <a href="{{ path('admin_app_procurationrequest_edit', {id: object.id}) }}" class="btn btn-xs btn-default" title="Éditer">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Éditer
+        </a>
+
+        <a href="{{ path('admin_app_procurationrequest_show', {id: object.id}) }}" class="btn btn-xs btn-default" title="Éditer">
+            <i class="fa fa-search-plus" aria-hidden="true"></i>
+            Afficher
+        </a>
+    </div>
+
+    <div style="width: 160px; margin-top: 5px;">
+        {% if not object.processed %}
+            <a href="{{ path('admin_app_procurationrequest_delete', {id: object.id}) }}" class="btn btn-xs btn-default" title="Supprimer">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                Supprimer
+            </a>
+        {% else %}
+            <small>Désassociez la demande avant de pouvoir la supprimer</small>
+        {% endif %}
+    </div>
+{% endblock %}

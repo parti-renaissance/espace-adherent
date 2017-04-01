@@ -53,9 +53,9 @@ class ProcurationProxy
      *
      * @ORM\Column(type="smallint")
      *
-     * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(value=0)
-     * @Assert\LessThanOrEqual(value=5)
+     * @Assert\NotBlank(groups={"admin"})
+     * @Assert\GreaterThanOrEqual(value=0, groups={"admin"})
+     * @Assert\LessThanOrEqual(value=5, groups={"admin"})
      */
     private $reliability = 0;
 
@@ -64,11 +64,12 @@ class ProcurationProxy
      *
      * @ORM\Column(length=6)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
+     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"front"})
      * @Assert\Choice(
-     *      callback={"AppBundle\ValueObject\Genders", "all"},
-     *      message="common.gender.invalid_choice",
-     *      strict=true
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups={"front"}
      * )
      */
     private $gender;
@@ -78,12 +79,13 @@ class ProcurationProxy
      *
      * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank")
+     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"front"})
      * @Assert\Length(
-     *      min=2,
-     *      max=50,
-     *      minMessage="procuration.last_name.min_length",
-     *      maxMessage="procuration.last_name.max_length"
+     *     min=2,
+     *     max=50,
+     *     minMessage="procuration.last_name.min_length",
+     *     maxMessage="procuration.last_name.max_length",
+     *     groups={"front"}
      * )
      */
     private $lastName = '';
@@ -93,12 +95,13 @@ class ProcurationProxy
      *
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="procuration.first_names.not_blank")
+     * @Assert\NotBlank(message="procuration.first_names.not_blank", groups={"front"})
      * @Assert\Length(
-     *      min=2,
-     *      max=100,
-     *      minMessage="procuration.first_names.min_length",
-     *      maxMessage="procuration.first_names.max_length"
+     *     min=2,
+     *     max=100,
+     *     minMessage="procuration.first_names.min_length",
+     *     maxMessage="procuration.first_names.max_length",
+     *     groups={"front"}
      * )
      */
     private $firstNames = '';
@@ -108,8 +111,8 @@ class ProcurationProxy
      *
      * @ORM\Column(length=150)
      *
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     * @Assert\NotBlank(message="common.address.required", groups={"front"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"front"})
      */
     private $address = '';
 
@@ -118,7 +121,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"front"})
      */
     private $postalCode = '';
 
@@ -127,7 +130,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"front"})
      */
     private $city;
 
@@ -136,7 +139,7 @@ class ProcurationProxy
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=255, groups={"front"})
      */
     private $cityName;
 
@@ -145,8 +148,8 @@ class ProcurationProxy
      *
      * @ORM\Column(length=2)
      *
-     * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\NotBlank(groups={"front"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
     private $country = 'FR';
 
@@ -155,7 +158,7 @@ class ProcurationProxy
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"front"})
      */
     private $phone;
 
@@ -164,8 +167,8 @@ class ProcurationProxy
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
+     * @Assert\NotBlank(message="common.email.not_blank", groups={"front"})
+     * @Assert\Email(message="common.email.invalid", groups={"front"})
      */
     private $emailAddress = '';
 
@@ -174,8 +177,8 @@ class ProcurationProxy
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\NotBlank(message="procuration.birthdate.not_blank")
-     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age")
+     * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"front"})
+     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age", groups={"front"})
      */
     private $birthdate;
 
@@ -184,7 +187,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"front"})
      */
     private $votePostalCode = '';
 
@@ -193,7 +196,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=15, nullable=true, name="vote_city_insee")
      *
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"front"})
      */
     private $voteCity;
 
@@ -202,7 +205,7 @@ class ProcurationProxy
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=255, groups={"front"})
      */
     private $voteCityName;
 
@@ -211,8 +214,8 @@ class ProcurationProxy
      *
      * @ORM\Column(length=2)
      *
-     * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\NotBlank(groups={"front"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
     private $voteCountry = 'FR';
 
@@ -221,7 +224,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=50, nullable=true)
      *
-     * @Assert\Length(max=50)
+     * @Assert\Length(max=50, groups={"front"})
      */
     private $voteOffice;
 
@@ -265,7 +268,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=100, nullable=true)
      *
-     * @Assert\Length(max=100)
+     * @Assert\Length(max=100, groups={"front"})
      */
     private $inviteSourceName = '';
 
@@ -274,23 +277,22 @@ class ProcurationProxy
      *
      * @ORM\Column(length=100, nullable=true)
      *
-     * @Assert\Length(max=100)
+     * @Assert\Length(max=100, groups={"front"})
      */
     private $inviteSourceFirstName = '';
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"front"})
+     * @AssertRecaptcha(groups={"front"})
      */
     public $recaptcha = '';
 
     /**
      * @var bool
      *
-     * @Assert\NotBlank(message="procuration.proposal_conditions.required")
-     * @Assert\IsTrue(message="procuration.proposal_conditions.required")
+     * @Assert\IsTrue(message="procuration.proposal_conditions.required", groups={"front"})
      */
     public $conditions;
 
@@ -318,7 +320,7 @@ class ProcurationProxy
     }
 
     /**
-     * @Assert\Callback(groups={"elections"})
+     * @Assert\Callback(groups={"elections"}, groups={"front"})
      *
      * @param ExecutionContextInterface $context
      */

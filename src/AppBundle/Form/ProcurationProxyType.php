@@ -101,6 +101,7 @@ class ProcurationProxyType extends AbstractType
             'translation_domain' => false,
             'data_class' => ProcurationProxy::class,
             'years' => array_combine($years, $years),
+            'validation_groups' => ['front'],
         ]);
     }
 

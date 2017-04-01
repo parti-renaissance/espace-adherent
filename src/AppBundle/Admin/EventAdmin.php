@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Event;
 use AppBundle\Event\EventCategories;
+use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,7 +14,6 @@ use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventAdmin extends AbstractAdmin
@@ -65,7 +65,7 @@ class EventAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [
@@ -120,7 +120,7 @@ class EventAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [
