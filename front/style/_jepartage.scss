@@ -94,4 +94,14 @@
             font-size: 30px;
         }
     }
+
+    .social__confirm {
+        display: block !important;
+        text-align: center;
+        background: $pink;
+        color: white;
+        padding: 10px;
+        align-self: center;
+        justify-self: center;
+    }
 }
