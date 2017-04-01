@@ -104,7 +104,8 @@
                         </div>
                     </div>
                     <div class="cm card--medium">
-                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="background-container card__background progressive-background"
+                        <a href="{{ path('article_view', {'slug': article.slug}) }}"
+                           class="background-container card__background progressive-background link--no-decor"
                            data-sd="{{ media_asset(article.media, {'w': 300, 'q': 20}) }}"
                            data-hd="{{ media_asset(article.media, {'w': 1200, 'q': 70}) }}"
                            style="background-color: #000000;">
