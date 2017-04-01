@@ -118,6 +118,10 @@ class PageController extends Controller
      */
     public function mouvementCarteEvenementsAction()
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('page/les-evenements/la-carte.html.twig', [
             'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
         ]);
