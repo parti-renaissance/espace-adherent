@@ -110,6 +110,12 @@ class App {
             module.default();
         })
     }
+
+    runSocialShare() {
+        System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        })
+    }
 }
 
 window.App = new App();

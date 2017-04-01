@@ -3,25 +3,64 @@
         margin-bottom: 0;
     }
 
+    .je-partage__copy {
+        text-align: center;
+        background: $pink;
+        color: white;
+        font-size: 80px;
+        margin: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        opacity: 0;
+        display: none;
+        transform: opacity .2s;
+
+        &--flash {
+            display: flex;
+            opacity: 1;
+        }
+    }
+
     .je-partage__graphics {
         background: black;
 
-        > div {
+        &__crop {
+            min-width: 350px;
+            min-height: 400px;
+            background-size: cover;
             flex: 1;
             display: flex;
             position: relative;
+            background-position: center;
 
             @media (max-width: $mobile) {
                 flex: initial;
                 width: 100%;
             }
+        }
+
+        > div {
+            // flex: 1;
+            // display: flex;
+            // position: relative;
+            //
+            // @media (max-width: $mobile) {
+            //     flex: initial;
+            //     width: 100%;
+            // }
 
             > img {
-                flex: 1;
-
-                @media (max-width: $mobile) {
-                    width: 100%;
-                }
+                // flex: 1;
+                //
+                // @media (max-width: $mobile) {
+                //     width: 100%;
+                // }
             }
 
             &:hover .je-partage__social {
@@ -53,7 +92,9 @@
             @include classic-gradient($filter--dark);
         }
 
-        a {
+        a,
+        .social__copy {
+            cursor: pointer;
             text-align: center;
             color: white;
             border: 0;
@@ -63,7 +104,7 @@
             height: 40px;
             width: 40px;
             padding: 20px;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
 
