@@ -53,4 +53,13 @@ class SocialShareController extends Controller
             ),
         ]);
     }
+
+    /**
+     * @Route("/je-partage")
+     * @Method("GET")
+     */
+    public function redirectAction(): Response
+    {
+        return $this->redirectToRoute('app_social_share_list', [], Response::HTTP_MOVED_PERMANENTLY);
+    }
 }
