@@ -11,11 +11,11 @@
         });
 
         function confirmcopy() {
-            document.getElementById("confirm-message").className = "social__confirm";
+            document.getElementById("confirm-message").className += " je-partage__copy--flash";
             setTimeout(function(){
                 document.getElementById("confirm-message").className =
-                document.getElementById("confirm-message").className.replace( /(?:^|\s)social__confirm(?!\S)/g , '' )
-            }, 2000);
+                document.getElementById("confirm-message").className.replace( /(?:^|\s)je-partage__copy--flash(?!\S)/g , '' )
+            }, 700);
         }
     </script>
 {% endblock %}
@@ -76,8 +76,9 @@
     </section>
 
     <section>
-        <div id="confirm-message" style="display:none;">Copié !</div>
+        <div id="confirm-message" class="je-partage__copy">Copié !</div>
     </section>
+
     <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap">
         {% for story in socialShares %}
         <script type="application/ld+json">

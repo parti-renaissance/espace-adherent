@@ -3,6 +3,30 @@
         margin-bottom: 0;
     }
 
+    .je-partage__copy {
+        text-align: center;
+        background: $pink;
+        color: white;
+        font-size: 80px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        opacity: 0;
+        display: none;
+        transform: opacity .2s;
+
+        &--flash {
+            display: flex;
+            opacity: 1;
+        }
+    }
+
     .je-partage__graphics {
         background: black;
 
@@ -93,15 +117,5 @@
         .fa {
             font-size: 30px;
         }
-    }
-
-    .social__confirm {
-        display: block !important;
-        text-align: center;
-        background: $pink;
-        color: white;
-        padding: 10px;
-        align-self: center;
-        justify-self: center;
     }
 }
