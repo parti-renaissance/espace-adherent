@@ -19,11 +19,16 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
         $mediaFactory = $this->container->get('app.content.media_factory');
         $storage = $this->container->get('app.storage');
 
-        // Media
-        $mediaFile = new File(__DIR__.'/../../../../app/data/dist/macron.jpg');
-        $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Social image', 'social.jpg', $mediaFile);
-        $manager->persist($media);
+        // Medias
+        $medias = [];
+
+        for ($i = 1; $i <= 4; ++$i) {
+            $mediaFile = new File(__DIR__.'/../../../../app/data/dist/social'.$i.'.jpg');
+            $storage->put('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
+
+            $manager->persist($media = $mediaFactory->createFromFile('Social image '.$i, 'social'.$i.'.jpg', $mediaFile));
+            $medias[] = $media;
+        }
 
         $manager->flush();
 
@@ -41,26 +46,26 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
         $socialShare1->setDefaultUrl('https://en-marche.fr/');
         $socialShare1->setDescription('description');
         $socialShare1->setFacebookUrl('https://www.facebook.com/EmmanuelMacron');
-        $socialShare1->setMedia($media);
+        $socialShare1->setMedia($medias[0]);
         $socialShare1->setSocialShareCategory($category1);
 
         $socialShare2 = new SocialShare('Partage culture 2', 2, true);
         $socialShare2->setDefaultUrl('https://en-marche.fr/');
         $socialShare2->setDescription('description');
         $socialShare2->setTwitterUrl('https://twitter.com/EmmanuelMacron');
-        $socialShare2->setMedia($media);
+        $socialShare2->setMedia($medias[1]);
         $socialShare2->setSocialShareCategory($category1);
 
         $socialShare3 = new SocialShare('Partage culture 3', 3, false);
         $socialShare3->setDefaultUrl('https://en-marche.fr/');
         $socialShare3->setDescription('description');
-        $socialShare3->setMedia($media);
+        $socialShare3->setMedia($medias[2]);
         $socialShare3->setSocialShareCategory($category1);
 
         $socialShare4 = new SocialShare('Partage Défense 1', 1, true);
         $socialShare4->setDefaultUrl('https://en-marche.fr/');
         $socialShare4->setDescription('description');
-        $socialShare4->setMedia($media);
+        $socialShare4->setMedia($medias[3]);
         $socialShare4->setSocialShareCategory($category2);
 
         $manager->persist($socialShare1);

@@ -4,6 +4,14 @@
 {% block page_title 'Partagez le project' %}
 {% block canonical_url url('app_social_share_list') %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runSocialShare();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 <main class="content je-partage">
     <section class="programme">
@@ -40,10 +48,12 @@
         </nav>
     </section>
     <section class="je-partage__header background--green space--30-0">
-        <header class="l__wrapper--slim l__row l__row--h-stretch">
-            <h1 class="text--large">
+        <header class="l__wrapper--slim">
+            <h1 class="text--large text--center">
                 Partagez le projet
             </h1>
+
+            {#
             <div class="select__styled">
                 <select name="category" data-width="100%" class="select__styled--inner">
                     {% for category in socialShareCategories %}
@@ -53,30 +63,60 @@
                     {% endfor %}
                 </select>
             </div>
+            #}
         </header>
     </section>
 
-    <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap">
-        {% for story in socialShares if story.socialShareCategory == 'Culture' %}
-        <div>
-            <img src="{{ media_asset(story.media, {'w': 402}) }}" alt="{{ story.name }}"/>
+    <section>
+        <div id="confirm-message" class="je-partage__copy">Copié !</div>
+    </section>
+
+    <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap" id="je-partage">
+        {% for story in socialShares %}
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "ImageObject",
+            "author": {
+                "@type": "Organization",
+                "name": "En Marche !",
+                "url": "{{ url('homepage') }}"
+            },
+            "name": "{{ story.name }}",
+            "description": "{{ story.description }}",
+            "contentUrl": "{{ (url('homepage')|trim('/')~media_asset(story.media, {'w': 1050, 'q': 70}))|raw }}",
+            "dateCreated": "{{ story.createdAt|date(constant('\DATE_ATOM')) }}",
+            "potentialAction": {
+                "@type": "ShareAction",
+                "object": {
+                    "@type": "CreativeWork",
+                    "url": "{{ story.defaultUrl }}"
+                }
+            }
+        }
+        </script>
+
+        <div class="je-partage__graphics__crop progressive-background"
+             data-sd="{{ media_asset(story.media, {'w': 300, 'q': 20}) }}"
+             data-hd="{{ media_asset(story.media, {'w': 1050, 'q': 70}) }}">
             <div class="je-partage__social">
                 <div class="je-partage__social--inner">
-                    <a download="{{ story.media }}" href="{{ media_asset(story.media) }}"
+                    <a download="{{ story.name }}" href="{{ media_asset(story.media) }}"
                        title="Téléchargez {{ story.name }}"
                        arial-label="Téléchargez {{ story.name }}">
                         <i class="fa fa-download"></i>
                     </a>
-                    <a href="#" arial-label="Partagez via e-mail"
-                       onclick="App.share('email', '{{ story.defaultUrl }}', '{{ story.name }}')">
-                        <i class="fa fa-envelope-o"></i>
-                    </a>
-                    <a href="#" arial-label="Partagez sur Facebook"
-                       onclick="App.share('facebook', '{{ story.defaultUrl }}', '{{ story.name }}')">
+                    <input type="text" id="story-{{ story.id }}" value="{{ story.defaultUrl }}"
+                           style="position: absolute; left: -09111983px"/>
+                    <div class="social__copy" arial-label="Copiez le lien" data-clipboard-target="#story-{{ story.id }}">
+                        <i class="fa fa-link"></i>
+                    </div>
+                    <a href="javascript:void(0)" arial-label="Partagez sur Facebook"
+                       onclick="App.share('facebook', '{{ story.facebookUrl ?? story.defaultUrl }}', '{{ story.name }}')">
                         <i class="fa fa-facebook"></i>
                     </a>
-                    <a href="#" arial-label="Partagez sur Twitter"
-                       onclick="App.share('twitter', '{{ story.defaultUrl }}', '{{ story.name }}')">
+                    <a href="javascript:void(0)" arial-label="Partagez sur Twitter"
+                       onclick="App.share('twitter', '{{ story.twitterUrl ?? story.defaultUrl }}', '{{ story.name }}')">
                         <i class="fa fa-twitter"></i>
                     </a>
                 </div>
