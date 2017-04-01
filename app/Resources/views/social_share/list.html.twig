@@ -57,8 +57,8 @@
     </section>
 
     <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap">
-        {% for story in socialShares if story.socialShareCategory == 'Culture' %}
-        <div>
+        {% for story in socialShares %}
+        <div class="je-partage__graphics__crop">
             <img src="{{ media_asset(story.media, {'w': 402}) }}" alt="{{ story.name }}"/>
             <div class="je-partage__social">
                 <div class="je-partage__social--inner">
