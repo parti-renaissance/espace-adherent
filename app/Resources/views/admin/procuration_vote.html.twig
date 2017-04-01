@@ -1,9 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field%}
-    {{ object.votePostalCode }} {{ object.voteCityName }}<br />
-    {{ object.voteCountry }}
-    {% if object.voteOffice %}
-        <br />Bureau : {{ object.voteOffice }}
-    {% endif %}
-{% endblock %}

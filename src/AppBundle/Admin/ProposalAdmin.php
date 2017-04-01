@@ -50,7 +50,7 @@ class ProposalAdmin extends AbstractAdmin
                     'label' => 'Thèmes',
                 ])
             ->end()
-            ->with('Publication', array('class' => 'col-md-4'))
+            ->with('Publication', ['class' => 'col-md-4'])
                 ->add('position', null, [
                     'label' => 'Ordre dans la liste',
                 ])

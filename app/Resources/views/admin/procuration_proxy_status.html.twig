@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.foundRequest %}
+        <span class="label label-success">Associée</span><br />
+        A
+        <a href="{{ path('admin_app_procurationrequest_show', {'id': object.foundRequest.id}) }}">
+            {{ object.foundRequest.firstNames }} {{ object.foundRequest.lastName }}
+        </a>
+    {% else %}
+        <span class="label label-default">En attente</span>
+    {% endif %}
+{% endblock %}

@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
@@ -16,7 +17,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
@@ -101,7 +101,7 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [

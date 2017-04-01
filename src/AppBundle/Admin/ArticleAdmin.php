@@ -51,7 +51,7 @@ class ArticleAdmin extends AbstractAdmin
                     'label' => 'Thèmes',
                 ])
             ->end()
-            ->with('Publication', array('class' => 'col-md-4'))
+            ->with('Publication', ['class' => 'col-md-4'])
                 ->add('published', CheckboxType::class, [
                     'label' => 'Publier l\'article',
                     'required' => false,
