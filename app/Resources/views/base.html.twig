@@ -231,6 +231,11 @@
                                         <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                     </li>
                                 {% endif %}
+                                {% if is_granted('ROLE_PROCURATION_MANAGER') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
+                                    </li>
+                                {% endif %}
                                 <li class="text--small">
                                     <a href="{{ path('app_je_marche') }}" target="_blank" rel="noopener noreferrer">J'agis</a>
                                 </li>
