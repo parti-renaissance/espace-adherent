@@ -43,6 +43,12 @@
             position: relative;
             background-position: center;
 
+            &:nth-child(3n + 1):nth-last-child(2),
+            &:nth-child(3n + 2):nth-last-child(1),
+            &:nth-child(3n + 1):nth-last-child(1) {
+                max-width: 400px;
+            }
+
             @media (max-width: $mobile) {
                 flex: initial;
                 width: 100%;
