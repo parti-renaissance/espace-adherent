@@ -223,6 +223,17 @@ $text--size-extra-large: 48px;
         }
     }
 
+    &--with-bullet {
+        ul {
+            padding-left: 40px;
+            list-style-type: disc;
+        }
+
+        li {
+            list-style-type: inherit;
+        }
+    }
+
     &--all-caps {
         @include text--all-caps;
     }
