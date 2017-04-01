@@ -73,32 +73,31 @@
 
     <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap" id="je-partage">
         {% for story in socialShares %}
-        <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "ImageObject",
-            "author": {
-                "@type": "Organization",
-                "name": "En Marche !",
-                "url": "{{ url('homepage') }}"
-            },
-            "name": "{{ story.name }}",
-            "description": "{{ story.description }}",
-            "contentUrl": "{{ (url('homepage')|trim('/')~media_asset(story.media, {'w': 1050, 'q': 70}))|raw }}",
-            "dateCreated": "{{ story.createdAt|date(constant('\DATE_ATOM')) }}",
-            "potentialAction": {
-                "@type": "ShareAction",
-                "object": {
-                    "@type": "CreativeWork",
-                    "url": "{{ story.defaultUrl }}"
-                }
-            }
-        }
-        </script>
-
         <div class="je-partage__graphics__crop progressive-background"
              data-sd="{{ media_asset(story.media, {'w': 300, 'q': 20}) }}"
              data-hd="{{ media_asset(story.media, {'w': 1050, 'q': 70}) }}">
+            <script type="application/ld+json">
+            {
+                "@context": "http://schema.org",
+                 "@type": "ImageObject",
+                 "author": {
+                     "@type": "Organization",
+                     "name": "En Marche !",
+                     "url": "{{ url('homepage') }}"
+                 },
+                 "name": "{{ story.name }}",
+                 "description": "{{ story.description }}",
+                 "contentUrl": "{{ (url('homepage')|trim('/')~media_asset(story.media, {'w': 1050, 'q': 70}))|raw }}",
+                 "dateCreated": "{{ story.createdAt|date(constant('\DATE_ATOM')) }}",
+                 "potentialAction": {
+                     "@type": "ShareAction",
+                     "object": {
+                         "@type": "CreativeWork",
+                         "url": "{{ story.defaultUrl }}"
+                     }
+                 }
+            }
+            </script>
             <div class="je-partage__social">
                 <div class="je-partage__social--inner">
                     <a download="{{ story.name }}" href="{{ media_asset(story.media) }}"
