@@ -68,9 +68,11 @@ class ArticleController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
+
         return $this->render('article/article.html.twig', [
             'article' => $article,
-            'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
+            'latestArticles' => $articlesRepo->findThreeLatestOtherThan($article),
         ]);
     }
 

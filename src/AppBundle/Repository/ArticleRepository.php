@@ -104,6 +104,27 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
+     * @param Article|null $article
+     *
+     * @return Article[]
+     */
+    public function findThreeLatestOtherThan(Article $article = null): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'm')
+            ->leftJoin('a.media', 'm')
+            ->where('a.published = :published')
+            ->setParameter('published', true)
+            ->andWhere('a.id != :current')
+            ->setParameter('current', $article->getId())
+            ->orderBy('a.publishedAt', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * Get the query builder to find all articles.
      *
      * @return \Doctrine\ORM\QueryBuilder
