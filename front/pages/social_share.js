@@ -1,13 +1,21 @@
+/* eslint-disable no-new */
 /*
  * Social share
  */
-export default () => {
-    const confirmMessage = dom('#confirm-message');
+import Clipboard from 'clipboard';
 
-    findAll(dom('#je-partage'), '.social__copy').forEach((item) => {
-        on(item, 'click', () => {
-            addClass(confirmMessage, 'je-partage__copy--flash');
-            setTimeout(() => { removeClass(confirmMessage, 'je-partage__copy--flash'); }, 700);
+export default () => {
+    if (Clipboard.isSupported()) {
+        const confirmMessage = dom('#confirm-message');
+
+        new Clipboard('.social__copy');
+
+        findAll(dom('#je-partage'), '.social__copy').forEach((item) => {
+            show(item);
+            on(item, 'click', () => {
+                addClass(confirmMessage, 'je-partage__copy--flash');
+                setTimeout(() => { removeClass(confirmMessage, 'je-partage__copy--flash'); }, 700);
+            });
         });
-    });
+    }
 };
