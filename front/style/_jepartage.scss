@@ -68,7 +68,9 @@
             @include classic-gradient($filter--dark);
         }
 
-        a {
+        a,
+        .social__copy {
+            cursor: pointer;
             text-align: center;
             color: white;
             border: 0;
@@ -78,7 +80,7 @@
             height: 40px;
             width: 40px;
             padding: 20px;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
 
