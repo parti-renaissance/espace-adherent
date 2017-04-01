@@ -6,22 +6,37 @@
     .je-partage__graphics {
         background: black;
 
-        > div {
+        &__crop {
+            min-width: 350px;
+            min-height: 400px;
+            background-size: cover;
             flex: 1;
             display: flex;
             position: relative;
+            background-position: center;
 
             @media (max-width: $mobile) {
                 flex: initial;
                 width: 100%;
             }
+        }
+
+        > div {
+            // flex: 1;
+            // display: flex;
+            // position: relative;
+            //
+            // @media (max-width: $mobile) {
+            //     flex: initial;
+            //     width: 100%;
+            // }
 
             > img {
-                flex: 1;
-
-                @media (max-width: $mobile) {
-                    width: 100%;
-                }
+                // flex: 1;
+                //
+                // @media (max-width: $mobile) {
+                //     width: 100%;
+                // }
             }
 
             &:hover .je-partage__social {

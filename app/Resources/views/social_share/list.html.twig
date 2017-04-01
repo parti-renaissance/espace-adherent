@@ -58,8 +58,8 @@
 
     <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap">
         {% for story in socialShares %}
-        <div class="je-partage__graphics__crop">
-            <img src="{{ media_asset(story.media, {'w': 402}) }}" alt="{{ story.name }}"/>
+        <div class="je-partage__graphics__crop"
+             style="background-image: url('{{ media_asset(story.media, {'w': 402, 'q': 100}) }}')">
             <div class="je-partage__social">
                 <div class="je-partage__social--inner">
                     <a download="{{ story.media }}" href="{{ media_asset(story.media) }}"
