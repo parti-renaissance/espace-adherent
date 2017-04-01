@@ -102,10 +102,10 @@
                        arial-label="Téléchargez {{ story.name }}">
                         <i class="fa fa-download"></i>
                     </a>
-                    <input type="text" id="{{ story.name|url_encode }}" value="{{ story.defaultUrl }}"
+                    <input type="text" id="story-{{ story.id }}" value="{{ story.defaultUrl }}"
                            style="position: absolute; left: -09111983px"/>
                     <div class="social__copy" arial-label="Copiez le lien" id="copy-link-button"
-                         data-clipboard-target="#{{ story.name|url_encode }}">
+                         data-clipboard-target="#story-{{ story.id }}">
                         <i class="fa fa-link"></i>
                     </div>
                     <a href="#" arial-label="Partagez sur Facebook"
