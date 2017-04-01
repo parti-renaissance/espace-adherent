@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SocialShareCategoryRepository")
  * @ORM\Table(name="social_share_categories")
  */
 class SocialShareCategory
