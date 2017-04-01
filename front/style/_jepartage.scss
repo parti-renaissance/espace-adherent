@@ -30,6 +30,10 @@
     .je-partage__graphics {
         background: black;
 
+        @media (max-width: $mobile) {
+            background: white;
+        }
+
         &__crop {
             min-width: 350px;
             min-height: 400px;
@@ -42,25 +46,10 @@
             @media (max-width: $mobile) {
                 flex: initial;
                 width: 100%;
-            }
-        }
-
-        > div {
-            // flex: 1;
-            // display: flex;
-            // position: relative;
-            //
-            // @media (max-width: $mobile) {
-            //     flex: initial;
-            //     width: 100%;
-            // }
-
-            > img {
-                // flex: 1;
-                //
-                // @media (max-width: $mobile) {
-                //     width: 100%;
-                // }
+                min-width: 100%;
+                top: 60px;
+                margin-top: 20px;
+                margin-bottom: 60px;
             }
 
             &:hover .je-partage__social {
@@ -81,15 +70,31 @@
         opacity: 0;
         transition: opacity .2s;
 
+        @media (max-width: $mobile) {
+            opacity: 1;
+            top: 0;
+            height: 60px;
+            margin-top: -60px;
+        }
+
         &--inner {
             width: 200px;
             z-index: 2;
             display: flex;
             justify-content: space-around;
-            flex-wrap: wrap;        }
+            flex-wrap: wrap;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+        }
 
         &:before {
             @include classic-gradient($filter--dark);
+
+            @media (max-width: $mobile) {
+                background: black;
+            }
         }
 
         a,
@@ -108,6 +113,13 @@
             align-items: center;
             justify-content: center;
 
+            @media (max-width: $mobile) {
+                width: 15px;
+                height: 15px;
+                padding: 10px;
+                border-width: 2px;
+            }
+
             &:hover {
                 color: $blue;
                 border-color: $blue;
@@ -116,6 +128,10 @@
 
         .fa {
             font-size: 30px;
+
+            @media (max-width: $mobile) {
+                font-size: 20px;
+            }
         }
     }
 }
