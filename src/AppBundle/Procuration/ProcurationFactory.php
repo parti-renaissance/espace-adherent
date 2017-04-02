@@ -67,6 +67,8 @@ class ProcurationFactory
         $proxy->setElectionPresidentialSecondRound($data['electionPresidentialSecondRound'] ?? false);
         $proxy->setElectionLegislativeFirstRound($data['electionLegislativeFirstRound'] ?? false);
         $proxy->setElectionLegislativeSecondRound($data['electionLegislativeSecondRound'] ?? false);
+        $proxy->setReliability($data['reliability'] ?? 0);
+        $proxy->setReliabilityDescription($data['reliabilityDescription'] ?? '');
 
         return $proxy;
     }

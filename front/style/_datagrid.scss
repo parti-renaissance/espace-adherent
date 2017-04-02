@@ -59,6 +59,10 @@
             background: #eaeaea;
         }
 
+        &--no-hover tr:hover {
+            background: transparent !important;
+        }
+
         &__col {
             &--left {
                 text-align: left !important;

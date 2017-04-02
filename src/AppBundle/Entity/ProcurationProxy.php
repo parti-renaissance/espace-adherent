@@ -52,12 +52,15 @@ class ProcurationProxy
      * @var int|null
      *
      * @ORM\Column(type="smallint")
-     *
-     * @Assert\NotBlank(groups={"admin"})
-     * @Assert\GreaterThanOrEqual(value=0, groups={"admin"})
-     * @Assert\LessThanOrEqual(value=5, groups={"admin"})
      */
     private $reliability = 0;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30, nullable=true)
+     */
+    private $reliabilityDescription = '';
 
     /**
      * @var string|null
@@ -427,6 +430,16 @@ class ProcurationProxy
     public function setReliability(?int $reliability)
     {
         $this->reliability = $reliability;
+    }
+
+    public function getReliabilityDescription(): ?string
+    {
+        return $this->reliabilityDescription;
+    }
+
+    public function setReliabilityDescription(?string $reliabilityDescription)
+    {
+        $this->reliabilityDescription = $reliabilityDescription;
     }
 
     public function getGender()
