@@ -194,10 +194,15 @@ old_sound_rabbit_mq:
             heartbeat: 0
 
     producers:
-        mailjet_referent:
+        mailjet_campaign:
             connection:       default
-            exchange_options: { name: 'mailjet-referent', type: direct }
-            class:            AppBundle\Producer\Mailjet\ReferentMessageMailjetProducer
+            exchange_options: { name: 'mailjet-campaign', type: direct }
+            class:            AppBundle\Producer\Mailjet\MailjetMessageProducer
+
+        mailjet_transactional:
+            connection:       default
+            exchange_options: { name: 'mailjet-transactional', type: direct }
+            class:            AppBundle\Producer\Mailjet\MailjetMessageProducer
 
         referent_managed_users_dumper:
             connection:       default
@@ -205,11 +210,18 @@ old_sound_rabbit_mq:
             class:            AppBundle\Producer\ReferentManagedUsersDumperProducer
 
     consumers:
-        mailjet_referent:
+        mailjet_campaign:
             connection:        default
-            exchange_options:  { name: 'mailjet-referent', type: direct }
-            queue_options:     { name: 'mailjet-referent', durable: false }
-            callback:          app.consumer.mailjet.referent
+            exchange_options:  { name: 'mailjet-campaign', type: direct }
+            queue_options:     { name: 'mailjet-campaign', durable: false }
+            callback:          app.consumer.mailjet.campaign
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        mailjet_transactional:
+            connection:        default
+            exchange_options:  { name: 'mailjet-transactional', type: direct }
+            queue_options:     { name: 'mailjet-transactional', durable: false }
+            callback:          app.consumer.mailjet.transactional
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         referent_managed_users_dumper:

@@ -17,7 +17,7 @@ services:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
     app.referent.message_handler.producer:
-        class: 'AppBundle\Producer\Mailjet\ReferentMessageNullProducer'
+        class: 'AppBundle\Producer\Mailjet\MailjetNullMessageProducer'
         public: false
 
 parameters:
