@@ -37,7 +37,7 @@
         </service>
 
         <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories d'actualités" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\ArticleCategory</argument>
