@@ -1,0 +1,60 @@
+{#
+Available variables:
+- object - Object of an class instance which you provided in the bundle config. e.g. AppBundle\Entity\Post
+#}
+<!doctype html>
+<html ⚡ lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ object.title }}</title>
+    <link rel="canonical" href="{{ url('blog_post', { slug: object.slug }) }}">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": "{{ url('blog_post', { slug: object.slug }) }}",
+        "headline": "{{ object.title }}",
+          "datePublished": "{{ object.publishedAt|date('Y-m-d H:i:s') }}",
+          "dateModified": "{{ object.publishedAt|date('Y-m-d H:i:s') }}",
+        "author": {
+          "@type": "Person",
+          "name": "John Doe"
+        },
+        "publisher": {
+          "@type": "Organization",
+            "logo": { "@type": "ImageObject", "url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png", "width": 125, "height": 60 },
+          "name": "Takeit"
+        }
+      }
+    </script>
+    <style amp-boilerplate>
+        {% include '@amp_theme/css/amp-boilerplate.html.twig' %}
+    </style>
+      {% include '@amp_theme/css/amp-boilerplate-noscript.html.twig' %}
+    <style amp-custom>
+        {% include '@amp_theme/css/amp-custom.html.twig' %}
+    </style>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+  </head>
+  <body>
+    <header role="banner">
+      <a href="#" class="header-link">
+        AMP Demo Theme
+      </a>
+    </header>
+
+    <article role="article">
+        <h1>{{ object.title }}</h1>
+        <div class="article-content">
+          {{ object.content|raw|md2html }}
+        </div>
+    </article>
+
+    <footer>
+      <a href="#" class="header-link">
+        Footer
+      </a>
+    </footer>
+  </body>
+</html>

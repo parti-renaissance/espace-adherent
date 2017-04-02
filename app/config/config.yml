@@ -218,3 +218,11 @@ old_sound_rabbit_mq:
             queue_options:     { name: 'referent-managed-users-dumper', durable: false }
             callback:          app.consumer.referent_managed_users_dumper
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+takeit_amp_html:
+    theme:
+        current_theme: "amp-theme"
+    model: AppBundle\Entity\Article
+    routing:
+        parameter_strategy:
+            enabled: true
