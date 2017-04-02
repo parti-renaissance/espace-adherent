@@ -35,18 +35,16 @@
         }
 
         &__crop {
-            min-width: 350px;
             min-height: 400px;
             background-size: cover;
-            flex: 1;
             display: flex;
             position: relative;
             background-position: center;
+            width: 35%;
 
-            &:nth-child(3n + 1):nth-last-child(2),
-            &:nth-child(3n + 2):nth-last-child(1),
-            &:nth-child(3n + 1):nth-last-child(1) {
-                max-width: 400px;
+            &:nth-child(4n),
+            &:nth-child(4n+1) {
+                width: 65%;
             }
 
             @media (max-width: $mobile) {
