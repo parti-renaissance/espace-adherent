@@ -42,7 +42,11 @@
                         {{ proxy.id }}
                     </td>
                     <td class="datagrid__table__col--left">
-                        {{ proxy.firstNames }} {{ proxy.lastName }}<br />
+                        {{ proxy.firstNames }} {{ proxy.lastName }}
+                        {% if proxy.reliabilityDescription %}
+                            ({{ proxy.reliabilityDescription }})
+                        {% endif %}
+                        <br />
                         <span class="datagrid__table__col--hide-mobile">
                             <em>Lieu de vote :</em>
                             {{ proxy.votePostalCode }} {{ proxy.voteCityName }} {{ proxy.voteCountry }}

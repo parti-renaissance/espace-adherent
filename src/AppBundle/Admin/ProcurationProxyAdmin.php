@@ -192,6 +192,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ->add('reliability', null, [
                 'label' => 'Fiabilité',
             ])
+            ->add('reliabilityDescription', null, [
+                'label' => 'Raison de la fiabilité',
+            ])
             ->add('_profile', null, [
                 'virtual_field' => true,
                 'label' => 'Proposition',

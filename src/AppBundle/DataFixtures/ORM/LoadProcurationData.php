@@ -201,6 +201,8 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'electionPresidentialSecondRound' => true,
             'electionLegislativeFirstRound' => true,
             'electionLegislativeSecondRound' => true,
+            'reliability' => 5,
+            'reliabilityDescription' => 'Responsable procuration',
         ]));
 
         $manager->flush();
