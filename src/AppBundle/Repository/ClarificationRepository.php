@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Clarification;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 class ClarificationRepository extends EntityRepository
@@ -16,5 +17,13 @@ class ClarificationRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @return Clarification[]|ArrayCollection
+     */
+    public function findAllPublished()
+    {
+        return $this->findBy(['published' => true], ['createdAt' => 'DESC']);
     }
 }

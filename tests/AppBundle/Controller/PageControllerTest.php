@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadClarificationData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
@@ -83,6 +84,7 @@ class PageControllerTest extends SqliteWebTestCase
             LoadEventData::class,
             LoadPageData::class,
             LoadProposalData::class,
+            LoadClarificationData::class,
         ]);
     }
 

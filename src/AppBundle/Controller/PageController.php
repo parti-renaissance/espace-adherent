@@ -84,6 +84,10 @@ class PageController extends Controller
      */
     public function emmanuelMacronDesintoxListAction()
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $repository = $this->getDoctrine()->getRepository(Clarification::class);
 
         return $this->render('page/emmanuel-macron/desintox.html.twig', [
@@ -97,6 +101,10 @@ class PageController extends Controller
      */
     public function emmanuelMacronDesintoxViewAction($slug)
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $clarification = $this->getDoctrine()->getRepository(Clarification::class)->findOneBySlug($slug);
 
         if (!$clarification || !$clarification->isPublished()) {
