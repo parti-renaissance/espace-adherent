@@ -4,13 +4,13 @@ EXEC=$(FIG) exec app
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db new-migration watch clear clean test tu tf tj lint ls ly lt lj fig-build fig-up perm
+.PHONY: help start stop reset db new-migration watch clear clean test tu tf tj lint ls ly lt lj build up perm
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 start:          ## Install and start the project
-start: fig-build fig-up db web/built perm
+start: build up db web/built perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -82,10 +82,10 @@ lj:             ## Lint the Javascript to follow the convention
 lj: node_modules
 	$(RUN) yarn lint
 
-fig-build:
+build:
 	$(FIG) build
 
-fig-up:
+up:
 	$(FIG) up -d
 
 perm:
