@@ -381,7 +381,7 @@ class ProcurationRequest
             return false;
         }
 
-        if ($this->voteCountry === 'FR' && $this->getVotePostalCode() !== $proxy->getVotePostalCode()) {
+        if ($this->voteCountry === 'FR' && 0 !== strpos($proxy->getVotePostalCode(), substr($this->getVotePostalCode(), 0, 2))) {
             return false;
         }
 
