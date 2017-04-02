@@ -109,6 +109,29 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'reason' => ProcurationRequest::REASON_HELP,
         ]));
 
+        $manager->persist($factory->createRequestFromArray([
+            'gender' => 'male',
+            'first_names' => 'William',
+            'last_name' => 'Brunelle',
+            'email' => 'WilliamBrunelle@dayrep.com',
+            'address' => '59, Avenue De Marlioz',
+            'postalCode' => '44000',
+            'city' => '44000-44109',
+            'cityName' => null,
+            'phone' => '33 411809703',
+            'birthdate' => '1964-01-16',
+            'voteCountry' => 'FR',
+            'votePostalCode' => '44000',
+            'voteCity' => '44000-44109',
+            'voteCityName' => null,
+            'voteOffice' => 'Saighterse',
+            'electionPresidentialFirstRound' => true,
+            'electionPresidentialSecondRound' => true,
+            'electionLegislativeFirstRound' => true,
+            'electionLegislativeSecondRound' => true,
+            'reason' => ProcurationRequest::REASON_HEALTH,
+        ]));
+
         $referent = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_8_UUID);
 
         $manager->persist($factory->createProxyProposalFromArray([
@@ -151,6 +174,29 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'voteCity' => '75018-75118',
             'voteCityName' => null,
             'voteOffice' => 'Lycée général Zola',
+            'electionPresidentialFirstRound' => true,
+            'electionPresidentialSecondRound' => true,
+            'electionLegislativeFirstRound' => true,
+            'electionLegislativeSecondRound' => true,
+        ]));
+
+        $manager->persist($factory->createProxyProposalFromArray([
+            'referent' => $referent,
+            'gender' => 'male',
+            'first_names' => 'Benjamin',
+            'last_name' => 'Robitaille',
+            'email' => 'BenjaminRobitaille@teleworm.us',
+            'address' => '47, place Stanislas',
+            'postalCode' => '44100',
+            'city' => '44100-44109',
+            'cityName' => null,
+            'phone' => '33 269692256',
+            'birthdate' => '1969-10-17',
+            'voteCountry' => 'FR',
+            'votePostalCode' => '44100',
+            'voteCity' => '44100-44109',
+            'voteCityName' => null,
+            'voteOffice' => 'Bentapair',
             'electionPresidentialFirstRound' => true,
             'electionPresidentialSecondRound' => true,
             'electionLegislativeFirstRound' => true,

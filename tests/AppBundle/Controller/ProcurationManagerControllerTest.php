@@ -34,6 +34,15 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
+    public function providePages()
+    {
+        return [
+            ['/espace-responsable-procuration'],
+            ['/espace-responsable-procuration/demande/1'],
+            ['/espace-responsable-procuration/demande/2'],
+        ];
+    }
+
     /**
      * @group functionnal
      */
@@ -56,7 +65,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(4, $crawler->filter('.datagrid__table tbody tr'));
 
         // Request page
         $linkNode = $crawler->filter('#request-link-3');
@@ -135,7 +144,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Michel Carbonneau")'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Maxime Michaux")'));
     }
