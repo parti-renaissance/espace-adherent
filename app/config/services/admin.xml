@@ -28,7 +28,89 @@
                 </argument>
             </call>
 
-            <tag name="sonata.admin" manager-type="orm" label="Images" group="Médias" />
+            <tag name="sonata.admin" manager-type="orm" label="Images" group="Communication" />
+        </service>
+
+        <!-- ArticleCategory -->
+        <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
+            <argument />
+            <argument>AppBundle\Entity\ArticleCategory</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'actualités" group="Communication" />
+        </service>
+
+        <!-- Article -->
+        <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Article</argument>
+            <argument />
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Actualités" group="Communication" />
+        </service>
+
+        <!-- Page -->
+        <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Page</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Pages statiques" group="Communication" />
+        </service>
+
+        <!-- SocialShareCategory -->
+        <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
+            <argument />
+            <argument>AppBundle\Entity\SocialShareCategory</argument>
+            <argument />
+
+            <tag name="sonata.admin" manager-type="orm" label="Catégories Je Partage" group="Communication" />
+        </service>
+
+        <!-- SocialShare -->
+        <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
+            <argument />
+            <argument>AppBundle\Entity\SocialShare</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Contenus Je Partage" group="Communication" />
+        </service>
+
+        <!-- Clarification -->
+        <service id="app.admin.clarification" class="AppBundle\Admin\ClarificationAdmin">
+            <argument />
+            <argument>AppBundle\Entity\Clarification</argument>
+            <argument />
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
+                </argument>
+            </call>
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+
+            <tag name="sonata.admin" manager-type="orm" label="Désintox" group="Communication" />
         </service>
 
         <!-- HomeBlock -->
@@ -55,56 +137,6 @@
             <tag name="sonata.admin" manager-type="orm" label="Liens En direct" group="Page d'accueil" />
         </service>
 
-        <!-- ArticleCategory -->
-        <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
-            <argument />
-            <argument>AppBundle\Entity\ArticleCategory</argument>
-            <argument />
-
-            <tag name="sonata.admin" manager-type="orm" label="Catégories d'articles" group="Actualités" />
-        </service>
-
-        <!-- Article -->
-        <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
-            <argument />
-            <argument>AppBundle\Entity\Article</argument>
-            <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
-
-            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Actualités" />
-        </service>
-
-        <!-- SocialShareCategory -->
-        <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
-            <argument />
-            <argument>AppBundle\Entity\SocialShareCategory</argument>
-            <argument />
-
-            <tag name="sonata.admin" manager-type="orm" label="Catégories" group="Partage social" />
-        </service>
-
-        <!-- SocialShare -->
-        <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
-            <argument />
-            <argument>AppBundle\Entity\SocialShare</argument>
-            <argument />
-
-            <call method="setStorage">
-                <argument type="service" id="app.storage" />
-            </call>
-
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
-            </call>
-
-            <tag name="sonata.admin" manager-type="orm" label="Contenus sociaux" group="Partage social" />
-        </service>
-
         <!-- ProposalTheme -->
         <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
             <argument />
@@ -129,21 +161,6 @@
             <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Programme" />
         </service>
 
-        <!-- Page -->
-        <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
-            <argument />
-            <argument>AppBundle\Entity\Page</argument>
-            <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
-
-            <tag name="sonata.admin" manager-type="orm" label="Pages" group="Pages" />
-        </service>
-
         <!-- Administrator -->
         <service id="app.admin.administrator" class="AppBundle\Admin\AdministratorAdmin">
             <argument />
@@ -158,12 +175,6 @@
                 <argument type="service" id="scheb_two_factor.security.google_authenticator" />
             </call>
 
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
-
             <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Utilisateurs" />
         </service>
 
@@ -172,12 +183,6 @@
             <argument />
             <argument>AppBundle\Entity\Adherent</argument>
             <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
 
             <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Utilisateurs" />
         </service>

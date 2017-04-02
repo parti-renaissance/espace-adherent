@@ -2,7 +2,7 @@
 
 {% block banner '' %}
 {% block page_title 'Désintox' %}
-{% block canonical_url url('page_emmanuel_macron_desintox') %}
+{% block canonical_url url('page_emmanuel_macron_desintox_list') %}
 {# {% block meta_description page.description %} #}
 
 {% block stylesheets %}
@@ -31,22 +31,30 @@
         <hr class="l__wrapper--medium">
 
         <div class="l__wrapper--slim">
-
             <div class="space--30-0 text--body">
-                Le rôle de la politique est de déployer un cadre qui permettra à chacune et à chacun Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Le rôle de la politique est de déployer un cadre qui permettra à chacune et à chacun
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </div>
 
             <ul class="desintox__cases">
+                {% for clarification in clarifications %}
                 <li>
                     <h1 class="text--large">
-                        <a href="#" class="link--no-decor">
-                            Héritier de Hollande ou traître du quinquennat ?
+                        <a href="{{ path('page_emmanuel_macron_desintox_view', {'slug': clarification.slug}) }}"
+                           class="link--no-decor">
+                            {{ clarification.title }}
                         </a>
                     </h1>
                     <div>
-                        <a href="#" class="btn btn--black">Lire</a>
+                        <a href="{{ path('page_emmanuel_macron_desintox_view', {'slug': clarification.slug}) }}"
+                           class="btn btn--black">Lire</a>
                     </div>
                 </li>
+                {% endfor %}
             </ul>
         </div>
     </section>
