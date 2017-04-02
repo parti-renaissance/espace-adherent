@@ -32,11 +32,12 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
 
         // Categories
-        $manager->persist($newsCategory = new ArticleCategory('Actualités', 'actualites', 1));
-        $manager->persist($videosCategory = new ArticleCategory('Vidéos', 'videos', 2));
-        $manager->persist($speechCategory = new ArticleCategory('Discours', 'discours', 3));
-        $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 4));
-        $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 5));
+        $manager->persist($newsCategory = new ArticleCategory('Articles', 'articles', 1));
+        $manager->persist($desintoxCategory = new ArticleCategory('Désintox', 'desintox', 2));
+        $manager->persist($videosCategory = new ArticleCategory('Vidéos', 'videos', 3));
+        $manager->persist($speechCategory = new ArticleCategory('Discours', 'discours', 4));
+        $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 5));
+        $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 6));
 
         $manager->flush();
 
@@ -78,8 +79,8 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         // A lot of articles for listing
-        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
-            for ($i = 0; $i < 150; ++$i) {
+        foreach ([$newsCategory, $desintoxCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
+            for ($i = 0; $i < 50; ++$i) {
                 $manager->persist($factory->createFromArray([
                     'title' => $faker->sentence(),
                     'slug' => $faker->slug(),
