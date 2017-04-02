@@ -31,7 +31,7 @@ class ProposalAdmin extends AbstractAdmin
         ;
 
         $formMapper
-            ->with('Méta-données', array('class' => 'col-md-8'))
+            ->with('Méta-données', ['class' => 'col-md-8'])
                 ->add('title', null, [
                     'label' => 'Titre',
                 ])

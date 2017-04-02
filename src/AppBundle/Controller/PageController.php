@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Page;
@@ -78,14 +79,32 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/desintox", name="page_emmanuel_macron_desintox")
+     * @Route("/emmanuel-macron/desintox", name="page_emmanuel_macron_desintox_list")
      * @Method("GET")
      */
-    public function emmanuelMacronDesintoxAction()
+    public function emmanuelMacronDesintoxListAction()
     {
+        $repository = $this->getDoctrine()->getRepository(Clarification::class);
+
         return $this->render('page/emmanuel-macron/desintox.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-desintox'),
-            // 'cases' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+            'clarifications' => $repository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/emmanuel-macron/desintox/{slug}", name="page_emmanuel_macron_desintox_view")
+     * @Method("GET")
+     */
+    public function emmanuelMacronDesintoxViewAction($slug)
+    {
+        $clarification = $this->getDoctrine()->getRepository(Clarification::class)->findOneBySlug($slug);
+
+        if (!$clarification || !$clarification->isPublished()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('page/emmanuel-macron/desintox_view.html.twig', [
+            'clarification' => $clarification,
         ]);
     }
 

@@ -54,6 +54,8 @@ class PageControllerTest extends SqliteWebTestCase
             ['/emmanuel-macron/le-programme'],
             ['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'],
             ['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'],
+            ['/emmanuel-macron/desintox'],
+            ['/emmanuel-macron/desintox/heritier-hollande-traite-quiquennat'],
             ['/le-mouvement'],
             ['/le-mouvement/notre-organisation'],
             ['/le-mouvement/les-comites'],

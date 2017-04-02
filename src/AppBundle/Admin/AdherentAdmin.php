@@ -32,7 +32,7 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Informations personnelles', array('class' => 'col-md-8'))
+            ->with('Informations personnelles', ['class' => 'col-md-8'])
                 ->add('status', null, [
                     'label' => 'Etat du compte',
                 ])
@@ -72,7 +72,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Longitude du point sur la carte',
                 ])
             ->end()
-            ->with('Préférences des e-mails', array('class' => 'col-md-8'))
+            ->with('Préférences des e-mails', ['class' => 'col-md-8'])
                 ->add('hasSubscribedMainEmails', 'boolean', [
                     'label' => 'Abonné aux mails nationaux ?',
                 ])
@@ -96,7 +96,7 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Informations personnelles', array('class' => 'col-md-8'))
+            ->with('Informations personnelles', ['class' => 'col-md-8'])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Etat du compte',
                     'choices' => [

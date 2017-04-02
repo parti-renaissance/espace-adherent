@@ -3,8 +3,6 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\SocialShare;
-use League\Flysystem\Filesystem;
-use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -14,47 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SocialShareAdmin extends AbstractAdmin
 {
-    /**
-     * @var Filesystem
-     */
-    private $storage;
-
-    /**
-     * @var Server
-     */
-    private $glide;
-
-    /**
-     * @param SocialShare $socialShare
-     */
-    public function prePersist($socialShare)
-    {
-        parent::prePersist($socialShare);
-
-        $this->storage->put(
-            'images/'.$socialShare->getMedia()->getPath(),
-            file_get_contents($socialShare->getMedia()->getFile()->getPathname())
-        );
-
-        $this->glide->deleteCache('images/'.$socialShare->getMedia()->getPath());
-    }
-
-    /**
-     * @param SocialShare $socialShare
-     */
-    public function preUpdate($socialShare)
-    {
-        parent::preUpdate($socialShare);
-
-        if ($socialShare->getMedia()->getFile()) {
-            $this->storage->put(
-                'images/'.$socialShare->getMedia()->getPath(),
-                file_get_contents($socialShare->getMedia()->getFile()->getPathname())
-            );
-
-            $this->glide->deleteCache('images/'.$socialShare->getMedia()->getPath());
-        }
-    }
+    use MediaSynchronisedAdminTrait;
 
     /**
      * @param SocialShare $object
@@ -142,15 +100,5 @@ class SocialShareAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    public function setStorage(Filesystem $storage)
-    {
-        $this->storage = $storage;
-    }
-
-    public function setGlide(Server $glide)
-    {
-        $this->glide = $glide;
     }
 }

@@ -21,6 +21,8 @@ class Article
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
+    use EntityMediaTrait;
+    use EntityPublishableTrait;
 
     /**
      * @var int
@@ -49,29 +51,6 @@ class Article
      * @Assert\NotBlank
      */
     private $publishedAt;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $published = false;
-
-    /**
-     * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
-     *
-     * @Assert\NotBlank
-     */
-    private $media;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $displayMedia = true;
 
     /**
      * @var ProposalTheme[]|Collection
@@ -119,50 +98,6 @@ class Article
     public function setPublishedAt(\DateTime $publishedAt): Article
     {
         $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->published;
-    }
-
-    public function setPublished(bool $published): Article
-    {
-        $this->published = $published;
-
-        return $this;
-    }
-
-    /**
-     * @return Media|null
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media|null $media
-     *
-     * @return Article
-     */
-    public function setMedia(Media $media = null): Article
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    public function displayMedia(): bool
-    {
-        return $this->displayMedia;
-    }
-
-    public function setDisplayMedia(bool $displayMedia): Article
-    {
-        $this->displayMedia = $displayMedia;
 
         return $this;
     }

@@ -2,26 +2,14 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Page;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PageAdmin extends AbstractAdmin
 {
-    /**
-     * @param Page $object
-     *
-     * @return Metadata
-     */
-    public function getObjectMetadata($object)
-    {
-        return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         if ($this->getSubject()->getId() === null) {

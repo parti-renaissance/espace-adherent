@@ -2,20 +2,22 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Clarification;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class ArticleAdmin extends AbstractAdmin
+class ClarificationAdmin extends AbstractAdmin
 {
+    use MediaSynchronisedAdminTrait;
+
     /**
-     * @param Article $object
+     * @param Clarification $object
      *
      * @return Metadata
      */
@@ -32,40 +34,32 @@ class ArticleAdmin extends AbstractAdmin
         ;
 
         $formMapper
-            ->with('Méta-données', ['class' => 'col-md-8'])
+            ->with('Méta-données', ['class' => 'col-md-4'])
                 ->add('title', null, [
                     'label' => 'Titre',
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                 ])
-                ->add('media', null, [
+            ->end()
+            ->with('Média', ['class' => 'col-md-4'])
+                ->add('media', AdminType::class, [
                     'label' => 'Image principale',
-                    'required' => false,
                 ])
                 ->add('displayMedia', CheckboxType::class, [
-                    'label' => 'Afficher l\'image principale dans l\'article',
+                    'label' => 'Afficher l\'image principale',
                     'required' => false,
-                ])
-                ->add('themes', null, [
-                    'label' => 'Thèmes',
                 ])
             ->end()
             ->with('Publication', ['class' => 'col-md-4'])
                 ->add('published', CheckboxType::class, [
-                    'label' => 'Publier l\'article',
+                    'label' => 'Publier la désintox',
                     'required' => false,
-                ])
-                ->add('publishedAt', DatePickerType::class, [
-                    'label' => 'Date de publication',
                 ])
                 ->add('slug', null, [
                     'label' => 'URL de publication',
                     'disabled' => !$slugEditable,
-                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/article/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
-                ])
-                ->add('category', null, [
-                    'label' => 'Catégorie de publication',
+                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/emmanuel-macron/desintox/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
                 ])
             ->end()
             ->with('Contenu', array('class' => 'col-md-12'))
@@ -83,7 +77,8 @@ class ArticleAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -92,14 +87,8 @@ class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
-            ->add('category', null, [
-                'label' => 'Catégorie',
-            ])
             ->add('published', null, [
                 'label' => 'Publié ?',
-            ])
-            ->add('publishedAt', null, [
-                'label' => 'Date de publication',
             ])
             ->add('updatedAt', null, [
                 'label' => 'Dernière mise à jour',
@@ -108,11 +97,12 @@ class ArticleAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'preview' => [
-                        'template' => 'admin/article_preview.html.twig',
+                        'template' => 'admin/clarification_preview.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }
