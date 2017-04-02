@@ -176,6 +176,7 @@ class SitemapFactory
     {
         $sitemap->add($this->generateUrl('page_emmanuel_macron'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_emmanuel_macron_revolution'), null, ChangeFrequency::WEEKLY, 0.6);
+        $sitemap->add($this->generateUrl('page_emmanuel_macron_desintox'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_emmanuel_macron_programme'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_notre_organisation'), null, ChangeFrequency::WEEKLY, 0.6);

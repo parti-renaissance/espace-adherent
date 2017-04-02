@@ -78,6 +78,18 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/emmanuel-macron/desintox", name="page_emmanuel_macron_desintox")
+     * @Method("GET")
+     */
+    public function emmanuelMacronDesintoxAction()
+    {
+        return $this->render('page/emmanuel-macron/desintox.html.twig', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-desintox'),
+            // 'cases' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+        ]);
+    }
+
+    /**
      * @Route("/le-mouvement", name="page_le_mouvement")
      * @Method("GET")
      */

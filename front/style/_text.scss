@@ -211,6 +211,10 @@ $text--size-extra-large: 48px;
         padding: 0 5px;
     }
 
+    &--inline {
+        display: inline;
+    }
+
     &--limited {
         max-width: 500px;
 

@@ -29,10 +29,6 @@
         border-color: $gray;
         cursor: not-allowed;
     }
-
-    @media(max-width: $mobile) {
-        font-size: $text--size-smallest;
-    }
 }
 
 @mixin btn--primary {
