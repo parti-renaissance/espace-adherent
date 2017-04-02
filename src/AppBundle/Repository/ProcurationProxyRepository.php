@@ -56,12 +56,20 @@ class ProcurationProxyRepository extends EntityRepository
         $qb = $this->createQueryBuilder('pp');
         $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
             ->where($qb->expr()->orX(
-                'pp.voteCountry = \'FR\' AND pp.voteCity = :voteCity',
-                'pp.voteCountry != \'FR\' AND pp.voteCountry = :voteCountry'
+                $qb->expr()->andX(
+                    'pp.voteCountry = \'FR\'',
+                    'SUBSTRING(pp.votePostalCode, 1, 2) = SUBSTRING(:votePostalCode, 1, 2)',
+                    'pp.voteCityName = :voteCityName'
+                ),
+                $qb->expr()->andX(
+                    'pp.voteCountry != \'FR\'',
+                    'pp.voteCountry = :voteCountry'
+                )
             ))
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
-            ->setParameter('voteCity', $procurationRequest->getVoteCity())
+            ->setParameter('votePostalCode', $procurationRequest->getVotePostalCode())
+            ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC');

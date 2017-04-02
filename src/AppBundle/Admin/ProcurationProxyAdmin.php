@@ -58,12 +58,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Adresse postale',
                 ])
             ->end()
-            ->with('Fiabilité', ['class' => 'col-md-6'])
-                ->add('reliability', null, [
-                    'label' => 'Score de fiabilité',
-                    'help' => 'Entre 0 et 5',
-                ])
-            ->end()
             ->with('Lieu de vote', ['class' => 'col-md-6'])
                 ->add('voteCountry', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
@@ -194,6 +188,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('reliability', null, [
+                'label' => 'Fiabilité',
             ])
             ->add('_profile', null, [
                 'virtual_field' => true,
