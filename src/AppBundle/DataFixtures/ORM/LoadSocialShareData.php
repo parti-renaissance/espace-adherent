@@ -49,7 +49,7 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
         $socialShare1->setMedia($medias[0]);
         $socialShare1->setSocialShareCategory($category1);
 
-        $socialShare2 = new SocialShare('Partage culture 2', 2, true);
+        $socialShare2 = new SocialShare('Fier d\'être Français', 2, true);
         $socialShare2->setDefaultUrl('https://en-marche.fr/');
         $socialShare2->setDescription('description');
         $socialShare2->setTwitterUrl('https://twitter.com/EmmanuelMacron');
