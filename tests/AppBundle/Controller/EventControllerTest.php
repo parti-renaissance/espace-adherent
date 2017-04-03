@@ -7,6 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
+use AppBundle\Mailjet\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
@@ -60,6 +61,7 @@ class EventControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -99,6 +101,7 @@ class EventControllerTest extends SqliteWebTestCase
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
 

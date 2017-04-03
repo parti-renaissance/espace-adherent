@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
-class EventCancellationMessage extends MailjetMessage
+final class EventCancellationMessage extends MailjetMessage
 {
     /**
      * Creates a new message instance for a list of recipients.

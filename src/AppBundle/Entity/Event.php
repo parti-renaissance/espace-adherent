@@ -217,6 +217,11 @@ class Event implements GeoPointInterface
         return $this->organizer;
     }
 
+    public function getOrganizerName(): ?string
+    {
+        return $this->organizer ? $this->organizer->getFirstName() : '';
+    }
+
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;

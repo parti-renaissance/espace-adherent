@@ -56,7 +56,7 @@ class EventRegistration
         Event $event,
         string $firstName,
         string $emailAddress,
-        ?string $postalCode,
+        ?string $postalCode = null,
         bool $newsletterSubscriber = false,
         UuidInterface $adherentUuid = null,
         string $createdAt = 'now'

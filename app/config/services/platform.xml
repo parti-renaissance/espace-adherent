@@ -208,6 +208,7 @@
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
         </service>
 
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">

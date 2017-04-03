@@ -2,17 +2,23 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\EventRegistrationConfirmationMessage;
+
 class EventRegistrationCommandHandler
 {
     private $factory;
     private $manager;
+    private $mailjet;
 
     public function __construct(
         EventRegistrationFactory $factory,
-        EventRegistrationManager $manager
+        EventRegistrationManager $manager,
+        MailjetService $mailjet
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(EventRegistrationCommand $command)
@@ -28,6 +34,8 @@ class EventRegistrationCommandHandler
             $this->manager->remove($registration);
         }
 
-        $this->manager->create($this->factory->createFromCommand($command));
+        $this->manager->create($registration = $this->factory->createFromCommand($command));
+
+        $this->mailjet->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration($registration));
     }
 }
