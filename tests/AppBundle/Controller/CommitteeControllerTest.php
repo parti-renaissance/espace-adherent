@@ -56,6 +56,25 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
     /**
      * @group functionnal
+     * @dataProvider provideHostCredentials
+     */
+    public function testAuthenticatedCommitteeHostCannotUnfollowCommittee(string $emailAddress, string $password)
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress, $password);
+
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Unfollow link must be disabled
+        $this->assertSame('disabled', $crawler->filter('.committee-unfollow')->attr('disabled'));
+
+        // Other follower/register links must not exist
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+    }
+
+    /**
+     * @group functionnal
      */
     public function testAutenticatedAdherentCanFollowCommittee()
     {

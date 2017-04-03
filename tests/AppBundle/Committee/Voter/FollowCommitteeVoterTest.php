@@ -14,7 +14,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     private $voter;
     private $repository;
 
-    public function testCommitteeHostAdherentIsAllowedToUnfollowCommittee()
+    public function testCommitteeHostAdherentIsNotAllowedToUnfollowCommittee()
     {
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
@@ -31,50 +31,13 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->with($adherent, (string) $committee->getUuid())
             ->willReturn($membership);
 
-        $this
-            ->repository
-            ->expects($this->once())
-            ->method('countHostMembers')
-            ->with((string) $committee->getUuid())
-            ->willReturn(2);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
-        );
-    }
-
-    public function testCommitteeHostAdherentIsNotAllowedToUnfollowCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID);
-        $membership = $adherent->hostCommittee($committee);
-
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->repository
-            ->expects($this->once())
-            ->method('findMembership')
-            ->with($adherent, (string) $committee->getUuid())
-            ->willReturn($membership);
-
-        $this
-            ->repository
-            ->expects($this->once())
-            ->method('countHostMembers')
-            ->with((string) $committee->getUuid())
-            ->willReturn(1);
-
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
             $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
         );
     }
 
-    public function testFollowerAdherentCanUnfollowTheCommittee()
+    public function testFollowerAdherentCanUnfollowCommittee()
     {
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $committee->approved();
@@ -90,11 +53,6 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->method('findMembership')
             ->with($adherent, (string) $committee->getUuid())
             ->willReturn($membership);
-
-        $this
-            ->repository
-            ->expects($this->never())
-            ->method('countHostMembers');
 
         $this->assertSame(
             VoterInterface::ACCESS_GRANTED,
@@ -117,11 +75,6 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->with($adherent, (string) $committee->getUuid())
             ->willReturn(null);
 
-        $this
-            ->repository
-            ->expects($this->never())
-            ->method('countHostMembers');
-
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
             $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
@@ -131,7 +84,6 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     public function testAdherentIsNotAllowedToUnfollowAnUnapprovedCommittee()
     {
         $this->repository->expects($this->never())->method('findMembership');
-        $this->repository->expects($this->never())->method('countHostMembers');
 
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
         $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
