@@ -1,0 +1,12 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% for route, title in {
+    'page_emmanuel_macron': 'Ce que je suis',
+    'page_emmanuel_macron_revolution': 'Révolution',
+    'page_emmanuel_macron_desintox_list': 'Désintox'
+} %}
+    <li class="{{ route == currentRoute ? 'active' }}">
+        <a href="{{ path(route) }}">
+            {{ title }}
+        </a>
+    </li>
+{% endfor %}
