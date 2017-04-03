@@ -32,7 +32,7 @@ class EventProvider
                 continue;
             }
 
-            $data[] = [
+            $el = [
                 'uuid' => $event->getUuid()->toString(),
                 'slug' => $event->getSlug(),
                 'name' => $event->getName(),
@@ -45,6 +45,20 @@ class EventProvider
                     'lng' => (float) $event->getLongitude(),
                 ],
             ];
+
+            if ($committee = $event->getCommittee()) {
+                $el += [
+                    'committee_name' => $committee->getName(),
+                    'committee_url' => $this->urlGenerator->generate('app_committee_show', [
+                        'uuid' => (string) $committee->getUuid(),
+                        'slug' => $committee->getSlug(),
+                    ]),
+                ];
+            } else {
+                $el['organizer'] = $event->getOrganizer()->getFullName();
+            }
+
+            $data[] = $el;
         }
 
         return $data ?? [];

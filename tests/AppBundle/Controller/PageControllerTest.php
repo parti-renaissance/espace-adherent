@@ -43,7 +43,7 @@ class PageControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $crawler->filter('html:contains("Tous les événements")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("La carte des événements")')->count());
         $this->assertContains('Tous (5)', $crawler->filter('.events-map-categories--all')->first()->text());
     }
 
