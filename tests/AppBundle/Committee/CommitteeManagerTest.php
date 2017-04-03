@@ -132,13 +132,6 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[3]);
         $this->assertSame('En Marche - Comité de Rouen', (string) $committees[4]);
         $this->assertSame('En Marche - Comité de Berlin', (string) $committees[5], 'Followed committee - least popular one last');
-
-        // With a fixed limit of 4 committees maximum.
-        $this->assertCount(4, $this->committeeManager->getAdherentCommittees($adherent, 4));
-        $this->assertSame('En Marche Paris 8', (string) $committees[0], 'Supervised committee must come first');
-        $this->assertSame('En Marche Dammarie-les-Lys', (string) $committees[1], 'Hosted committee must come after supervised committees');
-        $this->assertSame('En Marche - Comité de Évry', (string) $committees[2], 'Followed committee - most popular of the list must come first');
-        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[3], 'Followed committee - least popular of the list must come last');
     }
 
     private function getCommitteeMock(string $uuid)

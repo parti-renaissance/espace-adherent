@@ -77,32 +77,6 @@ class CommitteeMembershipRepository extends EntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
-    /**
-     * Returns whether or not an adherent is already member of a committee.
-     *
-     * @param Adherent $adherent
-     * @param string   $committeeUuid
-     *
-     * @return bool
-     */
-    public function isMemberOf(Adherent $adherent, string $committeeUuid): bool
-    {
-        $query = $this
-            ->createMembershipQueryBuilder($adherent, $committeeUuid)
-            ->select('COUNT(cm.uuid)')
-            ->getQuery()
-        ;
-
-        return 1 === (int) $query->getSingleScalarResult();
-    }
-
-    /**
-     * Finds all the memberships for an adherent.
-     *
-     * @param Adherent $adherent
-     *
-     * @return CommitteeMembershipCollection
-     */
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
     {
         $query = $this
@@ -115,14 +89,6 @@ class CommitteeMembershipRepository extends EntityRepository
         return new CommitteeMembershipCollection($query->getResult());
     }
 
-    /**
-     * Finds the membership relationship between an adherent and a committee.
-     *
-     * @param Adherent $adherent
-     * @param string   $committeeUuid
-     *
-     * @return CommitteeMembership|null
-     */
     public function findMembership(Adherent $adherent, string $committeeUuid): ?CommitteeMembership
     {
         $query = $this

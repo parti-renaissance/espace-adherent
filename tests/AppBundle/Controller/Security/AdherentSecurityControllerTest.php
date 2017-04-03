@@ -14,7 +14,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @group functional
+ * @group functionnal
  */
 class AdherentSecurityControllerTest extends SqliteWebTestCase
 {

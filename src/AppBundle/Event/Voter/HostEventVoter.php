@@ -23,14 +23,20 @@ class HostEventVoter extends AbstractEventVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, Event $event): bool
     {
-        if ($event->getOrganizer() && $adherent->getId() === $event->getOrganizer()->getId()) {
+        if ($event->getOrganizer() && $adherent->equals($event->getOrganizer())) {
             return true;
         }
 
-        if (!$event->getCommittee()) {
+        if (!$committee = $event->getCommittee()) {
             return false;
         }
 
-        return $this->repository->hostCommittee($adherent, (string) $event->getCommittee()->getUuid());
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($membership = $adherent->getMembershipFor($committee)) {
+            return $membership->canHostCommittee();
+        }
+
+        return $this->repository->hostCommittee($adherent, $committee->getUuid());
     }
 }

@@ -8,25 +8,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class ProcurationManagerControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
-    public function testProcurationManagerBackendIsForbiddenAsAnonymous($path)
+    public function testProcurationManagerBackendIsForbiddenAsAnonymous(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
     }
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
-    public function testProcurationManagerBackendIsForbiddenAsAdherentNotReferent($path)
+    public function testProcurationManagerBackendIsForbiddenAsAdherentNotReferent(string $path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
@@ -38,14 +39,12 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
     {
         return [
             ['/espace-responsable-procuration'],
+            ['/espace-responsable-procuration/mandataires'],
             ['/espace-responsable-procuration/demande/1'],
             ['/espace-responsable-procuration/demande/2'],
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testProcurationManagerNotManagedRequestIsForbidden()
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
@@ -54,9 +53,6 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAssociateDeassociateRequest()
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
@@ -134,9 +130,6 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Jean-Michel Carbonneau', trim($crawler->filter('.datagrid__table tbody tr td strong')->text()));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testProcurationManagerProxiesList()
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');

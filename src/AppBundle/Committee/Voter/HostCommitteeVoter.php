@@ -2,18 +2,18 @@
 
 namespace AppBundle\Committee\Voter;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeMembershipRepository;
 
 class HostCommitteeVoter extends AbstractCommitteeVoter
 {
-    private $repository;
+    private $manager;
 
-    public function __construct(CommitteeMembershipRepository $repository)
+    public function __construct(CommitteeManager $manager)
     {
-        $this->repository = $repository;
+        $this->manager = $manager;
     }
 
     protected function supports($attribute, $committee)
@@ -23,6 +23,6 @@ class HostCommitteeVoter extends AbstractCommitteeVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, Committee $committee): bool
     {
-        return $this->repository->hostCommittee($adherent, (string) $committee->getUuid());
+        return $this->manager->hostCommittee($adherent, $committee);
     }
 }

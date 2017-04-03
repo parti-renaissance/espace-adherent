@@ -45,15 +45,6 @@ class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
         $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), LoadAdherentData::COMMITTEE_1_UUID));
     }
 
-    public function testAdherentIsMemberOfCommittee()
-    {
-        $this->assertFalse($this->repository->isMemberOf($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID), LoadAdherentData::COMMITTEE_1_UUID));
-        $this->assertTrue($this->repository->isMemberOf($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID), LoadAdherentData::COMMITTEE_1_UUID));
-        $this->assertTrue($this->repository->isMemberOf($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), LoadAdherentData::COMMITTEE_1_UUID));
-        $this->assertTrue($this->repository->isMemberOf($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID), LoadAdherentData::COMMITTEE_1_UUID));
-        $this->assertTrue($this->repository->isMemberOf($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), LoadAdherentData::COMMITTEE_1_UUID));
-    }
-
     public function testMemberIsCommitteeHost()
     {
         $this->assertTrue($this->repository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID)));

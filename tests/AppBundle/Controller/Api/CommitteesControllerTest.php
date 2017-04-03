@@ -10,7 +10,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
 /**
- * @group functional
+ * @group functionnal
  */
 class CommitteesControllerTest extends MysqlWebTestCase
 {
