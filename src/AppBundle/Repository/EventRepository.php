@@ -133,11 +133,9 @@ class EventRepository extends EntityRepository
         return $qb
             ->leftJoin('e.committee', 'c')
             ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
-            ->andWhere('c.status = :committee_status')
             ->andWhere('e.beginAt >= :today')
             ->orderBy('e.beginAt', 'ASC')
             ->setParameter('today', date('Y-m-d'))
-            ->setParameter('committee_status', Committee::APPROVED)
         ;
     }
 
