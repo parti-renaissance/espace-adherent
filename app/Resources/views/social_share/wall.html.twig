@@ -47,7 +47,7 @@
             </ul>
         </nav>
     </section>
-    <section class="je-partage__header background--green space--30-0">
+    <section class="je-partage__header background--green space--60-0">
         <header class="l__wrapper--slim">
             <h1 class="text--large text--center">
                 Partagez le projet
@@ -71,11 +71,9 @@
         <div id="confirm-message" class="je-partage__copy">Copié !</div>
     </section>
 
-    <section class="je-partage__graphics l__wrapper l__row l__row--top l__row--wrap" id="je-partage">
+    <section class="je-partage__graphics" id="je-partage">
         {% for story in socialShares %}
-        <div class="je-partage__graphics__crop progressive-background"
-             data-sd="{{ media_asset(story.media, {'w': 300, 'q': 20}) }}"
-             data-hd="{{ media_asset(story.media, {'w': 1050, 'q': 70}) }}">
+        <div class="je-partage__graphics__crop {{ loop.index is even ? 'story--even' }}">
             <script type="application/ld+json">
             {
                 "@context": "http://schema.org",
@@ -98,7 +96,16 @@
                  }
             }
             </script>
+            <img src="{{ media_asset(story.media, {'w': 1050, 'q': 70}) }}"
+                 title="{{ story.name }}" alt="{{ story.name }}" />
             <div class="je-partage__social l__col">
+                <div class="je-partage__info text--white text--body l__col">
+                    <div class="je-partage__info__title">{{ story.name }}</div>
+                    <div><a href="{{ story.defaultUrl }}" target="_blank"
+                        class="link--white text--small">
+                        voir la source &rarr;
+                    </a></div>
+                </div>
                 <div class="je-partage__social--inner">
                     <a download="{{ story.name }}" href="{{ media_asset(story.media) }}"
                        title="Téléchargez {{ story.name }}"
@@ -119,9 +126,6 @@
                        onclick="App.share('twitter', '{{ story.twitterUrl ?? story.defaultUrl }}', '{{ story.name|e('js') }}')">
                         <i class="fa fa-twitter"></i>
                     </a>
-                </div>
-                <div class="je-partage__title text--body text--white">
-                    {{ story.name }}
                 </div>
             </div>
         </div>
