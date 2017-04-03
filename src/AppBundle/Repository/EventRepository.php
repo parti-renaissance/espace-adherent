@@ -104,13 +104,15 @@ class EventRepository extends EntityRepository
     /**
      * @return Event[]
      */
-    public function findUpcomingEvents(): array
+    public function findUpcomingEvents(string $category = null): array
     {
-        return $this
-            ->createUpcomingEventsQueryBuilder()
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createUpcomingEventsQueryBuilder();
+
+        if ($category) {
+            $qb->andWhere('e.category = :category')->setParameter('category', $category);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function countUpcomingEvents(): int

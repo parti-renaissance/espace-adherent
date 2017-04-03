@@ -47,8 +47,15 @@ export default class ReqwestApiClient {
     }
 
     getUpcomingEvents(callback) {
+        var url = '/api/events';
+        var type = dom('#map-config').getAttribute('data-event-type');
+        
+        if ('' !== type) {
+            url = url + '?type=' + type;
+        }
+
         this._createRequest(callback, {
-            url: '/api/events',
+            url:  url,
             type: 'json'
         });
     }
