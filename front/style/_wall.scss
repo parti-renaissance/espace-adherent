@@ -27,6 +27,19 @@
         }
     }
 
+    .je-partage__title {
+        z-index: 3;
+        margin-top: 20px;
+        padding: 0 20px;
+        text-align: center;
+        max-height: 54px;
+        overflow: hidden;
+
+        @media (max-width: $mobile) {
+            margin: 0;
+        }
+    }
+
     .je-partage__graphics {
         background: black;
 
@@ -51,9 +64,9 @@
                 flex: initial;
                 width: 100%;
                 min-width: 100%;
-                top: 60px;
+                top: 100px;
                 margin-top: 20px;
-                margin-bottom: 60px;
+                margin-bottom: 100px;
             }
 
             &:hover .je-partage__social {
@@ -77,8 +90,8 @@
         @media (max-width: $mobile) {
             opacity: 1;
             top: 0;
-            height: 60px;
-            margin-top: -60px;
+            height: 100px;
+            margin-top: -100px;
         }
 
         &--inner {

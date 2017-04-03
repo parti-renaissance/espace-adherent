@@ -98,7 +98,7 @@
                  }
             }
             </script>
-            <div class="je-partage__social">
+            <div class="je-partage__social l__col">
                 <div class="je-partage__social--inner">
                     <a download="{{ story.name }}" href="{{ media_asset(story.media) }}"
                        title="Téléchargez {{ story.name }}"
@@ -119,6 +119,9 @@
                        onclick="App.share('twitter', '{{ story.twitterUrl ?? story.defaultUrl }}', '{{ story.name|e('js') }}')">
                         <i class="fa fa-twitter"></i>
                     </a>
+                </div>
+                <div class="je-partage__title text--body text--white">
+                    {{ story.name }}
                 </div>
             </div>
         </div>
