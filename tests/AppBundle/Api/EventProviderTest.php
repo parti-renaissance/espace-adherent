@@ -7,9 +7,12 @@ use AppBundle\Entity\Event;
 use AppBundle\Repository\EventRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tests\AppBundle\TestHelperTrait;
 
 class EventProviderTest extends \PHPUnit_Framework_TestCase
 {
+    use TestHelperTrait;
+
     public function testGetUpcomingEvents()
     {
         $events[] = $event1 = $this->createCommitteeEventMock(
@@ -17,7 +20,8 @@ class EventProviderTest extends \PHPUnit_Framework_TestCase
             'evenement-paris',
             'Événement de Paris',
             48.8705073,
-            2.3032432
+            2.3032432,
+            true
         );
 
         $events[] = $event2 = $this->createCommitteeEventMock(
@@ -25,7 +29,8 @@ class EventProviderTest extends \PHPUnit_Framework_TestCase
             'evenement-berlin',
             'Événement de Berlin',
             52.5330939,
-            13.4662418
+            13.4662418,
+            true
         );
 
         // This one is not geocoded and will not included in the final results
@@ -56,6 +61,7 @@ class EventProviderTest extends \PHPUnit_Framework_TestCase
                         'lat' => 48.8705073,
                         'lng' => 2.3032432,
                     ],
+                    'organizer' => 'John Smith',
                 ],
                 [
                     'uuid' => 'ae65d178-3dc6-4c14-843c-36df38c82834',
@@ -66,13 +72,14 @@ class EventProviderTest extends \PHPUnit_Framework_TestCase
                         'lat' => 52.5330939,
                         'lng' => 13.4662418,
                     ],
+                    'organizer' => 'John Smith',
                 ],
             ],
             $data
         );
     }
 
-    private function createCommitteeEventMock(string $uuid, string $slug, string $name, float $latitude = null, float $longitude = null)
+    private function createCommitteeEventMock(string $uuid, string $slug, string $name, float $latitude = null, float $longitude = null, $withOrganizer = false)
     {
         $event = $this->createMock(Event::class);
         $event->expects($this->any())->method('isGeocoded')->willReturn($latitude && $longitude);
@@ -81,6 +88,10 @@ class EventProviderTest extends \PHPUnit_Framework_TestCase
         $event->expects($this->any())->method('getName')->willReturn($name);
         $event->expects($this->any())->method('getLatitude')->willReturn($latitude);
         $event->expects($this->any())->method('getLongitude')->willReturn($longitude);
+
+        if ($withOrganizer) {
+            $event->expects($this->once())->method('getOrganizer')->willReturn($this->createAdherent());
+        }
 
         return $event;
     }

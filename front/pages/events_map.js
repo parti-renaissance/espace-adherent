@@ -22,8 +22,16 @@ export default (mapFactory, api) => {
                     infowindow.close();
                 }
 
+                let content = `<a href="${event.url}" target="_blank">${event.name}</a><br>Organisé par`;
+
+                if ('committee_url' in event) {
+                    content += `<a href="${event.committee_url}" target="_blank">${event.committee_name}</a>`;
+                } else {
+                    content += `&nbsp;${event.organizer}`;
+                }
+
                 infowindow = new google.maps.InfoWindow({
-                    content: `<a href="${event.url}" target="_blank">${event.name}</a>`,
+                    content,
                     position: event.position,
                     pixelOffset: new google.maps.Size(0, -8),
                 });
