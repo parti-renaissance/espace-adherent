@@ -53,6 +53,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'Rédacteur (articles, page d\'accueil, pages, programme)' => 'ROLE_WRITER',
                     'Campagne (newsletter, invitations, Je Marche)' => 'ROLE_CAMPAIGN',
                     'Territoire (Campagne + adhérent, comités, événements, référents, procurations)' => 'ROLE_TERRITORY',
+                    'Territoire (Adhérents uniquement)' => 'ROLE_TERRITORY_ADHERENT',
                     'Administrateur' => 'ROLE_ADMIN',
                     'Super-administrateur' => 'ROLE_SUPER_ADMIN',
                 ],
