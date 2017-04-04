@@ -28,8 +28,8 @@ export default class SearchEngine
 
                 // Then priority to any keyword
                 for (let k in keywords) {
-                    for (let l in resultColumnKeywords) {
-                        if (l != 0) {
+                    if (k != 0) {
+                        for (let l in resultColumnKeywords) {
                             if (startsWith(resultColumnKeywords[l], keywords[k])) {
                                 item.score += 2;
                             }

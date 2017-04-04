@@ -9,7 +9,7 @@ export default class Slugifier
     }
 
     dasherize(string) {
-        return trim(string).replace(/[_\s]+/g, '-').replace(/([A-Z])/g, '-$1').replace(/-+/g, '-').toLowerCase();
+        return trim(string).replace(/[_\s\,]+/g, '-').replace(/([A-Z])/g, '-$1').replace(/-+/g, '-').toLowerCase();
     }
 
     slugify(string) {
@@ -17,7 +17,7 @@ export default class Slugifier
             throw new Error('Invalid type for argument provided to slugify (string expected).');
         }
 
-        string = this.dasherize(this.latinise(string).replace(/[^\w\s-]/g, '').toLowerCase());
+        string = this.dasherize(this.latinise(string).replace(/[^\w\s-\,]/g, '').toLowerCase());
 
         if (string.charAt(0) === '-') {
             string = string.substr(1);
