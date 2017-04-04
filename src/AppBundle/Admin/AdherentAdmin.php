@@ -18,6 +18,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdherentAdmin extends AbstractAdmin
@@ -183,6 +184,8 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+                'show_filter' => true,
+                'field_type' => EmailType::class,
             ])
             ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date d\'adhésion',
