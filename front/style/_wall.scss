@@ -52,30 +52,6 @@ $biggerthanmobile: $mobile + 150px;
         }
     }
 
-    .je-partage__footer__social {
-        background: black;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-
-        @media (min-width: $biggerthanmobile + 1px) {
-            display: none;
-        }
-
-        > a,
-        > div {
-            flex: 1;
-            text-align: center;
-            padding: 20px 0;
-            border: 0;
-            color: white;
-
-            .fa {
-                font-size: 30px;
-            }
-        }
-    }
-
     .je-partage__info {
         z-index: 3;
         margin-bottom: 20px;
@@ -90,6 +66,10 @@ $biggerthanmobile: $mobile + 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        @media (max-width: $biggerthanmobile) {
+            display: none;
         }
     }
 
@@ -136,7 +116,14 @@ $biggerthanmobile: $mobile + 150px;
         transition: opacity .2s;
 
         @media (max-width: $biggerthanmobile) {
-            display: none;
+            opacity: 1;
+            background: black;
+            position: inherit;
+            align-items: initial;
+
+            &:before {
+                display: none;
+            }
         }
 
         &--inner {
@@ -145,6 +132,11 @@ $biggerthanmobile: $mobile + 150px;
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+
+            @media (max-width: $biggerthanmobile) {
+                width: 100%;
+                flex-direction: row;
+            }
 
             a,
             .social__copy {
@@ -165,6 +157,15 @@ $biggerthanmobile: $mobile + 150px;
                 &:hover {
                     color: $blue;
                     border-color: $blue;
+                }
+
+                @media (max-width: $biggerthanmobile) {
+                    border: 0;
+                    flex: 1;
+                    text-align: center;
+                    padding: 20px 0;
+                    border: 0;
+                    color: white;
                 }
             }
 
