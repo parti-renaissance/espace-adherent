@@ -3,12 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Form\NewsletterInvitationType;
 use AppBundle\Form\NewsletterSubscriptionType;
 use AppBundle\Form\NewsletterUnsubscribeType;
+use AppBundle\Newsletter\Invitation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 class NewsletterController extends Controller
 {
@@ -19,6 +22,7 @@ class NewsletterController extends Controller
     public function subscriptionAction(Request $request)
     {
         $subscription = new NewsletterSubscription();
+        $subscription->setEmail($request->query->get('mail'));
 
         $form = $this->createForm(NewsletterSubscriptionType::class, $subscription);
         $form->handleRequest($request);
@@ -70,5 +74,43 @@ class NewsletterController extends Controller
     public function unsubscribedAction()
     {
         return $this->render('newsletter/unsubscribed.html.twig');
+    }
+
+    /**
+     * @Route("/newsletter/invitation", name="newsletter_invitation")
+     * @Method("GET|POST")
+     */
+    public function invitationAction(Request $request)
+    {
+        $form = $this->createForm(NewsletterInvitationType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Invitation $invitation */
+            $invitation = $form->getData();
+            $this->get('app.newsletter_invitation.handler')->handle($invitation, $request->getClientIp());
+            $request->getSession()->set('newsletter_invitations_count', count($invitation->guests));
+
+            return $this->redirectToRoute('newsletter_invitation_sent');
+        }
+
+        return $this->render('newsletter/invitation.html.twig', [
+            'invitation_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/newsletter/invitation/merci", name="newsletter_invitation_sent")
+     * @Method("GET")
+     */
+    public function invitationSentAction(Request $request)
+    {
+        if (!$invitationsCount = $request->getSession()->remove('newsletter_invitations_count')) {
+            throw new PreconditionFailedHttpException('The invitations count is missing from the session.');
+        }
+
+        return $this->render('newsletter/invitation_sent.html.twig', [
+            'invitations_count' => $invitationsCount,
+        ]);
     }
 }
