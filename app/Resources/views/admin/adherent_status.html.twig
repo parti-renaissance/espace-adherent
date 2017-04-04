@@ -1,6 +1,6 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     {% if object.isReferent %}
         <span class="label label-primary">Référent</span>
     {% elseif object.isProcurationManager %}

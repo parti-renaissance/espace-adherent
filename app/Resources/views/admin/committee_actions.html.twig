@@ -1,6 +1,6 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     <div style="width: 160px">
         {% if not object.isApproved %}
             <a href="{{ path('app_admin_committee_approve', {id: object.id}) }}" class="btn btn-xs btn-default" title="Approuver">
