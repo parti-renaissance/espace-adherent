@@ -8,6 +8,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
+use AppBundle\Event\EventCategories;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -163,6 +164,7 @@ class PageController extends Controller
 
         return $this->render('page/les-evenements/la-carte.html.twig', [
             'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
+            'types' => EventCategories::CHOICES,
         ]);
     }
 

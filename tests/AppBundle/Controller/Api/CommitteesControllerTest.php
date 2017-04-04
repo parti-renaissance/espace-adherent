@@ -16,10 +16,17 @@ class CommitteesControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
+    public function testGetApiEventsWithInvalidType()
+    {
+        $this->client->request(Request::METHOD_GET, '/api/events?type=FOO');
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+    }
+
     /**
      * @dataProvider provideApiUrl
      */
-    public function testGetCommitteesAction(string $url)
+    public function testGetApiEndpointAction(string $url)
     {
         $this->client->request(Request::METHOD_GET, $url);
 
@@ -33,6 +40,9 @@ class CommitteesControllerTest extends MysqlWebTestCase
         return [
             ['/api/committees'],
             ['/api/events'],
+            ['/api/events?type=CE001'],
+            ['/api/events?type=CE002'],
+            ['/api/events?type=CE003'],
         ];
     }
 

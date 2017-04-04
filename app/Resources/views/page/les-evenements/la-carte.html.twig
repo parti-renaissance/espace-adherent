@@ -14,6 +14,20 @@
 
 {% block map_chapo %}
     <div class="committees-map__counter">
-        <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements
+        <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements - <a href="{{ path('page_les_evenements_la_carte') }}">voir tous les événements</a>
+        <div>
+            <ul class="events-map-categories">
+                {% for label, type in types %}
+                    <li>
+                        <a href="{{ path('page_les_evenements_la_carte', {'type': type}) }}">{{ label }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
+
+{% block map_config %}
+    <div id="map-config" data-event-type="{{ app.request.query.get('type') }}"></div>
+{% endblock %}
+
