@@ -17,10 +17,6 @@ class SocialShareController extends Controller
      */
     public function listAction(): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         $manager = $this->getDoctrine();
 
         return $this->render('social_share/wall.html.twig', [
