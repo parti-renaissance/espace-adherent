@@ -3,7 +3,7 @@ version: "2"
 services:
     app:
         build:
-            context: .
+            context: docker/dev
         depends_on:
             - db
             - redis
@@ -15,39 +15,10 @@ services:
     db:
         image: mysql:5.7
         environment:
-            MYSQL_ROOT_PASSWORD: enmarche
-            MYSQL_DATABASE: enmarche
-            MYSQL_USER: enmarche
-            MYSQL_PASSWORD: enmarche
-
-    testdb:
-        image: mysql:5.7
-        environment:
-            MYSQL_ROOT_PASSWORD: enmarche_test
-            MYSQL_DATABASE: enmarche_test
-            MYSQL_USER: enmarche_test
-            MYSQL_PASSWORD: enmarche_test
+            MYSQL_ROOT_PASSWORD: root
 
     redis:
         image: redis:3.2
 
     rabbitmq:
         image: rabbitmq:3-management
-
-    tools:
-        build:
-            context: .
-        command: sleep infinity
-        depends_on:
-            - db
-        volumes_from:
-            - app
-
-    pma:
-        image: phpmyadmin/phpmyadmin
-        depends_on:
-            - db
-        environment:
-            PMA_HOST: db
-            PMA_USER: enmarche
-            PMA_PASSWORD: enmarche

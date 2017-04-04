@@ -6,6 +6,9 @@ services:
             - "~/.composer:/root/.composer"
         ports:
             - "8000:80"
+        environment:
+            - BLACKFIRE_CLIENT_ID
+            - BLACKFIRE_CLIENT_TOKEN
 
     rabbitmq:
         ports:
@@ -16,13 +19,15 @@ services:
             - "3306:3306"
 
     pma:
+        image: phpmyadmin/phpmyadmin
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
+            PMA_USER: root
+            PMA_PASSWORD: root
         ports:
             - "8080:80"
-
-#    tools:
-#        environment:
-#            BLACKFIRE_CLIENT_ID:
-#            BLACKFIRE_CLIENT_TOKEN:
 
 #    blackfire:
 #        image: blackfire/blackfire
