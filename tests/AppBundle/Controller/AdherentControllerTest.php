@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
@@ -25,6 +26,51 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     /* @var MailjetEmailRepository */
     private $emailRepository;
+
+    /**
+     * @group functional
+     */
+    public function testMyEventsPageIsProtected()
+    {
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+    }
+
+    /**
+     * @group functional
+     */
+    public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Mes événements')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertSame(3, $crawler->filter('.event-registration')->count());
+
+        $titles = $crawler->filter('.event-registration h2 a');
+        $this->assertSame('Réunion de réflexion parisienne', trim($titles->first()->text()));
+        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(1)->text()));
+        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->last()->text()));
+
+        $crawler = $this->client->click($crawler->selectLink('Événements passés')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertSame(3, $crawler->filter('.event-registration')->count());
+
+        $titles = $crawler->filter('.event-registration h2 a');
+        $this->assertSame('Marche Parisienne', trim($titles->first()->text()));
+        $this->assertSame('Grand Meeting de Marseille', trim($titles->eq(1)->text()));
+        $this->assertSame('Grand Meeting de Paris', trim($titles->last()->text()));
+    }
 
     /**
      * @dataProvider provideProfilePage
@@ -510,6 +556,7 @@ class AdherentControllerTest extends SqliteWebTestCase
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
             LoadAdherentData::class,
+            LoadEventData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();
