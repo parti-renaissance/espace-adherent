@@ -15,7 +15,7 @@ class EventException extends \RuntimeException
         $this->event = $event;
     }
 
-    public function getEvent(): Event
+    public function getEvent(): ?Event
     {
         return $this->event;
     }
