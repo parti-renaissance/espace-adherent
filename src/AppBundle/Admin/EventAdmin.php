@@ -19,6 +19,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper

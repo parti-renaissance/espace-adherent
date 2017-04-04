@@ -9,6 +9,13 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class LiveLinkAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'id',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

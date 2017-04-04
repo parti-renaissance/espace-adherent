@@ -14,6 +14,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ArticleAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'publishedAt',
+    ];
+
     /**
      * @param Article $object
      *

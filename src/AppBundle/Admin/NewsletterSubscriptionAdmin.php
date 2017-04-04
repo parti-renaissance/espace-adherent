@@ -10,6 +10,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 128,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

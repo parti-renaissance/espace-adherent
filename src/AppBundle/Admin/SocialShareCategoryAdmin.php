@@ -8,6 +8,13 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class SocialShareCategoryAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 128,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'position',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

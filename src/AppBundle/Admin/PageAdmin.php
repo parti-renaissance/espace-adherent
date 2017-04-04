@@ -10,6 +10,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PageAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 64,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         if ($this->getSubject()->getId() === null) {
