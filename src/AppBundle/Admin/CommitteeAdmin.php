@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
@@ -181,10 +182,8 @@ class CommitteeAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value']);
-
                     /* @var QueryBuilder $qb */
-                    if (!$ids) {
+                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
@@ -205,10 +204,30 @@ class CommitteeAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value']);
+                    /* @var QueryBuilder $qb */
+                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value'])) {
+                        // Force no results when no user is found
+                        $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
+
+                        return true;
+                    }
+
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+
+                    return true;
+                },
+            ])
+            ->add('hostEmailAddress', CallbackFilter::class, [
+                'label' => 'Email de l\'animateur',
+                'show_filter' => true,
+                'field_type' => EmailType::class,
+                'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
+                    if (!$value['value']) {
+                        return;
+                    }
 
                     /* @var QueryBuilder $qb */
-                    if (!$ids) {
+                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 

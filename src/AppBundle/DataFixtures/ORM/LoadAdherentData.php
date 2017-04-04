@@ -334,7 +334,9 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent6->superviseCommittee($committee2));
         $manager->persist($adherent3->followCommittee($committee4));
         $manager->persist($adherent3->followCommittee($committee5));
+        $manager->persist($adherent9->superviseCommittee($committee6));
         $manager->persist($adherent3->followCommittee($committee6));
+        $manager->persist($adherent10->superviseCommittee($committee7));
         $manager->persist($adherent3->followCommittee($committee7));
         $manager->persist($adherent3->hostCommittee($committee3));
         $manager->persist($adherent9->followCommittee($committee5));
