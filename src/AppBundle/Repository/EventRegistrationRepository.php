@@ -64,17 +64,40 @@ class EventRegistrationRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findAdherentRegistrations(Adherent $adherent)
+    public function findUpcomingAdherentRegistrations(string $adherentUuid): array
     {
+        return $this
+            ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
+            ->andWhere('e.beginAt >= :now')
+            ->setParameter('now', date('Y-m-d H:i:s'))
+            ->orderBy('e.beginAt', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findPastAdherentRegistrations(string $adherentUuid): array
+    {
+        return $this
+            ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
+            ->andWhere('e.finishAt < :now')
+            ->setParameter('now', date('Y-m-d H:i:s'))
+            ->orderBy('e.finishAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function createAdherentEventRegistrationQueryBuilder(string $adherentUuid): QueryBuilder
+    {
+        $adherentUuid = Uuid::fromString($adherentUuid);
+
         return $this
             ->createQueryBuilder('er')
             ->select('er', 'e')
             ->leftJoin('er.event', 'e')
-            ->orderBy('e.createdAt', 'DESC')
             ->where('er.adherentUuid = :adherent')
-            ->setParameter('adherent', $adherent->getUuid()->toString())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('adherent', $adherentUuid->toString());
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder
