@@ -59,11 +59,28 @@
         margin: -8px 20px 0 0;
     }
 
+    &__btn-export-csv {
+        float: right;
+        margin: -8px 20px 0 0;
+    }
+
     &__users-count-container {
         @media (max-width: $mobile) {
             display: block;
             clear: both;
             padding-top: 10px;
         }
+    }
+
+    #csv-export {
+        display: inline;
+    }
+
+    a.disabled {
+        opacity: 0.7;
+        background: #E5E5E5;
+        color: rgba(0, 0, 0, 0.5);
+        border-color: #BCBCBC;
+        cursor: not-allowed;
     }
 }

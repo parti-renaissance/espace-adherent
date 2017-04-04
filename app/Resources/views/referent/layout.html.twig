@@ -21,32 +21,32 @@
                             <ul>
                                 <li {% block referent_menu_users_list %}{% endblock %}>
                                     <a href="{{ path('app_referent_users') }}">
-                                        À tous les contacts
+                                        À <span class="csv-export-title">tous les contacts</span>
                                     </a>
                                 </li>
                                 <li {% block referent_menu_users_subscribers %}{% endblock %}>
                                     <a href="{{ path('app_referent_subscribers') }}">
-                                        Uniquement aux Marcheurs
+                                        Uniquement aux <span class="csv-export-title">Marcheurs</span>
                                     </a>
                                 </li>
                                 <li {% block referent_menu_users_adherents %}{% endblock %}>
                                     <a href="{{ path('app_referent_adherents') }}">
-                                        Uniquement aux adhérents
+                                        Uniquement aux <span class="csv-export-title">adhérents</span>
                                     </a>
                                 </li>
                                 <li {% block referent_menu_users_nonfollowers %}{% endblock %}>
                                     <a href="{{ path('app_referent_nonfollowers') }}">
-                                        Uniquement aux adhérents non membres de Comités
+                                        Uniquement aux <span class="csv-export-title">adhérents non membres de Comités</span>
                                     </a>
                                 </li>
                                 <li {% block referent_menu_users_followers %}{% endblock %}>
                                     <a href="{{ path('app_referent_followers') }}">
-                                        Uniquement aux adhérents membres de Comités
+                                        Uniquement aux <span class="csv-export-title">adhérents membres de Comités</span>
                                     </a>
                                 </li>
                                 <li {% block referent_menu_users_hosts %}{% endblock %}>
                                     <a href="{{ path('app_referent_hosts') }}">
-                                        Uniquement aux animateurs de Comités
+                                        Uniquement aux <span class="csv-export-title">animateurs de Comités</span>
                                     </a>
                                 </li>
                             </ul>
