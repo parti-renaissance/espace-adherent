@@ -1,0 +1,19 @@
+<a download="{{ story.name }}" href="{{ media_asset(story.media) }}"
+   title="Téléchargez {{ story.name }}"
+   arial-label="Téléchargez {{ story.name }}">
+    <i class="fa fa-download"></i>
+</a>
+<input type="text" id="story-{{ story.id }}" value="{{ story.defaultUrl }}"
+       style="position: absolute; left: -09111983px"/>
+<div class="social__copy" arial-label="Copiez le lien" data-clipboard-target="#story-{{ story.id }}"
+     style="display: none !important;">
+    <i class="fa fa-link"></i>
+</div>
+<a href="javascript:void(0)" arial-label="Partagez sur Facebook"
+   onclick="App.share('facebook', '{{ story.facebookUrl ?? story.defaultUrl }}', '{{ story.name|e('js') }}')">
+    <i class="fa fa-facebook"></i>
+</a>
+<a href="javascript:void(0)" arial-label="Partagez sur Twitter"
+   onclick="App.share('twitter', '{{ story.twitterUrl ?? story.defaultUrl }}', '{{ story.name|e('js') }}')">
+    <i class="fa fa-twitter"></i>
+</a>
