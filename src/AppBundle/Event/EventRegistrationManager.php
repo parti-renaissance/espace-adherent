@@ -5,6 +5,7 @@ namespace AppBundle\Event;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Repository\EventRegistrationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -65,5 +66,21 @@ class EventRegistrationManager
         if ($flush) {
             $this->manager->flush();
         }
+    }
+
+    /**
+     * @throws EventRegistrationException
+     */
+    public function getAdherentRegistrations(Adherent $adherent, string $type = 'upcoming'): array
+    {
+        if (!in_array($type = strtolower($type), ['upcoming', 'past'])) {
+            throw new EventRegistrationException(sprintf('Invalid "type" query string parameter. It must be eiter "upcoming" or "past" but "%s" given.', $type));
+        }
+
+        if ('past' === $type) {
+            return $this->repository->findPastAdherentRegistrations($adherent->getUuid());
+        }
+
+        return $this->repository->findUpcomingAdherentRegistrations($adherent->getUuid());
     }
 }

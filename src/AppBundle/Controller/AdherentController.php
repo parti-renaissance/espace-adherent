@@ -7,7 +7,7 @@ use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
+use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("/espace-adherent")
@@ -152,12 +153,18 @@ class AdherentController extends Controller
      * @Route("/mes-evenements", name="app_adherent_events")
      * @Method("GET")
      */
-    public function eventsAction(): Response
+    public function eventsAction(Request $request): Response
     {
-        $registrationsRepository = $this->getDoctrine()->getRepository(EventRegistration::class);
+        $manager = $this->get('app.event.registration_manager');
+
+        try {
+            $registration = $manager->getAdherentRegistrations($this->getUser(), $request->query->get('type', 'upcoming'));
+        } catch (EventRegistrationException $e) {
+            throw new BadRequestHttpException('Invalid request parameters.', $e);
+        }
 
         return $this->render('adherent/events.html.twig', [
-            'registrations' => $registrationsRepository->findAdherentRegistrations($this->getUser()),
+            'registrations' => $registration,
         ]);
     }
 
