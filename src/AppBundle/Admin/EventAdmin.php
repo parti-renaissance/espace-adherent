@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Event;
 use AppBundle\Event\EventCategories;
+use AppBundle\Form\EventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -138,6 +139,11 @@ class EventAdmin extends AbstractAdmin
         $datagridMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('category', null, [
+                'label' => 'Type',
+                'field_type' => EventCategoryType::class,
+                'show_filter' => true,
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
