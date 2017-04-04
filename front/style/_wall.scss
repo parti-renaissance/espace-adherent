@@ -53,11 +53,15 @@ $biggerthanmobile: $mobile + 150px;
 
             @media (max-width: $biggerthanmobile) {
                 font-size: 16px;
+                white-space: normal;
+                overflow: visible;
             }
         }
 
         @media (max-width: $biggerthanmobile) {
             margin: 0;
+            flex: 1;
+            background-color: $darker;
         }
     }
 
@@ -81,8 +85,9 @@ $biggerthanmobile: $mobile + 150px;
                 flex: initial;
                 width: 100%;
                 min-width: 100%;
-                top: 150px;
-                margin-bottom: 170px;
+                top: 180px;
+                margin-top: 20px;
+                margin-bottom: 180px;
             }
 
             &:hover .je-partage__social {
@@ -106,8 +111,8 @@ $biggerthanmobile: $mobile + 150px;
         @media (max-width: $biggerthanmobile) {
             opacity: 1;
             top: 0;
-            height: 150px;
-            margin-top: -150px;
+            height: 180px;
+            margin-top: -180px;
             justify-content: space-around;
         }
 
@@ -120,6 +125,7 @@ $biggerthanmobile: $mobile + 150px;
 
             @media (max-width: $biggerthanmobile) {
                 width: 100%;
+                padding: 5px 0;
             }
 
             a,
