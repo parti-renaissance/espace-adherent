@@ -14,6 +14,13 @@ class SocialShareAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     /**
      * @param SocialShare $object
      *

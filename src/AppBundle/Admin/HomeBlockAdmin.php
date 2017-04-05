@@ -12,6 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class HomeBlockAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'id',
+    ];
+
     /**
      * @param HomeBlock $object
      *

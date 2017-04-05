@@ -13,6 +13,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ProposalAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 32,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     /**
      * @param Proposal $object
      *
