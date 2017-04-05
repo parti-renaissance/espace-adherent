@@ -50,7 +50,8 @@ Il y a deux groupes de tests automatisés : les tests serveur (Symfony) et les t
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-make test-php
+make tu # tests unitaires
+make tf # tests fonctionnels
 ```
 
 ### Lancer les tests client
@@ -58,7 +59,7 @@ make test-php
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-make test-js
+make tj
 ```
 
 
@@ -85,5 +86,22 @@ par rapport au repository principal) :
 $ cd /dossier/du/projet
 $ make deps
 ```
+
+## Profiling avec Blackfire
+
+Uncomment the `blackfire` service in docker-compose.override.yml
+
+Set the environment variables BLACKFIRE_CLIENT_* AND BLACKFIRE_SERVER_*, which are available in [https://blackfire.io/account](https://blackfire.io/account).
+
+Download the companion [here](https://chrome.google.com/webstore/detail/blackfire-companion/miefikpgahefdbcgoiicnmpbeeomffld) and start profiling !
+
+You can profile CLI commands like this:
+
+`docker-compose run --rm app blackfire run **You command**`
+
+For example, profiling phpunit:
+
+`docker-compose run --rm app blackfire run vendor/bin/phpunit`
+
 
 [Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)

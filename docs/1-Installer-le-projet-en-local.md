@@ -82,24 +82,24 @@ Vous devriez alors pouvoir lancer `make` qui vous affichera l'aide du Makefile :
 
 ```
 $ make
-help:            Show this help
-install:         [start deps db-create] Setup the project using Docker and docker-compose
-start:           Start the Docker containers
-stop:            Stop the Docker containers
-deps:            [composer yarn assets-dev perm] Install the project PHP and JS dependencies
-composer:        Install the project PHP dependencies
-yarn:            Install the project JS dependencies
-db-create:       Create the database and load fixtures in it
-db-update:       Update the database structure according to the last changes
-cache-clear:     Clear the application cache in development
-clean:           Deeply clean the application (remove all the cache, the logs, the sessions and the built assets)
-perm:            Fix the application cache and logs permissions
-assets:          Watch the assets and build their development version on change
-assets-dev:      Build the development assets
-assets-prod:     Build the production assets
-test:            [test-php test-js] Run the PHP and the Javascript tests
-test-php:        Run the PHP tests
-test-js:         Run the Javascript tests
+start:           Install and start the project
+stop:            Remove docker containers
+reset:           Reset the whole project
+db:              Reset the database and load fixtures
+:---------------------------------------------------------------------------:
+db-diff:         Generate a migration by comparing your current database to your mapping information.
+watch:           Watch the assets and build their development version on change
+clear:           Remove all the cache, the logs, the sessions and the built assets
+clean:           Clear and remove dependencies
+deps:            Install the project PHP and JS dependencies
+:---------------------------------------------------------------------------:
+test:            Run the PHP and the Javascript tests
+tu:              Run the PHP unit tests
+tf:              Run the PHP functional tests
+tj:              Run the Javascript tests
+lint:            Run lint on twig, yaml and Javascript files
+ls:              Lint Symfony (twig and yaml) files
+lj:              Lint the Javascript to follow the convention
 ```
 
 ### 1.1.2.2 Lancer l'initialisation du projet
@@ -107,11 +107,11 @@ test-js:         Run the Javascript tests
 Tout d'abord, créez une copie du fichier `docker-compose.override.yml.dist` appelée `docker-compose.override.yml`
 afin de choisir le port à utiliser pour le projet.
 
-Lancez l'initialisation du projet avec `make install` :
+Lancez l'initialisation du projet avec `make start` :
 
 ```
-$ make install          # Sous macOS ou si vous avez configuré votre utilisateur Linux pour Docker
-$ sudo make install     # Sous Linux si vous avez simplement installé Docker
+$ make start          # Sous macOS ou si vous avez configuré votre utilisateur Linux pour Docker
+$ sudo make start     # Sous Linux si vous avez simplement installé Docker
 Pulling db (mariadb:latest)...
 latest: Pulling from library/mariadb
 ...
@@ -132,6 +132,7 @@ Vous pouvez alors y entrer les identifiants suivants :
 ```
 admin@en-marche-dev.fr / admin        pour l'accès en mode administrateur
 writer@en-marche-dev.fr / writer      pour l'accès en mode rédacteur
+referent@en-marche-dev.fr / referent  pour l'accès en mode référent
 ```
 
 ## 1.1.3 Accéder à l'espace adhérent
@@ -149,14 +150,18 @@ créé 4 containers :
 
 - `app`, l'application en elle-même
 - `db`, la base de donnée utilisée par l'application
-- `tools`, un container d'outils pour travailler sur le projet (Yarn notament)
-- `pma`, PHPMyAdmin, pour travailler avec la base de donnée
+- `redis`, une base de donnée clé-valeur en mémoire, utilisée en tant que cache de données
+- `rabbitmq`, un système permettant de gérer des files de messages
 
-Par défaut, si vous avez copié le `docker-compose.override.yml.dist` en `docker-compose.override.yml`, vous devriez
-pouvoir accéder aux containers sur les ports suivants de votre machine locale :
+Par défaut, si vous avez copié le `docker-compose.override.yml.dist` en `docker-compose.override.yml` vous avez access à des containers supplémentaires :
+- `pma`, PHPMyAdmin, pour travailler avec la base de donnée
+- `blackfire`, un profiler PHP
+
+De plus vous devriez pouvoir accéder aux containers sur les ports suivants de votre machine locale :
 
 - `app`, HTTP sur le port 8000
 - `db`, MySQL sur le port 3306
 - `pma`, HTTP sur le port 8080
+- `rabbitmq`, HTTP sur le port 15672
 
 [Suivant : 2. Architecture du projet](2-Architecture-du-projet.md)

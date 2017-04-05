@@ -1,78 +1,115 @@
-APP=docker-compose exec -T app
-TOOLS=docker-compose run --rm tools
-CONSOLE=$(APP) bin/console
+FIG=docker-compose
+RUN=$(FIG) run --rm app
+EXEC=$(FIG) exec app
+CONSOLE=bin/console
 
-.PHONY: help install start stop deps composer yarn db-create db-fixtures db-update clear-cache clear-all perm clean
+.DEFAULT_GOAL := help
+.PHONY: help start stop reset db db-diff watch clear clean test tu tf tj lint ls ly lt lj build up perm deps
 
-help:           ## Show this help
+help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-install:        ## [start deps db-create, db-fixtures] Setup the project using Docker and docker-compose
-install: start deps db-create db-fixtures perm
+start:          ## Install and start the project
+start: build up db web/built perm
 
-start:          ## Start the Docker containers
-	docker-compose up -d
+stop:           ## Remove docker containers
+	$(FIG) kill
+	$(FIG) rm -v --force
 
-stop:           ## Stop the Docker containers
-	docker-compose down
+reset:          ## Reset the whole project
+reset: stop start
 
-deps:           ## [composer yarn assets-dev perm] Install the project PHP and JS dependencies
-deps: composer yarn assets-dev perm
+db:             ## Reset the database and load fixtures
+db: vendor
+	$(RUN) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MySQL
+	$(RUN) $(CONSOLE) doctrine:database:drop --force --if-exists
+	$(RUN) $(CONSOLE) doctrine:database:create --if-not-exists
+	$(RUN) $(CONSOLE) doctrine:migrations:migrate -n
+	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
 
-composer:       ## Install the project PHP dependencies
-	$(APP) composer install
+:##---------------------------------------------------------------------------:
 
-yarn:           ## Install the project JS dependencies
-	$(TOOLS) yarn install
+db-diff:        ## Generate a migration by comparing your current database to your mapping information.
+db-diff: vendor
+	$(RUN) $(CONSOLE) doctrine:migration:diff
 
-db-create:      ## Create the database and load the fixtures in it
-	$(APP) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MariaDB
-	$(CONSOLE) doctrine:database:drop --force --if-exists
-	$(CONSOLE) doctrine:database:create --if-not-exists
-	$(CONSOLE) doctrine:schema:create
+watch:          ## Watch the assets and build their development version on change
+watch: node_modules
+	$(RUN) yarn watch
 
-db-fixtures:    ## Reloads the data fixtures for the dev environment
-	$(CONSOLE) doctrine:fixtures:load -n
+clear:          ## Remove all the cache, the logs, the sessions and the built assets
+clear: perm
+	-$(EXEC) rm -rf var/cache/*
+	-$(EXEC) rm -rf var/sessions/*
+	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
+	rm -rf var/logs/*
+	rm -rf web/built
 
-db-update:      ## Update the database structure according to the last changes
-	$(CONSOLE) doctrine:schema:update --force
+clean:          ## Clear and remove dependencies
+clean: clear
+	rm -rf vendor node_modules
 
-clear-cache:    ## Clear the application cache in development
-	$(CONSOLE) cache:clear
+deps:           ## Install the project PHP and JS dependencies
+deps: vendor web/built
 
-clear-all:      ## Deeply clean the application (remove all the cache, the logs, the sessions and the built assets)
-	$(CONSOLE) cache:clear --no-warmup
-	$(CONSOLE) cache:clear --no-warmup --env=prod
-	$(CONSOLE) cache:clear --no-warmup --env=test
-	$(APP) rm -rf var/logs/*
-	$(APP) rm -rf var/sessions/*
-	$(APP) rm -rf web/built
-	$(APP) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
+:##---------------------------------------------------------------------------:
 
-clean:         ## Removes all generated files
-	- @make clear-all
-	$(APP) rm -rf vendor node_modules
+test:           ## Run the PHP and the Javascript tests
+test: tu tf tj
 
-perm:           ## Fix the application cache and logs permissions
-	$(APP) chmod 777 -R var
+tu:             ## Run the PHP unit tests
+tu: vendor
+	$(RUN) vendor/bin/phpunit --exclude-group functionnal
 
-assets:         ## Watch the assets and build their development version on change
-	$(TOOLS) yarn watch
+tf:             ## Run the PHP functional tests
+tf: vendor
+	$(RUN) vendor/bin/phpunit --group functionnal
 
-assets-dev:     ## Build the development assets
-	$(TOOLS) yarn build-dev
+tj:             ## Run the Javascript tests
+tj: node_modules
+	$(RUN) yarn test
 
-assets-prod:    ## Build the production assets
-	$(TOOLS) yarn build-prod
+lint:           ## Run lint on twig, yaml and Javascript files
+lint: lint-sf lint-front
 
-test:           ## [test-php test-lintjs test-js] Run the PHP and the Javascript tests
-test: test-php test-lintjs test-js
+ls:             ## Lint Symfony (twig and yaml) files
+ls: ly lt
 
-test-php:       ## Run the PHP tests
-	$(APP) vendor/bin/phpunit
+ly:
+	$(RUN) $(CONSOLE) lint:yaml app/config
 
-test-lintjs:    ## Lint the Javascript to follow the convention
-	$(TOOLS) yarn lint
+lt:
+	$(RUN) $(CONSOLE) lint:twig app/Resources
 
-test-js:        ## Run the Javascript tests
-	$(TOOLS) yarn test
+lj:             ## Lint the Javascript to follow the convention
+lj: node_modules
+	$(RUN) yarn lint
+
+build:
+	$(FIG) build
+
+up:
+	$(FIG) up -d
+
+perm:
+	-$(EXEC) chmod 777 -R var
+
+# Rules from files
+
+vendor: composer.lock
+	@$(RUN) composer install
+
+composer.lock: composer.json
+	@echo compose.lock is not up to date.
+
+app/config/parameters.yml: app/config/parameters.yml.dist
+	@$(RUN) composer run-script post-install-cmd
+
+node_modules: yarn.lock
+	@$(RUN) yarn install
+
+yarn.lock: package.json
+	@echo yarn.lock is not up to date.
+
+web/built: front node_modules
+	@$(RUN) yarn build-dev
