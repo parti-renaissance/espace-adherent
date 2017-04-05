@@ -28,17 +28,17 @@
             </h1>
             <h2 class="text--gray b__nudge--bottom bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
             <ul class="article__social">
-                <li role="button" arial-label="Partagez sur Facebook"
+                <li role="button" aria-label="Partagez sur Facebook"
                     class="btn btn--social btn--facebook"
                     onclick="App.share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
                     <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
-                <li role="button" arial-label="Partagez via Twitter"
+                <li role="button" aria-label="Partagez via Twitter"
                     class="btn btn--social btn--twitter"
                     onclick="App.share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
                     <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
-                <li role="button" arial-label="Partagez via email"
+                <li role="button" aria-label="Partagez via email"
                     class="btn btn--social btn--email"
                     onclick="App.share('email', window.location.href, '{{ article.title }}')">
                     <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
@@ -59,7 +59,7 @@
         </article>
 
         <ul class="article__social space--60-0 l__wrapper--slim">
-            <li role="button" arial-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
+            <li role="button" aria-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
                 onclick="App.share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
                 <i class="fa fa-facebook-square"></i> <span>Partagez</span>
             </li>
@@ -68,7 +68,7 @@
                 onclick="App.share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
                 <i class="fa fa-twitter"></i> <span>Tweetez</span>
             </li>
-            <li role="button" arial-label="Partagez via email"
+            <li role="button" aria-label="Partagez via email"
                 class="btn btn--social btn--email"
                 onclick="App.share('email', window.location.href, '{{ article.title }}')">
                 <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
