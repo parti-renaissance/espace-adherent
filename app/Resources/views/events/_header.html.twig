@@ -43,22 +43,22 @@
         </div>
         <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
             <li class="head">Partagez</li>
-            <li role="button" arial-label="Partagez sur Facebook"
+            <li role="button" aria-label="Partagez sur Facebook"
                 class=""
                 onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}')">
                 <i class="fa fa-facebook-square"></i>
             </li>
-            <li role="button" arial-label="Partagez via Twitter"
+            <li role="button" aria-label="Partagez via Twitter"
                 class=""
                 onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }} :')">
                 <i class="fa fa-twitter"></i>
             </li>
-            <li role="button" arial-label="Partagez via email"
+            <li role="button" aria-label="Partagez via email"
                 class=""
                 onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
                 <i class="fa fa-envelope-o"></i>
             </li>
-            <li role="button" arial-label="{{ 'committee.event.show.share.download_ical'|trans }}">
+            <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
                 <a href="{{ path('app_committee_event_export_ical', {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
