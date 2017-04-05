@@ -1,12 +1,19 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.isReferent %}
-        <span class="label label-primary">Référent</span>
-    {% elseif object.isProcurationManager %}
-        <span class="label label-primary">Procuration</span>
-    {% elseif object.isHost %}
-        <span class="label label-primary" style="background-color: #90ade6 !important;">Animateur</span>
+    {% if object.hasAdvancedPrivileges %}
+        {% if object.isReferent %}
+            <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
+        {% endif %}
+    
+        {% if object.isProcurationManager %}
+            <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
+        {% endif %}
+    
+        {% if object.isHost %}
+            <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
+        {% endif %}
+
     {% else %}
         <span class="label label-default">Adhérent</span>
     {% endif %}
