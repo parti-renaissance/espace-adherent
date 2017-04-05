@@ -1,0 +1,9 @@
+{% extends 'page/le-mouvement/layout.html.twig' %}
+
+{% block page_title 'Le mouvement - Législatives' %}
+{% block canonical_url url('page_le_mouvement_legislatives') %}
+{% block meta_description page.description %}
+
+{% block mouvement_content %}
+    {{ page.content|markdown }}
+{% endblock %}

@@ -140,6 +140,21 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives")
+     * @Method("GET")
+     */
+    public function mouvementLegislativesAction()
+    {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('page/le-mouvement/legislatives.html.twig', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-legislatives'),
+        ]);
+    }
+
+    /**
      * @Route("/le-mouvement/la-carte", name="page_le_mouvement_la_carte")
      * @Method("GET")
      */
