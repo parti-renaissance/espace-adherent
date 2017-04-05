@@ -1,6 +1,6 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     <div style="width: 160px; margin-top: 5px;">
         {% if object.enabled %}
             <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="btn btn-xs btn-default" title="Impersonnifier">
@@ -18,7 +18,7 @@
             Éditer
         </a>
 
-        <a href="{{ path('admin_app_adherent_show', {id: object.id}) }}" class="btn btn-xs btn-default" title="Éditer">
+        <a href="{{ path('admin_app_adherent_show', {id: object.id}) }}" class="btn btn-xs btn-default" title="Afficher">
             <i class="fa fa-search-plus" aria-hidden="true"></i>
             Afficher
         </a>

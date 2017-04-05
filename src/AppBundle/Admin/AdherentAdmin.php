@@ -287,7 +287,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('registeredAt', null, [
                 'label' => 'Date d\'adhésion',
             ])
-            ->add('type', TextType::class, [
+            ->add('type', null, [
                 'label' => 'Type',
                 'template' => 'admin/adherent_status.html.twig',
             ])

@@ -35,6 +35,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
+                    'template' => 'admin/event_category.html.twig',
                 ])
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
@@ -254,18 +255,13 @@ class EventAdmin extends AbstractAdmin
             ->add('participantsCount', null, [
                 'label' => 'Participants',
             ])
-            ->add('status', 'choice', [
+            ->add('status', null, [
                 'label' => 'Statut',
-                'choices' => array_combine(Event::STATUSES, Event::STATUSES),
-                'catalogue' => 'forms',
+                'template' => 'admin/event_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
+                'template' => 'admin/event_actions.html.twig',
             ])
         ;
     }
