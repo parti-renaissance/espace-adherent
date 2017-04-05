@@ -3518,6 +3518,10 @@ react-addons-test-utils@^15.3.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-csv@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.5.tgz#1416c91dc7f075cd06f11cd50b221fd7600cca64"
+
 react-data-grid@^2.0.6:
   version "2.0.18"
   resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-2.0.18.tgz#b0ddd03f1c152cc2cc5aaa70bff500e64138f581"

@@ -84,7 +84,7 @@
     <hr />
 
     <form method="post" action="{% block referent_users_list_action %}{% endblock %}">
-        <p id="selected-users">
+        <div id="selected-users">
             <button class="btn btn--blue referent__btn-send-mail" id="send-mail-btn" disabled="disabled">
                 Envoyer un e-mail
             </button>
@@ -93,8 +93,13 @@
                 <span id="selected-users-count">0</span> utilisateur(s) sélectionnés
             </span>
 
+            <div id="csv-export">
+                <a class="btn btn--blue referent__btn-export-csv disabled">
+                    Export CSV
+                </a>
+            </div>
             <input type="hidden" name="selected_users_json" id="selected-users-json" />
-        </p>
+        </div>
     </form>
 
     <hr />
