@@ -18,7 +18,7 @@ use AppBundle\Validator\Recaptcha as AssertRecaptcha;
  * @ORM\Table(name="procuration_requests")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationRequestRepository")
  *
- * @UniqueEntity(fields={"emailAddress"}, message="procuration.request.unique")
+ * @UniqueEntity(fields={"emailAddress"}, message="procuration.request.unique", groups={"profile"})
  */
 class ProcurationRequest
 {
