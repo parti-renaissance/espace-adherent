@@ -335,9 +335,7 @@ class CommitteeMembershipRepository extends EntityRepository
     }
 
     /**
-     * @param string $firstName
-     *
-     * @return array
+     * @return string[]
      */
     public function findCommitteesUuidByHostFirstName(string $firstName): array
     {
@@ -358,9 +356,7 @@ class CommitteeMembershipRepository extends EntityRepository
     }
 
     /**
-     * @param string $lastName
-     *
-     * @return array
+     * @return string[]
      */
     public function findCommitteesUuidByHostLastName(string $lastName): array
     {
@@ -372,6 +368,27 @@ class CommitteeMembershipRepository extends EntityRepository
             ->where('LOWER(a.lastName) LIKE :lastName')
             ->andWhere($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
             ->setParameter('lastName', '%'.strtolower($lastName).'%')
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'committeeUuid'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findCommitteesUuidByHostEmailAddress(string $emailAddress): array
+    {
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb
+            ->select('cm.committeeUuid')
+            ->leftJoin('cm.adherent', 'a')
+            ->where('LOWER(a.emailAddress) LIKE :emailAddress')
+            ->andWhere($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
+            ->setParameter('emailAddress', '%'.strtolower($emailAddress).'%')
             ->getQuery()
         ;
 
