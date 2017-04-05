@@ -27,6 +27,13 @@
                             </a>
                         </li>
                     {% endfor %}
+                    {% if enable_canary %}
+                    <li class="{{ 'page_le_mouvement_notre_organisation' == currentRoute ? 'active' }}">
+                        <a href="{{ path('page_le_mouvement_notre_organisation') }}">
+                            Législatives
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
 

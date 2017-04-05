@@ -67,6 +67,13 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'title' => 'Le mouvement - Législatives',
+            'slug' => 'le-mouvement-legislatives',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../organization.html'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'title' => 'Mentions légales',
             'slug' => 'mentions-legales',
             'description' => $description,
