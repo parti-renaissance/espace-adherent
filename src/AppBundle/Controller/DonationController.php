@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
+use AppBundle\Donation\DonationView;
 use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationSubscriptionRequestType;
 use AppBundle\Form\DonationRequestType;
@@ -97,7 +98,7 @@ class DonationController extends Controller
 
         return $this->render('donation/informations.html.twig', [
             'form' => $form->createView(),
-            'donation' => $donationRequest,
+            'donation' => DonationView::createFromDonationRequest($donationRequest),
         ]);
     }
 
@@ -160,7 +161,7 @@ class DonationController extends Controller
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),
             'error_code' => $request->query->get('code'),
-            'donation' => $donation,
+            'donation' => DonationView::createFromDonation($donation),
             'retry_url' => $retryUrl,
             'is_in_subscription_process' => $this->get('app.membership_utils')->isInSubscriptionProcess(),
         ]);

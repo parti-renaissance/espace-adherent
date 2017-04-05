@@ -22,7 +22,7 @@
         {% if successful %}
             <div class="donation__result--successful__amount">
                 Paiement réussi de<br />
-                <h3>{{ (donation.amount/100)|round(2) }}€</h3>
+                <h3>{{ donation.amount|round(2) }}€</h3>
             </div>
             <div class="donation__result--successful__thankyou">
                 Votre soutien compte<br />
@@ -86,3 +86,29 @@
         {% endif %}
     </div>
 {% endblock %}
+
+{% block final_javascripts %}
+    {% if google_tag_manager_api_key is not empty and successful %}
+        {{ include('third_party/gtm.html.twig') }}
+        <script type="text/javascript">
+            dataLayer.push({
+                transaction: {
+                    id: '{{ donation.transaction }}',
+                    totalPriceATI: '{{ donation.amount }}',
+                    totalPriceATE: '{{ donation.amount }}',
+                    paymentMethod: 'carte bancaire',
+                    cardType: '{{ donation.cardType }}',
+                    currency: '{{ donation.currency }}'
+                },
+                product: [{
+                    id: '{{ donation.uuid }}',
+                    name: '{{ is_in_subscription_process ? 'Don adhésion En Marche' : 'Don hors adhésion En Marche' }}',
+                    price: '{{ donation.amount }}',
+                    category: '{{ donation.donorProfile }}'
+                }],
+                event: 'transaction_event'
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
