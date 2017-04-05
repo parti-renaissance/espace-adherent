@@ -28,13 +28,16 @@
             </div>
         </header>
 
-        <nav class="desintox__nav l__wrapper--medium">
-            <ul class="text--body">
-                {{ include('page/emmanuel-macron/nav.html.twig') }}
-            </ul>
-        </nav>
-
-        <hr>
+        {% if enable_canary %}
+            <nav class="desintox__nav l__wrapper--medium">
+                <ul class="text--body">
+                    {{ include('page/emmanuel-macron/nav.html.twig') }}
+                </ul>
+            </nav>
+            <hr>
+        {% else %}
+            <hr class="l__wrapper">
+        {% endif %}
 
         <div class="l__wrapper--slim">
             <div class="space--30-0 text--body">
@@ -45,7 +48,8 @@
                 renouer. Le chômage n'est pas une fatalité, mais un combat que nous pouvons
                 gagner grâce aux mesures justes qui donneront à tous les acteurs la capacité.
 
-                <iframe width="100%" height="315" class="b__nudge--top-40" src="https://www.youtube.com/embed/hzZCVNBqUvs?list=PL6Wo2DWicQN-AUKvmXiimEM469eFo6SnQ" frameborder="0" allowfullscreen></iframe>
+                <!-- <iframe width="100%" height="315" class="b__nudge--top-40" src="" frameborder="0" allowfullscreen></iframe> -->
+                <div class="space--20-0"></div>
             </div>
 
 
