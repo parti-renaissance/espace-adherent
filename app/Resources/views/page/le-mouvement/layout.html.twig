@@ -13,7 +13,7 @@
             </header>
 
             <nav class="l__wrapper text--body b__nudge--bottom-larger">
-                <ul class="l__wrapper--slim">
+                <ul class="l__wrapper--narrow">
                     {% set currentRoute = app.request.attributes.get('_route') %}
                     {% for route, title in {
                         'page_le_mouvement': 'Qui sommes-nous?',
@@ -28,8 +28,8 @@
                         </li>
                     {% endfor %}
                     {% if enable_canary %}
-                    <li class="{{ 'page_le_mouvement_notre_organisation' == currentRoute ? 'active' }}">
-                        <a href="{{ path('page_le_mouvement_notre_organisation') }}">
+                    <li class="{{ 'page_le_mouvement_legislatives' == currentRoute ? 'active' }}">
+                        <a href="{{ path('page_le_mouvement_legislatives') }}">
                             Législatives
                         </a>
                     </li>
