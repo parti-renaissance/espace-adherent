@@ -33,9 +33,7 @@ class JeMarcheController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($jeMarcheReport);
-            $em->flush();
+            $this->get('app.je_marche_report_handler')->handle($jeMarcheReport);
 
             return $this->redirectToRoute('app_je_marche_thanks');
         }
