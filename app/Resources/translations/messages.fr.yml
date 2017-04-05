@@ -87,3 +87,12 @@ procuration_manager.associate.success: La demande de procuration a bien été as
 procuration_manager.deassociate.success: La demande de procuration a bien été désassociée du mandataire.
 procuration_manager.disabled.success: La proposition du mandataire a bien été désactivée.
 procuration_manager.enabled.success: La proposition du mandataire a bien été réactivée.
+
+#
+# Newsletter
+#
+newsletter.invitation.form.first_name: Votre prénom
+newsletter.invitation.form.last_name: Votre nom
+newsletter.invitation.form.guest: E-mail d'un ami
+newsletter.invitation.form.invite: J'invite des amis
+newsletter.invitation.form.invite_sent: Votre invitation a bien été envoyée ! | Vos %count% invitations ont bien été envoyées !

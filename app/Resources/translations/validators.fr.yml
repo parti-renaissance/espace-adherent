@@ -93,6 +93,8 @@ neswletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
 
 neswletter.postalCode.invalid: Ce code postal n'est pas valide.
 
+newsletter.guests.min: Merci de saisir au moins une adresse e-mail.
+
 #
 # Invitation
 #

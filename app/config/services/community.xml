@@ -43,6 +43,12 @@
             <argument type="service" id="app.mailjet.client.transactional" />
         </service>
 
+        <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="router" />
+        </service>
+
         <!-- Invitation -->
         <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
