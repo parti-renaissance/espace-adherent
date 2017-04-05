@@ -6,9 +6,9 @@ services:
             - "~/.composer:/root/.composer"
         ports:
             - "8000:80"
-        environment:
-            - BLACKFIRE_CLIENT_ID
-            - BLACKFIRE_CLIENT_TOKEN
+#        environment:
+#            - BLACKFIRE_CLIENT_ID
+#            - BLACKFIRE_CLIENT_TOKEN
 
     rabbitmq:
         ports:

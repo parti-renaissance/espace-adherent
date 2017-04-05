@@ -50,7 +50,8 @@ Il y a deux groupes de tests automatisés : les tests serveur (Symfony) et les t
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-make test-php
+make tu # tests unitaires
+make tf # tests fonctionnels
 ```
 
 ### Lancer les tests client
@@ -58,7 +59,7 @@ make test-php
 Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
 
 ```
-make test-js
+make tj
 ```
 
 
@@ -88,7 +89,7 @@ $ make deps
 
 ## Profiling avec Blackfire
 
-Uncomment the `tools` and `blackfire` services in docker-compose.override.yml
+Uncomment the `blackfire` service in docker-compose.override.yml
 
 Set the environment variables BLACKFIRE_CLIENT_* AND BLACKFIRE_SERVER_*, which are available in [https://blackfire.io/account](https://blackfire.io/account).
 

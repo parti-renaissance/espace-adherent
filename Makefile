@@ -4,7 +4,7 @@ EXEC=$(FIG) exec app
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db new-migration watch clear clean test tu tf tj lint ls ly lt lj build up perm
+.PHONY: help start stop reset db db-diff watch clear clean test tu tf tj lint ls ly lt lj build up perm deps
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -29,8 +29,8 @@ db: vendor
 
 :##---------------------------------------------------------------------------:
 
-new-migration:  ## Generate a migration by comparing your current database to your mapping information.
-new-migration: vendor
+db-diff:        ## Generate a migration by comparing your current database to your mapping information.
+db-diff: vendor
 	$(RUN) $(CONSOLE) doctrine:migration:diff
 
 watch:          ## Watch the assets and build their development version on change
@@ -48,6 +48,9 @@ clear: perm
 clean:          ## Clear and remove dependencies
 clean: clear
 	rm -rf vendor node_modules
+
+deps:           ## Install the project PHP and JS dependencies
+deps: vendor web/built
 
 :##---------------------------------------------------------------------------:
 
