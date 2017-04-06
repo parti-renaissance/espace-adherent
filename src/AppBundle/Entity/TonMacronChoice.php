@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Table(name="ton_macron_choices", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="ton_macron_choices_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="ton_macron_choices_key_unique", columns="key")
+ *   @ORM\UniqueConstraint(name="ton_macron_choices_content_key_unique", columns="content_key")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TonMacronChoiceRepository")
  */
@@ -35,9 +35,9 @@ final class TonMacronChoice
     private $step;
 
     /**
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=30)
      */
-    private $key;
+    private $contentKey;
 
     /**
      * @ORM\Column(length=100)
@@ -49,23 +49,18 @@ final class TonMacronChoice
      */
     private $content;
 
-    public function __construct(UuidInterface $uuid, string $step, string $key, string $label, string $content)
+    public function __construct(UuidInterface $uuid, string $step, string $contentKey, string $label, string $content)
     {
         $this->uuid = $uuid;
         $this->step = $step;
-        $this->key = $key;
         $this->label = $label;
+        $this->contentKey = $contentKey;
         $this->content = $content;
     }
 
     public function getStep(): string
     {
         return $this->step;
-    }
-
-    public function getKey(): string
-    {
-        return $this->key;
     }
 
     public function getLabel(): string
@@ -76,5 +71,10 @@ final class TonMacronChoice
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function getContentKey(): string
+    {
+        return $this->contentKey;
     }
 }
