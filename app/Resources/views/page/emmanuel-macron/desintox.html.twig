@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block banner '' %}
-{% block page_title 'Désintox' %}
+{% block page_title page.title %}
+{% block meta_description page.description %}
 {% block canonical_url url('page_emmanuel_macron_desintox_list') %}
-{# {% block meta_description page.description %} #}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -23,7 +23,7 @@
         <header class="space--60-0">
             <div class="l__wrapper--slim text--center">
                 <h1 class="text--large text--inline text--on-white">
-                    Désintox
+                    {{ page.title }}
                 </h1>
             </div>
         </header>
@@ -41,27 +41,8 @@
 
         <div class="l__wrapper--slim">
             <div class="desintox__intro text--body">
-                « Nous vivons une époque de transparence, j'y souscris, mais ça ne doit pas être non plus l'époque du soupçon, du grand déballage, ou du grand n’importe quoi. »<br>
-                <div class="text--right">Emmanuel Macron, Europe 1, 29 mars</div>
-                <br>
-
-                <div class="text--center"><em>
-                    « Ce n'est qu’un banquier, le candidat de la finance. »<br>
-                    « Attention il fera payer un loyer fictif aux propriétaires ! »<br>
-                    « Il est à la solde des médias ! Tout la presse roule pour lui. »<br>
-                </em></div>
-                <br>
-                Vous avez forcément vu passer ces allégations. C’est un ami qui vous les a envoyées via une boucle de mails, c’est une connaissance qui l'a partagé sur son mur Facebook, c’est un voisin qui a entendu dire d'une "source sûre" qu'Emmanuel Macron n'était pas net, qu'il y avait des zones d'ombres.<br>
-                <br>
-                Ils instillent le doute, le soupçon devient roi, les rumeurs courent. Les réseaux en sont pleins.<br>
-                <br>
-                Depuis des semaines, nous partageons, échangeons, sur le terrain et sur internet : pour nous il s'agit d'honorer notre démocratie. D’autres, cachés derrière leurs ordinateurs, salissent leurs adversaires. Nous faisons le choix de la bienveillance.<br>
-                <br>Mettons fin à ces rumeurs dès à présent : il est plus que jamais temps de nous consacrer à notre projet.<br>
-                <br>
-                <strong>Mounir Mahjoubi</strong><br>
-                Responsable de la campagne numérique
+                {{ page.content|raw }}
             </div>
-
 
             <ul class="desintox__cases">
                 {% for clarification in clarifications %}

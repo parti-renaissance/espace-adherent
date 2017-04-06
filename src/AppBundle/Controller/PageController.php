@@ -92,6 +92,7 @@ class PageController extends Controller
         $repository = $this->getDoctrine()->getRepository(Clarification::class);
 
         return $this->render('page/emmanuel-macron/desintox.html.twig', [
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('desintox'),
             'clarifications' => $repository->findAll(),
         ]);
     }
