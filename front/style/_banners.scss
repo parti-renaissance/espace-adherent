@@ -37,26 +37,9 @@
 }
 
 .bercy__banner {
-    &__bg {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: #060608;
-        background-position: left bottom;
-        background-size: 47%;
-        @include gradient-container;
-
-        &:before {
-            @include classic-gradient($gradient--procuration);
-            width: 208px;
-            z-index: 2;
-            left: -30px;
-        }
-
-        > div {
-            position: relative;
-            z-index: 1;
-        }
-    }
+    background-color: #060608;
+    background-position: left center;
+    background-size: 40%;
 
     &:before,
     &:after {
