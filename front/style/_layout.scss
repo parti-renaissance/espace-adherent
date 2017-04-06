@@ -79,6 +79,10 @@
             justify-content: space-around;
         }
 
+        &--h-end {
+            justify-content: flex-end;
+        }
+
         &--v-stretch {
             align-items: stretch;
         }
