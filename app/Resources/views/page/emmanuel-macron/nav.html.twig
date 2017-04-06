@@ -9,10 +9,14 @@
         </a>
     </li>
 {% endfor %}
-{% if enable_canary %}
-    <li>
-        <a href="{{ path('page_emmanuel_macron_desintox_list') }}">
-            Désintox
-        </a>
-    </li>
-{% endif %}
+{% for route, title in {
+    'page_emmanuel_macron_desintox_list': 'Désintox'
+} %}
+    {% if enable_canary %}
+        <li class="{{ route == currentRoute ? 'active' }}">
+            <a href="{{ path(route) }}">
+                Désintox
+            </a>
+        </li>
+    {% endif %}
+{% endfor %}
