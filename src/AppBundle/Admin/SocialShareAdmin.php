@@ -3,16 +3,23 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\SocialShare;
+use AppBundle\Twig\AssetExtension;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SocialShareAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
+
+    /**
+     * @var AssetExtension
+     */
+    protected $assetExtension;
 
     protected $datagridValues = [
         '_page' => 1,
@@ -31,6 +38,35 @@ class SocialShareAdmin extends AbstractAdmin
         return new Metadata($object->getName(), null, $object->getMedia()->getPath());
     }
 
+    /**
+     * @param SocialShare $object
+     */
+    public function prePersist($object)
+    {
+        // Upload
+        $this->storage->put(
+            'images/'.$object->getMedia()->getPath(),
+            file_get_contents($object->getMedia()->getFile()->getPathname())
+        );
+
+        $this->glide->deleteCache('images/'.$object->getMedia()->getPath());
+
+        // Default URL
+        if (!$object->getDefaultUrl()) {
+            // Trick to generate the URL before persisting
+            $object->getMedia()->setUpdatedAt(new \DateTime());
+
+            $object->setDefaultUrl(
+                $this->assetExtension->transformedMediaAsset($object->getMedia(), [], UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+        }
+
+        // Name
+        if (!$object->getName()) {
+            $object->setName($object->getMedia()->getName());
+        }
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -40,8 +76,11 @@ class SocialShareAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Données sociales', ['class' => 'col-md-6'])
-                ->add('name', null, [
-                    'label' => 'Nom',
+                ->add('published', null, [
+                    'label' => 'Publié ?',
+                ])
+                ->add('position', null, [
+                    'label' => 'Position',
                 ])
                 ->add('type', ChoiceType::class, [
                     'label' => 'Type',
@@ -50,23 +89,28 @@ class SocialShareAdmin extends AbstractAdmin
                 ->add('socialShareCategory', null, [
                     'label' => 'Catégorie',
                 ])
-                ->add('defaultUrl', null, [
-                    'label' => 'URL par défaut ',
-                ])
                 ->add('description', null, [
                     'label' => 'Description',
                 ])
+                ->add('name', null, [
+                    'label' => 'Nom',
+                    'required' => false,
+                    'help' => 'Laissez vide pour réutiliser le nom du média',
+                ])
+                ->add('defaultUrl', null, [
+                    'label' => 'URL par défaut',
+                    'required' => false,
+                    'help' => 'Laissez vide pour réutiliser l\'URL du média',
+                ])
                 ->add('twitterUrl', null, [
-                    'label' => 'Url Twitter',
+                    'label' => 'URL pour Twitter',
+                    'required' => false,
+                    'help' => 'Laissez vide pour utiliser l\'URL par défaut',
                 ])
                 ->add('facebookUrl', null, [
-                    'label' => 'Url Facebook',
-                ])
-                ->add('position', null, [
-                    'label' => 'Position',
-                ])
-                ->add('published', null, [
-                    'label' => 'Publié ?',
+                    'label' => 'URL pour Facebook',
+                    'required' => false,
+                    'help' => 'Laissez vide pour utiliser l\'URL par défaut',
                 ])
             ->end()
         ;
@@ -107,5 +151,10 @@ class SocialShareAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function setAssetExtension(AssetExtension $assetExtension)
+    {
+        $this->assetExtension = $assetExtension;
     }
 }

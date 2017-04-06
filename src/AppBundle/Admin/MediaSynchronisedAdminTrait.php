@@ -2,7 +2,6 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Clarification;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 
@@ -28,31 +27,25 @@ trait MediaSynchronisedAdminTrait
         $this->glide = $glide;
     }
 
-    /**
-     * @param Clarification $clarification
-     */
-    public function prePersist($clarification)
+    public function prePersist($object)
     {
         $this->storage->put(
-            'images/'.$clarification->getMedia()->getPath(),
-            file_get_contents($clarification->getMedia()->getFile()->getPathname())
+            'images/'.$object->getMedia()->getPath(),
+            file_get_contents($object->getMedia()->getFile()->getPathname())
         );
 
-        $this->glide->deleteCache('images/'.$clarification->getMedia()->getPath());
+        $this->glide->deleteCache('images/'.$object->getMedia()->getPath());
     }
 
-    /**
-     * @param Clarification $clarification
-     */
-    public function preUpdate($clarification)
+    public function preUpdate($object)
     {
-        if ($clarification->getMedia()->getFile()) {
+        if ($object->getMedia()->getFile()) {
             $this->storage->put(
-                'images/'.$clarification->getMedia()->getPath(),
-                file_get_contents($clarification->getMedia()->getFile()->getPathname())
+                'images/'.$object->getMedia()->getPath(),
+                file_get_contents($object->getMedia()->getFile()->getPathname())
             );
 
-            $this->glide->deleteCache('images/'.$clarification->getMedia()->getPath());
+            $this->glide->deleteCache('images/'.$object->getMedia()->getPath());
         }
     }
 }

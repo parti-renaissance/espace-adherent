@@ -35,10 +35,9 @@ class SocialShare
     /**
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank
      * @Assert\Length(max = 100)
      */
-    private $name;
+    private $name = '';
 
     /**
      * @ORM\Column
@@ -71,24 +70,23 @@ class SocialShare
     /**
      * @ORM\Column
      *
-     * @Assert\NotBlank
      * @Assert\Url
      */
-    private $defaultUrl;
+    private $defaultUrl = '';
 
     /**
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
      */
-    private $facebookUrl;
+    private $facebookUrl = '';
 
     /**
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
      */
-    private $twitterUrl;
+    private $twitterUrl = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SocialShareCategory")
@@ -111,10 +109,11 @@ class SocialShare
 
     public function __construct(string $name = '', int $position = 1, $published = false)
     {
-        $this->name = EmojisRemover::remove($name);
         $this->position = $position;
         $this->published = $published;
         $this->type = self::TYPE_IMAGE;
+
+        $this->setName($name);
     }
 
     public function __toString()
@@ -127,14 +126,14 @@ class SocialShare
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
     public function setName(?string $name)
     {
-        $this->name = EmojisRemover::remove($name);
+        $this->name = $name ? EmojisRemover::remove($name) : '';
     }
 
     public function getSlug(): ?string
@@ -169,7 +168,7 @@ class SocialShare
 
     public function setDefaultUrl(?string $defaultUrl)
     {
-        $this->defaultUrl = $defaultUrl;
+        $this->defaultUrl = $defaultUrl ?: '';
     }
 
     public function getFacebookUrl(): ?string
@@ -179,7 +178,7 @@ class SocialShare
 
     public function setFacebookUrl(?string $facebookUrl)
     {
-        $this->facebookUrl = $facebookUrl;
+        $this->facebookUrl = $facebookUrl ?: '';
     }
 
     public function getTwitterUrl(): ?string
@@ -189,7 +188,7 @@ class SocialShare
 
     public function setTwitterUrl(?string $twitterUrl)
     {
-        $this->twitterUrl = $twitterUrl;
+        $this->twitterUrl = $twitterUrl ?: '';
     }
 
     public function getType(): ?string

@@ -6,6 +6,7 @@ use AppBundle\Entity\Media;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AssetExtension extends \Twig_Extension
 {
@@ -33,18 +34,18 @@ class AssetExtension extends \Twig_Extension
         );
     }
 
-    public function transformedStaticAsset(string $path, array $parameters = [])
+    public function transformedStaticAsset(string $path, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['cache'] = $this->hash;
 
-        return $this->generateAssetUrl('static/'.$path, $parameters);
+        return $this->generateAssetUrl('static/'.$path, $parameters, $referenceType);
     }
 
-    public function transformedMediaAsset(Media $media, array $parameters = [])
+    public function transformedMediaAsset(Media $media, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['cache'] = substr(md5($media->getUpdatedAt()->format('U')), 0, 20);
 
-        return $this->generateAssetUrl('images/'.$media->getPath(), $parameters);
+        return $this->generateAssetUrl('images/'.$media->getPath(), $parameters, $referenceType);
     }
 
     public function webpackAsset(string $path, $packageName = null)
@@ -56,12 +57,12 @@ class AssetExtension extends \Twig_Extension
         return $this->symfonyAssetExtension->getAssetUrl('built/'.$this->hash.'.'.$path, $packageName);
     }
 
-    private function generateAssetUrl(string $path, array $parameters = [])
+    private function generateAssetUrl(string $path, array $parameters = [], int $referenceType)
     {
         $parameters['fm'] = 'pjpg';
         $parameters['s'] = SignatureFactory::create($this->secret)->generateSignature($path, $parameters);
         $parameters['path'] = $path;
 
-        return $this->router->generate('asset_url', $parameters);
+        return $this->router->generate('asset_url', $parameters, $referenceType);
     }
 }
