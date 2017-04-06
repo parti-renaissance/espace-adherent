@@ -154,4 +154,61 @@ final class TonMacronFriendInvitation
 
         return $this->createdAt;
     }
+
+    /**
+     * @return string[]
+     */
+    public function getArguments(): array
+    {
+        foreach (TonMacronChoice::getStepsOrderForEmail() as $step) {
+            foreach ($this->getStepChoices($step) as $choice) {
+                $arguments[] = $choice->getContent();
+            }
+        }
+
+        return $arguments ?? [];
+    }
+
+    /**
+     * @return TonMacronChoice[]
+     */
+    private function getStepChoices(int $step): array
+    {
+        return $this
+            ->choices
+            ->filter(function (TonMacronChoice $choice) use ($step) {
+                return $step == $choice->getStep();
+            })
+            ->toArray()
+        ;
+    }
+
+    public function setFriendEmailAddress(string $emailAddress = null): void
+    {
+        $this->friendEmailAddress = $emailAddress;
+    }
+
+    public function setAuthor(string $firstName, string $lastName, string $emailAddress): void
+    {
+        $this->authorFirstName = $firstName;
+        $this->authorLastName = $lastName;
+        $this->authorEmailAddress = $emailAddress;
+    }
+
+    public function setMailSubject(string $subject = null): void
+    {
+        $this->mailSubject = $subject;
+    }
+
+    public function setMailBody(string $content = null): void
+    {
+        $this->mailBody = $content;
+    }
+
+    public function addChoice(TonMacronChoice $choice): void
+    {
+        if (!$this->choices->contains($choice)) {
+            $this->choices->add($choice);
+        }
+    }
 }

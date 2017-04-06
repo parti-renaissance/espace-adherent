@@ -17,6 +17,9 @@ final class TonMacronChoice
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
+    const MAIL_INTRODUCTION_KEY = 'S00C01';
+    const MAIL_CONCLUSION_KEY = 'S00C02';
+
     const STEP_FRIEND_PROFESSIONAL_POSITION = 'friend_professional_position';
     const STEP_FRIEND_PROJECT = 'friend_project';
     const STEP_FRIEND_INTERESTS = 'friend_interests';
@@ -48,6 +51,16 @@ final class TonMacronChoice
      * @ORM\Column(type="text")
      */
     private $content;
+
+    public static function getStepsOrderForEmail(): array
+    {
+        return [
+            self::STEPS[self::STEP_SELF_REASONS],
+            self::STEPS[self::STEP_FRIEND_PROFESSIONAL_POSITION],
+            self::STEPS[self::STEP_FRIEND_INTERESTS],
+            self::STEPS[self::STEP_FRIEND_PROJECT],
+        ];
+    }
 
     public function __construct(UuidInterface $uuid, string $step, string $contentKey, string $label, string $content)
     {

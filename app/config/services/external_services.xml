@@ -19,7 +19,7 @@
             <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
         </service>
 
-        <!-- Mailjet (transactionnal) -->
+        <!-- Mailjet (transactional) -->
         <service id="app.mailjet.client.transactional" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport.transactional"/>

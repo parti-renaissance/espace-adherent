@@ -14,14 +14,14 @@ class LoadTonMacronData implements FixtureInterface
         // Step 0
         $choices[] = $this->createNoStepChoice(
             '8a2fdb59-357f-4e74-9aeb-c2b064d31064',
-            'S00C01',
+            TonMacronChoice::MAIL_INTRODUCTION_KEY,
             'Début du message',
             file_get_contents(__DIR__.'/../ton-macron/mail-introduction.txt')
         );
 
         $choices[] = $this->createNoStepChoice(
             '31276b63-a4f3-4994-aca8-ed4ca78c173e',
-            'S00C02',
+            TonMacronChoice::MAIL_CONCLUSION_KEY,
             'Find du message',
             'Dis-moi ce que tu en penses. Tu trouveras tous les détails de ces propositions ici.'
         );

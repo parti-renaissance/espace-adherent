@@ -1,0 +1,15 @@
+{{ introduction.content|replace({'%friend_first_name%': invitation.friendFirstName|e})|raw }}
+
+<ul>
+{% for argument in invitation.arguments %}
+    {{- argument|raw }}
+{% endfor %}
+</ul>
+
+{{ conclusion.content|raw }}
+
+<p>
+{{ invitation.authorFirstName }}
+<br/><br/>
+PS : Envie d'envoyer un argumentaire personnalisé comme celui-ci ? <a href="http://en-marche.fr">Clique ici</a>.
+</p>
