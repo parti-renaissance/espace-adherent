@@ -75,5 +75,9 @@
             <argument type="service" id="router" />
         </service>
 
+        <service id="app.procuration.request_serializer" class="AppBundle\Procuration\ProcurationRequestSerializer">
+            <argument type="service" id="router" />
+        </service>
+
     </services>
 </container>
