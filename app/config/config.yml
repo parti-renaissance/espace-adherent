@@ -3,13 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: adherent.yml }
     - { resource: assets_version.yml }
-    - { resource: services/admin.xml }
-    - { resource: services/cms.xml }
-    - { resource: services/community.xml }
-    - { resource: services/external_services.xml }
-    - { resource: services/platform.xml }
-    - { resource: services/repositories.xml }
-    - { resource: services/system.xml }
+    - { resource: services/ }
 
 parameters:
     locale:                      fr

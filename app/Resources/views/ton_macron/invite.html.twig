@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Ton Macron' %}
+
+{% block content %}
+    <main class="ton_macron">
+        <section class="ton_macron--intro l__wrapper">
+
+            {{ include('ton_macron/_header.html.twig') }}
+
+            <div class="ton_macron--content">
+                {{ include('ton_macron/_' ~ transition ~ '.html.twig') }}
+            </div>
+        </section>
+    </main>
+{% endblock %}
