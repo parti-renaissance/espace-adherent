@@ -15,6 +15,7 @@ class CommitteeFeedMessageType extends AbstractType
         $builder->add('content', TextareaType::class, [
             'label' => false,
             'attr' => ['placeholder' => 'Écrivez ici votre message public'],
+            'purify_html' => true,
         ]);
     }
 

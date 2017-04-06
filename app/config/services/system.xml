@@ -99,5 +99,10 @@
             <tag name="jms_serializer.subscribing_handler" />
         </service>
 
+        <!-- Form -->
+        <service id="app.form.text_type_extension" class="AppBundle\Form\TypeExtension\TextTypeExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\TextType" />
+        </service>
+
     </services>
 </container>
