@@ -74,6 +74,13 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'title' => 'Désintox',
+            'slug' => 'desintox',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../desintox.html'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'title' => 'Mentions légales',
             'slug' => 'mentions-legales',
             'description' => $description,
