@@ -9,6 +9,58 @@ use Doctrine\ORM\QueryBuilder;
 
 class ProcurationRequestRepository extends EntityRepository
 {
+    public function findAllForExport(): array
+    {
+        return $this->createQueryBuilder('pr')
+            ->select(
+                'pr.id AS request_id',
+                'pr.gender AS request_birthdate',
+                'pr.firstNames AS request_firstNames',
+                'pr.lastName AS request_lastName',
+                'pr.emailAddress AS request_emailAddress',
+                'pr.address AS request_address',
+                'pr.postalCode AS request_postalCode',
+                'pr.city AS request_city',
+                'pr.cityName AS request_cityName',
+                'pr.country AS request_country',
+                'pr.voteOffice AS request_voteOffice',
+                'pr.votePostalCode AS request_votePostalCode',
+                'pr.voteCity AS request_voteCity',
+                'pr.voteCityName AS request_voteCityName',
+                'pr.voteCountry AS request_voteCountry',
+                'pr.electionPresidentialFirstRound AS request_electionPresidentialFirstRound',
+                'pr.electionPresidentialSecondRound AS request_electionPresidentialSecondRound',
+                'pr.electionLegislativeFirstRound AS request_electionLegislativeFirstRound',
+                'pr.electionLegislativeSecondRound AS request_electionLegislativeSecondRound',
+                'pr.reason AS request_reason',
+                'pr.processedAt AS request_processedAt',
+
+                'pp.id AS proposal_id',
+                'pp.gender AS proposal_birthdate',
+                'pp.firstNames AS proposal_firstNames',
+                'pp.lastName AS proposal_lastName',
+                'pp.emailAddress AS proposal_emailAddress',
+                'pp.address AS proposal_address',
+                'pp.postalCode AS proposal_postalCode',
+                'pp.city AS proposal_city',
+                'pp.cityName AS proposal_cityName',
+                'pp.country AS proposal_country',
+                'pp.voteOffice AS proposal_voteOffice',
+                'pp.votePostalCode AS proposal_votePostalCode',
+                'pp.voteCity AS proposal_voteCity',
+                'pp.voteCityName AS proposal_voteCityName',
+                'pp.voteCountry AS proposal_voteCountry',
+                'pp.electionPresidentialFirstRound AS proposal_electionPresidentialFirstRound',
+                'pp.electionPresidentialSecondRound AS proposal_electionPresidentialSecondRound',
+                'pp.electionLegislativeFirstRound AS proposal_electionLegislativeFirstRound',
+                'pp.electionLegislativeSecondRound AS proposal_electionLegislativeSecondRound'
+            )
+            ->join('pr.foundProxy', 'pp')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     /**
      * @param Adherent $procurationManager
      *
