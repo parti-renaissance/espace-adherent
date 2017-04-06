@@ -603,69 +603,6 @@
     }
 }
 
-.programme__banner {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center 53%;
-    background-size: 54%;
-    background-color: black;
-    @include gradient-container;
-
-    > div {
-        position: relative;
-        z-index: 1;
-    }
-
-    svg {
-        path {
-            @include color-stroke(white);
-        }
-
-        &:hover {
-            path {
-                @include hover-stroke(white);
-            }
-        }
-    }
-
-    &:before {
-        @include classic-gradient($gradient--program-left);
-        width: 528px;
-    }
-
-    &:after {
-        @include classic-gradient($gradient--program-right);
-        left: 60%;
-        width: 20%;
-    }
-}
-
-.newsletter__banner {
-    background-color: #55F0B8;
-    color: black;
-
-    > div {
-        position: relative;
-        z-index: 1;
-    }
-
-    svg {
-        path {
-            @include color-stroke(black);
-        }
-
-        &:hover {
-            path {
-                @include hover-stroke(black);
-            }
-        }
-    }
-
-    &__btn {
-        margin: 7px 0 0 20px;
-    }
-}
-
 .content.emmanuel-macron {
     header {
         background-size: cover;
