@@ -145,10 +145,6 @@ class PageController extends Controller
      */
     public function mouvementLegislativesAction()
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('page/le-mouvement/legislatives.html.twig', [
             'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-legislatives'),
         ]);
