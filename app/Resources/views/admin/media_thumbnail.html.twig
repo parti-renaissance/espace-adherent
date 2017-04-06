@@ -2,6 +2,6 @@
 
 {% block field %}
     <div style="text-align: center;">
-        <img src="{{ media_asset(object) }}" style="max-height: 50px; max-width: 100px;" />
+        <img src="{{ media_asset(object, {'w': 150}) }}" style="max-height: 50px; max-width: 100px;" />
     </div>
 {% endblock %}
