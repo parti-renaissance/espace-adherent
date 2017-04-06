@@ -43,11 +43,6 @@ class ReferentsController extends Controller
             'coordinates' => [4.076463, 48.300452],
         ],
         [
-            'postalCode' => '95000',
-            'name' => 'Mohamed Saou',
-            'coordinates' => [2.047804, 49.048254],
-        ],
-        [
             'postalCode' => '89000',
             'name' => 'Patrice José Tampied Azurza',
             'coordinates' => [3.569805, 47.79466],
