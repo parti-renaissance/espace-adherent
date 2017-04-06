@@ -115,6 +115,11 @@ class MediaAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('_thumbnail', null, [
+                'label' => 'Miniature',
+                'virtual_field' => true,
+                'template' => 'admin/media_thumbnail.html.twig',
+            ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
@@ -125,10 +130,10 @@ class MediaAdmin extends AbstractAdmin
                 'label' => 'Type de fichier',
             ])
             ->add('width', null, [
-                'label' => 'Largeur (en pixels)',
+                'label' => 'Largeur',
             ])
             ->add('height', null, [
-                'label' => 'Hauteur (en pixels)',
+                'label' => 'Hauteur',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
@@ -138,14 +143,9 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'preview' => [
-                        'template' => 'admin/media_preview.html.twig',
-                    ],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ]);
+                'template' => 'admin/media_actions.html.twig',
+            ])
+        ;
     }
 
     public function setStorage(Filesystem $storage)
