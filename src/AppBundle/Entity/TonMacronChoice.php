@@ -17,6 +17,18 @@ final class TonMacronChoice
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
+    const STEP_FRIEND_PROFESSIONAL_POSITION = 'friend_professional_position';
+    const STEP_FRIEND_PROJECT = 'friend_project';
+    const STEP_FRIEND_INTERESTS = 'friend_interests';
+    const STEP_SELF_REASONS = 'self_reasons';
+
+    const STEPS = [
+        self::STEP_FRIEND_PROFESSIONAL_POSITION,
+        self::STEP_FRIEND_PROJECT,
+        self::STEP_FRIEND_INTERESTS,
+        self::STEP_SELF_REASONS,
+    ];
+
     /**
      * @ORM\Column(type="smallint", length=1, options={"unsigned": true})
      */
