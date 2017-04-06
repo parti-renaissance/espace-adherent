@@ -20,6 +20,7 @@
                         'page_le_mouvement_notre_organisation': 'Notre organisation',
                         'page_le_mouvement_les_comites': 'En marche sur le terrain',
                         'page_le_mouvement_devenez_benevole': 'Devenez bénévole',
+                        'page_le_mouvement_legislatives': 'Législatives'
                     } %}
                         <li class="{{ route == currentRoute ? 'active' }}">
                             <a href="{{ path(route) }}">
@@ -27,13 +28,6 @@
                             </a>
                         </li>
                     {% endfor %}
-                    {% if enable_canary %}
-                    <li class="{{ 'page_le_mouvement_legislatives' == currentRoute ? 'active' }}">
-                        <a href="{{ path('page_le_mouvement_legislatives') }}">
-                            Législatives
-                        </a>
-                    </li>
-                    {% endif %}
                 </ul>
             </nav>
 
