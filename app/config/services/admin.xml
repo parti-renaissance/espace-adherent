@@ -110,6 +110,10 @@
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
             </call>
+
+            <call method="setAssetExtension">
+                <argument type="service" id="app.twig.media_asset_extension" />
+            </call>
         </service>
 
         <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
