@@ -1,1 +1,59 @@
-{{ form(invitation_form) }}
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+{% endblock %}
+
+<div class="ton_macron__send">
+    <b> Sélectionnez 2 sujets qui intéressent votre ami(e)</b>
+
+    <br/>
+    <br/>
+
+    {{ form_start(invitation_form) }}
+
+    {{ form_errors(invitation_form) }}
+
+    <div class="form__row">
+        {{ form_label(invitation_form.messageSubject) }}
+        {{ form_errors(invitation_form.messageSubject) }}
+        {{ form_widget(invitation_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.messageContent) }}
+        {{ form_errors(invitation_form.messageContent) }}
+        {{ form_widget(invitation_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500 ckeditor' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.selfFirstName) }}
+        {{ form_errors(invitation_form.selfFirstName) }}
+        {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.selfLastName) }}
+        {{ form_errors(invitation_form.selfLastName) }}
+        {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.selfEmail) }}
+        {{ form_errors(invitation_form.selfEmail) }}
+        {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.friendEmail) }}
+        {{ form_errors(invitation_form.friendEmail) }}
+        {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_widget(invitation_form.send, {'attr': {'class': 'btn btn--primary'}}) }}
+    </div>
+
+    {{ form_end(invitation_form) }}
+</div>
