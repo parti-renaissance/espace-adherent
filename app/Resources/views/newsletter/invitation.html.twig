@@ -29,7 +29,7 @@
                 </p>
 
                 <div class="newsletter-page__form l__wrapper-500">
-                    {{ form_start(invitation_form) }}
+                    {{ form_start(invitation_form, {attr: {novalidate: 'novalidate'}}) }}
 
                     {{ form_errors(invitation_form) }}
 
