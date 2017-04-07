@@ -79,5 +79,11 @@
             <argument type="service" id="router" />
         </service>
 
+        <!-- JeMarche -->
+         <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailjet.client.transactional" />
+        </service>
+
     </services>
 </container>
