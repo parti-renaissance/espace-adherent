@@ -1,1 +1,22 @@
-{{ form(invitation_form) }}
+<div class="ton_macron__fill_interests">
+    <b>Sélectionnez 2 sujets qui intéressent votre ami(e)</b>
+
+    <br/>
+    <br/>
+
+    {{ form_start(invitation_form) }}
+
+    {{ form_errors(invitation_form) }}
+
+    <div class="form__row">
+        {% for checkbox in invitation_form.friendInterests %}
+            {{ form_row(checkbox) }}
+        {% endfor %}
+    </div>
+
+    <div class="form__row">
+        {{ form_widget(invitation_form.fill_interests, {'attr': {'class': 'btn btn--primary'}}) }}
+    </div>
+
+    {{ form_end(invitation_form) }}
+</div>

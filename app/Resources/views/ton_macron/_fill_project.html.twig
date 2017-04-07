@@ -1,1 +1,20 @@
-{{ form(invitation_form) }}
+<div class="ton_macron__fill_project">
+    <b>Quel est son projet pour les 5 prochaines années ?</b>
+
+    <br/>
+    <br/>
+
+    {{ form_start(invitation_form) }}
+
+    <div class="form__row">
+        {% for radio in invitation_form.friendProject %}
+            {{ form_row(radio) }}
+        {% endfor %}
+    </div>
+
+    <div class="form__row">
+        {{ form_widget(invitation_form.fill_project, {'attr': {'class': 'btn btn--primary'}}) }}
+    </div>
+
+    {{ form_end(invitation_form) }}
+</div>
