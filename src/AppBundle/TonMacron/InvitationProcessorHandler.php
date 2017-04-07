@@ -6,7 +6,7 @@ use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\TonMacronFriendMessage;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
 
 final class InvitationProcessorHandler
@@ -30,17 +30,17 @@ final class InvitationProcessorHandler
         $this->stateMachine = $stateMachine;
     }
 
-    public function start(Session $session): InvitationProcessor
+    public function start(SessionInterface $session): InvitationProcessor
     {
         return $session->get(self::SESSION_KEY, new InvitationProcessor());
     }
 
-    public function save(Session $session, InvitationProcessor $processor): void
+    public function save(SessionInterface $session, InvitationProcessor $processor): void
     {
         $session->set(self::SESSION_KEY, $processor);
     }
 
-    public function terminate(Session $session): void
+    public function terminate(SessionInterface $session): void
     {
         $session->remove(self::SESSION_KEY);
     }
@@ -53,10 +53,11 @@ final class InvitationProcessorHandler
     /**
      * Returns whether the process is finished or not.
      */
-    public function handle(Session $session, InvitationProcessor $processor): bool
+    public function process(SessionInterface $session, InvitationProcessor $processor): bool
     {
         if ($this->stateMachine->can($processor, InvitationProcessor::TRANSITION_SEND)) {
             // End process
+            $processor->refreshChoices($this->manager); // merge objects from session before mapping them in the entity
             $invitation = TonMacronFriendInvitation::createFromProcessor($processor);
 
             $this->manager->persist($invitation);
