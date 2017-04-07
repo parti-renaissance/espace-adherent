@@ -23,10 +23,10 @@ final class TonMacronChoice
     const STEP_SELF_REASONS = 'self_reasons';
 
     const STEPS = [
-        self::STEP_FRIEND_PROFESSIONAL_POSITION,
-        self::STEP_FRIEND_PROJECT,
-        self::STEP_FRIEND_INTERESTS,
-        self::STEP_SELF_REASONS,
+        self::STEP_FRIEND_PROFESSIONAL_POSITION => 1,
+        self::STEP_FRIEND_PROJECT => 2,
+        self::STEP_FRIEND_INTERESTS => 3,
+        self::STEP_SELF_REASONS => 4,
     ];
 
     /**
