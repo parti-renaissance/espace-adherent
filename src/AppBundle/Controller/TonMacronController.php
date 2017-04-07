@@ -19,6 +19,10 @@ class TonMacronController extends Controller
      */
     public function inviteAction(Request $request): Response
     {
+        if (!((bool) $this->getParameter('enable_canary'))) {
+            throw $this->createNotFoundException();
+        }
+
         $session = $request->getSession();
         $invitation = $session->get('ton_macron.invitation', new InvitationProcessor()); // TODO move this line in a handler
 
