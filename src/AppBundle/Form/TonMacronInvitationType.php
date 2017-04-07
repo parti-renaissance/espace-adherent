@@ -58,6 +58,7 @@ class TonMacronInvitationType extends AbstractType
                         'step' => TonMacronChoice::STEP_FRIEND_INTERESTS,
                         'expanded' => true,
                         'multiple' => true,
+                        'error_bubbling' => true,
                     ])
                     ->add(InvitationProcessor::TRANSITION_FILL_INTERESTS, SubmitType::class, [
                         'label' => 'ton_macron.invitation_form.fill_step_3',
@@ -70,6 +71,7 @@ class TonMacronInvitationType extends AbstractType
                         'step' => TonMacronChoice::STEP_SELF_REASONS,
                         'expanded' => true,
                         'multiple' => true,
+                        'error_bubbling' => true,
                     ])
                     ->add(InvitationProcessor::TRANSITION_FILL_REASONS, SubmitType::class, [
                         'label' => 'ton_macron.invitation_form.fill_step_4',
@@ -80,12 +82,11 @@ class TonMacronInvitationType extends AbstractType
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
-                        'data' => '',
+                        'data' => 'Les 10 raisons pour lesquelles je pense que tu devrais voter pour Macron',
                         'empty_data' => '',
                     ])
                     ->add('messageContent', TextareaType::class, [
                         'label' => false,
-                        'data' => '', // TODO use a service to create default
                         'empty_data' => '',
                     ])
                     ->add('selfFirstName', TextType::class, [
@@ -108,7 +109,7 @@ class TonMacronInvitationType extends AbstractType
                         'empty_data' => '',
                         'attr' => ['placeholder' => 'ton_macron.invitation_form.friend_email'],
                     ])
-                    ->add(InvitationProcessor::TRANSITION_FILL_REASONS, SubmitType::class, [
+                    ->add(InvitationProcessor::TRANSITION_SEND, SubmitType::class, [
                         'label' => 'ton_macron.invitation_form.fill_step_5',
                     ])
                 ;
