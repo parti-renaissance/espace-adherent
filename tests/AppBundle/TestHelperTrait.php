@@ -21,6 +21,7 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\TonMacronChoice;
+use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -38,6 +39,7 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
+use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use libphonenumber\PhoneNumber;
@@ -177,6 +179,11 @@ trait TestHelperTrait
     public function getTonMacronChoiceRepository(): TonMacronChoiceRepository
     {
         return $this->getRepository(TonMacronChoice::class);
+    }
+
+    public function getTonMacronInvitationRepository(): TonMacronFriendInvitationRepository
+    {
+        return $this->getRepository(TonMacronFriendInvitation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

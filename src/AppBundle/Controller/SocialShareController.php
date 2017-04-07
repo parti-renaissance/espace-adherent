@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\SocialShare;
 use AppBundle\Entity\SocialShareCategory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SocialShareController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/jepartage", name="app_social_share_list")
      * @Method("GET")
@@ -32,9 +35,7 @@ class SocialShareController extends Controller
      */
     public function showAction(SocialShareCategory $category): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->enableCanary();
 
         $manager = $this->getDoctrine();
 
