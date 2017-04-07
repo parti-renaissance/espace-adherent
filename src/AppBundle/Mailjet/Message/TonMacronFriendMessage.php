@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class TonMacronFriendMessage extends MailjetMessage
 {
-    public static function createFromInvitation(TonMacronFriendInvitation $invitation, string $body): self
+    public static function createFromInvitation(TonMacronFriendInvitation $invitation): self
     {
         $message = new static(
             Uuid::uuid4(),
@@ -15,7 +15,7 @@ final class TonMacronFriendMessage extends MailjetMessage
             $invitation->getFriendEmailAddress(),
             null,
             $invitation->getMailSubject(),
-            ['message' => $body],
+            ['message' => $invitation->getMailBody()],
             [],
             null,
             $invitation->getUuid()

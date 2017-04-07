@@ -10,6 +10,8 @@
 
             <div class="ton_macron--content">
                 {{ include('ton_macron/_' ~ transition ~ '.html.twig') }}
+
+                <a href="{{ path('app_ton_macron_invite_restart') }}">Recommencer</a>
             </div>
         </section>
     </main>

@@ -34,5 +34,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.ton_macron_choice" class="AppBundle\Repository\TonMacronChoiceRepository" public="false">
+            <argument>AppBundle\Entity\TonMacronChoice</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
