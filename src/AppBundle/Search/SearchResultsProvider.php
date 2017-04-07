@@ -6,6 +6,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class SearchResultsProvider
 {
@@ -51,12 +52,7 @@ class SearchResultsProvider
             $qb = $this->committee->createQueryBuilder('c');
         }
 
-        $query = $search->getQuery();
-
-        if (!empty($query)) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
+        $qb = $this->applySearchQueryQB($qb, $search);
 
         return $qb
             ->andWhere('n.status = :status')
@@ -84,12 +80,7 @@ class SearchResultsProvider
             $qb = $this->committee->createQueryBuilder('n');
         }
 
-        $query = $search->getQuery();
-
-        if (!empty($query)) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
+        $qb = $this->applySearchQueryQB($qb, $search);
 
         return $qb
             ->setFirstResult($search->getOffset())
@@ -97,5 +88,24 @@ class SearchResultsProvider
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    private function applySearchQueryQB(QueryBuilder $qb, SearchParametersFilter $search): QueryBuilder
+    {
+        $query = $search->getQuery();
+
+        if (empty($query)) {
+            return $qb;
+        }
+
+        if ($search->containsPostalCodes()) {
+            $qb->andWhere('n.postAddress.postalCode IN (:postalCodes)');
+            $qb->setParameter('postalCodes', explode(',', $query));
+        } else {
+            $qb->andWhere('n.name like :query');
+            $qb->setParameter('query', '%'.$query.'%');
+        }
+
+        return $qb;
     }
 }
