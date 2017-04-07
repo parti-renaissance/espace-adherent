@@ -3,14 +3,14 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Mailjet\Message\ReferentMessage;
-use AppBundle\Producer\Mailjet\ReferentMessageProducerInterface;
+use AppBundle\Producer\Mailjet\MailjetMessageProducerInterface;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 
 class ReferentMessageHandler
 {
     private $producer;
 
-    public function __construct(ReferentMessageProducerInterface $producer)
+    public function __construct(MailjetMessageProducerInterface $producer)
     {
         $this->producer = $producer;
     }
