@@ -58,10 +58,10 @@ final class TonMacronChoice
     public static function getStepsOrderForEmail(): array
     {
         return [
-            self::STEPS[self::STEP_SELF_REASONS],
-            self::STEPS[self::STEP_FRIEND_PROFESSIONAL_POSITION],
-            self::STEPS[self::STEP_FRIEND_INTERESTS],
-            self::STEPS[self::STEP_FRIEND_PROJECT],
+            self::STEP_SELF_REASONS,
+            self::STEP_FRIEND_PROFESSIONAL_POSITION,
+            self::STEP_FRIEND_INTERESTS,
+            self::STEP_FRIEND_PROJECT,
         ];
     }
 

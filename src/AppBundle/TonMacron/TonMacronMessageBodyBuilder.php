@@ -2,7 +2,6 @@
 
 namespace AppBundle\TonMacron;
 
-use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Repository\TonMacronChoiceRepository;
 
 class TonMacronMessageBodyBuilder
@@ -18,9 +17,9 @@ class TonMacronMessageBodyBuilder
         $this->repository = $repository;
     }
 
-    public function buildMessageBody(TonMacronFriendInvitation $invitation): string
+    public function buildMessageBody(InvitationProcessor $invitation): void
     {
-        return $this->twig->render('campaign/ton_macron.html.twig', [
+        $invitation->messageContent = $this->twig->render('campaign/ton_macron.html.twig', [
             'introduction' => $this->repository->findMailIntroduction(),
             'conclusion' => $this->repository->findMailConclusion(),
             'invitation' => $invitation,

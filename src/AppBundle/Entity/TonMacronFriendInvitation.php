@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\TonMacron\InvitationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -155,60 +157,19 @@ final class TonMacronFriendInvitation
         return $this->createdAt;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getArguments(): array
+    public static function createFromProcessor(InvitationProcessor $processor): self
     {
-        foreach (TonMacronChoice::getStepsOrderForEmail() as $step) {
-            foreach ($this->getStepChoices($step) as $choice) {
-                $arguments[] = $choice->getContent();
-            }
-        }
+        $self = new self(Uuid::uuid4(), $processor->friendFirstName, $processor->friendAge, $processor->friendGender);
 
-        return $arguments ?? [];
-    }
+        $self->authorFirstName = $processor->selfFirstName;
+        $self->authorLastName = $processor->selfLastName;
+        $self->authorEmailAddress = $processor->selfEmail;
+        $self->friendEmailAddress = $processor->friendEmail;
+        $self->mailSubject = $processor->messageSubject;
+        $self->mailBody = $processor->messageContent;
 
-    /**
-     * @return TonMacronChoice[]
-     */
-    private function getStepChoices(int $step): array
-    {
-        return $this
-            ->choices
-            ->filter(function (TonMacronChoice $choice) use ($step) {
-                return $step == $choice->getStep();
-            })
-            ->toArray()
-        ;
-    }
+        $processor->defineChoices($self->choices);
 
-    public function setFriendEmailAddress(string $emailAddress = null): void
-    {
-        $this->friendEmailAddress = $emailAddress;
-    }
-
-    public function setAuthor(string $firstName, string $lastName, string $emailAddress): void
-    {
-        $this->authorFirstName = $firstName;
-        $this->authorLastName = $lastName;
-        $this->authorEmailAddress = $emailAddress;
-    }
-
-    public function setMailSubject(string $subject = null): void
-    {
-        $this->mailSubject = $subject;
-    }
-
-    public function setMailBody(string $content = null): void
-    {
-        $this->mailBody = $content;
-    }
-
-    public function addChoice(TonMacronChoice $choice): void
-    {
-        if (!$this->choices->contains($choice)) {
-            $this->choices->add($choice);
-        }
+        return $self;
     }
 }

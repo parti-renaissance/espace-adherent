@@ -2,6 +2,8 @@
 
 namespace AppBundle\TonMacron;
 
+use AppBundle\Entity\TonMacronChoice;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class InvitationProcessor
@@ -130,4 +132,55 @@ final class InvitationProcessor
      * @var string
      */
     public $marking;
+
+    /**
+     * @return string[]
+     */
+    public function getArguments(): array
+    {
+        foreach (TonMacronChoice::getStepsOrderForEmail() as $step) {
+            switch ($step) {
+                case TonMacronChoice::STEP_FRIEND_PROFESSIONAL_POSITION:
+                    $choices = [$this->friendPosition];
+                    break;
+                case TonMacronChoice::STEP_FRIEND_PROJECT:
+                    $choices = [$this->friendProject];
+                    break;
+                case TonMacronChoice::STEP_FRIEND_INTERESTS:
+                    $choices = $this->friendInterests;
+                    break;
+                case TonMacronChoice::STEP_SELF_REASONS:
+                    $choices = $this->selfReasons;
+                    break;
+                default:
+                    // Not handled
+                    continue;
+            }
+
+            foreach ($choices as $choice) {
+                $arguments[] = $choice->getContent();
+            }
+        }
+
+        return $arguments ?? [];
+    }
+
+    public function defineChoices(Collection $collection)
+    {
+        // Ensure the collection is new
+        $collection->clear();
+
+        if ($this->friendPosition) {
+            $collection->add($this->friendPosition);
+        }
+        if ($this->friendProject) {
+            $collection->add($this->friendProject);
+        }
+        foreach ($this->friendInterests as $interest) {
+            $collection->add($interest);
+        }
+        foreach ($this->selfReasons as $reason) {
+            $collection->add($reason);
+        }
+    }
 }
