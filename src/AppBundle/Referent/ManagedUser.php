@@ -141,9 +141,9 @@ class ManagedUser
             $adherent->getCountry(),
             $adherent->getPhone(),
             $adherent->isHost(),
-            array_map(function (CommitteeMembership $membership) {
+            array_unique(array_map(function (CommitteeMembership $membership) {
                 return $membership->getCommitteeUuid()->toString();
-            }, $adherent->getMemberships()->toArray()),
+            }, $adherent->getMemberships()->toArray())),
             $adherent->hasSubscribedReferentsEmails()
         );
     }
