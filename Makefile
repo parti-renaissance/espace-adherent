@@ -4,7 +4,7 @@ EXEC=$(FIG) exec app
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff watch clear clean test tu tf tj lint ls ly lt lj build up perm deps
+.PHONY: help start stop reset db db-diff watch clear clean test tu tf tj lint ls ly lt lj build up perm deps cc
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -51,6 +51,10 @@ clean: clear
 
 deps:           ## Install the project PHP and JS dependencies
 deps: vendor web/built
+
+cc:             ## Clear the cache in dev env
+cc:
+	$(RUN) $(CONSOLE) cache:clear
 
 :##---------------------------------------------------------------------------:
 

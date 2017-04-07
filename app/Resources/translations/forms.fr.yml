@@ -3,3 +3,12 @@
 #
 SCHEDULED: Programmé
 CANCELLED: Annulé
+
+#
+# Campagne => Ton Macron => Choix
+#
+not_visible: 'Étape 0 : choix hors étapes du tunnel Ton Macron'
+friend_professional_position: Etape 1 - Dîtes en plus votre ami(e)
+friend_project: Etape 2 - Quel est son projet pour les 5 prochaines années ?
+friend_interests: Etape 3 - Sélectionnez 2 sujets qui intéressent votre ami(e)
+self_reasons: Etape 4 - Expliquez à votre ce qui plaît chez Emmanuel Macron

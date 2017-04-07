@@ -199,6 +199,25 @@
             <argument />
         </service>
 
+        <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Campagne" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronChoice</argument>
+            <argument />
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/ton_macron_choice_list.html.twig</argument>
+            </call>
+        </service>
+        
+        <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Campagne" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
+            <argument />
+        </service>
 
         <!--
         ######################################################
