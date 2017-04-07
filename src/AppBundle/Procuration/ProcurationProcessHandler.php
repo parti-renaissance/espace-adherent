@@ -6,22 +6,19 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
-use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProcessHandler
 {
     private $manager;
     private $mailjet;
-    private $router;
+    private $factory;
 
-    public function __construct(ObjectManager $manager, MailjetService $mailjet, UrlGeneratorInterface $router)
+    public function __construct(ObjectManager $manager, MailjetService $mailjet, ProcurationProxyMessageFactory $factory)
     {
         $this->manager = $manager;
         $this->mailjet = $mailjet;
-        $this->router = $router;
+        $this->factory = $factory;
     }
 
     public function process(Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy)
@@ -33,15 +30,7 @@ class ProcurationProcessHandler
         $this->manager->persist($proxy);
         $this->manager->flush();
 
-        $this->mailjet->sendMessage(ProcurationProxyFoundMessage::create(
-            $procurationManager,
-            $request,
-            $proxy,
-            $this->router->generate('app_procuration_my_request', [
-                'id' => $request->getId(),
-                'token' => $request->generatePrivateToken(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $this->mailjet->sendMessage($this->factory->createProxyFoundMessage($procurationManager, $request, $proxy));
     }
 
     public function unprocess(Adherent $procurationManager, ProcurationRequest $request)
@@ -56,7 +45,7 @@ class ProcurationProcessHandler
         $this->manager->flush();
 
         if ($proxy) {
-            $this->mailjet->sendMessage(ProcurationProxyCancelledMessage::create($procurationManager, $request, $proxy));
+            $this->mailjet->sendMessage($this->factory->createProxyCancelledMessage($procurationManager, $request, $proxy));
         }
     }
 }

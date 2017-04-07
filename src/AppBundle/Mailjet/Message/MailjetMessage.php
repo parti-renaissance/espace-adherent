@@ -142,7 +142,7 @@ abstract class MailjetMessage
         return $this->senderEmail;
     }
 
-    public function setSenderEmail(?string $senderEmail)
+    public function setSenderEmail(?string $senderEmail): void
     {
         $this->senderEmail = $senderEmail;
     }
@@ -152,7 +152,7 @@ abstract class MailjetMessage
         return $this->senderName;
     }
 
-    public function setSenderName(?string $senderName)
+    public function setSenderName(?string $senderName): void
     {
         $this->senderName = $senderName;
     }
@@ -162,8 +162,13 @@ abstract class MailjetMessage
         return $this->cc;
     }
 
-    public function addCC(string $cc)
+    public function addCC(string $cc): void
     {
         $this->cc[] = $cc;
+    }
+
+    public function setReplyTo(string $replyTo): void
+    {
+        $this->replyTo = $replyTo;
     }
 }

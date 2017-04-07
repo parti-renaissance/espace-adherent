@@ -21,9 +21,7 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
                 'target_firstname' => self::escape($request->getFirstNames()),
                 'voter_first_name' => $proxy->getFirstNames(),
                 'voter_last_name' => $proxy->getLastName(),
-            ],
-            [],
-            $procurationManager->getEmailAddress()
+            ]
         );
 
         $message->setSenderName('Procuration Macron');

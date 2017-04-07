@@ -69,10 +69,15 @@
 
         <service id="app.procuration.factory" class="AppBundle\Procuration\ProcurationFactory" />
 
+        <service id="app.procuration.proxy_message_factory" class="AppBundle\Procuration\ProcurationProxyMessageFactory" public="false">
+            <argument type="service" id="router" />
+            <argument>%procurations_reply_to_email%</argument>
+        </service>
+
         <service id="app.procuration.process_handler" class="AppBundle\Procuration\ProcurationProcessHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
-            <argument type="service" id="router" />
+            <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
         <service id="app.procuration.request_serializer" class="AppBundle\Procuration\ProcurationRequestSerializer">
