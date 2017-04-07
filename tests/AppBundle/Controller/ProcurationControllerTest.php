@@ -54,6 +54,32 @@ class ProcurationControllerTest extends SqliteWebTestCase
         // Profile
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->submit($crawler->filter('form[name=app_procuration_profile]')->form([
+            'app_procuration_profile' => [
+                'gender' => 'male',
+                'firstNames' => 'Paul, Jean, Martin',
+                'lastName' => 'Dupont',
+                'emailAddress' => 'paul@dupont.tld',
+                'address' => '6 rue Neyret',
+                'country' => 'FR',
+                'postalCode' => '69001',
+                'city' => '69001-69381',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '',
+                ],
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__error')->text());
+
         $this->client->submit($crawler->filter('form[name=app_procuration_profile]')->form([
             'app_procuration_profile' => [
                 'gender' => 'male',
@@ -218,8 +244,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_4_UUID);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
-
-    // myRequestAction is tested in ProcurationManagerControllerTest
 
     protected function setUp()
     {

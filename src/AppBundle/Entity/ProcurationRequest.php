@@ -145,6 +145,7 @@ class ProcurationRequest
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
+     * @Assert\NotBlank(message="common.phone_number.required", groups={"profile"})
      * @AssertPhoneNumber(defaultRegion="FR", groups={"profile"})
      */
     private $phone;

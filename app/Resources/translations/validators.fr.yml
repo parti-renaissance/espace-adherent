@@ -33,6 +33,7 @@ common.address.max_length: L'adresse ne peut pas dépasser 150 caractères.
 common.address.required: L'adresse est obligatoire.
 common.address.not_geocodable: Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.
 
+common.phone_number.required: Le numéro de téléphone est obligatoire.
 common.phone_number.invalid: Ce numéro de téléphone est invalide.
 
 common.conditions.not_accepted: Vous devez accepter la charte.
