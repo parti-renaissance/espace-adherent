@@ -57,6 +57,7 @@ final class InvitationProcessorHandler
     {
         if ($this->stateMachine->can($processor, InvitationProcessor::TRANSITION_SEND)) {
             // End process
+            $processor->refreshChoices($this->manager); // merge objects from session before mapping them in the entity
             $invitation = TonMacronFriendInvitation::createFromProcessor($processor);
 
             $this->manager->persist($invitation);

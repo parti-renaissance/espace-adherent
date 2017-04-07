@@ -4,6 +4,7 @@ namespace AppBundle\TonMacron;
 
 use AppBundle\Entity\TonMacronChoice;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class InvitationProcessor
@@ -59,6 +60,8 @@ final class InvitationProcessor
     public $friendGender;
 
     /**
+     * @var TonMacronChoice|null
+     *
      * @Assert\NotBlank(groups={"fill_info"})
      * @Assert\Type("AppBundle\Entity\TonMacronChoice", groups={"fill_info"})
      */
@@ -165,7 +168,7 @@ final class InvitationProcessor
         return $arguments ?? [];
     }
 
-    public function defineChoices(Collection $collection)
+    public function defineChoices(Collection $collection): void
     {
         // Ensure the collection is new
         $collection->clear();
@@ -182,5 +185,32 @@ final class InvitationProcessor
         foreach ($this->selfReasons as $reason) {
             $collection->add($reason);
         }
+    }
+
+    public function refreshChoices(ObjectManager $manager): void
+    {
+        if ($this->friendPosition) {
+            $this->friendPosition = $manager->merge($this->friendPosition);
+        }
+        if ($this->friendProject) {
+            $this->friendProject = $manager->merge($this->friendProject);
+        }
+
+        $refreshedInterests = [];
+        foreach ($this->friendInterests as $interest) {
+            $refreshedInterests[] = $manager->merge($interest);
+        }
+        $this->friendInterests = $refreshedInterests;
+
+        $refreshedReasons = [];
+        foreach ($this->selfReasons as $reason) {
+            $refreshedReasons[] = $manager->merge($reason);
+        }
+        $this->selfReasons = $refreshedReasons;
+    }
+
+    public function getSelfFirstName()
+    {
+        return $this->selfFirstName;
     }
 }
