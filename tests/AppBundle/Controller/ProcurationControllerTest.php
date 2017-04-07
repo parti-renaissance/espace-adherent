@@ -174,6 +174,43 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->submit($crawler->filter('form[name=app_procuration_proposal]')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_proposal' => [
+                'gender' => 'male',
+                'firstNames' => 'Paul, Jean, Martin',
+                'lastName' => 'Dupont',
+                'emailAddress' => 'paul@dupont.tld',
+                'address' => '6 rue Neyret',
+                'country' => 'FR',
+                'postalCode' => '69001',
+                'city' => '69001-69381',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '',
+                ],
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
+                'voteCountry' => 'FR',
+                'votePostalCode' => '92110',
+                'voteCity' => '92110-92024',
+                'voteCityName' => '',
+                'voteOffice' => 'TestOfficeName',
+                'electionPresidentialFirstRound' => true,
+                'electionPresidentialSecondRound' => false,
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'conditions' => true,
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__error')->text());
+
         $this->client->submit($crawler->filter('form[name=app_procuration_proposal]')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_proposal' => [
