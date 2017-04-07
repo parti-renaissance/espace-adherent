@@ -492,11 +492,16 @@
 }
 
 .events-map-categories {
-    padding-top: 20px;
+    margin-bottom: 20px;
+
+    .active {
+        font-weight: bold;
+        padding-bottom: 5px;
+    }
 }
 
 .events-map-categories li {
-    display: inline;
+    display: inline-block;
     list-style: none;
     margin: 5px;
 }

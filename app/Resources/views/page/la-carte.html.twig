@@ -31,8 +31,8 @@
                 {{- block('page_title') -}}
             </h1>
         </header>
-        <section class="l__wrapper-500 b__nudge--bottom-medium">
-            <div class="l__row l__row--h-stretch l__hide--on-mobile">
+        <section class="l__wrapper--wide text--body">
+            <div class="l__row l__row--center l__hide--on-mobile">
                 {% block map_chapo %}
                     <div class="committees-map__counter">
                         <h4>{{ userCount|number_format(0, ',', ' ') }}</h4> adhérents

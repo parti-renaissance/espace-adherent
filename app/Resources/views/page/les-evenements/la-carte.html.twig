@@ -1,6 +1,8 @@
+{% set currentParam = app.request.get('type') %}
+
 {% extends 'page/la-carte.html.twig' %}
 
-{% block page_title 'Evénements en cours ou à venir' %}
+{% block page_title 'Tous les événements' %}
 {% block canonical_url url('page_les_evenements_la_carte') %}
 
 {% block javascripts %}
@@ -14,12 +16,18 @@
 
 {% block map_chapo %}
     <div class="committees-map__counter">
-        <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements - <a href="{{ path('page_les_evenements_la_carte') }}">voir tous les événements</a>
         <div>
-            <ul class="events-map-categories">
+            <ul class="events-map-categories text--summary">
+                    <li class="events-map-categories--all">
+                        <a href="{{ path('page_les_evenements_la_carte') }}"
+                           class="link--no-decor {{ currentParam ? '' : 'active' }}">
+                            Tous ({{ eventCount|number_format(0, ',', ' ') }})
+                        </a>
+                    </li>
                 {% for label, type in types %}
                     <li>
-                        <a href="{{ path('page_les_evenements_la_carte', {'type': type}) }}">{{ label }}</a>
+                        <a href="{{ path('page_les_evenements_la_carte', {'type': type}) }}"
+                           class="link--no-decor {{ currentParam == type ? 'active' }}">{{ label }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -30,4 +38,3 @@
 {% block map_config %}
     <div id="map-config" data-event-type="{{ app.request.query.get('type') }}"></div>
 {% endblock %}
-

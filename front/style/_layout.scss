@@ -1,6 +1,11 @@
 // Layout
 
 .l {
+    &__wrapper--wide {
+        width: 90%;
+        margin: 0 auto;
+    }
+
     &__wrapper {
         @include wrapper;
     }
