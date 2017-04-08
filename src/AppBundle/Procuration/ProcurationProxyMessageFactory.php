@@ -33,7 +33,7 @@ class ProcurationProxyMessageFactory
         $url = $this->urlGenerator->generate('app_procuration_my_request', [
             'id' => $request->getId(),
             'token' => $request->generatePrivateToken(),
-        ]);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $message = ProcurationProxyFoundMessage::create($procurationManager, $request, $proxy, $url);
         $message->setReplyTo($this->replyToEmailAddress);
