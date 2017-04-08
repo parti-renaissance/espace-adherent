@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\TonMacronChoice;
+use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -22,7 +23,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
 
     const INVITATION_PATH = '/pourquoichoisirmacron';
     const INVITATION_RESTART_PATH = '/pourquoichoisirmacron/recommencer';
-    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/merci';
+    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/%uuid%/merci';
 
     /* @var TonMacronChoiceRepository */
     private $tonMacronChoiceRepository;
@@ -125,15 +126,13 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[send]"]'));
 
         $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
-            'ton_macron_invitation[messageSubject]' => $invitation->messageSubject = 'Toujours envie de voter blanc ?',
-            'ton_macron_invitation[selfFirstName]' => $invitation->selfFirstName = 'Marie',
-            'ton_macron_invitation[selfLastName]' => $invitation->selfLastName = 'Dupont',
-            'ton_macron_invitation[selfEmail]' => $invitation->selfEmail = 'marie.dupont@example.org',
-            'ton_macron_invitation[friendEmail]' => $invitation->friendEmail = 'beatrice@example.org',
+            'ton_macron_invitation[messageSubject]' => $currentInvitation->messageSubject = 'Toujours envie de voter blanc ?',
+            'ton_macron_invitation[selfFirstName]' => $currentInvitation->selfFirstName = 'Marie',
+            'ton_macron_invitation[selfLastName]' => $currentInvitation->selfLastName = 'Dupont',
+            'ton_macron_invitation[selfEmail]' => $currentInvitation->selfEmail = 'marie.dupont@example.org',
+            'ton_macron_invitation[friendEmail]' => $currentInvitation->friendEmail = 'beatrice@example.org',
         ]));
 
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(self::INVITATION_SENT_PATH, $this->client);
         $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
         $this->assertCount(1, $mails = $this->emailRepository->findAll());
 
@@ -142,6 +141,23 @@ class TonMacronControllerTest extends SqliteWebTestCase
 
         $this->assertSame('TonMacronFriendMessage', $mail->getMessageClass());
         $this->assertContains('beatrice@example.org', $mail->getRecipientsAsString());
+        $this->assertCount(1, $invitations = $this->tonMacronInvitationRepository->findAll());
+
+        /** @var TonMacronFriendInvitation $invitationLog */
+        $invitationLog = $invitations[0];
+
+        $this->assertSame($currentInvitation->friendFirstName, $invitationLog->getFriendFirstName());
+        $this->assertSame($currentInvitation->friendAge, $invitationLog->getFriendAge());
+        $this->assertSame($currentInvitation->friendGender, $invitationLog->getFriendGender());
+        $this->assertSame($currentInvitation->friendPosition->getContent(), $invitationLog->getFriendPosition());
+        $this->assertSame($currentInvitation->friendEmail, $invitationLog->getFriendEmailAddress());
+        $this->assertSame($currentInvitation->selfFirstName, $invitationLog->getAuthorFirstName());
+        $this->assertSame($currentInvitation->selfLastName, $invitationLog->getAuthorLastName());
+        $this->assertSame($currentInvitation->selfEmail, $invitationLog->getAuthorEmailAddress());
+        $this->assertSame($currentInvitation->messageSubject, $invitationLog->getMailSubject());
+        $this->assertSame($currentInvitation->messageContent, $invitationLog->getMailBody());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo(sprintf(self::INVITATION_SENT_PATH, $invitationLog->getUuid()->toString()), $this->client);
     }
 
     public function testRestartAction()
