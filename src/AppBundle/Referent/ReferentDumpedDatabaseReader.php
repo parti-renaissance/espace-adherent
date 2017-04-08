@@ -86,4 +86,15 @@ class ReferentDumpedDatabaseReader
 
         return $selectedManagedUser;
     }
+
+    public function serializeSelected(array $selected): string
+    {
+        $serialized = [];
+
+        foreach ($selected as $user) {
+            $serialized[] = ($user->getType() === ManagedUser::TYPE_ADHERENT ? 'a' : 'n').'|'.$user->getId();
+        }
+
+        return implode(',', $serialized);
+    }
 }

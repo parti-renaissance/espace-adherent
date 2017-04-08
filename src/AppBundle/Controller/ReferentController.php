@@ -99,7 +99,9 @@ class ReferentController extends Controller
         $uuid = $this->getUser()->getUuid()->toString();
         $selected = $request->request->get('selected_users_json');
 
-        $allowedSelectedUsers = $this->get('app.referent.dumped_database_reader')->filterAllowedUsers($uuid, $selected);
+        $dbReader = $this->get('app.referent.dumped_database_reader');
+
+        $allowedSelectedUsers = $dbReader->filterAllowedUsers($uuid, $selected);
         if (empty($allowedSelectedUsers)) {
             return $this->redirectToRoute('app_referent_'.$from);
         }
@@ -117,7 +119,7 @@ class ReferentController extends Controller
         }
 
         return $this->render('referent/users/message.html.twig', [
-            'selected' => $allowedSelectedUsers,
+            'selected' => $dbReader->serializeSelected($allowedSelectedUsers),
             'referentMessage' => $referentMessage,
             'form' => $form->createView(),
             'from' => $from,
