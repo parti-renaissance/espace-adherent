@@ -3,7 +3,7 @@
 {% block page_title 'Je donne' %}
 {% block meta_description 'Si la démocratie n’a pas de prix, elle a un coût! Aidez-nous à faire gagner vos idées' %}
 {% block canonical_url url('donation_index') %}
-{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/donation-sharer.jpg') }}{% endblock %}
+{% block open_graph_image (url('homepage')|trim('/') ~ asset('images/donation-sharer.jpg'))|raw %}
 
 {% block stylesheets %}
     <style type="text/css">
