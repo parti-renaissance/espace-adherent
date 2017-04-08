@@ -27,25 +27,25 @@
         </div>
 
         <div class="form__row">
-            {{ form_label(invitation_form.selfFirstName) }}
+            {{ form_label(invitation_form.selfFirstName, 'Votre prénom') }}
             {{ form_errors(invitation_form.selfFirstName) }}
             {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
         </div>
 
         <div class="form__row">
-            {{ form_label(invitation_form.selfLastName) }}
+            {{ form_label(invitation_form.selfLastName, 'Votre nom') }}
             {{ form_errors(invitation_form.selfLastName) }}
             {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
         </div>
 
         <div class="form__row">
-            {{ form_label(invitation_form.selfEmail) }}
+            {{ form_label(invitation_form.selfEmail, 'Votre adresse e-mail') }}
             {{ form_errors(invitation_form.selfEmail) }}
             {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
         </div>
 
         <div class="form__row">
-            {{ form_label(invitation_form.friendEmail) }}
+            {{ form_label(invitation_form.friendEmail, 'L\'e-mail de votre ami(e)') }}
             {{ form_errors(invitation_form.friendEmail) }}
             {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
         </div>

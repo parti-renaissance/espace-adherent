@@ -85,7 +85,11 @@ final class MailjetTemplateEmail implements \JsonSerializable
                 $body['Vars'] = $this->recipients[0]['Vars'];
 
                 foreach ($this->recipients as $recipient) {
-                    $to[] = sprintf('"%s" <%s>', $recipient['Name'], $recipient['Email']);
+                    if (isset($recipient['Name'])) {
+                        $to[] = sprintf('"%s" <%s>', $recipient['Name'], $recipient['Email']);
+                    } else {
+                        $to[] = $recipient['Email'];
+                    }
                 }
             }
 
