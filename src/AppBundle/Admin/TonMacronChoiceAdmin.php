@@ -23,6 +23,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
             ])
             ->add('content', null, [
                 'label' => 'Message',
+                'attr' => ['rows' => 10],
             ])
             ->add('step', ChoiceType::class, [
                 'label' => 'Etape',
