@@ -23,7 +23,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
 
     const INVITATION_PATH = '/pourquoichoisirmacron';
     const INVITATION_RESTART_PATH = '/pourquoichoisirmacron/recommencer';
-    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/%uuid%/merci';
+    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/%s/merci';
 
     /* @var TonMacronChoiceRepository */
     private $tonMacronChoiceRepository;
@@ -155,7 +155,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertSame($currentInvitation->selfLastName, $invitationLog->getAuthorLastName());
         $this->assertSame($currentInvitation->selfEmail, $invitationLog->getAuthorEmailAddress());
         $this->assertSame($currentInvitation->messageSubject, $invitationLog->getMailSubject());
-        $this->assertSame($currentInvitation->messageContent, $invitationLog->getMailBody());
+        $this->assertSame(trim($currentInvitation->messageContent), $invitationLog->getMailBody());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(sprintf(self::INVITATION_SENT_PATH, $invitationLog->getUuid()->toString()), $this->client);
     }
