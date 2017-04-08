@@ -53,7 +53,7 @@ export default class AddressForm {
         }
 
         show(this._city);
-        this._city.required = true;
+        this._city.required = false;
 
         if (!this._state.cities || 0 === this._state.cities.length) {
             const defaultOption = this.createOption('', this._cityName.placeholder);
