@@ -16,7 +16,9 @@ class TonMacronController extends Controller
     use CanaryControllerTrait;
 
     /**
+     * @Route("/pourquoichoisirmacron")
      * @Route("/pourquoi-choisir-macron")
+     * @Route("/pourquoi-voter-macron")
      * @Method("GET")
      */
     public function redirectAction(): Response
@@ -27,7 +29,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoichoisirmacron", name="app_ton_macron_invite")
+     * @Route("/pourquoivotermacron", name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
     public function inviteAction(Request $request): Response
@@ -59,7 +61,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoichoisirmacron/recommencer", name="app_ton_macron_invite_restart")
+     * @Route("/pourquoivotermacron/recommencer", name="app_ton_macron_invite_restart")
      * @Method("GET")
      */
     public function restartInviteAction(Request $request): Response
@@ -72,7 +74,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoichoisirmacron/{uuid}/merci", name="app_ton_macron_invite_sent")
+     * @Route("/pourquoivotermacron/{uuid}/merci", name="app_ton_macron_invite_sent")
      * @Method("GET")
      */
     public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
