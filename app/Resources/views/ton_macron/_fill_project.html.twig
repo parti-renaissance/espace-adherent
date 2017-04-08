@@ -1,20 +1,34 @@
-<div class="ton_macron__fill_project">
-    <b>Quel est son projet pour les 5 prochaines années ?</b>
+<section class="tonmacron__content l__wrapper-500 l__mobile--col space--60-0">
+    <div>
+        <ul class="tonmacron__steps">
+            <li class="active"><span>Votre ami(e)</span></li>
+            <li>Vos raisons</li>
+            <li>Récapitulatif</li>
+        </ul>
 
-    <br/>
-    <br/>
+        {{ form_start(invitation_form) }}
+        {{ form_errors(invitation_form) }}
 
-    {{ form_start(invitation_form) }}
+            <h5 class="tonmacron__title">
+                Quel est son projet pour les 5 prochaines années ?
+            </h5>
 
-    <div class="form__row">
-        {% for radio in invitation_form.friendProject %}
-            {{ form_row(radio) }}
-        {% endfor %}
+            <div class="form__row">
+                {% for radio in invitation_form.friendProject %}
+                    <div class="tonmacron__choice">
+                        <div class="form__radio-button">
+                            {{ form_widget(radio) }}
+                            {{ form_label(radio) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text--center b__nudge--top-large">
+                {{ form_widget(invitation_form.fill_project, {'attr': {'class': 'btn btn--blue'}}) }}
+                <a href="{{ path('app_ton_macron_invite_restart') }}" class="btn">Recommencer</a>
+            </div>
+
+        {{ form_end(invitation_form) }}
     </div>
-
-    <div class="form__row">
-        {{ form_widget(invitation_form.fill_project, {'attr': {'class': 'btn btn--primary'}}) }}
-    </div>
-
-    {{ form_end(invitation_form) }}
-</div>
+</section>

@@ -2,17 +2,26 @@
 
 {% block page_title 'Ton Macron' %}
 
+{% block javascripts %}
+    {% if transition is constant('AppBundle\\TonMacron\\InvitationProcessor::TRANSITION_SEND') %}
+        {% import 'javascript.js.twig' as js %}
+
+        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+        <script type="text/javascript">
+            {{ js.ckeditor('ton_macron_invitation_messageContent') }}
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-    <main class="ton_macron">
-        <section class="ton_macron--intro l__wrapper--narrow">
+    <main class="tonmacron">
+        <div class="tonmacron__header">
+            <h1 class="text--large b__nudge--top-large text--center l__wrapper--slim">
+                Pourquoi choisir Macron
+            </h1>
+        </div>
 
-            {{ include('ton_macron/_header.html.twig') }}
-
-            <div class="ton_macron--content">
-                {{ include('ton_macron/_' ~ transition ~ '.html.twig') }}
-
-                <a href="{{ path('app_ton_macron_invite_restart') }}">Recommencer</a>
-            </div>
-        </section>
+        {{ include('ton_macron/_'~transition~'.html.twig') }}
     </main>
 {% endblock %}

@@ -1,38 +1,153 @@
-.ton_macron {
-    &__steps {
-        @include steps;
-        width: 360px;
+.tonmacron {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-position: center;
+    @media (max-height: 1000px) {
+        justify-content: flex-start;
+        height: auto;
+    }
 
-        .active:before {
-            background: #FF3680;
+    @media (max-width: $mobile) {
+        background-color: white;
+        background-position: 0 0;
+        background-size: 100%;
+    }
+
+    &__header {
+        &--outer {
+            background-position: center 62%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            @include gradient-container;
+            background-color: $filter--gray;
+            background-blend-mode: multiply;
+
+            a.text--logo:hover {
+                color: $blue;
+            }
+        }
+
+        &--inner {
+            padding: 20px 0 80px;
+        }
+
+        > * {
+            position: relative;
         }
     }
 
-    &__fill_info_left {
-        font-size: 14px;
-        float: left;
+    &__steps {
+        @include steps;
+        width: 360px;
     }
 
-    &__fill_info_right {
-        float: right;
+    &__content {
+        > div {
+            @media (max-width: $tablet) {
+                width: 100%;
+                margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            padding: 15px 0 0 0;
+
+            > div:first-child {
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     }
 
-    &__fill_info_form {
-        text-align: center;
+    &__banner {
+        background-color: $dark;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        &--form-right {
+            text-align: right;
+        }
+
+        &--form-left {
+            text-align: left;
+        }
+
+        &__form {
+            background-color: $gray--lighter;
+            border: 1px solid $gray--light;
+            padding: 30px;
+            margin: 0 0 0 75px;
+            text-align: left;
+            box-sizing: border-box;
+            min-width: 480px;
+            max-width: 650px;
+
+            @media (max-width: $tablet) {
+                margin: 0 auto;
+                width: 100% !important;
+            }
+
+            @media (max-width: $mobile) {
+                margin: 0;
+                border-left: 0;
+                border-right: 0;
+                padding: 30px 10px;
+                min-width: 0;
+            }
+
+            h4 {
+                font-family: $font-gillsans;
+                font-weight: normal;
+                font-size: 24px;
+                line-height: 1.2;
+                letter-spacing: 0.3px;
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+
+            label {
+                font-weight: bold;
+            }
+
+            &--large {
+                min-width: 650px;
+                max-width: 650px;
+
+                @media (max-width: $tablet) {
+                    min-width: 0;
+                }
+            }
+        }
     }
 
-    .jumbotron {
-        background-color: #eceeef;
-        padding: 20px;
+    &__title {
+        font-family: $font-gillsans;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: 0.3px;
+        margin: 0 0 20px 0;
     }
 
-    &--content {
-        min-height: 400px;
-    }
+    &__choice {
+        margin: 0 0 15px 15px;
 
-    &__fill_project,
-    &__fill_interests,
-    &__fill_reasons {
-      text-align: center;
+        .form__checkbox label:before {
+            margin-top: -3px;
+        }
+
+        &__day {
+            color: $gray--dark;
+            margin: -5px 0 0 31px;
+        }
     }
 }
