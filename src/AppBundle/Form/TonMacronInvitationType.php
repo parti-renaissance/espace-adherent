@@ -84,22 +84,18 @@ class TonMacronInvitationType extends AbstractType
                     ->add('selfFirstName', TextType::class, [
                         'label' => false,
                         'empty_data' => '',
-                        'attr' => ['placeholder' => 'ton_macron.invitation_form.self_first_name'],
                     ])
                     ->add('selfLastName', TextType::class, [
                         'label' => false,
                         'empty_data' => '',
-                        'attr' => ['placeholder' => 'ton_macron.invitation_form.self_last_name'],
                     ])
                     ->add('selfEmail', EmailType::class, [
                         'label' => false,
                         'empty_data' => '',
-                        'attr' => ['placeholder' => 'ton_macron.invitation_form.self_email'],
                     ])
                     ->add('friendEmail', EmailType::class, [
                         'label' => false,
                         'empty_data' => '',
-                        'attr' => ['placeholder' => 'ton_macron.invitation_form.friend_email'],
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_SEND);

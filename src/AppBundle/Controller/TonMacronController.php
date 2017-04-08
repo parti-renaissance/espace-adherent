@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\CanaryControllerTrait;
+use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Form\TonMacronInvitationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,8 +43,10 @@ class TonMacronController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->get('app.ton_macron.invitation_processor_handler')->process($session, $invitation)) {
-                return $this->redirectToRoute('app_ton_macron_invite_sent');
+            if ($invitationLog = $this->get('app.ton_macron.invitation_processor_handler')->process($session, $invitation)) {
+                return $this->redirectToRoute('app_ton_macron_invite_sent', [
+                    'uuid' => $invitationLog->getUuid()->toString(),
+                ]);
             }
 
             return $this->redirectToRoute('app_ton_macron_invite');
@@ -69,13 +72,15 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoichoisirmacron/merci", name="app_ton_macron_invite_sent")
+     * @Route("/pourquoichoisirmacron/{uuid}/merci", name="app_ton_macron_invite_sent")
      * @Method("GET")
      */
-    public function inviteSentAction(): Response
+    public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
     {
         $this->disableInProduction();
 
-        return $this->render('ton_macron/invite_sent.html.twig');
+        return $this->render('ton_macron/invite_sent.html.twig', [
+            'invitation' => $invitation,
+        ]);
     }
 }

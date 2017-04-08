@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block page_title 'Ton Macron' %}
+{% extends 'ton_macron/_layout.html.twig' %}
 
 {% block javascripts %}
     {% if transition is constant('AppBundle\\TonMacron\\InvitationProcessor::TRANSITION_SEND') %}
@@ -18,7 +16,7 @@
     <main class="tonmacron">
         <div class="tonmacron__header">
             <h1 class="text--large b__nudge--top-large text--center l__wrapper--slim">
-                Pourquoi choisir Macron
+                Pourquoi voter Macron
             </h1>
         </div>
 

@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
+use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\TonMacronChoice;
+use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -19,9 +21,9 @@ class TonMacronControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    const INVITATION_PATH = '/ton-macron/invitation';
-    const INVITATION_RESTART_PATH = '/ton-macron/invitation/recommencer';
-    const INVITATION_SENT_PATH = '/ton-macron/invitation/merci';
+    const INVITATION_PATH = '/pourquoichoisirmacron';
+    const INVITATION_RESTART_PATH = '/pourquoichoisirmacron/recommencer';
+    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/%s/merci';
 
     /* @var TonMacronChoiceRepository */
     private $tonMacronChoiceRepository;
@@ -37,6 +39,8 @@ class TonMacronControllerTest extends SqliteWebTestCase
      */
     public function testInviteAction()
     {
+        $this->assertCount(0, $this->emailRepository->findAll());
+
         $invitation = new InvitationProcessor();
 
         $crawler = $this->client->request(Request::METHOD_GET, self::INVITATION_PATH);
@@ -121,24 +125,61 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[send]"]'));
 
-        $crawler = $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
-            'ton_macron_invitation[messageSubject]' => $invitation->messageSubject = 'Toujours envie de voter blanc ?',
-            'ton_macron_invitation[selfFirstName]' => $invitation->selfFirstName = 'Marie',
-            'ton_macron_invitation[selfLastName]' => $invitation->selfLastName = 'Dupont',
-            'ton_macron_invitation[selfEmail]' => $invitation->selfEmail = 'marie.dupont@example.com',
-            'ton_macron_invitation[friendEmail]' => $invitation->friendEmail = 'beatrice@example.com',
+        $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
+            'ton_macron_invitation[messageSubject]' => $currentInvitation->messageSubject = 'Toujours envie de voter blanc ?',
+            'ton_macron_invitation[selfFirstName]' => $currentInvitation->selfFirstName = 'Marie',
+            'ton_macron_invitation[selfLastName]' => $currentInvitation->selfLastName = 'Dupont',
+            'ton_macron_invitation[selfEmail]' => $currentInvitation->selfEmail = 'marie.dupont@example.org',
+            'ton_macron_invitation[friendEmail]' => $currentInvitation->friendEmail = 'beatrice@example.org',
         ]));
 
-        $invitation->marking = InvitationProcessor::STATE_SENT;
+        $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
+        $this->assertCount(1, $mails = $this->emailRepository->findAll());
 
-        $this->assertSame($invitation->messageSubject, $this->getCurrentInvitation()->messageSubject);
-        $this->assertSame($invitation->selfFirstName, $this->getCurrentInvitation()->selfFirstName);
-        $this->assertSame($invitation->selfLastName, $this->getCurrentInvitation()->selfLastName);
-        $this->assertSame($invitation->selfEmail, $this->getCurrentInvitation()->selfEmail);
-        $this->assertSame($invitation->friendEmail, $this->getCurrentInvitation()->friendEmail);
-        $this->assertSame($invitation->marking, $this->getCurrentInvitation()->marking);
+        /** @var MailjetEmail $mail */
+        $mail = $mails[0];
+
+        $this->assertSame('TonMacronFriendMessage', $mail->getMessageClass());
+        $this->assertContains('beatrice@example.org', $mail->getRecipientsAsString());
+        $this->assertCount(1, $invitations = $this->tonMacronInvitationRepository->findAll());
+
+        /** @var TonMacronFriendInvitation $invitationLog */
+        $invitationLog = $invitations[0];
+
+        $this->assertSame($currentInvitation->friendFirstName, $invitationLog->getFriendFirstName());
+        $this->assertSame($currentInvitation->friendAge, $invitationLog->getFriendAge());
+        $this->assertSame($currentInvitation->friendGender, $invitationLog->getFriendGender());
+        $this->assertSame($currentInvitation->friendPosition->getContent(), $invitationLog->getFriendPosition());
+        $this->assertSame($currentInvitation->friendEmail, $invitationLog->getFriendEmailAddress());
+        $this->assertSame($currentInvitation->selfFirstName, $invitationLog->getAuthorFirstName());
+        $this->assertSame($currentInvitation->selfLastName, $invitationLog->getAuthorLastName());
+        $this->assertSame($currentInvitation->selfEmail, $invitationLog->getAuthorEmailAddress());
+        $this->assertSame($currentInvitation->messageSubject, $invitationLog->getMailSubject());
+        $this->assertSame(trim($currentInvitation->messageContent), $invitationLog->getMailBody());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(self::INVITATION_SENT_PATH, $this->client);
+        $this->assertClientIsRedirectedTo(sprintf(self::INVITATION_SENT_PATH, $invitationLog->getUuid()->toString()), $this->client);
+    }
+
+    public function testRestartAction()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, self::INVITATION_PATH);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
+            'ton_macron_invitation[friendFirstName]' => 'Béatrice',
+            'ton_macron_invitation[friendAge]' => '32',
+            'ton_macron_invitation[friendGender]' => 'female',
+            'ton_macron_invitation[friendPosition]' => '4',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
+
+        $this->client->followRedirect();
+        $this->client->request(Request::METHOD_GET, self::INVITATION_RESTART_PATH);
+
+        $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
     }
 
     protected function setUp()

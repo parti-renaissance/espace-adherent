@@ -53,7 +53,7 @@ final class InvitationProcessorHandler
     /**
      * Returns whether the process is finished or not.
      */
-    public function process(SessionInterface $session, InvitationProcessor $processor): bool
+    public function process(SessionInterface $session, InvitationProcessor $processor): ?TonMacronFriendInvitation
     {
         if ($this->stateMachine->can($processor, InvitationProcessor::TRANSITION_SEND)) {
             // End process
@@ -67,7 +67,7 @@ final class InvitationProcessorHandler
             $this->terminate($session);
             $this->stateMachine->apply($processor, InvitationProcessor::TRANSITION_SEND);
 
-            return true;
+            return $invitation;
         }
 
         // Continue processing
@@ -79,6 +79,6 @@ final class InvitationProcessorHandler
 
         $this->save($session, $processor);
 
-        return false;
+        return null;
     }
 }
