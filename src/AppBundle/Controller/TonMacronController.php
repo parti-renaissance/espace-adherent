@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Form\TonMacronInvitationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,15 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TonMacronController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route(name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
     public function inviteAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->enableCanary();
 
         $session = $request->getSession();
         $handler = $this->get('app.ton_macron.invitation_processor_handler');
@@ -52,9 +53,7 @@ class TonMacronController extends Controller
      */
     public function restartInviteAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->enableCanary();
 
         $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
 
@@ -67,9 +66,7 @@ class TonMacronController extends Controller
      */
     public function inviteSentAction(): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->enableCanary();
 
         return $this->render('ton_macron/invite_sent.html.twig');
     }
