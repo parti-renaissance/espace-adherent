@@ -119,13 +119,13 @@ final class InvitationProcessor
 
     /**
      * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(checkHost=true, checkMX=true, groups={"send"})
+     * @Assert\Email(groups={"send"})
      */
     public $selfEmail = '';
 
     /**
      * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(checkHost=true, checkMX=true, groups={"send"})
+     * @Assert\Email(groups={"send"})
      */
     public $friendEmail = '';
 
