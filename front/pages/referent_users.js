@@ -18,14 +18,11 @@ export default (slugifier, columns, users) => {
 
     const onSelectedChange = (rows) => {
         let count = 0;
-        const json = [];
+        const serialized = [];
         const data = [];
 
         Object.keys(rows).forEach((key) => {
-            json.push({
-                type: 'adherent' === rows[key].type ? 'a' : 'n',
-                id: rows[key].id,
-            });
+            serialized.push(`${'adherent' === rows[key].type ? 'a' : 'n'}|${rows[key].id}`);
 
             // Construct the csv data ordered by column names
             const dataRow = [];
@@ -47,7 +44,7 @@ export default (slugifier, columns, users) => {
             dom('#csv-export')
         );
 
-        selectedUsersInput.value = JSON.stringify(json);
+        selectedUsersInput.value = serialized.join(',');
         selectedUsersCount.innerHTML = count;
         sendMailBtn.disabled = 0 === count;
     };

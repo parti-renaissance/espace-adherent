@@ -242,6 +242,10 @@
             <argument type="service" id="app.storage"/>
         </service>
 
+        <service id="app.referent.dumped_database_reader" class="AppBundle\Referent\ReferentDumpedDatabaseReader">
+            <argument type="service" id="app.storage"/>
+        </service>
+
         <service id="app.referent.managed_users.factory" class="AppBundle\Referent\ManagedUserFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
@@ -256,10 +260,6 @@
 
         <service id="app.referent.managed_committees.exporter" class="AppBundle\Referent\ManagedCommitteesExporter">
             <argument type="service" id="router" />
-        </service>
-
-        <service id="app.referent.message_factory" class="AppBundle\Referent\ReferentMessageFactory">
-            <argument type="service" id="app.referent.managed_users.factory" />
         </service>
 
         <service id="app.referent.message_handler.producer" alias="old_sound_rabbit_mq.mailjet_referent_producer" public="false" />

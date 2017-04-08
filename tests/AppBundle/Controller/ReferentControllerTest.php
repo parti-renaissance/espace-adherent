@@ -72,27 +72,12 @@ class ReferentControllerTest extends SqliteWebTestCase
             Request::METHOD_POST,
             '/espace-referent/utilisateurs/envoyer-un-message/selectionnes',
             [
-                'selected_users_json' => json_encode([
-                    [
-                        'id' => '1',
-                        'type' => 'a',
-                    ],
-                    [
-                        'id' => '7',
-                        'type' => 'a',
-                    ],
-                    [
-                        'id' => '4',
-                        'type' => 'n',
-                    ],
-                    [
-                        'id' => '3',
-                        'type' => 'n',
-                    ],
-                    [
-                        'id' => '5',
-                        'type' => 'a',
-                    ],
+                'selected_users_json' => implode(',', [
+                    'a|1',
+                    'a|7',
+                    'n|4',
+                    'n|3',
+                    'a|5',
                 ]),
             ]
         );

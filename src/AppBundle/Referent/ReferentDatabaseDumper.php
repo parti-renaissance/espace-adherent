@@ -41,7 +41,7 @@ class ReferentDatabaseDumper
     public function dump(string $identifier, string $type = 'all'): void
     {
         $type = strtolower($type);
-        if (!in_array($type, self::EXPORT_TYPES)) {
+        if (!in_array($type, self::EXPORT_TYPES, true)) {
             throw new \InvalidArgumentException(sprintf('The "%s" export type is unsupported and must be one of %s.', $type, implode(', ', self::EXPORT_TYPES)));
         }
 
