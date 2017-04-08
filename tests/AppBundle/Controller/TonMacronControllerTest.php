@@ -21,9 +21,9 @@ class TonMacronControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    const INVITATION_PATH = '/pourquoichoisirmacron';
-    const INVITATION_RESTART_PATH = '/pourquoichoisirmacron/recommencer';
-    const INVITATION_SENT_PATH = '/pourquoichoisirmacron/%s/merci';
+    const INVITATION_PATH = '/pourquoivotermacron';
+    const INVITATION_RESTART_PATH = '/pourquoivotermacron/recommencer';
+    const INVITATION_SENT_PATH = '/pourquoivotermacron/%s/merci';
 
     /* @var TonMacronChoiceRepository */
     private $tonMacronChoiceRepository;
