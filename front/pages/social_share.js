@@ -4,7 +4,7 @@
  */
 import Clipboard from 'clipboard';
 
-export default () => {
+export default (urlAll, urlCategory) => {
     if (Clipboard.isSupported()) {
         const confirmMessage = dom('#confirm-message');
 
@@ -18,4 +18,11 @@ export default () => {
             });
         });
     }
+
+    const categoryChooser = dom('#je-partage-category');
+
+    on(categoryChooser, 'change', () => {
+        const category = categoryChooser.options[categoryChooser.selectedIndex].value;
+        window.location.href = ('all' === category) ? urlAll : urlCategory.replace('slug', category);
+    });
 };

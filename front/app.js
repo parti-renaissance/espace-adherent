@@ -111,9 +111,9 @@ class App {
         })
     }
 
-    runSocialShare() {
+    runSocialShare(urlAll, urlCategory) {
         System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default(urlAll, urlCategory);
         })
     }
 }

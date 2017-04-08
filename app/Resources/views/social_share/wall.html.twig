@@ -7,7 +7,10 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runSocialShare();
+            App.runSocialShare(
+                '{{ path('app_social_share_list') }}',
+                '{{ path('app_social_share_show', {'slug': 'slug'}) }}'
+            );
         });
     </script>
 {% endblock %}
@@ -47,22 +50,23 @@
         </nav>
     </section>
     <section class="je-partage__header background--green space--60-0">
-        <header class="l__wrapper--slim">
-            <h1 class="text--large text--center">
+        <header class="l__wrapper--slim l__row l__row--h-stretch">
+            <h1 class="text--large">
                 Partagez le projet
             </h1>
 
-            {#
             <div class="select__styled">
-                <select name="category" data-width="100%" class="select__styled--inner">
+                <select name="category" data-width="100%" class="select__styled--inner" id="je-partage-category">
+                    <option value="all" {{ not currentCategory ? ' selected ' : '' }}>
+                        Toutes les thématiques
+                    </option>
                     {% for category in socialShareCategories %}
-                        <option value="{{ category }}" {{  category == 'value' ? ' selected ' : '' }}>
-                            {{ category | trans }}
+                        <option value="{{ category.slug }}" {{  category == currentCategory ? ' selected ' : '' }}>
+                            {{ category.name }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
-            #}
         </header>
     </section>
 
