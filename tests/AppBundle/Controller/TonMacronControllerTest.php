@@ -149,7 +149,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertSame($currentInvitation->friendFirstName, $invitationLog->getFriendFirstName());
         $this->assertSame($currentInvitation->friendAge, $invitationLog->getFriendAge());
         $this->assertSame($currentInvitation->friendGender, $invitationLog->getFriendGender());
-        $this->assertSame($currentInvitation->friendPosition->getContent(), $invitationLog->getFriendPosition());
+        $this->assertSame($currentInvitation->friendPosition->getLabel(), $invitationLog->getFriendPosition());
         $this->assertSame($currentInvitation->friendEmail, $invitationLog->getFriendEmailAddress());
         $this->assertSame($currentInvitation->selfFirstName, $invitationLog->getAuthorFirstName());
         $this->assertSame($currentInvitation->selfLastName, $invitationLog->getAuthorLastName());
