@@ -35,7 +35,7 @@ class SocialShareController extends Controller
      */
     public function showAction(SocialShareCategory $category): Response
     {
-        $this->enableCanary();
+        $this->disableInProduction();
 
         $manager = $this->getDoctrine();
 

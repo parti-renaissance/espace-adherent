@@ -1,59 +1,60 @@
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
+<section class="tonmacron__content l__wrapper--medium l__mobile--col space--60-0">
+    <div>
+        <ul class="tonmacron__steps">
+            <li>Votre ami(e)</li>
+            <li>Vos raisons</li>
+            <li class="active">Récapitulatif</li>
+        </ul>
 
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-{% endblock %}
+        {{ form_start(invitation_form) }}
 
-<div class="ton_macron__send">
-    <b> Sélectionnez 2 sujets qui intéressent votre ami(e)</b>
+        <h5 class="tonmacron__title">
+            Récapitulatif de votre message
+        </h5>
 
-    <br/>
-    <br/>
+        {{ form_errors(invitation_form) }}
 
-    {{ form_start(invitation_form) }}
+        <div class="form__row">
+            {{ form_label(invitation_form.messageSubject, 'Objet') }}
+            {{ form_errors(invitation_form.messageSubject) }}
+            {{ form_widget(invitation_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
 
-    {{ form_errors(invitation_form) }}
+        <div class="form__row">
+            {{ form_label(invitation_form.messageContent, 'Message') }}
+            {{ form_errors(invitation_form.messageContent) }}
+            {{ form_widget(invitation_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
+        </div>
 
-    <div class="form__row">
-        {{ form_label(invitation_form.messageSubject) }}
-        {{ form_errors(invitation_form.messageSubject) }}
-        {{ form_widget(invitation_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+        <div class="form__row">
+            {{ form_label(invitation_form.selfFirstName) }}
+            {{ form_errors(invitation_form.selfFirstName) }}
+            {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_label(invitation_form.selfLastName) }}
+            {{ form_errors(invitation_form.selfLastName) }}
+            {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_label(invitation_form.selfEmail) }}
+            {{ form_errors(invitation_form.selfEmail) }}
+            {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_label(invitation_form.friendEmail) }}
+            {{ form_errors(invitation_form.friendEmail) }}
+            {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="text--center b__nudge--top-large">
+            {{ form_widget(invitation_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
+            <a href="{{ path('app_ton_macron_invite_restart') }}" class="btn">Recommencer</a>
+        </div>
+
+        {{ form_end(invitation_form) }}
     </div>
-
-    <div class="form__row">
-        {{ form_label(invitation_form.messageContent) }}
-        {{ form_errors(invitation_form.messageContent) }}
-        {{ form_widget(invitation_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500 ckeditor' } }) }}
-    </div>
-
-    <div class="form__row">
-        {{ form_label(invitation_form.selfFirstName) }}
-        {{ form_errors(invitation_form.selfFirstName) }}
-        {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
-    </div>
-
-    <div class="form__row">
-        {{ form_label(invitation_form.selfLastName) }}
-        {{ form_errors(invitation_form.selfLastName) }}
-        {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
-    </div>
-
-    <div class="form__row">
-        {{ form_label(invitation_form.selfEmail) }}
-        {{ form_errors(invitation_form.selfEmail) }}
-        {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
-    </div>
-
-    <div class="form__row">
-        {{ form_label(invitation_form.friendEmail) }}
-        {{ form_errors(invitation_form.friendEmail) }}
-        {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
-    </div>
-
-    <div class="form__row">
-        {{ form_widget(invitation_form.send, {'attr': {'class': 'btn btn--primary'}}) }}
-    </div>
-
-    {{ form_end(invitation_form) }}
-</div>
+</section>

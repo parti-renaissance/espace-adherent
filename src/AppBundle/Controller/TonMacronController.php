@@ -20,9 +20,7 @@ class TonMacronController extends Controller
      */
     public function redirectAction(): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->disableInProduction();
 
         return $this->redirectToRoute('app_ton_macron_invite');
     }
@@ -33,7 +31,7 @@ class TonMacronController extends Controller
      */
     public function inviteAction(Request $request): Response
     {
-        $this->enableCanary();
+        $this->disableInProduction();
 
         $session = $request->getSession();
         $handler = $this->get('app.ton_macron.invitation_processor_handler');
@@ -58,12 +56,12 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/recommencer", name="app_ton_macron_invite_restart")
+     * @Route("/pourquoichoisirmacron/recommencer", name="app_ton_macron_invite_restart")
      * @Method("GET")
      */
     public function restartInviteAction(Request $request): Response
     {
-        $this->enableCanary();
+        $this->disableInProduction();
 
         $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
 
@@ -71,12 +69,12 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/merci", name="app_ton_macron_invite_sent")
+     * @Route("/pourquoichoisirmacron/merci", name="app_ton_macron_invite_sent")
      * @Method("GET")
      */
     public function inviteSentAction(): Response
     {
-        $this->enableCanary();
+        $this->disableInProduction();
 
         return $this->render('ton_macron/invite_sent.html.twig');
     }

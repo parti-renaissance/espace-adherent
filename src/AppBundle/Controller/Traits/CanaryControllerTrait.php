@@ -10,7 +10,7 @@ trait CanaryControllerTrait
     /**
      * @throws NotFoundHttpException When the canary is not enabled
      */
-    public function enableCanary()
+    public function disableInProduction()
     {
         /** @var Controller $this */
         if (!((bool) $this->getParameter('enable_canary'))) {
