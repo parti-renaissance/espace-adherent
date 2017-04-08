@@ -8,8 +8,7 @@ use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
-use AppBundle\Referent\ManagedUser;
-use libphonenumber\PhoneNumber;
+use AppBundle\Referent\ReferentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -96,32 +95,16 @@ class ReferentController extends Controller
     public function usersSendMessageSelectedAction(Request $request): Response
     {
         $from = $request->query->get('from', 'users');
-        $from = in_array($from, ['subscribers', 'adherents', 'followers', 'nonfollowers', 'hosts']) ? $from : 'users';
+        $from = in_array($from, ['subscribers', 'adherents', 'followers', 'nonfollowers', 'hosts'], true) ? $from : 'users';
+        $uuid = $this->getUser()->getUuid()->toString();
+        $selected = $request->request->get('selected_users_json');
 
-        try {
-            $selected = \GuzzleHttp\json_decode($request->request->get('selected_users_json', '[]'), true);
-        } catch (\InvalidArgumentException $e) {
-            $selected = [];
-        }
-
-        if (empty($selected)) {
+        $allowedSelectedUsers = $this->get('app.referent.dumped_database_reader')->filterAllowedUsers($uuid, $selected);
+        if (empty($allowedSelectedUsers)) {
             return $this->redirectToRoute('app_referent_'.$from);
         }
 
-        $allowedUsers = @unserialize($this->readDumpedUsersList('serialized') ?? 'a:0:{}', [
-            'allowed_classes' => [
-                ManagedUser::class,
-                PhoneNumber::class,
-                \DateTime::class,
-            ],
-        ]);
-
-        $factory = $this->get('app.referent.message_factory');
-        $referentMessage = $factory->createReferentMessageFor($this->getUser(), $allowedUsers, $selected);
-
-        if (empty($referentMessage->getTo())) {
-            return $this->redirectToRoute('app_referent_users');
-        }
+        $referentMessage = new ReferentMessage($this->getUser(), $allowedSelectedUsers);
 
         $form = $this->createForm(ReferentMessageType::class, $referentMessage);
         $form->handleRequest($request);
@@ -134,7 +117,7 @@ class ReferentController extends Controller
         }
 
         return $this->render('referent/users/message.html.twig', [
-            'selected' => $selected,
+            'selected' => $allowedSelectedUsers,
             'referentMessage' => $referentMessage,
             'form' => $form->createView(),
             'from' => $from,
@@ -200,12 +183,9 @@ class ReferentController extends Controller
 
     private function readDumpedUsersList(string $type)
     {
-        $filename = 'dumped_referents_users/'.$this->getUser()->getUuid()->toString().'_'.$type.'.data';
-
-        if (!$this->get('app.storage')->has($filename)) {
-            return null;
-        }
-
-        return $this->get('app.storage')->read($filename);
+        return $this->get('app.referent.dumped_database_reader')->readList(
+            $this->getUser()->getUuid()->toString(),
+            $type
+        );
     }
 }
