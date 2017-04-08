@@ -3,13 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\TonMacronInvitationType;
-use AppBundle\TonMacron\InvitationProcessor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Workflow\StateMachine;
 
 /**
  * @Route("/ton-macron/invitation")
@@ -52,13 +50,13 @@ class TonMacronController extends Controller
      * @Route("/recommencer", name="app_ton_macron_invite_restart")
      * @Method("GET")
      */
-    public function restartInviteAction(Request $request)
+    public function restartInviteAction(Request $request): Response
     {
         if (!((bool) $this->getParameter('enable_canary'))) {
             throw $this->createNotFoundException();
         }
 
-        $request->getSession()->remove('ton_macron.invitation');
+        $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
 
         return $this->redirectToRoute('app_ton_macron_invite');
     }
@@ -67,7 +65,7 @@ class TonMacronController extends Controller
      * @Route("/merci", name="app_ton_macron_invite_sent")
      * @Method("GET")
      */
-    public function inviteSentAction()
+    public function inviteSentAction(): Response
     {
         if (!((bool) $this->getParameter('enable_canary'))) {
             throw $this->createNotFoundException();

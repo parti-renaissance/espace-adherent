@@ -208,9 +208,4 @@ final class InvitationProcessor
         }
         $this->selfReasons = $refreshedReasons;
     }
-
-    public function getSelfFirstName()
-    {
-        return $this->selfFirstName;
-    }
 }
