@@ -59,41 +59,22 @@ EOF;
         $invitation->selfFirstName = 'Marie';
         $invitation->selfLastName = 'Dupont';
         $invitation->selfEmail = 'marie.dupont@gmail.tld';
-        $invitation->friendPosition = $this->createArgumentChoice(1, [
-            "Pour augmenter le pouvoir d'achat, il propose de supprimer les cotisations.",
-            'Tous les 5 ans, en cas de démission, tu auras le droit de bénéficier du chômage.',
-        ]);
-        $invitation->friendProject = $this->createArgumentChoice(2, [
-            'Si tu veux investir dans une PME, tu ne seras pas taxé.',
-        ]);
+        $invitation->friendPosition = $this->createArgumentChoice(1, 'Tous les 5 ans, en cas de démission, tu auras le droit de bénéficier du chômage.');
+        $invitation->friendProject = $this->createArgumentChoice(2, 'Si tu veux investir dans une PME, tu ne seras pas taxé.');
         $invitation->friendInterests = [
-            $this->createArgumentChoice(3, [
-                "Il lancera un grand plan de transformation agricole de 5 milliards d'euros.",
-                'Il soutiendra la mise en place d’un système de subventions contracycliques de la PAC.',
-            ]),
-            $this->createArgumentChoice(3, [
-                'Il créera un « Pass Culture ».',
-                'Les bibliothèques seront ouvertes en soirée et le week-end.',
-            ]),
+            $this->createArgumentChoice(3, "Il lancera un grand plan de transformation agricole de 5 milliards d'euros."),
+            $this->createArgumentChoice(3, 'Il créera un « Pass Culture ».'),
         ];
         $invitation->selfReasons = [
-            $this->createArgumentChoice(4, [
-                'Emmanuel Macron est différent des responsables politiques.',
-                "Emmanuel Macron n'est jamais seul.",
-            ]),
+            $this->createArgumentChoice(4, 'Emmanuel Macron est différent des responsables politiques.'),
         ];
 
         return $invitation;
     }
 
-    private function createArgumentChoice(int $step, array $measures): TonMacronChoice
+    private function createArgumentChoice(int $step, string $measure): TonMacronChoice
     {
-        $content = [];
-        foreach ($measures as $measure) {
-            $content[] = sprintf('<li>%s</li>', $measure);
-        }
-
-        return $this->createChoice($step, implode("\n", $content));
+        return $this->createChoice($step, $measure);
     }
 
     private function createChoice(int $step, string $content): TonMacronChoice
