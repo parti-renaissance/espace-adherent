@@ -98,6 +98,11 @@ final class TonMacronFriendInvitation
         $this->createdAt = new \DateTimeImmutable($createdAt);
     }
 
+    public function __toString(): string
+    {
+        return 'Invitation de '.$this->authorEmailAddress.' à '.$this->friendEmailAddress;
+    }
+
     public function getFriendFirstName(): string
     {
         return $this->friendFirstName;
