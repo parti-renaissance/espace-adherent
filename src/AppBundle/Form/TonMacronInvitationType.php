@@ -36,10 +36,8 @@ class TonMacronInvitationType extends AbstractType
                         'placeholder' => 'ton_macron.invitation_form.friend_position',
                         'step' => TonMacronChoice::STEP_FRIEND_PROFESSIONAL_POSITION,
                     ])
-                    ->add(InvitationProcessor::TRANSITION_FILL_INFO, SubmitType::class, [
-                        'label' => 'ton_macron.invitation_form.fill_step_1',
-                    ])
                 ;
+                $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_INFO);
                 break;
             case InvitationProcessor::TRANSITION_FILL_PROJECT:
                 $builder
@@ -47,10 +45,8 @@ class TonMacronInvitationType extends AbstractType
                         'step' => TonMacronChoice::STEP_FRIEND_PROJECT,
                         'expanded' => true,
                     ])
-                    ->add(InvitationProcessor::TRANSITION_FILL_PROJECT, SubmitType::class, [
-                        'label' => 'ton_macron.invitation_form.fill_step_2',
-                    ])
                 ;
+                $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_PROJECT);
                 break;
             case InvitationProcessor::TRANSITION_FILL_INTERESTS:
                 $builder
@@ -60,10 +56,8 @@ class TonMacronInvitationType extends AbstractType
                         'multiple' => true,
                         'error_bubbling' => true,
                     ])
-                    ->add(InvitationProcessor::TRANSITION_FILL_INTERESTS, SubmitType::class, [
-                        'label' => 'ton_macron.invitation_form.fill_step_3',
-                    ])
                 ;
+                $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_INTERESTS);
                 break;
             case InvitationProcessor::TRANSITION_FILL_REASONS:
                 $builder
@@ -73,10 +67,8 @@ class TonMacronInvitationType extends AbstractType
                         'multiple' => true,
                         'error_bubbling' => true,
                     ])
-                    ->add(InvitationProcessor::TRANSITION_FILL_REASONS, SubmitType::class, [
-                        'label' => 'ton_macron.invitation_form.fill_step_4',
-                    ])
                 ;
+                $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_REASONS);
                 break;
             case InvitationProcessor::TRANSITION_SEND:
                 $builder
@@ -109,10 +101,8 @@ class TonMacronInvitationType extends AbstractType
                         'empty_data' => '',
                         'attr' => ['placeholder' => 'ton_macron.invitation_form.friend_email'],
                     ])
-                    ->add(InvitationProcessor::TRANSITION_SEND, SubmitType::class, [
-                        'label' => 'ton_macron.invitation_form.fill_step_5',
-                    ])
                 ;
+                $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_SEND);
                 break;
         }
     }
@@ -129,5 +119,12 @@ class TonMacronInvitationType extends AbstractType
             ->setRequired('transition')
             ->setAllowedValues('transition', InvitationProcessor::TRANSITIONS)
         ;
+    }
+
+    private function addSubmitButton(FormBuilderInterface $builder, string $step)
+    {
+        $builder->add($step, SubmitType::class, [
+            'label' => 'ton_macron.invitation_form.submit_'. $step,
+        ]);
     }
 }
