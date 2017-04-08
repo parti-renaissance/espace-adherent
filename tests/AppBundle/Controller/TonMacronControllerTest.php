@@ -3,11 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
+use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\InvitationProcessorHandler;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -51,10 +53,11 @@ class TonMacronControllerTest extends SqliteWebTestCase
         ]));
 
         $invitation->friendAge = 32;
-        $invitation->friendPosition = $this->getChoices(4);
+        $invitation->friendPosition = $this->getChoice(4);
         $invitation->marking = InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT;
 
-        //$this->assertEquals($invitation, $this->getCurrentInvitation());
+        $this->assertEquals($invitation, $this->getCurrentInvitation());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
 
         $crawler = $this->client->followRedirect();
@@ -66,25 +69,29 @@ class TonMacronControllerTest extends SqliteWebTestCase
             'ton_macron_invitation[friendProject]' => '19',
         ]));
 
-        $invitation->friendPosition = $this->getChoices(19);
+        $invitation->friendProject = $this->getChoice(19);
         $invitation->marking = InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS;
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[fill_interests]"]'));
 
-        $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
-            'ton_macron_invitation[friendInterests]' => ['28', '46'],
+        $this->client->submit($crawler->selectButton('ton_macron_invitation[fill_interests]')->form([
+            'ton_macron_invitation[friendInterests]' => [
+                0 => 28,
+                18 => 46,
+            ],
         ]));
 
-        $invitation->friendPosition = $this->getChoices([28, 46]);
+        $invitation->friendInterests = $this->getChoices([28, 46]);
         $invitation->marking = InvitationProcessor::STATE_NEEDS_SELF_REASONS;
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
 
         $crawler = $this->client->followRedirect();
@@ -93,22 +100,20 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[fill_reasons]"]'));
 
         $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
-            'ton_macron_invitation[selfReasons]' => ['61', '62'],
+            'ton_macron_invitation[selfReasons]' => [1 => '61', 2 => '62'],
         ]));
 
-        $invitation->friendPosition = $this->getChoices([61, 62]);
+        $invitation->selfReasons = $this->getChoices([61, 62]);
         $invitation->marking = InvitationProcessor::STATE_SUMMARY;
 
         $currentInvitation = $this->getCurrentInvitation();
 
         $this->assertEquals($invitation->selfReasons, $currentInvitation->selfReasons);
         $this->assertNotEquals($invitation->messageContent, $currentInvitation->messageContent);
-        $this->assertContains('S01C04', $currentInvitation->messageContent);
-        $this->assertContains('S02C19', $currentInvitation->messageContent);
-        $this->assertContains('S03C28', $currentInvitation->messageContent);
-        $this->assertContains('S03C46', $currentInvitation->messageContent);
-        $this->assertContains('S04C61', $currentInvitation->messageContent);
-        $this->assertContains('S04C62', $currentInvitation->messageContent);
+        foreach ($invitation->getArguments() as $choice) {
+            $this->assertContains($choice, $currentInvitation->messageContent);
+        }
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
 
         $crawler = $this->client->followRedirect();
@@ -116,17 +121,23 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[send]"]'));
 
-        $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
+        $crawler = $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
             'ton_macron_invitation[messageSubject]' => $invitation->messageSubject = 'Toujours envie de voter blanc ?',
             'ton_macron_invitation[selfFirstName]' => $invitation->selfFirstName = 'Marie',
             'ton_macron_invitation[selfLastName]' => $invitation->selfLastName = 'Dupont',
-            'ton_macron_invitation[selfEmail]' => $invitation->selfEmail = 'marie.dupont@domain.tld',
-            'ton_macron_invitation[frienEmail]' => $invitation->friendEmail = 'beatrice@gmail.tld',
+            'ton_macron_invitation[selfEmail]' => $invitation->selfEmail = 'marie.dupont@example.com',
+            'ton_macron_invitation[friendEmail]' => $invitation->friendEmail = 'beatrice@example.com',
         ]));
 
         $invitation->marking = InvitationProcessor::STATE_SENT;
 
-        $this->assertEquals($invitation, $this->getCurrentInvitation());
+        $this->assertSame($invitation->messageSubject, $this->getCurrentInvitation()->messageSubject);
+        $this->assertSame($invitation->selfFirstName, $this->getCurrentInvitation()->selfFirstName);
+        $this->assertSame($invitation->selfLastName, $this->getCurrentInvitation()->selfLastName);
+        $this->assertSame($invitation->selfEmail, $this->getCurrentInvitation()->selfEmail);
+        $this->assertSame($invitation->friendEmail, $this->getCurrentInvitation()->friendEmail);
+        $this->assertSame($invitation->marking, $this->getCurrentInvitation()->marking);
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_SENT_PATH, $this->client);
     }
 
@@ -138,7 +149,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
             LoadTonMacronData::class,
         ]);
 
-        $this->tonMacronChoiceRepository = $this->getTonMacronInvitationRepository();
+        $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
         $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();
         $this->emailRepository = $this->getMailjetEmailRepository();
     }
@@ -164,11 +175,18 @@ class TonMacronControllerTest extends SqliteWebTestCase
         return $this->getTonMacronInvitationHandler()->start($this->client->getRequest()->getSession());
     }
 
-    /**
-     * @var string|int[] $ids
-     */
-    private function getChoices($ids)
+    private function getChoice(int $id): ?TonMacronChoice
     {
-        return $this->tonMacronChoiceRepository->findBy(['id' => (array) $ids]);
+        return $this->tonMacronChoiceRepository->find($id);
+    }
+
+    /**
+     * @var int[] $ids
+     *
+     * @return TonMacronChoice[]
+     */
+    private function getChoices(array $ids): ArrayCollection
+    {
+        return new ArrayCollection($this->tonMacronChoiceRepository->findBy(['id' => $ids]));
     }
 }
