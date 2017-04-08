@@ -450,5 +450,12 @@ $text--size-extra-large: 48px;
                 }
             }
         }
+
+        &--reversed {
+            svg,
+            i {
+                margin-left: 7px;
+            }
+        }
     }
 }
