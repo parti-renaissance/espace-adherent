@@ -181,9 +181,9 @@ class TonMacronControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @var int[] $ids
+     * @param int[] $ids
      *
-     * @return TonMacronChoice[]
+     * @return TonMacronChoice[]|ArrayCollection
      */
     private function getChoices(array $ids): ArrayCollection
     {

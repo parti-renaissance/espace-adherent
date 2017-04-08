@@ -124,7 +124,7 @@ class TonMacronInvitationType extends AbstractType
     private function addSubmitButton(FormBuilderInterface $builder, string $step)
     {
         $builder->add($step, SubmitType::class, [
-            'label' => 'ton_macron.invitation_form.submit_'. $step,
+            'label' => 'ton_macron.invitation_form.submit_'.$step,
         ]);
     }
 }

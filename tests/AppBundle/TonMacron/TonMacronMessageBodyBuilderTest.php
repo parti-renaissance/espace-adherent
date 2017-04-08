@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\TonMacron;
 
 use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\TonMacronMessageBodyBuilder;
