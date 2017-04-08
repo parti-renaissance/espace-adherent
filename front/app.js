@@ -128,6 +128,12 @@ class App {
             module.default(urlAll, urlCategory);
         })
     }
+
+    runSearchOverlay() {
+        System.import('pages/search_overlay').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        })
+    }
 }
 
 window.App = new App();
