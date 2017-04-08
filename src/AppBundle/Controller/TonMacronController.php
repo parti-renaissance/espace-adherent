@@ -35,7 +35,7 @@ class TonMacronController extends Controller
         ])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->get('app.ton_macron.invitation_processor_handler')->handle($session, $invitation)) {
+            if ($this->get('app.ton_macron.invitation_processor_handler')->process($session, $invitation)) {
                 return $this->redirectToRoute('app_ton_macron_invite_sent');
             }
 

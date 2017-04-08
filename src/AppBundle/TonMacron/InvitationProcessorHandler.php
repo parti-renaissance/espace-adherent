@@ -53,7 +53,7 @@ final class InvitationProcessorHandler
     /**
      * Returns whether the process is finished or not.
      */
-    public function handle(Session $session, InvitationProcessor $processor): bool
+    public function process(Session $session, InvitationProcessor $processor): bool
     {
         if ($this->stateMachine->can($processor, InvitationProcessor::TRANSITION_SEND)) {
             // End process
