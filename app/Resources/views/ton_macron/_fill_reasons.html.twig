@@ -1,1 +1,25 @@
-{{ form(invitation_form) }}
+<div class="ton_macron__fill_reasons">
+    <strong>
+        Pour finir, expliquez à votre ami ce qui vous<br/>
+        plaît chez Emmanuel Macron
+    </strong>
+
+    <br/>
+    <br/>
+
+    {{ form_start(invitation_form) }}
+
+    {{ form_errors(invitation_form) }}
+
+    <div class="form__row">
+        {% for checkbox in invitation_form.selfReasons %}
+            {{ form_row(checkbox) }}
+        {% endfor %}
+    </div>
+
+    <div class="form__row">
+        {{ form_widget(invitation_form.fill_reasons, {'attr': {'class': 'btn btn--primary'}}) }}
+    </div>
+
+    {{ form_end(invitation_form) }}
+</div>

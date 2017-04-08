@@ -84,10 +84,23 @@
             <argument type="service" id="router" />
         </service>
 
-        <!-- JeMarche -->
+        <!-- Je Marche -->
          <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
+        </service>
+
+        <!-- Ton Macron -->
+         <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
+             <argument type="service" id="app.ton_macron.message_body_builder"/>
+             <argument type="service" id="doctrine.orm.entity_manager"/>
+             <argument type="service" id="app.mailjet.client.transactional"/>
+             <argument type="service" id="state_machine.ton_macron_invitation"/>
+         </service>
+
+        <service id="app.ton_macron.message_body_builder" class="AppBundle\TonMacron\TonMacronMessageBodyBuilder">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="app.repository.ton_macron_choice"/>
         </service>
 
     </services>

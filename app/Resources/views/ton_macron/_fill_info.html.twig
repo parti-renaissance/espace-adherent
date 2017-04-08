@@ -1,1 +1,49 @@
-{{ form(invitation_form) }}
+<div class="ton_macron__fill_info_left">
+    <b>Comment ça marche</b>
+    <br/><br/>
+    <b>Etape 1</b>
+    <br/>
+    <b>Etape 2</b>
+    <br/>
+    <b>Etape 3</b>
+</div>
+
+<div class="ton_macron__fill_info_right ton_macron__fill_info_form jumbotron">
+    <b>Dites en plus sur votre ami(e)</b>
+
+    <br/>
+    <br/>
+
+    {{ form_start(invitation_form) }}
+
+    <div class="form__row">
+        {{ form_label(invitation_form.friendFirstName) }}
+        {{ form_errors(invitation_form.friendFirstName) }}
+        {{ form_widget(invitation_form.friendFirstName, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.friendAge) }}
+        {{ form_errors(invitation_form.friendAge) }}
+        {{ form_widget(invitation_form.friendAge, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.friendGender) }}
+        {{ form_errors(invitation_form.friendGender) }}
+        {{ form_widget(invitation_form.friendGender, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+    <div class="form__row">
+        {{ form_label(invitation_form.friendPosition) }}
+        {{ form_errors(invitation_form.friendPosition) }}
+        {{ form_widget(invitation_form.friendPosition, { 'attr': { 'class': 'form--full' } }) }}
+    </div>
+
+
+    <div class="form__row">
+    {{ form_widget(invitation_form.fill_info, {'attr': {'class': 'btn btn--primary form--full'}}) }}
+    </div>
+
+    {{ form_end(invitation_form) }}
+</div>

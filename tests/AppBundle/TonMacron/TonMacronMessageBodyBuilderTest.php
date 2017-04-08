@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\TonMacron;
 
 use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Repository\TonMacronChoiceRepository;
+use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\TonMacronMessageBodyBuilder;
 use Ramsey\Uuid\Uuid;
 
@@ -39,38 +39,49 @@ EOF;
             ->method('findMailConclusion')
             ->willReturn($this->createChoice(0, $conclusionText));
 
+        $this->createBuilder()->buildMessageBody($invitation = $this->createInvitationProcessor());
+
         $this->assertSame(
             file_get_contents(__DIR__.'/../../Fixtures/files/campaign/ton_macron.html'),
-            $this->createBuilder()->buildMessageBody($this->createInvitation())
+            $invitation->messageContent
         );
     }
 
-    private function createInvitation(): TonMacronFriendInvitation
+    private function createInvitationProcessor(): InvitationProcessor
     {
-        $invitation = new TonMacronFriendInvitation(Uuid::uuid4(), 'Béatrice', 32, 'female');
-        $invitation->setFriendEmailAddress('beatrice123@domain.tld');
-        $invitation->setMailSubject('Toujours envie de voter blanc ?');
-        $invitation->setAuthor('Marie', 'Dupont', 'marie.dupont@gmail.tld');
+        $invitation = new InvitationProcessor();
 
-        $invitation->addChoice($this->createArgumentChoice(1, [
+        $invitation->friendFirstName = 'Béatrice';
+        $invitation->friendAge = 32;
+        $invitation->friendGender = 'female';
+        $invitation->friendEmail = 'beatrice123@domain.tld';
+        $invitation->messageSubject = 'Toujours envie de voter blanc ?';
+        $invitation->selfFirstName = 'Marie';
+        $invitation->selfLastName = 'Dupont';
+        $invitation->selfEmail = 'marie.dupont@gmail.tld';
+        $invitation->friendPosition = $this->createArgumentChoice(1, [
             "Pour augmenter le pouvoir d'achat, il propose de supprimer les cotisations.",
             'Tous les 5 ans, en cas de démission, tu auras le droit de bénéficier du chômage.',
-        ]));
-        $invitation->addChoice($this->createArgumentChoice(2, [
+        ]);
+        $invitation->friendProject = $this->createArgumentChoice(2, [
             'Si tu veux investir dans une PME, tu ne seras pas taxé.',
-        ]));
-        $invitation->addChoice($this->createArgumentChoice(3, [
-            "Il lancera un grand plan de transformation agricole de 5 milliards d'euros.",
-            'Il soutiendra la mise en place d’un système de subventions contracycliques de la PAC.',
-        ]));
-        $invitation->addChoice($this->createArgumentChoice(3, [
-            'Il créera un « Pass Culture ».',
-            'Les bibliothèques seront ouvertes en soirée et le week-end.',
-        ]));
-        $invitation->addChoice($this->createArgumentChoice(4, [
-            'Emmanuel Macron est différent des responsables politiques.',
-            "Emmanuel Macron n'est jamais seul.",
-        ]));
+        ]);
+        $invitation->friendInterests = [
+            $this->createArgumentChoice(3, [
+                "Il lancera un grand plan de transformation agricole de 5 milliards d'euros.",
+                'Il soutiendra la mise en place d’un système de subventions contracycliques de la PAC.',
+            ]),
+            $this->createArgumentChoice(3, [
+                'Il créera un « Pass Culture ».',
+                'Les bibliothèques seront ouvertes en soirée et le week-end.',
+            ]),
+        ];
+        $invitation->selfReasons = [
+            $this->createArgumentChoice(4, [
+                'Emmanuel Macron est différent des responsables politiques.',
+                "Emmanuel Macron n'est jamais seul.",
+            ]),
+        ];
 
         return $invitation;
     }

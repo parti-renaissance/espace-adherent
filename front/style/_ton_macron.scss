@@ -1,0 +1,38 @@
+.ton_macron {
+    &__steps {
+        @include steps;
+        width: 360px;
+
+        .active:before {
+            background: #FF3680;
+        }
+    }
+
+    &__fill_info_left {
+        font-size: 14px;
+        float: left;
+    }
+
+    &__fill_info_right {
+        float: right;
+    }
+
+    &__fill_info_form {
+        text-align: center;
+    }
+
+    .jumbotron {
+        background-color: #eceeef;
+        padding: 20px;
+    }
+
+    &--content {
+        min-height: 400px;
+    }
+
+    &__fill_project,
+    &__fill_interests,
+    &__fill_reasons {
+      text-align: center;
+    }
+}

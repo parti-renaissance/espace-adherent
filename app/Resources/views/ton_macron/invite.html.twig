@@ -4,12 +4,14 @@
 
 {% block content %}
     <main class="ton_macron">
-        <section class="ton_macron--intro l__wrapper">
+        <section class="ton_macron--intro l__wrapper--narrow">
 
             {{ include('ton_macron/_header.html.twig') }}
 
             <div class="ton_macron--content">
                 {{ include('ton_macron/_' ~ transition ~ '.html.twig') }}
+
+                <a href="{{ path('app_ton_macron_invite_restart') }}">Recommencer</a>
             </div>
         </section>
     </main>

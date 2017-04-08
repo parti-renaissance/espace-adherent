@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Ton Macron' %}
+
+{% block content %}
+    <main class="ton_macron">
+        <section class="ton_macron--intro l__wrapper">
+            <p>
+                Votre message est bien parti.<br>
+                Vous avez été mis en copie de celui-ci.<br>
+                N'hésitez pas à le partager.
+            </p>
+            <a href="{{ path('app_ton_macron_invite') }}">Je recommence pour un autre ami</a>
+        </section>
+    </main>
+{% endblock %}

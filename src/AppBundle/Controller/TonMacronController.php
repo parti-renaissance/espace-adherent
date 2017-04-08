@@ -2,48 +2,41 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Form\TonMacronInvitationType;
-use AppBundle\TonMacron\InvitationProcessor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @Route("/ton-macron/invitation")
+ */
 class TonMacronController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
-     * @Route("/ton-macron/invitation", name="app_ton_macron_invite")
+     * @Route(name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
     public function inviteAction(Request $request): Response
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
-            throw $this->createNotFoundException();
-        }
+        $this->enableCanary();
 
         $session = $request->getSession();
-        $invitation = $session->get('ton_macron.invitation', new InvitationProcessor()); // TODO move this line in a handler
-
-        /** @var StateMachine $stateMachine */
-        $stateMachine = $this->get('state_machine.ton_macron_invitation');
-        $transition = current($stateMachine->getEnabledTransitions($invitation))->getName();
+        $handler = $this->get('app.ton_macron.invitation_processor_handler');
+        $invitation = $handler->start($session);
+        $transition = $handler->getCurrentTransition($invitation);
         $form = $this->createForm(TonMacronInvitationType::class, $invitation, [
             'transition' => $transition,
         ])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($stateMachine->can($invitation, InvitationProcessor::TRANSITION_SEND)) {
-                // TODO handle invite
-                $stateMachine->apply($invitation, $transition);
-                $session->remove('ton_macron.invitation');
-
-                return $this->redirectToRoute('homepage');
+            if ($this->get('app.ton_macron.invitation_processor_handler')->process($session, $invitation)) {
+                return $this->redirectToRoute('app_ton_macron_invite_sent');
             }
-
-            $stateMachine->apply($invitation, $transition);
-            $session->set('ton_macron.invitation', $invitation);
 
             return $this->redirectToRoute('app_ton_macron_invite');
         }
@@ -52,5 +45,29 @@ class TonMacronController extends Controller
             'invitation_form' => $form->createView(),
             'transition' => $transition,
         ]);
+    }
+
+    /**
+     * @Route("/recommencer", name="app_ton_macron_invite_restart")
+     * @Method("GET")
+     */
+    public function restartInviteAction(Request $request): Response
+    {
+        $this->enableCanary();
+
+        $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
+
+        return $this->redirectToRoute('app_ton_macron_invite');
+    }
+
+    /**
+     * @Route("/merci", name="app_ton_macron_invite_sent")
+     * @Method("GET")
+     */
+    public function inviteSentAction(): Response
+    {
+        $this->enableCanary();
+
+        return $this->render('ton_macron/invite_sent.html.twig');
     }
 }
