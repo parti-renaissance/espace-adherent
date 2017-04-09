@@ -165,8 +165,6 @@ class PageController extends Controller
      */
     public function mouvementCarteEvenementsAction()
     {
-        $this->disableInProduction();
-
         return $this->render('page/les-evenements/la-carte.html.twig', [
             'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
             'types' => EventCategories::CHOICES,
