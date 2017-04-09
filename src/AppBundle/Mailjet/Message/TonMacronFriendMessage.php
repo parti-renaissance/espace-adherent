@@ -14,7 +14,12 @@ final class TonMacronFriendMessage extends MailjetMessage
             '135119',
             $invitation->getFriendEmailAddress(),
             null,
-            $invitation->getMailSubject(),
+            sprintf(
+                '%s %s vient de vous écrire : %s',
+                $invitation->getAuthorFirstName(),
+                $invitation->getAuthorLastName(),
+                $invitation->getMailSubject()
+            ),
             ['message' => $invitation->getMailBody()],
             [],
             null,
