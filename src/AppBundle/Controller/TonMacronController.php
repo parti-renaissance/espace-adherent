@@ -16,15 +16,11 @@ class TonMacronController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/pourquoichoisirmacron")
-     * @Route("/pourquoi-choisir-macron")
      * @Route("/pourquoi-voter-macron")
      * @Method("GET")
      */
     public function redirectAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->redirectToRoute('app_ton_macron_invite');
     }
 
@@ -34,8 +30,6 @@ class TonMacronController extends Controller
      */
     public function inviteAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $session = $request->getSession();
         $handler = $this->get('app.ton_macron.invitation_processor_handler');
         $invitation = $handler->start($session);
@@ -67,8 +61,6 @@ class TonMacronController extends Controller
      */
     public function restartInviteAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
 
         return $this->redirectToRoute('app_ton_macron_invite');
@@ -80,8 +72,6 @@ class TonMacronController extends Controller
      */
     public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
     {
-        $this->disableInProduction();
-
         return $this->render('ton_macron/invite_sent.html.twig', [
             'invitation' => $invitation,
         ]);
