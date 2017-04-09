@@ -345,11 +345,15 @@
                         <li><a href="{{ path('page_elles_marchent') }}">Elles Marchent</a></li>
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
-                        <li><h4><a href="{{ path('articles_list', {'category': 'actualites'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                        <li><h4><a href="{{ path('articles_list', {'category': 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                        <li><a href="{{ path('articles_list', {'category': 'tout'}) }}">Toute l'actualité</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'actualites'}) }}">Articles</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'videos'}) }}">Vidéos</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'discours'}) }}">Discours</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'medias'}) }}">Médias</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'meetings'}) }}">Meetings</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
+                        <li><a href="{{ path('articles_list', {'category': 'tribunes'}) }}">Tribunes</a></li>
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S’engager</a></h4></li>
@@ -362,6 +366,11 @@
                         <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                         <li><a href="{{ path('app_je_marche') }}">J'agis</a></li>
                         <li><a href="{{ path('app_je_marche_action') }}">Je Marche</a></li>
+                        <li>
+                            <a href="{{ path('app_ton_macron_invite') }}">
+                                Je convaincs un ami
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}">
                                 Espace perso
