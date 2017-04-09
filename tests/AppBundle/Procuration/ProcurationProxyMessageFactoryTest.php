@@ -33,7 +33,7 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
         $this->assertSame('Annulation de la mise en relation', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
-        $this->assertSame('Marie Bénédicte Dumont', $message->getRecipient(0)->getFullName());
+        $this->assertNull($message->getRecipient(0)->getFullName());
         $this->assertSame('Procuration Macron', $message->getSenderName());
         $this->assertSame(
             [
@@ -73,7 +73,7 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
         $this->assertSame('Votre mandataire', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
-        $this->assertSame('Marie Bénédicte Dumont', $message->getRecipient(0)->getFullName());
+        $this->assertNull($message->getRecipient(0)->getFullName());
         $this->assertSame('Procuration Macron', $message->getSenderName());
         $this->assertSame(
             [

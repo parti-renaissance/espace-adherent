@@ -13,7 +13,7 @@ class CommitteeCreationConfirmationMessage extends MailjetMessage
             Uuid::uuid4(),
             '54689',
             $adherent->getEmailAddress(),
-            $adherent->getFullName(),
+            self::fixMailjetParsing($adherent->getFullName()),
             'Votre comité sera bientôt en ligne'
         );
 

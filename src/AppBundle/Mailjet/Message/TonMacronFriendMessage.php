@@ -13,13 +13,8 @@ final class TonMacronFriendMessage extends MailjetMessage
             Uuid::uuid4(),
             '135119',
             $invitation->getFriendEmailAddress(),
-            null,
-            sprintf(
-                '%s %s vient de vous écrire : %s',
-                $invitation->getAuthorFirstName(),
-                $invitation->getAuthorLastName(),
-                $invitation->getMailSubject()
-            ),
+            self::fixMailjetParsing($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName()),
+            $invitation->getMailSubject(),
             ['message' => $invitation->getMailBody()],
             [],
             null,

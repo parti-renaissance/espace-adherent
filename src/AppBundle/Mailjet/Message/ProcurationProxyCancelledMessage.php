@@ -15,7 +15,7 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
             Uuid::uuid4(),
             '120189',
             $request->getEmailAddress(),
-            $request->getFirstNames().' '.$request->getLastName(),
+            null,
             'Annulation de la mise en relation',
             [
                 'target_firstname' => self::escape($request->getFirstNames()),

@@ -22,7 +22,7 @@ final class ReferentMessage extends MailjetMessage
             Uuid::uuid4(),
             '63336',
             $referent->getEmailAddress(),
-            $referent->getFullName(),
+            self::fixMailjetParsing($referent->getFullName()),
             $model->getSubject(),
             [
                 'referant_firstname' => self::escape($referent->getFirstName()),
@@ -40,7 +40,7 @@ final class ReferentMessage extends MailjetMessage
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmail(),
-                $recipient->getFullName(),
+                self::fixMailjetParsing($recipient->getFullName()),
                 [
                     'target_firstname' => self::escape($recipient->getFirstName() ?: ''),
                 ]

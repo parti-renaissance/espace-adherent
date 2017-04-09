@@ -39,7 +39,7 @@ final class EventCancellationMessage extends MailjetMessage
             Uuid::uuid4(),
             '78678',
             $recipient->getEmailAddress(),
-            $recipient->getFullName(),
+            self::fixMailjetParsing($recipient->getFullName()),
             sprintf('L\'événement "%s" a été annulé.', $event->getName()),
             static::getTemplateVars($event->getName(), $eventsLink),
             $recipientVarsGenerator($recipient),
@@ -51,7 +51,7 @@ final class EventCancellationMessage extends MailjetMessage
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
+                self::fixMailjetParsing($recipient->getFullName()),
                 $recipientVarsGenerator($recipient)
             );
         }

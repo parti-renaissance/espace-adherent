@@ -13,7 +13,7 @@ final class AdherentResetPasswordMessage extends MailjetMessage
             Uuid::uuid4(),
             '54686',
             $adherent->getEmailAddress(),
-            $adherent->getFullName(),
+            self::fixMailjetParsing($adherent->getFullName()),
             'Réinitialisez votre mot de passe',
             [
                 'target_firstname' => self::escape($adherent->getFirstName()),

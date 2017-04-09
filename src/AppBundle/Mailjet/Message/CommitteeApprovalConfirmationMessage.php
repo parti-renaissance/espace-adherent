@@ -13,7 +13,7 @@ final class CommitteeApprovalConfirmationMessage extends MailjetMessage
             Uuid::uuid4(),
             '54720',
             $host->getEmailAddress(),
-            $host->getFullName(),
+            self::fixMailjetParsing($host->getFullName()),
             'Votre comité est validé, à vous de jouer',
             static::getTemplateVars($committeeCityName, $committeeUrl),
             static::getRecipientVars($host->getFirstName())

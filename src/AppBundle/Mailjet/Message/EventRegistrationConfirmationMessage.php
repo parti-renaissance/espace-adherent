@@ -16,7 +16,7 @@ final class EventRegistrationConfirmationMessage extends MailjetMessage
             Uuid::uuid4(),
             '118620',
             $registration->getEmailAddress(),
-            $firstName,
+            self::fixMailjetParsing($firstName),
             'Confirmation de participation à un événement En Marche !',
             [
                 'prenom' => self::escape($firstName),

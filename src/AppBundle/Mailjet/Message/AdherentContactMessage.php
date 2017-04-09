@@ -18,7 +18,7 @@ final class AdherentContactMessage extends MailjetMessage
             Uuid::uuid4(),
             '114629',
             $contactMessage->getTo()->getEmailAddress(),
-            $contactMessage->getTo()->getFullName(),
+            self::fixMailjetParsing($contactMessage->getTo()->getFullName()),
             $contactMessage->getFrom()->getFirstName().' vous a envoyé un message',
             [],
             [

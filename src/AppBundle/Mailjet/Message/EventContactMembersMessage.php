@@ -24,7 +24,7 @@ final class EventContactMembersMessage extends MailjetMessage
             Uuid::uuid4(),
             '116586',
             $recipient->getEmailAddress(),
-            $recipient->getFirstName(),
+            self::fixMailjetParsing($recipient->getFirstName()),
             "L'organisateur d'un événement auquel vous êtes inscrit vous a envoyé un message",
             [
                 'organizer_firstname' => self::escape($organizer->getFirstName()),
@@ -46,7 +46,7 @@ final class EventContactMembersMessage extends MailjetMessage
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFirstName(),
+                self::fixMailjetParsing($recipient->getFirstName()),
                 [
                     'target_firstname' => self::escape($recipient->getFirstName()),
                 ]
