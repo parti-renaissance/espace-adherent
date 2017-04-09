@@ -34,15 +34,17 @@
         <section class="l__wrapper--wide text--body">
             <div class="l__row l__row--center l__hide--on-mobile">
                 {% block map_chapo %}
-                    <div class="committees-map__counter">
-                        <h4>{{ userCount|number_format(0, ',', ' ') }}</h4> adhérents
-                    </div>
-                    <div class="committees-map__counter">
-                        <h4>{{ committeeCount|number_format(0, ',', ' ') }}</h4> comités
-                    </div>
-                    <div class="committees-map__counter">
-                        <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements
-                    </div>
+                    <ul class="committees-map__counter text--summary">
+                        <li id="counter-adherents">
+                            <h4>{{ userCount|number_format(0, ',', ' ') }}</h4> adhérents
+                        </li>
+                        <li id="counter-committees">
+                            <h4>{{ committeeCount|number_format(0, ',', ' ') }}</h4> comités
+                        </li>
+                        <li id="counter-events">
+                            <h4>{{ eventCount|number_format(0, ',', ' ') }}</h4> événements
+                        </li>
+                    </ul>
                 {% endblock %}
             </div>
         </section>
