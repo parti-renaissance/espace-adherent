@@ -7,9 +7,10 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro ckeditor(element) %}
+{% macro ckeditor(element, height) %}
 CKEDITOR.replace('{{ element }}', {
     removePlugins: 'elementspath',
+    height: {{ height|default(200) }},
     resize_enabled: false,
     toolbar: [
         { name: 'tools', items: [ 'Maximize' ] },

@@ -1,9 +1,11 @@
 <section class="tonmacron__content l__wrapper--medium l__mobile--col space--60-0">
     <div>
         <ul class="tonmacron__steps">
-            <li>Votre ami(e)</li>
-            <li>Vos raisons</li>
-            <li class="active">Récapitulatif</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li class="active"></li>
         </ul>
 
         {{ form_start(invitation_form) }}
@@ -26,28 +28,30 @@
             {{ form_widget(invitation_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
         </div>
 
-        <div class="form__row">
-            {{ form_label(invitation_form.selfFirstName, 'Votre prénom') }}
-            {{ form_errors(invitation_form.selfFirstName) }}
-            {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
+        <div class="l__wrapper-500 b__nudge--top-50">
+            <div class="form__row">
+                {{ form_label(invitation_form.selfFirstName, 'Votre prénom') }}
+                {{ form_errors(invitation_form.selfFirstName) }}
+                {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
 
-        <div class="form__row">
-            {{ form_label(invitation_form.selfLastName, 'Votre nom') }}
-            {{ form_errors(invitation_form.selfLastName) }}
-            {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
+            <div class="form__row">
+                {{ form_label(invitation_form.selfLastName, 'Votre nom') }}
+                {{ form_errors(invitation_form.selfLastName) }}
+                {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
 
-        <div class="form__row">
-            {{ form_label(invitation_form.selfEmail, 'Votre adresse e-mail') }}
-            {{ form_errors(invitation_form.selfEmail) }}
-            {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
+            <div class="form__row">
+                {{ form_label(invitation_form.selfEmail, 'Votre adresse e-mail') }}
+                {{ form_errors(invitation_form.selfEmail) }}
+                {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
 
-        <div class="form__row">
-            {{ form_label(invitation_form.friendEmail, 'L\'e-mail de votre ami(e)') }}
-            {{ form_errors(invitation_form.friendEmail) }}
-            {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+            <div class="form__row">
+                {{ form_label(invitation_form.friendEmail, 'L\'e-mail de votre ami(e)') }}
+                {{ form_errors(invitation_form.friendEmail) }}
+                {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
         </div>
 
         <div class="text--center b__nudge--top-large">
