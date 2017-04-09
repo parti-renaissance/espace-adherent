@@ -11,6 +11,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class TonMacronChoiceAdmin extends AbstractAdmin
 {
     protected $maxPerPage = 200;
+    protected $datagridValues = [
+        '_page' => 1,
+        '_per_page' => 200,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'contentKey',
+    ];
 
     protected function configureFormFields(FormMapper $formMapper)
     {
