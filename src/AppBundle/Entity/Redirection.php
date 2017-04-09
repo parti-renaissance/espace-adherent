@@ -1,0 +1,110 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Table(name="redirections")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RedirectionRepository")
+ */
+class Redirection
+{
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="url_from")
+     *
+     * @Assert\NotBlank
+     */
+    private $from;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="url_to")
+     *
+     * @Assert\NotBlank
+     */
+    private $to;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={301, 302})
+     */
+    private $type;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    public function __toString()
+    {
+        return 'Redirection from '.$this->from.' to '.$this->to;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getFrom(): ?string
+    {
+        return $this->from;
+    }
+
+    public function setFrom(?string $from)
+    {
+        $this->from = $from;
+    }
+
+    public function getTo(): ?string
+    {
+        return $this->to;
+    }
+
+    public function setTo(?string $to)
+    {
+        $this->to = $to;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(?int $type)
+    {
+        $this->type = $type;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+}

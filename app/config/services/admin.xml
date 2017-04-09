@@ -160,6 +160,14 @@
             </call>
         </service>
 
+        <service id="app.admin.redirection" class="AppBundle\Admin\RedirectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\Redirection</argument>
+            <argument />
+        </service>
+
 
         <!--
         ######################################################
