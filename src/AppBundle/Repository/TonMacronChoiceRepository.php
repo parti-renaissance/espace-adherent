@@ -15,6 +15,7 @@ class TonMacronChoiceRepository extends EntityRepository
             ->createQueryBuilder('c')
             ->where('c.step = :step')
             ->setParameter('step', TonMacronChoice::STEPS[$step])
+            ->orderBy('c.contentKey', 'ASC')
         ;
     }
 
