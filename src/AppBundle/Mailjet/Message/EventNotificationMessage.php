@@ -55,7 +55,7 @@ class EventNotificationMessage extends MailjetMessage
             Uuid::uuid4(),
             '54917',
             $recipient->getEmailAddress(),
-            $recipient->getFullName(),
+            self::fixMailjetParsing($recipient->getFullName()),
             sprintf(
                 '%s - %s : Nouvel événement de %s : %s',
                 static::formatDate($event->getBeginAt(), 'd MMMM'),
@@ -73,7 +73,7 @@ class EventNotificationMessage extends MailjetMessage
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
+                self::fixMailjetParsing($recipient->getFullName()),
                 $recipientVarsGenerator($recipient)
             );
         }

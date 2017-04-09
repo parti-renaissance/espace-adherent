@@ -20,7 +20,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             Uuid::uuid4(),
             '63337',
             $host->getEmailAddress(),
-            $host->getFullName(),
+            self::fixMailjetParsing($host->getFullName()),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
@@ -42,7 +42,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
+                self::fixMailjetParsing($recipient->getFullName()),
                 [
                     'target_firstname' => self::escape($recipient->getFirstName()),
                 ]

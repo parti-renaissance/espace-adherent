@@ -12,7 +12,7 @@ final class DonationMessage extends MailjetMessage
             $donation->getUuid(),
             '54677',
             $donation->getEmailAddress(),
-            $donation->getFullName(),
+            self::fixMailjetParsing($donation->getFullName()),
             'Merci pour votre engagement',
             [
                 'target_firstname' => self::escape($donation->getFirstName()),

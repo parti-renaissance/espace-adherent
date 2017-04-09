@@ -137,6 +137,11 @@ abstract class MailjetMessage
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8', false);
     }
 
+    final protected static function fixMailjetParsing(string $string): string
+    {
+        return str_replace(',', '', $string);
+    }
+
     public function getSenderEmail(): ?string
     {
         return $this->senderEmail;

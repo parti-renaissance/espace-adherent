@@ -13,7 +13,7 @@ final class AdherentAccountConfirmationMessage extends MailjetMessage
             Uuid::uuid4(),
             '54673',
             $adherent->getEmailAddress(),
-            $adherent->getFullName(),
+            self::fixMailjetParsing($adherent->getFullName()),
             'Et maintenant ?',
             static::getTemplateVars($adherentsCount, $committeesCount),
             static::getRecipientVars($adherent->getFirstName(), $adherent->getLastName())

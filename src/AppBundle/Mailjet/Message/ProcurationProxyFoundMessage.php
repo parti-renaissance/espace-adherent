@@ -19,7 +19,7 @@ final class ProcurationProxyFoundMessage extends MailjetMessage
             Uuid::uuid4(),
             '120187',
             $request->getEmailAddress(),
-            $request->getFirstNames().' '.$request->getLastName(),
+            null,
             'Votre mandataire',
             [
                 'target_firstname' => self::escape($request->getFirstNames()),

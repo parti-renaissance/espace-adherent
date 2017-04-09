@@ -31,7 +31,7 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             Uuid::uuid4(),
             '63337',
             $recipient->getEmailAddress(),
-            $recipient->getFullName(),
+            self::fixMailjetParsing($recipient->getFullName()),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
             static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
@@ -44,7 +44,7 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
+                self::fixMailjetParsing($recipient->getFullName()),
                 static::getRecipientVars($recipient->getFirstName())
             );
         }

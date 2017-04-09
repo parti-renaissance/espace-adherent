@@ -13,7 +13,7 @@ final class AdherentResetPasswordConfirmationMessage extends MailjetMessage
             Uuid::uuid4(),
             '130495',
             $adherent->getEmailAddress(),
-            $adherent->getFullName(),
+            self::fixMailjetParsing($adherent->getFullName()),
             'Confirmation de modification de votre mot de passe',
             ['target_firstname' => self::escape($adherent->getFirstName())]
         );
