@@ -488,6 +488,12 @@
         h4 {
             display: inline;
         }
+
+        li {
+            display: inline-block;
+            list-style: none;
+            margin: 5px 5px 25px 5px;
+        }
     }
 }
 

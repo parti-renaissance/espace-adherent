@@ -33,9 +33,9 @@ class PageControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte En Marche !")')->count());
-        $this->assertContains('10 adhérents', $crawler->filter('.committees-map__counter')->first()->text());
-        $this->assertContains('6 comités', $crawler->filter('.committees-map__counter')->eq(1)->text());
-        $this->assertContains('9 événements', $crawler->filter('.committees-map__counter')->last()->text());
+        $this->assertContains('10 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertContains('6 comités', $crawler->filter('#counter-committees')->text());
+        $this->assertContains('9 événements', $crawler->filter('#counter-events')->text());
     }
 
     public function testCommitteesEventsMap()
