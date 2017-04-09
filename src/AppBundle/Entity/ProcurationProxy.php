@@ -300,7 +300,7 @@ class ProcurationProxy
      */
     public $conditions;
 
-    public function __construct(Adherent $referent)
+    public function __construct(?Adherent $referent)
     {
         $this->referent = $referent;
         $this->phone = static::createPhoneNumber();

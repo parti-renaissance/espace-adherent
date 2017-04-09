@@ -127,15 +127,17 @@ class ProcurationController extends Controller
     public function proxyProposalAction(Request $request): Response
     {
         $referentUuid = $request->query->get('uuid');
+        $referent = null;
 
-        if (!$referentUuid || !Uuid::isValid($referentUuid)) {
-            throw $this->createNotFoundException();
-        }
+        if ($referentUuid) {
+            if (!Uuid::isValid($referentUuid)) {
+                return $this->redirectToRoute('app_procuration_proxy_proposal');
+            }
 
-        $referent = $this->getDoctrine()->getRepository(Adherent::class)->findOneBy(['uuid' => $referentUuid]);
-
-        if (!$referent || (!$referent->isReferent() && !$referent->isProcurationManager())) {
-            throw $this->createNotFoundException();
+            $referent = $this->getDoctrine()->getRepository(Adherent::class)->findOneBy(['uuid' => $referentUuid]);
+            if (!$referent || (!$referent->isReferent() && !$referent->isProcurationManager())) {
+                return $this->redirectToRoute('app_procuration_proxy_proposal');
+            }
         }
 
         $proposal = new ProcurationProxy($referent);
