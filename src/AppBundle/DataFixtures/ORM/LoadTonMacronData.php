@@ -26,6 +26,13 @@ class LoadTonMacronData implements FixtureInterface
             'Dis-moi ce que tu en penses. Tu trouveras tous les détails de ces propositions ici.'
         );
 
+        $choices[] = $this->createFirstStepChoice(
+            '31276b63-c013-4719-85a9-c2b064d31064',
+            TonMacronChoice::FEMALE_KEY,
+            'Madame',
+            'Argument pour les femmes'
+        );
+
         // Step 1
         $choices[] = $this->createFirstStepChoice(
             '5d0c4a88-c013-4719-85a9-e02a7f41266c',

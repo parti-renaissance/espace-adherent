@@ -1,14 +1,14 @@
 {{ introduction.content|replace({'%friend_first_name%': invitation.friendFirstName|e})|raw }}
 
+{% spaceless %}
 <ul>
-{% for argument in invitation.arguments %}
-    <li>{{- argument|raw }}</li>
-{% endfor %}
+    {% if gender_choice %}
+        <li>{{ gender_choice.content|raw }}</li>
+    {% endif %}
+    {% for argument in invitation.arguments %}
+        <li>{{- argument|raw }}</li>
+    {% endfor %}
 </ul>
+{% endspaceless %}
 
 {{ conclusion.content|raw }}
-
-<p>
-<br/><br/>
-PS : Envie d'envoyer un argumentaire personnalisé comme celui-ci ? <a href="http://en-marche.fr">Clique ici</a>.
-</p>

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\TonMacronChoice;
+use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -32,6 +33,15 @@ class TonMacronChoiceRepository extends EntityRepository
     public function findMailIntroduction(): ?TonMacronChoice
     {
         return $this->findOneBy(['contentKey' => TonMacronChoice::MAIL_INTRODUCTION_KEY]);
+    }
+
+    public function findGenderChoice(?string $gender): ?TonMacronChoice
+    {
+        if ($gender === Genders::FEMALE) {
+            return $this->findOneBy(['contentKey' => TonMacronChoice::FEMALE_KEY]);
+        }
+
+        return $this->findOneBy(['contentKey' => TonMacronChoice::MALE_KEY]);
     }
 
     public function findMailConclusion(): ?TonMacronChoice

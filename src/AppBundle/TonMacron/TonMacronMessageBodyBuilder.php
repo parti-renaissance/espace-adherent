@@ -21,6 +21,7 @@ class TonMacronMessageBodyBuilder
     {
         $invitation->messageContent = $this->twig->render('campaign/ton_macron.html.twig', [
             'introduction' => $this->repository->findMailIntroduction(),
+            'gender_choice' => $this->repository->findGenderChoice($invitation->friendGender),
             'conclusion' => $this->repository->findMailConclusion(),
             'invitation' => $invitation,
         ]);
