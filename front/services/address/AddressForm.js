@@ -66,28 +66,16 @@ export default class AddressForm {
             return;
         }
 
-        let initialCityFound = false;
-        let firstOption = null;
         for (let inseeCode in this._state.cities) {
             const value = this._state.postalCode+'-'+inseeCode;
             const option = this.createOption(value, this._state.cities[inseeCode]);
 
-            if (!firstOption) {
-                firstOption = value;
-            }
-
             if (value === this._initialCity) {
-                initialCityFound = true;
+                option.selected = true;
             }
 
             this._city.appendChild(option);
             this._city.disabled = false;
-        }
-
-        if (initialCityFound) {
-            this._city.value = initialCityFound;
-        } else if (firstOption) {
-            this._city.value = firstOption;
         }
     }
 
