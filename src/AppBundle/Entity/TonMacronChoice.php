@@ -20,6 +20,8 @@ final class TonMacronChoice
 
     const MAIL_INTRODUCTION_KEY = 'S00C01';
     const MAIL_CONCLUSION_KEY = 'S00C02';
+    const MALE_KEY = 'S00C03';
+    const FEMALE_KEY = 'S00C04';
 
     const STEP_NOT_VISIBLE = 'not_visible';
     const STEP_FRIEND_PROFESSIONAL_POSITION = 'friend_professional_position';

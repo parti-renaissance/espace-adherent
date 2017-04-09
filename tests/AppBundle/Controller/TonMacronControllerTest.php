@@ -86,12 +86,12 @@ class TonMacronControllerTest extends SqliteWebTestCase
 
         $this->client->submit($crawler->selectButton('ton_macron_invitation[fill_interests]')->form([
             'ton_macron_invitation[friendInterests]' => [
-                0 => 28,
-                18 => 46,
+                0 => 29,
+                18 => 47,
             ],
         ]));
 
-        $invitation->friendInterests = $this->getChoices([28, 46]);
+        $invitation->friendInterests = $this->getChoices([29, 47]);
         $invitation->marking = InvitationProcessor::STATE_NEEDS_SELF_REASONS;
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
@@ -104,10 +104,10 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $crawler->filter('button[name="ton_macron_invitation[fill_reasons]"]'));
 
         $this->client->submit($crawler->filter('form[name="ton_macron_invitation"]')->form([
-            'ton_macron_invitation[selfReasons]' => [1 => '61', 2 => '62'],
+            'ton_macron_invitation[selfReasons]' => [1 => '62', 2 => '63'],
         ]));
 
-        $invitation->selfReasons = $this->getChoices([61, 62]);
+        $invitation->selfReasons = $this->getChoices([62, 63]);
         $invitation->marking = InvitationProcessor::STATE_SUMMARY;
 
         $currentInvitation = $this->getCurrentInvitation();
@@ -149,7 +149,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertSame($currentInvitation->friendFirstName, $invitationLog->getFriendFirstName());
         $this->assertSame($currentInvitation->friendAge, $invitationLog->getFriendAge());
         $this->assertSame($currentInvitation->friendGender, $invitationLog->getFriendGender());
-        $this->assertSame($currentInvitation->friendPosition->getLabel(), $invitationLog->getFriendPosition());
+        $this->assertSame($currentInvitation->friendPosition->getContentKey(), $invitationLog->getFriendPosition());
         $this->assertSame($currentInvitation->friendEmail, $invitationLog->getFriendEmailAddress());
         $this->assertSame($currentInvitation->selfFirstName, $invitationLog->getAuthorFirstName());
         $this->assertSame($currentInvitation->selfLastName, $invitationLog->getAuthorLastName());
