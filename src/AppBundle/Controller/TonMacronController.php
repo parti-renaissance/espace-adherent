@@ -55,6 +55,7 @@ class TonMacronController extends Controller
         }
 
         return $this->render('ton_macron/invite.html.twig', [
+            'invitation' => $invitation,
             'invitation_form' => $form->createView(),
             'transition' => $transition,
         ]);

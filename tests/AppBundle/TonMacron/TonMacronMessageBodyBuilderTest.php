@@ -42,7 +42,7 @@ EOF;
         $this->createBuilder()->buildMessageBody($invitation = $this->createInvitationProcessor());
 
         $this->assertSame(
-            file_get_contents(__DIR__.'/../../Fixtures/files/campaign/ton_macron.html'),
+            file_get_contents(__DIR__.'/../../Fixtures/files/ton_macron_mail.html'),
             $invitation->messageContent
         );
     }
