@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Takeit\Bundle\AmpHtmlBundle\Model\AmpInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Article
+class Article implements AmpInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;

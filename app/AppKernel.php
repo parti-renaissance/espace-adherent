@@ -37,6 +37,9 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
 
+            // AMP
+            new Takeit\Bundle\AmpHtmlBundle\TakeitAmpHtmlBundle(),
+
             new AppBundle\AppBundle(),
         ];
 
