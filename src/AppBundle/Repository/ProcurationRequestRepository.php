@@ -90,6 +90,7 @@ class ProcurationRequestRepository extends EntityRepository
             ))
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
+            ->andWhere('pp.reliability >= 0')
             ->andWhere($this->createNotMatchingCount().' = 0')
             ->getQuery()
             ->getDQL();
