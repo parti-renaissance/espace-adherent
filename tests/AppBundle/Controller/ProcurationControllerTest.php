@@ -152,18 +152,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
     /**
      * @group functionnal
      */
-    public function testProcurationProposalWithoutValidReferentThrows404()
-    {
-        $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-
-        $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_1_UUID);
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
-    /**
-     * @group functionnal
-     */
     public function testProcurationProposal()
     {
         // There should not be any proposal at the moment
