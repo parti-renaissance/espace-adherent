@@ -23,7 +23,16 @@ use Symfony\Component\HttpFoundation\Response;
 class ProcurationController extends Controller
 {
     /**
-     * @Route("", name="app_procuration_index")
+     * @Route("", name="app_procuration_landing")
+     * @Method("GET")
+     */
+    public function landingAction(Request $request): Response
+    {
+        return $this->render('procuration/landing.html.twig');
+    }
+
+    /**
+     * @Route("/je-demande", name="app_procuration_index")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response

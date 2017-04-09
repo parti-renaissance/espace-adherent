@@ -1,0 +1,53 @@
+{% extends 'procuration/_layout.html.twig' %}
+
+{% block page_title 'Procuration Macron' %}
+{% block meta_description 'Chaque vote compte. Donnez ou recevez procuration avec En Marche !' %}
+{% block canonical_url url('app_procuration_landing') %}
+
+{% block content %}
+    <main class="procuration">
+        <div>
+            <section class="procuration__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center text--white"
+                     data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
+                     data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
+                <div class="l__wrapper l__row space--30-0">
+                    <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">En Marche !</a>
+                </div>
+                <div class="procuration__header--inner l__wrapper--slim">
+                    <h1 class="text--larger">
+                        Chaque vote compte.
+                    </h1>
+                    <h2 class="text--medium b__nudge--top l__hide--on-mobile b__nudge--bottom-small">
+                        Les élections du 23 avril, 7 mai 2017, 11 et 18 juin 2017.
+                    </h2>
+                    <div class="text--body">Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.</div>
+                </div>
+            </section>
+            <section class="procuration__content l__wrapper-500 l__col space--60-0 text--center">
+                <div class="b__nudge--bottom-60">
+                    <h2 class="text--medium text--bold b__nudge--bottom-small">
+                        Je ne suis pas présent(e) à une ou plusieurs dates des élections
+                    </h2>
+                    <div class="b__nudge--bottom text--summary">
+                        Un(e) habitant(e) de ma ville va voter en mon nom.
+                    </div>
+                    <a href="{{ path('app_procuration_index') }}" class="btn btn--blue">
+                        Je donne procuration
+                    </a>
+                </div>
+                <div>
+                    <h2 class="text--medium text--bold b__nudge--bottom-small">
+                        Je suis présent(e) à une ou plusieurs dates des élections
+                    </h2>
+                    <div class="b__nudge--bottom text--summary">
+                        Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
+                    </div>
+                    <a href="{{ path('app_procuration_proxy_proposal') }}" class="btn btn--blue">
+                        Je me porte mandataire
+                    </a>
+                </div>
+            </section>
+        </div>
+        {{ include('components/footer--slim.html.twig') }}
+    </main>
+{% endblock %}

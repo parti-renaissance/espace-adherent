@@ -34,7 +34,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertEmpty($this->procurationRequestRepostitory->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
