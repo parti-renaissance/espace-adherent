@@ -16,13 +16,45 @@
         <h1 class="text--large">
             Merci de votre participation à Procuration Macron.
         </h1>
-        <p class="text--body b__nudge--bottom-larger">
+        <p class="text--body">
             Votre formulaire a bien été envoyé.<br />
             En cas de demande de procuration ayant lieu dans votre commune, votre responsable local vous contactera.
         </p>
 
+
+        <div class="space--30-0">
+            <div class="text--medium text--bold b__nudge--bottom">
+                Proposez à vos amis de devenir mandataires !
+            </div>
+            {#
+            <div class="procuration__copy-link">
+                <input type="text" id="website" value="www.procuration-macron.fr" />
+                <button class="btn btn--blue" id="copy-link-button" data-clipboard-target="#website" style="display: none;">
+                    Copier le lien
+                </button>
+            </div>
+            #}
+            <ul>
+                <li role="button" aria-label="Partagez sur Facebook"
+                    class="btn btn--social btn--facebook"
+                    onclick="App.share('facebook', 'https://en-marche.fr/procuration/je-propose', 'Chaque vote compte. Allez voter au nom d’un citoyen de votre ville.')">
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                </li>
+                <li role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', 'https://en-marche.fr/procuration/je-propose', 'Chaque vote compte. Allez voter au nom d’un citoyen de votre ville.')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </li>
+                <li role="button" aria-label="Partagez via email"
+                    class="btn btn--social btn--email"
+                    onclick="App.share('email', 'https://en-marche.fr/procuration/je-propose', 'Chaque vote compte. Allez voter au nom d’un citoyen de votre ville.')">
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                </li>
+            </ul>
+        </div>
+
         <p>
-            <a href="{{ path('app_procuration_proxy_proposal', {'uuid': uuid}) }}" class="btn btn--primary">
+            <a href="{{ path('app_procuration_proxy_proposal', {'uuid': uuid}) }}" class="btn">
                 Recommencer
             </a>
         </p>
