@@ -304,6 +304,11 @@ class ProcurationProxy
     {
         $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
+
+        if (!$this->referent) {
+            $this->disabled = true;
+            $this->reliability = -1;
+        }
     }
 
     public function __toString()

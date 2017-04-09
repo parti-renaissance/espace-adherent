@@ -23,7 +23,9 @@ class ProcurationProxyRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('pp')
             ->addOrderBy('pp.createdAt', 'DESC')
-            ->addOrderBy('pp.lastName', 'ASC');
+            ->addOrderBy('pp.lastName', 'ASC')
+            ->andWhere('pp.reliability >= 0')
+        ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
@@ -39,7 +41,9 @@ class ProcurationProxyRepository extends EntityRepository
         $qb = $this->createQueryBuilder('pp')
             ->select('COUNT(pp)')
             ->where('pp.id = :id')
-            ->setParameter('id', $proxy->getId());
+            ->andWhere('pp.reliability >= 0')
+            ->setParameter('id', $proxy->getId())
+        ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
@@ -68,6 +72,7 @@ class ProcurationProxyRepository extends EntityRepository
             ))
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
+            ->andWhere('pp.reliability >= 0')
             ->setParameter('votePostalCode', $procurationRequest->getVotePostalCode())
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
