@@ -100,9 +100,11 @@ newsletter.invitation.form.invite_sent: Votre invitation a bien été envoyée !
 #
 # Ton Macron
 #
+ton_macron.invitation_form.male: Homme
+ton_macron.invitation_form.female: Femme
 ton_macron.invitation_form.friend_first_name: Son prénom
 ton_macron.invitation_form.friend_age: Son âge
-ton_macron.invitation_form.friend_position: Son statut professionnel
+ton_macron.invitation_form.friend_position: Sa situation professionnelle
 ton_macron.invitation_form.submit_fill_info: Continuer
 ton_macron.invitation_form.submit_fill_project: Continuer
 ton_macron.invitation_form.submit_fill_interests: Continuer

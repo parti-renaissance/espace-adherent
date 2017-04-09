@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\TonMacron\InvitationProcessor;
+use AppBundle\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -31,7 +32,13 @@ class TonMacronInvitationType extends AbstractType
                         'placeholder' => 'ton_macron.invitation_form.friend_age',
                         'choices' => array_combine(range(17, 130), range(17, 130)),
                     ])
-                    ->add('friendGender', GenderType::class, ['label' => false])
+                    ->add('friendGender', GenderType::class, [
+                        'label' => false,
+                        'choices' => [
+                            'ton_macron.invitation_form.male' => Genders::MALE,
+                            'ton_macron.invitation_form.female' => Genders::FEMALE,
+                        ],
+                    ])
                     ->add('friendPosition', TonMacronChoiceEntityType::class, [
                         'placeholder' => 'ton_macron.invitation_form.friend_position',
                         'step' => TonMacronChoice::STEP_FRIEND_PROFESSIONAL_POSITION,
