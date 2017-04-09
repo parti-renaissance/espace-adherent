@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
+use AppBundle\DataFixtures\ORM\LoadRedirectionData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
@@ -62,6 +63,20 @@ class HomeControllerTest extends SqliteWebTestCase
         ];
     }
 
+    /**
+     * @group functionnal
+     */
+    public function testDynamicRedirections()
+    {
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301');
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/dynamic-redirection-301-target', $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-302');
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/dynamic-redirection-302-target', $this->client);
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -69,6 +84,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->init([
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
+            LoadRedirectionData::class,
         ]);
     }
 
