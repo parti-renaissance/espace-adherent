@@ -7,7 +7,7 @@ import 'core-js/modules/es6.object.keys';
 import 'core-js/modules/es6.promise';
 
 window.Kernel = class {
-    static boot(release, sentryDsn) {
+    static boot(release, sentryDsn, algoliaAppId, algoliaAppPublicKey) {
         Kernel.release = release;
         Kernel.sentryDsn = sentryDsn;
 
@@ -31,6 +31,8 @@ window.Kernel = class {
                 App.run({
                     sentryDsn: sentryDsn,
                     release: release,
+                    algoliaAppId: algoliaAppId,
+                    algoliaAppPublicKey: algoliaAppPublicKey
                 });
             }
         };

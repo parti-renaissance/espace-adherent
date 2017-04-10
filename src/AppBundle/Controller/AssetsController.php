@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
+use AppBundle\Entity\Page;
+use AppBundle\Entity\Proposal;
 use AppBundle\Geocoder\Coordinates;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -58,5 +61,47 @@ class AssetsController extends Controller
         }
 
         return new Response($contents, 200, ['content-type' => 'image/png']);
+    }
+
+    /**
+     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|page|article"})
+     * @Method("GET")
+     */
+    public function algoliaAction(Request $request, string $type, string $slug)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $media = null;
+
+        if ('proposal' === $type) {
+            if (!$proposal = $manager->getRepository(Proposal::class)->findOneBySlug($slug)) {
+                throw $this->createNotFoundException();
+            }
+
+            $media = $proposal->getMedia();
+        } elseif ('article' === $type) {
+            if (!$article = $manager->getRepository(Article::class)->findOneBySlug($slug)) {
+                throw $this->createNotFoundException();
+            }
+
+            $media = $article->getMedia();
+        } elseif (!$manager->getRepository(Page::class)->findOneBySlug($slug)) {
+            throw $this->createNotFoundException();
+        }
+
+        $path = $media ? 'images/'.$media->getPath() : 'static/algolia-default-image.jpg';
+
+        $glide = $this->get('app.glide');
+        $glide->setResponseFactory(new SymfonyResponseFactory($request));
+
+        try {
+            return $glide->getImageResponse($path, [
+                'w' => 250,
+                'h' => 170,
+                'fit' => 'crop',
+                'fm' => 'pjpg',
+            ]);
+        } catch (FileNotFoundException $e) {
+            throw $this->createNotFoundException();
+        }
     }
 }

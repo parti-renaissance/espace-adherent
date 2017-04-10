@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -112,6 +113,9 @@ class Proposal
         return $this->themes;
     }
 
+    /**
+     * @Algolia\IndexIf
+     */
     public function isPublished(): bool
     {
         return $this->published;

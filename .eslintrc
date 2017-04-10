@@ -47,6 +47,7 @@
     "yoda": ["error", "always"],
     "max-len": ["error", 120],
     "no-param-reassign": ["off"],
-    "no-unused-vars": ["off"]
+    "no-unused-vars": ["off"],
+    "class-methods-use-this": ["off"]
   }
 }

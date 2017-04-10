@@ -10,6 +10,7 @@ import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
 import externalLinks from './listeners/external-links';
 import noJsRecaptcha from './listeners/no-js-recaptcha';
+import alogliaSearch from './listeners/algolia-search';
 
 class App {
     constructor() {
@@ -21,6 +22,7 @@ class App {
             progressiveBackground,
             externalLinks,
             noJsRecaptcha,
+            alogliaSearch,
         ];
     }
 
@@ -126,12 +128,6 @@ class App {
     runSocialShare(urlAll, urlCategory) {
         System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);
-        })
-    }
-
-    runSearchOverlay() {
-        System.import('pages/search_overlay').catch((error) => { throw error; }).then((module) => {
-            module.default();
         })
     }
 }
