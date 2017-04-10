@@ -22,13 +22,13 @@ class ProcurationRequestSerializer
 
         // Create URLs
         foreach ($exportedRequests as $key => $request) {
-            $processedAt = $request['request_processedAt']->format('Y-m-d H:i:s');
-            unset($exportedRequests[$key]['request_processedAt']);
-
+            $token = $request['request_processedAt']->format('Y-m-d H:i:s').$request['proposal_id'];
             $exportedRequests[$key]['generatedUrl'] = $this->router->generate('app_procuration_my_request', [
                 'id' => $request['request_id'],
-                'token' => Uuid::uuid5(Uuid::NAMESPACE_OID, $processedAt.$request['proposal_id'])->toString(),
+                'token' => Uuid::uuid5(Uuid::NAMESPACE_OID, $token)->toString(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $exportedRequests[$key]['request_processedAt'] = (int) $request['request_processedAt']->format('U');
         }
 
         $handle = fopen('php://memory', 'rb+');
@@ -53,6 +53,7 @@ class ProcurationRequestSerializer
             'request_electionLegislativeFirstRound',
             'request_electionLegislativeSecondRound',
             'request_reason',
+            'request_processedAt',
             'proposal_id',
             'proposal_birthdate',
             'proposal_firstNames',
