@@ -1,6 +1,6 @@
 {% for warning in form.vars.warnings %}
     <div class="form--warning">
-        {{ warning.messageTemplate|trans(warning.messageParameters, 'validators') }}
+        {{ warning.messageTemplate|trans(warning.messageParameters, 'validators')|raw }}
     </div>
 {% endfor %}
 
