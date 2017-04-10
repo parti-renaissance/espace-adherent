@@ -22,13 +22,15 @@ class ProcurationRequestSerializer
 
         // Create URLs
         foreach ($exportedRequests as $key => $request) {
-            $token = $request['request_processedAt']->format('Y-m-d H:i:s').$request['proposal_id'];
+            $processedAt = $request['request_processedAt']->format('Y-m-d H:i:s');
+
+            $token = $processedAt.$request['proposal_id'];
             $exportedRequests[$key]['generatedUrl'] = $this->router->generate('app_procuration_my_request', [
                 'id' => $request['request_id'],
                 'token' => Uuid::uuid5(Uuid::NAMESPACE_OID, $token)->toString(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-            $exportedRequests[$key]['request_processedAt'] = (int) $request['request_processedAt']->format('U');
+            $exportedRequests[$key]['request_processedAt'] = $processedAt;
         }
 
         $handle = fopen('php://memory', 'rb+');
