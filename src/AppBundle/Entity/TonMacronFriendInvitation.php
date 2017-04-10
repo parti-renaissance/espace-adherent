@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,8 @@ use Ramsey\Uuid\UuidInterface;
  *   @ORM\UniqueConstraint(name="ton_macron_friend_invitations_uuid_unique", columns="uuid")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TonMacronFriendInvitationRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 final class TonMacronFriendInvitation
 {

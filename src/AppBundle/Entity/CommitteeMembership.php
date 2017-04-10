@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeMembershipException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -25,6 +26,8 @@ use Ramsey\Uuid\UuidInterface;
  *   }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeMembershipRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class CommitteeMembership
 {

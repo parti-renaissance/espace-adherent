@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\InitializedEntityException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Utils\EmojisRemover;
@@ -12,6 +13,8 @@ use Ramsey\Uuid\Uuid;
 /**
  * @ORM\Table(name="donations")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Donation implements GeoPointInterface
 {

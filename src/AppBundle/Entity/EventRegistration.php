@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -9,6 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRegistrationRepository")
  * @ORM\Table(name="events_registrations")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class EventRegistration
 {
