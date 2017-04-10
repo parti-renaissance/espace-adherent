@@ -27,6 +27,7 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
         $message->setSenderName('Procuration Macron');
         $message->addCC($procurationManager->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
+        $message->setReplyTo($procurationManager->getEmailAddress());
 
         return $message;
     }

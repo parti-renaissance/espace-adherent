@@ -32,6 +32,7 @@ final class ProcurationProxyFoundMessage extends MailjetMessage
         $message->setSenderName('Procuration Macron');
         $message->addCC($procurationManager->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
+        $message->setReplyTo($proxy->getEmailAddress());
 
         return $message;
     }
