@@ -116,6 +116,15 @@
         margin: 0;
     }
 
+    &--warning {
+        background: #edf861;
+        margin: 30px 0;
+        padding: 10px;
+        color: #ff3680;
+        font-size: 16px;
+        line-height: 1em;
+    }
+
     &__radio-button {
         label {
             display: flex;

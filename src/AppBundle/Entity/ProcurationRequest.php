@@ -7,7 +7,6 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +16,6 @@ use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 /**
  * @ORM\Table(name="procuration_requests")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationRequestRepository")
- *
- * @UniqueEntity(fields={"emailAddress"}, message="procuration.request.unique", groups={"profile"})
  */
 class ProcurationRequest
 {
@@ -35,7 +32,7 @@ class ProcurationRequest
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
     private $id;
 
