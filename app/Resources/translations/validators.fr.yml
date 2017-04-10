@@ -134,7 +134,7 @@ procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
 
 procuration.request.unique: Vous semblez déjà avoir demandé procuration avec cette adresse e-mail. Vous pouvez soit abandonner le processus et conserver votre demande précédente, ou bien confirmer cette nouvelle demande. Dans tous les cas, vous devriez bientôt être contacté(e) par un responsable procuration En Marche.
-procuration.proposal.unique: Vous semblez déjà avoir proposé d'être mandataire. Merci de votre aide ! Vous devriez bientôt être contacté(e) par un responsable procuration En Marche.
+procuration.proposal.unique: Vous semblez déjà avoir proposé d'être mandataire. Merci de votre aide ! Vous pouvez soit abandonner le processus et conserver votre demande précédente, ou bien confirmer cette nouvelle demande. Vous devriez bientôt être contacté(e) par un responsable procuration En Marche.
 
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
 

@@ -11,6 +11,20 @@ use Doctrine\ORM\QueryBuilder;
 class ProcurationProxyRepository extends EntityRepository
 {
     /**
+     * @return ProcurationProxy[]
+     */
+    public function findByEmailAddress(string $emailAddress): array
+    {
+        return $this
+            ->createQueryBuilder('pp')
+            ->where('LOWER(pp.emailAddress) = :emailAddress')
+            ->setParameter('emailAddress', mb_strtolower($emailAddress))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param Adherent $procurationManager
      *
      * @return ProcurationProxy[]

@@ -149,6 +149,7 @@ class ProcurationController extends Controller
         }
 
         $form = $this->createForm(ProcurationProxyType::class, $proposal);
+        $form->get('state')->setData('new_request');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -230,6 +230,97 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    public function testProcurationProxyProposalWorfklowRaisesWarningWhenMatchingProcurationProposalAlreadyExists()
+    {
+        // There should not be any proposal at the moment
+        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_proposal' => [
+                'gender' => 'male',
+                'firstNames' => 'Maxime',
+                'lastName' => 'Michaux',
+                'emailAddress' => 'maxime.michaux@example.fr',
+                'address' => '14 rue Jules Ferry',
+                'country' => 'FR',
+                'postalCode' => '75018',
+                'city' => '75018-75120',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0140998080',
+                ],
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
+                'voteCountry' => 'FR',
+                'votePostalCode' => '75018',
+                'voteCity' => '75018-75120',
+                'voteCityName' => '',
+                'voteOffice' => 'Mairie',
+                'electionPresidentialFirstRound' => true,
+                'electionPresidentialSecondRound' => false,
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'conditions' => true,
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Vous semblez déjà avoir proposé d\'être mandataire.', $crawler->filter('.form--warning')->text());
+
+        $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_proposal' => [
+                'gender' => 'male',
+                'firstNames' => 'Maxime',
+                'lastName' => 'Michaux',
+                'emailAddress' => 'maxime.michaux@example.fr',
+                'address' => '14 rue Jules Ferry',
+                'country' => 'FR',
+                'postalCode' => '75018',
+                'city' => '75018-75120',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0140998080',
+                ],
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
+                'voteCountry' => 'FR',
+                'votePostalCode' => '75018',
+                'voteCity' => '75018-75120',
+                'voteCityName' => '',
+                'voteOffice' => 'Mairie',
+                'electionPresidentialFirstRound' => true,
+                'electionPresidentialSecondRound' => false,
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'conditions' => true,
+            ],
+        ]));
+
+        // Procuration request should have been saved
+        /* @var ProcurationProxy $proposal */
+        $this->assertCount(4, $proposals = $this->procurationProxyRepostitory->findAll());
+
+        // Redirected to thanks
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
     /**
      * @group functionnal
      */
