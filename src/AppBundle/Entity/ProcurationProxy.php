@@ -6,7 +6,6 @@ use AppBundle\Intl\FranceCitiesBundle;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,8 +15,6 @@ use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationProxyRepository")
- *
- * @UniqueEntity(fields={"emailAddress"}, message="procuration.proposal.unique", groups={"front"})
  */
 class ProcurationProxy
 {

@@ -148,7 +148,7 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'birthdate' => '1989-02-17',
             'voteCountry' => 'FR',
             'votePostalCode' => '75018',
-            'voteCity' => '75020-75120',
+            'voteCity' => '75018-75120',
             'voteCityName' => null,
             'voteOffice' => 'Mairie',
             'electionPresidentialFirstRound' => false,

@@ -49,5 +49,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.procuration_proxy" class="AppBundle\Repository\ProcurationProxyRepository" public="false">
+            <argument>AppBundle\Entity\ProcurationProxy</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
