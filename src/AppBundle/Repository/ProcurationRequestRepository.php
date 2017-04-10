@@ -9,6 +9,23 @@ use Doctrine\ORM\QueryBuilder;
 
 class ProcurationRequestRepository extends EntityRepository
 {
+    /**
+     * @return ProcurationRequest[]
+     */
+    public function findByEmailAddress(string $emailAddress): array
+    {
+        return $this
+            ->createQueryBuilder('pr')
+            ->where('LOWER(pr.emailAddress) = :emailAddress')
+            ->setParameter('emailAddress', mb_strtolower($emailAddress))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return ProcurationRequest[]
+     */
     public function findAllForExport(): array
     {
         return $this->createQueryBuilder('pr')
@@ -62,11 +79,9 @@ class ProcurationRequestRepository extends EntityRepository
     }
 
     /**
-     * @param Adherent $procurationManager
-     *
-     * @return array
+     * @return ProcurationRequest[]
      */
-    public function findManagedBy(Adherent $procurationManager)
+    public function findManagedBy(Adherent $procurationManager): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -122,7 +137,7 @@ class ProcurationRequestRepository extends EntityRepository
         return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
-    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager)
+    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): void
     {
         $codesFilter = $qb->expr()->orX();
 
@@ -147,7 +162,7 @@ class ProcurationRequestRepository extends EntityRepository
         $qb->andWhere($codesFilter);
     }
 
-    private function createNotMatchingCount()
+    private function createNotMatchingCount(): string
     {
         $elections = [
             'electionPresidentialFirstRound',

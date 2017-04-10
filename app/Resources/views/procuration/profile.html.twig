@@ -101,13 +101,20 @@
                     {{ form_errors(form.emailAddress) }}
                 </div>
 
-                {{ form_rest(form) }}
+                {% for warning in form.vars.warnings %}
+                    <div class="form--warning">
+                        {{ warning.messageTemplate|trans(warning.messageParameters, 'validators') }}
+                    </div>
+                {% endfor %}
 
                 <div class="text--center b__nudge--top-large">
                     <button type="submit" class="btn btn--blue">
-                        Je continue
+                        {{- 'must_confirm' == form.state.vars.value ? 'Je confirme ma nouvelle demande' : 'Je continue' -}}
                     </button>
                 </div>
+
+                {{ form_rest(form) }}
+
             </form>
         </div>
     </section>

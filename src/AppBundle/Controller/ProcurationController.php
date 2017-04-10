@@ -71,6 +71,7 @@ class ProcurationController extends Controller
         }
 
         $form = $this->createForm(ProcurationProfileType::class, $command);
+        $form->get('state')->setData('new_request');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

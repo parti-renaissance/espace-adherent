@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Repository\ProcurationProxyRepository;
@@ -25,13 +26,93 @@ class ProcurationControllerTest extends SqliteWebTestCase
     /** @var ProcurationProxyRepository */
     private $procurationProxyRepostitory;
 
+    public function testProcurationRequestWorfklowRaisesWarningWhenMatchingProcurationExists()
+    {
+        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_procuration_vote]')->form([
+            'app_procuration_vote' => [
+                'voteCountry' => 'FR',
+                'votePostalCode' => '75018',
+                'voteCity' => '75018-75118',
+                'voteCityName' => '',
+                'voteOffice' => 'TestOfficeName',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/mes-coordonnees', $this->client);
+        $crawler = $this->client->followRedirect();
+
+        // Profile
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+            'app_procuration_profile' => [
+                'gender' => 'female',
+                'firstNames' => 'Carine, Margaux',
+                'lastName' => 'Édouard',
+                'emailAddress' => 'caroline.edouard@example.fr',
+                'address' => '165 rue Marcadet',
+                'country' => 'FR',
+                'postalCode' => '75018',
+                'city' => '75018-75118',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0600010203',
+                ],
+                'birthdate' => [
+                    'year' => '1977',
+                    'month' => '11',
+                    'day' => '23',
+                ],
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Vous semblez déjà avoir demandé procuration avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
+
+        $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form());
+
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/ma-procuration', $this->client);
+        $crawler = $this->client->followRedirect();
+
+        // Elections
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_procuration_elections]')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_elections' => [
+                'electionPresidentialFirstRound' => true,
+                'electionPresidentialSecondRound' => false,
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'reason' => ProcurationRequest::REASON_HANDICAP,
+            ],
+        ]));
+
+        // Procuration request should have been saved
+        /* @var ProcurationRequest $request */
+        $this->assertCount(6, $requests = $this->procurationRequestRepostitory->findAll());
+        $this->assertInstanceOf(ProcurationRequest::class, $request = $requests[0]);
+
+        // Redirected to thanks
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/merci', $this->client);
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
     /**
      * @group functionnal
      */
     public function testProcurationRequest()
     {
-        // There should not be any request at the moment
-        $this->assertEmpty($this->procurationRequestRepostitory->findAll());
+        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
@@ -122,8 +203,8 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         // Procuration request should have been saved
         /* @var ProcurationRequest $request */
-        $this->assertCount(1, $requests = $this->procurationRequestRepostitory->findAll());
-        $this->assertInstanceOf(ProcurationRequest::class, $request = $requests[0]);
+        $this->assertCount(6, $requests = $this->procurationRequestRepostitory->findAll());
+        $this->assertInstanceOf(ProcurationRequest::class, $request = end($requests));
 
         $this->assertSame('FR', $request->getVoteCountry());
         $this->assertSame('92110', $request->getVotePostalCode());
@@ -155,7 +236,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
     public function testProcurationProposal()
     {
         // There should not be any proposal at the moment
-        $this->assertEmpty($this->procurationProxyRepostitory->findAll());
+        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
@@ -235,8 +316,8 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         // Procuration request should have been saved
         /* @var ProcurationProxy $proposal */
-        $this->assertCount(1, $proposals = $this->procurationProxyRepostitory->findAll());
-        $this->assertInstanceOf(ProcurationProxy::class, $proposal = $proposals[0]);
+        $this->assertCount(4, $proposals = $this->procurationProxyRepostitory->findAll());
+        $this->assertInstanceOf(ProcurationProxy::class, $proposal = end($proposals));
 
         $this->assertSame('FR', $proposal->getVoteCountry());
         $this->assertSame('92110', $proposal->getVotePostalCode());
@@ -276,6 +357,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadProcurationData::class,
         ]);
 
         $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();
