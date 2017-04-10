@@ -61,8 +61,8 @@
         </div>
 
         <div class="text--center b__nudge--top-large">
-            {{ form_widget(invitation_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
             <a href="{{ path('app_ton_macron_invite_restart') }}" class="btn">Recommencer</a>
+            {{ form_widget(invitation_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
         </div>
 
         {{ form_end(invitation_form) }}
