@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -9,6 +10,8 @@ use Ramsey\Uuid\Uuid;
 /**
  * @ORM\Table(name="newsletter_invitations")
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class NewsletterInvite
 {

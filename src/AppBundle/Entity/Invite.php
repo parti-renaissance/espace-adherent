@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     since="24 hours",
  *     message="invitation.email.was_invited_recently"
  * )
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Invite
 {

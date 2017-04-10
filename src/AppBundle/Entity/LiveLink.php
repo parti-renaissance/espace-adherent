@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -10,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="live_links")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LiveLinkRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class LiveLink
 {
