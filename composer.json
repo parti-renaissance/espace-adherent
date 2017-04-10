@@ -57,7 +57,9 @@
         "php-amqplib/rabbitmq-bundle": "^1.12",
         "sabre/dav": "^3.2",
         "jms-serializer/serializer-bundle": "^1.1",
-        "suin/php-rss-writer": "^1.5"
+        "suin/php-rss-writer": "^1.5",
+        "facebook/graph-sdk": "^5.4",
+        "imagine/imagine": "^0.6.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

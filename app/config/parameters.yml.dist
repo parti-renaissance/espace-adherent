@@ -38,3 +38,9 @@ parameters:
     env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
 
     env(GMAPS_API_KEY):         ''
+
+    env(FACEBOOK_APP_ID):         'app_id'
+    env(FACEBOOK_APP_SECRET):     'app_secret'
+    env(FACEBOOK_GRAPH_API_HOST): 'https://graph.facebook.com'
+
+    env(WATERMARKS_PATH):         '%kernel.root_dir%/../web/watermarks'
