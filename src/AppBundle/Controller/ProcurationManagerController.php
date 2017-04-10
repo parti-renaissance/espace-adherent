@@ -19,6 +19,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  */
 class ProcurationManagerController extends Controller
 {
+    const PER_PAGE = 25;
+
     /**
      * @Route("", name="app_procuration_manager_index")
      * @Method("GET")
@@ -26,13 +28,33 @@ class ProcurationManagerController extends Controller
     public function indexAction(): Response
     {
         $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
-        $requests = $requestsRepository->findManagedBy($this->getUser());
 
         return $this->render('procuration_manager/index.html.twig', [
+            'requests' => $requestsRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE),
+            'totalCount' => $requestsRepository->countManagedBy($this->getUser()),
+            'countToProcess' => $requestsRepository->countToProcessManagedBy($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/requests-list/{page}",
+     *     requirements={"page"="\d+"},
+     *     name="app_procuration_manager_requests_list"
+     * )
+     * @Method("GET")
+     */
+    public function requestsListAction($page): Response
+    {
+        $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
+        $requests = $requestsRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE);
+
+        if (!$requests) {
+            return new Response();
+        }
+
+        return $this->render('procuration_manager/_requests_list.html.twig', [
             'requests' => $requests,
-            'countToProcess' => count(array_filter($requests, function ($request) {
-                return !$request['data']['processed'];
-            })),
         ]);
     }
 
@@ -45,7 +67,30 @@ class ProcurationManagerController extends Controller
         $proxiesRepository = $this->getDoctrine()->getRepository(ProcurationProxy::class);
 
         return $this->render('procuration_manager/proposals.html.twig', [
-            'proxies' => $proxiesRepository->findManagedBy($this->getUser()),
+            'proxies' => $proxiesRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE),
+            'totalCount' => $proxiesRepository->countManagedBy($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/proposals-list/{page}",
+     *     requirements={"page"="\d+"},
+     *     name="app_procuration_manager_proposals_list"
+     * )
+     * @Method("GET")
+     */
+    public function proposalsListAction($page): Response
+    {
+        $proxiesRepository = $this->getDoctrine()->getRepository(ProcurationProxy::class);
+        $proxies = $proxiesRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE);
+
+        if (!$proxies) {
+            return new Response();
+        }
+
+        return $this->render('procuration_manager/_proposals_list.html.twig', [
+            'proxies' => $proxies,
         ]);
     }
 

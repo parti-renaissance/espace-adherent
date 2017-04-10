@@ -1,0 +1,51 @@
+{% for request in requests %}
+    <tr>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ request.data.id }}
+        </td>
+        <td class="datagrid__table__col--left">
+            {{ request.data.firstNames }} {{ request.data.lastName }}<br />
+            <span class="datagrid__table__col--hide-mobile">
+                        <em>Lieu de vote :</em>
+                {{ request.data.votePostalCode }} {{ request.data.voteCityName }} {{ request.data.voteCountry }}
+                    </span>
+        </td>
+        <td>
+            {% if not request.data.processed %}
+                <strong>En attente</strong>
+            {% else %}
+                Traitée<br />
+                (le {{ request.data.processedAt|date('d/m/Y à H:i') }})
+            {% endif %}
+        </td>
+        <td class="datagrid__table__col--left">
+            {% if request.data.electionPresidentialFirstRound and request.data.electionPresidentialSecondRound %}
+                Présidentielle : 1er et 2nd tour<br />
+            {% elseif request.data.electionPresidentialFirstRound %}
+                Présidentielle : 1er tour<br />
+            {% elseif request.data.electionPresidentialSecondRound %}
+                Présidentielle : 2nd tour<br />
+            {% endif %}
+
+            {% if request.data.electionLegislativeFirstRound and request.data.electionLegislativeSecondRound %}
+                Législatives : 1er et 2nd tour<br />
+            {% elseif request.data.electionLegislativeFirstRound %}
+                Législatives : 1er tour<br />
+            {% elseif request.data.electionLegislativeSecondRound %}
+                Législatives : 2nd tour<br />
+            {% endif %}
+        </td>
+        <td>
+            {{ request.matchingProxiesCount }}
+        </td>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ request.data.createdAt|date('d/m/Y H:i') }}
+        </td>
+        <td>
+            <a href="{{ path('app_procuration_manager_request', {'id': request.data.id}) }}"
+               id="request-link-{{ request.data.id }}">
+                Afficher
+            </a>
+        </td>
+    </tr>
+{% endfor %}

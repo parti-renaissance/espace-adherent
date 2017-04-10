@@ -26,10 +26,12 @@ class ProcurationProxyRepository extends EntityRepository
 
     /**
      * @param Adherent $procurationManager
+     * @param int      $page
+     * @param int      $perPage
      *
      * @return ProcurationProxy[]
      */
-    public function findManagedBy(Adherent $procurationManager): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -39,11 +41,25 @@ class ProcurationProxyRepository extends EntityRepository
             ->addOrderBy('pp.createdAt', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
             ->andWhere('pp.reliability >= 0')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
         ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function countManagedBy(Adherent $procurationManager): int
+    {
+        if (!$procurationManager->isProcurationManager()) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder('pp')->select('COUNT(pp)')->andWhere('pp.reliability >= 0');
+        $this->addAndWhereManagedBy($qb, $procurationManager);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function isManagedBy(Adherent $procurationManager, ProcurationProxy $proxy): bool
