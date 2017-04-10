@@ -75,7 +75,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous semblez déjà avoir demandé procuration avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
+        $this->assertContains('Vous semblez déjà avoir soumis une demande pour être mandant avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
 
         $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form());
 
@@ -275,7 +275,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous semblez déjà avoir proposé d\'être mandataire.', $crawler->filter('.form--warning')->text());
+        $this->assertContains('Vous semblez déjà avoir soumis une demande pour être mandataire avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
 
         $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form([
             'g-recaptcha-response' => 'dummy',
