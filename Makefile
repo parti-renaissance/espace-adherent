@@ -9,6 +9,11 @@ CONSOLE=bin/console
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
+
+##
+## Project setup
+##---------------------------------------------------------------------------
+
 start:          ## Install and start the project
 start: build up db web/built perm
 
@@ -19,6 +24,28 @@ stop:           ## Remove docker containers
 reset:          ## Reset the whole project
 reset: stop start
 
+clear:          ## Remove all the cache, the logs, the sessions and the built assets
+clear: perm
+	-$(EXEC) rm -rf var/cache/*
+	-$(EXEC) rm -rf var/sessions/*
+	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
+	-$(EXEC) $(CONSOLE) redis:flushall -n || true
+	rm -rf var/logs/*
+	rm -rf web/built
+
+clean:          ## Clear and remove dependencies
+clean: clear
+	rm -rf vendor node_modules
+
+cc:             ## Clear the cache in dev env
+cc:
+	$(RUN) $(CONSOLE) cache:clear
+
+
+##
+## Database
+##---------------------------------------------------------------------------
+
 db:             ## Reset the database and load fixtures
 db: vendor
 	$(RUN) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MySQL
@@ -27,36 +54,35 @@ db: vendor
 	$(RUN) $(CONSOLE) doctrine:migrations:migrate -n
 	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
 
-:##---------------------------------------------------------------------------:
-
-db-diff:        ## Generate a migration by comparing your current database to your mapping information.
+db-diff:        ## Generate a migration by comparing your current database to your mapping information
 db-diff: vendor
 	$(RUN) $(CONSOLE) doctrine:migration:diff
+
+db-load:        ## Reset the database fixtures
+db-load: vendor
+	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
+
+
+##
+## Assets
+##---------------------------------------------------------------------------
 
 watch:          ## Watch the assets and build their development version on change
 watch: node_modules
 	$(RUN) yarn watch
 
-clear:          ## Remove all the cache, the logs, the sessions and the built assets
-clear: perm
-	-$(EXEC) rm -rf var/cache/*
-	-$(EXEC) rm -rf var/sessions/*
-	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
-	rm -rf var/logs/*
-	rm -rf web/built
+assets:         ## Build the development version of the assets
+assets: node_modules
+	$(RUN) yarn build-dev
 
-clean:          ## Clear and remove dependencies
-clean: clear
-	rm -rf vendor node_modules
+assets-prod:    ## Build the production version of the assets
+assets-prod: node_modules
+	$(RUN) yarn build-prod
 
-deps:           ## Install the project PHP and JS dependencies
-deps: vendor web/built
 
-cc:             ## Clear the cache in dev env
-cc:
-	$(RUN) $(CONSOLE) cache:clear
-
-:##---------------------------------------------------------------------------:
+##
+## Tests
+##---------------------------------------------------------------------------
 
 test:           ## Run the PHP and the Javascript tests
 test: tu tf tj
@@ -73,10 +99,10 @@ tj:             ## Run the Javascript tests
 tj: node_modules
 	$(RUN) yarn test
 
-lint:           ## Run lint on twig, yaml and Javascript files
-lint: lint-sf lint-front
+lint:           ## Run lint on Twig, YAML and Javascript files
+lint: ls ly lt lj
 
-ls:             ## Lint Symfony (twig and yaml) files
+ls:             ## Lint Symfony (Twig and YAML) files
 ls: ly lt
 
 ly:
@@ -88,6 +114,20 @@ lt:
 lj:             ## Lint the Javascript to follow the convention
 lj: node_modules
 	$(RUN) yarn lint
+
+
+##
+## Dependencies
+##---------------------------------------------------------------------------
+
+deps:           ## Install the project PHP and JS dependencies
+deps: vendor web/built
+
+
+##
+
+
+# Internal rules
 
 build:
 	$(FIG) build
