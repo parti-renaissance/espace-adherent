@@ -11,6 +11,27 @@
         </h2>
 
         <div class="text--center b__nudge--bottom-large">
+            <strong>Cette procuration concerne {{ '{1} le tour de scrutin suivant|[2,Inf[ les tours de scrutins suivants'|transchoice(request.electionsRoundsCount) }} :</strong>
+            <ul>
+                {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
+                    <li>Présidentielle : 1<sup>er</sup> et 2<sup>nd</sup> tours</li>
+                {% elseif request.electionPresidentialFirstRound %}
+                    <li>Présidentielle : 1<sup>er</sup> tour</li>
+                {% elseif request.electionPresidentialSecondRound %}
+                    <li>Présidentielle : 2<sup>nd</sup> tour</li>
+                {% endif %}
+
+                {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
+                    <li>Législatives : 1<sup>er</sup> et 2<sup>nd</sup> tours</li>
+                {% elseif request.electionLegislativeFirstRound %}
+                    <li>Législatives : 1<sup>er</sup> tour</li>
+                {% elseif request.electionLegislativeSecondRound %}
+                    <li>Législatives : 2<sup>nd</sup> tour</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="text--center b__nudge--bottom-large">
             <strong>{{ request.firstNames }} {{ request.lastName }}</strong> :
             téléchargez le formulaire <a href="https://www.formulaires.modernisation.gouv.fr/gf/cerfa_14952.do" target="_blank" rel="noopener noreferrer">CERFA de procuration</a>,
             remplissez-le avec les informations ci-dessous<br />
@@ -37,7 +58,7 @@
                 </h4>
 
                 <div class="profile-label">
-                    Auteur
+                    Genre, Prénom(s) et Nom du mandant
                 </div>
                 <div class="profile-value">
                     {{ request.gender == 'male' ? 'Monsieur' : 'Madame' }}
@@ -88,23 +109,23 @@
                 </div>
 
                 <div class="profile-label">
-                    Scrutins concernés
+                    {{ '{1} Scrutin concerné|[2,Inf[ Scrutins concernés'|transchoice(request.electionsRoundsCount) }} :
                 </div>
                 <div class="profile-value">
                     {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                        Présidentielle : 1er et 2nd tour<br />
+                        Présidentielle : 1<sup>er</sup> et 2<sup>nd</sup> tours<br />
                     {% elseif request.electionPresidentialFirstRound %}
-                        Présidentielle : 1er tour<br />
+                        Présidentielle : 1<sup>er</sup> tour<br />
                     {% elseif request.electionPresidentialSecondRound %}
-                        Présidentielle : 2nd tour<br />
+                        Présidentielle : 2<sup>nd</sup> tour<br />
                     {% endif %}
 
                     {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                        Législatives : 1er et 2nd tour<br />
+                        Législatives : 1<sup>er</sup> et 2<sup>nd</sup> tours<br />
                     {% elseif request.electionLegislativeFirstRound %}
-                        Législatives : 1er tour<br />
+                        Législatives : 1<sup>er</sup> tour<br />
                     {% elseif request.electionLegislativeSecondRound %}
-                        Législatives : 2nd tour<br />
+                        Législatives : 2<sup>nd</sup> tour<br />
                     {% endif %}
                 </div>
 
@@ -136,7 +157,7 @@
                 </h4>
 
                 <div class="profile-label">
-                    Auteur
+                    Genre, Prénom(s) et Nom du mandataire
                 </div>
                 <div class="profile-value">
                     {{ proxy.gender == 'male' ? 'Monsieur' : 'Madame' }}
@@ -184,27 +205,6 @@
                 <div class="profile-value">
                     {{ proxy.address }}<br />
                     {{ proxy.postalCode }} {{ proxy.cityName }} {{ proxy.country }}
-                </div>
-
-                <div class="profile-label">
-                    Disponibilités
-                </div>
-                <div class="profile-value">
-                    {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                        Présidentielle : 1er et 2nd tour<br />
-                    {% elseif proxy.electionPresidentialFirstRound %}
-                        Présidentielle : 1er tour<br />
-                    {% elseif proxy.electionPresidentialSecondRound %}
-                        Présidentielle : 2nd tour<br />
-                    {% endif %}
-
-                    {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
-                        Législatives : 1er et 2nd tour<br />
-                    {% elseif proxy.electionLegislativeFirstRound %}
-                        Législatives : 1er tour<br />
-                    {% elseif proxy.electionLegislativeSecondRound %}
-                        Législatives : 2nd tour<br />
-                    {% endif %}
                 </div>
             </div>
         </div>

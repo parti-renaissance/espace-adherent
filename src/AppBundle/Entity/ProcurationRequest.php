@@ -632,6 +632,28 @@ class ProcurationRequest
         $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
     }
 
+    public function getElectionsRoundsCount(): int
+    {
+        $count = 0;
+        if ($this->electionPresidentialFirstRound) {
+            ++$count;
+        }
+
+        if ($this->electionPresidentialSecondRound) {
+            ++$count;
+        }
+
+        if ($this->electionLegislativeFirstRound) {
+            ++$count;
+        }
+
+        if ($this->electionLegislativeSecondRound) {
+            ++$count;
+        }
+
+        return $count;
+    }
+
     public function getReason(): ?string
     {
         return $this->reason;
