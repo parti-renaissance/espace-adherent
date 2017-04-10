@@ -35,8 +35,6 @@ class SocialShareController extends Controller
      */
     public function showAction(SocialShareCategory $category): Response
     {
-        $this->disableInProduction();
-
         $manager = $this->getDoctrine();
 
         return $this->render('social_share/wall.html.twig', [
