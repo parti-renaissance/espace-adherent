@@ -46,6 +46,20 @@ export default class ReqwestApiClient {
         });
     }
 
+    getProcurationRequests(page, callback) {
+        this._createRequest(callback, {
+            url: '/espace-responsable-procuration/requests-list/'+page,
+            type: 'html'
+        });
+    }
+
+    getProcurationProposals(page, callback) {
+        this._createRequest(callback, {
+            url: '/espace-responsable-procuration/proposals-list/'+page,
+            type: 'html'
+        });
+    }
+
     getUpcomingEvents(callback) {
         var url = '/api/events';
         var type = dom('#map-config').getAttribute('data-event-type');

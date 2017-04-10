@@ -111,6 +111,18 @@ class App {
         })
     }
 
+    runProcurationManagerRequests(totalCount, perPage) {
+        System.import('pages/procuration_manager_requests').catch((error) => { throw error; }).then((module) => {
+            module.default(totalCount, perPage, this.get('api'));
+        })
+    }
+
+    runProcurationManagerProposals(totalCount, perPage) {
+        System.import('pages/procuration_manager_proposals').catch((error) => { throw error; }).then((module) => {
+            module.default(totalCount, perPage, this.get('api'));
+        })
+    }
+
     runSocialShare(urlAll, urlCategory) {
         System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);

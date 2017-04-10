@@ -79,46 +79,97 @@ class ProcurationRequestRepository extends EntityRepository
     }
 
     /**
+     * @param Adherent $procurationManager
+     * @param int      $page
+     * @param int      $perPage
+     *
      * @return ProcurationRequest[]
      */
-    public function findManagedBy(Adherent $procurationManager): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
         }
 
+        $qb = $this->createQueryBuilder('pr')
+            ->orderBy('pr.processed', 'ASC')
+            ->addOrderBy('pr.createdAt', 'DESC')
+            ->addOrderBy('pr.lastName', 'ASC')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+        ;
+
+        $this->addAndWhereManagedBy($qb, $procurationManager);
+
+        /** @var ProcurationRequest[] $requests */
+        $requests = $qb->getQuery()->getArrayResult();
+
         $qb = $this->_em->createQueryBuilder();
 
-        $proxiesCountSubRequest = $qb
+        $proxiesCountQueryTemplate = $qb
             ->select('COUNT(pp)')
             ->from('AppBundle:ProcurationProxy', 'pp')
-            ->where($qb->expr()->orX(
-                $qb->expr()->andX(
-                    'pp.voteCountry = \'FR\'',
-                    'SUBSTRING(pp.votePostalCode, 1, 2) = SUBSTRING(pr.votePostalCode, 1, 2)',
-                    'pp.voteCityName = pr.voteCityName'
-                ),
-                $qb->expr()->andX(
-                    'pp.voteCountry != \'FR\'',
-                    'pp.voteCountry = pr.voteCountry'
-                )
-            ))
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
             ->andWhere($this->createNotMatchingCount().' = 0')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->andX(
+                    'pp.voteCountry = \'FR\'',
+                    'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                    'pp.voteCityName = :voteCityName'
+                ),
+                $qb->expr()->andX(
+                    'pp.voteCountry != \'FR\'',
+                    'pp.voteCountry = :voteCountry'
+                )
+            ))
             ->getQuery()
-            ->getDQL();
+        ;
 
-        $qb = $this->createQueryBuilder('pr')
-            ->select('pr AS data', '('.$proxiesCountSubRequest.') as matchingProxiesCount')
-            ->orderBy('pr.processed', 'ASC')
-            ->addOrderBy('pr.createdAt', 'DESC')
-            ->addOrderBy('pr.lastName', 'ASC');
+        foreach ($requests as $key => $request) {
+            $proxiesCountQuery = clone $proxiesCountQueryTemplate;
+            $proxiesCountQuery->setParameters([
+                'votePostalCodePrefix' => substr($request['votePostalCode'], 0, 2),
+                'voteCityName' => $request['voteCityName'],
+                'voteCountry' => $request['voteCountry'],
+                'electionPresidentialFirstRound' => $request['electionPresidentialFirstRound'],
+                'electionPresidentialSecondRound' => $request['electionPresidentialSecondRound'],
+                'electionLegislativeFirstRound' => $request['electionLegislativeFirstRound'],
+                'electionLegislativeSecondRound' => $request['electionLegislativeSecondRound'],
+            ]);
 
+            $requests[$key] = [
+                'data' => $request,
+                'matchingProxiesCount' => (int) $proxiesCountQuery->getSingleScalarResult(),
+            ];
+        }
+
+        return $requests;
+    }
+
+    public function countManagedBy(Adherent $procurationManager): int
+    {
+        if (!$procurationManager->isProcurationManager()) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder('pr')->select('COUNT(pr)');
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
-        return $qb->getQuery()->getArrayResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function countToProcessManagedBy(Adherent $procurationManager): int
+    {
+        if (!$procurationManager->isProcurationManager()) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder('pr')->select('COUNT(pr)')->where('pr.processed = 0');
+        $this->addAndWhereManagedBy($qb, $procurationManager);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function isManagedBy(Adherent $procurationManager, ProcurationRequest $procurationRequest): bool
@@ -174,7 +225,7 @@ class ProcurationRequestRepository extends EntityRepository
         $notMatchingCount = [];
 
         foreach ($elections as $election) {
-            $notMatchingCount[] = sprintf('(CASE WHEN (pr.%s = TRUE AND pp.%s = FALSE) THEN 1 ELSE 0 END)', $election, $election);
+            $notMatchingCount[] = sprintf('(CASE WHEN (:%s = TRUE AND pp.%s = FALSE) THEN 1 ELSE 0 END)', $election, $election);
         }
 
         return implode(' + ', $notMatchingCount);
