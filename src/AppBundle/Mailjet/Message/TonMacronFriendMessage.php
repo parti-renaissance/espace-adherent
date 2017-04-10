@@ -20,6 +20,8 @@ final class TonMacronFriendMessage extends MailjetMessage
             null,
             $invitation->getUuid()
         );
+
+        $message->setReplyTo($invitation->getAuthorEmailAddress());
         $message->setSenderName(self::fixMailjetParsing($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName()));
         $message->addCC($invitation->getAuthorEmailAddress());
 
