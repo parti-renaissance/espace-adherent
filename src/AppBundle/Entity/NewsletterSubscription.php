@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,6 +16,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEn
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class NewsletterSubscription
 {

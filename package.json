@@ -10,6 +10,7 @@
     "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
+    "algoliasearch": "^3.22.1",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
