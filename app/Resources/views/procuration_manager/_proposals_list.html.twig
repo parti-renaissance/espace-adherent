@@ -4,9 +4,21 @@
             {{ proxy.id }}
         </td>
         <td class="datagrid__table__col--left">
-            {{ proxy.firstNames }} {{ proxy.lastName }}
+            <strong>{{ proxy.firstNames }} {{ proxy.lastName }}</strong>
             {% if proxy.reliabilityDescription %}
                 ({{ proxy.reliabilityDescription }})
+            {% endif %}
+            <br/>
+            Email :
+            <a href="mailto:{{ proxy.emailAddress }}">
+                {{ proxy.emailAddress }}
+            </a>
+            {% if proxy.phone %}
+                <br />
+                Téléphone :
+                <a href="{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                    {{ proxy.phone|phone_number_format }}
+                </a>
             {% endif %}
             <br />
             <span class="datagrid__table__col--hide-mobile">
