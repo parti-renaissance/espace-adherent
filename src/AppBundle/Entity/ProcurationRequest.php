@@ -39,6 +39,8 @@ class ProcurationRequest
     /**
      * The associated found proxy.
      *
+     * @var ProcurationProxy
+     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationProxy", mappedBy="foundRequest")
      */
     private $foundProxy;
@@ -378,15 +380,22 @@ class ProcurationRequest
     public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationBy = null): void
     {
         $this->foundProxy = $procurationProxy;
-        $procurationProxy->setFoundRequest($this);
         $this->foundBy = $procurationBy;
         $this->processed = true;
         $this->processedAt = new \DateTime();
+
+        if ($procurationProxy) {
+            $procurationProxy->setFoundRequest($this);
+        }
     }
 
     public function unprocess(): void
     {
-        $this->foundProxy->setFoundRequest(null);
+        if ($this->foundProxy instanceof ProcurationProxy) {
+            $this->foundProxy->setFoundRequest(null);
+        }
+
+        $this->foundProxy = null;
         $this->processed = false;
         $this->processedAt = null;
     }
