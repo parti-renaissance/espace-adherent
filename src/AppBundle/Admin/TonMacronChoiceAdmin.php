@@ -53,10 +53,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                    'delete' => [],
-                ],
+                'template' => 'admin/ton_macron_actions.html.twig',
             ])
         ;
     }
