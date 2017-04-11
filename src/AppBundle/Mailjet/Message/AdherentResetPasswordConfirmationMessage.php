@@ -9,7 +9,7 @@ final class AdherentResetPasswordConfirmationMessage extends MailjetMessage
 {
     public static function createFromAdherent(Adherent $adherent): self
     {
-        return new static(
+        return new self(
             Uuid::uuid4(),
             '130495',
             $adherent->getEmailAddress(),

@@ -188,6 +188,22 @@ class ProcurationRequestRepository extends EntityRepository
         return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function paginateRequestForSendReminderToProxies($offset = 0, $limit = 20): array
+    {
+        return $this->createQueryBuilder('pr')
+            ->leftJoin('pr.foundProxy', 'pp')
+            ->leftJoin('pr.foundBy', 'a')
+            ->select('pr', 'pp', 'a')
+            ->where('pr.processed = true')
+            ->andWhere('pr.processedAt <= :matchDate')
+            ->setParameter('matchDate', new \DateTime('-48 hours'))
+            ->andWhere('pr.reminded = 0')
+            ->setFirstResult($offset * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): void
     {
         $codesFilter = $qb->expr()->orX();

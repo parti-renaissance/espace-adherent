@@ -18,7 +18,7 @@ final class ReferentMessage extends MailjetMessage
 
         $batchUuid = Uuid::uuid4();
 
-        $message = new static(
+        $message = new self(
             Uuid::uuid4(),
             '63336',
             $referent->getEmailAddress(),

@@ -19,7 +19,7 @@ final class CommitteeNewFollowerMessage extends MailjetMessage
             throw new \RuntimeException('First recipient must be an Adherent instance.');
         }
 
-        $message = new static(
+        $message = new self(
             Uuid::uuid4(),
             '54904',
             $host->getEmailAddress(),

@@ -9,7 +9,7 @@ final class JeMarcheReportMessage extends MailjetMessage
 {
     public static function createFromJeMarcheReport(JeMarcheReport $jeMarcheReport): self
     {
-        return new static(
+        return new self(
             Uuid::uuid4(),
             '133783',
             $jeMarcheReport->getEmailAddress(),

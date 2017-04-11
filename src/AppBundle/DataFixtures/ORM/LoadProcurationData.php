@@ -109,7 +109,7 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'reason' => ProcurationRequest::REASON_HELP,
         ]));
 
-        $manager->persist($factory->createRequestFromArray([
+        $manager->persist($request1 = $factory->createRequestFromArray([
             'gender' => 'male',
             'first_names' => 'William',
             'last_name' => 'Brunelle',
@@ -180,7 +180,7 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'electionLegislativeSecondRound' => true,
         ]));
 
-        $manager->persist($factory->createProxyProposalFromArray([
+        $manager->persist($proxy1 = $factory->createProxyProposalFromArray([
             'referent' => $referent,
             'gender' => 'male',
             'first_names' => 'Benjamin',
@@ -204,6 +204,17 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
             'reliability' => 5,
             'reliabilityDescription' => 'Responsable procuration',
         ]));
+
+        $manager->flush();
+
+        $manager->refresh($request1);
+        $manager->refresh($proxy1);
+        $request1->process($proxy1, $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID));
+
+        $reflectionClass = new \ReflectionClass(ProcurationRequest::class);
+        $reflectionProperty = $reflectionClass->getProperty('processedAt');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($request1, new \DateTime('-48 hours'));
 
         $manager->flush();
     }

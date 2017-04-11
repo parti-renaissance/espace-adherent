@@ -9,7 +9,7 @@ final class NewsletterInvitationMessage extends MailjetMessage
 {
     public static function createFromInvite(NewsletterInvite $invite, string $subscribeUrl): self
     {
-        return new static(
+        return new self(
             Uuid::uuid4(),
             '120780',
             $invite->getEmail(),

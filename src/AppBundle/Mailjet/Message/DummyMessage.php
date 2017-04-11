@@ -8,7 +8,7 @@ final class DummyMessage extends MailjetMessage
 {
     public static function create()
     {
-        return new static(
+        return new self(
             Uuid::fromString('99999999-9999-9999-9999-999999999999'),
             '66666',
             'dummy@example.tld',

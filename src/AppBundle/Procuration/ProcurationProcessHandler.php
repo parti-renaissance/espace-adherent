@@ -23,8 +23,7 @@ class ProcurationProcessHandler
 
     public function process(Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy)
     {
-        $request->process($proxy);
-        $proxy->setFoundRequest($request);
+        $request->process($proxy, $procurationManager);
 
         $this->manager->persist($request);
         $this->manager->persist($proxy);
@@ -38,7 +37,6 @@ class ProcurationProcessHandler
         $proxy = $request->getFoundProxy();
 
         $request->unprocess();
-        $proxy->setFoundRequest(null);
 
         $this->manager->persist($request);
         $this->manager->persist($proxy);

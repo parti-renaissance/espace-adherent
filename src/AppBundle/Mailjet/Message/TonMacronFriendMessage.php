@@ -9,7 +9,7 @@ final class TonMacronFriendMessage extends MailjetMessage
 {
     public static function createFromInvitation(TonMacronFriendInvitation $invitation): self
     {
-        $message = new static(
+        $message = new self(
             Uuid::uuid4(),
             '135119',
             $invitation->getFriendEmailAddress(),

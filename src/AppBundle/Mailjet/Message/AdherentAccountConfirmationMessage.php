@@ -9,7 +9,7 @@ final class AdherentAccountConfirmationMessage extends MailjetMessage
 {
     public static function createFromAdherent(Adherent $adherent, int $adherentsCount = 0, int $committeesCount = 0): self
     {
-        return new static(
+        return new self(
             Uuid::uuid4(),
             '54673',
             $adherent->getEmailAddress(),
