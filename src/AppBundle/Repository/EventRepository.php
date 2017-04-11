@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -168,5 +169,37 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.committee', 'c')
             ->where('c.status = :status')
             ->setParameter('status', Committee::APPROVED);
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function searchEvents(SearchParametersFilter $search): array
+    {
+        if ($coordinates = $search->getCityCoordinates()) {
+            $qb = $this
+                ->createNearbyQueryBuilder($coordinates)
+                ->andWhere($this->getNearbyExpression().' < :distance_max')
+                ->andWhere('n.beginAt > :now')
+                ->setParameter('distance_max', $search->getRadius())
+                ->setParameter('now', new \DateTime('-36 hours'))
+                ->orderBy('n.beginAt', 'asc')
+                ->addOrderBy('distance_between', 'asc')
+            ;
+        } else {
+            $qb = $this->createQueryBuilder('n');
+        }
+
+        if (!empty($query = $search->getQuery())) {
+            $qb->andWhere('n.name like :query');
+            $qb->setParameter('query', '%'.$query.'%');
+        }
+
+        return $qb
+            ->setFirstResult($search->getOffset())
+            ->setMaxResults($search->getMaxResults())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

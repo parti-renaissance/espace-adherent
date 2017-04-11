@@ -28,6 +28,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     const EVENT_7_UUID = '00871ce7-21bd-448c-9775-a23b808e1666';
     const EVENT_8_UUID = '113876dd-87d2-426a-a12a-60ffd5107b10';
     const EVENT_9_UUID = '633d4cdf-c7b9-4188-ad7a-96d18e80bc09';
+    const EVENT_10_UUID = '5c2471c7-8def-4757-9bec-8e0fa24361d8';
 
     use ContainerAwareTrait;
 
@@ -173,6 +174,20 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
         $event9->incrementParticipantsCount();
 
+        $event10 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_10_UUID,
+            'organizer' => $author3,
+            'committee' => $committee1,
+            'name' => 'Grand débat parisien',
+            'category' => 'CE010',
+            'description' => 'Débatons ensemble du programme.',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
+            'begin_at' => date('Y-m-d', strtotime('yesterday')).' 09:30:00',
+            'finish_at' => date('Y-m-d', strtotime('yesterday')).' 19:00:00',
+            'capacity' => 100,
+        ]);
+        $event10->incrementParticipantsCount();
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -182,9 +197,11 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($event7);
         $manager->persist($event8);
         $manager->persist($event9);
+        $manager->persist($event10);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event10, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));

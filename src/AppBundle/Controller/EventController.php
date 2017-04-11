@@ -120,9 +120,7 @@ class EventController extends Controller
      */
     public function editAction(Request $request, Event $event): Response
     {
-        $command = EventCommand::createFromEvent($event);
-
-        $form = $this->createForm(EventCommandType::class, $command);
+        $form = $this->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

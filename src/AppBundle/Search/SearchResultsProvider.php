@@ -2,100 +2,35 @@
 
 namespace AppBundle\Search;
 
-use AppBundle\Entity\Committee;
 use AppBundle\Repository\EventRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 
 class SearchResultsProvider
 {
-    private $committee;
-    private $membership;
-    private $event;
+    private $committeeRepository;
+    private $eventRepository;
 
     public function __construct(
-        CommitteeRepository $committee,
-        CommitteeMembershipRepository $membership,
-        EventRepository $event
+        CommitteeRepository $committeeRepository,
+        EventRepository $eventRepository
     ) {
-        $this->committee = $committee;
-        $this->membership = $membership;
-        $this->event = $event;
+        $this->committeeRepository = $committeeRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     public function find(SearchParametersFilter $search): array
     {
         if (SearchParametersFilter::TYPE_COMMITTEES === $search->getType()) {
-            return $this->findCommittees($search);
+            return $this->committeeRepository->searchCommittees($search);
         }
 
         if (SearchParametersFilter::TYPE_EVENTS === $search->getType()) {
-            return $this->findEvents($search);
+            return $this->eventRepository->searchEvents($search);
         }
 
         throw new \RuntimeException(sprintf(
             'This provider is not able to handle the search type "%s"',
             $search->getType()
         ));
-    }
-
-    public function findCommittees(SearchParametersFilter $search): array
-    {
-        if ($coordinates = $search->getCityCoordinates()) {
-            $qb = $this->committee
-                ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->committee->getNearbyExpression().' < :distance_max')
-                ->setParameter('distance_max', $search->getRadius())
-            ;
-        } else {
-            $qb = $this->committee->createQueryBuilder('c');
-        }
-
-        $query = $search->getQuery();
-
-        if (!empty($query)) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
-
-        return $qb
-            ->andWhere('n.status = :status')
-            ->setParameter('status', Committee::APPROVED)
-            ->setFirstResult($search->getOffset())
-            ->setMaxResults($search->getMaxResults())
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findEvents(SearchParametersFilter $search): array
-    {
-        if ($coordinates = $search->getCityCoordinates()) {
-            $qb = $this->event
-                ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->committee->getNearbyExpression().' < :distance_max')
-                ->andWhere('n.beginAt > :now')
-                ->setParameter('distance_max', $search->getRadius())
-                ->setParameter('now', new \DateTime())
-                ->orderBy('n.beginAt', 'asc')
-                ->addOrderBy('distance_between', 'asc')
-            ;
-        } else {
-            $qb = $this->committee->createQueryBuilder('n');
-        }
-
-        $query = $search->getQuery();
-
-        if (!empty($query)) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
-
-        return $qb
-            ->setFirstResult($search->getOffset())
-            ->setMaxResults($search->getMaxResults())
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }
