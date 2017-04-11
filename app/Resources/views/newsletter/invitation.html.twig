@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block banner '' %}
-{% block footer '' %}
 
 {% block page_title 'Inviter à la newsletter' %}
 {% block canonical_url url('newsletter_subscription') %}
@@ -12,8 +11,8 @@
         <section>
             <div class="newsletter-page">
                 <h2 class="text--large b__nudge--top-large text--center l__wrapper--slim">
-                    Invitez vos amis à la<br>
-                    newsletter d'En Marche
+                    J'invite des amis<br>
+                    à la newsletter de campagne
                 </h2>
                 <p class="text--body l__wrapper--medium b__nudge--top b__nudge--bottom-large">
                     Vous connaissez quelqu'un que ça intéresserait ? Une personne qui reste à convaincre et qui souhaite
@@ -25,10 +24,10 @@
                     signés par Emmanuel Macron ainsi que des exclusivités sur la campagne.
                 </p>
                 <p class="text--body l__wrapper--medium b__nudge--top b__nudge--bottom-large">
-                    Participez à faire gagner nos idées
+                    Participez à faire gagner nos idées.
                 </p>
 
-                <div class="newsletter-page__form l__wrapper-500">
+                <div class="newsletter-page__form text--center">
                     {{ form_start(invitation_form, {attr: {novalidate: 'novalidate'}}) }}
 
                     {{ form_errors(invitation_form) }}
