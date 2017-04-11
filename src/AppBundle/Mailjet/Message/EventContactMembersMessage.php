@@ -20,7 +20,7 @@ final class EventContactMembersMessage extends MailjetMessage
         $recipients = array_values($recipients);
         $recipient = array_shift($recipients);
 
-        $message = new static(
+        $message = new self(
             Uuid::uuid4(),
             '116586',
             $recipient->getEmailAddress(),

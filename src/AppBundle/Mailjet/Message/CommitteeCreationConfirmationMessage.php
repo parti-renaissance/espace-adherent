@@ -9,7 +9,7 @@ class CommitteeCreationConfirmationMessage extends MailjetMessage
 {
     public static function create(Adherent $adherent, string $city): self
     {
-        $message = new static(
+        $message = new self(
             Uuid::uuid4(),
             '54689',
             $adherent->getEmailAddress(),

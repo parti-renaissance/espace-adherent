@@ -298,7 +298,7 @@ class ProcurationRequest
         $this->phone = static::createPhoneNumber();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return 'Demande de procuration de '.$this->lastName.' '.$this->firstNames;
     }
@@ -316,7 +316,7 @@ class ProcurationRequest
         ];
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode($countryCode);
@@ -333,7 +333,7 @@ class ProcurationRequest
      *
      * @param ExecutionContextInterface $context
      */
-    public function validateElectionsChosen(ExecutionContextInterface $context)
+    public function validateChosenElections(ExecutionContextInterface $context): void
     {
         if ($this->electionPresidentialFirstRound) {
             return;
@@ -354,7 +354,7 @@ class ProcurationRequest
         $context->addViolation('Vous devez choisir au moins une élection');
     }
 
-    public function importAdherentData(Adherent $adherent)
+    public function importAdherentData(Adherent $adherent): void
     {
         $this->gender = $adherent->getGender();
         $this->setFirstNames($adherent->getFirstName());
@@ -420,7 +420,7 @@ class ProcurationRequest
         return true;
     }
 
-    public function generatePrivateToken(): string
+    public function generatePrivateToken(): ?string
     {
         if (!$this->processed || !$this->foundProxy) {
             return null;
@@ -431,17 +431,17 @@ class ProcurationRequest
         return $token->toString();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getGender()
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender($gender)
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }
@@ -451,7 +451,7 @@ class ProcurationRequest
         return $this->lastName;
     }
 
-    public function setLastName(?string $lastName)
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = EmojisRemover::remove($lastName);
     }
@@ -461,7 +461,7 @@ class ProcurationRequest
         return $this->firstNames;
     }
 
-    public function setFirstNames(?string $firstNames)
+    public function setFirstNames(?string $firstNames): void
     {
         $this->firstNames = EmojisRemover::remove($firstNames);
     }
@@ -471,7 +471,7 @@ class ProcurationRequest
         return $this->address;
     }
 
-    public function setAddress(?string $address)
+    public function setAddress(?string $address): void
     {
         $this->address = EmojisRemover::remove($address);
     }
@@ -481,17 +481,17 @@ class ProcurationRequest
         return $this->postalCode;
     }
 
-    public function setPostalCode(?string $postalCode)
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity(?string $cityCode)
+    public function setCity(?string $cityCode): void
     {
         $this->city = $cityCode;
 
@@ -501,12 +501,12 @@ class ProcurationRequest
         }
     }
 
-    public function getCityName()
+    public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
-    public function setCityName(?string $cityName)
+    public function setCityName(?string $cityName): void
     {
         if ($cityName) {
             $this->cityName = EmojisRemover::remove($cityName);
@@ -518,17 +518,17 @@ class ProcurationRequest
         return $this->country;
     }
 
-    public function setCountry(?string $country)
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }
 
-    public function getPhone()
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
 
-    public function setPhone($phone)
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
@@ -538,17 +538,17 @@ class ProcurationRequest
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(?string $emailAddress)
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
 
-    public function getBirthdate()
+    public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate($birthdate)
+    public function setBirthdate(?\DateTime $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
@@ -563,12 +563,12 @@ class ProcurationRequest
         $this->votePostalCode = $votePostalCode;
     }
 
-    public function getVoteCity()
+    public function getVoteCity(): ?string
     {
         return $this->voteCity;
     }
 
-    public function setVoteCity(?string $cityCode)
+    public function setVoteCity(?string $cityCode): void
     {
         $this->voteCity = $cityCode;
 
@@ -578,12 +578,12 @@ class ProcurationRequest
         }
     }
 
-    public function getVoteCityName()
+    public function getVoteCityName(): ?string
     {
         return $this->voteCityName;
     }
 
-    public function setVoteCityName(?string $voteCityName)
+    public function setVoteCityName(?string $voteCityName): void
     {
         if ($voteCityName) {
             $this->voteCityName = EmojisRemover::remove($voteCityName);
@@ -595,7 +595,7 @@ class ProcurationRequest
         return $this->voteCountry;
     }
 
-    public function setVoteCountry(?string $voteCountry)
+    public function setVoteCountry(?string $voteCountry): void
     {
         $this->voteCountry = $voteCountry;
     }
@@ -605,7 +605,7 @@ class ProcurationRequest
         return $this->voteOffice;
     }
 
-    public function setVoteOffice(?string $voteOffice)
+    public function setVoteOffice(?string $voteOffice): void
     {
         $this->voteOffice = $voteOffice;
     }
@@ -615,7 +615,7 @@ class ProcurationRequest
         return $this->electionPresidentialFirstRound;
     }
 
-    public function setElectionPresidentialFirstRound(bool $electionPresidentialFirstRound)
+    public function setElectionPresidentialFirstRound(bool $electionPresidentialFirstRound): void
     {
         $this->electionPresidentialFirstRound = $electionPresidentialFirstRound;
     }
@@ -625,7 +625,7 @@ class ProcurationRequest
         return $this->electionPresidentialSecondRound;
     }
 
-    public function setElectionPresidentialSecondRound(bool $electionPresidentialSecondRound)
+    public function setElectionPresidentialSecondRound(bool $electionPresidentialSecondRound): void
     {
         $this->electionPresidentialSecondRound = $electionPresidentialSecondRound;
     }
@@ -635,7 +635,7 @@ class ProcurationRequest
         return $this->electionLegislativeFirstRound;
     }
 
-    public function setElectionLegislativeFirstRound(bool $electionLegislativeFirstRound)
+    public function setElectionLegislativeFirstRound(bool $electionLegislativeFirstRound): void
     {
         $this->electionLegislativeFirstRound = $electionLegislativeFirstRound;
     }
@@ -645,7 +645,7 @@ class ProcurationRequest
         return $this->electionLegislativeSecondRound;
     }
 
-    public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound)
+    public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound): void
     {
         $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
     }
@@ -677,7 +677,7 @@ class ProcurationRequest
         return $this->reason;
     }
 
-    public function setReason(?string $reason)
+    public function setReason(?string $reason): void
     {
         $this->reason = $reason;
     }
@@ -734,6 +734,6 @@ class ProcurationRequest
 
     public function remind(): void
     {
-        $this->reminded++;
+        ++$this->reminded;
     }
 }

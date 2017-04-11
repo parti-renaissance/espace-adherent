@@ -8,7 +8,7 @@ final class DonationMessage extends MailjetMessage
 {
     public static function createFromDonation(Donation $donation): self
     {
-        return new static(
+        return new self(
             $donation->getUuid(),
             '54677',
             $donation->getEmailAddress(),

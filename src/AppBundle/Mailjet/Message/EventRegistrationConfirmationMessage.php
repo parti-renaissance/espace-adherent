@@ -12,7 +12,7 @@ final class EventRegistrationConfirmationMessage extends MailjetMessage
         $event = $registration->getEvent();
         $firstName = $registration->getFirstName();
 
-        return new static(
+        return new self(
             Uuid::uuid4(),
             '118620',
             $registration->getEmailAddress(),
