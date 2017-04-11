@@ -32,7 +32,7 @@ class ProcurationProcessHandler
         $this->mailjet->sendMessage($this->factory->createProxyFoundMessage($procurationManager, $request, $proxy));
     }
 
-    public function unprocess(Adherent $procurationManager, ProcurationRequest $request)
+    public function unprocess(?Adherent $procurationManager, ProcurationRequest $request)
     {
         $proxy = $request->getFoundProxy();
 

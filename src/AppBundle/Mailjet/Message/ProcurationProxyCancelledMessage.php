@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyCancelledMessage extends MailjetMessage
 {
-    public static function create(Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy): self
+    public static function create(?Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -25,9 +25,14 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
         );
 
         $message->setSenderName('Procuration Macron');
-        $message->addCC($procurationManager->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
-        $message->setReplyTo($procurationManager->getEmailAddress());
+
+        if ($procurationManager) {
+            $message->addCC($procurationManager->getEmailAddress());
+            $message->setReplyTo($procurationManager->getEmailAddress());
+        } else {
+            $message->setReplyTo('procurations@en-marche.fr');
+        }
 
         return $message;
     }

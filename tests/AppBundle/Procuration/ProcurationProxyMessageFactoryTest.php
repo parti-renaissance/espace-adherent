@@ -45,8 +45,8 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             [
-                'john@smith.tld',
                 'monique@en-marche-dev.fr',
+                'john@smith.tld',
             ],
             $message->getCC()
         );

@@ -1,0 +1,44 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Désassocier {{ request.firstNames }} {{ request.lastName }}
+                        et {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <p>
+        <a href="{{ path('admin_app_procurationrequest_list') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Retour à la liste
+        </a>
+    </p>
+
+<div class="box box-primary">
+    <div class="box-body">
+        {{ form_errors(form) }}
+
+        <p>
+            Voulez-vous vraiment désassocier {{ request.firstNames }} {{ request.lastName }}
+            et {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }} ?
+        </p>
+
+        <form method="post" action="">
+            <p>
+                {{ form_widget(form.submit, {'label': 'Oui, désassocier', 'attr': {'class': 'btn btn-primary'}}) }}
+                <a href="{{ path('admin_app_procurationrequest_list') }}" class="btn btn-link">Non, annuler</a>
+            </p>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>
+{% endblock %}
