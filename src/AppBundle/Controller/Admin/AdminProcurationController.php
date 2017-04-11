@@ -8,6 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -45,5 +48,43 @@ class AdminProcurationController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="procurations-matched.csv"',
         ]);
+    }
+
+    /**
+     * List the procuration referents invitations URLs.
+     *
+     * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate")
+     * @Method("GET|POST")
+     * @Security("has_role('ROLE_TERRITORY')")
+     */
+    public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
+    {
+        if (!$request->getFoundProxy()) {
+            return $this->redirectAfterDeassociation($sfRequest);
+        }
+
+        $form = $this->createForm(FormType::class);
+        $form->add('submit', SubmitType::class);
+        $form->handleRequest($sfRequest);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.procuration.process_handler')->unprocess(null, $request);
+
+            return $this->redirectAfterDeassociation($sfRequest);
+        }
+
+        return $this->render('admin/procuration_request_deassociate.html.twig', [
+            'form' => $form->createView(),
+            'request' => $request,
+        ]);
+    }
+
+    private function redirectAfterDeassociation(Request $request)
+    {
+        if ('proxies' === $request->query->get('from')) {
+            return $this->redirectToRoute('admin_app_procurationproxy_list');
+        }
+
+        return $this->redirectToRoute('admin_app_procurationrequest_list');
     }
 }

@@ -2,11 +2,19 @@
 
 {% block field %}
     {% if object.foundRequest %}
-        <span class="label label-success">Associée</span><br />
-        A
-        <a href="{{ path('admin_app_procurationrequest_show', {'id': object.foundRequest.id}) }}">
-            {{ object.foundRequest.firstNames }} {{ object.foundRequest.lastName }}
-        </a>
+        <div style="margin-bottom: 10px; width: 160px;">
+            <span class="label label-success">Associé</span>
+            <a href="{{ path('app_admin_procuration_request_deassociate', {'id': object.foundRequest.id, 'from': 'proxies'}) }}" class="btn btn-default btn-xs">
+                Désassocier
+            </a>
+        </div>
+
+        <div>
+            A
+            <a href="{{ path('admin_app_procurationrequest_show', {'id': object.foundRequest.id}) }}">
+                {{ object.foundRequest.firstNames }} {{ object.foundRequest.lastName }}
+            </a>
+        </div>
     {% else %}
         <span class="label label-default">En attente</span>
     {% endif %}

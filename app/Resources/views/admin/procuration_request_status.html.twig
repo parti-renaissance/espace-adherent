@@ -2,11 +2,18 @@
 
 {% block field %}
     {% if object.hasFoundProxy %}
-        <span class="label label-success">Traitée</span><br />
-        Associée à
-        <a href="{{ path('admin_app_procurationproxy_show', {'id': object.foundProxy.id}) }}">
-            {{ object.foundProxy.firstNames }} {{ object.foundProxy.lastName }}
-        </a>
+        <div style="margin-bottom: 10px;">
+            <span class="label label-success">Traitée</span>
+            <a href="{{ path('app_admin_procuration_request_deassociate', {'id': object.id}) }}" class="btn btn-default btn-xs">
+                Désassocier
+            </a>
+        </div>
+        <div>
+            Associée à
+            <a href="{{ path('admin_app_procurationproxy_show', {'id': object.foundProxy.id}) }}">
+                {{ object.foundProxy.firstNames }} {{ object.foundProxy.lastName }}
+            </a>
+        </div>
     {% elseif object.processed %}
         <span class="label label-success">Traitée</span><br />
         Traitée manuellement
