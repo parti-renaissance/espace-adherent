@@ -44,6 +44,14 @@ class ProcurationRequest
     private $foundProxy;
 
     /**
+     * The user who associated the found proxy.
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(name="procuration_request_found_by_id", referencedColumnName="id")
+     */
+    private $foundBy;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=6)
@@ -271,6 +279,13 @@ class ProcurationRequest
     private $processedAt;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $reminded = 0;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"elections"})
@@ -360,15 +375,18 @@ class ProcurationRequest
         }
     }
 
-    public function process(ProcurationProxy $procurationProxy = null)
+    public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationBy = null): void
     {
         $this->foundProxy = $procurationProxy;
+        $procurationProxy->setFoundRequest($this);
+        $this->foundBy = $procurationBy;
         $this->processed = true;
         $this->processedAt = new \DateTime();
     }
 
-    public function unprocess()
+    public function unprocess(): void
     {
+        $this->foundProxy->setFoundRequest(null);
         $this->processed = false;
         $this->processedAt = null;
     }
@@ -684,8 +702,38 @@ class ProcurationRequest
         return $this->foundProxy;
     }
 
-    public function setFoundProxy(?ProcurationProxy $procurationProxy)
+    public function setFoundProxy(?ProcurationProxy $procurationProxy): void
     {
         $this->foundProxy = $procurationProxy;
+    }
+
+    public function getFoundBy(): ?Adherent
+    {
+        return $this->foundBy;
+    }
+
+    public function setFoundBy(?Adherent $foundBy): void
+    {
+        $this->foundBy = $foundBy;
+    }
+
+    public function getReminded(): int
+    {
+        return $this->reminded;
+    }
+
+    public function isReminded(): bool
+    {
+        return $this->reminded > 0;
+    }
+
+    public function setReminded(int $reminder): void
+    {
+        $this->reminded = $reminder;
+    }
+
+    public function remind(): void
+    {
+        $this->reminded++;
     }
 }
