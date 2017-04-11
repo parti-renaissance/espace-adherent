@@ -50,9 +50,9 @@ class SendMailToProcurationProxiesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $procurationRequestRepository = $this->manager->getRepository(ProcurationRequest::class);
         for ($i = 0, $total = 0; ; ++$i) {
-            $requests = $this->manager->getRepository(ProcurationRequest::class)
-                ->paginateRequestForSendReminderToProxies($i, $this->limit);
+            $requests = $procurationRequestRepository->paginateRequestForSendReminderToProxies($i, $this->limit);
 
             foreach ($requests as $request) {
                 $this->reminder->remind($request);
