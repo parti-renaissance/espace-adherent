@@ -98,7 +98,7 @@ abstract class AbstractProcurationType extends AbstractType
         // not there are already existing procuration requests with the same
         // email address. If yes, the user will have to confirm his choice.
         if ('new_request' === $request['state']) {
-            if ($mustConfirm = $this->matchEmailAddress($emailAddress)) {
+            if ($this->matchEmailAddress($emailAddress)) {
                 $request['state'] = 'must_confirm';
                 $form = $event->getForm();
                 $options = $form->getConfig()->getOptions();
