@@ -119,7 +119,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->filter('form[name=app_procuration_vote]')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_vote' => [
                 'voteCountry' => 'FR',
                 'votePostalCode' => '92110',
@@ -135,7 +135,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         // Profile
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->filter('form[name=app_procuration_profile]')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_profile' => [
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
@@ -160,8 +160,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__error')->text());
+        $this->assertSame(0, $crawler->filter('.form--warning')->count());
 
-        $this->client->submit($crawler->filter('form[name=app_procuration_profile]')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_profile' => [
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
@@ -190,7 +191,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         // Elections
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->filter('form[name=app_procuration_elections]')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_elections' => [
                 'electionPresidentialFirstRound' => true,
@@ -334,7 +335,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->filter('form[name=app_procuration_proposal]')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_proposal' => [
                 'gender' => 'male',
@@ -370,8 +371,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__error')->text());
+        $this->assertSame(0, $crawler->filter('.form--warning')->count());
 
-        $this->client->submit($crawler->filter('form[name=app_procuration_proposal]')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_proposal' => [
                 'gender' => 'male',
