@@ -32,7 +32,7 @@ class PageControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $crawler->filter('html:contains("La carte En Marche !")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
         $this->assertContains('10 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertContains('6 comités', $crawler->filter('#counter-committees')->text());
         $this->assertContains('9 événements', $crawler->filter('#counter-events')->text());
@@ -43,7 +43,7 @@ class PageControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $crawler->filter('html:contains("Tous les événements")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("La carte des événements")')->count());
         $this->assertContains('Tous (4)', $crawler->filter('.events-map-categories--all')->first()->text());
     }
 
