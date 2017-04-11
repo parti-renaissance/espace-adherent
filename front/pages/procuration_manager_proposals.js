@@ -1,7 +1,7 @@
 /*
  * Procuration manager proposals list
  */
-export default (filtersQueryString, totalCount, perPage, api) => {
+export default (queryString, totalCount, perPage, api) => {
     if (totalCount <= perPage) {
         return;
     }
@@ -17,7 +17,7 @@ export default (filtersQueryString, totalCount, perPage, api) => {
 
         page += 1;
 
-        api.getProcurationProposals(filtersQueryString, page, (proposals) => {
+        api.getProcurationProposals(queryString, page, (proposals) => {
             hide(loader);
 
             if (5 < proposals.length) {

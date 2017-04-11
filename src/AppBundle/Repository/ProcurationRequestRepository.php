@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Search\ProcurationParametersFilter;
+use AppBundle\Procuration\Filter\ProcurationRequestFilters;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -79,33 +79,32 @@ class ProcurationRequestRepository extends EntityRepository
         ;
     }
 
-    /**
-     * @param Adherent $procurationManager
-     * @param int      $page
-     * @param int      $perPage
-     *
-     * @return ProcurationRequest[]
-     */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters = null): array
+    public function findMatchingRequests(Adherent $manager, ProcurationRequestFilters $filters): array
     {
-        if (!$procurationManager->isProcurationManager()) {
+        if (!$manager->isProcurationManager()) {
             return [];
         }
 
-        $qb = $this->createQueryBuilder('pr')
-            ->orderBy('pr.processed', 'ASC')
-            ->addOrderBy('pr.createdAt', 'DESC')
-            ->addOrderBy('pr.lastName', 'ASC')
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage)
-        ;
+        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr'), $manager);
+        $filters->apply($qb, 'pr');
 
-        $this->addAndWhereManagedBy($qb, $procurationManager);
+        return $this->findRequests($qb);
+    }
 
-        if ($filters) {
-            $filters->apply($qb, 'pr');
+    public function countMatchingRequests(Adherent $manager, ProcurationRequestFilters $filters): int
+    {
+        if (!$manager->isProcurationManager()) {
+            return 0;
         }
 
+        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr')->select('COUNT(pr.id)'), $manager);
+        $filters->apply($qb, 'pr');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    private function findRequests(QueryBuilder $qb): array
+    {
         /** @var ProcurationRequest[] $requests */
         $requests = $qb->getQuery()->getArrayResult();
 
@@ -151,31 +150,6 @@ class ProcurationRequestRepository extends EntityRepository
         }
 
         return $requests;
-    }
-
-    public function countManagedBy(Adherent $procurationManager, ProcurationParametersFilter $filters): int
-    {
-        if (!$procurationManager->isProcurationManager()) {
-            return 0;
-        }
-
-        $qb = $this->createQueryBuilder('pr')->select('COUNT(pr)');
-        $this->addAndWhereManagedBy($qb, $procurationManager);
-        $filters->apply($qb, 'pr');
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    public function countToProcessManagedBy(Adherent $procurationManager): int
-    {
-        if (!$procurationManager->isProcurationManager()) {
-            return 0;
-        }
-
-        $qb = $this->createQueryBuilder('pr')->select('COUNT(pr)')->where('pr.processed = 0');
-        $this->addAndWhereManagedBy($qb, $procurationManager);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function isManagedBy(Adherent $procurationManager, ProcurationRequest $procurationRequest): bool

@@ -5,7 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Search\ProcurationParametersFilter;
+use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -26,43 +26,28 @@ class ProcurationProxyRepository extends EntityRepository
     }
 
     /**
-     * @param Adherent $procurationManager
-     * @param int      $page
-     * @param int      $perPage
-     *
      * @return ProcurationProxy[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters = null): array
+    public function findMatchingProposals(Adherent $manager, ProcurationProxyProposalFilters $filters): array
     {
-        if (!$procurationManager->isProcurationManager()) {
+        if (!$manager->isProcurationManager()) {
             return [];
         }
 
-        $qb = $this->createQueryBuilder('pp')
-            ->addOrderBy('pp.createdAt', 'DESC')
-            ->addOrderBy('pp.lastName', 'ASC')
-            ->andWhere('pp.reliability >= 0')
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage)
-        ;
-
-        $this->addAndWhereManagedBy($qb, $procurationManager);
-
-        if ($filters) {
-            $filters->apply($qb, 'pp');
-        }
+        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pp'), $manager);
+        $filters->apply($qb, 'pp');
 
         return $qb->getQuery()->getResult();
     }
 
-    public function countManagedBy(Adherent $procurationManager, ProcurationParametersFilter $filters): int
+    public function countMatchingProposals(Adherent $manager, ProcurationProxyProposalFilters $filters): int
     {
-        if (!$procurationManager->isProcurationManager()) {
+        if (!$manager->isProcurationManager()) {
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('pp')->select('COUNT(pp)')->andWhere('pp.reliability >= 0');
-        $this->addAndWhereManagedBy($qb, $procurationManager);
+        $qb = $this->createQueryBuilder('pp')->select('COUNT(pp.id)')->andWhere('pp.reliability >= 0');
+        $this->addAndWhereManagedBy($qb, $manager);
         $filters->apply($qb, 'pp');
 
         return (int) $qb->getQuery()->getSingleScalarResult();

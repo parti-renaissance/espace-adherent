@@ -4,9 +4,9 @@
             <label>
                 Pays du vote :<br />
                 <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
-                    <option value="" {{ filters.country is empty ? 'selected=selected' }}></option>
+                    <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
                     {% for code, label in filters.countries %}
-                        <option value="{{ code }}" {{ filters.country == code ? 'selected=selected' }}>{{ label }}</option>
+                        <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </label>
@@ -24,9 +24,9 @@
             <label>
                 Tour concerné :<br />
                 <select name="{{ constant('PARAMETER_TYPE', filters) }}" class="form form__field form--full">
-                    <option value="" {{ filters.type is empty ? 'selected=selected' }}></option>
+                    <option value="" {{ filters.type is empty ? 'selected="selected"' }}></option>
                     {% for code, label in filters.types %}
-                        <option value="{{ code }}" {{ filters.type == code ? 'selected=selected' }}>{{ label }}</option>
+                        <option value="{{ code }}" {{ filters.type == code ? 'selected="selected"' }}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </label>
@@ -36,7 +36,7 @@
             <br />
             <button type="submit" class="btn btn--blue b__nudge--right">Filtrer</button>
             {% if filters.hasData %}
-                <a href="{{ path(app.request.get('_route', '_route_params')) }}">Annuler le filtre</a>
+                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}">Annuler</a>
             {% endif %}
         </div>
     </div>

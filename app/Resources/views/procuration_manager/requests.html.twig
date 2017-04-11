@@ -1,0 +1,59 @@
+{% extends 'procuration_manager/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runProcurationManagerRequests('{{ filters.toQueryString|e('js') }}', {{ total_count }}, {{ filters.limit }});
+        });
+    </script>
+{% endblock %}
+
+{% block procuration_manager_content %}
+
+    {{ include('procuration_manager/_filters.html.twig') }}
+
+    <hr />
+
+    {% if 0 == requests|length %}
+        <div class="text--body text--center">
+            {% if constant('PROCESSED', filters) == filters.status %}
+                Vous n'avez pas encore de demande de procuration traitée.
+            {% else %}
+                Vous n'avez pas encore de demande de procuration à traiter.
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="text--body text--center b__nudge--bottom-large">
+            {% if constant('PROCESSED', filters) == filters.status %}
+                {{ '{1} Vous avez une demande de procuration traitée.|[2, Inf[ Vous avez %count% demandes de procuration traitées.'|transchoice(total_count) }}
+            {% else %}
+                {{ '{1} Vous avez une demande de procuration à traiter.|[2, Inf[ Vous avez %count% demandes de procuration à traiter.'|transchoice(total_count) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if requests|length %}
+        <table class="datagrid__table datagrid__table--bordered-rows">
+            <thead>
+            <tr>
+                <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
+                <th class="datagrid__table__col--left">Coordonnées du demandeur</th>
+                <th>Statut de la demande</th>
+                <th class="datagrid__table__col--left">Scrutins concernés</th>
+                <th>Mandataires</th>
+                <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="requests-list">
+            {{ include('procuration_manager/_requests_list.html.twig') }}
+            </tbody>
+        </table>
+        {% if total_count > filters.limit %}
+            <div class="text--center space--30">
+                <button class="btn" id="btn-more">Afficher plus</button>
+                <span id="loader" style="display: none;">Chargement ...</span>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

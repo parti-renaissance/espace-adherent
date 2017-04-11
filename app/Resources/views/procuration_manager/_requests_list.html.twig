@@ -6,9 +6,9 @@
         <td class="datagrid__table__col--left">
             {{ request.data.firstNames }} {{ request.data.lastName }}<br />
             <span class="datagrid__table__col--hide-mobile">
-                        <em>Lieu de vote :</em>
+                <em>Lieu de vote :</em>
                 {{ request.data.votePostalCode }} {{ request.data.voteCityName }} {{ request.data.voteCountry }}
-                    </span>
+            </span>
         </td>
         <td>
             {% if not request.data.processed %}
@@ -19,21 +19,12 @@
             {% endif %}
         </td>
         <td class="datagrid__table__col--left">
-            {% if request.data.electionPresidentialFirstRound and request.data.electionPresidentialSecondRound %}
-                Présidentielle : 1er et 2nd tour<br />
-            {% elseif request.data.electionPresidentialFirstRound %}
-                Présidentielle : 1er tour<br />
-            {% elseif request.data.electionPresidentialSecondRound %}
-                Présidentielle : 2nd tour<br />
-            {% endif %}
-
-            {% if request.data.electionLegislativeFirstRound and request.data.electionLegislativeSecondRound %}
-                Législatives : 1er et 2nd tour<br />
-            {% elseif request.data.electionLegislativeFirstRound %}
-                Législatives : 1er tour<br />
-            {% elseif request.data.electionLegislativeSecondRound %}
-                Législatives : 2nd tour<br />
-            {% endif %}
+            {{ include('procuration_manager/_ballots.html.twig', {
+                'presidential_first_round': request.data.electionPresidentialFirstRound,
+                'presidential_second_round': request.data.electionPresidentialSecondRound,
+                'legislative_first_round': request.data.electionLegislativeFirstRound,
+                'legislative_second_round': request.data.electionLegislativeSecondRound,
+            }, with_context=false) }}
         </td>
         <td>
             {{ request.matchingProxiesCount }}
