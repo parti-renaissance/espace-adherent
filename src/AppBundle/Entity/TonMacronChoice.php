@@ -78,7 +78,7 @@ final class TonMacronChoice
 
     public function __toString(): string
     {
-        return $this->label;
+        return $this->label ?: '';
     }
 
     public function getStep(): ?string
