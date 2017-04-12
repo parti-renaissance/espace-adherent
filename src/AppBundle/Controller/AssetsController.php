@@ -84,8 +84,6 @@ class AssetsController extends Controller
             }
 
             $media = $article->getMedia();
-        } elseif (!$manager->getRepository(Page::class)->findOneBySlug($slug)) {
-            throw $this->createNotFoundException();
         }
 
         $path = $media ? 'images/'.$media->getPath() : 'static/algolia-default-image.jpg';
