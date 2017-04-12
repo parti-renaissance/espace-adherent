@@ -49,8 +49,6 @@ trait EntityContentTrait
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $content;
 
