@@ -1,0 +1,33 @@
+.videos {
+    hr {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    &__grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 60px;
+            width: 48%;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+
+            .fb-video {
+                background: white;
+                margin-bottom: 10px;
+            }
+
+            ._4-u2 {
+                border-color: transparent;
+                border-width: 5px;
+            }
+        }
+    }
+}

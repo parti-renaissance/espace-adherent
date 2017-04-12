@@ -114,6 +114,15 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos")
+     * @Method("GET")
+     */
+    public function emmanuelMacronVideosAction()
+    {
+        return $this->render('page/emmanuel-macron/videos.html.twig');
+    }
+
+    /**
      * @Route("/le-mouvement", name="page_le_mouvement")
      * @Method("GET")
      */
