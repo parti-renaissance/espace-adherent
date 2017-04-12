@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProcurationProxyAdmin extends AbstractAdmin
 {
@@ -56,6 +57,20 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
                 ->add('address', null, [
                     'label' => 'Adresse postale',
+                ])
+            ->end()
+            ->with('Statut', ['class' => 'col-md-6'])
+                ->add('reliability', NumberType::class, [
+                    'label' => 'Fiabilité',
+                    'help' => '-1 : caché aux responsables procuration, 0 à 5 : score de fiabilité',
+                ])
+                ->add('reliabilityDescription', null, [
+                    'label' => 'Description',
+                    'help' => 'Description associée au mandataire pour les responsables procuration',
+                ])
+                ->add('disabled', null, [
+                    'label' => 'Est désactivé',
+                    'help' => 'Car plus disponible ou pas fiable',
                 ])
             ->end()
             ->with('Lieu de vote', ['class' => 'col-md-6'])
