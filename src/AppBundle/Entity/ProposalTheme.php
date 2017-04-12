@@ -2,12 +2,15 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="proposals_themes")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProposalThemeRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ProposalTheme
 {
