@@ -17,6 +17,10 @@
 
     <hr />
 
+    {{ include('procuration_manager/_filters.html.twig') }}
+
+    <hr />
+
     {% if requests|length == 0 %}
         <div class="text--body text--center">
             Vous n'avez aucune demande(s) de procuration à traiter.

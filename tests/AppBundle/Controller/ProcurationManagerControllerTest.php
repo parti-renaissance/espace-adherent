@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
+use AppBundle\Search\ProcurationParametersFilter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
@@ -140,6 +141,74 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Michel Carbonneau")'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Maxime Michaux")'));
+    }
+
+    public function testFilersOnProcurationManagerList()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(4, $crawler->filter('.datagrid__table tbody tr'));
+
+        $formValues = [
+            ProcurationParametersFilter::PARAMETER_COUNTRY => null,
+            ProcurationParametersFilter::PARAMETER_CITY => null,
+            ProcurationParametersFilter::PARAMETER_TYPE => null,
+        ];
+
+        $form = $crawler->selectButton('Filtrer')->form();
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_COUNTRY => 'GB']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_COUNTRY => 'FR']));
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_CITY => 'Nantes']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_CITY => '44']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_TYPE => ProcurationParametersFilter::TYPE_LEGISLATIVE_1_ROUND]));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->click($crawler->selectLink('Annuler le filtre')->link());
+        $this->assertCount(4, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testFiltrersOnProcurationManagerProxiesList()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+
+        $formValues = [
+            ProcurationParametersFilter::PARAMETER_COUNTRY => null,
+            ProcurationParametersFilter::PARAMETER_CITY => null,
+            ProcurationParametersFilter::PARAMETER_TYPE => null,
+        ];
+
+        $form = $crawler->selectButton('Filtrer')->form();
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_COUNTRY => 'GB']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_COUNTRY => 'FR']));
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_CITY => 'Nantes']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_CITY => '44']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationParametersFilter::PARAMETER_TYPE => ProcurationParametersFilter::TYPE_PRESIDENTIAL_1_ROUND]));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->click($crawler->selectLink('Annuler le filtre')->link());
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
     }
 
     protected function setUp()

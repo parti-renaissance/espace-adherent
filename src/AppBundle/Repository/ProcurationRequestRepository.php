@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Search\ProcurationParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -85,7 +86,7 @@ class ProcurationRequestRepository extends EntityRepository
      *
      * @return ProcurationRequest[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -100,6 +101,7 @@ class ProcurationRequestRepository extends EntityRepository
         ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
+        $this->applyFilter($qb, $filters);
 
         /** @var ProcurationRequest[] $requests */
         $requests = $qb->getQuery()->getArrayResult();
@@ -148,7 +150,7 @@ class ProcurationRequestRepository extends EntityRepository
         return $requests;
     }
 
-    public function countManagedBy(Adherent $procurationManager): int
+    public function countManagedBy(Adherent $procurationManager, ProcurationParametersFilter $filters): int
     {
         if (!$procurationManager->isProcurationManager()) {
             return 0;
@@ -156,6 +158,7 @@ class ProcurationRequestRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('pr')->select('COUNT(pr)');
         $this->addAndWhereManagedBy($qb, $procurationManager);
+        $this->applyFilter($qb, $filters);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -245,5 +248,27 @@ class ProcurationRequestRepository extends EntityRepository
         }
 
         return implode(' + ', $notMatchingCount);
+    }
+
+    private function applyFilter(QueryBuilder $qb, ProcurationParametersFilter $filters): void
+    {
+        if ($country = $filters->getCountry()) {
+            $qb->andWhere('pr.voteCountry = :filterVotreCountry');
+            $qb->setParameter('filterVotreCountry', $country);
+        }
+
+        if ($city = $filters->getCity()) {
+            if (is_numeric($city)) {
+                $qb->andWhere('pr.votePostalCode LIKE :filterVoteCity');
+                $qb->setParameter('filterVoteCity', $city.'%');
+            } else {
+                $qb->andWhere('LOWER(pr.voteCityName) LIKE :filterVoteCity');
+                $qb->setParameter('filterVoteCity', '%'.strtolower($city).'%');
+            }
+        }
+
+        if ($type = $filters->getType()) {
+            $qb->andWhere(sprintf('pr.%s = true', $type));
+        }
     }
 }
