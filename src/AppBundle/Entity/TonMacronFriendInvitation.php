@@ -163,6 +163,14 @@ final class TonMacronFriendInvitation
         return $this->createdAt;
     }
 
+    /**
+     * @return ArrayCollection|TonMacronChoice[]
+     */
+    public function getChoices()
+    {
+        return $this->choices;
+    }
+
     public static function createFromProcessor(InvitationProcessor $processor): self
     {
         $self = new self(Uuid::uuid4(), EmojisRemover::remove($processor->friendFirstName), $processor->friendAge, $processor->friendGender);
