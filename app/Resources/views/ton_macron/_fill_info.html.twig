@@ -28,8 +28,9 @@
         </div>
     </div>
 
-    <div class="tonmacron__banner__form">
-        {{ form_start(invitation_form) }}
+    <div class="tonmacron__banner__form-container">
+        <div class="tonmacron__banner__form">
+            {{ form_start(invitation_form) }}
             <h4 class="b__nudge--bottom-medium">
                 Quel est le profil de votre ami(e) ?
             </h4>
@@ -61,6 +62,23 @@
                 {{ form_widget(invitation_form.fill_info, {'attr': {'class': 'btn btn--blue'}}) }}
             </div>
 
-        {{ form_end(invitation_form) }}
+            {{ form_end(invitation_form) }}
+        </div>
+
+        <div class="b__nudge--top-50 text--small">
+            « En nous fournissant vos coordonnées, vous autorisez En Marche à vous contacter pendant la campagne
+            Présidentielle et, le cas échéant, des législatives. Ces informations sont exclusivement réservées à
+            l’usage d’En Marche pour des opérations de communication politique et de dons. Vos informations ne
+            pourront être communiquées qu’aux personnes habilitées d’En Marche et aux cocontractants qui, en leur
+            qualité de sous-traitants, n’agiront que sur instruction et seront soumis à une stricte obligation
+            de confidentialité. Certains de ces partenaires peuvent avoir des activités dans des pays situés en
+            dehors de l’Union Européenne, notamment aux fins d’hébergement des données. Vos données pourront être
+            transférées dans des pays présentant une protection adéquate au regard des garanties imposées par la
+            loi informatique et libertés du 6 janvier 1978, et dans le cadre des clauses contractuelles types de
+            la Commission européenne. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous
+            pouvez exercer vos droits d’accès, d'opposition, de rectification et de suppression à l’adresse
+            postale ou électronique suivante :<br />
+            En Marche – BP 80 049 – 94801 Villejuif – France et contact@en-marche.fr »
+        </div>
     </div>
 </section>
