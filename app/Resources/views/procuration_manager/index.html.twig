@@ -3,7 +3,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationManagerRequests({{ totalCount }}, {{ constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') }});
+            App.runProcurationManagerRequests('{{ filterqQueryString|e('js') }}', {{ totalCount }}, {{ constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') }});
         });
     </script>
 {% endblock %}
@@ -23,15 +23,29 @@
         <hr />
     {% endif %}
 
-    {% if requests|length == 0 %}
-        <div class="text--body text--center">
-            Vous n'avez aucune demande(s) de procuration à traiter.
-        </div>
+    {% if filters.hasData %}
+        {% if requests|length == 0 %}
+            <div class="text--body text--center">
+                Aucun résultat
+            </div>
+        {% else %}
+            <div class="text--body text--center b__nudge--bottom-large">
+                {{ totalCount }} résultat(s)
+            </div>
+        {% endif %}
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large">
-            Vous avez {{ countToProcess }} demande(s) de procuration à traiter.
-        </div>
+        {% if requests|length == 0 %}
+            <div class="text--body text--center">
+                Vous n'avez aucune demande(s) de procuration à traiter
+            </div>
+        {% else %}
+            <div class="text--body text--center b__nudge--bottom-large">
+                Vous avez {{ countToProcess }} demande(s) de procuration à traiter
+            </div>
+        {% endif %}
+    {% endif %}
 
+    {% if requests|length > 0 %}
         <table class="datagrid__table datagrid__table--bordered-rows">
             <thead>
             <tr>

@@ -20,7 +20,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  */
 class ProcurationManagerController extends Controller
 {
-    const PER_PAGE = 25;
+    const PER_PAGE = 30;
 
     /**
      * @Route("", name="app_procuration_manager_index")
@@ -36,6 +36,7 @@ class ProcurationManagerController extends Controller
             'totalCount' => $requestsRepository->countManagedBy($this->getUser(), $filters),
             'countToProcess' => $requestsRepository->countToProcessManagedBy($this->getUser()),
             'filters' => $filters,
+            'filterqQueryString' => http_build_query($request->query->all()),
         ]);
     }
 
@@ -47,10 +48,12 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET")
      */
-    public function requestsListAction($page): Response
+    public function requestsListAction(Request $request, $page): Response
     {
+        $filters = (new ProcurationParametersFilter())->handleRequest($request);
+
         $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
-        $requests = $requestsRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE);
+        $requests = $requestsRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE, $filters);
 
         if (!$requests) {
             return new Response();
@@ -74,6 +77,7 @@ class ProcurationManagerController extends Controller
             'proxies' => $proxiesRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE, $filters),
             'totalCount' => $proxiesRepository->countManagedBy($this->getUser(), $filters),
             'filters' => $filters,
+            'filterqQueryString' => http_build_query($request->query->all()),
         ]);
     }
 
@@ -85,10 +89,12 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET")
      */
-    public function proposalsListAction($page): Response
+    public function proposalsListAction(Request $request, $page): Response
     {
+        $filters = (new ProcurationParametersFilter())->handleRequest($request);
+
         $proxiesRepository = $this->getDoctrine()->getRepository(ProcurationProxy::class);
-        $proxies = $proxiesRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE);
+        $proxies = $proxiesRepository->findManagedBy($this->getUser(), (int) $page, self::PER_PAGE, $filters);
 
         if (!$proxies) {
             return new Response();
