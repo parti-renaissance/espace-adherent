@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Vidéos' %}
+{% block canonical_url url('page_emmanuel_macron_videos') %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+            background-color: #FF3680;
+        }
+        .btn--primary {
+            background-color: black;
+            border-color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.8&appId=222392711147441";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<main class="content">
+    <section class="videos">
+
+        <header class="space--60-0">
+            <div class="l__wrapper--slim text--center">
+                <h1 class="text--large text--inline text--on-white">
+                    Vidéos
+                </h1>
+            </div>
+        </header>
+
+        <hr class="l__wrapper" />
+
+        <div class="l__wrapper--slim videos__intro text--body text--medium space--60-0 text--center">
+            Toutes les vidéos emojis et Pourquoi je vote Macron qui vous donneront envie de voter Emmanuel Macron.
+        </div>
+
+        <ul class="l__wrapper--medium videos__grid">
+            <li>
+                <div class="fb-video"
+                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
+                     data-allowfullscreen="true"
+                     data-show-captions="true"
+                     data-width="450"
+                     data-show-text="true">
+                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
+                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
+                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
+                        <p>Laurence Haïm a un message pour vous.
+                           Inscrivez-vous ➜ en-marche.fr/bercy</p>
+                        Posted by <a href="https://www.facebook.com/EnMarche/">En Marche</a> on Tuesday, April 11, 2017
+                    </blockquote>
+                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
+                </div>
+                <div role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', 'lien video', 'titre')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </div>
+            </li>
+            <li>
+                <div class="fb-video"
+                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
+                     data-allowfullscreen="true"
+                     data-show-captions="true"
+                     data-width="450"
+                     data-show-text="true">
+                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
+                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
+                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
+                        <p>le message en text, sans html (en fait je me demande si c'est utile ca)</p>
+                    </blockquote>
+                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
+                </div>
+                <div role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', 'lien video', 'titre')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </div>
+            </li>
+            <li>
+                <div class="fb-video"
+                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
+                     data-allowfullscreen="true"
+                     data-show-captions="true"
+                     data-width="450"
+                     data-show-text="true">
+                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
+                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
+                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
+                        <p>Laurence Haïm a un message pour vous.
+                           Inscrivez-vous ➜ en-marche.fr/bercy</p>
+                        Posted by <a href="https://www.facebook.com/EnMarche/">En Marche</a> on Tuesday, April 11, 2017
+                    </blockquote>
+                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
+                </div>
+                <div role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', 'lien video', 'titre')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+</main>
+{% endblock %}
