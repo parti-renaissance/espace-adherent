@@ -289,5 +289,11 @@
             <argument type="service" id="app.repository.event"/>
         </service>
 
+        <!-- ImageFilter -->
+        <service id="app.image_filter" class="AppBundle\Facebook\ImageFilter">
+            <argument type="service" id="app.imagine"></argument>
+            <argument>%env(WATERMARKS_PATH)%</argument>
+        </service>
+
     </services>
 </container>

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <main class="facebook">
+        {{ include('facebook/header.html.twig') }}
+
+        <br/>
+
+        <div class="l__wrapper text--center">
+            <h2>
+                Félicitations, <br/>
+                vous pouvez maintenant cliquer sur une des images pour la télécharger :
+            </h2>
+
+            <br/>
+
+            {% for picture in base64EncodedPictures %}
+                <a download="profil_{{ loop.index }}.jpeg" href="data:image/jpeg;base64,{{ picture }}" class="facebook-download">
+                    <img alt="profil_{{ loop.index }}.jpeg" src="data:image/jpeg;base64,{{ picture }}" class="facebook-picture"></img>
+                </a>
+            {% endfor %}
+        </div>
+
+        <br/>
+    </main>
+{% endblock %}

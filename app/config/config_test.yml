@@ -21,6 +21,7 @@ services:
         public: false
 
 parameters:
+    env(FACEBOOK_GRAPH_API_HOST): "%kernel.root_dir%/../web/images"
     adherent_interests:
         agriculture: Agriculture
         culture: Culture

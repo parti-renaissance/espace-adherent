@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <main class="facebook">
+        {{ include('facebook/header.html.twig') }}
+
+        <br/>
+
+        <div class="l__wrapper text--center">
+            <a class="btn btn--facebook btn--medium" href="{{ path('app_facebook_auth') }}">
+                Changer mon image Facebook
+            </a>
+        </div>
+
+        <br/>
+    </main>
+{% endblock %}
