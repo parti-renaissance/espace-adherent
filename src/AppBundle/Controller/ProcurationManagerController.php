@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Search\ProcurationRequestParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,14 +26,16 @@ class ProcurationManagerController extends Controller
      * @Route("", name="app_procuration_manager_index")
      * @Method("GET")
      */
-    public function indexAction(): Response
+    public function indexAction(Request $request): Response
     {
         $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
+        $filters = (new ProcurationRequestParametersFilter())->handleRequest($request);
 
         return $this->render('procuration_manager/index.html.twig', [
-            'requests' => $requestsRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE),
-            'totalCount' => $requestsRepository->countManagedBy($this->getUser()),
+            'requests' => $requestsRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE, $filters),
+            'totalCount' => $requestsRepository->countManagedBy($this->getUser(), $filters),
             'countToProcess' => $requestsRepository->countToProcessManagedBy($this->getUser()),
+            'filters' => $filters,
         ]);
     }
 

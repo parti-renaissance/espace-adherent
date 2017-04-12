@@ -1,0 +1,28 @@
+<form method="get" action="{{ path('app_procuration_manager_index') }}">
+    <label>
+        Pays du vote:
+        <select name="{{ constant('PARAMETER_COUNTRY', filters) }}">
+            <option value="" {{ filters.country is empty ? 'selected=selected' }}></option>
+            {% for code, label in filters.countries %}
+                <option value="{{ code }}" {{ filters.country == code ? 'selected=selected' }}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Ville (ou code postal) du vote:
+        <input type="text" name="{{ constant('PARAMETER_CITY', filters) }}" value="{{ filters.city }}">
+    </label>
+    <label>
+        Tour concerné :
+        <select name="{{ constant('PARAMETER_TYPE', filters) }}">
+            <option value="" {{ filters.type is empty ? 'selected=selected' }}></option>
+            {% for code, label in filters.types %}
+                <option value="{{ code }}" {{ filters.type == code ? 'selected=selected' }}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <input type="submit" value="Filter">
+    {% if filters.hasData %}
+        <a href="{{ path('app_procuration_manager_index') }}">Annuler le filtre</a>
+    {% endif %}
+</form>
