@@ -225,6 +225,11 @@
             <argument />
             <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/ton_macron_invitations_list.html.twig</argument>
+            </call>
         </service>
 
         <!--
