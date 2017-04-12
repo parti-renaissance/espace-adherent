@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\TonMacron\InvitationProcessor;
+use AppBundle\Utils\EmojisRemover;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -164,15 +165,15 @@ final class TonMacronFriendInvitation
 
     public static function createFromProcessor(InvitationProcessor $processor): self
     {
-        $self = new self(Uuid::uuid4(), $processor->friendFirstName, $processor->friendAge, $processor->friendGender);
+        $self = new self(Uuid::uuid4(), EmojisRemover::remove($processor->friendFirstName), $processor->friendAge, $processor->friendGender);
 
         $self->friendPosition = $processor->friendPosition->getContentKey();
-        $self->authorFirstName = $processor->selfFirstName;
-        $self->authorLastName = $processor->selfLastName;
+        $self->authorFirstName = EmojisRemover::remove($processor->selfFirstName);
+        $self->authorLastName = EmojisRemover::remove($processor->selfLastName);
         $self->authorEmailAddress = $processor->selfEmail;
         $self->friendEmailAddress = $processor->friendEmail;
-        $self->mailSubject = $processor->messageSubject;
-        $self->mailBody = $processor->messageContent;
+        $self->mailSubject = EmojisRemover::remove($processor->messageSubject);
+        $self->mailBody = EmojisRemover::remove($processor->messageContent);
 
         $processor->defineChoices($self->choices);
 
