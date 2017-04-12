@@ -19,6 +19,8 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="event_slug_unique", columns="slug")
  *   }
  * )
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Event implements GeoPointInterface
 {

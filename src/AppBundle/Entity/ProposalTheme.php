@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="proposals_themes")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProposalThemeRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ProposalTheme
 {

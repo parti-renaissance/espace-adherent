@@ -27,6 +27,8 @@ use Ramsey\Uuid\UuidInterface;
  *   }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Committee implements GeoPointInterface
 {
