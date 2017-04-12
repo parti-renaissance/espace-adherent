@@ -95,7 +95,7 @@
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Programme</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
-                    <li {% if not enable_canary or not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                    <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                         <a href="javascript:void(0)" class="je-cherche">
                             {{ include('components/search.html.twig') }}
                         </a>
@@ -279,7 +279,7 @@
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Programme</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                             <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
-                            <li {% if not enable_canary or not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                            <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                                 <a href="javascript:void(0)" class="je-cherche icon--with-text">
                                     {{ include('components/search.html.twig') }}
                                     Rechercher
