@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\CanaryControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,12 +16,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FacebookController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("", name="app_facebook_index")
      * @Method("GET")
      */
     public function indexAction(): Response
     {
+        $this->disableInProduction();
+
         return $this->render('facebook/index.html.twig');
     }
 
@@ -30,6 +35,8 @@ class FacebookController extends Controller
      */
     public function authAction(): RedirectResponse
     {
+        $this->disableInProduction();
+
         $fb = $this->get('app.facebook.api');
         $helper = $fb->getRedirectLoginHelper();
 
@@ -46,6 +53,8 @@ class FacebookController extends Controller
      */
     public function getUserIdAction(Request $request): RedirectResponse
     {
+        $this->disableInProduction();
+
         if (!$request->query->has('code')) {
             return $this->redirectToRoute('app_facebook_auth');
         }
@@ -65,6 +74,8 @@ class FacebookController extends Controller
      */
     public function processPictureAction($id): Response
     {
+        $this->disableInProduction();
+
         $imageFilter = $this->get('app.image_filter');
 
         try {
