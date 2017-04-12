@@ -81,6 +81,7 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
                 'voter_first_name' => 'Monique',
                 'voter_last_name' => 'Clairefontaine',
                 'info_link' => $url,
+                'elections' => '',
             ],
             $message->getVars()
         );

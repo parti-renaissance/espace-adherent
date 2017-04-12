@@ -96,22 +96,16 @@
             </div>
             <div class="profile-value">
                 <span id="request-election-presidential">
-                    {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                        Présidentielle : 1er et 2nd tour<br />
-                    {% elseif request.electionPresidentialFirstRound %}
-                        Présidentielle : 1er tour<br />
-                    {% elseif request.electionPresidentialSecondRound %}
-                        Présidentielle : 2nd tour<br />
+                    {% set elections = request.electionsPresidential %}
+                    {% if elections %}
+                        {{ elections }}<br />
                     {% endif %}
                 </span>
 
                 <span id="request-election-legislatives">
-                    {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                        Législatives : 1er et 2nd tour
-                    {% elseif request.electionLegislativeFirstRound %}
-                        Législatives : 1er tour
-                    {% elseif request.electionLegislativeSecondRound %}
-                        Législatives : 2nd tour
+                    {% set elections = request.electionsLegislative %}
+                    {% if elections %}
+                        {{ elections }}<br />
                     {% endif %}
                 </span>
             </div>
