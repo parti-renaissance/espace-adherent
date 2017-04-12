@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import React from 'react';
 import { render } from 'react-dom';
 import AlgoliaSearch from '../components/AlgoliaSearch';
@@ -6,6 +8,14 @@ import AlgoliaSearch from '../components/AlgoliaSearch';
  * Algolia search
  */
 export default (di) => {
+    const appId = di.get('algoliaAppId');
+    const appKey = di.get('algoliaAppPublicKey');
+
+    if (!appId || !appKey) {
+        console.log('Algolia is disabled because no credentials were provided');
+        return;
+    }
+
     const overlay = dom('#search-overlay');
     const banner = dom('#header-banner');
     const header = dom('header');
@@ -31,10 +41,7 @@ export default (di) => {
     });
 
     render(
-        <AlgoliaSearch
-            appId={di.get('algoliaAppId')}
-            appKey={di.get('algoliaAppPublicKey')}
-        />,
+        <AlgoliaSearch appId={appId} appKey={appKey} environment={di.get('environment')} />,
         dom('#search-engine')
     );
 };
