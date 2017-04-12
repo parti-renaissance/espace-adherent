@@ -17,11 +17,9 @@
 
     <hr />
 
-    {% if enable_canary %}
-        {{ include('procuration_manager/_filters.html.twig') }}
+    {{ include('procuration_manager/_filters.html.twig') }}
 
-        <hr />
-    {% endif %}
+    <hr />
 
     {% if filters.hasData %}
         {% if requests|length == 0 %}
