@@ -32,7 +32,7 @@ class ProcurationProxyRepository extends EntityRepository
      *
      * @return ProcurationProxy[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters = null): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -47,7 +47,10 @@ class ProcurationProxyRepository extends EntityRepository
         ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
-        $this->applyFilter($qb, $filters);
+
+        if ($filters) {
+            $this->applyFilter($qb, $filters);
+        }
 
         return $qb->getQuery()->getResult();
     }
