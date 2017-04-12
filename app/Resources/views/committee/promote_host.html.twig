@@ -11,7 +11,7 @@
                 <div class="text--white">
                     <div class="text--all-caps text--small b__nudge--bottom-tiny">Comité local</div>
                     <h2 class="text--large">
-                        {{ include('components/location-pin.html.twig') }}
+                        {{ include('icons/location-pin.html.twig') }}
                         <span id="committee-name" class="committee__name">{{ committee.name }}</span>
                     </h2>
                 </div>
@@ -26,7 +26,7 @@
             <div class="committee__main l__wrapper--main l__wrapper--main-left">
                 <a href="{{ committee_path('app_commitee_list_members', committee) }}"
                    class="back-to-list icon--with-text text--summary space--20-0">
-                    {{ include('components/caret--left.html.twig') }}
+                    {{ include('icons/caret--left.html.twig') }}
                     Retour aux membres du comité
                 </a>
                 <header class="space--30-0">

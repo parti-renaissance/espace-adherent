@@ -1,6 +1,6 @@
 <aside class="committee__aside l__wrapper--aside">
     <div class="committee__card b__nudge--top-large text--medium-small text--all-caps icon--with-text">
-        {{ include('components/participants.html.twig') }}
+        {{ include('icons/participants.html.twig') }}
         <span class="committee-members">{{ 'committee.members_count'|transchoice(committee.membersCount) }}</span>
     </div>
     <div class="committee__card">
@@ -9,7 +9,7 @@
     </div>
     <div class="committee__card">
         <h5 class="icon--with-text">
-            {{ include('components/admin.html.twig') }}
+            {{ include('icons/admin.html.twig') }}
             Administration
         </h5>
         <ul class="committee__hosts">
@@ -30,7 +30,7 @@
     </div>
     <div class="committee__card">
         <h5 class="icon--with-text svg--black">
-            {{ include('components/location-pin.html.twig') }}
+            {{ include('icons/location-pin.html.twig') }}
             Localisation
         </h5>
 

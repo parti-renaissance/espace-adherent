@@ -39,7 +39,7 @@
                 {% endif %}
             </li>
             <li class="icon--with-text text--body">
-                {{ include('components/participants.html.twig') }}
+                {{ include('icons/participants.html.twig') }}
                 <span class="committee-event-attendees">
                     {{ item.event.participantsCount }} / {{ 'event.capacity'|transchoice(item.event.capacity)  }}
                 </span>

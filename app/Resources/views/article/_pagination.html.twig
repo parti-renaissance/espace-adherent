@@ -3,7 +3,7 @@
         {% if currentPage > 1 %}
             <li>
                 <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage - 1}) }}">
-                    {{ include('components/caret--left.html.twig') }}
+                    {{ include('icons/caret--left.html.twig') }}
                 </a>
             </li>
         {% endif %}
@@ -20,7 +20,7 @@
         {% if currentPage < totalPages %}
             <li>
                 <a href="{{ path('articles_list', {'category': current.slug, 'page': currentPage + 1}) }}">
-                    {{ include('components/caret--right.html.twig') }}
+                    {{ include('icons/caret--right.html.twig') }}
                 </a>
             </li>
         {% endif %}
