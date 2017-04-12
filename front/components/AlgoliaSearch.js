@@ -7,9 +7,9 @@ export default class AlgoliaSearch extends React.Component {
 
         const client = algoliasearch(props.appId, props.appKey);
 
-        this.articlesIndex = client.initIndex('Article_dev');
-        this.pagesIndex = client.initIndex('Page_dev');
-        this.proposalsIndex = client.initIndex('Proposal_dev');
+        this.articlesIndex = client.initIndex(`Article_${props.environment}`);
+        this.pagesIndex = client.initIndex(`Page_${props.environment}`);
+        this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
 
         this.state = {
             term: '',
@@ -158,4 +158,5 @@ export default class AlgoliaSearch extends React.Component {
 AlgoliaSearch.propTypes = {
     appId: PropTypes.string.isRequired,
     appKey: PropTypes.string.isRequired,
+    environment: PropTypes.string.isRequired,
 };

@@ -95,9 +95,13 @@
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Programme</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
-                    <li><a href="javascript:void(0)" id="je-cherche">
-                        {{ include('components/search.html.twig') }}
-                    </a></li>
+                    {% if enable_canary and algolia_app_id and algolia_api_key %}
+                    <li>
+                        <a href="javascript:void(0)" id="je-cherche">
+                            {{ include('components/search.html.twig') }}
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <div class="l__row">
                     {% if not user_is_adherent %}
@@ -418,6 +422,7 @@
                 Kernel.boot(
                     '{{ app.debug ? 'debug' : assets_hash }}',
                     {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    '{{ app.environment }}',
                     {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
                     {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }}
                 );
