@@ -99,7 +99,7 @@
          <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
              <argument type="service" id="app.ton_macron.message_body_builder"/>
              <argument type="service" id="doctrine.orm.entity_manager"/>
-             <argument type="service" id="app.mailjet.client.transactional"/>
+             <argument type="service" id="app.mailjet.client.campaign"/>
              <argument type="service" id="state_machine.ton_macron_invitation"/>
          </service>
 
