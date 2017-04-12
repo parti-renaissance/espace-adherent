@@ -46,16 +46,16 @@ export default class ReqwestApiClient {
         });
     }
 
-    getProcurationRequests(page, callback) {
+    getProcurationRequests(filtersQueryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/requests-list/'+page,
+            url: '/espace-responsable-procuration/requests-list/'+page+'?'+filtersQueryString,
             type: 'html'
         });
     }
 
-    getProcurationProposals(page, callback) {
+    getProcurationProposals(filtersQueryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/proposals-list/'+page,
+            url: '/espace-responsable-procuration/proposals-list/'+page+'?'+filtersQueryString,
             type: 'html'
         });
     }

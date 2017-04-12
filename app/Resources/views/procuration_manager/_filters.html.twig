@@ -1,28 +1,43 @@
 <form method="get">
-    <label>
-        Pays du vote:
-        <select name="{{ constant('PARAMETER_COUNTRY', filters) }}">
-            <option value="" {{ filters.country is empty ? 'selected=selected' }}></option>
-            {% for code, label in filters.countries %}
-                <option value="{{ code }}" {{ filters.country == code ? 'selected=selected' }}>{{ label }}</option>
-            {% endfor %}
-        </select>
-    </label>
-    <label>
-        Ville (ou code postal) du vote:
-        <input type="text" name="{{ constant('PARAMETER_CITY', filters) }}" value="{{ filters.city }}">
-    </label>
-    <label>
-        Tour concerné :
-        <select name="{{ constant('PARAMETER_TYPE', filters) }}">
-            <option value="" {{ filters.type is empty ? 'selected=selected' }}></option>
-            {% for code, label in filters.types %}
-                <option value="{{ code }}" {{ filters.type == code ? 'selected=selected' }}>{{ label }}</option>
-            {% endfor %}
-        </select>
-    </label>
-    <input type="submit" value="Filtrer">
-    {% if filters.hasData %}
-        <a href="{{ path(app.request.get('_route', '_route_params')) }}">Annuler le filtre</a>
-    {% endif %}
+    <div class="l__row l__row--top l__mobile--col">
+        <div class="l__col--grow-1 b__nudge--right">
+            <label>
+                Pays du vote :<br />
+                <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
+                    <option value="" {{ filters.country is empty ? 'selected=selected' }}></option>
+                    {% for code, label in filters.countries %}
+                        <option value="{{ code }}" {{ filters.country == code ? 'selected=selected' }}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        <div class="l__col--grow-1 b__nudge--right">
+            <label>
+                Ville (ou code postal) du vote :<br />
+                <input type="text" name="{{ constant('PARAMETER_CITY', filters) }}" value="{{ filters.city }}"
+                       class="form form__field form--full">
+            </label>
+        </div>
+
+        <div class="l__col--grow-1 b__nudge--right">
+            <label>
+                Tour concerné :<br />
+                <select name="{{ constant('PARAMETER_TYPE', filters) }}" class="form form__field form--full">
+                    <option value="" {{ filters.type is empty ? 'selected=selected' }}></option>
+                    {% for code, label in filters.types %}
+                        <option value="{{ code }}" {{ filters.type == code ? 'selected=selected' }}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        <div style="width: 220px;">
+            <br />
+            <button type="submit" class="btn btn--blue b__nudge--right">Filtrer</button>
+            {% if filters.hasData %}
+                <a href="{{ path(app.request.get('_route', '_route_params')) }}">Annuler le filtre</a>
+            {% endif %}
+        </div>
+    </div>
 </form>

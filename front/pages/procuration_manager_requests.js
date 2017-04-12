@@ -1,7 +1,7 @@
 /*
  * Procuration manager requests list
  */
-export default (totalCount, perPage, api) => {
+export default (filtersQueryString, totalCount, perPage, api) => {
     if (totalCount <= perPage) {
         return;
     }
@@ -17,7 +17,7 @@ export default (totalCount, perPage, api) => {
 
         page += 1;
 
-        api.getProcurationRequests(page, (requests) => {
+        api.getProcurationRequests(filtersQueryString, page, (requests) => {
             hide(loader);
 
             if (5 < requests.length) {

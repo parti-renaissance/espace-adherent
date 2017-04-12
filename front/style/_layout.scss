@@ -141,6 +141,10 @@
         &--v-stretch {
             justify-content: space-between;
         }
+
+        &--grow-1 {
+            flex-grow: 1;
+        }
     }
 
     &__tablet {

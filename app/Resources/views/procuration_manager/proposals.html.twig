@@ -3,7 +3,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationManagerProposals({{ totalCount }}, {{ constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') }});
+            App.runProcurationManagerProposals('{{ filterqQueryString|e('js') }}', {{ totalCount }}, {{ constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') }});
         });
     </script>
 {% endblock %}
@@ -29,15 +29,29 @@
         <hr />
     {% endif %}
 
-    {% if proxies|length == 0 %}
-        <div class="text--body text--center">
-            Vous n'avez aucune propositon de mandataire.
-        </div>
+    {% if filters.hasData %}
+        {% if proxies|length == 0 %}
+            <div class="text--body text--center">
+                Aucun résultat
+            </div>
+        {% else %}
+            <div class="text--body text--center b__nudge--bottom-large">
+                {{ totalCount }} résultat(s)
+            </div>
+        {% endif %}
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large">
-            Vous avez {{ totalCount }} propositon(s) de mandataire.
-        </div>
+        {% if proxies|length == 0 %}
+            <div class="text--body text--center">
+                Vous n'avez aucune propositon de mandataire
+            </div>
+        {% else %}
+            <div class="text--body text--center b__nudge--bottom-large">
+                Vous avez {{ totalCount }} propositon(s) de mandataire
+            </div>
+        {% endif %}
+    {% endif %}
 
+    {% if proxies|length > 0 %}
         <table class="datagrid__table datagrid__table--bordered-rows">
             <thead>
             <tr>
