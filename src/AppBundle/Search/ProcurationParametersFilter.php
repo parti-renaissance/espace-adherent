@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Provides a way to handle the search parameters.
  */
-class ProcurationRequestParametersFilter
+class ProcurationParametersFilter
 {
     const PARAMETER_COUNTRY = 'p';
     const PARAMETER_CITY = 'v';

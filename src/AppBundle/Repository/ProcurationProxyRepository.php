@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Search\ProcurationParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -31,7 +32,7 @@ class ProcurationProxyRepository extends EntityRepository
      *
      * @return ProcurationProxy[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -46,11 +47,12 @@ class ProcurationProxyRepository extends EntityRepository
         ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
+        $this->applyFilter($qb, $filters);
 
         return $qb->getQuery()->getResult();
     }
 
-    public function countManagedBy(Adherent $procurationManager): int
+    public function countManagedBy(Adherent $procurationManager, ProcurationParametersFilter $filters): int
     {
         if (!$procurationManager->isProcurationManager()) {
             return 0;
@@ -58,6 +60,7 @@ class ProcurationProxyRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('pp')->select('COUNT(pp)')->andWhere('pp.reliability >= 0');
         $this->addAndWhereManagedBy($qb, $procurationManager);
+        $this->applyFilter($qb, $filters);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -174,5 +177,27 @@ class ProcurationProxyRepository extends EntityRepository
         $qb->setParameter('electionLegislativeSecondRound', $procurationRequest->getElectionLegislativeSecondRound());
 
         return implode(' + ', $score);
+    }
+
+    private function applyFilter(QueryBuilder $qb, ProcurationParametersFilter $filters): void
+    {
+        if ($country = $filters->getCountry()) {
+            $qb->andWhere('pp.voteCountry = :filterVotreCountry');
+            $qb->setParameter('filterVotreCountry', $country);
+        }
+
+        if ($city = $filters->getCity()) {
+            if (is_numeric($city)) {
+                $qb->andWhere('pp.votePostalCode LIKE :filterVoteCity');
+                $qb->setParameter('filterVoteCity', $city.'%');
+            } else {
+                $qb->andWhere('LOWER(pp.voteCityName) LIKE :filterVoteCity');
+                $qb->setParameter('filterVoteCity', '%'.strtolower($city).'%');
+            }
+        }
+
+        if ($type = $filters->getType()) {
+            $qb->andWhere(sprintf('pp.%s = true', $type));
+        }
     }
 }

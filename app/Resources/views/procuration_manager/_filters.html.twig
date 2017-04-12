@@ -1,4 +1,4 @@
-<form method="get" action="{{ path('app_procuration_manager_index') }}">
+<form method="get" action="{{ path(app.request.get('_route', '_route_params')) }}">
     <label>
         Pays du vote:
         <select name="{{ constant('PARAMETER_COUNTRY', filters) }}">
@@ -23,6 +23,6 @@
     </label>
     <input type="submit" value="Filter">
     {% if filters.hasData %}
-        <a href="{{ path('app_procuration_manager_index') }}">Annuler le filtre</a>
+        <a href="{{ path(app.request.get('_route', '_route_params')) }}">Annuler le filtre</a>
     {% endif %}
 </form>

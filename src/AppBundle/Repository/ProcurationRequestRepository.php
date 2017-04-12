@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Search\ProcurationRequestParametersFilter;
+use AppBundle\Search\ProcurationParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -86,7 +86,7 @@ class ProcurationRequestRepository extends EntityRepository
      *
      * @return ProcurationRequest[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationRequestParametersFilter $filters): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -150,7 +150,7 @@ class ProcurationRequestRepository extends EntityRepository
         return $requests;
     }
 
-    public function countManagedBy(Adherent $procurationManager, ProcurationRequestParametersFilter $filters): int
+    public function countManagedBy(Adherent $procurationManager, ProcurationParametersFilter $filters): int
     {
         if (!$procurationManager->isProcurationManager()) {
             return 0;
@@ -234,7 +234,7 @@ class ProcurationRequestRepository extends EntityRepository
         return implode(' + ', $notMatchingCount);
     }
 
-    private function applyFilter(QueryBuilder $qb, ProcurationRequestParametersFilter $filters): void
+    private function applyFilter(QueryBuilder $qb, ProcurationParametersFilter $filters): void
     {
         if ($country = $filters->getCountry()) {
             $qb->andWhere('pr.voteCountry = :filterVotreCountry');

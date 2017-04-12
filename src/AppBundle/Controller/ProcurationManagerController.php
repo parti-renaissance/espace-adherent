@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Search\ProcurationRequestParametersFilter;
+use AppBundle\Search\ProcurationParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,7 +29,7 @@ class ProcurationManagerController extends Controller
     public function indexAction(Request $request): Response
     {
         $requestsRepository = $this->getDoctrine()->getRepository(ProcurationRequest::class);
-        $filters = (new ProcurationRequestParametersFilter())->handleRequest($request);
+        $filters = (new ProcurationParametersFilter())->handleRequest($request);
 
         return $this->render('procuration_manager/index.html.twig', [
             'requests' => $requestsRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE, $filters),
@@ -65,13 +65,15 @@ class ProcurationManagerController extends Controller
      * @Route("/mandataires", name="app_procuration_manager_proposals")
      * @Method("GET")
      */
-    public function proposalsAction(): Response
+    public function proposalsAction(Request $request): Response
     {
         $proxiesRepository = $this->getDoctrine()->getRepository(ProcurationProxy::class);
+        $filters = (new ProcurationParametersFilter())->handleRequest($request);
 
         return $this->render('procuration_manager/proposals.html.twig', [
-            'proxies' => $proxiesRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE),
-            'totalCount' => $proxiesRepository->countManagedBy($this->getUser()),
+            'proxies' => $proxiesRepository->findManagedBy($this->getUser(), 1, self::PER_PAGE, $filters),
+            'totalCount' => $proxiesRepository->countManagedBy($this->getUser(), $filters),
+            'filters' => $filters,
         ]);
     }
 
