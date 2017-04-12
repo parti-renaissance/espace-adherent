@@ -17,9 +17,11 @@
 
     <hr />
 
-    {{ include('procuration_manager/_filters.html.twig') }}
+    {% if enable_canary %}
+        {{ include('procuration_manager/_filters.html.twig') }}
 
-    <hr />
+        <hr />
+    {% endif %}
 
     {% if requests|length == 0 %}
         <div class="text--body text--center">

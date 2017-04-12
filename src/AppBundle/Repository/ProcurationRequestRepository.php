@@ -86,7 +86,7 @@ class ProcurationRequestRepository extends EntityRepository
      *
      * @return ProcurationRequest[]
      */
-    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters): array
+    public function findManagedBy(Adherent $procurationManager, int $page, int $perPage, ProcurationParametersFilter $filters = null): array
     {
         if (!$procurationManager->isProcurationManager()) {
             return [];
@@ -101,7 +101,10 @@ class ProcurationRequestRepository extends EntityRepository
         ;
 
         $this->addAndWhereManagedBy($qb, $procurationManager);
-        $this->applyFilter($qb, $filters);
+
+        if ($filters) {
+            $this->applyFilter($qb, $filters);
+        }
 
         /** @var ProcurationRequest[] $requests */
         $requests = $qb->getQuery()->getArrayResult();
