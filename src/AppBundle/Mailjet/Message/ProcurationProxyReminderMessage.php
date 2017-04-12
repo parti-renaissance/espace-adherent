@@ -21,6 +21,7 @@ final class ProcurationProxyReminderMessage extends MailjetMessage
                 'voter_first_name' => $proxy->getFirstNames(),
                 'voter_last_name' => $proxy->getLastName(),
                 'info_link' => $infosUrl,
+                'elections' => implode(', ', $request->getElections()),
             ]
         );
 

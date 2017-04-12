@@ -681,6 +681,37 @@ class ProcurationRequest
         return $count;
     }
 
+    public function getElections(): array
+    {
+        return array_filter([$this->getElectionsPresidential(), $this->getElectionsLegislative()]);
+    }
+
+    public function getElectionsPresidential(): ?string
+    {
+        if ($this->electionPresidentialFirstRound && $this->electionPresidentialSecondRound) {
+            return 'Présidentielle : 1er et 2nd tour (23 avril et 7 mai)';
+        } elseif ($this->electionPresidentialFirstRound) {
+            return 'Présidentielle : 1er tour (23 avril)';
+        } elseif ($this->electionPresidentialSecondRound) {
+            return 'Présidentielle : 2nd tour (7 mai)';
+        }
+
+        return null;
+    }
+
+    public function getElectionsLegislative(): ?string
+    {
+        if ($this->electionLegislativeFirstRound && $this->electionLegislativeSecondRound) {
+            return 'Législatives : 1er et 2nd tour (4 juin et 18 juin)';
+        } elseif ($this->electionLegislativeFirstRound) {
+            return 'Législatives : 1er tour (4 juin)';
+        } elseif ($this->electionLegislativeSecondRound) {
+            return 'Législatives : 2nd tour (18 juin)';
+        }
+
+        return null;
+    }
+
     public function getReason(): ?string
     {
         return $this->reason;
