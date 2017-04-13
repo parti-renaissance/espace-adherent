@@ -300,6 +300,13 @@ class ProcurationProxy
      */
     public $conditions;
 
+    /**
+     * @var bool
+     *
+     * @Assert\IsTrue(message="procuration.authorization.required", groups={"front"})
+     */
+    private $authorization;
+
     public function __construct(?Adherent $referent)
     {
         $this->referent = $referent;

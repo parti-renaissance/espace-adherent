@@ -199,6 +199,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'reason' => ProcurationRequest::REASON_HEALTH,
+                'authorization' => true,
             ],
         ]));
 
@@ -272,6 +273,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
+                'authorization' => true,
             ],
         ]));
 
@@ -309,6 +311,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
+                'authorization' => true,
             ],
         ]));
 
@@ -366,6 +369,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
+                'authorization' => true,
             ],
         ]));
 

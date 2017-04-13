@@ -148,6 +148,8 @@ procuration.proposal.unique: |
 
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
 
+procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
+
 #
 # Event
 #

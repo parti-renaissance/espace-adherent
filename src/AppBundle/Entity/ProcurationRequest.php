@@ -272,6 +272,13 @@ class ProcurationRequest
     /**
      * @var bool
      *
+     * @Assert\IsTrue(message="procuration.authorization.required", groups={"front"})
+     */
+    private $authorization;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $processed = false;
