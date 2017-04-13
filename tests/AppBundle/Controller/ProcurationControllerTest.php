@@ -26,6 +26,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
     /** @var ProcurationProxyRepository */
     private $procurationProxyRepostitory;
 
+    /**
+     * @group functionnal
+     */
     public function testProcurationRequestWorfklowRaisesWarningWhenMatchingProcurationExists()
     {
         $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
@@ -93,6 +96,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'reason' => ProcurationRequest::REASON_HANDICAP,
+                'authorization' => '1',
             ],
         ]));
 
