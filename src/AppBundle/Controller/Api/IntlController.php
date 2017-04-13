@@ -18,7 +18,7 @@ class IntlController extends Controller
      * @Route("/postal-code/{postalCode}", name="api_postal_code")
      * @Method("GET")
      */
-    public function postalCodeAction($postalCode)
+    public function postalCodeAction(string $postalCode): JsonResponse
     {
         return new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode));
     }
@@ -27,7 +27,7 @@ class IntlController extends Controller
      * @Route("/vote-offices/{countryCode}", name="api_vote_offices")
      * @Method("GET")
      */
-    public function voteOfficesAction($countryCode)
+    public function voteOfficesAction(string $countryCode): JsonResponse
     {
         return new JsonResponse(VoteOfficeBundle::getVoteOfficies($countryCode));
     }

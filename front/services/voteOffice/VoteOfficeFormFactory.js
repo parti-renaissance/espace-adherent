@@ -1,6 +1,6 @@
 import VoteOfficeForm from './VoteOfficeForm';
 
-export default class VoteOfficeFormFormFactory {
+export default class VoteOfficeFormFactory {
     constructor(api) {
         this._api = api;
     }
