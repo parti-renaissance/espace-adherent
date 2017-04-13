@@ -8,6 +8,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -119,6 +120,11 @@ class CommitteeManager
     public function countCommitteeHosts(Committee $committee): int
     {
         return $this->getMembershipRepository()->countHostMembers($committee->getUuid());
+    }
+
+    public function countCommitteeSupervisors(Committee $committee): int
+    {
+        return $this->getMembershipRepository()->countSupervisorMembers($committee->getUuid());
     }
 
     public function getCommitteeHosts(Committee $committee): AdherentCollection
@@ -343,5 +349,23 @@ class CommitteeManager
     public function countApprovedCommittees(): int
     {
         return $this->getCommitteeRepository()->countApprovedCommittees();
+    }
+
+    public function changePrivilege(Adherent $adherent, Committee $committee, string $privilege): void
+    {
+        CommitteeMembership::checkPrivilege($privilege);
+
+        if (!$committeeMembership = $this->getCommitteeMembership($adherent, $committee)) {
+            return;
+        }
+
+        // We can't have more than 1 supervisors per committee
+        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege && $this->countCommitteeSupervisors($committee)) {
+            throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($committeeMembership->getUuid());
+        }
+
+        $committeeMembership->setPrivilege($privilege);
+
+        $this->getManager()->flush();
     }
 }

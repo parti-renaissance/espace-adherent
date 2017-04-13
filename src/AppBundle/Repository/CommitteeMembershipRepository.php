@@ -147,6 +147,21 @@ class CommitteeMembershipRepository extends EntityRepository
         return (int) $query->getSingleScalarResult();
     }
 
+    public function countSupervisorMembers(string $committeeUuid): int
+    {
+        $committeeUuid = Uuid::fromString($committeeUuid);
+
+        return $this->createQueryBuilder('cm')
+            ->select('COUNT(cm.uuid)')
+            ->where('cm.committeeUuid = :committee')
+            ->andWhere('cm.privilege = :privilege')
+            ->setParameter('committee', (string) $committeeUuid)
+            ->setParameter('privilege', CommitteeMembership::COMMITTEE_SUPERVISOR)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Returns the list of all hosts memberships of a committee.
      *

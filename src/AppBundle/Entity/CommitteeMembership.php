@@ -35,6 +35,12 @@ class CommitteeMembership
     const COMMITTEE_FOLLOWER = 'FOLLOWER';
     const COMMITTEE_SUPERVISOR = 'SUPERVISOR';
 
+    const PRIVILEGES = [
+        self::COMMITTEE_HOST,
+        self::COMMITTEE_FOLLOWER,
+        self::COMMITTEE_SUPERVISOR,
+    ];
+
     use EntityIdentityTrait;
 
     /**
@@ -145,6 +151,13 @@ class CommitteeMembership
             $privilege,
             $subscriptionDate
         );
+    }
+
+    public static function checkPrivilege(string $privilege): void
+    {
+        if (!in_array($privilege, self::PRIVILEGES, true)) {
+            throw new \InvalidArgumentException(sprintf('Invalid privilege %s', $privilege));
+        }
     }
 
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface

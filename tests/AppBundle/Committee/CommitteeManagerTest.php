@@ -7,6 +7,7 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
@@ -134,6 +135,61 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertSame('En Marche - Comité de Rouen', (string) $committees[5]);
         $this->assertSame('En Marche - Comité de Berlin', (string) $committees[6]);
         $this->assertSame('En Marche - Comité de Singapour', (string) $committees[7], 'Followed committee - least popular one last');
+    }
+
+    public function testChangePrivilegeNotDefinedPrivilege()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid privilege WRONG_PRIVILEGE');
+
+        $this->committeeManager->changePrivilege($adherent, $committee, 'WRONG_PRIVILEGE');
+    }
+
+    public function testChangePrivilegeException()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $this->expectException(CommitteeMembershipException::class);
+        $this->expectExceptionMessage(sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege.', $adherent->getMembershipFor($committee)->getUuid()));
+
+        $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+    }
+
+    public function testChangePrivilege()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent2 = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+
+        // Change privileges of the first member SUPERVISOR => FOLLOWER => HOST
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
+
+        $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_FOLLOWER);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_HOST);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isHostMember());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
+
+        // Change privileges of the second member: FOLLOWER => SUPERVISOR
+        $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isSupervisor());
+
+        $this->committeeManager->changePrivilege($adherent2, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+
+        $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isFollower());
     }
 
     private function getCommitteeMock(string $uuid)
