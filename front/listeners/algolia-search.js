@@ -22,7 +22,15 @@ export default (di) => {
     const content = dom('main');
     const footer = dom('footer');
 
-    on(dom('#je-cherche'), 'click', () => {
+    const searchButton = dom('#je-cherche');
+    const searchCloseButton = dom('#je-ferme-la-recherche');
+    const searchEngine = dom('#search-engine');
+
+    if (!searchButton || !searchCloseButton || !searchEngine) {
+        return;
+    }
+
+    on(searchButton, 'click', () => {
         addClass(overlay, 'g-search');
         addClass(banner, 'hide-me');
         addClass(header, 'hide-me');
@@ -32,7 +40,7 @@ export default (di) => {
         dom('#search-input').focus();
     });
 
-    on(dom('#je-ferme-la-recherche'), 'click', () => {
+    on(searchCloseButton, 'click', () => {
         removeClass(overlay, 'g-search');
         removeClass(banner, 'hide-me');
         removeClass(header, 'hide-me');
@@ -40,8 +48,5 @@ export default (di) => {
         removeClass(footer, 'hide-me');
     });
 
-    render(
-        <AlgoliaSearch appId={appId} appKey={appKey} environment={di.get('environment')} />,
-        dom('#search-engine')
-    );
+    render(<AlgoliaSearch appId={appId} appKey={appKey} environment={di.get('environment')} />, searchEngine);
 };
