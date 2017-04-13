@@ -61,6 +61,10 @@ class EventController extends Controller
      */
     public function attendAction(Request $request, Event $event): Response
     {
+        if ($event->isFinished()) {
+            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
+        }
+
         $committee = $event->getCommittee();
 
         $command = new EventRegistrationCommand($event, $this->getUser());
