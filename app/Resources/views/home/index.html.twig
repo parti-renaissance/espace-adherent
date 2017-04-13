@@ -30,6 +30,7 @@
                 </a>
             </div>
 
+            {#
             <a href="{{ blocks[1].link }}" class="comite card card--large-secondary l__col l__col--bottom space--30 card__background"
                  style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
                 <div class="background">
@@ -40,17 +41,40 @@
                     </div>
                 </div>
             </a>
+            #}
+
+            <div class="macron__banner background--pink">
+                <img src="{{ asset('images/jevotemacron.png') }}"
+                     title="Je Vote Macron"
+                     alt="Je Vote Macron" />
+                <div class="macron__banner__links">
+                    <a href="/article/10-raisons-de-voter-emmanuel-macron">
+                        10 raisons de voter<br>
+                        Emmanuel Macron
+                    </a>
+                    <a href="{{ path('page_emmanuel_macron_desintox_list') }}">
+                        Désintox
+                    </a>
+                    <a href="{{ path('app_ton_macron_invite') }}">
+                        Convaincre un ami
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div class="content">
+        <div class="content b__nudge--top">
             <article class="l__row l__row--v-stretch l__tablet--col">
                 <div class="action action__home yellow">
                     <p class="pink">J'agis pour la campagne !</p>
-                    <a href="{{ path('app_je_marche') }}" class="pink-yellow">Voir les actions</a>
+                    <a href="{{ path('app_je_marche') }}" class="pink-yellow">
+                        Voir les actions
+                    </a>
                 </div>
                 <div class="action action__home blue">
-                    <p>5000 événements cette semaine !</p>
-                    <a href="{{ path('app_search_events') }}" class="white-blue">Je participe</a>
+                    <p>Participez aux prochains meetings !</p>
+                    <a href="{{ path('articles_list', {'category': 'meetings'}) }}" class="white-blue">
+                        Je m'inscris
+                    </a>
                 </div>
             </article>
         </div>
@@ -120,7 +144,7 @@
 
     <section class="l__wrapper b__nudge--bottom-larger">
         <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
-            {% for block in blocks|slice(2,6) %}
+            {% for block in blocks|slice(1,6) %}
             {{ include('home/articles.html.twig') }}
             {% endfor %}
         </ul>

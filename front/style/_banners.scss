@@ -73,3 +73,48 @@
         margin: 7px 0 0 20px;
     }
 }
+
+.macron__banner {
+    flex-basis: 365px;
+    height: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 15px 15px;
+    box-sizing: border-box;
+
+    @media (max-width: $tablet) {
+        flex-basis: 100%;
+        height: auto;
+
+        img {
+            margin-bottom: 25px;
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    a {
+        @include text--medium;
+        font-weight: bold;
+        color: white;
+        border: 1px solid white;
+        text-align: center;
+        padding: 15px 0;
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin: 0;
+        }
+
+        &:hover {
+            background: white;
+            color: $pink;
+        }
+    }
+}
