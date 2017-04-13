@@ -43,22 +43,8 @@
             </a>
             #}
 
-            <div class="macron__banner background--pink">
-                <img src="{{ asset('images/jevotemacron.png') }}"
-                     title="Je Vote Macron"
-                     alt="Je Vote Macron" />
-                <div class="macron__banner__links">
-                    <a href="/article/10-raisons-de-voter-emmanuel-macron">
-                        10 raisons de voter<br>
-                        Emmanuel Macron
-                    </a>
-                    <a href="{{ path('page_emmanuel_macron_desintox_list') }}">
-                        Désintox
-                    </a>
-                    <a href="{{ path('app_ton_macron_invite') }}">
-                        Convaincre un ami
-                    </a>
-                </div>
+            <div class="macron__banner">
+                {{ include('banner/macron.html.twig') }}
             </div>
         </div>
 
