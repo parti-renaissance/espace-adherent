@@ -125,13 +125,15 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
 
         // Without any fixed limit.
-        $this->assertCount(6, $committees = $this->committeeManager->getAdherentCommittees($adherent));
+        $this->assertCount(8, $committees = $this->committeeManager->getAdherentCommittees($adherent));
         $this->assertSame('En Marche Paris 8', (string) $committees[0], 'Supervised committee must come first');
         $this->assertSame('En Marche Dammarie-les-Lys', (string) $committees[1], 'Hosted committee must come after supervised committees');
         $this->assertSame('En Marche - Comité de Évry', (string) $committees[2], 'Followed committee - most popular one first');
-        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[3]);
-        $this->assertSame('En Marche - Comité de Rouen', (string) $committees[4]);
-        $this->assertSame('En Marche - Comité de Berlin', (string) $committees[5], 'Followed committee - least popular one last');
+        $this->assertSame('En Marche - Comité de New York City', (string) $committees[3]);
+        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[4]);
+        $this->assertSame('En Marche - Comité de Rouen', (string) $committees[5]);
+        $this->assertSame('En Marche - Comité de Berlin', (string) $committees[6]);
+        $this->assertSame('En Marche - Comité de Singapour', (string) $committees[7], 'Followed committee - least popular one last');
     }
 
     private function getCommitteeMock(string $uuid)

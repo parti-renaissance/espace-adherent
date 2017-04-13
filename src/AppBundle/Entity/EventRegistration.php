@@ -104,6 +104,11 @@ class EventRegistration
         return $this->newsletterSubscriber;
     }
 
+    public function isEventFinished(): bool
+    {
+        return $this->event->isFinished();
+    }
+
     public function matches(Event $event, Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {
