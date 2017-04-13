@@ -24,8 +24,8 @@ class ReferentDumpDatabaseCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:referent:dump')
-            ->setDescription('Dumps the list of managed users, newsletters, etc. files')
+            ->setName('app:referent:single-dump')
+            ->setDescription('Dumps the list of managed users, newsletters, etc. files of a single referent')
             ->addArgument('referent', InputArgument::REQUIRED, 'The adherent UUID or email address')
             ->addArgument('type', InputArgument::OPTIONAL, 'The type of files to generate (ie. adherents)')
             ->setHelp(<<<'EOF'

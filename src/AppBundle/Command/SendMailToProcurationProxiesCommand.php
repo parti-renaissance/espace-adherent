@@ -25,7 +25,7 @@ class SendMailToProcurationProxiesCommand extends ContainerAwareCommand
      */
     private $limit;
 
-    public const COMMAND_NAME = 'app:mail:send-reminder-to-procuration-proxy';
+    public const COMMAND_NAME = 'app:procuration:send-reminder';
     private const MAILS_PER_LOOP = 'mails-per-loop';
     private const MAILS_PER_LOOP_DEFAULT_VALUE = 25;
 
@@ -33,7 +33,7 @@ class SendMailToProcurationProxiesCommand extends ContainerAwareCommand
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setDescription('Send a reminder, 48h after the match, to the procuration proxies.')
+            ->setDescription('Send a reminder to the procuration proxies.')
             ->addOption(self::MAILS_PER_LOOP, 'm', InputOption::VALUE_OPTIONAL, 'Adapt the number of emails to manage per loop if you have a memory limit issue.', self::MAILS_PER_LOOP_DEFAULT_VALUE)
         ;
     }
@@ -44,7 +44,7 @@ class SendMailToProcurationProxiesCommand extends ContainerAwareCommand
         $this->reminder = $this->getContainer()->get('app.procuration.reminder_handler');
 
         $this->limit = is_numeric($input->getOption(self::MAILS_PER_LOOP))
-            ? intval($input->getOption(self::MAILS_PER_LOOP))
+            ? (int) $input->getOption(self::MAILS_PER_LOOP)
             : self::MAILS_PER_LOOP_DEFAULT_VALUE;
     }
 

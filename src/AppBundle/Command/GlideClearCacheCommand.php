@@ -12,7 +12,7 @@ class GlideClearCacheCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:glide:clear-cache')
+            ->setName('app:glide:purge')
             ->addArgument('path', InputArgument::REQUIRED)
             ->setDescription('Clear the Glide cache for a given path')
         ;
