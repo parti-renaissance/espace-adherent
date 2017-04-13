@@ -3,6 +3,7 @@
 namespace AppBundle\Search;
 
 use AppBundle\Intl\UnitedNationsBundle;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -82,5 +83,27 @@ class ProcurationParametersFilter
     public function hasData(): bool
     {
         return $this->country || $this->city || $this->type;
+    }
+
+    public function apply(QueryBuilder $qb, string $alias): void
+    {
+        if ($this->country) {
+            $qb->andWhere(sprintf('%s.voteCountry = :filterVotreCountry', $alias));
+            $qb->setParameter('filterVotreCountry', $this->country);
+        }
+
+        if ($this->city) {
+            if (is_numeric($this->city)) {
+                $qb->andWhere(sprintf('%s.votePostalCode LIKE :filterVoteCity', $alias));
+                $qb->setParameter('filterVoteCity', $this->city.'%');
+            } else {
+                $qb->andWhere(sprintf('LOWER(%s.voteCityName) LIKE :filterVoteCity', $alias));
+                $qb->setParameter('filterVoteCity', '%'.strtolower($this->city).'%');
+            }
+        }
+
+        if ($this->type) {
+            $qb->andWhere(sprintf('%s.%s = true', $alias, $this->type));
+        }
     }
 }
