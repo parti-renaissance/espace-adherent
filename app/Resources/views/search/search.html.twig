@@ -64,7 +64,7 @@
 {% block content %}
 <main class="search">
     <header class="l__wrapper space--60-0 text--center">
-        <h1 class="text--large search-title">{% block search_title 'Comités'%}</h1>
+        <h1 class="text--large search-title">{% block search_title 'Comités' %}</h1>
         <h2 class="text--body text--normal">{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</h2>
     </header>
 
@@ -72,12 +72,10 @@
         {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
         {% set currentRoute = app.request.attributes.get('_route') %}
 
-        {% block banner_large_button %}
-        <a href="{{ path('page_le_mouvement_la_carte') }}"
-           class="text--center space--10-0 b__nudge--bottom background--green text--white text--medium link--no-decor link--block">
-            Voir la carte des comités
+        <a href="{% block button_link %}{{ path('page_le_mouvement_la_carte') }}{% endblock %}"
+           class="text--center space--10-0 b__nudge--bottom background--green text--medium link--no-decor link--block">
+            Voir la carte des {% block button_label %}comités{% endblock %}
         </a>
-        {% endblock %}
 
         <div class="search__results {{ currentRoute }}" id="search-results"></div>
     </div>
