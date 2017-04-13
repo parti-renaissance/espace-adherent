@@ -17,6 +17,7 @@ class ProposalFactory
         $proposal->setDisplayMedia($data['displayMedia'] ?? false);
         $proposal->setContent($data['content']);
         $proposal->setPublished($data['published'] ?? true);
+        $proposal->setKeywords($data['keywords'] ?? '');
 
         foreach ($data['themes'] as $theme) {
             $proposal->addTheme($theme);

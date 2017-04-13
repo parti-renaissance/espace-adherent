@@ -26,13 +26,26 @@ class PageAdmin extends AbstractAdmin
         }
 
         $formMapper
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-            ])
-            ->add('content', TextareaType::class, [
-                'label' => 'Contenu',
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
-            ]);
+            ->with('Contenu', ['class' => 'col-md-8'])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Description',
+                ])
+                ->add('content', TextareaType::class, [
+                    'label' => 'Contenu',
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
+            ->end()
+            ->with('Méta-donnes', ['class' => 'col-md-4'])
+                ->add('keywords', null, [
+                    'label' => 'Mots clés de recherche',
+                    'required' => false,
+                ])
+                ->add('media', null, [
+                    'label' => 'Image principale',
+                    'required' => false,
+                ])
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -49,9 +62,6 @@ class PageAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
-            ])
-            ->add('slug', null, [
-                'label' => 'URL',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

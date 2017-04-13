@@ -21,14 +21,13 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $factory = $this->container->get('app.content.article_factory');
         $mediaFactory = $this->container->get('app.content.media_factory');
         $storage = $this->container->get('app.storage');
-        $em = $this->container->get('doctrine.orm.entity_manager');
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../../app/data/dist/guadeloupe.jpg');
         $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Article image', 'article.jpg', $mediaFile);
-        $em->persist($media);
 
+        $manager->persist($media);
         $manager->flush();
 
         // Categories

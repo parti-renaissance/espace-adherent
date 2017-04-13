@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use AppBundle\Geocoder\Coordinates;
@@ -64,35 +65,16 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|page|article"})
+     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|page|static-page|article|clarification"})
      * @Method("GET")
      */
     public function algoliaAction(Request $request, string $type, string $slug)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $media = null;
-
-        if ('proposal' === $type) {
-            if (!$proposal = $manager->getRepository(Proposal::class)->findOneBySlug($slug)) {
-                throw $this->createNotFoundException();
-            }
-
-            $media = $proposal->getMedia();
-        } elseif ('article' === $type) {
-            if (!$article = $manager->getRepository(Article::class)->findOneBySlug($slug)) {
-                throw $this->createNotFoundException();
-            }
-
-            $media = $article->getMedia();
-        }
-
-        $path = $media ? 'images/'.$media->getPath() : 'static/algolia-default-image.jpg';
-
         $glide = $this->get('app.glide');
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
 
         try {
-            return $glide->getImageResponse($path, [
+            return $glide->getImageResponse($this->getTypePath($type, $slug), [
                 'w' => 250,
                 'h' => 170,
                 'fit' => 'crop',
@@ -101,5 +83,43 @@ class AssetsController extends Controller
         } catch (FileNotFoundException $e) {
             throw $this->createNotFoundException();
         }
+    }
+
+    private function getTypePath(string $type, string $slug): string
+    {
+        if ('static-page' === $type) {
+            return 'static/algolia/'.$slug.'.jpg';
+        }
+
+        $entity = $this->getTypeRepository($type)->findOneBySlug($slug);
+
+        if (!$entity) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$entity->getMedia()) {
+            return 'static/algolia/default.jpg';
+        }
+
+        return 'images/'.$entity->getMedia()->getPath();
+    }
+
+    private function getTypeRepository(string $type)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        if ('proposal' === $type) {
+            return $manager->getRepository(Proposal::class);
+        }
+
+        if ('clarification' === $type) {
+            return $manager->getRepository(Clarification::class);
+        }
+
+        if ('article' === $type) {
+            return $manager->getRepository(Article::class);
+        }
+
+        return $manager->getRepository(Page::class);
     }
 }

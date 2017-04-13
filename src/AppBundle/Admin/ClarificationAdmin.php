@@ -48,6 +48,10 @@ class ClarificationAdmin extends AbstractAdmin
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                 ])
+                ->add('keywords', null, [
+                    'label' => 'Mots clés de recherche',
+                    'required' => false,
+                ])
             ->end()
             ->with('Média', ['class' => 'col-md-4'])
                 ->add('media', AdminType::class, [

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Search\Algolia\PageSlugToUrl;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,6 +19,20 @@ class Page
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
+    use EntityMediaTrait;
+
+    const URLS = [
+        'emmanuel-macron-ce-que-je-suis' => '/emmanuel-macron',
+        'emmanuel-macron-revolution' => '/emmanuel-macron/revolution',
+        'emmanuel-macron-propositions' => '/emmanuel-macron/le-programme',
+        'le-mouvement-nos-valeurs' => '/le-mouvement',
+        'le-mouvement-notre-organisation' => '/le-mouvement/notre-organisation',
+        'le-mouvement-les-comites' => '/le-mouvement/les-comites',
+        'le-mouvement-devenez-benevole' => '/le-mouvement/devenez-benevole',
+        'mentions-legales' => '/mentions-legales',
+        'le-mouvement-legislatives' => '/le-mouvement/legislatives',
+        'desintox' => '/emmanuel-macron/desintox',
+    ];
 
     /**
      * @var int
@@ -41,9 +54,17 @@ class Page
     /**
      * @Algolia\Attribute
      */
+    public function getStatic(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
     public function getUrl(): string
     {
-        $url = PageSlugToUrl::getUrl($this->slug);
+        $url = self::URLS[$this->slug] ?? null;
         if (!$url) {
             throw new \LogicException(sprintf(
                 'Slug "%s" is not sync with AppBundle\Search\Algolia\PageSlugToUrl::URLS.',

@@ -46,94 +46,73 @@ trait EntityContentTrait
     /**
      * @var string|null
      *
+     * @ORM\Column(length=255, nullable=true)
+     *
+     * @Algolia\Attribute
+     */
+    private $keywords;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
      */
     private $content;
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->title ?: '';
     }
 
-    /**
-     * @return null|string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return EntityContentTrait
-     */
-    public function setTitle($title): self
+    public function setTitle(?string $title)
     {
         $this->title = EmojisRemover::remove($title);
-
-        return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @param null|string $slug
-     *
-     * @return EntityContentTrait
-     */
-    public function setSlug($slug): self
+    public function setSlug(?string $slug)
     {
         $this->slug = $slug;
-
-        return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param null|string $description
-     *
-     * @return EntityContentTrait
-     */
-    public function setDescription($description): self
+    public function setDescription(?string $description)
     {
         $this->description = EmojisRemover::remove($description);
-
-        return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    /**
-     * @param null|string $content
-     *
-     * @return EntityContentTrait
-     */
-    public function setContent($content): self
+    public function setContent(?string $content)
     {
         $this->content = EmojisRemover::remove($content);
+    }
 
-        return $this;
+    public function getKeywords(): ?string
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?string $keywords)
+    {
+        $this->keywords = $keywords;
     }
 }
