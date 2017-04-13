@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationElectionsType extends AbstractType
 {
@@ -42,6 +43,10 @@ class ProcurationElectionsType extends AbstractType
             ])
             ->add('authorization', CheckboxType::class, [
                 'mapped' => false,
+                'constraints' => new IsTrue([
+                    'message' => 'procuration.authorization.required',
+                    'groups' => ['elections'],
+                ]),
             ])
         ;
     }

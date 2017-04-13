@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationProxyType extends AbstractProcurationType
 {
@@ -61,9 +62,18 @@ class ProcurationProxyType extends AbstractProcurationType
             ])
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
+                'mapped' => false,
+                'constraints' => new IsTrue([
+                    'message' => 'procuration.proposal_conditions.required',
+                    'groups' => ['front'],
+                ]),
             ])
             ->add('authorization', CheckboxType::class, [
                 'mapped' => false,
+                'constraints' => new IsTrue([
+                    'message' => 'procuration.authorization.required',
+                    'groups' => ['front'],
+                ]),
             ])
         ;
     }
