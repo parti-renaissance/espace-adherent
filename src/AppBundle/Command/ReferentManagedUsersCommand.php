@@ -24,7 +24,7 @@ class ReferentManagedUsersCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:produce:referent-managed-users-dump')
+            ->setName('app:referent:dump')
             ->setDescription('Produce messages to update referents users dumps')
         ;
     }
