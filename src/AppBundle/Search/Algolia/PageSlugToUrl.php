@@ -14,7 +14,6 @@ class PageSlugToUrl
         'le-mouvement-nos-valeurs' => '/le-mouvement',
         'le-mouvement-notre-organisation' => '/le-mouvement/notre-organisation',
         'le-mouvement-les-comites' => '/le-mouvement/les-comites',
-        'le-mouvement-les-evenements' => '/le-mouvement/les-evenements',
         'le-mouvement-devenez-benevole' => '/le-mouvement/devenez-benevole',
         'mentions-legales' => '/mentions-legales',
         'emmanuel-macron-propositions' => '/emmanuel-macron/le-programme',
