@@ -182,7 +182,7 @@ class EventRepository extends EntityRepository
                 ->andWhere($this->getNearbyExpression().' < :distance_max')
                 ->andWhere('n.beginAt > :now')
                 ->setParameter('distance_max', $search->getRadius())
-                ->setParameter('now', new \DateTime('-36 hours'))
+                ->setParameter('now', new \DateTime())
                 ->orderBy('n.beginAt', 'asc')
                 ->addOrderBy('distance_between', 'asc')
             ;
