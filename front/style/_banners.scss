@@ -118,9 +118,6 @@
     box-sizing: border-box;
 
     @media (max-width: $tablet) {
-        flex-basis: 100%;
-        height: auto;
-
         img {
             margin-bottom: 25px;
         }
