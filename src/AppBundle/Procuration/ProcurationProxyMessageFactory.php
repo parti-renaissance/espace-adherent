@@ -44,10 +44,14 @@ class ProcurationProxyMessageFactory
 
     public function createProxyReminderMessage(ProcurationRequest $request): ProcurationProxyReminderMessage
     {
-        $url = $this->urlGenerator->generate('app_procuration_my_request', [
-            'id' => $request->getId(),
-            'token' => $request->generatePrivateToken(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = str_replace(
+            'http://localhost',
+            'https://en-marche.fr',
+            $this->urlGenerator->generate('app_procuration_my_request', [
+                'id' => $request->getId(),
+                'token' => $request->generatePrivateToken(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
 
         $message = ProcurationProxyReminderMessage::create($request, $url);
         $message->setReplyTo($this->replyToEmailAddress);
