@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadClarificationData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadFacebookVideoData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +48,14 @@ class PageControllerTest extends SqliteWebTestCase
         $this->assertContains('Tous (7)', $crawler->filter('.events-map-categories--all')->first()->text());
     }
 
+    public function testEmmanuelMacronVideos()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/emmanuel-macron/videos');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(2, $crawler->filter('.fb-video')->count());
+    }
+
     public function providePages()
     {
         return [
@@ -85,6 +94,7 @@ class PageControllerTest extends SqliteWebTestCase
             LoadPageData::class,
             LoadProposalData::class,
             LoadClarificationData::class,
+            LoadFacebookVideoData::class,
         ]);
     }
 

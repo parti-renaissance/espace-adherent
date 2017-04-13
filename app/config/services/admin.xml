@@ -66,6 +66,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Vidéos Facebook" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\FacebookVideo</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.home_block" class="AppBundle\Admin\HomeBlockAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Accueil » Blocs d'articles" group="Communication" />
 
