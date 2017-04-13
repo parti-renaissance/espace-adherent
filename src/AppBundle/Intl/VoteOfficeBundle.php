@@ -29,7 +29,9 @@ class VoteOfficeBundle
             'SARREBRUCK',
             'STUTTGART',
         ],
-        'ANCIENNE REPUBLIQUE YOUGOSLAVE DE MACEDOINE' => 'SKOPJE', // @TODO ???
+        'MK' => [ // ANCIENNE REPUBLIQUE YOUGOSLAVE DE MACEDOINE
+            'SKOPJE',
+        ],
         'AD' => [ // ANDORRE
             'ANDORRE',
         ],
@@ -403,8 +405,6 @@ class VoteOfficeBundle
         ],
         'PK' => [ // PAKISTAN
             'ISLAMABAD',
-        ],
-        'KARACHI' => [ // KARACHI // @TODO ???
             'Karachi',
         ],
         'PA' => [ // PANAMA
