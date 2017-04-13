@@ -10,6 +10,13 @@ export default class ReqwestApiClient {
         });
     }
 
+    getVoteOffices(country, callback) {
+        this._createRequest(callback, {
+            url: '/api/vote-offices/'+country,
+            type: 'json'
+        });
+    }
+
     getCommitteeTimelineFeed(committeeUuid, committeeSlug, offset, callback) {
         this._createRequest(callback, {
             url: '/comites/'+committeeUuid+'/'+committeeSlug+'/timeline?offset='+offset,

@@ -41,7 +41,7 @@ class ProcurationController extends Controller
 
         return $this->render('procuration/index.html.twig', [
             'has_error' => $request->query->getBoolean('has_error'),
-            'form' => $this->createForm(ProcurationVoteType::class, new ProcurationRequest())->createView(),
+            'form' => $this->createForm(ProcurationVoteType::class)->createView(),
         ]);
     }
 

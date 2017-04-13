@@ -59,6 +59,15 @@ class App {
         form.attachEvents();
     }
 
+    createVoteOfficeSelector(country, voteOffice) {
+        const formFactory = this._di.get('vote_office.form_factory');
+        const form = formFactory.createVoteOfficeForm(country, voteOffice);
+
+        form.prepare();
+        form.refresh();
+        form.attachEvents();
+    }
+
     runDonation() {
         System.import('pages/donation').catch((error) => { throw error; }).then((module) => {
             module.default();

@@ -29,4 +29,22 @@ class IntlControllerTest extends SqliteWebTestCase
             35357 => 'Villamée',
         ], \GuzzleHttp\json_decode($client->getResponse()->getContent(), true));
     }
+
+    public function testGetVoteOffices()
+    {
+        $client = $this->makeClient();
+        $client->request(Request::METHOD_GET, '/api/vote-offices/DE');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertJson($client->getResponse()->getContent());
+        $this->assertEquals([
+            'BERLIN',
+            'DUSSELDORF',
+            'HAMBOURG',
+            'FRANCFORT',
+            'MUNICH',
+            'SARREBRUCK',
+            'STUTTGART',
+        ], \GuzzleHttp\json_decode($client->getResponse()->getContent(), true));
+    }
 }

@@ -4,9 +4,9 @@ namespace AppBundle\Intl;
 
 class VoteOfficeBundle
 {
-    const VoteOffice = [
+    const VOTE_OFFICES = [
         'AF' => [ // AFGHANISTAN
-            'KABOUL'
+            'KABOUL',
         ],
         'ZA' => [ // AFRIQUE DU SUD
             'JOHANNESBURG',
@@ -546,6 +546,11 @@ class VoteOfficeBundle
         ],
         'ZW' => [ // ZIMBABWE
             'HARARE',
-        ]
+        ],
     ];
+
+    public static function getVoteOfficies(string $countryCode): array
+    {
+        return self::VOTE_OFFICES[$countryCode] ?? [];
+    }
 }
