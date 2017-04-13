@@ -40,6 +40,9 @@ class ProcurationElectionsType extends AbstractType
                     'En raison d’obligations de formation' => ProcurationRequest::REASON_TRAINING,
                 ],
             ])
+            ->add('authorization', CheckboxType::class, [
+                'mapped' => false,
+            ])
         ;
     }
 

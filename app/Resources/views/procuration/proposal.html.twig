@@ -245,7 +245,13 @@
                         {{ form_errors(form.conditions) }}
                         <div class="form__row form__checkbox form__checkbox--large">
                             {{ form_widget(form.conditions) }}
-                            {{ form_label(form.conditions, 'En cochant cette case , je m’engage à voter selon les vœux du mandant.') }}
+                            {{ form_label(form.conditions, 'En cochant cette case, je m’engage à voter selon les vœux du mandant.') }}
+                        </div>
+
+                        {{ form_errors(form.authorization) }}
+                        <div class="form__row form__checkbox form__checkbox--large">
+                            {{ form_widget(form.authorization) }}
+                            {{ form_label(form.authorization, 'En cochant cette case, vous autorisez En Marche à utiliser les informations détaillées dans le présent formulaire dans le cadre de la plateforme de procuration.') }}
                         </div>
                     </div>
 

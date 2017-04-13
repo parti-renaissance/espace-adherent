@@ -68,6 +68,14 @@
                     {{ form_widget(form.reason, { 'attr': { 'class': 'form--full' } }) }}
                 </div>
 
+                <div class="b__nudge--top-40">
+                    {{ form_errors(form.authorization) }}
+                    <div class="form__row form__checkbox form__checkbox--large">
+                        {{ form_widget(form.authorization) }}
+                        {{ form_label(form.authorization, 'En cochant cette case, vous autorisez En Marche à utiliser les informations détaillées dans le présent formulaire dans le cadre de la plateforme de procuration.') }}
+                    </div>
+                </div>
+
                 <div class="form__row b__nudge--top-40">
                     {{ form_errors(form.reason) }}
                     {{ form_widget(form.reason, { 'attr': { 'class': 'form--full' } }) }}

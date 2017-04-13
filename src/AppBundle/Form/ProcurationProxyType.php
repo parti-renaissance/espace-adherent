@@ -62,6 +62,9 @@ class ProcurationProxyType extends AbstractProcurationType
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('authorization', CheckboxType::class, [
+                'mapped' => false,
+            ])
         ;
     }
 
