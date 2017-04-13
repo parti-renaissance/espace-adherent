@@ -4,7 +4,7 @@ EXEC=$(FIG) exec app
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff watch clear clean test tu tf tj lint ls ly lt lj build up perm deps cc
+.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt lj build up perm deps cc
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -57,6 +57,14 @@ db: vendor
 db-diff:        ## Generate a migration by comparing your current database to your mapping information
 db-diff: vendor
 	$(RUN) $(CONSOLE) doctrine:migration:diff
+
+db-migrate:     ## Migrate database schema to the latest available version
+db-migrate: vendor
+	$(RUN) $(CONSOLE) doctrine:migration:migrate -n
+
+db-rollback:    ## Rollback the latest executed migration
+db-rollback: vendor
+	$(RUN) $(CONSOLE) d:m:e --down $(shell $(RUN) $(CONSOLE) d:m:l) -n
 
 db-load:        ## Reset the database fixtures
 db-load: vendor

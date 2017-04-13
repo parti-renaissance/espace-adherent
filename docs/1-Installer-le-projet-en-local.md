@@ -82,24 +82,42 @@ Vous devriez alors pouvoir lancer `make` qui vous affichera l'aide du Makefile :
 
 ```
 $ make
+ Project setup
+---------------------------------------------------------------------------
 start:           Install and start the project
 stop:            Remove docker containers
 reset:           Reset the whole project
-db:              Reset the database and load fixtures
-:---------------------------------------------------------------------------:
-db-diff:         Generate a migration by comparing your current database to your mapping information.
-watch:           Watch the assets and build their development version on change
 clear:           Remove all the cache, the logs, the sessions and the built assets
 clean:           Clear and remove dependencies
-deps:            Install the project PHP and JS dependencies
-:---------------------------------------------------------------------------:
+cc:              Clear the cache in dev env
+
+ Database
+---------------------------------------------------------------------------
+db:              Reset the database and load fixtures
+db-diff:         Generate a migration by comparing your current database to your mapping information
+db-migrate:      Migrate database schema to the latest available version
+db-rollback:     Rollback the latest executed migration
+db-load:         Reset the database fixtures
+
+ Assets
+---------------------------------------------------------------------------
+watch:           Watch the assets and build their development version on change
+assets:          Build the development version of the assets
+assets-prod:     Build the production version of the assets
+
+ Tests
+---------------------------------------------------------------------------
 test:            Run the PHP and the Javascript tests
 tu:              Run the PHP unit tests
 tf:              Run the PHP functional tests
 tj:              Run the Javascript tests
-lint:            Run lint on twig, yaml and Javascript files
-ls:              Lint Symfony (twig and yaml) files
+lint:            Run lint on Twig, YAML and Javascript files
+ls:              Lint Symfony (Twig and YAML) files
 lj:              Lint the Javascript to follow the convention
+
+ Dependencies
+---------------------------------------------------------------------------
+deps:            Install the project PHP and JS dependencies
 ```
 
 ### 1.1.2.2 Lancer l'initialisation du projet

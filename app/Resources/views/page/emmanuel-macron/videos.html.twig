@@ -50,70 +50,27 @@
         </div>
 
         <ul class="l__wrapper--medium videos__grid">
+            {% for video in videos %}
             <li>
                 <div class="fb-video"
-                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
+                     data-href="{{ video.url }}"
                      data-allowfullscreen="true"
                      data-show-captions="true"
                      data-width="450"
                      data-show-text="true">
-                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
-                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
-                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
-                        <p>Laurence Haïm a un message pour vous.
-                           Inscrivez-vous ➜ en-marche.fr/bercy</p>
-                        Posted by <a href="https://www.facebook.com/EnMarche/">En Marche</a> on Tuesday, April 11, 2017
+                    <blockquote cite="{{ video.url }}" class="fb-xfbml-parse-ignore">
+                        <a href="{{ video.url }}"></a>
+                        <p>{{ video.description }}</p>
+                        Publié par {{ video.author }} le {{ video.createdAt|date('m/d/Y', 'Europe/Paris') }}
                     </blockquote>
-                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
                 </div>
                 <div role="button" aria-label="Partagez via Twitter"
                     class="btn btn--social btn--twitter"
-                    onclick="App.share('twitter', 'lien video', 'titre')">
+                    onclick="App.share('twitter', '{{ video.url }}', '{{ video.description }}')">
                     <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </div>
             </li>
-            <li>
-                <div class="fb-video"
-                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
-                     data-allowfullscreen="true"
-                     data-show-captions="true"
-                     data-width="450"
-                     data-show-text="true">
-                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
-                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
-                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
-                        <p>le message en text, sans html (en fait je me demande si c'est utile ca)</p>
-                    </blockquote>
-                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
-                </div>
-                <div role="button" aria-label="Partagez via Twitter"
-                    class="btn btn--social btn--twitter"
-                    onclick="App.share('twitter', 'lien video', 'titre')">
-                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
-                </div>
-            </li>
-            <li>
-                <div class="fb-video"
-                     data-href="https://www.facebook.com/EnMarche/videos/769283806583157/"
-                     data-allowfullscreen="true"
-                     data-show-captions="true"
-                     data-width="450"
-                     data-show-text="true">
-                    {# DEPART : this is the code they should be adding. le reste, c'est nous. #}
-                    <blockquote cite="https://www.facebook.com/EnMarche/videos/769283806583157/" class="fb-xfbml-parse-ignore">
-                        <a href="https://www.facebook.com/EnMarche/videos/769283806583157/"></a>
-                        <p>Laurence Haïm a un message pour vous.
-                           Inscrivez-vous ➜ en-marche.fr/bercy</p>
-                        Posted by <a href="https://www.facebook.com/EnMarche/">En Marche</a> on Tuesday, April 11, 2017
-                    </blockquote>
-                    {# FIN : this is the code they should be adding. le reste, c'est nous. #}
-                </div>
-                <div role="button" aria-label="Partagez via Twitter"
-                    class="btn btn--social btn--twitter"
-                    onclick="App.share('twitter', 'lien video', 'titre')">
-                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
     </section>
 
