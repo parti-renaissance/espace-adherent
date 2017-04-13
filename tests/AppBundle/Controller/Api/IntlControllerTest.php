@@ -38,13 +38,13 @@ class IntlControllerTest extends SqliteWebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertJson($client->getResponse()->getContent());
         $this->assertEquals([
-            'BERLIN',
-            'DUSSELDORF',
-            'HAMBOURG',
-            'FRANCFORT',
-            'MUNICH',
-            'SARREBRUCK',
-            'STUTTGART',
+            'Berlin',
+            'Dusseldorf',
+            'Hambourg',
+            'Francfort',
+            'Munich',
+            'Sarrebruck',
+            'Stuttgart',
         ], \GuzzleHttp\json_decode($client->getResponse()->getContent(), true));
     }
 }

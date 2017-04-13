@@ -6,546 +6,546 @@ class VoteOfficeBundle
 {
     const VOTE_OFFICES = [
         'AF' => [ // AFGHANISTAN
-            'KABOUL',
+            'Kaboul',
         ],
         'ZA' => [ // AFRIQUE DU SUD
-            'JOHANNESBURG',
-            'LE CAP',
+            'Johannesburg',
+            'Le Cap',
         ],
         'AL' => [ // ALBANIE
-            'TIRANA',
+            'Tirana',
         ],
         'DZ' => [ // ALGERIE
-            'ALGER',
-            'ANNABA',
-            'ORAN',
+            'Alger',
+            'Annaba',
+            'Oran',
         ],
         'DE' => [ // ALLEMAGNE
-            'BERLIN',
-            'DUSSELDORF',
-            'HAMBOURG',
-            'FRANCFORT',
-            'MUNICH',
-            'SARREBRUCK',
-            'STUTTGART',
+            'Berlin',
+            'Dusseldorf',
+            'Hambourg',
+            'Francfort',
+            'Munich',
+            'Sarrebruck',
+            'Stuttgart',
         ],
         'MK' => [ // ANCIENNE REPUBLIQUE YOUGOSLAVE DE MACEDOINE
-            'SKOPJE',
+            'Skopje',
         ],
         'AD' => [ // ANDORRE
-            'ANDORRE',
+            'Andorre',
         ],
         'AO' => [ // ANGOLA
-            'LUANDA',
+            'Luanda',
         ],
         'SA' => [ // ARABIE SAOUDITE
-            'DJEDDAH',
-            'RIYAD',
+            'Djeddah',
+            'Riyad',
         ],
         'AR' => [ // ARGENTINE
-            'BUENOS AIRES',
+            'Buenos Aires',
         ],
         'AM' => [ // ARMENIE
-            'EREVAN',
+            'Erevan',
         ],
         'AU' => [ // AUSTRALIE
-            'SYDNEY',
+            'Sydney',
         ],
         'AT' => [ // AUTRICHE
-            'VIENNE',
+            'Vienne',
         ],
         'AZ' => [ // AZERBAIDJAN
-            'BAKOU',
+            'Bakou',
         ],
         'BH' => [ // BAHREIN
-            'MANAMA',
+            'Manama',
         ],
         'BD' => [ // BANGLADESH
-            'DACCA',
+            'Dacca',
         ],
         'BE' => [ // BELGIQUE
-            'BRUXELLES',
+            'Bruxelles',
         ],
         'BJ' => [ // BENIN
-            'COTONOU',
+            'Cotonou',
         ],
         'BY' => [ // BIELORUSSIE
-            'MINSK',
+            'Minsk',
         ],
         'MM' => [ // BIRMANIE
-            'RANGOUN',
+            'Rangoun',
         ],
         'BO' => [ // BOLIVIE
-            'LA PAZ',
+            'La paz',
         ],
         'BA' => [ // BOSNIE-HERZEGOVINE
-            'SARAJEVO',
+            'Sarajevo',
         ],
         'BW' => [ // BOTSWANA
-            'JOHANNESBOURG',
+            'Johannesbourg',
         ],
         'BR' => [ // BRESIL
-            'BRASILIA',
-            'RECIFE',
-            'RIO DE JANEIRO',
-            'SAO PAULO',
+            'Brasilia',
+            'Recife',
+            'Rio de janeiro',
+            'Sao paulo',
         ],
         'BN' => [ // BRUNEI
-            'SINGAPOUR',
+            'Singapour',
         ],
         'BG' => [ // BULGARIE
-            'SOFIA',
+            'Sofia',
         ],
         'BF' => [ // BURKINA FASO
-            'OUAGADOUGOU',
+            'Ouagadougou',
         ],
         'BI' => [ // BURUNDI
-            'BUJUMBURA',
+            'Bujumbura',
         ],
         'KH' => [ // CAMBODGE
-            'PHNOM PENH',
+            'Phnom penh',
         ],
         'CM' => [ // CAMEROUN
-            'DOUALA',
-            'YAOUNDE',
+            'Douala',
+            'Yaounde',
         ],
         'CA' => [ // CANADA
-            'MONCTON',
-            'MONTREAL',
-            'QUEBEC',
-            'TORONTO',
-            'VANCOUVER',
+            'Moncton',
+            'Montreal',
+            'Quebec',
+            'Toronto',
+            'Vancouver',
         ],
         'CV' => [ // CAP-VERT
-            'DAKAR',
+            'Dakar',
         ],
         'CF' => [ // CENTRAFRICAINE (République)
-            'BANGUI',
+            'Bangui',
         ],
         'CL' => [ // CHILI
-            'SANTIAGO',
+            'Santiago',
         ],
         'CN' => [ // CHINE
-            'CANTON',
-            'CHENGDU',
-            'HONG KONG',
-            'PEKIN',
-            'SHANGHAI',
-            'SHENYANG',
-            'WUHAN',
+            'Canton',
+            'Chengdu',
+            'Hong Kong',
+            'Pekin',
+            'Shanghai',
+            'Shenyang',
+            'Wuhan',
         ],
         'CY' => [ // CHYPRE
-            'NICOSIE',
+            'Nicosie',
         ],
         'CO' => [ // COLOMBIE
-            'BOGOTA',
+            'Bogota',
         ],
         'KM' => [ // COMORES
-            'MORONI',
+            'Moroni',
         ],
         'CG' => [ // CONGO
-            'BRAZZAVILLE',
-            'POINTE NOIRE',
+            'Brazzaville',
+            'Pointe-Noire',
         ],
         'CD' => [ // CONGO (République démocratique)
-            'KINSHASA',
+            'Kinshasa',
         ],
         'KR' => [ // COREE DU SUD
-            'SEOUL',
+            'Seoul',
         ],
         'CR' => [ // COSTA RICA
-            'SAN JOSE',
+            'San Jose',
         ],
         'CI' => [ // COTE D'IVOIRE
-            'ABIDJAN',
+            'Abidjan',
         ],
         'HR' => [ // CROATIE
-            'ZAGREB',
+            'Zagreb',
         ],
         'CU' => [ // CUBA
-            'LA HAVANE',
+            'La Havane',
         ],
         'DK' => [ // DANEMARK
-            'COPENHAGUE',
+            'Copenhague',
         ],
         'DJ' => [ // DJIBOUTI
-            'DJIBOUTI',
+            'Djibouti',
         ],
         'DO' => [ // DOMINICAINE (République)
-            'SAINT-DOMINGUE',
+            'Saint-Domingue',
         ],
         'EG' => [ // EGYPTE
-            'ALEXANDRIE',
-            'LE CAIRE',
+            'Alexandrie',
+            'Le Caire',
         ],
         'SV' => [ // EL SALVADOR
-            'GUATEMALA',
+            'Guatemala',
         ],
         'AE' => [ // EMIRATS ARABES UNIS
-            'ABOU DABI',
-            'DUBAI',
+            'Abou Dabi',
+            'Dubai',
         ],
         'EC' => [ // EQUATEUR
-            'QUITO',
+            'Quito',
         ],
         'ES' => [ // ESPAGNE
-            'BARCELONE',
-            'BILBAO',
-            'MADRID',
-            'SEVILLE',
+            'Barcelone',
+            'Bilbao',
+            'Madrid',
+            'Seville',
         ],
         'EE' => [ // ESTONIE
-            'TALLINN',
+            'Tallinn',
         ],
         'US' => [ // ETATS-UNIS D`AMERIQUE
-            'ATLANTA',
-            'BOSTON',
-            'CHICAGO',
-            'HOUSTON',
-            'LA NOUVELLE-ORLEANS',
-            'LOS ANGELES',
-            'MIAMI',
-            'NEW YORK',
-            'SAN FRANCISCO',
-            'WASHINGTON',
+            'Atlanta',
+            'Boston',
+            'Chicago',
+            'Houston',
+            'La Nouvelle-Orleans',
+            'Los Angeles',
+            'Miami',
+            'New York',
+            'San Francisco',
+            'Washington',
         ],
         'ET' => [ // ETHIOPIE
-            'ADDIS-ABEBA',
+            'Addis-Abeba',
         ],
         'FJ' => [ // FIDJI
-            'SUVA',
+            'Suva',
         ],
         'FI' => [ // FINLANDE
-            'HELSINKI',
+            'Helsinki',
         ],
         'GA' => [ // GABON
-            'LIBREVILLE',
+            'Libreville',
         ],
         'GE' => [ // GEORGIE
-            'TBILISSI',
+            'Tbilissi',
         ],
         'GH' => [ // GHANA
-            'ACCRA',
+            'Accra',
         ],
         'GR' => [ // GRECE
-            'ATHENES',
-            'THESSALONIQUE',
+            'Athenes',
+            'Thessalonique',
         ],
         'GT' => [ // GUATEMALA
-            'GUATEMALA',
+            'Guatemala',
         ],
         'GN' => [ // GUINEE
-            'CONAKRY',
+            'Conakry',
         ],
         'GW' => [ // GUINEE BISSAO
-            'DAKAR',
+            'Dakar',
         ],
         'GQ' => [ // GUINEE EQUATORIALE
-            'MALABO',
+            'Malabo',
         ],
         'HT' => [ // HAITI
-            'PORT-AU-PRINCE',
+            'Port-au-Prince',
         ],
         'HN' => [ // HONDURAS
-            'GUATEMALA',
+            'Guatemala',
         ],
         'HU' => [ // HONGRIE
-            'BUDAPEST',
+            'Budapest',
         ],
         'IN' => [ // INDE
-            'BANGALORE',
-            'BOMBAY',
-            'CALCUTTA',
-            'NEW DELHI',
-            'PONDICHERY',
+            'Bangalore',
+            'Bombay',
+            'Calcutta',
+            'New Delhi',
+            'Pondichery',
         ],
         'ID' => [ // INDONESIE
-            'JAKARTA',
+            'Jakarta',
         ],
         'IQ' => [ // IRAK
-            'BAGDAD',
-            'ERBIL',
+            'Bagdad',
+            'Erbil',
         ],
         'IR' => [ // IRAN
-            'TEHERAN',
+            'Teheran',
         ],
         'IE' => [ // IRLANDE
-            'DUBLIN',
+            'Dublin',
         ],
         'IS' => [ // ISLANDE
-            'REYKJAVIK',
+            'Reykjavik',
         ],
         'IL' => [ // ISRAEL
-            'HAIFA',
-            'JERUSALEM',
-            'TEL-AVIV',
+            'Haifa',
+            'Jerusalem',
+            'Tel-Aviv',
         ],
         'IT' => [ // ITALIE
-            'MILAN',
-            'NAPLES',
-            'ROME',
+            'Milan',
+            'Naples',
+            'Rome',
         ],
         'JM' => [ // JAMAÏQUE
-            'KINGSTON',
+            'Kingston',
         ],
         'JP' => [ // JAPON
-            'KYOTO',
-            'TOKYO',
+            'Kyoto',
+            'Tokyo',
         ],
         'JO' => [ // JORDANIE
-            'AMMAN',
+            'Amman',
         ],
         'KZ' => [ // KAZAKHSTAN
-            'ALMATY',
+            'Almaty',
         ],
         'KE' => [ // KENYA
-            'NAIROBI',
+            'Nairobi',
         ],
         'XK' => [ // KOSOVO
-            'PRISTINA',
+            'Pristina',
         ],
         'KW' => [ // KOWEIT
-            'KOWEIT',
+            'Koweit',
         ],
         'LA' => [ // LAOS
-            'VIENTIANE',
+            'Vientiane',
         ],
         'LV' => [ // LETTONIE
-            'RIGA',
+            'Riga',
         ],
         'LB' => [ // LIBAN
-            'BEYROUTH',
+            'Beyrouth',
         ],
         'LR' => [ // LIBERIA
-            'ABIDJAN',
+            'Abidjan',
         ],
         'LY' => [ // LIBYE
-            'TRIPOLI (délocalisé à Tunis)',
+            'Tripoli (délocalisé à Tunis)',
         ],
         'LT' => [ // LITUANIE
-            'VILNIUS',
+            'Vilnius',
         ],
         'LU' => [ // LUXEMBOURG
-            'LUXEMBOURG',
+            'Luxembourg',
         ],
         'MG' => [ // MADAGASCAR
-            'TANANARIVE',
+            'Tananarive',
         ],
         'MY' => [ // MALAISIE
-            'KUALA LUMPUR',
+            'Kuala Lumpur',
         ],
         'ML' => [ // MALI
-            'BAMAKO',
+            'Bamako',
         ],
         'MT' => [ // MALTE
-            'LA VALETTE',
+            'La Valette',
         ],
         'MA' => [ // MAROC
-            'AGADIR',
-            'CASABLANCA',
-            'FES',
-            'MARRAKECH',
-            'RABAT',
-            'TANGER',
+            'Agadir',
+            'Casablanca',
+            'Fes',
+            'Marrakech',
+            'Rabat',
+            'Tanger',
         ],
         'MU' => [ // MAURICE
-            'PORT-LOUIS',
+            'Port-Louis',
         ],
         'MR' => [ // MAURITANIE
-            'NOUAKCHOTT',
+            'Nouakchott',
         ],
         'MX' => [ // MEXIQUE
-            'MEXICO',
+            'Mexico',
         ],
         'MB' => [ // MOLDAVIE
-            'BUCAREST',
+            'Bucarest',
         ],
         'MC' => [ // MONACO
-            'MONACO',
+            'Monaco',
         ],
         'MN' => [ // MONGOLIE
-            'OULAN-BATOR',
+            'Oulan-Bator',
         ],
         'ME' => [ // MONTENEGRO
-            'TIRANA',
+            'Tirana',
         ],
         'MZ' => [ // MOZAMBIQUE
-            'MAPUTO',
+            'Maputo',
         ],
         'NA' => [ // NAMIBIE
-            'JOHANNESBOURG',
+            'Johannesbourg',
         ],
         'NP' => [ // NEPAL
-            'NEW DELHI',
+            'New Delhi',
         ],
         'NI' => [ // NICARAGUA
-            'SAN JOSE',
+            'San Jose',
         ],
         'NE' => [ // NIGER
-            'NIAMEY',
+            'Niamey',
         ],
         'NG' => [ // NIGERIA
-            'ABUJA',
-            'LAGOS',
+            'Abuja',
+            'Lagos',
         ],
         'NO' => [ // NORVEGE
-            'OSLO',
+            'Oslo',
         ],
         'NZ' => [ // NOUVELLE-ZELANDE
-            'WELLINGTON',
+            'Wellington',
         ],
         'OM' => [ // OMAN
-            'MASCATE',
+            'Mascate',
         ],
         'UG' => [ // OUGANDA
-            'KAMPALA',
+            'Kampala',
         ],
         'UZ' => [ // OUZBEKISTAN
-            'TACHKENT',
+            'Tachkent',
         ],
         'PK' => [ // PAKISTAN
-            'ISLAMABAD',
+            'Islamabad',
             'Karachi',
         ],
         'PA' => [ // PANAMA
-            'PANAMA',
+            'Panama',
         ],
         'PG' => [ // PAPOUASIE-NOUVELLE-GUINEE
-            'PORT MORESBY',
+            'Port Moresby',
         ],
         'PY' => [ // PARAGUAY
-            'BUENOS AIRES',
+            'Buenos Aires',
         ],
         'NL' => [ // PAYS-BAS
-            'AMSTERDAM',
+            'Amsterdam',
         ],
         'PE' => [ // PEROU
-            'LIMA',
+            'Lima',
         ],
         'PH' => [ // PHILIPPINES
-            'MANILLE',
+            'Manille',
         ],
         'PL' => [ // POLOGNE
-            'CRACOVIE',
-            'VARSOVIE',
+            'Cracovie',
+            'Varsovie',
         ],
         'PT' => [ // PORTUGAL
-            'LISBONNE',
+            'Lisbonne',
         ],
         'QA' => [ // QATAR
-            'DOHA',
+            'Doha',
         ],
         'RO' => [ // ROUMANIE
-            'BUCAREST',
+            'Bucarest',
         ],
         'GB' => [ // ROYAUME-UNI
-            'EDIMBOURG',
-            'LONDRES',
-            'EKATERINBOURG',
-            'MOSCOU',
-            'SAINT-PETERSBOURG',
+            'Edimbourg',
+            'Londres',
+            'Ekaterinbourg',
+            'Moscou',
+            'Saint-Petersbourg',
         ],
         'RW' => [ // RWANDA
-            'KIGALI',
+            'Kigali',
         ],
         'LC' => [ // SAINTE-LUCIE
-            'CASTRIES',
+            'Castries',
         ],
         'SN' => [ // SENEGAL
-            'DAKAR',
+            'Dakar',
         ],
         'RS' => [ // SERBIE
-            'BELGRADE',
+            'Belgrade',
         ],
         'SC' => [ // SEYCHELLES
-            'VICTORIA',
+            'Victoria',
         ],
         'SG' => [ // SINGAPOUR
-            'SINGAPOUR',
+            'Singapour',
         ],
         'SK' => [ // SLOVAQUIE
-            'BRATISLAVA',
+            'Bratislava',
         ],
         'SI' => [ // SLOVENIE
-            'LJUBLJANA',
+            'Ljubljana',
         ],
         'SD' => [ // SOUDAN
-            'KHARTOUM',
+            'Khartoum',
         ],
         'SS' => [ // SOUDAN DU SUD
-            'ADDIS-ABEBA',
+            'Addis-Abeba',
         ],
         'LK' => [ // SRI LANKA
-            'COLOMBO',
+            'Colombo',
         ],
         'SE' => [ // SUEDE
-            'STOCKHOLM',
+            'Stockholm',
         ],
         'CH' => [ // SUISSE
-            'GENEVE',
-            'ZURICH',
+            'Geneve',
+            'Zurich',
         ],
         'SR' => [ // SURINAM
-            'PARAMARIBO',
+            'Paramaribo',
         ],
         'SY' => [ // SYRIE
-            'DAMAS (délocalisé à Beyrouth)',
+            'Damas (délocalisé à Beyrouth)',
         ],
         'TW' => [ // TAIWAN
-            'TAIPEI',
+            'Taipei',
         ],
         'TZ' => [ // TANZANIE
-            'DAR ES SALAM',
+            'Dar es Salam',
         ],
         'TD' => [ // TCHAD
-            'N\'DJAMENA',
+            'N\'Djamena',
         ],
         'CZ' => [ // TCHEQUE (République)
-            'PRAGUE',
+            'Prague',
         ],
         'TH' => [ // THAÏLANDE
-            'BANGKOK',
+            'Bangkok',
         ],
         'TG' => [ // TOGO
-            'LOME',
+            'Lome',
         ],
         'TT' => [ // TRINITE-ET-TOBAGO
-            'PORT D\'ESPAGNE',
+            'Port d\'Espagne',
         ],
         'TN' => [ // TUNISIE
-            'TUNIS',
+            'Tunis',
         ],
         'TM' => [ // TURKMENISTAN
-            'ACHGABAT',
+            'Achgabat',
         ],
         'TR' => [ // TURQUIE
-            'ANKARA',
-            'ISTANBUL',
+            'Ankara',
+            'Istanbul',
         ],
         'UA' => [ // UKRAINE
-            'KIEV',
+            'Kiev',
         ],
         'UY' => [ // URUGUAY
-            'MONTEVIDEO',
+            'Montevideo',
         ],
         'VU' => [ // VANUATU
-            'PORT-VILA',
+            'Port-Vila',
         ],
         'VE' => [ // VENEZUELA
-            'CARACAS',
+            'Caracas',
         ],
         'VN' => [ // VIETNAM
-            'HANOI',
-            'HO CHI MINH-VILLE',
+            'Hanoi',
+            'Ho Chi Minh-Ville',
         ],
         'YE' => [ // YEMEN
-            'SANAA (délocalisé à Djibouti)',
+            'Sanaa (délocalisé à Djibouti)',
         ],
         'ZM' => [ // ZAMBIE
-            'JOHANNESBOURG',
+            'Johannesbourg',
         ],
         'ZW' => [ // ZIMBABWE
-            'HARARE',
+            'Harare',
         ],
     ];
 
