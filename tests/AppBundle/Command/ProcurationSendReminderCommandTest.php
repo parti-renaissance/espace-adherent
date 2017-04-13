@@ -9,7 +9,7 @@ use AppBundle\Repository\ProcurationRequestRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
-class SendMailToProcurationProxiesCommandTest extends SqliteWebTestCase
+class ProcurationSendReminderCommandTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 
@@ -25,9 +25,9 @@ class SendMailToProcurationProxiesCommandTest extends SqliteWebTestCase
     public function testCommand()
     {
         $this->decorated = false;
-        $output = $this->runCommand(SendMailToProcurationProxiesCommand::COMMAND_NAME);
+        $output = $this->runCommand(ProcurationSendReminderCommand::COMMAND_NAME);
 
-        $this->assertContains('1 reminders sent.', $output);
+        $this->assertContains('1 reminders sent', $output);
         $this->assertCount(1, $this->mailjetEmailRepository->findByMessageClass('ProcurationProxyReminderMessage'));
         $this->assertCount(1, $this->procurationRequestRepository->findByReminded(1));
     }
