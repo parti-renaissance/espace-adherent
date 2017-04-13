@@ -49,7 +49,7 @@ class ProcurationProxyRepository extends EntityRepository
         $this->addAndWhereManagedBy($qb, $procurationManager);
 
         if ($filters) {
-            $this->applyFilter($qb, $filters);
+            $filters->apply($qb, 'pp');
         }
 
         return $qb->getQuery()->getResult();
@@ -63,7 +63,7 @@ class ProcurationProxyRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('pp')->select('COUNT(pp)')->andWhere('pp.reliability >= 0');
         $this->addAndWhereManagedBy($qb, $procurationManager);
-        $this->applyFilter($qb, $filters);
+        $filters->apply($qb, 'pp');
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -180,27 +180,5 @@ class ProcurationProxyRepository extends EntityRepository
         $qb->setParameter('electionLegislativeSecondRound', $procurationRequest->getElectionLegislativeSecondRound());
 
         return implode(' + ', $score);
-    }
-
-    private function applyFilter(QueryBuilder $qb, ProcurationParametersFilter $filters): void
-    {
-        if ($country = $filters->getCountry()) {
-            $qb->andWhere('pp.voteCountry = :filterVotreCountry');
-            $qb->setParameter('filterVotreCountry', $country);
-        }
-
-        if ($city = $filters->getCity()) {
-            if (is_numeric($city)) {
-                $qb->andWhere('pp.votePostalCode LIKE :filterVoteCity');
-                $qb->setParameter('filterVoteCity', $city.'%');
-            } else {
-                $qb->andWhere('LOWER(pp.voteCityName) LIKE :filterVoteCity');
-                $qb->setParameter('filterVoteCity', '%'.strtolower($city).'%');
-            }
-        }
-
-        if ($type = $filters->getType()) {
-            $qb->andWhere(sprintf('pp.%s = true', $type));
-        }
     }
 }
