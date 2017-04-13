@@ -60,7 +60,6 @@ class PageControllerTest extends SqliteWebTestCase
             ['/le-mouvement'],
             ['/le-mouvement/notre-organisation'],
             ['/le-mouvement/les-comites'],
-            ['/le-mouvement/les-evenements'],
             ['/le-mouvement/devenez-benevole'],
             ['/le-mouvement/legislatives'],
             ['/le-mouvement/la-carte'],

@@ -183,7 +183,6 @@ class SitemapFactory
         $sitemap->add($this->generateUrl('page_le_mouvement_notre_organisation'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_la_carte'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_les_comites'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement_les_evenements'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_devenez_benevole'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_mentions_legales'), null, ChangeFrequency::WEEKLY, 0.2);
     }

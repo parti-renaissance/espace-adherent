@@ -187,17 +187,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/les-evenements", name="page_le_mouvement_les_evenements")
-     * @Method("GET")
-     */
-    public function mouvementEvenementsAction()
-    {
-        return $this->render('page/le-mouvement/les-evenements.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-evenements'),
-        ]);
-    }
-
-    /**
      * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole")
      * @Method("GET")
      */

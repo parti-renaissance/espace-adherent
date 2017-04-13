@@ -53,13 +53,6 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
-            'title' => 'Le mouvement - Les événements',
-            'slug' => 'le-mouvement-les-evenements',
-            'description' => $description,
-            'content' => file_get_contents(__DIR__.'/../content.md'),
-        ]));
-
-        $manager->persist($factory->createFromArray([
             'title' => 'Le mouvement - Devenez bénévole',
             'slug' => 'le-mouvement-devenez-benevole',
             'description' => $description,
