@@ -72,4 +72,36 @@
     &__btn {
         margin: 7px 0 0 20px;
     }
+
+    @media (max-width: $tablet) {
+        br {
+            display: none;
+        }
+
+        > div {
+            flex-direction: column;
+
+            div:first-child {
+                max-width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            div:child(2) {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    @media (max-width: $mobile) {
+        input,
+        button {
+            width: 100%;
+        }
+
+        button {
+            margin-top: 5px;
+        }
+    }
 }
