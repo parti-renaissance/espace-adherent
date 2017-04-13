@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\File\File;
 
 class LoadPageData implements FixtureInterface, ContainerAwareInterface
 {
@@ -14,78 +15,108 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $factory = $this->container->get('app.content.page_factory');
+        $mediaFactory = $this->container->get('app.content.media_factory');
+        $storage = $this->container->get('app.storage');
+
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
+        $mediaFile = new File(__DIR__.'/../../../../app/data/dist/10decembre.jpg');
+        $storage->put('images/page.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $mediaFactory->createFromFile('Page image', 'page.jpg', $mediaFile);
+
+        $manager->persist($media);
+        $manager->flush();
+
         $manager->persist($factory->createFromArray([
+            'keywords' => 'emmanuel macron',
             'title' => 'Emmanuel Macron - Ce que je suis',
             'slug' => 'emmanuel-macron-ce-que-je-suis',
             'description' => $description,
             'content' => trim(self::$ceQueJeSuis),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'emmanuel macron révolution',
             'title' => 'Emmanuel Macron - Révolution',
             'slug' => 'emmanuel-macron-revolution',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche',
             'title' => 'Le mouvement - Nos valeurs',
             'slug' => 'le-mouvement-nos-valeurs',
             'description' => $description,
             'content' => trim(self::$nosValeurs),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche organisation porte-parole',
             'title' => 'Le mouvement - Notre organisation',
             'slug' => 'le-mouvement-notre-organisation',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../organization.html'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche organisation comité comités',
             'title' => 'Le mouvement - Les comités',
             'slug' => 'le-mouvement-les-comites',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche bénévole volontaire',
             'title' => 'Le mouvement - Devenez bénévole',
             'slug' => 'le-mouvement-devenez-benevole',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche législatives',
             'title' => 'Le mouvement - Législatives',
             'slug' => 'le-mouvement-legislatives',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../organization.html'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'désintox fake news fausse informations',
             'title' => 'Désintox',
             'slug' => 'desintox',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../desintox.html'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mentions légales',
             'title' => 'Mentions légales',
             'slug' => 'mentions-legales',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../legalities.md'),
+            'media' => $media,
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'programme propositions',
             'title' => 'Les propositions d\'Emmanuel Macron',
             'slug' => 'emmanuel-macron-propositions',
             'description' => 'Le moment que nous vivons est celui d’une refondation profonde de la France. '.
                 'Voici celle que nous vous proposons.',
             'content' => self::$propositions,
+            'media' => $media,
         ]));
 
         $manager->flush();

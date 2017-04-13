@@ -16,6 +16,7 @@ class ClarificationFactory
         $clarification->setDisplayMedia($data['displayMedia'] ?? false);
         $clarification->setContent($data['content']);
         $clarification->setPublished($data['published'] ?? true);
+        $clarification->setKeywords($data['keywords'] ?? '');
 
         return $clarification;
     }

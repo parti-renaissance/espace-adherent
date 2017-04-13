@@ -7,9 +7,10 @@ export default class AlgoliaSearch extends React.Component {
 
         const client = algoliasearch(props.appId, props.appKey);
 
+        this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
+        this.clarificationsIndex = client.initIndex(`Clarification_${props.environment}`);
         this.articlesIndex = client.initIndex(`Article_${props.environment}`);
         this.pagesIndex = client.initIndex(`Page_${props.environment}`);
-        this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
 
         this.state = {
             term: '',
@@ -36,44 +37,65 @@ export default class AlgoliaSearch extends React.Component {
 
     _search(term) {
         let loaded = 0;
-        let hits = [];
         let nbHits = 0;
+
+        const hits = {
+            proposal: [],
+            clarification: [],
+            article: [],
+            page: [],
+        };
 
         const createResultsHandler = type => (err, content) => {
             loaded += 1;
             nbHits += content.nbHits;
-
-            hits = hits.concat(content.hits.map((hit) => {
-                hit.type = type;
+            hits[type] = content.hits.map((hit) => {
+                hit.type = ('page' === type && hit.static) ? 'static-page' : type;
 
                 return hit;
-            }));
+            });
 
-            if (3 === loaded) {
+            if (4 === loaded) {
                 this._searchCallback(nbHits, hits);
             }
         };
 
         this.proposalsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('proposal'));
+        this.clarificationsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('clarification'));
         this.articlesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('article'));
         this.pagesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('page'));
     }
 
     _searchCallback(nbHits, hits) {
+        const aggregated = []
+            .concat(hits.proposal)
+            .concat(hits.clarification)
+            .concat(hits.article)
+            .concat(hits.page)
+        ;
+
         this.setState({
             loading: false,
-            hits,
+            hits: aggregated,
             nbHits,
         });
     }
 
     _createImageURL(hit) {
+        if ('static-page' === hit.type) {
+            return `/algolia/${hit.type}/${hit.image}`;
+        }
+
         return `/algolia/${hit.type}/${hit.slug}`;
     }
 
     _createTypeName(hit) {
         if ('proposal' === hit.type) {
             return 'Proposition du programme';
+        }
+
+        if ('clarification' === hit.type) {
+            return 'Désintox';
         }
 
         if ('article' === hit.type) {
@@ -84,15 +106,19 @@ export default class AlgoliaSearch extends React.Component {
     }
 
     _createLinkURL(hit) {
-        if ('page' === hit.type) {
-            return hit.url;
+        if ('article' === hit.type) {
+            return `/article/${hit.slug}`;
         }
 
         if ('proposal' === hit.type) {
             return `/emmanuel-macron/le-programme/${hit.slug}`;
         }
 
-        return `/article/${hit.slug}`;
+        if ('clarification' === hit.type) {
+            return `/emmanuel-macron/desintox/${hit.slug}`;
+        }
+
+        return hit.url;
     }
 
     render() {
@@ -116,11 +142,11 @@ export default class AlgoliaSearch extends React.Component {
 
                 <article className="g-search__results l__wrapper--narrow" style={loadingStyle}>
                     <ul>
-                        {this.state.hits.map((hit) => {
+                        {this.state.hits.map((hit, i) => {
                             const link = this._createLinkURL(hit);
 
                             return (
-                                <li key={`${this.state.term}-${hit.objectID}`}>
+                                <li key={`${i}-${hit.objectID}`}>
                                     <a href={link} className="thumbnail">
                                         <img src={this._createImageURL(hit)} title={hit.title} alt={hit.title} />
                                     </a>

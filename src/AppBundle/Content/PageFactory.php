@@ -13,6 +13,9 @@ class PageFactory
         $page->setSlug($data['slug']);
         $page->setDescription($data['description']);
         $page->setContent($data['content']);
+        $page->setMedia($data['media'] ?? null);
+        $page->setDisplayMedia(false);
+        $page->setKeywords($data['keywords'] ?? '');
 
         return $page;
     }

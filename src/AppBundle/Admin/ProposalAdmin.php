@@ -45,6 +45,10 @@ class ProposalAdmin extends AbstractAdmin
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                 ])
+                ->add('keywords', null, [
+                    'label' => 'Mots clés de recherche',
+                    'required' => false,
+                ])
                 ->add('media', null, [
                     'label' => 'Image principale',
                     'required' => false,

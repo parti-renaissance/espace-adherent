@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Each time you add or update a custom url with an harcorded slug in the controller code, you must update the
- * AppBundle\Search\Algolia\PageSlugToUrl::URLS constant and reindex algolia's page index.
+ * AppBundle\Entity\Page::URLS constant and reindex algolia's page index.
  */
 class PageController extends Controller
 {
@@ -76,7 +76,6 @@ class PageController extends Controller
     public function emmanuelMacronPropositionAction($slug)
     {
         $proposal = $this->getDoctrine()->getRepository(Proposal::class)->findOneBySlug($slug);
-
         if (!$proposal || !$proposal->isPublished()) {
             throw $this->createNotFoundException();
         }
