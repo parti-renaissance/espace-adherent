@@ -194,19 +194,36 @@ class ProcurationRequestRepository extends EntityRepository
         return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function paginateRequestForSendReminderToProxies($offset = 0, $limit = 20): array
+    public function findRemindersBatchToSend($offset = 0, $limit = 25): array
     {
         return $this->createQueryBuilder('pr')
-            ->leftJoin('pr.foundProxy', 'pp')
-            ->leftJoin('pr.foundBy', 'a')
             ->select('pr', 'pp', 'a')
+            ->join('pr.foundProxy', 'pp')
+            ->leftJoin('pr.foundBy', 'a')
             ->where('pr.processed = true')
             ->andWhere('pr.reminded = 0')
+            ->andWhere('pr.processedAt <= :matchDate')
+            ->setParameter('matchDate', new \DateTime('-48 hours'))
             ->orderBy('pr.processedAt', 'ASC')
-            ->setFirstResult($offset * $limit)
+            ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
+    }
+
+    public function countRemindersToSend(): int
+    {
+        return (int) $this->createQueryBuilder('pr')
+            ->select('COUNT(pr)')
+            ->join('pr.foundProxy', 'pp')
+            ->where('pr.processed = true')
+            ->andWhere('pr.reminded = 0')
+            ->andWhere('pr.processedAt <= :matchDate')
+            ->setParameter('matchDate', new \DateTime('-48 hours'))
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): void

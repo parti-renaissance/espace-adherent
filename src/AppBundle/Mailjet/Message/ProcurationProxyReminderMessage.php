@@ -14,7 +14,7 @@ final class ProcurationProxyReminderMessage extends MailjetMessage
             Uuid::uuid4(),
             '133881',
             $request->getEmailAddress(),
-            $request->getFirstNames().' '.$request->getLastName(),
+            null,
             'RAPPEL : votre procuration',
             [
                 'target_firstname' => self::escape($request->getFirstNames()),
