@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use AppBundle\Event\EventCategories;
@@ -119,7 +120,9 @@ class PageController extends Controller
      */
     public function emmanuelMacronVideosAction()
     {
-        return $this->render('page/emmanuel-macron/videos.html.twig');
+        return $this->render('page/emmanuel-macron/videos.html.twig', [
+            'videos' => $this->getDoctrine()->getRepository(FacebookVideo::class)->findBy(['published' => true], ['position' => 'ASC']),
+        ]);
     }
 
     /**
