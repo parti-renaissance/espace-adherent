@@ -705,9 +705,9 @@ class ProcurationRequest
     public function getElectionsLegislative(): ?string
     {
         if ($this->electionLegislativeFirstRound && $this->electionLegislativeSecondRound) {
-            return 'Législatives : 1er et 2nd tour (4 juin et 18 juin)';
+            return 'Législatives : 1er et 2nd tour (11 juin et 18 juin)';
         } elseif ($this->electionLegislativeFirstRound) {
-            return 'Législatives : 1er tour (4 juin)';
+            return 'Législatives : 1er tour (11 juin)';
         } elseif ($this->electionLegislativeSecondRound) {
             return 'Législatives : 2nd tour (18 juin)';
         }
