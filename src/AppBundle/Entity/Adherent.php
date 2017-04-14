@@ -196,7 +196,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->legislative->hasArea()) {
+        if ($this->legislative && $this->legislative->hasArea()) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
@@ -657,13 +657,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setLegislativeCandidate(?string $area): void
     {
-        $this->legislative = new LegislativeCandidate();
+        if (!$this->legislative) {
+            $this->legislative = new LegislativeCandidate();
+            $this->legislative->setCandidate($this);
+        }
         $this->legislative->setArea($area);
-        $this->legislative->setCandidate($this);
     }
 
     public function getLegislativeCandidate(): ?string
     {
-        return $this->legislative->getArea();
+        return $this->legislative
+            ? $this->legislative->getArea()
+            : null;
     }
 }
