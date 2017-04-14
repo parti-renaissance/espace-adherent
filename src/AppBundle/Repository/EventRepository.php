@@ -178,9 +178,9 @@ class EventRepository extends EntityRepository
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression().' < :distance_max')
-                ->andWhere('n.beginAt > :now')
+                ->andWhere('n.beginAt > :today')
                 ->setParameter('distance_max', $search->getRadius())
-                ->setParameter('now', new \DateTime())
+                ->setParameter('today', new \DateTime('today'))
                 ->orderBy('n.beginAt', 'asc')
                 ->addOrderBy('distance_between', 'asc')
             ;
