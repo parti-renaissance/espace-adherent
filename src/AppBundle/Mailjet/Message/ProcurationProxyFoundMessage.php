@@ -20,7 +20,7 @@ final class ProcurationProxyFoundMessage extends MailjetMessage
             '120187',
             $request->getEmailAddress(),
             null,
-            'Votre mandataire',
+            'Votre procuration',
             [
                 'target_firstname' => self::escape($request->getFirstNames()),
                 'voter_first_name' => $proxy->getFirstNames(),
