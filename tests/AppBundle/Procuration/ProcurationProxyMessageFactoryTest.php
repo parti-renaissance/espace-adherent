@@ -71,7 +71,7 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Votre mandataire', $message->getSubject());
+        $this->assertSame('Votre procuration', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
         $this->assertNull($message->getRecipient(0)->getFullName());
         $this->assertSame('Procuration Macron', $message->getSenderName());
