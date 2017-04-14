@@ -40,7 +40,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(9, $this->repository->countActiveAdherents());
+        $this->assertSame(11, $this->repository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()

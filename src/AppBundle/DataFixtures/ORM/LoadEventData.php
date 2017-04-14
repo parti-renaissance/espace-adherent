@@ -29,6 +29,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     const EVENT_8_UUID = '113876dd-87d2-426a-a12a-60ffd5107b10';
     const EVENT_9_UUID = '633d4cdf-c7b9-4188-ad7a-96d18e80bc09';
     const EVENT_10_UUID = '5c2471c7-8def-4757-9bec-8e0fa24361d8';
+    const EVENT_11_UUID = 'f48c4863-dc9b-404c-8fd5-72b1c002788c';
+    const EVENT_12_UUID = '50dd58d7-f370-4874-8fbb-3746ca06d5d5';
 
     use ContainerAwareTrait;
 
@@ -36,12 +38,20 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     {
         $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
         $author7 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_7_UUID);
+        $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
+        $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
 
         $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
         $committee3 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_3_UUID);
         $committee4 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_4_UUID);
         $committee5 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_5_UUID);
+
+        // Singapore
+        $committee8 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_8_UUID);
+
+        // New York
+        $committee9 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_9_UUID);
 
         $committeeEventFactory = $this->getEventFactory();
         $registrationFactory = $this->getEventRegistrationFactory();
@@ -188,6 +198,34 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
         $event10->incrementParticipantsCount();
 
+        $event11 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_11_UUID,
+            'organizer' => $author11,
+            'committee' => $committee8,
+            'name' => 'Meeting de Singapour',
+            'category' => 'CE010',
+            'description' => 'Ouvert aux français de Singapour.',
+            'address' => PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', 1.2835627, 103.8606872),
+            'begin_at' => date('Y-m-d', strtotime('today')).' 09:30:00',
+            'finish_at' => date('Y-m-d', strtotime('today')).' 12:30:00',
+            'capacity' => 100,
+        ]);
+        $event11->incrementParticipantsCount(2);
+
+        $event12 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_12_UUID,
+            'organizer' => $author12,
+            'committee' => $committee9,
+            'name' => 'Meeting de New York City',
+            'category' => 'CE010',
+            'description' => 'Ouvert aux français de New York.',
+            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'begin_at' => date('Y-m-d', strtotime('today')).' 19:30:00',
+            'finish_at' => date('Y-m-d', strtotime('today')).' 23:50:00',
+            'capacity' => 55,
+        ]);
+        $event12->incrementParticipantsCount(2);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -198,6 +236,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($event8);
         $manager->persist($event9);
         $manager->persist($event10);
+        $manager->persist($event11);
+        $manager->persist($event12);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
@@ -210,6 +250,10 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event5, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event6, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event7, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author11)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author12)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author3)));
 
         $manager->flush();
 

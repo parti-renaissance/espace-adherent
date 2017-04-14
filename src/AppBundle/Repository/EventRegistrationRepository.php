@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Collection\EventRegistrationCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
@@ -66,26 +67,47 @@ class EventRegistrationRepository extends EntityRepository
 
     public function findUpcomingAdherentRegistrations(string $adherentUuid): array
     {
-        return $this
+        $registrations = $this
             ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
-            ->andWhere('e.beginAt >= :now')
-            ->setParameter('now', date('Y-m-d H:i:s'))
+            ->andWhere('e.beginAt >= :begin')
+            // The extra 24 hours enable to include events in foreign
+            // countries that are on different timezones.
+            ->setParameter('begin', new \DateTime('-24 hours'))
             ->orderBy('e.beginAt', 'ASC')
             ->getQuery()
             ->getResult()
+        ;
+
+        return $this
+            ->createEventRegistrationCollection($registrations)
+            ->getUpcomingRegistrations()
+            ->toArray()
         ;
     }
 
     public function findPastAdherentRegistrations(string $adherentUuid): array
     {
-        return $this
+        $registrations = $this
             ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
-            ->andWhere('e.finishAt < :now')
-            ->setParameter('now', date('Y-m-d H:i:s'))
+            ->andWhere('e.finishAt < :finish')
+            // The extra 24 hours enable to include events in foreign
+            // countries that are on different timezones.
+            ->setParameter('finish', new \DateTime('+24 hours'))
             ->orderBy('e.finishAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
+
+        return $this
+            ->createEventRegistrationCollection($registrations)
+            ->getPastRegistrations()
+            ->toArray()
+        ;
+    }
+
+    private function createEventRegistrationCollection(array $registrations): EventRegistrationCollection
+    {
+        return new EventRegistrationCollection($registrations);
     }
 
     private function createAdherentEventRegistrationQueryBuilder(string $adherentUuid): QueryBuilder
