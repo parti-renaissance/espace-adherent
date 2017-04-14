@@ -1,5 +1,3 @@
-php_version: 7
-
 ignore_branches:
     - gh-pages
 
