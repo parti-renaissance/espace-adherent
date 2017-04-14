@@ -91,7 +91,13 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('procurationManagedAreaCodesAsString', null, [
                     'label' => 'Codes des zones gérés',
                 ])
-            ->end();
+            ->end()
+            ->with('Candidat législatives', ['class' => 'col-md-4'])
+                ->add('legislativeCandidate', null, [
+                    'label' => 'Nom de la circonscription',
+                ])
+            ->end()
+        ;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -152,6 +158,13 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                ])
+            ->end()
+            ->with('Candidat aux législatives', ['class' => 'col-md-4'])
+                ->add('legislativeCandidate', TextType::class, [
+                    'label' => 'Nom de la circonscription',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas candidat aux législatives.',
                 ])
             ->end()
             ->with('Préférences des e-mails', ['class' => 'col-md-4'])

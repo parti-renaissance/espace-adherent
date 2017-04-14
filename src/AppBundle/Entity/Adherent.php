@@ -654,4 +654,23 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         return $membership->isSupervisor();
     }
+
+    public function setLegislativeCandidate(?string $area): void
+    {
+        if (!$area) {
+            $this->legislative = null;
+            return;
+        }
+
+        $this->legislative = new Legislative();
+        $this->legislative->setArea($area);
+        $this->legislative->setCandidate($this);
+    }
+
+    public function getLegislativeCandidate(): ?string
+    {
+        return $this->legislative
+            ? $this->legislative->getArea()
+            : null;
+    }
 }
