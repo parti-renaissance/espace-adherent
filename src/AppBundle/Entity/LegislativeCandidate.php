@@ -2,18 +2,21 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="legislative_candidates")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class LegislativeCandidate
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      */
@@ -22,7 +25,7 @@ class LegislativeCandidate
     /**
      * @var string
      *
-     * @ORM\Column(name="area", type="string", length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $area;
 

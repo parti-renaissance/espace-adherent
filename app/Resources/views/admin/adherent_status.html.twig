@@ -5,11 +5,15 @@
         {% if object.isReferent %}
             <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
         {% endif %}
+
+        {% if object.isLegislativeCandidate %}
+            <span class="label label-primary" style="padding: 2px;">Candidat législatives</span><br/>
+        {% endif %}
     
         {% if object.isProcurationManager %}
             <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
         {% endif %}
-    
+
         {% if object.isHost %}
             <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
         {% endif %}

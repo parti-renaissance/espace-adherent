@@ -149,6 +149,13 @@
                                             <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
                                         </li>
                                     {% endif %}
+                                    {% if is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank">
+                                                Espace candidat aux législatives
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                     <li class="text--small">
                                         <a href="{{ path('app_je_marche') }}" target="_blank" rel="noopener noreferrer">J'agis</a>
                                     </li>
