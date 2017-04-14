@@ -137,9 +137,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $procurationManagedArea;
 
     /**
-     * @var Legislative|null
+     * @var LegislativeCandidate|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Legislative", mappedBy="candidate", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\LegislativeCandidate", mappedBy="candidate", cascade={"persist"})
      */
     private $legislative;
 
@@ -196,7 +196,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->legislative) {
+        if ($this->legislative->hasArea()) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
@@ -657,21 +657,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setLegislativeCandidate(?string $area): void
     {
-        if (!$area) {
-            $this->legislative = null;
-
-            return;
-        }
-
-        $this->legislative = new Legislative();
+        $this->legislative = new LegislativeCandidate();
         $this->legislative->setArea($area);
         $this->legislative->setCandidate($this);
     }
 
     public function getLegislativeCandidate(): ?string
     {
-        return $this->legislative
-            ? $this->legislative->getArea()
-            : null;
+        return $this->legislative->getArea();
     }
 }

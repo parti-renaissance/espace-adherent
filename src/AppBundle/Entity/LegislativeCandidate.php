@@ -5,10 +5,10 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="legislative")
+ * @ORM\Table(name="legislative_candidates")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeRepository")
  */
-class Legislative
+class LegislativeCandidate
 {
     /**
      * @var int
@@ -22,7 +22,7 @@ class Legislative
     /**
      * @var string
      *
-     * @ORM\Column(name="area", type="string", length=255)
+     * @ORM\Column(name="area", type="string", length=255, nullable=true)
      */
     private $area;
 
@@ -39,12 +39,17 @@ class Legislative
         return $this->id;
     }
 
-    public function setArea(string $area): void
+    public function setArea(?string $area): void
     {
         $this->area = $area;
     }
 
     public function getArea(): ?string
+    {
+        return $this->area;
+    }
+
+    public function hasArea(): bool
     {
         return $this->area;
     }
