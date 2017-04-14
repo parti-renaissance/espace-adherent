@@ -33,10 +33,7 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Informations personnelles', ['class' => 'col-md-8'])
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
-                ])
+            ->with('Informations personnelles', ['class' => 'col-md-6'])
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
@@ -59,7 +56,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Statut',
                 ])
             ->end()
-            ->with('Référent', ['class' => 'col-md-4'])
+            ->with('Référent', ['class' => 'col-md-3'])
                 ->add('isReferent', 'boolean', [
                     'label' => 'Est référent ?',
                 ])
@@ -73,7 +70,26 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Longitude du point sur la carte',
                 ])
             ->end()
-            ->with('Préférences des e-mails', ['class' => 'col-md-8'])
+            ->with('Responsable procuration', ['class' => 'col-md-3'])
+                ->add('isProcurationManager', 'boolean', [
+                    'label' => 'Est responsable procuration ?',
+                ])
+                ->add('procurationManagedAreaCodesAsString', null, [
+                    'label' => 'Codes des zones gérés',
+                ])
+            ->end()
+            ->with('Candidat législatives', ['class' => 'col-md-3'])
+                ->add('isLegislativeCandidate', 'boolean', [
+                    'label' => 'Est candidat aux législatives ?',
+                ])
+                ->add('legislativeCandidate', null, [
+                    'label' => 'Nom de la circonscription',
+                ])
+            ->end()
+            ->with('Compte', ['class' => 'col-md-6'])
+                ->add('status', null, [
+                    'label' => 'Etat du compte',
+                ])
                 ->add('hasSubscribedMainEmails', 'boolean', [
                     'label' => 'Abonné aux mails nationaux ?',
                 ])
@@ -84,33 +100,13 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Abonné aux mails de comités ?',
                 ])
             ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-4'])
-                ->add('isProcurationManager', 'boolean', [
-                    'label' => 'Est responsable procuration ?',
-                ])
-                ->add('procurationManagedAreaCodesAsString', null, [
-                    'label' => 'Codes des zones gérés',
-                ])
-            ->end()
-            ->with('Candidat législatives', ['class' => 'col-md-4'])
-                ->add('legislativeCandidate', null, [
-                    'label' => 'Nom de la circonscription',
-                ])
-            ->end()
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Informations personnelles', ['class' => 'col-md-8'])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Etat du compte',
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
-                ])
+            ->with('Informations personnelles', ['class' => 'col-md-6'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
@@ -136,7 +132,28 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Statut',
                 ])
             ->end()
-            ->with('Référent', ['class' => 'col-md-4'])
+            ->with('Compte', ['class' => 'col-md-6'])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Etat du compte',
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ])
+                ->add('hasSubscribedMainEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails nationaux ?',
+                    'required' => false,
+                ])
+                ->add('hasSubscribedReferentsEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails de référents ?',
+                    'required' => false,
+                ])
+                ->add('hasSubscribedLocalHostEmails', CheckboxType::class, [
+                    'label' => 'Abonné aux mails de comités ?',
+                    'required' => false,
+                ])
+            ->end()
+            ->with('Référent', ['class' => 'col-md-3'])
                 ->add('managedArea.codesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
                     'required' => false,
@@ -152,7 +169,7 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-4'])
+            ->with('Responsable procuration', ['class' => 'col-md-3'])
                 ->add('procurationManagedAreaCodesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
                     'required' => false,
@@ -160,27 +177,14 @@ class AdherentAdmin extends AbstractAdmin
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
-            ->with('Candidat aux législatives', ['class' => 'col-md-4'])
+            ->with('Candidat aux législatives', ['class' => 'col-md-3'])
                 ->add('legislativeCandidate', TextType::class, [
                     'label' => 'Nom de la circonscription',
                     'required' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas candidat aux législatives.',
                 ])
             ->end()
-            ->with('Préférences des e-mails', ['class' => 'col-md-4'])
-                ->add('hasSubscribedMainEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails nationaux ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedReferentsEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails de référents ?',
-                    'required' => false,
-                ])
-                ->add('hasSubscribedLocalHostEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails de comités ?',
-                    'required' => false,
-                ])
-            ->end();
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -266,7 +270,8 @@ class AdherentAdmin extends AbstractAdmin
 
                     return true;
                 },
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)

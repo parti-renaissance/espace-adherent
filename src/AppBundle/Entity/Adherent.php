@@ -655,22 +655,27 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $membership->isSupervisor();
     }
 
+    public function isLegislativeCandidate(): bool
+    {
+        return $this->legislative instanceof LegislativeCandidate && !empty($this->legislative->getArea());
+    }
+
     public function setLegislativeCandidate(?string $area): void
     {
         if (!$area && !$this->legislative) {
             return;
         }
+
         if (!$this->legislative) {
             $this->legislative = new LegislativeCandidate();
             $this->legislative->setCandidate($this);
         }
+
         $this->legislative->setArea($area);
     }
 
     public function getLegislativeCandidate(): ?string
     {
-        return $this->legislative
-            ? $this->legislative->getArea()
-            : null;
+        return $this->legislative ? $this->legislative->getArea() : null;
     }
 }
