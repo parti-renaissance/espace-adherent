@@ -659,6 +659,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         if (!$area) {
             $this->legislative = null;
+
             return;
         }
 

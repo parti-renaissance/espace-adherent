@@ -59,4 +59,3 @@ class Legislative
         $this->candidate = $candidate;
     }
 }
-
