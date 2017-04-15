@@ -123,6 +123,8 @@ class PageController extends Controller
      */
     public function emmanuelMacronVideosAction()
     {
+        $this->disableInProduction();
+
         return $this->render('page/emmanuel-macron/videos.html.twig', [
             'videos' => $this->getDoctrine()->getRepository(FacebookVideo::class)->findBy(['published' => true], ['position' => 'ASC']),
         ]);

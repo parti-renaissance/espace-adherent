@@ -65,13 +65,21 @@
                         </blockquote>
                     </div>
 
-                    {% if video.twitterUrl %}
-                        <div role="button" aria-label="Partagez via Twitter"
-                             class="btn btn--social btn--twitter"
-                             onclick="App.share('twitter', '{{ video.twitterUrl }}', '{{ video.description|url_encode }}')">
-                            <i class="fa fa-twitter"></i> <span>Tweetez</span>
-                        </div>
-                    {% endif %}
+                    <div class="l__row">
+                        <button role="button" aria-label="Partagez via Twitter"
+                                class="btn btn--social btn--facebook b__nudge--right-nano"
+                                onclick="App.share('facebook', '{{ video.facebookUrl }}', '{{ video.description|url_encode }}')">
+                            <i class="fa fa-facebook"></i> <span>Partagez</span>
+                        </button>
+
+                        {% if video.twitterUrl %}
+                            <button role="button" aria-label="Partagez via Twitter"
+                                    class="btn btn--social btn--twitter"
+                                    onclick="App.share('twitter', '{{ video.twitterUrl }}', '{{ video.description|url_encode }}')">
+                                <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                            </button>
+                        {% endif %}
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
