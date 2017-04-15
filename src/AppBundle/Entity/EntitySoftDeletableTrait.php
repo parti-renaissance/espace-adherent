@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\ORM\Mapping as ORM;
 
 trait EntitySoftDeletableTrait
 {

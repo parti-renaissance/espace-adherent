@@ -128,7 +128,7 @@ class JeMarcheReport
     /**
      * @Assert\Callback
      */
-    public function validateOneFieldNotBlank(ExecutionContextInterface $context, $payload)
+    public function validateOneFieldNotBlank(ExecutionContextInterface $context)
     {
         if (!$this->notConvinced && !$this->almostConvinced && !$this->convinced) {
             $context->addViolation('Vous devez entrer au moins un contact que vous avez obtenu durant une action.');

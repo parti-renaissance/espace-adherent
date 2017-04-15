@@ -48,7 +48,7 @@ class AdherentSecurityController extends Controller
      * @Route("/connexion/check", name="app_adherent_login_check")
      * @Method("POST")
      */
-    public function loginCheck()
+    public function loginCheckAction()
     {
     }
 

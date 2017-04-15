@@ -8,12 +8,12 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -159,7 +159,6 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $committeeMembershipRepository = $this->committeeMembershipRepository;
-        $manager = $this->manager;
 
         $datagridMapper
             ->add('id', null, [
@@ -177,12 +176,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Prénom de l\'animateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -199,12 +197,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Nom de l\'animateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -221,12 +218,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Email de l\'animateur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function ($qb, $alias, $field, $value) use ($committeeMembershipRepository, $manager) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -243,12 +239,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Code postal',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
 
@@ -258,12 +253,11 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 
@@ -277,12 +271,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'field_options' => [
                     'choices' => array_flip(UnitedNationsBundle::getCountries()),
                 ],
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
                     $qb->setParameter('country', strtolower($value['value']));
 

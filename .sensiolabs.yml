@@ -3,4 +3,4 @@ ignore_branches:
 
 commit_failure_conditions:
     - "project.severity.critical > 0"
-    - "project.severity.major > 17"
+    - "project.severity.major > 8"

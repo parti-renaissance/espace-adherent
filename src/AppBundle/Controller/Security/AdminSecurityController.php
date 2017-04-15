@@ -46,7 +46,7 @@ class AdminSecurityController extends Controller
      * @Route("/login", name="app_admin_login_check")
      * @Method("POST")
      */
-    public function loginCheck()
+    public function loginCheckAction()
     {
     }
 

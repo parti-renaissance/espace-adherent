@@ -77,7 +77,7 @@ class CommitteeMembershipCollection extends ArrayCollection
         });
     }
 
-    private function merge(self $other): void
+    public function merge(self $other): void
     {
         foreach ($other as $element) {
             if (!$this->contains($element)) {

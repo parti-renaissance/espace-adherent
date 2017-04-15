@@ -24,9 +24,9 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         $this->urlGenerator->expects($this->never())->method('generate');
 
         $message = $this->factory->createProxyCancelledMessage(
-            $this->createAdherentMock('john@smith.tld'),
             $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld'),
-            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr')
+            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr'),
+            $this->createAdherentMock('john@smith.tld')
         );
 
         $this->assertInstanceOf(ProcurationProxyCancelledMessage::class, $message);

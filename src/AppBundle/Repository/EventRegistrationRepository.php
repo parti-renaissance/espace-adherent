@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Collection\EventRegistrationCollection;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;

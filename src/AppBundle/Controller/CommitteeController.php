@@ -238,7 +238,7 @@ class CommitteeController extends Controller
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
-    public function promoteHost(Request $request, Committee $committee, Adherent $member): Response
+    public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isPromotableHost($member, $committee)) {
@@ -276,7 +276,7 @@ class CommitteeController extends Controller
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
-    public function demoteHost(Request $request, Committee $committee, Adherent $member): Response
+    public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isDemotableHost($member, $committee)) {

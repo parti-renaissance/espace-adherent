@@ -97,8 +97,6 @@ class EventNotificationMessage extends MailjetMessage
             'event_date' => $eventDate,
             'event_hour' => $eventHour,
             'event_address' => self::escape($eventAddress),
-
-            // @todo this variable name must be renamed and uniquified in the template.
             'event_slug' => $eventLink,
             'event-slug' => $eventLink,
             'event_ok_link' => $eventOkLink,

@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyCancelledMessage extends MailjetMessage
 {
-    public static function create(?Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy): self
+    public static function create(ProcurationRequest $request, ProcurationProxy $proxy, ?Adherent $procurationManager): self
     {
         $message = new self(
             Uuid::uuid4(),
