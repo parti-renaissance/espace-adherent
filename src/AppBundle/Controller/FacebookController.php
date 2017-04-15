@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\FacebookProfile;
 use Facebook\Exceptions\FacebookSDKException;
 use Imagine\Image\Point;
@@ -20,16 +19,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FacebookController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("", name="app_facebook_index")
      * @Method("GET")
      */
     public function indexAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->render('facebook/index.html.twig');
     }
 
@@ -39,8 +34,6 @@ class FacebookController extends Controller
      */
     public function authAction(): RedirectResponse
     {
-        $this->disableInProduction();
-
         $fb = $this->get('app.facebook.api');
         $redirectUrl = str_replace('http://', 'https://', $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL));
 
@@ -53,8 +46,6 @@ class FacebookController extends Controller
      */
     public function getUserIdAction(Request $request): RedirectResponse
     {
-        $this->disableInProduction();
-
         if (!$request->query->has('code')) {
             if ('access_denied' === $request->query->get('error')) {
                 $this->addFlash('info', 'Pour habiller votre photo aux couleurs d\'En Marche, vous devez nous autoriser à télécharger votre image de profil.');
@@ -88,8 +79,6 @@ class FacebookController extends Controller
      */
     public function choosePictureAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $fbProfile = null;
 
         if (Uuid::isValid($uuid = $request->query->get('uuid'))) {
@@ -125,8 +114,6 @@ class FacebookController extends Controller
      */
     public function buildPictureAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $fbProfile = null;
         $watermarkNumber = (int) $request->query->get('watermark');
 
