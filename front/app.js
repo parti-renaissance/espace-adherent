@@ -139,6 +139,12 @@ class App {
             module.default(urlAll, urlCategory);
         })
     }
+
+    runFacebookPictureChooser(urls) {
+        System.import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
+            module.default(urls, this.get('api'));
+        })
+    }
 }
 
 window.App = new App();

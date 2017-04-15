@@ -1,5 +1,47 @@
 .facebook {
-    a.facebook-download {
-        border: none;
+    &__subtitle {
+        font-size: 20px;
+        font-weight: normal;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    &__example {
+        padding-top: 60px;
+        text-align: center;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    &__button {
+        padding-top: 40px;
+    }
+
+    &__chooser {
+        &__choice {
+            vertical-align: top;
+            display: inline-block;
+            padding: 15px;
+        }
+
+        &__image {
+            img {
+                width: 175px;
+                height: 175px;
+                padding: 0;
+                margin: 0 0 10px 0;
+            }
+
+            &--loading {
+                background: url('/images/loader-sm.gif') no-repeat 50% 50% #f5f5f5;
+                border: 1px solid #e5e5e5;
+                width: 175px;
+                height: 175px;
+                padding: 0;
+                margin: 0 0 15px 0;
+            }
+        }
     }
 }
