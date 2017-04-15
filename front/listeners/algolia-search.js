@@ -20,24 +20,28 @@ export default (di) => {
     const banner = dom('#header-banner');
     const header = dom('header');
     const content = dom('main');
+    const newsletter = dom('.newsletter__banner');
     const footer = dom('footer');
 
-    const searchButton = dom('#je-cherche');
+    const searchButtons = findAll(document, '.je-cherche');
     const searchCloseButton = dom('#je-ferme-la-recherche');
     const searchEngine = dom('#search-engine');
 
-    if (!searchButton || !searchCloseButton || !searchEngine) {
+    if (!searchButtons || !searchCloseButton || !searchEngine) {
         return;
     }
 
-    on(searchButton, 'click', () => {
-        addClass(overlay, 'g-search');
-        addClass(banner, 'hide-me');
-        addClass(header, 'hide-me');
-        addClass(content, 'hide-me');
-        addClass(footer, 'hide-me');
+    searchButtons.forEach((button) => {
+        on(button, 'click', () => {
+            addClass(overlay, 'g-search');
+            addClass(banner, 'hide-me');
+            addClass(header, 'hide-me');
+            addClass(content, 'hide-me');
+            addClass(newsletter, 'hide-me');
+            addClass(footer, 'hide-me');
 
-        dom('#search-input').focus();
+            dom('#search-input').focus();
+        });
     });
 
     on(searchCloseButton, 'click', () => {
@@ -45,6 +49,7 @@ export default (di) => {
         removeClass(banner, 'hide-me');
         removeClass(header, 'hide-me');
         removeClass(content, 'hide-me');
+        removeClass(newsletter, 'hide-me');
         removeClass(footer, 'hide-me');
     });
 

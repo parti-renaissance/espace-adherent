@@ -126,17 +126,15 @@ export default class AlgoliaSearch extends React.Component {
 
         return (
             <div className="g-search__content text--body listing">
-                <div className="g-search__search l__wrapper--slim text--center b__nudge--bottom-large">
-                    <form>
-                        <input type="text" placeholder="Rechercher" id="search-input"
-                               onChange={this.handleTermChange} />
-
-                        <div className="btn btn--large btn--no-border">
-                            <i className="fa fa-search" />
+                <div className="g-search__search--outer">
+                    <div className="g-search__search l__wrapper--slim text--center">
+                        <form>
+                            <input type="text" placeholder="Rechercher" id="search-input"
+                                   onChange={this.handleTermChange} />
+                        </form>
+                        <div className="b__nudge--top">
+                            {`${this.state.nbHits} résultat${1 < this.state.nbHits ? 's' : ''}`}
                         </div>
-                    </form>
-                    <div className="b__nudge--top">
-                        {`${this.state.nbHits} résultat${1 < this.state.nbHits ? 's' : ''}`}
                     </div>
                 </div>
 
