@@ -59,9 +59,27 @@
             width: 100%;
             border: 0;
         }
+        .frame__holder {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .frame__scroll {
+            overflow: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling:touch;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
-    <iframe src="{{ legislatives_platform }}"></iframe>
+    <div class="frame__holder">
+        <div class="frame__scroll">
+            <iframe src="{{ legislatives_platform }}"></iframe>
+        </div>
+    </div>
 </body>
 </html>
