@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @Route("/facebook")
+ * @Route("/profil-facebook")
  */
 class FacebookController extends Controller
 {
@@ -34,7 +34,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/auth", name="app_facebook_auth")
+     * @Route("/connexion", name="app_facebook_auth")
      * @Method("GET")
      */
     public function authAction(): RedirectResponse
@@ -42,13 +42,13 @@ class FacebookController extends Controller
         $this->disableInProduction();
 
         $fb = $this->get('app.facebook.api');
-        $redirectUrl = $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $redirectUrl = str_replace('http://', 'https://', $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL));
 
         return $this->redirect($fb->getRedirectLoginHelper()->getLoginUrl($redirectUrl, ['public_profile', 'email']));
     }
 
     /**
-     * @Route("/user/id", name="app_facebook_user_id")
+     * @Route("/import", name="app_facebook_user_id")
      * @Method("GET")
      */
     public function getUserIdAction(Request $request): RedirectResponse
@@ -69,7 +69,7 @@ class FacebookController extends Controller
         try {
             $accessToken = $helper->getAccessToken();
         } catch (FacebookSDKException $exception) {
-            throw new \RuntimeException('Facebook SDK request failed', 500, $exception);
+            return $this->redirectToRoute('app_facebook_auth');
         }
 
         $response = $fb->get('/me?fields=id,email,name,age_range,gender', $accessToken->getValue())->getDecodedBody();
