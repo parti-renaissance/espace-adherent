@@ -22,16 +22,26 @@ class FacebookVideo
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column
      *
+     * @Assert\Length(max=255)
      * @Assert\NotBlank
      * @Assert\Url
      */
-    private $url;
+    private $facebookUrl;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(nullable=true)
      *
+     * @Assert\Length(max=255)
+     * @Assert\Url
+     */
+    private $twitterUrl;
+
+    /**
+     * @ORM\Column(length=255)
+     *
+     * @Assert\Length(max=255)
      * @Assert\NotBlank
      */
     private $description;
@@ -39,6 +49,7 @@ class FacebookVideo
     /**
      * @ORM\Column(length=100)
      *
+     * @Assert\Length(max=100)
      * @Assert\NotBlank
      */
     private $author;
@@ -59,14 +70,24 @@ class FacebookVideo
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getFacebookUrl(): ?string
     {
-        return $this->url;
+        return $this->facebookUrl;
     }
 
-    public function setUrl(string $url)
+    public function setFacebookUrl(?string $facebookUrl)
     {
-        $this->url = $url;
+        $this->facebookUrl = $facebookUrl;
+    }
+
+    public function getTwitterUrl(): ?string
+    {
+        return $this->twitterUrl;
+    }
+
+    public function setTwitterUrl(?string $twitterUrl)
+    {
+        $this->twitterUrl = $twitterUrl;
     }
 
     public function getDescription(): ?string
@@ -74,7 +95,7 @@ class FacebookVideo
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
     }
@@ -84,17 +105,17 @@ class FacebookVideo
         return $this->author;
     }
 
-    public function setAuthor(string $author)
+    public function setAuthor(?string $author)
     {
         $this->author = $author;
     }
 
-    public function getPosition(): int
+    public function getPosition(): ?int
     {
         return $this->position;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(?int $position)
     {
         $this->position = $position;
     }
