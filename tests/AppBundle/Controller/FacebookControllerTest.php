@@ -15,19 +15,13 @@ class FacebookControllerTest extends WebTestCase
 
     public function testIndex()
     {
-        $this->client->request(Request::METHOD_GET, '/facebook');
+        $this->client->request(Request::METHOD_GET, '/profil-facebook');
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
     }
 
     public function testAuth()
     {
-        $this->client->request(Request::METHOD_GET, '/facebook/auth');
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $response = $this->client->getResponse());
-    }
-
-    public function testUserIdWithCode()
-    {
-        $this->client->request(Request::METHOD_GET, '/facebook/auth?code=code');
+        $this->client->request(Request::METHOD_GET, '/profil-facebook/connexion');
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $response = $this->client->getResponse());
     }
 
