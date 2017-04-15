@@ -21,9 +21,9 @@ class ProcurationProxyMessageFactory
         $this->replyToEmailAddress = $replyToEmailAddress;
     }
 
-    public function createProxyCancelledMessage(?Adherent $procurationManager, ProcurationRequest $request, ProcurationProxy $proxy): ProcurationProxyCancelledMessage
+    public function createProxyCancelledMessage(ProcurationRequest $request, ProcurationProxy $proxy, ?Adherent $procurationManager): ProcurationProxyCancelledMessage
     {
-        $message = ProcurationProxyCancelledMessage::create($procurationManager, $request, $proxy);
+        $message = ProcurationProxyCancelledMessage::create($request, $proxy, $procurationManager);
         $message->setReplyTo($this->replyToEmailAddress);
 
         return $message;

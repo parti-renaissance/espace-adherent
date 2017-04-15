@@ -6,7 +6,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
-use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,6 +13,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -211,12 +211,11 @@ class AdherentAdmin extends AbstractAdmin
             ->add('postalCode', 'doctrine_orm_callback', [
                 'label' => 'Code postal',
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
 
@@ -226,12 +225,11 @@ class AdherentAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 
@@ -244,12 +242,11 @@ class AdherentAdmin extends AbstractAdmin
                 'field_options' => [
                     'choices' => array_flip(UnitedNationsBundle::getCountries()),
                 ],
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
                     $qb->setParameter('country', strtolower($value['value']));
 
@@ -260,12 +257,11 @@ class AdherentAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'label' => 'N\'afficher que les référents',
                 'field_type' => CheckboxType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.managedArea.codes', $alias).' IS NOT NULL');
 
                     return true;

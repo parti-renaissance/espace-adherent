@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Clarification;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 class ClarificationRepository extends EntityRepository
@@ -20,7 +19,7 @@ class ClarificationRepository extends EntityRepository
     }
 
     /**
-     * @return Clarification[]|ArrayCollection
+     * @return Clarification[]
      */
     public function findAllPublished()
     {

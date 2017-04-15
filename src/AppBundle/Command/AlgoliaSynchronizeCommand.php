@@ -3,7 +3,6 @@
 namespace AppBundle\Command;
 
 use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer;
-use AlgoliaSearch\Client;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
@@ -24,11 +23,6 @@ class AlgoliaSynchronizeCommand extends ContainerAwareCommand
     ];
 
     /**
-     * @var string
-     */
-    private $env;
-
-    /**
      * @var EntityManager
      */
     private $manager;
@@ -37,11 +31,6 @@ class AlgoliaSynchronizeCommand extends ContainerAwareCommand
      * @var ManualIndexer
      */
     private $indexer;
-
-    /**
-     * @var Client
-     */
-    private $client;
 
     protected function configure()
     {
@@ -56,10 +45,8 @@ class AlgoliaSynchronizeCommand extends ContainerAwareCommand
     {
         $algolia = $this->getContainer()->get('algolia.indexer');
 
-        $this->env = $this->getContainer()->getParameter('kernel.environment');
         $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->indexer = $algolia->getManualIndexer($this->manager);
-        $this->client = $algolia->getClient();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

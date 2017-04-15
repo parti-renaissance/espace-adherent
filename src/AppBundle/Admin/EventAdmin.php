@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -166,12 +167,11 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Prénom de l\'organisateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
                     $qb->andWhere('organizer.firstName LIKE :firstname');
                     $qb->setParameter('firstname', $value['value']);
@@ -183,12 +183,11 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
                     $qb->andWhere('organizer.lastName LIKE :lastName');
                     $qb->setParameter('lastName', $value['value']);
@@ -200,12 +199,11 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Code postal (préfixe)',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
                     $qb->setParameter('postalCode', $value['value'].'%');
 
@@ -215,12 +213,11 @@ class EventAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function ($qb, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    /* @var QueryBuilder $qb */
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 

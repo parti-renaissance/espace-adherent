@@ -4,9 +4,8 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\QueryBuilder;
 
 class ArticleRepository extends EntityRepository
 {
@@ -38,7 +37,7 @@ class ArticleRepository extends EntityRepository
      * @param int    $page
      * @param int    $perPage
      *
-     * @return Article[]|Paginator
+     * @return Article[]
      */
     public function findByCategoryPaginated(string $category, int $page, int $perPage)
     {
@@ -82,21 +81,21 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
-     * @return Article[]|ArrayCollection
+     * @return Article[]
      */
     public function findAllPublished()
     {
-        return $this->getQueryBuilderFindAll()
+        return $this->createFindAllQueryBuilder()
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @return Article[]|ArrayCollection
+     * @return Article[]
      */
     public function findAllForFeed()
     {
-        return $this->getQueryBuilderFindAll()
+        return $this->createFindAllQueryBuilder()
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults(20)
             ->getQuery()
@@ -104,11 +103,9 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
-     * @param Article|null $article
-     *
      * @return Article[]
      */
-    public function findThreeLatestOtherThan(Article $article = null): array
+    public function findThreeLatestOtherThan(Article $article): array
     {
         return $this->createQueryBuilder('a')
             ->select('a', 'm')
@@ -127,9 +124,9 @@ class ArticleRepository extends EntityRepository
     /**
      * Get the query builder to find all articles.
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    private function getQueryBuilderFindAll()
+    private function createFindAllQueryBuilder()
     {
         return $this->createQueryBuilder('a')
             ->select('a', 'm', 'c')

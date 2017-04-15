@@ -43,7 +43,7 @@ class ProcurationProcessHandler
         $this->manager->flush();
 
         if ($proxy) {
-            $this->mailjet->sendMessage($this->factory->createProxyCancelledMessage($procurationManager, $request, $proxy));
+            $this->mailjet->sendMessage($this->factory->createProxyCancelledMessage($request, $proxy, $procurationManager));
         }
     }
 }
