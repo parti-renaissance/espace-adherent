@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
+ *
+ * @UniqueEntity(fields={"emailAddress", "birthdate"}, groups={"profile"}, message="procuration.request.unique")
  */
 class ProcurationRequest
 {

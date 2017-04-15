@@ -134,17 +134,11 @@ procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
 
 procuration.request.unique: |
-    Vous semblez déjà avoir soumis une demande pour être mandant avec cette adresse e-mail. Merci pour votre soutien !<br />
-    Si vous souhaitiez soumettre à nouveau votre demande précédente, c'est inutile : vous devriez bientôt être contacté(e)
-    par un représentant procuration En Marche !<br />
-    Si votre nouvelle demande concerne un autre mandant utilisant la même adresse e-mail, cliquez sur
-    "Je confirme ma nouvelle demande".
+    Vous êtes déjà inscrit comme mandant. Merci pour votre soutien.
+    Vous serez très bientôt contacté par l'équipe Procurations d'En Marche !
 procuration.proposal.unique: |
-    Vous semblez déjà avoir soumis une demande pour être mandataire avec cette adresse e-mail. Merci pour votre aide !<br />
-    Si vous souhaitiez soumettre à nouveau votre demande précédente, c'est inutile : vous devriez bientôt être
-    contacté(e) par un représentant procuration En Marche !<br />
-    Si votre nouvelle demande concerne un autre mandataire utilisant la même adresse e-mail, cliquez sur
-    "Je confirme ma nouvelle demande".
+    Vous êtes déjà inscrit comme mandataire. Merci pour votre soutien.
+    Vous serez très bientôt contacté par l'équipe Procurations d'En Marche !
 
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
 

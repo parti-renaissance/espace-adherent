@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class ProcurationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -26,94 +29,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
     /** @var ProcurationProxyRepository */
     private $procurationProxyRepostitory;
 
-    /**
-     * @group functionnal
-     */
-    public function testProcurationRequestWorfklowRaisesWarningWhenMatchingProcurationExists()
-    {
-        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
-
-        // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->filter('form[name=app_procuration_vote]')->form([
-            'app_procuration_vote' => [
-                'voteCountry' => 'FR',
-                'votePostalCode' => '75018',
-                'voteCity' => '75018-75118',
-                'voteCityName' => '',
-                'voteOffice' => 'TestOfficeName',
-            ],
-        ]));
-
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/mes-coordonnees', $this->client);
-        $crawler = $this->client->followRedirect();
-
-        // Profile
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
-            'app_procuration_profile' => [
-                'gender' => 'female',
-                'firstNames' => 'Carine, Margaux',
-                'lastName' => 'Édouard',
-                'emailAddress' => 'caroline.edouard@example.fr',
-                'address' => '165 rue Marcadet',
-                'country' => 'FR',
-                'postalCode' => '75018',
-                'city' => '75018-75118',
-                'cityName' => '',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '0600010203',
-                ],
-                'birthdate' => [
-                    'year' => '1977',
-                    'month' => '11',
-                    'day' => '23',
-                ],
-            ],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous semblez déjà avoir soumis une demande pour être mandant avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
-
-        $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form());
-
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/ma-procuration', $this->client);
-        $crawler = $this->client->followRedirect();
-
-        // Elections
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->filter('form[name=app_procuration_elections]')->form([
-            'g-recaptcha-response' => 'dummy',
-            'app_procuration_elections' => [
-                'electionPresidentialFirstRound' => true,
-                'electionPresidentialSecondRound' => false,
-                'electionLegislativeFirstRound' => true,
-                'electionLegislativeSecondRound' => false,
-                'reason' => ProcurationRequest::REASON_HANDICAP,
-                'authorization' => '1',
-            ],
-        ]));
-
-        // Procuration request should have been saved
-        /* @var ProcurationRequest $request */
-        $this->assertCount(6, $requests = $this->procurationRequestRepostitory->findAll());
-        $this->assertInstanceOf(ProcurationRequest::class, $request = $requests[0]);
-
-        // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/merci', $this->client);
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    /**
-     * @group functionnal
-     */
     public function testProcurationRequest()
     {
         $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
@@ -144,7 +59,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
                 'lastName' => 'Dupont',
-                'emailAddress' => 'paul@dupont.tld',
+                'emailAddress' => 'timothe.baume@example.gb',
                 'address' => '6 rue Neyret',
                 'country' => 'FR',
                 'postalCode' => '69001',
@@ -171,7 +86,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
                 'lastName' => 'Dupont',
-                'emailAddress' => 'paul@dupont.tld',
+                'emailAddress' => 'timothe.baume@example.gb',
                 'address' => '6 rue Neyret',
                 'country' => 'FR',
                 'postalCode' => '69001',
@@ -219,7 +134,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('male', $request->getGender());
         $this->assertSame('Paul, Jean, Martin', $request->getFirstNames());
         $this->assertSame('Dupont', $request->getLastName());
-        $this->assertSame('paul@dupont.tld', $request->getEmailAddress());
+        $this->assertSame('timothe.baume@example.gb', $request->getEmailAddress());
         $this->assertSame('FR', $request->getCountry());
         $this->assertSame('69001', $request->getPostalCode());
         $this->assertSame('Lyon 1er', $request->getCityName());
@@ -236,102 +151,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testProcurationProxyProposalWorfklowRaisesWarningWhenMatchingProcurationProposalAlreadyExists()
-    {
-        // There should not be any proposal at the moment
-        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
-
-        // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
-            'g-recaptcha-response' => 'dummy',
-            'app_procuration_proposal' => [
-                'gender' => 'male',
-                'firstNames' => 'Maxime',
-                'lastName' => 'Michaux',
-                'emailAddress' => 'maxime.michaux@example.fr',
-                'address' => '14 rue Jules Ferry',
-                'country' => 'FR',
-                'postalCode' => '75018',
-                'city' => '75018-75120',
-                'cityName' => '',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '0140998080',
-                ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
-                'voteCountry' => 'FR',
-                'votePostalCode' => '75018',
-                'voteCity' => '75018-75120',
-                'voteCityName' => '',
-                'voteOffice' => 'Mairie',
-                'electionPresidentialFirstRound' => true,
-                'electionPresidentialSecondRound' => false,
-                'electionLegislativeFirstRound' => true,
-                'electionLegislativeSecondRound' => false,
-                'conditions' => true,
-                'authorization' => true,
-            ],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous semblez déjà avoir soumis une demande pour être mandataire avec cette adresse e-mail.', $crawler->filter('.form--warning')->text());
-
-        $this->client->submit($crawler->selectButton('Je confirme ma nouvelle demande')->form([
-            'g-recaptcha-response' => 'dummy',
-            'app_procuration_proposal' => [
-                'gender' => 'male',
-                'firstNames' => 'Maxime',
-                'lastName' => 'Michaux',
-                'emailAddress' => 'maxime.michaux@example.fr',
-                'address' => '14 rue Jules Ferry',
-                'country' => 'FR',
-                'postalCode' => '75018',
-                'city' => '75018-75120',
-                'cityName' => '',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '0140998080',
-                ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
-                'voteCountry' => 'FR',
-                'votePostalCode' => '75018',
-                'voteCity' => '75018-75120',
-                'voteCityName' => '',
-                'voteOffice' => 'Mairie',
-                'electionPresidentialFirstRound' => true,
-                'electionPresidentialSecondRound' => false,
-                'electionLegislativeFirstRound' => true,
-                'electionLegislativeSecondRound' => false,
-                'conditions' => true,
-                'authorization' => true,
-            ],
-        ]));
-
-        // Procuration request should have been saved
-        /* @var ProcurationProxy $proposal */
-        $this->assertCount(4, $proposals = $this->procurationProxyRepostitory->findAll());
-
-        // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    /**
-     * @group functionnal
-     */
     public function testProcurationProposal()
     {
         // There should not be any proposal at the moment
@@ -348,7 +167,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
                 'lastName' => 'Dupont',
-                'emailAddress' => 'paul@dupont.tld',
+                'emailAddress' => 'maxime.michaux@example.fr',
                 'address' => '6 rue Neyret',
                 'country' => 'FR',
                 'postalCode' => '69001',
@@ -387,7 +206,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'gender' => 'male',
                 'firstNames' => 'Paul, Jean, Martin',
                 'lastName' => 'Dupont',
-                'emailAddress' => 'paul@dupont.tld',
+                'emailAddress' => 'maxime.michaux@example.fr',
                 'address' => '6 rue Neyret',
                 'country' => 'FR',
                 'postalCode' => '69001',
@@ -427,7 +246,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('male', $proposal->getGender());
         $this->assertSame('Paul, Jean, Martin', $proposal->getFirstNames());
         $this->assertSame('Dupont', $proposal->getLastName());
-        $this->assertSame('paul@dupont.tld', $proposal->getEmailAddress());
+        $this->assertSame('maxime.michaux@example.fr', $proposal->getEmailAddress());
         $this->assertSame('FR', $proposal->getCountry());
         $this->assertSame('69001', $proposal->getPostalCode());
         $this->assertSame('Lyon 1er', $proposal->getCityName());
@@ -443,9 +262,107 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
+    public function testProcurationRequestUniqueEmailBirthdate()
+    {
+        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_procuration_vote]')->form([
+            'app_procuration_vote' => [
+                'voteCountry' => 'FR',
+                'votePostalCode' => '75018',
+                'voteCity' => '75018-75118',
+                'voteCityName' => '',
+                'voteOffice' => 'TestOfficeName',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/mes-coordonnees', $this->client);
+        $crawler = $this->client->followRedirect();
+
+        // Profile
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+            'app_procuration_profile' => [
+                'gender' => 'female',
+                'firstNames' => 'Carine, Margaux',
+                'lastName' => 'Édouard',
+                'emailAddress' => 'caroline.edouard@example.fr',
+                'address' => '165 rue Marcadet',
+                'country' => 'FR',
+                'postalCode' => '75018',
+                'city' => '75018-75118',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0600010203',
+                ],
+                'birthdate' => [
+                    'year' => '1968',
+                    'month' => '10',
+                    'day' => '9',
+                ],
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Vous êtes déjà inscrit comme mandant.', $crawler->filter('.procuration__banner__form')->text());
+    }
+
+    public function testProcurationProposalUniqueEmailBirthdate()
+    {
+        // There should not be any proposal at the moment
+        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_proposal' => [
+                'gender' => 'male',
+                'firstNames' => 'Maxime',
+                'lastName' => 'Michaux',
+                'emailAddress' => 'maxime.michaux@example.fr',
+                'address' => '14 rue Jules Ferry',
+                'country' => 'FR',
+                'postalCode' => '75018',
+                'city' => '75018-75120',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0140998080',
+                ],
+                'birthdate' => [
+                    'year' => '1989',
+                    'month' => '2',
+                    'day' => '17',
+                ],
+                'voteCountry' => 'FR',
+                'votePostalCode' => '75018',
+                'voteCity' => '75018-75120',
+                'voteCityName' => '',
+                'voteOffice' => 'Mairie',
+                'electionPresidentialFirstRound' => true,
+                'electionPresidentialSecondRound' => false,
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'conditions' => true,
+                'authorization' => true,
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Vous êtes déjà inscrit comme mandataire.', $crawler->filter('.procuration__banner__form')->text());
+    }
+
     public function testProcurationProposalManagerUuid()
     {
         $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_4_UUID);
