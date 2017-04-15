@@ -62,6 +62,10 @@ $text--size-extra-large: 48px;
     font-size: $text--size-large;
     letter-spacing: -0.5px;
     line-height: 38px;
+
+    @media (max-width: $mobile) {
+        @include text--medium;
+    }
 }
 
 @mixin text--larger {

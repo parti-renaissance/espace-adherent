@@ -96,7 +96,7 @@
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
                     <li {% if not enable_canary or not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
-                        <a href="javascript:void(0)" id="je-cherche">
+                        <a href="javascript:void(0)" class="je-cherche">
                             {{ include('components/search.html.twig') }}
                         </a>
                     </li>
@@ -272,6 +272,11 @@
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron_programme') }}">Programme</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                             <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'actualites'}) }}">Actualités</a></li>
+                            <li {% if not enable_canary or not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                                <a href="javascript:void(0)" class="je-cherche">
+                                    Rechercher
+                                </a>
+                            </li>
                         </ul>
                         <hr>
                         <ul class="list__links list__links--row b__nudge--bottom-small">
@@ -413,7 +418,7 @@
                 <div class="text--logo"><a href="/">En Marche !</a></div>
                 <a href="javascript:void(0)" id="je-ferme-la-recherche"
                    class="l__row l__row--center text--body link--no-decor icon--with-text--reversed btn__icon">
-                    Fermer la recherche
+                    <span>Fermer la recherche</span>
                     {{ include('components/close.html.twig') }}
                 </a>
             </div>
