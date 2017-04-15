@@ -53,7 +53,12 @@ class PageControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/emmanuel-macron/videos');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(2, $crawler->filter('.fb-video')->count());
+        $this->assertSame(12, $crawler->filter('.fb-video')->count());
+
+        $videoGridText = $crawler->filter('.videos__grid')->text();
+        $this->assertContains('Laurence Haïm a un message pour vous. Inscrivez-vous ➜ en-marche.fr/bercy', $videoGridText);
+        $this->assertContains('#MacronPau avec les helpers en coulisses. Allez allez ! Cette révolution nous allons la porter.', $videoGridText);
+        $this->assertNotContains('Découvrez le teaser', $videoGridText);
     }
 
     public function providePages()

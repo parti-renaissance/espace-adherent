@@ -18,8 +18,12 @@ class FacebookVideoAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('url', UrlType::class, [
-                'label' => 'Url',
+            ->add('facebookUrl', UrlType::class, [
+                'label' => 'URL Facebook',
+            ])
+            ->add('twitterUrl', UrlType::class, [
+                'label' => 'URL Twitter',
+                'required' => false,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -32,14 +36,18 @@ class FacebookVideoAdmin extends AbstractAdmin
             ])
             ->add('published', null, [
                 'label' => 'Publié ?',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('url', null, [
-                'label' => 'Url',
+            ->add('facebookUrl', null, [
+                'label' => 'URL Facebook',
+            ])
+            ->add('twitterUrl', null, [
+                'label' => 'URL Twitter',
             ])
             ->add('description', null, [
                 'label' => 'Description',
@@ -59,6 +67,7 @@ class FacebookVideoAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }
