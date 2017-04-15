@@ -41,7 +41,7 @@ class ProcurationController extends Controller
 
         return $this->render('procuration/index.html.twig', [
             'has_error' => $request->query->getBoolean('has_error'),
-            'form' => $this->createForm(ProcurationVoteType::class)->createView(),
+            'form' => $this->createForm(ProcurationVoteType::class, new ProcurationRequest())->createView(),
         ]);
     }
 
@@ -80,7 +80,6 @@ class ProcurationController extends Controller
         }
 
         $form = $this->createForm(ProcurationProfileType::class, $command);
-        $form->get('state')->setData('new_request');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -158,7 +157,6 @@ class ProcurationController extends Controller
         }
 
         $form = $this->createForm(ProcurationProxyType::class, $proposal);
-        $form->get('state')->setData('new_request');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

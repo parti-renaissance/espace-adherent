@@ -260,7 +260,13 @@
                         <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
                     {% endif %}
 
-                    {{ include('procuration/form_footer.html.twig') }}
+                    <div class="text--center b__nudge--top-large">
+                        <button type="submit" class="btn btn--blue">
+                            Je continue
+                        </button>
+                    </div>
+
+                    {{ form_rest(form) }}
 
                 </form>
                 {{ include('procuration/legal.html.twig') }}

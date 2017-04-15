@@ -101,7 +101,13 @@
                     {{ form_errors(form.emailAddress) }}
                 </div>
 
-                {{ include('procuration/form_footer.html.twig') }}
+                <div class="text--center b__nudge--top-large">
+                    <button type="submit" class="btn btn--blue">
+                        Je continue
+                    </button>
+                </div>
+
+                {{ form_rest(form) }}
 
             </form>
         </div>
