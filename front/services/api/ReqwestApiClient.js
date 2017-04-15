@@ -70,7 +70,7 @@ export default class ReqwestApiClient {
     getUpcomingEvents(callback) {
         var url = '/api/events';
         var type = dom('#map-config').getAttribute('data-event-type');
-        
+
         if ('' !== type) {
             url = url + '?type=' + type;
         }
@@ -78,6 +78,13 @@ export default class ReqwestApiClient {
         this._createRequest(callback, {
             url:  url,
             type: 'json'
+        });
+    }
+
+    getFacebookPicture(url, callback) {
+        this._createRequest(callback, {
+            url:  url,
+            type: 'text'
         });
     }
 

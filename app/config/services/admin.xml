@@ -160,6 +160,14 @@
             </call>
         </service>
 
+        <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\FacebookProfile</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.redirection" class="AppBundle\Admin\RedirectionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Communication" />
 

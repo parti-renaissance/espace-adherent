@@ -3,6 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\CanaryControllerTrait;
+use AppBundle\Entity\FacebookProfile;
+use Facebook\Exceptions\FacebookSDKException;
+use Imagine\Image\Point;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -38,13 +42,9 @@ class FacebookController extends Controller
         $this->disableInProduction();
 
         $fb = $this->get('app.facebook.api');
-        $helper = $fb->getRedirectLoginHelper();
+        $redirectUrl = $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        return $this->redirect($helper->getLoginUrl($this->generateUrl(
-            'app_facebook_user_id',
-            [],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )));
+        return $this->redirect($fb->getRedirectLoginHelper()->getLoginUrl($redirectUrl, ['public_profile', 'email']));
     }
 
     /**
@@ -56,34 +56,105 @@ class FacebookController extends Controller
         $this->disableInProduction();
 
         if (!$request->query->has('code')) {
-            return $this->redirectToRoute('app_facebook_auth');
+            if ('access_denied' === $request->query->get('error')) {
+                $this->addFlash('info', 'Pour habiller votre photo aux couleurs d\'En Marche, vous devez nous autoriser à télécharger votre image de profil.');
+            }
+
+            return $this->redirectToRoute('app_facebook_index');
         }
 
         $fb = $this->get('app.facebook.api');
         $helper = $fb->getRedirectLoginHelper();
-        $accessToken = $helper->getAccessToken();
 
-        $response = $fb->get('/me', $accessToken->getValue())->getDecodedBody();
+        try {
+            $accessToken = $helper->getAccessToken();
+        } catch (FacebookSDKException $exception) {
+            throw new \RuntimeException('Facebook SDK request failed', 500, $exception);
+        }
 
-        return $this->redirectToRoute('app_facebook_picture', ['id' => $response['id']]);
+        $response = $fb->get('/me?fields=id,email,name,age_range,gender', $accessToken->getValue())->getDecodedBody();
+
+        $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
+        $fbProfile = $repository->persistFromSDKResponse($response);
+
+        return $this->redirectToRoute('app_facebook_picture_choose', [
+            'uuid' => $fbProfile->getUuid()->toString(),
+        ]);
     }
 
     /**
-     * @Route("/process/{id}", name="app_facebook_picture")
+     * @Route("/choisir-une-image", name="app_facebook_picture_choose")
      * @Method("GET")
      */
-    public function processPictureAction($id): Response
+    public function choosePictureAction(Request $request): Response
     {
         $this->disableInProduction();
 
-        $imageFilter = $this->get('app.image_filter');
+        $fbProfile = null;
 
-        try {
-            $base64EncodedPictures = $imageFilter->applyWatermarks(sprintf('%s/%s/picture?type=large', $this->getParameter('env(facebook_graph_api_host)'), $id));
-        } catch (\InvalidArgumentException $exception) {
+        if (Uuid::isValid($uuid = $request->query->get('uuid'))) {
+            $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
+            $fbProfile = $repository->findOneBy(['uuid' => $uuid]);
+        }
+
+        if (!$fbProfile) {
+            $this->addFlash('info', 'Une erreur s\'est produite, pouvez-vous réessayer ?');
+
+            return $this->redirectToRoute('app_facebook_index');
+        }
+
+        $router = $this->get('router');
+        $uuid = $fbProfile->getUuid()->toString();
+
+        return $this->render('facebook/show.html.twig', [
+            'urls' => array_map(
+                function ($file) use ($router, $uuid) {
+                    return $router->generate('app_facebook_picture_build', [
+                        'uuid' => $uuid,
+                        'watermark' => $file['filename'],
+                    ]);
+                },
+                $this->get('app.storage')->listContents('static/watermarks')
+            ),
+        ]);
+    }
+
+    /**
+     * @Route("/build", name="app_facebook_picture_build")
+     * @Method("GET")
+     */
+    public function buildPictureAction(Request $request): Response
+    {
+        $this->disableInProduction();
+
+        $fbProfile = null;
+        $watermarkNumber = (int) $request->query->get('watermark');
+
+        if (Uuid::isValid($uuid = $request->query->get('uuid'))) {
+            $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
+            $fbProfile = $repository->findOneBy(['uuid' => $uuid]);
+        }
+
+        if (!$fbProfile || !$watermarkNumber) {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('facebook/show.html.twig', ['base64EncodedPictures' => $base64EncodedPictures]);
+        $storage = $this->get('app.storage');
+        if (!$storage->has('static/watermarks/'.$watermarkNumber.'.png')) {
+            throw $this->createNotFoundException();
+        }
+
+        $imagine = $this->get('app.imagine');
+
+        $fbApiHost = $this->getParameter('env(FACEBOOK_GRAPH_API_HOST)');
+        $pictureUrl = sprintf('%s/%s/picture?width=1500', $fbApiHost, $fbProfile->getFacebookId());
+        $picture = $imagine->open($pictureUrl);
+
+        $watermark = $imagine->load($storage->read('static/watermarks/'.$watermarkNumber.'.png'));
+
+        $watermark->resize($picture->getSize());
+        $picture->paste($watermark, new Point(0, 0));
+
+        return new Response(base64_encode($picture->get('jpeg')));
     }
 }

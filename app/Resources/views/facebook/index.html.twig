@@ -1,17 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'facebook/_layout.html.twig' %}
 
 {% block content %}
-    <main class="facebook">
-        {{ include('facebook/header.html.twig') }}
+    <main class="facebook text--center b__nudge--bottom-huge">
+        <header class="l__wrapper l__wrapper--slim b__nudge--top-40">
+            <h1 class="text--large">
+                Le 23 avril, je vote Macron !
+            </h1>
+        </header>
 
-        <br/>
+        <section class="l__wrapper">
+            <h2 class="facebook__subtitle">
+                Mettez votre photo Facebook aux couleurs d'Emmanuel Macron !
+            </h2>
 
-        <div class="l__wrapper text--center">
-            <a class="btn btn--facebook btn--medium" href="{{ path('app_facebook_auth') }}">
-                Changer mon image Facebook
-            </a>
-        </div>
+            <div class="facebook__example">
+                <img src="{{ asset('images/facebook/example.jpg') }}" />
+            </div>
 
-        <br/>
+            <div class="facebook__button">
+                <a class="btn btn--facebook btn--medium" href="{{ path('app_facebook_auth') }}">
+                    Changer mon image Facebook
+                </a>
+            </div>
+        </section>
     </main>
 {% endblock %}
