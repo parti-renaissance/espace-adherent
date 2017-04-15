@@ -39,7 +39,7 @@ deployment:
         owner: EnMarche
         commands:
             # Check packages security
-            - bin/console security:check
+            #- bin/console security:check
 
             # Google Cloud authentication
             - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json && cp ${HOME}/gcloud-service-key.json gcloud-service-key.json
