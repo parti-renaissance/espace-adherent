@@ -9,11 +9,9 @@
             height: 100vh;
             justify-content: flex-start;
         }
-        footer {
-            display: none;
-        }
     </style>
 {% endblock %}
+{% block footer '' %}
 
 {% block javascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
