@@ -16,6 +16,9 @@
 
 {% block content %}
     <main class="content committees-map">
+        <a href="{{ path('app_search_events') }}" class="l__wrapper icon--with-text text--summary">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la liste des événements</a>
         <header class="l__wrapper--slim text--center committees-map__header">
             <h1 class="text--large">
                 {{- block('page_title') -}}
