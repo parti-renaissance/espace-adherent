@@ -7,10 +7,10 @@ export default class AlgoliaSearch extends React.Component {
 
         const client = algoliasearch(props.appId, props.appKey);
 
+        this.customResultsIndex = client.initIndex(`CustomSearchResult_${props.environment}`);
         this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
         this.clarificationsIndex = client.initIndex(`Clarification_${props.environment}`);
         this.articlesIndex = client.initIndex(`Article_${props.environment}`);
-        this.pagesIndex = client.initIndex(`Page_${props.environment}`);
 
         this.state = {
             term: '',
@@ -21,6 +21,7 @@ export default class AlgoliaSearch extends React.Component {
 
         this.timer = null;
         this.handleTermChange = this.handleTermChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     handleTermChange(event) {
@@ -35,22 +36,31 @@ export default class AlgoliaSearch extends React.Component {
         this.timer = setTimeout(() => { this._search(term); }, 200);
     }
 
+    handleKeyPress(event) {
+        // Disable enter
+        const code = event.which || event.keyCode;
+
+        if (13 === code || 10 === code) {
+            event.preventDefault();
+        }
+    }
+
     _search(term) {
         let loaded = 0;
         let nbHits = 0;
 
         const hits = {
+            custom: [],
             proposal: [],
             clarification: [],
             article: [],
-            page: [],
         };
 
         const createResultsHandler = type => (err, content) => {
             loaded += 1;
             nbHits += content.nbHits;
             hits[type] = content.hits.map((hit) => {
-                hit.type = ('page' === type && hit.static) ? 'static-page' : type;
+                hit.type = type;
 
                 return hit;
             });
@@ -60,18 +70,18 @@ export default class AlgoliaSearch extends React.Component {
             }
         };
 
+        this.customResultsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('custom'));
         this.proposalsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('proposal'));
         this.clarificationsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('clarification'));
         this.articlesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('article'));
-        this.pagesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('page'));
     }
 
     _searchCallback(nbHits, hits) {
         const aggregated = []
+            .concat(hits.custom)
             .concat(hits.proposal)
             .concat(hits.clarification)
             .concat(hits.article)
-            .concat(hits.page)
         ;
 
         this.setState({
@@ -82,8 +92,8 @@ export default class AlgoliaSearch extends React.Component {
     }
 
     _createImageURL(hit) {
-        if ('static-page' === hit.type) {
-            return `/algolia/${hit.type}/${hit.image}`;
+        if ('custom' === hit.type) {
+            return `/algolia/custom/${hit.id}`;
         }
 
         return `/algolia/${hit.type}/${hit.slug}`;
@@ -130,7 +140,8 @@ export default class AlgoliaSearch extends React.Component {
                     <div className="g-search__search l__wrapper--slim text--center">
                         <form>
                             <input type="text" placeholder="Rechercher" id="search-input"
-                                   onChange={this.handleTermChange} />
+                                   onChange={this.handleTermChange}
+                                   onKeyPress={this.handleKeyPress} />
                         </form>
                         <div className="b__nudge--top">
                             {`${this.state.nbHits} résultat${1 < this.state.nbHits ? 's' : ''}`}

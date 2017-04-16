@@ -34,11 +34,12 @@ export default (di) => {
     searchButtons.forEach((button) => {
         on(button, 'click', () => {
             addClass(overlay, 'g-search');
-            addClass(banner, 'hide-me');
-            addClass(header, 'hide-me');
-            addClass(content, 'hide-me');
-            addClass(newsletter, 'hide-me');
-            addClass(footer, 'hide-me');
+
+            [header, content, banner, newsletter, footer].forEach((item) => {
+                if (item) {
+                    addClass(item, 'hide-me');
+                }
+            });
 
             dom('#search-input').focus();
         });
@@ -46,11 +47,12 @@ export default (di) => {
 
     on(searchCloseButton, 'click', () => {
         removeClass(overlay, 'g-search');
-        removeClass(banner, 'hide-me');
-        removeClass(header, 'hide-me');
-        removeClass(content, 'hide-me');
-        removeClass(newsletter, 'hide-me');
-        removeClass(footer, 'hide-me');
+
+        [header, content, banner, newsletter, footer].forEach((item) => {
+            if (item) {
+                removeClass(item, 'hide-me');
+            }
+        });
     });
 
     render(<AlgoliaSearch appId={appId} appKey={appKey} environment={di.get('environment')} />, searchEngine);

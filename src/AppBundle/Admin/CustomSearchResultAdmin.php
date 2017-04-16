@@ -8,43 +8,33 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class PageAdmin extends AbstractAdmin
+class CustomSearchResultAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 64,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'title',
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
     ];
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if ($this->getSubject()->getId() === null) {
-            $formMapper->add('title', null, [
-                'label' => 'Titre',
-            ]);
-        }
-
         $formMapper
-            ->with('Contenu', ['class' => 'col-md-8'])
-                ->add('description', TextareaType::class, [
-                    'label' => 'Description',
-                ])
-                ->add('content', TextareaType::class, [
-                    'label' => 'Contenu',
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
-                ])
-            ->end()
-            ->with('Méta-donnes', ['class' => 'col-md-4'])
-                ->add('keywords', null, [
-                    'label' => 'Mots clés de recherche',
-                    'required' => false,
-                ])
-                ->add('media', null, [
-                    'label' => 'Image principale',
-                    'required' => false,
-                ])
-            ->end()
+            ->add('title', null, [
+                'label' => 'Titre (priorité la plus élevée dans la recherche)',
+            ])
+            ->add('media', null, [
+                'label' => 'Image du résultat de recherche',
+            ])
+            ->add('keywords', null, [
+                'label' => 'Mots-clés (priorité scondaire dans la recherche)',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description (priorité la plus faible dans la recherche)',
+            ])
+            ->add('url', null, [
+                'label' => 'URL du résultat de recherche',
+            ])
         ;
     }
 
@@ -54,7 +44,12 @@ class PageAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+            ->add('keywords', null, [
+                'label' => 'Mot-clé',
+                'show_filter' => true,
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -63,11 +58,14 @@ class PageAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
+            ->add('keywords', null, [
+                'label' => 'Mots-clés',
+            ])
+            ->add('url', null, [
+                'label' => 'URL',
+            ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
-            ])
-            ->add('updatedAt', null, [
-                'label' => 'Date de dernière mise à jour',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

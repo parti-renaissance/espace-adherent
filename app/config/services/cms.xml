@@ -28,6 +28,8 @@
 
         <service id="app.content.clarification_factory" class="AppBundle\Content\ClarificationFactory" />
 
+        <service id="app.content.custom_search_factory" class="AppBundle\Content\CustomSearchResultFactory" />
+
         <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">
             <argument>%locale%</argument>
             <argument>%feed_ttl%</argument>
