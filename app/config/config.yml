@@ -143,6 +143,11 @@ csa_guzzle:
                 base_uri: 'https://maps.googleapis.com'
                 timeout: 2.0
 
+        facebook_graph_api:
+            config:
+                base_uri: 'https://graph.facebook.com'
+                timeout: 2.0
+
 scheb_two_factor:
     google:
         enabled: true
