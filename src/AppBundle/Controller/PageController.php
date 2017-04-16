@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Committee;
@@ -22,8 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PageController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/emmanuel-macron", name="page_emmanuel_macron")
      * @Method("GET")
@@ -123,8 +120,6 @@ class PageController extends Controller
      */
     public function emmanuelMacronVideosAction()
     {
-        $this->disableInProduction();
-
         return $this->render('page/emmanuel-macron/videos.html.twig', [
             'videos' => $this->getDoctrine()->getRepository(FacebookVideo::class)->findBy(['published' => true], ['position' => 'ASC']),
         ]);
