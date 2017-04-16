@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Legislatives' %}
+{% block canonical_url url('site_legislatives') %}
+
+{% block banner '' %}
+{% block header '' %}
+{% block footer '' %}
+
+
+{% block content %}
+    <header class="l__wrapper space--20-0 l__row l__row--h-stretch">
+        <div class="text--logo"><a href="/">En Marche !</a></div>
+        <nav>
+            <ul class="list__links list__links--row list__links--no-decor list__links--nav">
+                {% set currentRoute = app.request.attributes.get('_route') %}
+                {% for route, title in {
+                    'site_legislatives': 'Legislatives 2017',
+                    'site_legislatives_annuaire': 'Tous les candidats',
+                    'site_legislatives_carte': 'La carte',
+                    'app_procuration_landing': 'Donner procuration'
+                } %}
+                    <li class="{{ route == currentRoute ? 'active' }}">
+                        <a href="{{ path(route) }}">
+                            {{ title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    {% block content__inner %}
+    <main class="legislatives">
+        <section>
+            <header class="l__wrapper--slim space--60-0 text--center ">
+                <h1 class="text--large">
+                    Je découvre les 577 candidats <em>En Marche !</em>
+                </h1>
+                <h2 class="text--body text--medium text--normal b__nudge--top-10">
+                    Aux élections législatives 2017
+                </h2>
+            </header>
+
+            <div class="l__wrapper--slim l__row l__row--h-stretch l__mobile--col">
+                <div class="box border--pink l__col l__col--center">
+                    <div class="text--center text--body text--medium b__nudge--bottom">
+                        Je ne connais pas<br>mon candidat
+                    </div>
+                    <form method="post" action="{{ path('newsletter_subscription') }}" name="app_newsletter_banner"
+                          class="l__row l__row--stretch">
+                        <input type="text"
+                               aria-label="Entrez votre département ou circonscription"
+                               title="Votre département ou circonscription"
+                               placeholder="Département ou circonscription"
+                               class="form form__field form__field--no-margin" />
+
+                        <button title="OK" type="submit" class="btn btn--primary">Ok</button>
+                    </form>
+                </div>
+                <div class="box border--green l__col l__col--center">
+                    <div class="text--center text--body text--medium b__nudge--bottom">
+                        Je connais<br>mon candidat
+                    </div>
+                    <form method="post" action="{{ path('newsletter_subscription') }}" name="app_newsletter_banner"
+                          class="l__row l__row--stretch">
+                        <input type="text"
+                               aria-label="Entrez son nom"
+                               title="Son nom"
+                               placeholder="Entrez son nom"
+                               class="form form__field form__field--no-margin" />
+
+                        <button title="OK" type="submit" class="btn btn--green">Ok</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="l__row l__row--h-stretch background--light space--20-30
+                        l__row--wrap l__tablet--col b__nudge--top-50">
+                <div class="text--small text--all-caps space--10-0">
+                    je reçois le trombinoscope des 577 candidats
+                </div>
+                <form method="post" action="#" name="app_newsletter_banner">
+                    <input type="email"
+                           required="required"
+                           aria-label="Entrez votre adresse email"
+                           title="Adresse email"
+                           placeholder="Adresse email"
+                           class="form__email form form__field form__field--no-border" />
+
+                    <input type="text"
+                           aria-label="Entrez votre code postal"
+                           title="Code postal"
+                           placeholder="Code postal"
+                           class="form__zipcode form form__field form__field--no-border" />
+
+                    <button title="Je reçois" type="submit" class="btn btn--no-border btn--green">
+                        Je reçois
+                    </button>
+                </form>
+            </div>
+
+            <div class="b__nudge--top-50 l__wrapper--slim b__nudge--bottom-huge">
+                <h2 class="text--body text--medium text--center text--normal
+                           b__nudge--bottom">
+                    Comment ont-été choisi les 577 candidats ?
+                </h2>
+
+                <div class="text--body">
+                    TEXT THAT COMES FROM CMS: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+            </div>
+
+        </section>
+    </main>
+    {% endblock %}
+
+{% endblock %}

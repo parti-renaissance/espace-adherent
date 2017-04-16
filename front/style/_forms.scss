@@ -36,6 +36,10 @@
             height: 500px;
             padding: 12px;
         }
+
+        &--no-margin {
+            margin: 0;
+        }
     }
 
     &__errors {

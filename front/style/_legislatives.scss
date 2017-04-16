@@ -1,0 +1,27 @@
+.legislatives {
+    .box {
+        width: 48%;
+        border-width: 2px;
+        border-style: solid;
+        padding: 30px 25px;;
+        box-sizing: border-box;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+
+            &:first-child {
+                margin-bottom: 20px;
+            }
+        }
+
+        form {
+            width: 100%;
+
+            input[type="text"] {
+                border-right: 0;
+                flex: 1;
+                height: 40px;
+            }
+        }
+    }
+}
