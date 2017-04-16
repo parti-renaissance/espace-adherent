@@ -39,7 +39,7 @@ class FacebookProfile
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $emailAddress = '';
 
@@ -86,10 +86,10 @@ class FacebookProfile
         $fbProfile = new self();
         $fbProfile->uuid = self::createUuid($data['id']);
         $fbProfile->facebookId = $data['id'];
-        $fbProfile->emailAddress = $data['email'];
-        $fbProfile->name = $data['name'];
-        $fbProfile->ageRange = $data['age_range'];
-        $fbProfile->gender = $data['gender'];
+        $fbProfile->emailAddress = $data['email'] ?: '';
+        $fbProfile->name = $data['name'] ?: '';
+        $fbProfile->ageRange = $data['age_range'] ?: [];
+        $fbProfile->gender = $data['gender'] ?: '';
 
         return $fbProfile;
     }
@@ -101,22 +101,22 @@ class FacebookProfile
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?: '';
     }
 
     public function getEmailAddress(): string
     {
-        return $this->emailAddress;
+        return $this->emailAddress ?: '';
     }
 
     public function getGender(): string
     {
-        return $this->gender;
+        return $this->gender ?: '';
     }
 
     public function getAgeRange(): array
     {
-        return $this->ageRange;
+        return $this->ageRange ?: [];
     }
 
     public function getAgeRangeAsString(): string

@@ -140,7 +140,7 @@ class FacebookController extends Controller
         $imagine = $this->get('app.imagine');
 
         $fbApiHost = $this->getParameter('env(FACEBOOK_GRAPH_API_HOST)');
-        $pictureUrl = sprintf('%s/%s/picture?width=1500', $fbApiHost, $fbProfile->getFacebookId());
+        $pictureUrl = sprintf('%s/%s/picture?width=1500&height=1500', $fbApiHost, $fbProfile->getFacebookId());
         $picture = $imagine->open($pictureUrl);
 
         $watermark = $imagine->load($storage->read('static/watermarks/'.$watermarkNumber.'.png'));
