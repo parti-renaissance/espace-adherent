@@ -15,8 +15,23 @@
         }
     }
 
-    &__button {
-        padding-top: 40px;
+    &__legalities {
+        &__checkbox {
+            padding-top: 40px;
+
+            label {
+                font-size: 12px !important;
+                color: #999;
+                text-align: justify;
+            }
+        }
+
+        &__text {
+            padding-top: 60px;
+            font-size: 12px !important;
+            color: #999;
+            text-align: left;
+        }
     }
 
     &__chooser {
