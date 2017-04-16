@@ -57,6 +57,13 @@ class FacebookProfile
     private $ageRange = [];
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $accessToken;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -80,11 +87,12 @@ class FacebookProfile
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $facebookId);
     }
 
-    public static function createFromSDKResponse(array $data): self
+    public static function createFromSDKResponse(string $accessToken, array $data): self
     {
         $fbProfile = new self();
         $fbProfile->uuid = self::createUuid($data['id']);
         $fbProfile->facebookId = $data['id'];
+        $fbProfile->accessToken = $accessToken;
         $fbProfile->emailAddress = $data['email'] ?: '';
         $fbProfile->name = $data['name'] ?: '';
         $fbProfile->ageRange = $data['age_range'] ?: [];
@@ -96,6 +104,11 @@ class FacebookProfile
     public function getFacebookId(): string
     {
         return $this->facebookId;
+    }
+
+    public function getAccessToken(): string
+    {
+        return $this->accessToken ?: '';
     }
 
     public function getName(): string

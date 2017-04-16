@@ -54,5 +54,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.facebook_profile" class="AppBundle\Repository\FacebookProfileRepository" public="false">
+            <argument>AppBundle\Entity\FacebookProfile</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

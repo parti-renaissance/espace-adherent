@@ -3,9 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\FacebookProfile;
+use AppBundle\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
-use Imagine\Image\Point;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -60,19 +59,11 @@ class FacebookController extends Controller
             return $this->redirectToRoute('app_facebook_index');
         }
 
-        $fb = $this->get('app.facebook.api');
-        $helper = $fb->getRedirectLoginHelper();
-
         try {
-            $accessToken = $helper->getAccessToken();
+            $fbProfile = $this->get('app.facebook.profile_importer')->import();
         } catch (FacebookSDKException $exception) {
-            return $this->redirectToRoute('app_facebook_auth');
+            return $this->redirectToRoute('app_facebook_index');
         }
-
-        $response = $fb->get('/me?fields=id,email,name,age_range,gender', $accessToken->getValue())->getDecodedBody();
-
-        $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
-        $fbProfile = $repository->persistFromSDKResponse($response);
 
         return $this->redirectToRoute('app_facebook_picture_choose', [
             'uuid' => $fbProfile->getUuid()->toString(),
@@ -85,14 +76,7 @@ class FacebookController extends Controller
      */
     public function choosePictureAction(Request $request): Response
     {
-        $fbProfile = null;
-
-        if (Uuid::isValid($uuid = $request->query->get('uuid'))) {
-            $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
-            $fbProfile = $repository->findOneBy(['uuid' => $uuid]);
-        }
-
-        if (!$fbProfile) {
+        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
             $this->addFlash('info', 'Une erreur s\'est produite, pouvez-vous réessayer ?');
 
             return $this->redirectToRoute('app_facebook_index');
@@ -106,7 +90,7 @@ class FacebookController extends Controller
                 function ($file) use ($router, $uuid) {
                     return $router->generate('app_facebook_picture_build', [
                         'uuid' => $uuid,
-                        'watermark' => $file['filename'],
+                        'filter' => $file['filename'],
                     ]);
                 },
                 $this->get('app.storage')->listContents('static/watermarks')
@@ -120,34 +104,31 @@ class FacebookController extends Controller
      */
     public function buildPictureAction(Request $request): Response
     {
-        $fbProfile = null;
-        $watermarkNumber = (int) $request->query->get('watermark');
-
-        if (Uuid::isValid($uuid = $request->query->get('uuid'))) {
-            $repository = $this->getDoctrine()->getRepository(FacebookProfile::class);
-            $fbProfile = $repository->findOneBy(['uuid' => $uuid]);
+        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+            throw $this->createNotFoundException();
         }
 
-        if (!$fbProfile || !$watermarkNumber) {
+        if (!$filterNumber = (int) $request->query->get('filter')) {
             throw $this->createNotFoundException();
         }
 
         $storage = $this->get('app.storage');
-        if (!$storage->has('static/watermarks/'.$watermarkNumber.'.png')) {
+        if (!$storage->has('static/watermarks/'.$filterNumber.'.png')) {
             throw $this->createNotFoundException();
         }
 
-        $imagine = $this->get('app.imagine');
+        $pictureData = $this->get('app.facebook.picture_importer')->import($fbProfile->getFacebookId());
+        $filterData = $storage->read('static/watermarks/'.$filterNumber.'.png');
 
-        $fbApiHost = $this->getParameter('env(FACEBOOK_GRAPH_API_HOST)');
-        $pictureUrl = sprintf('%s/%s/picture?width=1500&height=1500', $fbApiHost, $fbProfile->getFacebookId());
-        $picture = $imagine->open($pictureUrl);
+        if (!$filteredPictureData = $this->get('app.facebook.picture_filterer')->applyFilter($pictureData, $filterData)) {
+            throw $this->createNotFoundException();
+        }
 
-        $watermark = $imagine->load($storage->read('static/watermarks/'.$watermarkNumber.'.png'));
+        return new Response(base64_encode($filteredPictureData));
+    }
 
-        $watermark->resize($picture->getSize());
-        $picture->paste($watermark, new Point(0, 0));
-
-        return new Response(base64_encode($picture->get('jpeg')));
+    private function getFacebookProfileRepository(): FacebookProfileRepository
+    {
+        return $this->getDoctrine()->getRepository(FacebookProfile::class);
     }
 }
