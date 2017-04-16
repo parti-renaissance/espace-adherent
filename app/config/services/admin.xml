@@ -74,6 +74,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.custom_search_result" class="AppBundle\Admin\CustomSearchResultAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\CustomSearchResult</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.home_block" class="AppBundle\Admin\HomeBlockAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Accueil » Blocs d'articles" group="Communication" />
 

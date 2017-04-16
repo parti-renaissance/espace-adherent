@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
-use AppBundle\Entity\Page;
+use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Proposal;
 use AppBundle\Geocoder\Coordinates;
 use League\Glide\Filesystem\FileNotFoundException;
@@ -65,7 +65,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|page|static-page|article|clarification"})
+     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|custom|article|clarification"})
      * @Method("GET")
      */
     public function algoliaAction(Request $request, string $type, string $slug)
@@ -87,11 +87,11 @@ class AssetsController extends Controller
 
     private function getTypePath(string $type, string $slug): string
     {
-        if ('static-page' === $type) {
-            return 'static/algolia/'.$slug.'.jpg';
+        if ('custom' === $type) {
+            $entity = $this->getDoctrine()->getRepository(CustomSearchResult::class)->find((int) $slug);
+        } else {
+            $entity = $this->getTypeRepository($type)->findOneBySlug($slug);
         }
-
-        $entity = $this->getTypeRepository($type)->findOneBySlug($slug);
 
         if (!$entity) {
             throw $this->createNotFoundException();
@@ -120,6 +120,6 @@ class AssetsController extends Controller
             return $manager->getRepository(Article::class);
         }
 
-        return $manager->getRepository(Page::class);
+        return $manager->getRepository(Article::class);
     }
 }
