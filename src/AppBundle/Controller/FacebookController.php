@@ -32,8 +32,14 @@ class FacebookController extends Controller
      * @Route("/connexion", name="app_facebook_auth")
      * @Method("GET")
      */
-    public function authAction(): RedirectResponse
+    public function authAction(Request $request): RedirectResponse
     {
+        if ('on' !== $request->query->get('mentions_legales')) {
+            $this->addFlash('info', 'Pour habiller votre photo aux couleurs d\'En Marche, vous devez nous autoriser à télécharger votre image de profil.');
+
+            return $this->redirectToRoute('app_facebook_index');
+        }
+
         $fb = $this->get('app.facebook.api');
         $redirectUrl = str_replace('http://', 'https://', $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL));
 
@@ -44,7 +50,7 @@ class FacebookController extends Controller
      * @Route("/import", name="app_facebook_user_id")
      * @Method("GET")
      */
-    public function getUserIdAction(Request $request): RedirectResponse
+    public function importAction(Request $request): RedirectResponse
     {
         if (!$request->query->has('code')) {
             if ('access_denied' === $request->query->get('error')) {

@@ -17,10 +17,41 @@
                 <img src="{{ asset('images/facebook/example.jpg') }}" />
             </div>
 
-            <div class="facebook__button">
-                <a class="btn btn--facebook btn--medium" href="{{ path('app_facebook_auth') }}">
-                    Changer mon image Facebook
-                </a>
+            <div class="facebook__legalities__checkbox l__wrapper-500">
+                <form method="get" action="{{ path('app_facebook_auth') }}">
+                    <div class="form__row form__checkbox form__checkbox--large">
+                        <input type="checkbox" name="mentions_legales" id="mentions_legales" required="required" />
+                        <label for="mentions_legales">
+                            En cochant cette case, vous autorisez En Marche à utiliser les informations suivantes pour
+                            activer un filtre En Marche sur votre compte Facebook (photo de profil Facebook, nom, prénom,
+                            âge, sexe et adresse mail).
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn--facebook btn--medium">
+                        Changer mon image Facebook
+                    </button>
+                </form>
+            </div>
+
+            <div class="facebook__legalities__text text--body l__wrapper-500">
+                En nous fournissant les informations ci-après (photo de profil Facebook, nom, prénom, âge, sexe et
+                adresse mail), vous autorisez En Marche à utiliser ces informations pour activer un filtre En Marche
+                sur votre compte Facebook. Ces informations sont nécessaires pour utiliser l’application qui permet de
+                générer votre avatar En Marche. En Marche ne postera rien sur votre compte Facebook sans votre
+                autorisation préalable. Ces informations sont réservées à l’usage d’En Marche dans le cadre de la
+                présente application, et pour des opérations de communication politique et de dons. Ces données seront
+                conservées pendant toute la durée des élections présidentielle et législatives. Vos informations ne
+                pourront être communiquées qu’aux personnes habilitées d’En Marche et aux cocontractants qui, en leur
+                qualité de sous-traitants, n’agiront que sur instruction d’En Marche et seront soumis à une stricte
+                obligation de confidentialité. Certains de nos partenaires peuvent avoir des activités dans des pays
+                situés en dehors de l’Union Européenne, notamment aux fins d’hébergement des données. Vos données
+                pourront être transférées dans des pays présentant une protection adéquate au regard des garanties
+                imposées par la loi informatique et libertés du 6 janvier 1978, et dans le cadre des clauses
+                contractuelles types de la Commission européenne. En application des articles 38 et suivants de la
+                loi du 6 janvier 1978, vous pouvez exercer vos droits d’accès, d'opposition, de rectification et de
+                suppression à l’adresse postale ou électronique suivante :<br />
+                En Marche – BP 80 049 – 94801 Villejuif – France et contact@en-marche.fr
             </div>
         </section>
     </main>
