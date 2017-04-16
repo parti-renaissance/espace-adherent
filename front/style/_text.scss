@@ -423,6 +423,11 @@ $text--size-extra-large: 48px;
             .icon-search {
                 position: relative;
                 top: 4px;
+
+                @media (max-width: $mobile) {
+                    top: 1px;
+                    width: 20px;
+                }
             }
         }
 
