@@ -55,5 +55,13 @@ export default (di) => {
         });
     });
 
-    render(<AlgoliaSearch appId={appId} appKey={appKey} environment={di.get('environment')} />, searchEngine);
+    render(
+        <AlgoliaSearch
+            appId={appId}
+            appKey={appKey}
+            blacklist={di.get('algoliaBlacklist')}
+            environment={di.get('environment')}
+        />,
+        searchEngine
+    );
 };

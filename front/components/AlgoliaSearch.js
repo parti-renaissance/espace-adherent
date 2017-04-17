@@ -7,6 +7,8 @@ export default class AlgoliaSearch extends React.Component {
 
         const client = algoliasearch(props.appId, props.appKey);
 
+        this.blacklist = props.blacklist || [];
+
         this.customResultsIndex = client.initIndex(`CustomSearchResult_${props.environment}`);
         this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
         this.clarificationsIndex = client.initIndex(`Clarification_${props.environment}`);
@@ -55,6 +57,11 @@ export default class AlgoliaSearch extends React.Component {
             clarification: [],
             article: [],
         };
+
+        if (-1 < this.blacklist.indexOf(term)) {
+            this._searchCallback(0, hits);
+            return;
+        }
 
         const createResultsHandler = type => (err, content) => {
             loaded += 1;
@@ -193,5 +200,6 @@ export default class AlgoliaSearch extends React.Component {
 AlgoliaSearch.propTypes = {
     appId: PropTypes.string.isRequired,
     appKey: PropTypes.string.isRequired,
+    blacklist: PropTypes.array,
     environment: PropTypes.string.isRequired,
 };
