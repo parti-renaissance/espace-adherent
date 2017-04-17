@@ -215,7 +215,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives/resultats-noms", name="site_legislatives_resultats_noms")
+     * @Route("/legislatives/recherche/noms", name="site_legislatives_resultats_noms")
      * @Method("GET")
      */
     public function legislativesResultatsNomsAction()
@@ -224,7 +224,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives/resultats-departements", name="site_legislatives_resultats_departements")
+     * @Route("/legislatives/recherche/departements", name="site_legislatives_resultats_departements")
      * @Method("GET")
      */
     public function legislativesResultatsDepartementsAction()
