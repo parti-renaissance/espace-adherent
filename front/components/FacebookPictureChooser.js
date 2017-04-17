@@ -70,6 +70,19 @@ export default class FacebookPictureChooser extends React.Component {
                                             <a className="btn btn--small btn--disabled" disabled={true}>
                                                 Télécharger
                                             </a>
+                                            <br />
+                                            <a className="btn btn--small btn--disabled b__nudge--top" disabled={true}>
+                                                Envoyer sur Facebook
+                                            </a>
+                                            <br />
+                                            <div className="text--smallest text--muted b__nudge--top-5">
+                                                Nous aurons besoin de votre autorisation<br />
+                                                pour envoyer la photo.
+                                            </div>
+                                            <div className="text--smallest text--muted b__nudge--top-5">
+                                                Une fois envoyée, vous pourrez la<br />
+                                                définir comme photo de profil.
+                                            </div>
                                         </div>
                                     </div>
                                 );
@@ -88,6 +101,20 @@ export default class FacebookPictureChooser extends React.Component {
                                            className="btn btn--small btn--blue">
                                             Télécharger
                                         </a>
+                                        <br />
+                                        <a href={picture.uploadUrl}
+                                           className="btn btn--small btn--facebook b__nudge--top">
+                                            Envoyer sur Facebook
+                                        </a>
+                                        <br />
+                                        <div className="text--smallest text--muted b__nudge--top-5">
+                                            Nous aurons besoin de votre autorisation<br />
+                                            pour envoyer la photo.
+                                        </div>
+                                        <div className="text--smallest text--muted b__nudge--top-5">
+                                            Une fois envoyée, vous pourrez la<br />
+                                            définir comme photo de profil.
+                                        </div>
                                     </div>
                                 </div>
                             );
