@@ -10,7 +10,8 @@ export default class FacebookPictureChooser extends React.Component {
         const pictures = [];
         props.urls.forEach((url) => {
             pictures.push({
-                url,
+                dataUrl: url.data,
+                uploadUrl: url.upload,
                 loading: true,
                 data: null,
             });
@@ -25,10 +26,10 @@ export default class FacebookPictureChooser extends React.Component {
 
     componentDidMount() {
         this.props.urls.forEach((url) => {
-            this.api.getFacebookPicture(url, (data) => {
+            this.api.getFacebookPicture(url.data, (data) => {
                 const pictures = this.state.pictures;
                 for (const i in pictures) {
-                    if (pictures[i].url === url) {
+                    if (pictures[i].dataUrl === url.data) {
                         pictures[i].loading = false;
                         pictures[i].data = data.responseText;
                     }
@@ -62,11 +63,11 @@ export default class FacebookPictureChooser extends React.Component {
                         {this.state.pictures.map((picture, key) => {
                             if (picture.loading) {
                                 return (
-                                    <div className="facebook__chooser__choice" key={picture.url}>
+                                    <div className="facebook__chooser__choice" key={picture.dataUrl}>
                                         <div className="facebook__chooser__image facebook__chooser__image--loading" />
 
                                         <div className="facebook__chooser__choice__button">
-                                            <a className="btn btn--disabled" disabled={true}>
+                                            <a className="btn btn--small btn--disabled" disabled={true}>
                                                 Télécharger
                                             </a>
                                         </div>
@@ -75,7 +76,7 @@ export default class FacebookPictureChooser extends React.Component {
                             }
 
                             return (
-                                <div className="facebook__chooser__choice" key={picture.url}>
+                                <div className="facebook__chooser__choice" key={picture.dataUrl}>
                                     <div className="facebook__chooser__image">
                                         <img alt={`je_vote_macron_${key + 1}.jpg`}
                                              src={`data:image/jpeg;base64,${picture.data}`} />
@@ -84,7 +85,7 @@ export default class FacebookPictureChooser extends React.Component {
                                     <div className="facebook__chooser__choice__button">
                                         <a download={`je_vote_macron_${key + 1}.jpg`}
                                            href={`data:image/jpeg;base64,${picture.data}`}
-                                           className="btn btn--blue">
+                                           className="btn btn--small btn--blue">
                                             Télécharger
                                         </a>
                                     </div>

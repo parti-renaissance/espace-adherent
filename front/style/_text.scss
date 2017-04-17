@@ -284,6 +284,10 @@ $text--size-extra-large: 48px;
         color: $black--half;
     }
 
+    &--muted {
+        color: $gray--muted;
+    }
+
     &--light-gray {
         color: $gray;
     }
