@@ -64,7 +64,8 @@ $text--size-extra-large: 48px;
     line-height: 38px;
 
     @media (max-width: $mobile) {
-        @include text--medium;
+        font-size: $text--size-medium;
+        line-height: 1.2em;
     }
 }
 
@@ -163,7 +164,8 @@ $text--size-extra-large: 48px;
         @include text--large;
 
         @media (max-width: $mobile) {
-            @include text--medium-large;
+            font-size: $text--size-medium;
+            line-height: 1.2em;
         }
     }
 
@@ -171,7 +173,9 @@ $text--size-extra-large: 48px;
         @include text--larger;
 
         @media (max-width: $mobile) {
-            @include text--large;
+            font-size: $text--size-large;
+            letter-spacing: -0.5px;
+            line-height: 38px;
         }
     }
 

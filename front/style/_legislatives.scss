@@ -64,27 +64,50 @@
                 z-index: 2;
             }
         }
+    }
 
-        &__social {
-            padding: 0 15px;
+    &__social {
+        .fa {
+            font-size: $text--size-medium;
+            margin-left: 5px;
+            cursor: pointer;
 
-            .fa {
-                font-size: $text--size-medium;
-                margin-left: 5px;
-                cursor: pointer;
-
-                &-facebook-official {
-                    color: $facebook;
-                }
-
-                &-twitter {
-                    color: $twitter;
-                }
-
-                &:hover {
-                    opacity: .8
-                }
+            &-facebook-official {
+                color: $facebook;
             }
+
+            &-twitter {
+                color: $twitter;
+            }
+
+            &:hover {
+                opacity: .8
+            }
+        }
+    }
+
+    &__candidate__photo {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        width: 40%;
+        height: 250px;
+
+        @media (max-width: $tablet) {
+            height: 175px;
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+    }
+
+    &__candidate__info {
+        width: 57%;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            margin-top: 20px;
         }
     }
 }
