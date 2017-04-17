@@ -125,8 +125,6 @@ class FacebookController extends Controller
      */
     public function uploadPicturePermissionAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
             throw $this->createNotFoundException();
         }
@@ -150,8 +148,6 @@ class FacebookController extends Controller
      */
     public function uploadPictureExecuteAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         try {
             if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
                 throw $this->createNotFoundException();
