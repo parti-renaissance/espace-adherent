@@ -19,11 +19,11 @@ class FacebookProfileRepository extends EntityRepository
 
     public function persistFromSDKResponse(string $accessToken, array $data): FacebookProfile
     {
-        if ($fbProfile = $this->findOneByUuid(FacebookProfile::createUuid($data['id']))) {
-            return $fbProfile;
+        if (!$fbProfile = $this->findOneByUuid(FacebookProfile::createUuid($data['id']))) {
+            $fbProfile = FacebookProfile::createFromSDKResponse($accessToken, $data);
         }
 
-        $fbProfile = FacebookProfile::createFromSDKResponse($accessToken, $data);
+        $fbProfile->setUpdatedAt(new \DateTime());
 
         $this->_em->persist($fbProfile);
         $this->_em->flush();

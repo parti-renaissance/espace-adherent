@@ -125,5 +125,11 @@
             <argument type="service" id="app.imagine" />
         </service>
 
+        <service id="app.facebook.picture_uploader" class="AppBundle\Facebook\PictureUploader">
+            <argument type="service" id="app.facebook.api" />
+            <argument type="service" id="filesystem" />
+            <argument>%kernel.cache_dir%</argument>
+        </service>
+
     </services>
 </container>

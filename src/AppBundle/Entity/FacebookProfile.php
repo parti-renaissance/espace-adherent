@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -20,6 +19,7 @@ use Ramsey\Uuid\UuidInterface;
 class FacebookProfile
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
 
     /**
      * @var string
@@ -64,18 +64,11 @@ class FacebookProfile
     private $accessToken;
 
     /**
-     * @var \DateTime
+     * @var bool
      *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="boolean")
      */
-    private $createdAt;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
+    private $hasAutoUploaded = false;
 
     public function __toString()
     {
@@ -99,6 +92,12 @@ class FacebookProfile
         $fbProfile->gender = $data['gender'] ?: '';
 
         return $fbProfile;
+    }
+
+    public function logAutoUploaded(string $uploadAccessToken)
+    {
+        $this->accessToken = $uploadAccessToken;
+        $this->hasAutoUploaded = true;
     }
 
     public function getFacebookId(): string
@@ -141,8 +140,13 @@ class FacebookProfile
         return implode(', ', $parts);
     }
 
-    public function getCreatedAt(): \DateTime
+    public function hasAutoUploaded(): bool
     {
-        return $this->createdAt;
+        return $this->hasAutoUploaded;
+    }
+
+    public function getAutoUploaded(): bool
+    {
+        return $this->hasAutoUploaded;
     }
 }

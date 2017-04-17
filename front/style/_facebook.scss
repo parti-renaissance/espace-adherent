@@ -42,7 +42,7 @@
         }
 
         &__image {
-            img {
+            img, &--loading {
                 width: 175px;
                 height: 175px;
                 padding: 0;
@@ -50,12 +50,9 @@
             }
 
             &--loading {
+                display: inline-block;
                 background: url('/images/loader-sm.gif') no-repeat 50% 50% #f5f5f5;
                 border: 1px solid #e5e5e5;
-                width: 175px;
-                height: 175px;
-                padding: 0;
-                margin: 0 0 15px 0;
             }
         }
     }

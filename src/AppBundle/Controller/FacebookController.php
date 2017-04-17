@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\FacebookProfile;
 use AppBundle\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
@@ -18,6 +19,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FacebookController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("", name="app_facebook_index")
      * @Method("GET")
@@ -40,7 +43,7 @@ class FacebookController extends Controller
         }
 
         $fb = $this->get('app.facebook.api');
-        $redirectUrl = str_replace('http://', 'https://', $this->generateUrl('app_facebook_user_id', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        $redirectUrl = $this->generateFacebookRedirectUrl('app_facebook_user_id', []);
 
         return $this->redirect($fb->getRedirectLoginHelper()->getLoginUrl($redirectUrl, ['public_profile', 'email']));
     }
@@ -85,16 +88,21 @@ class FacebookController extends Controller
         $router = $this->get('router');
         $uuid = $fbProfile->getUuid()->toString();
 
+        $urls = [];
+        foreach ($this->get('app.storage')->listContents('static/watermarks') as $filter) {
+            $parameters = [
+                'uuid' => $uuid,
+                'filter' => $filter['filename'],
+            ];
+
+            $urls[] = [
+                'data' => $router->generate('app_facebook_picture_build', $parameters),
+                'upload' => $router->generate('app_facebook_picture_upload_permission', $parameters),
+            ];
+        }
+
         return $this->render('facebook/show.html.twig', [
-            'urls' => array_map(
-                function ($file) use ($router, $uuid) {
-                    return $router->generate('app_facebook_picture_build', [
-                        'uuid' => $uuid,
-                        'filter' => $file['filename'],
-                    ]);
-                },
-                $this->get('app.storage')->listContents('static/watermarks')
-            ),
+            'urls' => $urls,
         ]);
     }
 
@@ -108,6 +116,83 @@ class FacebookController extends Controller
             throw $this->createNotFoundException();
         }
 
+        return new Response(base64_encode($this->buildFilteredPicture($fbProfile, $request)));
+    }
+
+    /**
+     * @Route("/upload/permission", name="app_facebook_picture_upload_permission")
+     * @Method("GET")
+     */
+    public function uploadPicturePermissionAction(Request $request): Response
+    {
+        $this->disableInProduction();
+
+        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$filterNumber = (int) $request->query->get('filter')) {
+            throw $this->createNotFoundException();
+        }
+
+        $fb = $this->get('app.facebook.api');
+        $redirectUrl = $this->generateFacebookRedirectUrl('app_facebook_picture_upload_execute', [
+            'uuid' => $fbProfile->getUuid()->toString(),
+            'filter' => $filterNumber,
+        ]);
+
+        return $this->redirect($fb->getRedirectLoginHelper()->getLoginUrl($redirectUrl, ['user_photos', 'publish_actions']));
+    }
+
+    /**
+     * @Route("/upload/executer", name="app_facebook_picture_upload_execute")
+     * @Method("GET")
+     */
+    public function uploadPictureExecuteAction(Request $request): Response
+    {
+        $this->disableInProduction();
+
+        try {
+            if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+                throw $this->createNotFoundException();
+            }
+
+            $filteredPictureData = $this->buildFilteredPicture($fbProfile, $request);
+            $response = $this->get('app.facebook.picture_uploader')->upload($filteredPictureData);
+
+            $fbProfile->logAutoUploaded($response['access_token']);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($fbProfile);
+            $manager->flush();
+        } catch (FacebookSDKException $exception) {
+            return $this->redirectToRoute('app_facebook_picture_choose', [
+                'uuid' => $request->query->get('uuid'),
+                'filter' => $request->query->get('filter'),
+            ]);
+        }
+
+        return $this->redirect('https://www.facebook.com/photo.php?fbid='.$response['photo_id']);
+    }
+
+    private function getFacebookProfileRepository(): FacebookProfileRepository
+    {
+        return $this->getDoctrine()->getRepository(FacebookProfile::class);
+    }
+
+    private function generateFacebookRedirectUrl(string $route, array $parameters)
+    {
+        $url = $this->generateUrl($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+
+        if ($this->getParameter('kernel.debug')) {
+            return $url;
+        }
+
+        return str_replace('http://', 'https://', $url);
+    }
+
+    private function buildFilteredPicture(FacebookProfile $fbProfile, Request $request): string
+    {
         if (!$filterNumber = (int) $request->query->get('filter')) {
             throw $this->createNotFoundException();
         }
@@ -124,11 +209,6 @@ class FacebookController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return new Response(base64_encode($filteredPictureData));
-    }
-
-    private function getFacebookProfileRepository(): FacebookProfileRepository
-    {
-        return $this->getDoctrine()->getRepository(FacebookProfile::class);
+        return $filteredPictureData;
     }
 }

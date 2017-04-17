@@ -29,7 +29,7 @@ class PictureFilterer
         $picture->paste($filter, new Point(0, 0));
 
         return $picture->get('jpeg', [
-            'jpeg_quality' => 100,
+            'jpeg_quality' => 80,
         ]);
     }
 }
