@@ -242,7 +242,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives/annuaire", name="site_legislatives_annuaire")
+     * @Route("/legislatives/trombinoscope", name="site_legislatives_annuaire")
      * @Method("GET")
      */
     public function legislativesAnnuaireAction()
@@ -251,7 +251,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives/carte", name="site_legislatives_carte")
+     * @Route("/legislatives/la-carte", name="site_legislatives_carte")
      * @Method("GET")
      */
     public function legislativesCarteAction()

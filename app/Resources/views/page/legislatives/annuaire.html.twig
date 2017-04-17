@@ -1,0 +1,58 @@
+{% extends 'page/legislatives/layout.html.twig' %}
+
+{% block page_title 'Le Trombinoscope | Législatives' %}
+{% block canonical_url url('site_legislatives_annuaire') %}
+
+
+{% block content__inner %}
+
+    <div class="l__wrapper text--center space--30">
+
+        <ul class="list__links list__links--row list__links--no-decor">
+            <li><a href="{{ path('site_legislatives_annuaire') }}"
+                   class="btn btn--primary {{ 'site_legislatives_annuaire' == currentRoute ? 'active' }}">
+                Trombinoscope
+            </a></li>
+            <li><a href="{{ path('site_legislatives_carte') }}"
+                   class="btn btn--primary {{ 'site_legislatives_carte' == currentRoute ? 'active' }}">
+                Carte
+            </a></li>
+        </ul>
+
+        <div class="text--body b__nudge--top">
+            577 candidats <em>En Marche !</em>
+        </div>
+
+    </div>
+
+    {% block candidates %}
+
+    <div class="l__wrapper--medium l__row l__row--wrap">
+        <div class="legislatives__trombi__item">
+            <a href="#"
+               class="legislatives__trombi__item__visual progressive-background link--no-decor"
+               data-sd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 100, 'q': 20}) }}"
+               data-hd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 300, 'q': 70}) }}">
+                 <div class="text--white">
+                     <h1 class="text--medium-small">Mounir Mahjoubi</h1>
+                     <span class="text--body">1e circonscription<span>
+                 </div>
+            </a>
+            <div class="legislatives__trombi__item__social l__row l__row--h-stretch b__nudge--top-10">
+                <a href="#" class="link--no-decor">
+                    Voir son site
+                </a>
+                <div class="list__links--svgs">
+                    <a href="#" class="link--no-decor">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="link--no-decor">
+                        <i class="fa fa-facebook-official"></i>
+                    </a>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+{% endblock %}

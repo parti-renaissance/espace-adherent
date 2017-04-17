@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Legislatives' %}
+{% block page_title 'Législatives' %}
 {% block canonical_url url('site_legislatives') %}
 
 {% block banner '' %}
@@ -15,7 +15,7 @@
             <ul class="list__links list__links--row list__links--no-decor list__links--nav">
                 {% set currentRoute = app.request.attributes.get('_route') %}
                 {% for route, title in {
-                    'site_legislatives': 'Legislatives 2017',
+                    'site_legislatives': 'Législatives 2017',
                     'site_legislatives_annuaire': 'Tous les candidats',
                     'site_legislatives_carte': 'La carte',
                     'app_procuration_landing': 'Donner procuration'
@@ -30,8 +30,8 @@
         </nav>
     </header>
 
-    {% block content__inner %}
     <main class="legislatives">
+    {% block content__inner %}
         <section>
             <header class="l__wrapper--slim space--60-0 text--center ">
                 <h1 class="text--large">
@@ -112,7 +112,7 @@
             </div>
 
         </section>
+        {% endblock %}
     </main>
-    {% endblock %}
 
 {% endblock %}

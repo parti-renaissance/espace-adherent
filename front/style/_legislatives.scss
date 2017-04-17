@@ -24,4 +24,67 @@
             }
         }
     }
+
+    .list__links a {
+        opacity: 0.7;
+
+        &.active {
+            opacity: 1;
+        }
+    }
+
+    &__trombi__item {
+        width: 32%;
+
+        @media (max-width: $tablet) {
+            width: 48%;
+        }
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
+
+        &__visual {
+            @include gradient-container;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px 15px;
+            box-sizing: border-box;
+
+            &:before {
+                @include classic-gradient($filter);
+            }
+
+            > div {
+                z-index: 2;
+            }
+        }
+
+        &__social {
+            padding: 0 15px;
+
+            .fa {
+                font-size: $text--size-medium;
+                margin-left: 5px;
+                cursor: pointer;
+
+                &-facebook-official {
+                    color: $facebook;
+                }
+
+                &-twitter {
+                    color: $twitter;
+                }
+
+                &:hover {
+                    opacity: .8
+                }
+            }
+        }
+    }
 }
