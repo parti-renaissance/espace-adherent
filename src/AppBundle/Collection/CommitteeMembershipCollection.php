@@ -37,6 +37,11 @@ class CommitteeMembershipCollection extends ArrayCollection
         }));
     }
 
+    public function countCommitteeSupervisorMemberships(): int
+    {
+        return $this->getCommitteeSupervisorMemberships()->count();
+    }
+
     public function getCommitteeHostMemberships(int $withSupervisors = self::INCLUDE_SUPERVISORS): self
     {
         if (self::EXCLUDE_SUPERVISORS === $withSupervisors) {

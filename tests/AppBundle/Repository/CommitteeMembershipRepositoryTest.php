@@ -36,6 +36,13 @@ class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
         $this->assertSame(1, $this->repository->countHostMembers(LoadAdherentData::COMMITTEE_4_UUID));
     }
 
+    public function testCountSupervisorMembersInCommittee()
+    {
+        $this->assertSame(1, $this->repository->countSupervisorMembers(LoadAdherentData::COMMITTEE_1_UUID));
+        $this->assertSame(1, $this->repository->countSupervisorMembers(LoadAdherentData::COMMITTEE_3_UUID));
+        $this->assertSame(1, $this->repository->countSupervisorMembers(LoadAdherentData::COMMITTEE_7_UUID));
+    }
+
     public function testFindCommitteeMembersMemberships()
     {
         $this->assertNull($this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID), LoadAdherentData::COMMITTEE_1_UUID));
