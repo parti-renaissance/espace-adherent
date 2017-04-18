@@ -99,6 +99,10 @@ export default class VoteOfficeForm {
     }
 
     replaceInputWith(element) {
+        if (this._voteOffice === element) {
+            return;
+        }
+
         insertAfter(this._voteOffice, element);
         remove(this._voteOffice);
         this._voteOffice = element;
