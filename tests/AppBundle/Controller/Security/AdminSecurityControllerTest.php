@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class AdminSecurityControllerTest extends SqliteWebTestCase
 {
     /* @var Client */
@@ -16,9 +19,6 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
 
     use ControllerTestTrait;
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticationIsSuccessful()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
@@ -40,7 +40,6 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideInvalidCredentials
      */
     public function testLoginCheckFails($username, $password)

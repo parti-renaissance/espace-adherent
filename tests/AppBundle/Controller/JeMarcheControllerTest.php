@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class JeMarcheControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -20,9 +23,6 @@ class JeMarcheControllerTest extends SqliteWebTestCase
     /** @var JeMarcheReportRepository */
     private $jeMarcheReportRepostitory;
 
-    /**
-     * @group functionnal
-     */
     public function testReportJeMarche()
     {
         // There should not be any report at the moment
@@ -61,9 +61,6 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(JeMarcheReportMessage::class));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testReportJeMarchePartial()
     {
         // There should not be any report at the moment

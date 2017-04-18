@@ -10,6 +10,9 @@ use AppBundle\Repository\InvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class InvitationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -20,9 +23,6 @@ class InvitationControllerTest extends SqliteWebTestCase
     /** @var InvitationRepository */
     private $invitationRepository;
 
-    /**
-     * @group functionnal
-     */
     public function testInvite()
     {
         // There should not be any invites at the moment

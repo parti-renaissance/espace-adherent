@@ -18,9 +18,12 @@ use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
-class CommitteeControllerTest extends SqliteWebTestCase
+/**
+ * @group functionnal
+ */
+class CommitteeControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -39,9 +42,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
 
-    /**
-     * @group functionnal
-     */
     public function testAnonymousUserIsNotAllowedToFollowCommittee()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
@@ -55,7 +55,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideHostCredentials
      */
     public function testAuthenticatedCommitteeHostCannotUnfollowCommittee(string $emailAddress, string $password)
@@ -73,9 +72,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAutenticatedAdherentCanFollowCommittee()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -125,9 +121,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -140,9 +133,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeHostCanEditCommitteeInformation()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -210,9 +200,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame('Comité français En Marche ! de la ville de Clichy', $crawler->filter('#committee_description')->text());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -225,9 +212,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeHostCanPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -349,9 +333,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testApprovedCommitteePageIsViewableByAnyone()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
@@ -393,9 +374,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         ]);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testUnapprovedCommitteedIsViewableByItsCreator()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
@@ -417,9 +395,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAnonymousGuestCanShowCommitteePage()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
@@ -438,9 +413,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedAdherentCanShowCommitteePage()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
@@ -460,9 +432,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -479,9 +448,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedCommitteeHostCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -499,9 +465,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeMessageForm($crawler));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -545,7 +508,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideFollowerCredentials
      */
     public function testAuthenticatedFollowerCannotSeeCommitteeMembers(string $username, string $password)
@@ -567,7 +529,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideHostCredentials
      */
     public function testAuthenticatedHostCanSeeCommitteeMembers(string $username, string $password)
@@ -593,9 +554,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedCommitteeSupervisorCanPromoteNewHostsAmongMembers()
     {
         // Authenticate as the committee supervisor
@@ -613,9 +571,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertContains('Le membre a été promu animateur du comité avec succès.', $crawler->filter('#notice-flashes')->text());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAuthenticatedCommitteeHostCannotPromoteNewHostsAmongMembers()
     {
         // Authenticate as the committee supervisor
@@ -626,9 +581,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeExportMembers()
     {
         // Authenticate as the committee supervisor
@@ -669,9 +621,6 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertCount(2, explode("\n", $this->client->getResponse()->getContent()));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeContactMembers()
     {
         // Authenticate as the committee supervisor

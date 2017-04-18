@@ -9,13 +9,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class HomeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @group functionnal
-     */
     public function testIndex()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -31,9 +31,6 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testHealth()
     {
         $this->client->request(Request::METHOD_GET, '/health');
@@ -43,7 +40,6 @@ class HomeControllerTest extends SqliteWebTestCase
 
     /**
      * @dataProvider provideSitemaps
-     * @group functionnal
      */
     public function testSitemaps($page)
     {
@@ -63,9 +59,6 @@ class HomeControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDynamicRedirections()
     {
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301');

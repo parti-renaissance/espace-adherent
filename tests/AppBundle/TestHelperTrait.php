@@ -16,6 +16,7 @@ use AppBundle\Entity\Donation;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\MailjetEmail;
+use AppBundle\Entity\NewsletterInvite;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
@@ -35,6 +36,7 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
@@ -149,6 +151,11 @@ trait TestHelperTrait
     public function getInvitationRepository(): InvitationRepository
     {
         return $this->getRepository(Invite::class);
+    }
+
+    public function getNewsletterInvitationRepository(): NewsletterInviteRepository
+    {
+        return $this->getRepository(NewsletterInvite::class);
     }
 
     public function getNewsletterSubscriptionRepository(): NewsletterSubscriptionRepository

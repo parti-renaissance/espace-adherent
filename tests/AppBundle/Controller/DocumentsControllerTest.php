@@ -7,22 +7,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class DocumentsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsIndexAsAnonymous()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
         $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsIndexAsAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -44,9 +41,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsIndexAsHost()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -68,9 +62,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsIndexAsReferent()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
@@ -92,9 +83,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsDirectory()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -123,9 +111,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsDirectoryUnauthorized()
     {
         $documentsRoot = '/espace-adherent/documents/dossier';
@@ -150,9 +135,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsRead()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -168,9 +150,6 @@ class DocumentsControllerTest extends SqliteWebTestCase
         $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsReadUnauthorized()
     {
         $documentsRoot = '/espace-adherent/documents/telecharger';

@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Table(name="newsletter_invitations")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterInviteRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

@@ -142,8 +142,7 @@ class SearchParametersFilter
             return $item->get();
         }
 
-        $coordinates = $this->geocoder->geocode($this->city);
-        $item->set($coordinates);
+        $item->set($coordinates = $this->geocoder->geocode($this->city));
         $this->cache->save($item);
 
         return $coordinates;

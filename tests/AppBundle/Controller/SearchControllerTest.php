@@ -6,13 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\MysqlWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class SearchControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @group functionnal
-     */
     public function testIndex()
     {
         $this->client->request(Request::METHOD_GET, '/recherche');

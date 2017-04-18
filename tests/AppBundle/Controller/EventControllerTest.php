@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
@@ -13,33 +14,41 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
-class EventControllerTest extends SqliteWebTestCase
+/**
+ * @group functionnal
+ */
+class EventControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
     /** @var EventRegistrationRepository */
     private $repository;
 
-    /**
-     * @group functionnal
-     */
     public function testAnonymousUserCanRegisterToEvent()
     {
-        return;
-        $committeeUrl = sprintf('/comites/%s/en-marche-paris-8', LoadAdherentData::COMMITTEE_1_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
+
+        $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('En savoir plus')->link());
-        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+        $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertEmpty($crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
         $this->assertEmpty($crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
         $this->assertEmpty($crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
@@ -70,32 +79,33 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        return;
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $committeeUrl = sprintf('/comites/%s/en-marche-paris-8', LoadAdherentData::COMMITTEE_1_UUID);
+        $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
+
+        $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('En savoir plus')->link());
-        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+        $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
         $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
         $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
@@ -111,20 +121,17 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
+        $this->client->click($crawler->selectLink('Mes événements')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCantRegisterToAFullEvent()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
@@ -152,7 +159,6 @@ class EventControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideHostProtectedPages
      */
     public function testAnonymousUserCannotEditEvent($path)
@@ -162,7 +168,6 @@ class EventControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideCancelledInaccessiblePages
      */
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
@@ -173,7 +178,6 @@ class EventControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideHostProtectedPages
      */
     public function testRegisteredAdherentUserCannotEditEvent($path)
@@ -206,9 +210,6 @@ class EventControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testOrganizerCanEditEvent()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -269,9 +270,6 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testOrganizerCanCancelEvent()
     {
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
@@ -297,9 +295,6 @@ class EventControllerTest extends SqliteWebTestCase
         static::assertCount(2, $message->getRecipients());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testCommitteeHostCanEditEvent()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -309,9 +304,6 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testOrganizerCanSeeRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -321,9 +313,6 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeMembersList($crawler, 2));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testOrganizerCanExportRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -362,9 +351,6 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testOrganizerCanContactRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -430,9 +416,6 @@ class EventControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo($membersUrl, $this->client);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testExportIcalEvent()
     {
         $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
@@ -462,6 +445,7 @@ class EventControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadHomeBlockData::class,
             LoadAdherentData::class,
             LoadEventData::class,
         ]);
