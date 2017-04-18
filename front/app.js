@@ -122,15 +122,15 @@ class App {
         })
     }
 
-    runProcurationManagerRequests(filtersQueryString, totalCount, perPage) {
+    runProcurationManagerRequests(queryString, totalCount, perPage) {
         System.import('pages/procuration_manager_requests').catch((error) => { throw error; }).then((module) => {
-            module.default(filtersQueryString, totalCount, perPage, this.get('api'));
+            module.default(queryString, totalCount, perPage, this.get('api'));
         })
     }
 
-    runProcurationManagerProposals(filtersQueryString, totalCount, perPage) {
+    runProcurationManagerProposals(queryString, totalCount, perPage) {
         System.import('pages/procuration_manager_proposals').catch((error) => { throw error; }).then((module) => {
-            module.default(filtersQueryString, totalCount, perPage, this.get('api'));
+            module.default(queryString, totalCount, perPage, this.get('api'));
         })
     }
 

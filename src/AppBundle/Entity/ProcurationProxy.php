@@ -678,6 +678,16 @@ class ProcurationProxy
         $this->disabled = $disabled;
     }
 
+    public function enable(): void
+    {
+        $this->disabled = false;
+    }
+
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
     public function getInviteSourceName(): ?string
     {
         return $this->inviteSourceName;

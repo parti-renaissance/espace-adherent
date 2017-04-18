@@ -27,23 +27,12 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {% set remainingAvailabilities = proxy.remainingAvailabilities %}
-
-            {% if remainingAvailabilities.presidential.first and remainingAvailabilities.presidential.second %}
-                Présidentielle : 1er et 2nd tour<br />
-            {% elseif remainingAvailabilities.presidential.first %}
-                Présidentielle : 1er tour<br />
-            {% elseif remainingAvailabilities.presidential.second %}
-                Présidentielle : 2nd tour<br />
-            {% endif %}
-
-            {% if remainingAvailabilities.legislatives.first and remainingAvailabilities.legislatives.second %}
-                Législatives : 1er et 2nd tour<br />
-            {% elseif remainingAvailabilities.legislatives.first %}
-                Législatives : 1er tour<br />
-            {% elseif remainingAvailabilities.legislatives.second %}
-                Législatives : 2nd tour<br />
-            {% endif %}
+            {{ include('procuration_manager/_ballots.html.twig', {
+                'presidential_first_round': proxy.remainingAvailabilities.presidential.first,
+                'presidential_second_round': proxy.remainingAvailabilities.presidential.second,
+                'legislative_first_round': proxy.remainingAvailabilities.legislatives.first,
+                'legislative_second_round': proxy.remainingAvailabilities.legislatives.second,
+            }, with_context=false) }}
         </td>
         <td class="datagrid__table__col--hide-mobile">
             {{ proxy.createdAt|date('d/m/Y H:i') }}

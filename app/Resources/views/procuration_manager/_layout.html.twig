@@ -16,6 +16,18 @@
             </header>
 
             <div class="l__wrapper procuration-manager__content">
+                <div class="text--center">
+                    <a href="{{ path('app_procuration_manager_index', {'status': constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED') }) }}">Mandants à traiter</a>
+                    --
+                    <a href="{{ path('app_procuration_manager_index', {'status': constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED') }) }}">Mandants traités</a>
+                    --
+                    <a href="{{ path('app_procuration_manager_proposals', {'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED') }) }}">Mandataires disponibles</a>
+                    --
+                    <a href="{{ path('app_procuration_manager_proposals', {'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED') }) }}">Mandataires associés</a>
+                    --
+                    <a href="{{ path('app_procuration_manager_proposals', {'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED') }) }}">Mandataires désactivés</a>
+                </div>
+                <hr />
                 {% block procuration_manager_content %}{% endblock %}
             </div>
         </section>

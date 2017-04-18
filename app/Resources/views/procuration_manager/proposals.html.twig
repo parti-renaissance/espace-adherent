@@ -3,19 +3,12 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationManagerProposals('{{ filterqQueryString|e('js') }}', {{ totalCount }}, {{ constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') }});
+            App.runProcurationManagerProposals('{{ filters.toQueryString|e('js') }}', {{ total_count }}, {{ filters.limit }});
         });
     </script>
 {% endblock %}
 
 {% block procuration_manager_content %}
-    <div class="text--center">
-        <a href="{{ path('app_procuration_manager_index') }}">Demandes</a>
-        -
-        <strong>Mandataires</strong>
-    </div>
-
-    <hr />
 
     Votre lien d'invitation (à partager uniquement aux mandataires de confiance) :<br />
     <input type="text" class="form form--full form__field"
@@ -27,29 +20,29 @@
 
     <hr />
 
-    {% if filters.hasData %}
-        {% if proxies|length == 0 %}
-            <div class="text--body text--center">
-                Aucun résultat
-            </div>
-        {% else %}
-            <div class="text--body text--center b__nudge--bottom-large">
-                {{ totalCount }} résultat(s)
-            </div>
-        {% endif %}
+    {% if 0 == proxies|length %}
+        <div class="text--body text--center">
+            {% if constant('UNASSOCIATED', filters) == filters.status %}
+                Vous n'avez pas encore de proposition de mandataire disponible.
+            {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                Vous n'avez pas encore de proposition de mandataire associé à une demande de procuration.
+            {% else %}
+                Vous n'avez pas encore de proposition de mandataire désactivé.
+            {% endif %}
+        </div>
     {% else %}
-        {% if proxies|length == 0 %}
-            <div class="text--body text--center">
-                Vous n'avez aucune propositon de mandataire
-            </div>
-        {% else %}
-            <div class="text--body text--center b__nudge--bottom-large">
-                Vous avez {{ totalCount }} propositon(s) de mandataire
-            </div>
-        {% endif %}
+        <div class="text--body text--center b__nudge--bottom-large">
+            {% if constant('UNASSOCIATED', filters) == filters.status %}
+                {{ '{1} Vous avez une proposition de mandataire disponible.|[2, Inf[ Vous avez %count% propositions de mandataires disponibles.'|transchoice(total_count) }}
+            {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                {{ '{1} Vous avez une proposition de mandataire associé.|[2, Inf[ Vous avez %count% propositions de mandataires associés.'|transchoice(total_count) }}
+            {% else %}
+                {{ '{1} Vous avez une proposition de mandataire désactivé.|[2, Inf[ Vous avez %count% propositions de mandataires désactivés.'|transchoice(total_count) }}
+            {% endif %}
+        </div>
     {% endif %}
 
-    {% if proxies|length > 0 %}
+    {% if proxies|length %}
         <table class="datagrid__table datagrid__table--bordered-rows">
             <thead>
             <tr>
@@ -66,7 +59,7 @@
             </tbody>
         </table>
 
-        {% if totalCount > constant('AppBundle\\Controller\\ProcurationManagerController::PER_PAGE') %}
+        {% if total_count > filters.limit %}
             <div class="text--center space--30">
                 <button class="btn" id="btn-more">Afficher plus</button>
                 <span id="loader" style="display: none;">Chargement ...</span>
