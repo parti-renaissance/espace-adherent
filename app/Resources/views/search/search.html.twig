@@ -8,7 +8,7 @@
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
             var page = 1;
-            var limit = {{ search_max_results|default('30') }};
+            var limit = {{ search_max_results|default(30) }};
             var moreButton = dom('#search-more');
             var query = dom("[name='q']");
             var radius = dom("[name='r']");
@@ -55,8 +55,6 @@
                 types: ['(cities)'],
 
             });
-
-            fetchResults();
         });
     </script>
 {% endblock %}
@@ -77,7 +75,9 @@
             Voir la carte des {% block button_label %}comités{% endblock %}
         </a>
 
-        <div class="search__results {{ currentRoute }}" id="search-results"></div>
+        <div class="search__results {{ currentRoute }}" id="search-results">
+            {{ include('search/results.html.twig') }}
+        </div>
     </div>
 
     <div class="l__wrapper text--center b__nudge--bottom-huge">

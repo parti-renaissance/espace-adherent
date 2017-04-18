@@ -15,9 +15,12 @@ use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
-class AdherentControllerTest extends SqliteWebTestCase
+/**
+ * @group functional
+ */
+class AdherentControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -27,9 +30,6 @@ class AdherentControllerTest extends SqliteWebTestCase
     /* @var MailjetEmailRepository */
     private $emailRepository;
 
-    /**
-     * @group functional
-     */
     public function testMyEventsPageIsProtected()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
@@ -40,12 +40,8 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
     }
 
-    /**
-     * @group functional
-     */
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
     {
-        return;
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -78,7 +74,6 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     /**
      * @dataProvider provideProfilePage
-     * @group functionnal
      */
     public function testProfileActionIsSecured($profilePage)
     {
@@ -90,7 +85,6 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     /**
      * @dataProvider provideProfilePage
-     * @group functionnal
      */
     public function testProfileActionIsAccessibleForAdherent($profilePage, $title)
     {
@@ -114,9 +108,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         yield ['/espace-adherent/mon-profil/preferences-des-emails', 'Préférences des e-mails'];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testEditAdherentProfile()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -221,9 +212,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertNotSame($oldLongitude, $newLongitude);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testEditAdherentInterests()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -280,9 +268,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         }
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAdherentChangePassword()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -325,9 +310,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/changer-mot-de-passe', $this->client);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAdherentSetEmailNotifications()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
@@ -379,7 +361,6 @@ class AdherentControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
     public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress, string $password)
@@ -411,7 +392,6 @@ class AdherentControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider provideRegularAdherentsCredentials
      */
     public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $password)
@@ -492,9 +472,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsActionSecured()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
@@ -503,9 +480,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testDocumentsActionIsAccessibleAsAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
@@ -515,9 +489,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertContains('Documents', $this->client->getResponse()->getContent());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testContactActionSecured()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
@@ -526,9 +497,6 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
     }
 
-    /**
-     * @group functionnal
-     */
     public function testContactActionForAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');

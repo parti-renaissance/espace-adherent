@@ -206,8 +206,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'category' => 'CE010',
             'description' => 'Ouvert aux français de Singapour.',
             'address' => PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', 1.2835627, 103.8606872),
-            'begin_at' => date('Y-m-d', strtotime('today')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('today')).' 12:30:00',
+            'begin_at' => (new \DateTime('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new \DateTime('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00'),
             'capacity' => 100,
         ]);
         $event11->incrementParticipantsCount(2);
@@ -220,8 +220,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'category' => 'CE010',
             'description' => 'Ouvert aux français de New York.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
-            'begin_at' => date('Y-m-d', strtotime('today')).' 19:30:00',
-            'finish_at' => date('Y-m-d', strtotime('today')).' 23:50:00',
+            'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
         $event12->incrementParticipantsCount(2);

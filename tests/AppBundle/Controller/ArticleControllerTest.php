@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class ArticleControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @group functionnal
-     */
     public function testArticlePublished()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/article/outre-mer');
@@ -26,9 +26,6 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testArticleWithoutImage()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/article/sans-image');
@@ -38,9 +35,6 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testArticleDraft()
     {
         $this->client->request(Request::METHOD_GET, '/article/brouillon');
@@ -68,9 +62,6 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertEquals($expected, $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5));
     }
 
-    /**
-     * @return array
-     */
     public function dataProviderIsPaginationValid(): array
     {
         return [

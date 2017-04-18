@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class DonationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -24,9 +27,6 @@ class DonationControllerTest extends SqliteWebTestCase
     /* @var DonationRepository */
     private $donationRepository;
 
-    /**
-     * @group functionnal
-     */
     public function testFullProcess()
     {
         $appClient = $this->appClient;

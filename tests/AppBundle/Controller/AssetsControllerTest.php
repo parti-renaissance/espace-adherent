@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class AssetsControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -15,9 +18,6 @@ class AssetsControllerTest extends SqliteWebTestCase
     /** @var Signature */
     private $signature;
 
-    /**
-     * @group functionnal
-     */
     public function testAssetWithSignatureIsFound()
     {
         $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg', [
@@ -27,9 +27,6 @@ class AssetsControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testAssetWithoutSignatureIsNotFound()
     {
         $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg');
@@ -37,9 +34,6 @@ class AssetsControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testInvalidAssetWithSignatureIsNotFound()
     {
         $this->client->request(Request::METHOD_GET, '/assets/invalid.jpg', [
@@ -49,9 +43,6 @@ class AssetsControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testStaticMaps()
     {
         $client = static::createClient();
@@ -98,9 +89,6 @@ class AssetsControllerTest extends SqliteWebTestCase
         );
     }
 
-    /**
-     * @group functionnal
-     */
     public function testStaticMapsWithWrongQuery()
     {
         $client = static::createClient();

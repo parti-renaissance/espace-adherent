@@ -3,10 +3,11 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
-use AppBundle\Entity\NewsletterInvite;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailjet\Message\NewsletterInvitationMessage;
 use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
+use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
@@ -14,6 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class NewsletterControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -24,9 +28,12 @@ class NewsletterControllerTest extends SqliteWebTestCase
     /** @var NewsletterSubscriptionRepository */
     private $subscriptionsRepository;
 
-    /**
-     * @group functionnal
-     */
+    /** @var NewsletterInviteRepository */
+    private $newsletterInviteRepository;
+
+    /** @var MailjetEmailRepository */
+    private $mailjetEmailRepository;
+
     public function testSubscriptionAndRetry()
     {
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
@@ -52,7 +59,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCount(1, $this->mailjetEmailRepository->findMessages(NewsletterSubscriptionMessage::class));
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
@@ -70,9 +77,6 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testSubscriptionFromHome()
     {
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
@@ -91,15 +95,12 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCount(1, $this->mailjetEmailRepository->findMessages(NewsletterSubscriptionMessage::class));
     }
 
-    /**
-     * @group functionnal
-     */
     public function testInvitationAndRetry()
     {
-        $this->assertCount(0, $this->manager->getRepository(NewsletterInvite::class)->findAll());
+        $this->assertCount(0, $this->newsletterInviteRepository->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter/invitation');
@@ -121,22 +122,27 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertContains('Vos 2 invitations ont bien été envoyées', trim($crawler->filter('.newsletter-result > h2')->text()));
-        // Invitations should have been saved
-        $this->assertCount(2, $invitations = $this->manager->getRepository(NewsletterInvite::class)->findAll());
 
-        /** @var NewsletterInvite $invite */
-        $invite = $invitations[0];
+        // Invitations should have been saved
+        $this->assertCount(2, $invitations = $this->newsletterInviteRepository->findAll());
+
+        $invite1 = $this->newsletterInviteRepository->findMostRecentInvite('hugo.hamon@clichy-beach.com');
+        $this->assertSame('hugo.hamon@clichy-beach.com', $invite1->getEmail());
+        $this->assertSame('Titouan Galopin', $invite1->getSenderFullName());
+
+        $invite2 = $this->newsletterInviteRepository->findMostRecentInvite('jules.pietri@clichy-beach.com');
+        $this->assertSame('jules.pietri@clichy-beach.com', $invite2->getEmail());
+        $this->assertSame('Titouan Galopin', $invite2->getSenderFullName());
 
         // Email should have been sent
-        $this->assertCount(2, $messages = $this->getMailjetEmailRepository()->findMessages(NewsletterInvitationMessage::class));
+        $this->assertCount(2, $messages = $this->mailjetEmailRepository->findMessages(NewsletterInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->mailjetEmailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
         $this->assertContains('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
-        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getEmail());
-        $this->assertSame('Titouan Galopin', $invite->getSenderFullName());
+
+        $this->assertCount(1, $messages = $this->mailjetEmailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
+        $this->assertContains('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testInvitationSentWithoutRedirection()
     {
         $this->client->request(Request::METHOD_GET, '/newsletter/invitation/merci');
@@ -154,6 +160,8 @@ class NewsletterControllerTest extends SqliteWebTestCase
         ]);
 
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
+        $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();
+        $this->mailjetEmailRepository = $this->getMailjetEmailRepository();
     }
 
     protected function tearDown()
@@ -161,6 +169,8 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->kill();
 
         $this->subscriptionsRepository = null;
+        $this->newsletterInviteRepository = null;
+        $this->mailjetEmailRepository = null;
 
         parent::tearDown();
     }

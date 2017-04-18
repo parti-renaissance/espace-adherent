@@ -8,22 +8,12 @@ use Ramsey\Uuid\Uuid;
 
 class MailjetEmailRepository extends EntityRepository
 {
-    /**
-     * Finds a MailjetEmail instance by its UUID.
-     *
-     * @param string $uuid
-     *
-     * @return MailjetEmail|null
-     */
     public function findOneByUuid(string $uuid): ?MailjetEmail
     {
         return $this->findOneBy(['uuid' => Uuid::fromString($uuid)->toString()]);
     }
 
     /**
-     * @param string $messageClass
-     * @param string $recipient
-     *
      * @return MailjetEmail[]
      */
     public function findRecipientMessages(string $messageClass, string $recipient): array
@@ -42,9 +32,6 @@ class MailjetEmailRepository extends EntityRepository
     }
 
     /**
-     * @param string      $messageClass
-     * @param string|null $batch
-     *
      * @return MailjetEmail[]
      */
     public function findMessages(string $messageClass, string $batch = null): array

@@ -8,12 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class ReferentControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
     public function testReferentBackendIsForbiddenAsAnonymous($path)
@@ -23,7 +25,6 @@ class ReferentControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
     public function testReferentBackendIsForbiddenAsAdherentNotReferent($path)
@@ -35,7 +36,6 @@ class ReferentControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @group functionnal
      * @dataProvider providePages
      */
     public function testReferentBackendIsAccessibleAsReferent($path)
@@ -61,9 +61,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         ];
     }
 
-    /**
-     * @group functionnal
-     */
     public function testReferentSendMessage()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');

@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functionnal
+ */
 class TonMacronControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
@@ -34,9 +37,6 @@ class TonMacronControllerTest extends SqliteWebTestCase
     /* @var MailjetEmailRepository */
     private $emailRepository;
 
-    /**
-     * @group functionnal
-     */
     public function testInviteAction()
     {
         $this->assertCount(0, $this->emailRepository->findAll());

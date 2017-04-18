@@ -37,24 +37,21 @@
                 L'événement est complet
             </div>
         {% endif %}
-        <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
+        <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees">
             {{ include('components/participants.html.twig') }}
             {{ event.participantsCount }} / {{ 'event.capacity'|transchoice(event.capacity)  }}
         </div>
         <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
             <li class="head">Partagez</li>
             <li role="button" aria-label="Partagez sur Facebook"
-                class=""
                 onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}')">
                 <i class="fa fa-facebook-square"></i>
             </li>
             <li role="button" aria-label="Partagez via Twitter"
-                class=""
                 onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }} :')">
                 <i class="fa fa-twitter"></i>
             </li>
             <li role="button" aria-label="Partagez via email"
-                class=""
                 onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
                 <i class="fa fa-envelope-o"></i>
             </li>
