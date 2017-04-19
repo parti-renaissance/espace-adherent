@@ -193,6 +193,11 @@ class EventRepository extends EntityRepository
             $qb->setParameter('query', '%'.$query.'%');
         }
 
+        if ($category = $search->getEventCategory()) {
+            $qb->andWhere('n.category = :category');
+            $qb->setParameter('category', $category);
+        }
+
         return $qb
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
