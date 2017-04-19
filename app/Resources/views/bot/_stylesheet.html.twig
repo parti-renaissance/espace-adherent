@@ -1,1 +1,3 @@
+{% if not app.request.attributes.get('_campaign_expired') %}
 <link rel="stylesheet" type="text/css" href="https://api.motion.ai/sdk/webchat.css" />
+{% endif %}

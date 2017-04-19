@@ -18,6 +18,20 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <!-- Campaign silence listener -->
+        <service id="app.feature_flag.campaign_silence_listener.geoip" class="GeoIp2\Database\Reader" public="false">
+            <argument>%kernel.root_dir%/data/GeoLite2-Country.mmdb</argument>
+        </service>
+
+        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\FeatureFlag\CampaignSilenceListener">
+            <argument type="service" id="app.feature_flag.campaign_silence_listener.geoip" />
+            <argument type="service" id="twig" />
+            <argument>%env(DISABLE_AMERICA)%</argument>
+            <argument>%env(DISABLE_EUROPE)%</argument>
+
+            <tag name="kernel.event_subscriber" />
+        </service>
+
         <!-- Dynamic redirections -->
         <service id="app.dynamic_redirections_subscriber" class="AppBundle\Redirection\DynamicRedirectionsSubscriber">
             <argument type="service" id="app.repository.redirection" />

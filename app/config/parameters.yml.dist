@@ -55,3 +55,6 @@ parameters:
     legislatives_domain:        '%env(LEGISLATIVES_DOMAIN)%'
     env(ENMARCHE_DOMAIN):       en-marche.fr
     env(LEGISLATIVES_DOMAIN):   legislatives-en-marche.fr
+
+    env(DISABLE_AMERICA):       0
+    env(DISABLE_EUROPE):        0
