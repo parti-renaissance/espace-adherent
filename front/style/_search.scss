@@ -2,7 +2,6 @@
     &__bar {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 60px;
 
         &__options {
             display: flex;
@@ -205,5 +204,9 @@
             background-color: #d4d4d4;
             color: black;
         }
+    }
+
+    &__event__type {
+        margin-top: 10px;
     }
 }

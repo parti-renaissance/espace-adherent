@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\EventCategories;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,6 +31,7 @@ class SearchController extends Controller
         return $this->render('search/search_events.html.twig', [
             'search_max_results' => $this->getParameter('search_max_results'),
             'search_type' => SearchParametersFilter::TYPE_EVENTS,
+            'event_categories' => EventCategories::CHOICES,
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],

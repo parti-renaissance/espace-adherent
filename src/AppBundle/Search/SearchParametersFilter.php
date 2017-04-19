@@ -20,6 +20,7 @@ class SearchParametersFilter
     const PARAMETER_CITY = 'c';
     const PARAMETER_TYPE = 't';
     const PARAMETER_OFFSET = 'offset';
+    const PARAMETER_EVENT_CATEGORY = 'ec';
 
     const DEFAULT_QUERY = '';
     const DEFAULT_TYPE = self::TYPE_COMMITTEES;
@@ -60,6 +61,7 @@ class SearchParametersFilter
     private $city;
     private $offset;
     private $maxResults;
+    private $eventCategory;
 
     public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
     {
@@ -84,6 +86,7 @@ class SearchParametersFilter
         $this->setType($request->query->getAlpha(self::PARAMETER_TYPE));
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
+        $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
 
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);
@@ -182,5 +185,15 @@ class SearchParametersFilter
     public function getMaxResults()
     {
         return $this->maxResults;
+    }
+
+    public function getEventCategory(): ?string
+    {
+        return $this->eventCategory;
+    }
+
+    public function setEventCategory(?string $eventCategory)
+    {
+        $this->eventCategory = $eventCategory;
     }
 }
