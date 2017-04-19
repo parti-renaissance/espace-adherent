@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PageController extends Controller
 {
     /**
-     * @Route("/emmanuel-macron", name="page_emmanuel_macron")
+     * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
      * @Method("GET")
      */
     public function emmanuelMacronAction()
@@ -33,7 +33,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/revolution", name="page_emmanuel_macron_revolution")
+     * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
      * @Method("GET")
      */
     public function emmanuelMacronRevolutionAction()
@@ -46,8 +46,8 @@ class PageController extends Controller
     /**
      * Redirections to the program.
      *
-     * @Route("/programme")
-     * @Route("/le-programme")
+     * @Route("/programme", defaults={"_enable_campaign_silence"=true})
+     * @Route("/le-programme", defaults={"_enable_campaign_silence"=true})
      * @Method("GET")
      */
     public function redirectProgrammeAction()
@@ -56,7 +56,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/le-programme", name="page_emmanuel_macron_programme")
+     * @Route("/emmanuel-macron/le-programme", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_programme")
      * @Method("GET")
      */
     public function emmanuelMacronProgrammeAction()
@@ -68,7 +68,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/le-programme/{slug}", name="page_emmanuel_macron_proposition")
+     * @Route("/emmanuel-macron/le-programme/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_proposition")
      * @Method("GET")
      */
     public function emmanuelMacronPropositionAction($slug)
@@ -84,7 +84,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/desintox", name="page_emmanuel_macron_desintox_list")
+     * @Route("/emmanuel-macron/desintox", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_list")
      * @Method("GET")
      */
     public function emmanuelMacronDesintoxListAction()
@@ -98,7 +98,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/desintox/{slug}", name="page_emmanuel_macron_desintox_view")
+     * @Route("/emmanuel-macron/desintox/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_view")
      * @Method("GET")
      */
     public function emmanuelMacronDesintoxViewAction($slug)
@@ -115,7 +115,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos")
+     * @Route("/emmanuel-macron/videos", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_videos")
      * @Method("GET")
      */
     public function emmanuelMacronVideosAction()
@@ -126,7 +126,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement", name="page_le_mouvement")
+     * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
      * @Method("GET")
      */
     public function mouvementValeursAction()
@@ -137,7 +137,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/notre-organisation", name="page_le_mouvement_notre_organisation")
+     * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
      * @Method("GET")
      */
     public function mouvementOrganisationAction()
@@ -148,7 +148,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives")
+     * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
      * @Method("GET")
      */
     public function mouvementLegislativesAction()
@@ -206,34 +206,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives", name="site_legislatives_annuaire")
-     * @Method("GET")
-     */
-    public function legislativesHomeAction()
-    {
-        return $this->render('page/legislatives/annuaire.html.twig');
-    }
-
-    /**
-     * @Route("/legislatives/candidat", name="site_legislatives_candidat")
-     * @Method("GET")
-     */
-    public function legislativesCandidatAction()
-    {
-        return $this->render('page/legislatives/candidat.html.twig');
-    }
-
-    /**
-     * @Route("/legislatives/la-carte", name="site_legislatives_carte")
-     * @Method("GET")
-     */
-    public function legislativesCarteAction()
-    {
-        return $this->render('page/legislatives/carte.html.twig');
-    }
-
-    /**
-     * @Route("/mentions-legales", name="page_mentions_legales")
+     * @Route("/mentions-legales", defaults={"_enable_campaign_silence"=true}, name="page_mentions_legales")
      * @Method("GET")
      */
     public function mentionsLegalesAction()
@@ -253,7 +226,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/elles-marchent", name="page_elles_marchent")
+     * @Route("/elles-marchent", defaults={"_enable_campaign_silence"=true}, name="page_elles_marchent")
      * @Method("GET")
      */
     public function ellesMarchentAction()

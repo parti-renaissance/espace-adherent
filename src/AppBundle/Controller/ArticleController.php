@@ -18,7 +18,7 @@ class ArticleController extends Controller
      * @Route(
      *     "/articles/{category}/{page}",
      *     requirements={"category"="\w+", "page"="\d+"},
-     *     defaults={"page"=1},
+     *     defaults={"page"=1, "_enable_campaign_silence"=true},
      *     name="articles_list"
      * )
      * @Method("GET")
@@ -57,7 +57,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/article/{slug}", name="article_view")
+     * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
      * @Method("GET")
      */
     public function articleAction($slug): Response
@@ -77,7 +77,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/feed.xml", name="articles_feed")
+     * @Route("/feed.xml", defaults={"_enable_campaign_silence"=true}, name="articles_feed")
      * @Method("GET")
      */
     public function feedAction(): Response

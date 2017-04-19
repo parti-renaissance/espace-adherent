@@ -186,7 +186,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/ma-demande/{id}/{token}", name="app_procuration_my_request")
+     * @Route("/ma-demande/{id}/{token}", defaults={"_enable_campaign_silence"=true}, name="app_procuration_my_request")
      * @Method("GET")
      */
     public function myRequestAction(ProcurationRequest $request, string $token): Response

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", defaults={"_enable_campaign_silence"=true}, name="homepage")
      * @Method("GET")
      */
     public function indexAction()
@@ -24,7 +24,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/sitemap.xml", name="app_sitemap_index")
+     * @Route("/sitemap.xml", defaults={"_enable_campaign_silence"=true}, name="app_sitemap_index")
      * @Method("GET")
      */
     public function sitemapIndexAction()
@@ -36,7 +36,7 @@ class HomeController extends Controller
      * @Route(
      *     "/sitemap_{type}_{page}.xml",
      *     requirements={"type"="main|content|committees|events", "page"="\d+"},
-     *     defaults={"page"="1"},
+     *     defaults={"page"="1", "_enable_campaign_silence"=true},
      *     name="app_sitemap"
      * )
      * @Method("GET")

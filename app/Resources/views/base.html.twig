@@ -101,6 +101,7 @@
                         </a>
                     </li>
                 </ul>
+                {% if not app.request.attributes.get('_campaign_expired') %}
                 <div class="l__row">
                     {% if not user_is_adherent %}
                         <a href="{{ path('app_membership_register') }}"
@@ -184,11 +185,13 @@
                         {% endif %}
                     </div>
                 </div>
+                {% endif %}
             </nav>
             <!--  Header / Navigation Mobile-->
             <nav class="l__wrapper l__hide--above-small-laptop space--20-0">
                 <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
                     <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
+                    {% if not app.request.attributes.get('_campaign_expired') %}
                     <li class="l__row">
                         {% if not user_is_adherent %}
                             <a href="{{ path('app_membership_register') }}"
@@ -200,6 +203,7 @@
                             Je donne
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
                 <div class="nav__mobile">
                     <input type="checkbox" id="nav-menu">
@@ -322,7 +326,9 @@
         {% block content %}{% endblock %}
 
         {% block footer %}
+        {% if not app.request.attributes.get('_campaign_expired') %}
         {{ include('components/newsletter_footer.html.twig') }}
+        {% endif %}
 
         <footer class="background--lighter space--30-0">
             <div class="l__wrapper">
@@ -354,11 +360,13 @@
                         <li><h4><a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a></h4></li>
                         <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
                         <li><a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a></li>
+                        {% if not app.request.attributes.get('_campaign_expired') %}
                         <li><a href="{{ path('page_le_mouvement_les_comites') }}">En marche sur le terrain</a></li>
                         <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
                         <li><a href="{{ path('page_le_mouvement_la_carte') }}">La carte des comités</a></li>
                         <li><a href="{{ path('page_les_evenements_la_carte') }}">La carte des événements</a></li>
                         <li><a href="{{ path('page_bot') }}">Le Bot En Marche !</a></li>
+                        {% endif %}
                         <li><a href="{{ path('page_elles_marchent') }}">Elles Marchent</a></li>
                     </ul>
                     <ul class="list__links list__links--col list__links--no-decor">
@@ -372,6 +380,7 @@
                         <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
                         <li><a href="{{ path('articles_list', {'category': 'tribunes'}) }}">Tribunes</a></li>
                     </ul>
+                    {% if not app.request.attributes.get('_campaign_expired') %}
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S’engager</a></h4></li>
                         <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
@@ -398,6 +407,7 @@
                             <a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a>
                         </li>
                     </ul>
+                    {% endif %}
                     <ul class="list__links list__links--col list__links--no-decor">
                         <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
                         <li><a href="https://boutique.en-marche.fr" target="_blank" rel="noopener noreferrer">La Boutique</a></li>
@@ -405,7 +415,9 @@
                         <li><a href="http://www.lesjeunesavecmacron.fr" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
                         <li><a href="http://www.leselusavecmacron.fr" target="_blank" rel="noopener noreferrer">Les élus avec Macron</a></li>
                         <li><a href="http://enmarcheletour.fr" target="_blank" rel="noopener noreferrer">En Marche Le Tour</a></li>
+                        {% if not app.request.attributes.get('_campaign_expired') %}
                         <li><a href="{{ path('app_procuration_landing') }}" target="_blank" rel="noopener noreferrer">Procuration Macron</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="l__row l__row--h-stretch l__tablet--col">

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AssetsController extends Controller
 {
     /**
-     * @Route("/assets/{path}", requirements={"path"=".+"}, name="asset_url")
+     * @Route("/assets/{path}", defaults={"_enable_campaign_silence"=true}, requirements={"path"=".+"}, name="asset_url")
      * @Method("GET")
      */
     public function assetAction($path, Request $request)
@@ -46,7 +46,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/maps/{latitude},{longitude}", requirements={
+     * @Route("/maps/{latitude},{longitude}", defaults={"_enable_campaign_silence"=true}, requirements={
      *     "latitude"="^%pattern_coordinate%$",
      *     "longitude"="^%pattern_coordinate%$"
      * }, name="map_url")
@@ -65,7 +65,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|custom|article|clarification"})
+     * @Route("/algolia/{type}/{slug}", defaults={"_enable_campaign_silence"=true}, requirements={"type"="proposal|custom|article|clarification"})
      * @Method("GET")
      */
     public function algoliaAction(Request $request, string $type, string $slug)
