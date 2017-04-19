@@ -21,6 +21,7 @@ services:
         public: false
 
 parameters:
+    enmarche_domain: localhost
     adherent_interests:
         agriculture: Agriculture
         culture: Culture
