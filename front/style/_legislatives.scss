@@ -1,40 +1,7 @@
 .legislatives {
-    .box {
-        width: 48%;
-        border-width: 2px;
-        border-style: solid;
-        padding: 30px 25px;;
-        box-sizing: border-box;
-
-        @media (max-width: $mobile) {
-            width: 100%;
-
-            &:first-child {
-                margin-bottom: 20px;
-            }
-        }
-
-        form {
-            width: 100%;
-
-            input[type="text"] {
-                border-right: 0;
-                flex: 1;
-                height: 40px;
-            }
-        }
-    }
-
-    .list__links a {
-        opacity: 0.7;
-
-        &.active {
-            opacity: 1;
-        }
-    }
-
     &__trombi__item {
         width: 32%;
+        margin-bottom: 20px;
 
         @media (max-width: $tablet) {
             width: 48%;
@@ -64,18 +31,6 @@
                 z-index: 2;
             }
         }
-    }
-
-    &__departements__item {
-        width: 48%;
-
-        @media (max-width: $mobile) {
-            width: 100%;
-        }
-    }
-
-    &__departements__list {
-        width: 50%;
     }
 
     &__social {
@@ -120,41 +75,6 @@
         @media (max-width: $mobile) {
             width: 100%;
             margin-top: 20px;
-        }
-    }
-
-    &__search__photo {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        width: 30%;
-        height: 200px;
-
-        @media (max-width: $tablet) {
-            height: 150px;
-        }
-
-        @media (max-width: $mobile) {
-            width: 100%;
-        }
-
-    }
-
-    &__search__info {
-        width: 67%;
-
-        @media (max-width: $mobile) {
-            width: 100%;
-            margin-top: 20px;
-        }
-    }
-
-    &__search__list__item {
-        padding: 30px 0;
-        border-bottom: 1px solid $gray--light;
-
-        &:last-child {
-            border: 0;
         }
     }
 }

@@ -6,52 +6,43 @@
 
 {% block content__inner %}
 
-    <div class="l__wrapper text--center space--30">
-
-        <ul class="list__links list__links--row list__links--no-decor">
-            <li><a href="{{ path('site_legislatives_annuaire') }}"
-                   class="btn btn--primary {{ 'site_legislatives_annuaire' == currentRoute ? 'active' }}">
-                Trombinoscope
-            </a></li>
-            <li><a href="{{ path('site_legislatives_carte') }}"
-                   class="btn btn--primary {{ 'site_legislatives_carte' == currentRoute ? 'active' }}">
-                Carte
-            </a></li>
-        </ul>
-
-        <div class="text--body b__nudge--top">
-            577 candidats <em>En Marche !</em>
-        </div>
-
-    </div>
+    <header class="l__wrapper--slim text--center space--60-0">
+        <h1 class="text--large">
+            Je découvre les 577 candidats <em>En Marche !</em>
+        </h1>
+        <h2 class="text--body text--medium text--normal b__nudge--top-10">
+            Aux élections législatives 2017
+        </h2>
+    </header>
 
     {% block candidates %}
 
-    <div class="l__wrapper--medium l__row l__row--wrap">
-        <div class="legislatives__trombi__item">
-            <a href="#"
-               class="legislatives__trombi__item__visual progressive-background link--no-decor"
-               data-sd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 100, 'q': 20}) }}"
-               data-hd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 300, 'q': 70}) }}">
-                 <div class="text--white">
-                     <h1 class="text--medium-small">Mounir Mahjoubi</h1>
-                     <span class="text--body">1e circonscription<span>
-                 </div>
-            </a>
-            <div class="legislatives__social l__row l__row--h-stretch space--10-15">
-                <a href="#" class="link--no-decor">
-                    Voir son site
+        <div class="l__wrapper--medium l__row l__row--h-stretch l__row--wrap">
+            <div class="legislatives__trombi__item">
+                <a href="#"
+                   class="legislatives__trombi__item__visual progressive-background link--no-decor"
+                   data-sd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 100, 'q': 20}) }}"
+                   data-hd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 300, 'q': 70}) }}">
+                     <div class="text--white">
+                         <h1 class="text--medium-small">Mounir Mahjoubi</h1>
+                         <span class="text--body">1e circonscription<span>
+                     </div>
                 </a>
-                <div class="list__links--svgs">
+                <div class="legislatives__social l__row l__row--h-stretch space--10-15">
                     <a href="#" class="link--no-decor">
-                        <i class="fa fa-twitter"></i>
+                        Voir son site
                     </a>
-                    <a href="#" class="link--no-decor">
-                        <i class="fa fa-facebook-official"></i>
-                    </a>
+                    <div class="list__links--svgs">
+                        <a href="#" class="link--no-decor">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="link--no-decor">
+                            <i class="fa fa-facebook-official"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
     {% endblock %}
 

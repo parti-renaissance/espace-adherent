@@ -206,30 +206,12 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/legislatives", name="site_legislatives")
+     * @Route("/legislatives", name="site_legislatives_annuaire")
      * @Method("GET")
      */
     public function legislativesHomeAction()
     {
-        return $this->render('page/legislatives/layout.html.twig');
-    }
-
-    /**
-     * @Route("/legislatives/recherche/noms", name="site_legislatives_resultats_noms")
-     * @Method("GET")
-     */
-    public function legislativesResultatsNomsAction()
-    {
-        return $this->render('page/legislatives/resultats-noms.html.twig');
-    }
-
-    /**
-     * @Route("/legislatives/recherche/departements", name="site_legislatives_resultats_departements")
-     * @Method("GET")
-     */
-    public function legislativesResultatsDepartementsAction()
-    {
-        return $this->render('page/legislatives/resultats-departements.html.twig');
+        return $this->render('page/legislatives/annuaire.html.twig');
     }
 
     /**
@@ -239,15 +221,6 @@ class PageController extends Controller
     public function legislativesCandidatAction()
     {
         return $this->render('page/legislatives/candidat.html.twig');
-    }
-
-    /**
-     * @Route("/legislatives/trombinoscope", name="site_legislatives_annuaire")
-     * @Method("GET")
-     */
-    public function legislativesAnnuaireAction()
-    {
-        return $this->render('page/legislatives/annuaire.html.twig');
     }
 
     /**
