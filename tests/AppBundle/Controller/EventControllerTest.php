@@ -5,9 +5,11 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
+use AppBundle\Mailjet\Message\EventInvitationMessage;
 use AppBundle\Mailjet\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
 use Ramsey\Uuid\Uuid;
@@ -421,6 +423,61 @@ class EventControllerTest extends MysqlWebTestCase
         $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testInvitation()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
+        $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_3_UUID, $slug = $event->getSlug());
+
+        $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl.'/invitation');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=event_invitation]')->form([
+            'event_invitation[email]' => 'titouan@en-marche.fr',
+            'event_invitation[firstName]' => 'Titouan',
+            'event_invitation[lastName]' => 'Galopin',
+            'event_invitation[message]' => 'Venez !',
+            'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
+            'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo($eventUrl.'/invitation/merci', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+        // Invitations should have been saved
+        $this->assertCount(2, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
+
+        /** @var EventInvite $invite */
+        $invite = $invitations[0];
+
+        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getEmail());
+        $this->assertSame('Titouan Galopin', $invite->getSenderFullName());
+
+        // Email should have been sent
+        $this->assertCount(2, $messages = $this->getMailjetEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
+    }
+
+    /**
+     * @group functionnal
+     */
+    public function testInvitationSentWithoutRedirection()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/invitation/merci', LoadEventData::EVENT_1_UUID, $event->getSlug()));
+
+        $this->assertResponseStatusCode(Response::HTTP_PRECONDITION_FAILED, $this->client->getResponse());
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)

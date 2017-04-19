@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Inviter des amis à un événement' %}
+
+{% block content %}
+    <section class="l__wrapper">
+        <a href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid, 'slug': committee_event.slug}) }}"
+           class="previous-link icon--with-text text--summary">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la page de l'événement
+        </a>
+
+        {{ include('events/_event_header.html.twig') }}
+
+        <hr/>
+    </section>
+    <section class="l__wrapper-500 space--30-0 b__nudge--bottom-huge">
+        <div class="event_invitation-result">
+            <h2 class="b__nudge--bottom text--normal">Inviter des amis à l'événement</h2>
+            <p>{{ 'event.invitation.form.invite_sent'|transchoice(invitations_count) }}</p>
+        </div>
+    </section>
+{% endblock %}

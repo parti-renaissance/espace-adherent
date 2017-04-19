@@ -149,6 +149,8 @@ procuration.authorization.required: Vous devez nous autoriser à utiliser ces in
 # Event
 #
 event.full: L'événement est complet.
+event.invitation.message.max_length: Le message contient {{ limit }} caractères mais ne doit pas excéder 200.
+event.invitation.guests.min: Merci de saisir au moins une adresse e-mail.
 
 #
 # Ton Macron

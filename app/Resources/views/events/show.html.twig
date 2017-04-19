@@ -78,7 +78,8 @@
         <section class="commitee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des événements</a>
+                Retour à la liste des événements
+            </a>
 
             {{ include('events/_header.html.twig') }}
 
@@ -104,7 +105,9 @@
                 <li class="text--bold">À propos</li>
                 {% if event.active %}
                     <li>
-                        <a href="mailto:?subject=Rejoins cet événement En Marche !&amp;body=Je vais participer à l'événement {{ event.name }} ({{ event_url }}), rejoins moi !">Inviter des amis</a>
+                        <a href="{{ path('app_event_invite', {'uuid': event.uuid, 'slug': event.slug}) }}">
+                            Inviter des amis
+                        </a>
                     </li>
                 {% endif %}
                 <li>
@@ -132,7 +135,6 @@
                     </li>
                 {% endif %}
             </ul>
-
             <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
                 {{- event.description|raw -}}
             </div>
