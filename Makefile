@@ -15,7 +15,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:          ## Install and start the project
-start: build up db web/built perm
+start: build up app/config/parameters.yml db web/built perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -29,7 +29,7 @@ clear: perm
 	-$(EXEC) rm -rf var/cache/*
 	-$(EXEC) rm -rf var/sessions/*
 	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
-	-$(EXEC) $(CONSOLE) redis:flushall -n || true
+	-$(EXEC) $(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
 	rm -rf web/built
 
