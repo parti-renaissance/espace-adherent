@@ -79,11 +79,8 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Candidat législatives', ['class' => 'col-md-3'])
-                ->add('isLegislativeCandidate', 'boolean', [
+                ->add('legislativeCandidate', 'boolean', [
                     'label' => 'Est candidat aux législatives ?',
-                ])
-                ->add('legislativeCandidate', null, [
-                    'label' => 'Nom de la circonscription',
                 ])
             ->end()
             ->with('Compte', ['class' => 'col-md-6'])
@@ -178,10 +175,9 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Candidat aux législatives', ['class' => 'col-md-3'])
-                ->add('legislativeCandidate', TextType::class, [
-                    'label' => 'Nom de la circonscription',
+                ->add('legislativeCandidate', CheckboxType::class, [
+                    'label' => 'Candidat aux législatives',
                     'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas candidat aux législatives.',
                 ])
             ->end()
         ;

@@ -123,6 +123,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $localHostEmailsSubscription = true;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $legislativeCandidate;
+
+    /**
      * @ORM\Embedded(class="ManagedArea", columnPrefix="managed_area_")
      *
      * @var ManagedArea
@@ -135,13 +140,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"persist"})
      */
     private $procurationManagedArea;
-
-    /**
-     * @var LegislativeCandidate|null
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\LegislativeCandidate", mappedBy="candidate", cascade={"persist"})
-     */
-    private $legislative;
 
     /**
      * @var CommitteeMembership[]|Collection
@@ -175,6 +173,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->status = $status;
+        $this->legislativeCandidate = false;
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
     }
@@ -196,7 +195,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->legislative && $this->legislative->hasArea()) {
+        if ($this->legislativeCandidate) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
@@ -657,25 +656,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isLegislativeCandidate(): bool
     {
-        return $this->legislative instanceof LegislativeCandidate && !empty($this->legislative->getArea());
+        return $this->legislativeCandidate;
     }
 
-    public function setLegislativeCandidate(?string $area): void
+    public function setLegislativeCandidate(bool $candidate): void
     {
-        if (!$area && !$this->legislative) {
-            return;
-        }
-
-        if (!$this->legislative) {
-            $this->legislative = new LegislativeCandidate();
-            $this->legislative->setCandidate($this);
-        }
-
-        $this->legislative->setArea($area);
-    }
-
-    public function getLegislativeCandidate(): ?string
-    {
-        return $this->legislative ? $this->legislative->getArea() : null;
+        $this->legislativeCandidate = $candidate;
     }
 }
