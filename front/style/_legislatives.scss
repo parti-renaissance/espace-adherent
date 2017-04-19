@@ -1,4 +1,29 @@
 .legislatives {
+
+    input[type="text"] {
+        border: 0;
+        border-bottom: 1px solid black;
+        padding: 10px 0;
+        font-weight: bold;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        @include text--medium;
+
+        &::placeholder {
+            color: $gray;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    form {
+        display: flex;
+        align-items: flex-end;
+    }
+
     &__trombi__item {
         width: 32%;
         margin-bottom: 20px;
