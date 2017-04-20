@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="legislative_district_zones")
+ * @ORM\Table(name="legislative_district_zones", uniqueConstraints={
+ *   @ORM\UniqueConstraint(name="legislative_district_zones_area_code_unique", columns="area_code")
+ * })
  */
 class LegislativeDistrictZone
 {
@@ -19,6 +21,11 @@ class LegislativeDistrictZone
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @ORM\Column(length=4)
+     */
+    private $areaCode;
 
     /**
      * @ORM\Column(length=20)
@@ -35,18 +42,19 @@ class LegislativeDistrictZone
      */
     private $keywords;
 
-    public static function createDepartmentZone(string $name, array $keywords = []): self
+    public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return new self(self::TYPE_DEPARTMENT, $name, $keywords);
+        return new self($areaCode, self::TYPE_DEPARTMENT, $name, $keywords);
     }
 
-    public static function createRegionZone(string $name, array $keywords = []): self
+    public static function createRegionZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return new self(self::TYPE_REGION, $name, $keywords);
+        return new self($areaCode, self::TYPE_REGION, $name, $keywords);
     }
 
-    public function __construct(string $type, string $name, array $keywords = [])
+    public function __construct(string $areaCode, string $type, string $name, array $keywords = [])
     {
+        $this->areaCode = $areaCode;
         $this->setAreaType($type);
         $this->setKeywords($keywords);
         $this->setName($name);
@@ -74,6 +82,16 @@ class LegislativeDistrictZone
     public function getAreaType(): string
     {
         return $this->areaType;
+    }
+
+    public function getAreaCode(): string
+    {
+        return $this->areaCode;
+    }
+
+    public function setAreaCode(string $code): void
+    {
+        $this->areaCode = $code;
     }
 
     public function getName(): string

@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="legislative_candidates", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="legislative_candidates_slug_unique", columns="slug")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeCandidateRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -88,7 +88,7 @@ class LegislativeCandidate
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone", fetch="EAGER")
      */
     private $districtZone;
 
@@ -117,7 +117,7 @@ class LegislativeCandidate
         $this->slug = $slug;
     }
 
-    public function getProfilePicture(): ?string
+    public function getProfilePicture(): ?Media
     {
         return $this->media;
     }
@@ -240,5 +240,10 @@ class LegislativeCandidate
     public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
+    }
+
+    public function hasWebPages(): bool
+    {
+        return $this->websiteUrl || $this->twitterPageUrl || $this->facebookPageUrl || $this->donationPageUrl;
     }
 }

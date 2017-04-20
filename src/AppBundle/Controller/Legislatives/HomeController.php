@@ -24,7 +24,7 @@ class HomeController extends Controller
         $this->disableInProduction();
 
         return $this->render('legislatives/homepage.html.twig', [
-            'candidates' => $this->getDoctrine()->getRepository(LegislativeCandidate::class)->findAll(),
+            'candidates' => $this->getDoctrine()->getRepository(LegislativeCandidate::class)->findAllForDirectory(),
         ]);
     }
 
