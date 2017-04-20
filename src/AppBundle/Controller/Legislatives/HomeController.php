@@ -4,11 +4,10 @@ namespace AppBundle\Controller\Legislatives;
 
 use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\LegislativeCandidate;
+use AppBundle\Entity\LegislativeDistrictZone;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
@@ -25,23 +24,7 @@ class HomeController extends Controller
 
         return $this->render('legislatives/homepage.html.twig', [
             'candidates' => $this->getDoctrine()->getRepository(LegislativeCandidate::class)->findAllForDirectory(),
+            'groupedZones' => $this->getDoctrine()->getRepository(LegislativeDistrictZone::class)->findAllGrouped(),
         ]);
-    }
-
-    /**
-     * @Route("/search", name="legislatives_search")
-     * @Method("GET")
-     */
-    public function searchAction(Request $request): JsonResponse
-    {
-        $this->disableInProduction();
-
-        if (!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
-        }
-
-        return new JsonResponse(
-            $this->getDoctrine()->getRepository(LegislativeCandidate::class)->filter($request) // @todo
-        );
     }
 }

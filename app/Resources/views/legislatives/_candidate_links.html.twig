@@ -1,7 +1,7 @@
 <div class="{{ links_container_class|default('legislatives__social space--20-0') }}" class="candidate_links">
     {% if candidate.websiteUrl %}
         <a href="{{ candidate.websiteUrl }}" class="{{ website_url_class|default('btn btn--blue') }}" title="Visiter le site du candidat">
-            Voir le site de {{ candidate.fullName }}
+            Voir le site{% if show_name %} de {{ candidate.fullName }}{% endif %}
         </a>
     {% endif %}
 

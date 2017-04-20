@@ -19,6 +19,11 @@ class LegislativeCandidate
     use EntityPersonNameTrait;
     use EntityMediaTrait;
 
+    const CAREERS = [
+        'legislative_candidate.careers.1',
+        'legislative_candidate.careers.2',
+    ];
+
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
      * @ORM\Id
@@ -91,6 +96,11 @@ class LegislativeCandidate
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone", fetch="EAGER")
      */
     private $districtZone;
+
+    /**
+     * @ORM\Column
+     */
+    private $career;
 
     public function getId(): ?int
     {
@@ -245,5 +255,15 @@ class LegislativeCandidate
     public function hasWebPages(): bool
     {
         return $this->websiteUrl || $this->twitterPageUrl || $this->facebookPageUrl || $this->donationPageUrl;
+    }
+
+    public function getCareer(): ?string
+    {
+        return $this->career;
+    }
+
+    public function setCareer(string $career): void
+    {
+        $this->career = $career;
     }
 }

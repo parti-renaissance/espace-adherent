@@ -31,10 +31,11 @@ class LoadLegislativesData implements FixtureInterface
             'alban-martin'
         );
         $candidate001->setEmailAddress('alban.martin@en-marche-dev.fr');
-        $candidate001->setDonationPageUrl('https://albanmartin.en-marche-dev.fr/give-me-money');
         $candidate001->setFacebookPageUrl('https://www.facebook.com/albanmartin-fake');
         $candidate001->setTwitterPageUrl('https://twitter.com/albanmartin-fake');
         $candidate001->setWebsiteUrl('https://albanmartin.en-marche-dev.fr');
+        $candidate001->setDonationPageUrl('https://albanmartin.en-marche-dev.fr/dons');
+        $candidate001->setCareer(LegislativeCandidate::CAREERS[0]);
 
         $manager->persist($candidate001);
 
@@ -190,6 +191,7 @@ class LoadLegislativesData implements FixtureInterface
         $candidate->setLatitude($latitude);
         $candidate->setLongitude($longitude);
         $candidate->setDescription(file_get_contents($description));
+        $candidate->setCareer(LegislativeCandidate::CAREERS[1]);
 
         if ($slug) {
             $candidate->setSlug($slug);
