@@ -442,6 +442,8 @@ class VoteOfficeBundle
             'Edimbourg',
             'Londres',
             'Ekaterinbourg',
+        ],
+        'RU' => [ // RUSSIE
             'Moscou',
             'Saint-Petersbourg',
         ],
