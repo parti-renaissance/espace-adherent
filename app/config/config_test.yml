@@ -22,6 +22,7 @@ services:
 
 parameters:
     enmarche_domain: localhost
+    legislatives_domain: 'legislatives-en-marche.dev'
     adherent_interests:
         agriculture: Agriculture
         culture: Culture
