@@ -5,6 +5,7 @@ namespace AppBundle\FeatureFlag;
 use GeoIp2\Database\Reader;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -42,13 +43,10 @@ class CampaignSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        $clientIp = $request->getClientIps();
-        $clientIp = end($clientIp);
-
         try {
-            $country = $this->geoip->country($clientIp)->country->isoCode;
+            $country = $this->geoip->country($this->getClientIp($request))->country->isoCode;
         } catch (\Exception $e) {
-            $country = 'GP'; // By default, be large
+            $country = 'GP';
         }
 
         /*
@@ -82,5 +80,18 @@ class CampaignSilenceListener implements EventSubscriberInterface
     public function campaignIsSilentAction()
     {
         return new Response($this->twig->render('campaign_silent.html.twig'));
+    }
+
+    private function getClientIp(Request $request)
+    {
+        $clientIp = $request->server->get('HTTP_CF_CONNECTING_IP');
+
+        if ($clientIp) {
+            return $clientIp;
+        }
+
+        $clientIp = $request->getClientIps();
+
+        return end($clientIp);
     }
 }

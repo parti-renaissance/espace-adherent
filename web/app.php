@@ -12,6 +12,11 @@ if (!empty($_SERVER['BASIC_AUTH_USER']) && !empty($_SERVER['BASIC_AUTH_PASSWORD'
     }
 }
 
+if (!isset($_SERVER['HTTP_CF_RAY'])) {
+    echo 'GoogleHC healthy';
+    exit;
+}
+
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
