@@ -175,7 +175,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
-        $adherent9->setLegislativeCandidate('Sixième circonscription du Finistère');
+        $adherent9->setLegislativeCandidate(true);
         $adherent9->enableCommitteesNotifications();
 
         $adherent10 = $adherentFactory->createFromArray([
