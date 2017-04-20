@@ -74,13 +74,15 @@
     </header>
 
     <div class="l__wrapper">
+        <div class="search__bar--outer l__hide--on-mobile">
+            <a href="{% block button_link %}{{ path('page_le_mouvement_la_carte') }}{% endblock %}"
+               class="search__bar__map-link link--no-decor text--body">
+               <i class="fa fa-map-marker"></i>
+                Voir la carte des {% block button_label %}comités{% endblock %}
+            </a>
+        </div>
         {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
         {% set currentRoute = app.request.attributes.get('_route') %}
-
-        <a href="{% block button_link %}{{ path('page_le_mouvement_la_carte') }}{% endblock %}"
-           class="text--center space--10-0 b__nudge--bottom background--green text--medium link--no-decor link--block">
-            Voir la carte des {% block button_label %}comités{% endblock %}
-        </a>
 
         <div class="search__results {{ currentRoute }}" id="search-results">
             {{ include('search/results.html.twig') }}

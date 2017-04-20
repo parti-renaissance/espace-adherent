@@ -3,7 +3,7 @@
         display: flex;
         justify-content: space-between;
         margin-top: 15px;
-        margin-bottom: 60px;
+        margin-bottom: 40px;
         background: $blue;
 
         &__options {
@@ -19,6 +19,16 @@
                 flex-direction: column;
                 margin-bottom: 20px;
             }
+        }
+
+        &--outer {
+            position: relative;
+        }
+
+        &__map-link {
+            position: absolute;
+            margin-top: 20px;
+            right: 0;
         }
 
         .search-box {
@@ -71,7 +81,7 @@
             @include text--body;
             font-size: 18px;
 
-            @media (max-width: $tablet) {
+            @media (max-width: $mobile) {
                 margin-top: 20px;
                 height: 55px;
                 display: flex;
@@ -81,7 +91,7 @@
             }
 
             li {
-                @media (max-width: $tablet) {
+                @media (max-width: $mobile) {
                     width: 50%;
                 }
 
@@ -95,7 +105,7 @@
                     padding: 16px 20px 14px;
                     border-bottom: 3px solid transparent;
 
-                    @media (max-width: $tablet) {
+                    @media (max-width: $mobile) {
                         justify-content: center;
                     }
                 }
