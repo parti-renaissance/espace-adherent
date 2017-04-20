@@ -30,7 +30,7 @@
         </ul>
     </div>
 
-    {% if search_type is constant('TYPE_EVENTS', search) %}
+    {% if enable_canary and search_type is constant('TYPE_EVENTS', search) %}
         <div class="search__event__type">
             type d'événement
             <select name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form form__field">
