@@ -1,0 +1,53 @@
+{% extends 'page/legislatives/layout.html.twig' %}
+
+{% block page_title 'Le Trombinoscope | Législatives' %}
+{% block canonical_url url('site_legislatives_annuaire') %}
+
+
+{% block content__inner %}
+
+    <header class="l__wrapper--slim text--center space--60-0">
+        <h1 class="text--large">
+            Je découvre les 577 candidats <em>En Marche !</em>
+        </h1>
+        <h2 class="text--body text--medium text--normal b__nudge--top-10">
+            Aux élections législatives 2017
+        </h2>
+    </header>
+
+    {% block candidates %}
+
+        <form class="l__wrapper--medium b__nudge--bottom-large">
+            <input type="text" placeholder="Rechercher" id="search-input"} />
+        </form>
+
+        <div class="l__wrapper--medium l__row l__row--h-stretch l__row--wrap">
+            <div class="legislatives__trombi__item">
+                <a href="#"
+                   class="legislatives__trombi__item__visual progressive-background link--no-decor"
+                   data-sd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 100, 'q': 20}) }}"
+                   data-hd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 300, 'q': 70}) }}">
+                     <div class="text--white">
+                         <h1 class="text--medium-small">Mounir Mahjoubi</h1>
+                         <span class="text--body">1e circonscription<span>
+                     </div>
+                </a>
+                <div class="legislatives__social l__row l__row--h-stretch space--10-15">
+                    <a href="#" class="link--no-decor">
+                        Voir son site
+                    </a>
+                    <div class="list__links--svgs">
+                        <a href="#" class="link--no-decor">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="link--no-decor">
+                            <i class="fa fa-facebook-official"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'page/legislatives/layout.html.twig' %}
+
+{% block page_title 'Mounir Mahjoubi | Législatives' %}
+{% block canonical_url url('site_legislatives_candidat') %}
+
+
+{% block content__inner %}
+
+    <div class="l__wrapper">
+        <a href="{{ path('site_legislatives_annuaire') }}" class="icon--with-text text--summary space--20-0">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la liste des candidats</a>
+    </div>
+
+    <div class="l__wrapper--medium space--30-0 l__row l__row--h-stretch l__mobile--col">
+        <div class="legislatives__candidate__photo progressive-background link--no-decor"
+             data-sd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 100, 'q': 20}) }}"
+             data-hd="{{ static_asset('elles-marchent/mounir.jpg', {'w': 400, 'q': 70}) }}">
+        </div>
+        <div class="legislatives__candidate__info">
+            <h1 class="text--large">Mounir Mahjoubi</h1>
+            <span class="text--body">1e circonscription<span>
+            <div class="legislatives__social space--20-0">
+                <a href="#" class="btn btn--blue">
+                    Voir le site de Mounir Mahjoubi
+                </a>
+                <div class="list__links--svgs b__nudge--top-10">
+                    <a href="#" class="link--no-decor">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="link--no-decor">
+                        <i class="fa fa-facebook-official"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="l__wrapper--slim text--body b__nudge--bottom-huge">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </div>
+
+
+{% endblock %}

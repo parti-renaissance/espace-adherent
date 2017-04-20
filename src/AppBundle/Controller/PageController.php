@@ -206,6 +206,33 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/legislatives", name="site_legislatives_annuaire")
+     * @Method("GET")
+     */
+    public function legislativesHomeAction()
+    {
+        return $this->render('page/legislatives/annuaire.html.twig');
+    }
+
+    /**
+     * @Route("/legislatives/candidat", name="site_legislatives_candidat")
+     * @Method("GET")
+     */
+    public function legislativesCandidatAction()
+    {
+        return $this->render('page/legislatives/candidat.html.twig');
+    }
+
+    /**
+     * @Route("/legislatives/la-carte", name="site_legislatives_carte")
+     * @Method("GET")
+     */
+    public function legislativesCarteAction()
+    {
+        return $this->render('page/legislatives/carte.html.twig');
+    }
+
+    /**
      * @Route("/mentions-legales", name="page_mentions_legales")
      * @Method("GET")
      */
