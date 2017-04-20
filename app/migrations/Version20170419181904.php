@@ -27,6 +27,7 @@ class Version20170419181904 extends AbstractMigration
         $this->addSql('ALTER TABLE legislative_candidates ADD CONSTRAINT FK_AE55AF9BEA9FDD75 FOREIGN KEY (media_id) REFERENCES medias (id)');
         $this->addSql('CREATE INDEX IDX_AE55AF9B23F5C396 ON legislative_candidates (district_zone_id)');
         $this->addSql('CREATE INDEX IDX_AE55AF9BEA9FDD75 ON legislative_candidates (media_id)');
+        $this->addSql('UPDATE legislative_candidates SET slug = id'); // fix for prod
         $this->addSql('CREATE UNIQUE INDEX legislative_candidates_slug_unique ON legislative_candidates (slug)');
     }
 
