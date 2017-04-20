@@ -50,3 +50,8 @@ parameters:
     env(ALGOLIA_BLACKLIST):     ~
 
     env(LEGISLATIVES_PLATFORM): https://www.google.fr
+
+    enmarche_domain:            '%env(ENMARCHE_DOMAIN)%'
+    legislatives_domain:        '%env(LEGISLATIVES_DOMAIN)%'
+    env(ENMARCHE_DOMAIN):       en-marche.fr
+    env(LEGISLATIVES_DOMAIN):   legislatives-en-marche.fr
