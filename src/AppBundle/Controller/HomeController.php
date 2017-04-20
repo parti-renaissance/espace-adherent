@@ -24,15 +24,6 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/health", name="health")
-     * @Method("GET")
-     */
-    public function healthAction()
-    {
-        return new Response('Healthy');
-    }
-
-    /**
      * @Route("/sitemap.xml", name="app_sitemap_index")
      * @Method("GET")
      */

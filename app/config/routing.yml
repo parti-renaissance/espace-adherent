@@ -16,12 +16,17 @@ app:
     type:     "annotation"
     host:     "%enmarche_domain%"
 
+app_admin:
+    resource: "@AppBundle/Controller/Admin"
+    type:     "annotation"
+    prefix:   "/admin"
+    host:     "%enmarche_domain%"
+
 app_legislatives:
     resource: "@AppBundle/Controller/Legislatives"
     type:     "annotation"
     host:     "%legislatives_domain%"
 
-app_admin:
-    resource: "@AppBundle/Controller/Admin"
+app_health:
+    resource: "@AppBundle/Controller/HealthController.php"
     type:     "annotation"
-    prefix:   "/admin"
