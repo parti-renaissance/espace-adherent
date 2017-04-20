@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HealthController extends Controller
 {
     /**
-     * @Route("/health", name="health")
+     * @Route("/health", defaults={"_enable_campaign_silence"=true}, name="health")
      * @Method("GET")
      */
     public function healthAction()
