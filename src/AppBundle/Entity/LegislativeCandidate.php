@@ -27,6 +27,16 @@ class LegislativeCandidate
     private $id;
 
     /**
+     * @ORM\Column(length=6)
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(length=100, nullable=true)
+     */
+    private $emailAddress;
+
+    /**
      * @ORM\Column(length=100)
      * @Gedmo\Slug(fields={"firstName", "lastName"})
      */
@@ -210,5 +220,25 @@ class LegislativeCandidate
     public function setDistrictZone(?LegislativeDistrictZone $districtZone): void
     {
         $this->districtZone = $districtZone;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(?string $emailAddress): void
+    {
+        $this->emailAddress = $emailAddress;
     }
 }

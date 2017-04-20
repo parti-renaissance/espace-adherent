@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Entity\LegislativeDistrictZone;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -22,12 +23,14 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0001'],
             "Troisième circonscription de l'Ain",
             '3',
+            Genders::MALE,
             'Alban',
             'Martin',
             46.2600121,
             5.5815357
         );
         $candidate001->setSlug('alban-martin');
+        $candidate001->setEmailAddress('alban.martin@en-marche-dev.fr');
         $candidate001->setFacebookPageUrl('https://www.facebook.com/albanmartin-fake');
         $candidate001->setTwitterPageUrl('https://twitter.com/albanmartin-fake');
         $candidate001->setWebsiteUrl('https://albanmartin.en-marche-dev.fr');
@@ -38,6 +41,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0073'],
             'Première circonscription de la Savoie',
             '1',
+            Genders::FEMALE,
             'Michelle',
             'Dumoulin',
             45.6942366,
@@ -48,6 +52,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0073'],
             'Deuxième circonscription de la Savoie',
             '2',
+            Genders::MALE,
             'Pierre',
             'Etchebest',
             45.6647635,
@@ -58,6 +63,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0074'],
             'Cinquième circonscription de la Haute-Savoie',
             '5',
+            Genders::FEMALE,
             'Monique',
             'Albert',
             46.3910742,
@@ -68,6 +74,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0075'],
             'Première circonscription de Paris',
             '1',
+            Genders::MALE,
             'Etienne',
             'de Monté-Cristo',
             48.8620254,
@@ -78,6 +85,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0075'],
             'Deuxième circonscription de Paris',
             '2',
+            Genders::FEMALE,
             'Valérie',
             'Langlade',
             48.8677068,
@@ -88,6 +96,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0075'],
             'Troisième circonscription de Paris',
             '3',
+            Genders::FEMALE,
             'Isabelle',
             'Piémontaise',
             48.8625838,
@@ -98,6 +107,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0974'],
             'Première circonscription de la Réunion',
             '1',
+            Genders::FEMALE,
             'Estelle',
             'Antonov',
             -20.9432,
@@ -108,6 +118,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0974'],
             'Deuxième circonscription de la Réunion',
             '2',
+            Genders::MALE,
             'Jacques',
             'Arditi',
             -21.014042,
@@ -118,6 +129,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['0974'],
             'Troisième circonscription de la Réunion',
             '3',
+            Genders::MALE,
             'Albert',
             'Bérégovoy',
             -21.2917429,
@@ -128,6 +140,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['1001'],
             'Première circonscription des Français établis hors de France',
             '1',
+            Genders::MALE,
             'Franck',
             'de Lavalle',
             36.2305449,
@@ -138,6 +151,7 @@ class LoadLegislativesData implements FixtureInterface
             $zones['1011'],
             'Onzième circonscription des Français établis hors de France',
             '11',
+            Genders::FEMALE,
             'Emmanuelle',
             'Parfait',
             1.3150701,
@@ -151,6 +165,7 @@ class LoadLegislativesData implements FixtureInterface
         LegislativeDistrictZone $zone,
         string $districtName,
         string $districtNumber,
+        string $gender,
         string $firstName,
         string $lastName,
         float $latitude,
@@ -164,6 +179,7 @@ class LoadLegislativesData implements FixtureInterface
         }
 
         $candidate = new LegislativeCandidate();
+        $candidate->setGender($gender);
         $candidate->setFirstName($firstName);
         $candidate->setLastName($lastName);
         $candidate->setDistrictZone($zone);
