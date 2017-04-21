@@ -39,7 +39,7 @@ class CampaignSilenceListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $request->attributes->set('_campaign_expired', false);
 
-        foreach (['sonata_', 'app_admin_', 'admin_app_'] as $prefix) {
+        foreach (['lexik_paybox_', 'sonata_', 'app_admin_', 'admin_app_', '_profiler'] as $prefix) {
             if (0 === strpos($request->attributes->get('_route'), $prefix)) {
                 return;
             }
