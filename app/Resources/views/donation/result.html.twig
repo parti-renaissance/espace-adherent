@@ -31,28 +31,31 @@
                 un acteur de la révolution<br />
                 En Marche !
             </div>
-            <div class="donation__result--successful__thankyou">
-                Faites le savoir à vos<br />
-                proches, diffusez nos idées,<br />
-                rejoignez nos comités<br />
-                locaux. Soyez fier d’être<br />
-                En Marche !
-            </div>
-            <div class="donation__result--successful__share-pride">
-                « Fier d’être en Marche ! »
-            </div>
-            <ul class="donation__result--successful__sharer">
-                <li role="button" aria-label="Partagez sur Facebook"
-                    class="btn btn-medium btn--social btn--facebook"
-                    onclick="App.share('facebook', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ?')">
-                    <i class="fa fa-facebook-square"></i> <span>Je partage</span>
-                </li>
-                <li role="button" aria-label="Partagez via Twitter"
-                    class="btn btn-medium btn--social btn--twitter"
-                    onclick="App.share('twitter', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ? http://en-marche.fr/don via @enmarchefr')">
-                    <i class="fa fa-twitter"></i> <span>Je tweete</span>
-                </li>
-            </ul>
+
+            {% if not campaign_expired %}
+                <div class="donation__result--successful__thankyou">
+                    Faites le savoir à vos<br />
+                    proches, diffusez nos idées,<br />
+                    rejoignez nos comités<br />
+                    locaux. Soyez fier d’être<br />
+                    En Marche !
+                </div>
+                <div class="donation__result--successful__share-pride">
+                    « Fier d’être en Marche ! »
+                </div>
+                <ul class="donation__result--successful__sharer">
+                    <li role="button" aria-label="Partagez sur Facebook"
+                        class="btn btn-medium btn--social btn--facebook"
+                        onclick="App.share('facebook', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ?')">
+                        <i class="fa fa-facebook-square"></i> <span>Je partage</span>
+                    </li>
+                    <li role="button" aria-label="Partagez via Twitter"
+                        class="btn btn-medi<um btn--social btn--twitter"
+                        onclick="App.share('twitter', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ? http://en-marche.fr/don via @enmarchefr')">
+                        <i class="fa fa-twitter"></i> <span>Je tweete</span>
+                    </li>
+                </ul>
+            {% endif %}
 
             {% if is_in_subscription_process %}
                 <p>
