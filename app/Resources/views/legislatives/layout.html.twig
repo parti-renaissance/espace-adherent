@@ -25,7 +25,9 @@
         </nav>
     </header>
 
-    <main class="legislatives">
-        {% block content__inner %}{% endblock %}
-    </main>
+    {% block content__outer %}
+        <main class="legislatives">
+            {% block content__inner %}{% endblock %}
+        </main>
+    {% endblock %}
 {% endblock %}

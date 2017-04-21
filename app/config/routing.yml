@@ -30,3 +30,7 @@ app_legislatives:
 app_health:
     resource: "@AppBundle/Controller/HealthController.php"
     type:     "annotation"
+
+app_assets:
+    resource: "@AppBundle/Controller/AssetsController.php"
+    type:     "annotation"

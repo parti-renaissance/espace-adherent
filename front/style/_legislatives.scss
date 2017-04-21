@@ -1,3 +1,7 @@
+.legislatives__map {
+    height: 100%;
+}
+
 .legislatives {
     input[type="text"] {
         border: 0;
@@ -85,6 +89,7 @@
     }
 
     &__candidate__photo {
+        background-color: $filter;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;

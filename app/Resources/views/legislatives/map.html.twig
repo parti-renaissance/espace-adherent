@@ -1,4 +1,4 @@
-{% extends 'legislatives/homepage.html.twig' %}
+{% extends 'legislatives/layout.html.twig' %}
 
 {% block page_title 'La carte | Législatives' %}
 {% block canonical_url url('legislatives_map') %}
@@ -12,8 +12,26 @@
     </style>
 {% endblock %}
 
-{% block content__inner %}
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCandidatesMap();
+        });
+    </script>
+{% endblock %}
 
-    La carte
+{% block content__outer %}
+    <main class="legislatives__map">
+        <header class="l__wrapper--slim text--center space--60-0">
+            <h1 class="text--large text--pink">
+                La carte des candidats
+            </h1>
+            <h2 class="text--body text--medium text--normal b__nudge--top-10">
+                577 candidats
+            </h2>
+        </header>
 
+        <div id="map" style="height: 100%; width: 100%;"></div>
+    </main>
 {% endblock %}

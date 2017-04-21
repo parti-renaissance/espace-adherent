@@ -59,5 +59,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.legislative_candidate" class="AppBundle\Repository\LegislativeCandidateRepository" public="false">
+            <argument>AppBundle\Entity\LegislativeCandidate</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
