@@ -37,7 +37,7 @@ class CommitteeMembershipException extends \RuntimeException
     {
         return new self(
             $membershipUuid,
-            sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege.', $membershipUuid),
+            sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Only one supervisor per committee allowed.', $membershipUuid),
             $previous
         );
     }
