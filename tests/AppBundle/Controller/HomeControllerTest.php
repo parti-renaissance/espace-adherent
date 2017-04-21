@@ -23,7 +23,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
         // Articles
-        $this->assertSame(1, $crawler->filter('html:contains("« Je viens échanger, comprendre et construire. »")')->count());
+        // $this->assertSame(1, $crawler->filter('html:contains("« Je viens échanger, comprendre et construire. »")')->count());
         $this->assertSame(1, $crawler->filter('html:contains("Tribune de Richard Ferrand")')->count());
 
         // Live links
