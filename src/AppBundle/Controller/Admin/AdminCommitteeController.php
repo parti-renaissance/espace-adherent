@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\CommitteeException;
+use AppBundle\Exception\CommitteeMembershipException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -83,7 +84,11 @@ class AdminCommitteeController extends Controller
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
-        $this->get('app.committee.manager')->changePrivilege($adherent, $committee, $privilege);
+        try {
+            $this->get('app.committee.manager')->changePrivilege($adherent, $committee, $privilege);
+        } catch (CommitteeMembershipException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
 
         return $this->redirectToRoute('app_admin_committee_members', [
             'id' => $committee->getId(),

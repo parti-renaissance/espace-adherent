@@ -15,6 +15,10 @@
 {% endblock %}
 
 {% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
     <p>
         <a href="{{ path('admin_app_committee_list') }}" class="btn btn-default">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
