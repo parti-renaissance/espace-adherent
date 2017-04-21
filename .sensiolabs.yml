@@ -2,5 +2,5 @@ ignore_branches:
     - gh-pages
 
 commit_failure_conditions:
-    - "project.severity.critical > 0"
-    - "project.severity.major > 9"
+    - "pr.severity.critical > 0"
+    - "pr.severity.major > 0"
