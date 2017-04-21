@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeDistrictZoneRepository")
  * @ORM\Table(name="legislative_district_zones", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="legislative_district_zones_area_code_unique", columns="area_code")
  * })
+ * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  */
 class LegislativeDistrictZone
 {
@@ -19,6 +22,11 @@ class LegislativeDistrictZone
     const ZONE_DOM_TOM = 'DOM-TOM';
     const ZONE_FOREIGN = 'Étranger';
 
+    const TYPE_CHOICES = [
+        'Département (DOM-TOM inclus)' => self::TYPE_DEPARTMENT,
+        'Autre région du monde' => self::TYPE_REGION,
+    ];
+
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
      * @ORM\Id
@@ -28,16 +36,31 @@ class LegislativeDistrictZone
 
     /**
      * @ORM\Column(length=4)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Regex(
+     *   pattern="/^[0-1]\d{3}$/",
+     *   message="legislative_district_zone.area_code.invalid",
+     *   groups="Admin"
+     * )
      */
     private $areaCode;
 
     /**
      * @ORM\Column(length=20)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Choice(
+     *   callback = "getAreaTypeChoices",
+     *   message="legislative_district_zone.area_type.invalid",
+     *   strict=true,
+     *   groups="Admin"
+     * )
      */
-    private $areaType;
+    private $areaType = self::TYPE_DEPARTMENT;
 
     /**
      * @ORM\Column(length=100)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Length(min=2, max=100, groups="Admin")
      */
     private $name;
 
@@ -48,28 +71,43 @@ class LegislativeDistrictZone
 
     public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return new self($areaCode, self::TYPE_DEPARTMENT, $name, $keywords);
+        return self::create($areaCode, self::TYPE_DEPARTMENT, $name, $keywords);
     }
 
     public static function createRegionZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return new self($areaCode, self::TYPE_REGION, $name, $keywords);
+        return self::create($areaCode, self::TYPE_REGION, $name, $keywords);
     }
 
-    public function __construct(string $areaCode, string $type, string $name, array $keywords = [])
+    private static function create(string $areaCode, string $areaType, string $name, array $keywords = []): self
     {
-        $this->areaCode = $areaCode;
-        $this->setAreaType($type);
-        $this->setKeywords($keywords);
-        $this->setName($name);
+        $zone = new self();
+        $zone->setAreaCode($areaCode);
+        $zone->setAreaType($areaType);
+        $zone->setKeywords($keywords);
+        $zone->setName($name);
+
+        return $zone;
+    }
+
+    public static function getAreaTypeChoices(): array
+    {
+        return array_values(self::TYPE_CHOICES);
     }
 
     public function __toString(): string
     {
-        return $this->name;
+        $areaCode = (int) $this->areaCode;
+        if ($areaCode < 10) {
+            $code = substr($this->areaCode, 2);
+        } else {
+            $code = ltrim($this->areaCode, '0');
+        }
+
+        return sprintf('%s - %s', $code, $this->name);
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -83,12 +121,12 @@ class LegislativeDistrictZone
         $this->areaType = $type;
     }
 
-    public function getAreaType(): string
+    public function getAreaType(): ?string
     {
         return $this->areaType;
     }
 
-    public function getAreaCode(): string
+    public function getAreaCode(): ?string
     {
         return $this->areaCode;
     }
@@ -98,7 +136,26 @@ class LegislativeDistrictZone
         $this->areaCode = $code;
     }
 
-    public function getName(): string
+    final public function getAreaTypeLabel(): string
+    {
+        $areaCode = (int) $this->areaCode;
+
+        if ($areaCode <= 95) {
+            return self::ZONE_FRANCE;
+        }
+
+        if ($areaCode >= 971 && $areaCode <= 989) {
+            return self::ZONE_DOM_TOM;
+        }
+
+        if ($areaCode >= 1000) {
+            return self::ZONE_FOREIGN;
+        }
+
+        throw new \RuntimeException(sprintf('Unexpected code "%s" for zone "%s"', $areaCode, $this->name));
+    }
+
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -121,6 +178,24 @@ class LegislativeDistrictZone
         $this->setKeywords($keywords);
     }
 
+    public function removeKeyword(string $keyword): void
+    {
+        $keywords = $this->getKeywords();
+
+        if (false !== $key = array_search($keyword, $keywords, true)) {
+            unset($keywords[$key]);
+        }
+
+        if (false !== $key = array_search(mb_strtolower($keyword, 'UTF-8'), $keywords, true)) {
+            unset($keywords[$key]);
+        }
+
+        $this->setKeywords($keywords);
+    }
+
+    /**
+     * @Assert\Count(min=1, groups="Admin")
+     */
     public function getKeywords(): array
     {
         if (empty($this->keywords)) {

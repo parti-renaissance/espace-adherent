@@ -154,3 +154,18 @@ event.full: L'événement est complet.
 #
 ton_macron.invitation.friend_interests.count: Vous devez sélectionner 2 intérêts.
 ton_macron.invitation.self_reasons.count: Vous devez sélectionner 2 raisons.
+
+#
+# Legislatives
+#
+legislative_district_zone.area_code.unique: 'Ce code de circonscription existe déjà.'
+legislative_district_zone.area_code.invalid: 'Le code de la circonscription doit être une suite de 4 chiffres commençant par 0 ou 1.'
+legislative_district_zone.area_type.invalid: 'Le type de circonscription choisi est invalide.'
+
+legislative_candidate.slug.invalid: "L'identifiant d'URL ne peut contenir que des lettres minuscules, des chiffres et des tirets."
+legislative_candidate.facebook_page_url.invalid: "Cette URL ne semble pas être une URL Facebook valide."
+legislative_candidate.twitter_page_url.invalid: "Cette URL ne semble pas être une URL Twitter valide."
+legislative_candidate.district_number.invalid: "Le numéro de circonscription doit être un nombre entier positif."
+legislative_candidate.latitude.invalid: "Cette valeur n'est pas une latitude valide."
+legislative_candidate.longitude.invalid: "Cette valeur n'est pas une longitude valide."
+legislative_candidate.carreer.invalid: "Cette carrière est invalide."

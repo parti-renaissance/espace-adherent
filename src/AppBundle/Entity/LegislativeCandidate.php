@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="legislative_candidates", uniqueConstraints={
@@ -13,6 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeCandidateRepository")
  *
  * @Algolia\Index(autoIndex=false)
+ * @UniqueEntity(fields="slug", groups="Admin")
  */
 class LegislativeCandidate
 {
@@ -33,57 +36,79 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column(length=6)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Choice(
+     *   callback = {"AppBundle\ValueObject\Genders", "all"},
+     *   message="common.gender.invalid_choice",
+     *   strict=true,
+     *   groups="Admin"
+     * )
      */
     private $gender;
 
     /**
      * @ORM\Column(length=100, nullable=true)
+     * @Assert\Email(groups="Admin")
      */
     private $emailAddress;
 
     /**
      * @ORM\Column(length=100)
      * @Gedmo\Slug(fields={"firstName", "lastName"})
+     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
     private $slug;
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      */
     private $facebookPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      */
     private $twitterPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\Url(groups="Admin")
      */
     private $donationPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
+     * @Assert\Url(groups="Admin")
      */
     private $websiteUrl;
 
     /**
      * @ORM\Column(length=100)
+     * @Assert\NotBlank(groups="Admin")
      */
     private $districtName;
 
     /**
      * @ORM\Column(length=10)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Regex(pattern="/^\d+$/", message="legislative_candidate.district_number.invalid", groups="Admin")
      */
     private $districtNumber;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.latitude.invalid", groups="Admin")
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.longitude.invalid", groups="Admin")
      */
     private $longitude;
 
@@ -94,13 +119,22 @@ class LegislativeCandidate
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone", fetch="EAGER")
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Valid
      */
     private $districtZone;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Choice(callback="getCareerChoices", message="legislative_candidate.carreer.invalid", groups="Admin")
      */
     private $career;
+
+    public static function getCareerChoices(): array
+    {
+        return self::CAREERS;
+    }
 
     public function getId(): ?int
     {
