@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DonationController extends Controller
 {
     /**
-     * @Route(name="donation_index")
+     * @Route(defaults={"_enable_campaign_silence"=true}, name="donation_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -27,7 +27,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/coordonnees", name="donation_informations")
+     * @Route("/coordonnees", defaults={"_enable_campaign_silence"=true}, name="donation_informations")
      * @Method({"GET", "POST"})
      */
     public function informationsAction(Request $request)
@@ -57,7 +57,12 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/paiement", name="donation_pay", requirements={"uuid"="%pattern_uuid%"})
+     * @Route(
+     *     "/{uuid}/paiement",
+     *     requirements={"uuid"="%pattern_uuid%"},
+     *     defaults={"_enable_campaign_silence"=true},
+     *     name="donation_pay"
+     * )
      * @Method("GET")
      */
     public function payboxAction(Donation $donation)
@@ -77,7 +82,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/callback", name="donation_callback")
+     * @Route("/callback", defaults={"_enable_campaign_silence"=true}, name="donation_callback")
      * @Method("GET")
      */
     public function callbackAction(Request $request)
@@ -92,7 +97,12 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{status}", name="donation_result", requirements={"status"="effectue|erreur", "uuid"="%pattern_uuid%"})
+     * @Route(
+     *     "/{uuid}/{status}",
+     *     requirements={"status"="effectue|erreur", "uuid"="%pattern_uuid%"},
+     *     defaults={"_enable_campaign_silence"=true},
+     *     name="donation_result"
+     * )
      * @Method("GET")
      */
     public function resultAction(Request $request, Donation $donation)
