@@ -4,11 +4,11 @@
 {% block canonical_url url('legislatives_candidate', {'slug': candidate.slug}) %}
 
 {% block content__inner %}
-
     <div class="l__wrapper">
         <a href="{{ path('legislatives_homepage') }}" class="icon--with-text text--summary space--20-0" title="Retour à la liste des candidats">
             {{ include('components/caret--left.html.twig') }}
-            Retour à la liste des candidats</a>
+            Retour à la liste des candidats
+        </a>
     </div>
 
     <div class="l__wrapper--medium space--30-0 l__row l__row--h-stretch l__mobile--col" id="candidate-profile">
@@ -23,7 +23,7 @@
             <h1 class="text--large">{{ candidate.fullName }}</h1>
             <span class="text--body" id="candidate-district-name">{{ candidate.districtName }}</span>
             {% if candidate.hasWebPages %}
-                {{ include('legislatives/_candidate_links.html.twig') }}
+                {{ include('legislatives/_candidate_links.html.twig', {'show_name': true}) }}
             {% endif %}
         </div>
     </div>
@@ -31,5 +31,4 @@
     <div class="l__wrapper--slim text--body b__nudge--bottom-huge" id="candidate-description">
         {{ candidate.description|markdown }}
     </div>
-
 {% endblock %}

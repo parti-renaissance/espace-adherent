@@ -53,7 +53,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertSame('https://albanmartin.en-marche-dev.fr', $links->first()->attr('href'));
         $this->assertSame('https://twitter.com/albanmartin-fake', $links->eq(1)->attr('href'));
         $this->assertSame('https://www.facebook.com/albanmartin-fake', $links->eq(2)->attr('href'));
-        $this->assertSame('https://albanmartin.en-marche-dev.fr/give-me-money', $links->last()->attr('href'));
+        $this->assertSame('https://albanmartin.en-marche-dev.fr/dons', $links->last()->attr('href'));
         $this->assertSame(4, $description->filter('p')->count());
 
         $crawler = $this->client->click($crawler->selectLink('Retour à la liste des candidats')->link());

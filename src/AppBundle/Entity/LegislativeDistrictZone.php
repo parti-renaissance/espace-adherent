@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeDistrictZoneRepository")
  * @ORM\Table(name="legislative_district_zones", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="legislative_district_zones_area_code_unique", columns="area_code")
  * })
@@ -14,6 +14,10 @@ class LegislativeDistrictZone
 {
     private const TYPE_DEPARTMENT = 'departement';
     private const TYPE_REGION = 'region';
+
+    const ZONE_FRANCE = 'France métropolitaine';
+    const ZONE_DOM_TOM = 'DOM-TOM';
+    const ZONE_FOREIGN = 'Étranger';
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
