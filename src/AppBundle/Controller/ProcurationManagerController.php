@@ -44,10 +44,10 @@ class ProcurationManagerController extends Controller
     }
 
     /**
-     * @Route("/mandants/liste", name="app_procuration_manager_requests_list")
+     * @Route("/plus", name="app_procuration_manager_requests_list")
      * @Method("GET")
      */
-    public function requestsListAction(Request $request): Response
+    public function requestsMoreAction(Request $request): Response
     {
         try {
             $filters = $filters = ProcurationRequestFilters::fromQueryString($request);
@@ -86,10 +86,10 @@ class ProcurationManagerController extends Controller
     }
 
     /**
-     * @Route("/mandataires/liste", name="app_procuration_manager_proposals_list")
+     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list")
      * @Method("GET")
      */
-    public function proposalsListAction(Request $request): Response
+    public function proposalsMoreAction(Request $request): Response
     {
         try {
             $filters = ProcurationProxyProposalFilters::fromQueryString($request);

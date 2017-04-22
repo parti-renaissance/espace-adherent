@@ -206,10 +206,6 @@ abstract class ProcurationFilters
             $parameters[self::PARAMETER_STATUS] = $this->status;
         }
 
-        if ($this->currentPage) {
-            $parameters[self::PARAMETER_PAGE] = $this->currentPage;
-        }
-
         return $parameters ?? [];
     }
 }
