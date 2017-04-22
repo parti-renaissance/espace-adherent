@@ -7,6 +7,7 @@
     flex-direction: column;
     justify-content: space-between;
     background-position: center;
+
     @media (max-height: 1000px) {
         justify-content: flex-start;
         height: auto;
@@ -177,6 +178,31 @@
 }
 
 .procuration-manager {
+    &__tabs {
+        text-align: center;
+
+        li {
+            display: inline-block;
+        }
+
+        a {
+            border: 0;
+            display: block;
+            padding: 5px 10px;
+            color: $darker;
+            
+            &:hover {
+                background: #e5e5e5;
+                color: $darker;
+            }
+        }
+
+        li.active a {
+            background: $blue;
+            color: white;
+        }
+    }
+
     &__content {
         min-height: 300px;
     }
