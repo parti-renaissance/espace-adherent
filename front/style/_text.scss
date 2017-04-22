@@ -267,6 +267,10 @@ $text--size-extra-large: 48px;
         text-align: right;
     }
 
+    &--block {
+      white-space: nowrap;
+    }
+
     &--white {
         color: white;
 
