@@ -61,14 +61,14 @@ export default class ReqwestApiClient {
 
     getProcurationRequests(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/requests-list/'+page+'?'+queryString,
+            url: '/espace-responsable-procuration/plus?page='+page+'&'+queryString,
             type: 'html'
         });
     }
 
     getProcurationProposals(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/proposals-list/'+page+'?'+queryString,
+            url: '/espace-responsable-procuration/mandataires/plus?page='+page+'&'+queryString,
             type: 'html'
         });
     }
