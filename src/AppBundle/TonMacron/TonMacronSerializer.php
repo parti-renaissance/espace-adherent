@@ -54,21 +54,6 @@ class TonMacronSerializer
         }
 
         $handle = fopen('php://memory', 'rb+');
-        fputcsv($handle, [
-            'id',
-            'friend_firstName',
-            'friend_age',
-            'friend_gender',
-            'friend_position',
-            'friend_emailAddress',
-            'author_firstName',
-            'author_lastName',
-            'author_emailAddress',
-            'mail_subject',
-            'date',
-            'choices',
-        ]);
-
         foreach ($invitations as $invitation) {
             fputcsv($handle, [
                 'id' => $invitation->getId(),
@@ -82,9 +67,6 @@ class TonMacronSerializer
                 'author_emailAddress' => $invitation->getAuthorEmailAddress(),
                 'mail_subject' => $invitation->getMailSubject(),
                 'date' => $invitation->getCreatedAt()->format('Y-m-d H:i:s'),
-                'choices' => implode(',', array_map(function (TonMacronChoice $choice) {
-                    return $choice->getContentKey();
-                }, $invitation->getChoices()->toArray())),
             ]);
         }
 
