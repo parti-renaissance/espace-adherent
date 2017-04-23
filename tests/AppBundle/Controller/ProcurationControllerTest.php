@@ -113,7 +113,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_elections' => [
-                'electionPresidentialFirstRound' => true,
                 'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
@@ -139,7 +138,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('69001', $request->getPostalCode());
         $this->assertSame('Lyon 1er', $request->getCityName());
         $this->assertSame('6 rue Neyret', $request->getAddress());
-        $this->assertTrue($request->getElectionPresidentialFirstRound());
+        $this->assertFalse($request->getElectionPresidentialFirstRound());
         $this->assertFalse($request->getElectionPresidentialSecondRound());
         $this->assertTrue($request->getElectionLegislativeFirstRound());
         $this->assertFalse($request->getElectionLegislativeSecondRound());
@@ -187,7 +186,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionPresidentialFirstRound' => true,
                 'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
@@ -226,7 +224,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionPresidentialFirstRound' => true,
                 'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
@@ -251,7 +248,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('69001', $proposal->getPostalCode());
         $this->assertSame('Lyon 1er', $proposal->getCityName());
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
-        $this->assertTrue($proposal->getElectionPresidentialFirstRound());
+        $this->assertFalse($proposal->getElectionPresidentialFirstRound());
         $this->assertFalse($proposal->getElectionPresidentialSecondRound());
         $this->assertTrue($proposal->getElectionLegislativeFirstRound());
         $this->assertFalse($proposal->getElectionLegislativeSecondRound());
@@ -350,7 +347,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '75018-75120',
                 'voteCityName' => '',
                 'voteOffice' => 'Mairie',
-                'electionPresidentialFirstRound' => true,
                 'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
