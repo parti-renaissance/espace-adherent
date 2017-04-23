@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ProcurationController extends Controller
 {
     /**
-     * @Route("", name="app_procuration_landing")
+     * @Route("", defaults={"_enable_campaign_silence"=true}, name="app_procuration_landing")
      * @Method("GET")
      */
     public function landingAction(Request $request): Response
@@ -32,7 +32,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande", name="app_procuration_index")
+     * @Route("/je-demande", defaults={"_enable_campaign_silence"=true}, name="app_procuration_index")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response
@@ -46,7 +46,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/mon-lieu-de-vote", name="app_procuration_request_vote")
+     * @Route("/je-demande/mon-lieu-de-vote", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_vote")
      * @Method("GET|POST")
      */
     public function voteAction(Request $request): Response
@@ -68,7 +68,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/mes-coordonnees", name="app_procuration_request_profile")
+     * @Route("/je-demande/mes-coordonnees", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_profile")
      * @Method("GET|POST")
      */
     public function profileAction(Request $request): Response
@@ -94,7 +94,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/ma-procuration", name="app_procuration_request_elections")
+     * @Route("/je-demande/ma-procuration", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_elections")
      * @Method("GET|POST")
      */
     public function electionsAction(Request $request): Response
@@ -121,7 +121,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/merci", name="app_procuration_request_thanks")
+     * @Route("/je-demande/merci", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_thanks")
      * @Method("GET")
      */
     public function requestThanksAction(): Response
@@ -130,7 +130,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-propose", name="app_procuration_proxy_proposal")
+     * @Route("/je-propose", defaults={"_enable_campaign_silence"=true}, name="app_procuration_proxy_proposal")
      * @Method("GET|POST")
      */
     public function proxyProposalAction(Request $request): Response
@@ -175,7 +175,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-propose/merci", name="app_procuration_proposal_thanks")
+     * @Route("/je-propose/merci", defaults={"_enable_campaign_silence"=true}, name="app_procuration_proposal_thanks")
      * @Method("GET")
      */
     public function proposalThanksAction(Request $request): Response
