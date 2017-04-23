@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class StatsController extends Controller
 {
     /**
-     * @Route("/stats", name="api_stats")
+     * @Route("/stats", defaults={"_enable_campaign_silence"=true}, name="api_stats")
      * @Method("GET")
      */
     public function indexAction()
