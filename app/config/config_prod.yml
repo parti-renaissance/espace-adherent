@@ -1,17 +1,6 @@
 imports:
     - { resource: config.yml }
 
-services:
-    app.mailjet.transport.transactional:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
-        arguments: ['@?logger']
-        public: false
-
-    app.mailjet.transport.campaign:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
-        arguments: ['@?logger']
-        public: false
-
 monolog:
     handlers:
         main:

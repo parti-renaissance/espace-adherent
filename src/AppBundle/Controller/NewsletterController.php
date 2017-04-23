@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 class NewsletterController extends Controller
 {
     /**
-     * @Route("/newsletter", name="newsletter_subscription")
+     * @Route("/newsletter", defaults={"_enable_campaign_silence"=true}, name="newsletter_subscription")
      * @Method({"GET", "POST"})
      */
     public function subscriptionAction(Request $request)
@@ -39,7 +39,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/merci", name="newsletter_subscription_subscribed")
+     * @Route("/newsletter/merci", defaults={"_enable_campaign_silence"=true}, name="newsletter_subscription_subscribed")
      * @Method("GET")
      */
     public function subscribedAction()
@@ -48,7 +48,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/desinscription", name="newsletter_unsubscribe")
+     * @Route("/newsletter/desinscription", defaults={"_enable_campaign_silence"=true}, name="newsletter_unsubscribe")
      * @Method({"GET", "POST"})
      */
     public function unsubscribeAction(Request $request)
@@ -68,7 +68,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/desinscription/desinscrit", name="newsletter_unsubscribe_unsubscribed")
+     * @Route("/newsletter/desinscription/desinscrit", defaults={"_enable_campaign_silence"=true}, name="newsletter_unsubscribe_unsubscribed")
      * @Method("GET")
      */
     public function unsubscribedAction()
@@ -77,7 +77,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/invitation", name="newsletter_invitation")
+     * @Route("/newsletter/invitation", defaults={"_enable_campaign_silence"=true}, name="newsletter_invitation")
      * @Method("GET|POST")
      */
     public function invitationAction(Request $request)
@@ -100,7 +100,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/invitation/merci", name="newsletter_invitation_sent")
+     * @Route("/newsletter/invitation/merci", defaults={"_enable_campaign_silence"=true}, name="newsletter_invitation_sent")
      * @Method("GET")
      */
     public function invitationSentAction(Request $request)

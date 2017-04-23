@@ -82,7 +82,7 @@
         {% endfor %}
 
         {% block banner %}
-            {{ include('banner/program.html.twig') }}
+            {{ include('banner/newsletter.html.twig') }}
         {% endblock %}
 
         {% set user_is_adherent = is_granted('ROLE_ADHERENT') %}
@@ -329,9 +329,7 @@
         {% block content %}{% endblock %}
 
         {% block footer %}
-            {% if not campaign_expired %}
-                {{ include('components/newsletter_footer.html.twig') }}
-            {% endif %}
+            {{ include('components/newsletter_footer.html.twig') }}
 
             <footer class="background--lighter space--30-0">
                 <div class="l__wrapper">
