@@ -8,6 +8,7 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
+            {#
             <div class="l__row l__tablet--col l__row--v-stretch">
                 <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
                    style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}'); height: 370px;">
@@ -30,6 +31,12 @@
                     </a>
                 </div>
             </div>
+            #}
+
+            <video poster="{{ static_asset('emmanuel-macron.jpg', {'q': 70}) }}" id="bgvid" playsinline autoplay muted loop style="width:100%;">
+                <source src="http://thenewcode.com/assets/videos/polina.webm" type="video/webm">
+                <source src="http://thenewcode.com/assets/videos/polina.mp4" type="video/mp4">
+            </video>
 
             {% if not campaign_expired %}
                 <div class="content b__nudge--top">
