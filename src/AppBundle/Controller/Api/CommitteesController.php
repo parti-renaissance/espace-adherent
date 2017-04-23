@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class CommitteesController extends Controller
 {
     /**
-     * @Route("/committees", name="api_committees")
+     * @Route("/committees", defaults={"_enable_campaign_silence"=true}, name="api_committees")
      * @Method("GET")
      */
     public function getApprovedCommitteesAction()
@@ -25,7 +25,7 @@ class CommitteesController extends Controller
     }
 
     /**
-     * @Route("/events", name="api_committees_events")
+     * @Route("/events", defaults={"_enable_campaign_silence"=true}, name="api_committees_events")
      * @Method("GET")
      */
     public function getUpcomingCommitteesEventsAction(Request $request)
