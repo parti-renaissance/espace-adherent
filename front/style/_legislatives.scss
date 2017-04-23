@@ -1,10 +1,57 @@
 .legislatives {
+    &__header {
+        @media (max-width: $mobile) {
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+
+            > div {
+                padding-left: 5%;
+            }
+
+            nav {
+                margin-top: 20px;
+                width: 100%;
+                padding-left: 5%;
+                box-sizing: border-box;
+                @include gradient-container;
+
+                &:after {
+                    @include classic-gradient($gradient--menu);
+                    width: 40px;
+                    right: 0;
+                    left: auto;
+                    top: -5px;
+                }
+            }
+
+            ul {
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+                width: auto;
+                justify-content: flex-start;
+                padding: 0 0 20px 0;
+                -webkit-overflow-scrolling: touch;
+
+                li:last-child {
+                    padding-right: 50px;
+                }
+            }
+        }
+    }
+
+    header {
+        @media (max-width: $mobile) {
+            padding: 0 0 40px;
+        }
+    }
+
     input[type="text"] {
         border: 0;
         border-bottom: 1px solid black;
         padding: 6px 0;
         width: 100%;
-        max-width: 600px;
         margin: 0 auto;
         @include text--default;
         margin-right: 20px;
@@ -32,6 +79,24 @@
     form {
         display: flex;
         align-items: center;
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .fa {
+                margin: 0;
+            }
+
+            .l__row,
+            .l__row > select {
+                width: 100%;
+            }
+
+            .l__row {
+                margin: 15px 0 0 0;
+            }
+        }
 
         .label {
           margin-right: 10px;
