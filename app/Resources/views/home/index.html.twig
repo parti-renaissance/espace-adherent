@@ -9,11 +9,13 @@
     <main>
         <section class="l__wrapper">
             <div class="l__row l__tablet--col l__row--v-stretch">
-                <a href="{{ blocks[0].link }}" class="card card__background card--large card--large--disable-gradient card--large__desktop l__hide--on-tablet l__col--bottom"
-                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}');">
+                <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
+                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}'); height: 370px;">
                     <div class="background">
                         <div class="content">
-                            <div class="btn btn--no-border btn--blue">Lire</div>
+                            <h2>{{ blocks[0].title }}</h2>
+                            <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                            <div class="btn btn--no-border">Lire</div>
                         </div>
                     </div>
                 </a>
@@ -22,10 +24,10 @@
                         <div class="background card__background"
                              style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}')"></div>
                     </a>
-                </div>
-
-                <div class="macron__banner">
-                    {{ include('banner/macron.html.twig') }}
+                    <a class="content" href="{{ blocks[0].link }}">
+                        <h2>{{ blocks[0].title }}</h2>
+                        <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                    </a>
                 </div>
             </div>
 
