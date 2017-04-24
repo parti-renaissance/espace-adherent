@@ -6,6 +6,7 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Utils\EmojisRemover;
 use AppBundle\Utils\HtmlPurifier;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -109,7 +110,7 @@ class EventCommand
 
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = trim(EmojisRemover::remove(trim($name)));
     }
 
     public function getCategory(): ?string
@@ -129,7 +130,7 @@ class EventCommand
 
     public function setDescription(?string $description)
     {
-        $this->description = HtmlPurifier::purify($description);
+        $this->description = HtmlPurifier::purify(trim(EmojisRemover::remove(trim($description))));
     }
 
     public function getCapacity(): ?int
