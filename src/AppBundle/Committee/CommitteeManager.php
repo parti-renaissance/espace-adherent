@@ -275,7 +275,9 @@ class CommitteeManager
         }
 
         foreach ($this->getCommitteeRepository()->findByUuid($committees) as $committee) {
-            $this->followCommittee($adherent, $committee);
+            if (!$this->isFollowingCommittee($adherent, $committee)) {
+                $this->followCommittee($adherent, $committee);
+            }
         }
 
         $this->getManager()->flush();
