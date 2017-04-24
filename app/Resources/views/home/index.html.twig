@@ -35,14 +35,14 @@
 
             <a href="{{ blocks[0].link }}" class="video__container link--no-decor">
                 <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}"
-                       id="bgvid" playsinline autoplay muted loop style="width:100%;">
+                       id="bgvid" playsinline autoplay muted loop">
                     <source src="video-hp.mov" type="video/webm">
                     <source src="video-hp.mov" type="video/mp4">
                 </video>
                 <div class="video__filter"></div>
                 <div class="video__content">
-                    <h2 class="text--white text--larger">{{ blocks[0].title }}</h2>
-                    <p class="text--body text--white">{{ blocks[0].subtitle }}</p>
+                    <h2>{{ blocks[0].title }}</h2>
+                    <p class="text--body">{{ blocks[0].subtitle }}</p>
                     <div class="btn btn--no-border">Lire</div>
                 </div>
             </a>
