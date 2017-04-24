@@ -8,31 +8,6 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
-            {#
-            <div class="l__row l__tablet--col l__row--v-stretch">
-                <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
-                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}'); height: 370px;">
-                    <div class="background">
-                        <div class="content">
-                            <h2>{{ blocks[0].title }}</h2>
-                            <p class="text--summary">{{ blocks[0].subtitle }}</p>
-                            <div class="btn btn--no-border">Lire</div>
-                        </div>
-                    </div>
-                </a>
-                <div class="card card--large card--large__tablet l__hide--on-desktop">
-                    <a href="{{ blocks[0].link }}" class="background-container">
-                        <div class="background card__background"
-                             style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}')"></div>
-                    </a>
-                    <a class="content" href="{{ blocks[0].link }}">
-                        <h2>{{ blocks[0].title }}</h2>
-                        <p class="text--summary">{{ blocks[0].subtitle }}</p>
-                    </a>
-                </div>
-            </div>
-            #}
-
             <a href="{{ blocks[0].link }}" class="video__container link--no-decor">
                 <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}"
                        id="bgvid" playsinline autoplay muted loop>
@@ -58,9 +33,9 @@
                             </a>
                         </div>
                         <div class="action action__home blue">
-                            <p>Participez aux prochains meetings !</p>
-                            <a href="{{ path('articles_list', {'category': 'meetings'}) }}" class="white-blue">
-                                Je m'inscris
+                            <p>Chaque vote compte : je fais procuration</p>
+                            <a href="{{ path('app_procuration_index') }}" class="white-blue" target="_blank" rel="noreferrer noopener">
+                                En savoir plus
                             </a>
                         </div>
                     </article>
