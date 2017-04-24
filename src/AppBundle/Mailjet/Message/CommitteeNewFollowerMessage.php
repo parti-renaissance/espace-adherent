@@ -48,7 +48,7 @@ final class CommitteeNewFollowerMessage extends MailjetMessage
             'committee_admin_url' => $hostUrl,
             'member_firstname' => self::escape($newFollower->getFirstName()),
             'member_lastname' => $newFollower->getLastNameInitial(),
-            'member_age' => $newFollower->getAge(),
+            'member_age' => $newFollower->getAge() ?? 'n/a',
         ];
     }
 
