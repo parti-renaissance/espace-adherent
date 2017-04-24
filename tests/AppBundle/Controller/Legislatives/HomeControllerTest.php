@@ -17,21 +17,21 @@ class HomeControllerTest extends SqliteWebTestCase
 
     public function testMap()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/la-carte');
+        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testCandidatesApiNotXmlHttpRequest()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
+        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     public function testCandidatesApi()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates', [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates', [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('application/json', $this->client->getResponse()->headers->get('Content-Type'));
@@ -47,18 +47,22 @@ class HomeControllerTest extends SqliteWebTestCase
         $candidates = $crawler->filter('.legislatives_candidate');
 
         // Check the order of candidates
-        $this->assertSame(12, $candidates->count());
+        $this->assertSame(16, $candidates->count());
         $this->assertSame('Alban Martin', $candidates->first()->filter('h1')->text());
-        $this->assertSame('Michelle Dumoulin', $candidates->eq(1)->filter('h1')->text());
-        $this->assertSame('Pierre Etchebest', $candidates->eq(2)->filter('h1')->text());
-        $this->assertSame('Monique Albert', $candidates->eq(3)->filter('h1')->text());
-        $this->assertSame('Etienne de Monté-Cristo', $candidates->eq(4)->filter('h1')->text());
-        $this->assertSame('Valérie Langlade', $candidates->eq(5)->filter('h1')->text());
-        $this->assertSame('Isabelle Piémontaise', $candidates->eq(6)->filter('h1')->text());
-        $this->assertSame('Estelle Antonov', $candidates->eq(7)->filter('h1')->text());
-        $this->assertSame('Jacques Arditi', $candidates->eq(8)->filter('h1')->text());
-        $this->assertSame('Albert Bérégovoy', $candidates->eq(9)->filter('h1')->text());
-        $this->assertSame('Franck de Lavalle', $candidates->eq(10)->filter('h1')->text());
+        $this->assertSame('Paul Arty', $candidates->eq(1)->filter('h1')->text());
+        $this->assertSame('Michel Patulacci', $candidates->eq(2)->filter('h1')->text());
+        $this->assertSame('Josiane Dupuis', $candidates->eq(3)->filter('h1')->text());
+        $this->assertSame('Nathan Enquillé', $candidates->eq(4)->filter('h1')->text());
+        $this->assertSame('Michelle Dumoulin', $candidates->eq(5)->filter('h1')->text());
+        $this->assertSame('Pierre Etchebest', $candidates->eq(6)->filter('h1')->text());
+        $this->assertSame('Monique Albert', $candidates->eq(7)->filter('h1')->text());
+        $this->assertSame('Etienne de Monté-Cristo', $candidates->eq(8)->filter('h1')->text());
+        $this->assertSame('Valérie Langlade', $candidates->eq(9)->filter('h1')->text());
+        $this->assertSame('Isabelle Piémontaise', $candidates->eq(10)->filter('h1')->text());
+        $this->assertSame('Estelle Antonov', $candidates->eq(11)->filter('h1')->text());
+        $this->assertSame('Jacques Arditi', $candidates->eq(12)->filter('h1')->text());
+        $this->assertSame('Albert Bérégovoy', $candidates->eq(13)->filter('h1')->text());
+        $this->assertSame('Franck de Lavalle', $candidates->eq(14)->filter('h1')->text());
         $this->assertSame('Emmanuelle Parfait', $candidates->last()->filter('h1')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Alban Martin')->link());

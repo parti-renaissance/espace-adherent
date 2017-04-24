@@ -15,7 +15,9 @@ class LoadLegislativesData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $rank = 0;
         foreach ($zones = $this->createLegislativeZones() as $zone) {
+            $zone->setRank(++$rank);
             $manager->persist($zone);
         }
 
@@ -41,7 +43,7 @@ class LoadLegislativesData implements FixtureInterface
 
         $manager->persist($this->createLegislativeCandidate(
             $zones['0073'],
-            'Première circonscription de la Savoie',
+            'Première circonscription de Savoie',
             '1',
             Genders::FEMALE,
             'Michelle',
@@ -52,7 +54,7 @@ class LoadLegislativesData implements FixtureInterface
 
         $manager->persist($this->createLegislativeCandidate(
             $zones['0073'],
-            'Deuxième circonscription de la Savoie',
+            'Deuxième circonscription de Savoie',
             '2',
             Genders::MALE,
             'Pierre',
@@ -63,7 +65,7 @@ class LoadLegislativesData implements FixtureInterface
 
         $manager->persist($this->createLegislativeCandidate(
             $zones['0074'],
-            'Cinquième circonscription de la Haute-Savoie',
+            'Cinquième circonscription de Haute-Savoie',
             '5',
             Genders::FEMALE,
             'Monique',
@@ -161,6 +163,54 @@ class LoadLegislativesData implements FixtureInterface
             'emmanuelle-parfait'
         ));
 
+        $manager->persist($this->createLegislativeCandidate(
+            $zones['002A'],
+            'Première circonscription de Corse Sud',
+            '1',
+            Genders::MALE,
+            'Michel',
+            'Patulacci',
+            41.9227051,
+            8.6356286,
+            'michel-patulacci'
+        ));
+
+        $manager->persist($this->createLegislativeCandidate(
+            $zones['002B'],
+            'Première circonscription de Haute Corse',
+            '1',
+            Genders::FEMALE,
+            'Josiane',
+            'Dupuis',
+            42.6860037,
+            9.3889053,
+            'josiane-dupuis'
+        ));
+
+        $manager->persist($this->createLegislativeCandidate(
+            $zones['0019'],
+            'Première circonscription de Corrèze',
+            '1',
+            Genders::MALE,
+            'Paul',
+            'Arty',
+            45.26565,
+            1.7695031,
+            'paul-arty'
+        ));
+
+        $manager->persist($this->createLegislativeCandidate(
+            $zones['0021'],
+            'Première circonscription de Côte d\'Or',
+            '1',
+            Genders::MALE,
+            'Nathan',
+            'Enquillé',
+            47.3318596,
+            4.9620089,
+            'nathan-enquille'
+        ));
+
         $manager->flush();
     }
 
@@ -208,7 +258,10 @@ class LoadLegislativesData implements FixtureInterface
         // France Métropolitaine
         $zones['0001'] = LegislativeDistrictZone::createDepartmentZone('0001', 'Ain', ['01']);
         $zones['0002'] = LegislativeDistrictZone::createDepartmentZone('0002', 'Aisne', ['02']);
-        $zones['0020'] = LegislativeDistrictZone::createDepartmentZone('0020', 'Corse', ['20', '2A', '2B']);
+        $zones['0019'] = LegislativeDistrictZone::createDepartmentZone('0019', 'Corrèze', ['19']);
+        $zones['002A'] = LegislativeDistrictZone::createDepartmentZone('002A', 'Corse Sud', ['20', '2A', '2B', 'Corse']);
+        $zones['002B'] = LegislativeDistrictZone::createDepartmentZone('002B', 'Haute Corse', ['20', '2A', '2B', 'Corse']);
+        $zones['0021'] = LegislativeDistrictZone::createDepartmentZone('0021', "Côte d'Or", ['21']);
         $zones['0073'] = LegislativeDistrictZone::createDepartmentZone('0073', 'Savoie', ['73']);
         $zones['0074'] = LegislativeDistrictZone::createDepartmentZone('0074', 'Haute-Savoie', ['74', 'Haute Savoie']);
         $zones['0075'] = LegislativeDistrictZone::createDepartmentZone('0075', 'Paris', ['75']);

@@ -17,7 +17,7 @@ class LegislativeCandidateRepository extends EntityRepository
             ->addSelect('dz, md')
             ->leftJoin('lc.districtZone', 'dz')
             ->leftJoin('lc.media', 'md')
-            ->orderBy('dz.areaCode', 'ASC')
+            ->orderBy('dz.rank', 'ASC')
             ->addOrderBy('lc.districtNumber', 'ASC')
             ->getQuery()
             ->getResult()

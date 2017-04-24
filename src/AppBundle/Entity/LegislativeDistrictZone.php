@@ -38,7 +38,7 @@ class LegislativeDistrictZone
      * @ORM\Column(length=4)
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(
-     *   pattern="/^[0-1]\d{3}$/",
+     *   pattern="/^([0-1]\d{3}|002[A-B])$/",
      *   message="legislative_district_zone.area_code.invalid",
      *   groups="Admin"
      * )
@@ -58,6 +58,11 @@ class LegislativeDistrictZone
     private $areaType = self::TYPE_DEPARTMENT;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     */
+    private $rank;
+
+    /**
      * @ORM\Column(length=100)
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Length(min=2, max=100, groups="Admin")
@@ -69,23 +74,24 @@ class LegislativeDistrictZone
      */
     private $keywords;
 
-    public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
+    public static function createDepartmentZone(string $areaCode, string $name, array $keywords = [], int $rank = 1): self
     {
-        return self::create($areaCode, self::TYPE_DEPARTMENT, $name, $keywords);
+        return self::create($areaCode, self::TYPE_DEPARTMENT, $name, $keywords, $rank);
     }
 
-    public static function createRegionZone(string $areaCode, string $name, array $keywords = []): self
+    public static function createRegionZone(string $areaCode, string $name, array $keywords = [], int $rank = 1): self
     {
-        return self::create($areaCode, self::TYPE_REGION, $name, $keywords);
+        return self::create($areaCode, self::TYPE_REGION, $name, $keywords, $rank);
     }
 
-    private static function create(string $areaCode, string $areaType, string $name, array $keywords = []): self
+    private static function create(string $areaCode, string $areaType, string $name, array $keywords = [], int $rank = 1): self
     {
         $zone = new self();
         $zone->setAreaCode($areaCode);
         $zone->setAreaType($areaType);
         $zone->setKeywords($keywords);
         $zone->setName($name);
+        $zone->rank = $rank;
 
         return $zone;
     }
@@ -208,5 +214,15 @@ class LegislativeDistrictZone
     public function setKeywords(array $keywords): void
     {
         $this->keywords = implode("\n", array_unique($keywords));
+    }
+
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    public function setRank(int $rank): void
+    {
+        $this->rank = $rank;
     }
 }
