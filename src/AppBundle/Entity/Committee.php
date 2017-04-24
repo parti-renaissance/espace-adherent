@@ -352,7 +352,7 @@ class Committee implements GeoPointInterface
 
     public function isCreatedBy(UuidInterface $uuid): bool
     {
-        return $this->createdBy->equals($uuid);
+        return $this->createdBy && $this->createdBy->equals($uuid);
     }
 
     /**
