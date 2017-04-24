@@ -17,7 +17,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
         '_page' => 1,
         '_per_page' => 150,
         '_sort_order' => 'ASC',
-        '_sort_by' => 'areaCode',
+        '_sort_by' => 'rank',
     ];
 
     protected $formOptions = [
