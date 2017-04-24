@@ -273,8 +273,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         // Submit the committee form with valid data to create the new committee event
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
-                'name' => "Débat sur l'écologie",
-                'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
+                'name' => " ♻ Débat sur l'écologie ♻ ",
+                'description' => ' ♻ Cette journée sera consacrée à un grand débat sur la question écologique. ♻ ',
                 'category' => 'CE003',
                 'address' => [
                     'address' => '6 rue Neyret',
@@ -311,6 +311,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
         $this->assertSame("Débat sur l'écologie", $event->getName());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $event->getDescription());
         $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
         $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');

@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Event\EventCategories;
 use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\UuidInterface;
@@ -140,7 +139,7 @@ class Event implements GeoPointInterface
         $this->setName($name);
         $this->slug = $slug;
         $this->category = $category;
-        $this->description = EmojisRemover::remove($description);
+        $this->description = $description;
         $this->postAddress = $address;
         $this->capacity = $capacity;
         $this->participantsCount = $participantsCount;
@@ -170,7 +169,7 @@ class Event implements GeoPointInterface
         $this->capacity = $capacity;
         $this->beginAt = new \DateTime($beginAt);
         $this->finishAt = new \DateTime($finishAt);
-        $this->description = EmojisRemover::remove($description);
+        $this->description = $description;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
@@ -266,7 +265,7 @@ class Event implements GeoPointInterface
 
     private function setName(string $name)
     {
-        $this->name = EmojisRemover::remove($name);
+        $this->name = $name;
         $this->canonicalName = static::canonicalize($name);
     }
 
