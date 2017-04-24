@@ -40,6 +40,10 @@
     video {
         position: relative;
         z-index: 100;
+
+        &[poster] {
+            max-height: 399px;
+        }
     }
 }
 
