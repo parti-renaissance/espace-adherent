@@ -31,3 +31,27 @@
         }
     }
 }
+
+.video__container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    video {
+        position: relative;
+        z-index: 100;
+    }
+}
+
+.video__content {
+    position: absolute;
+    z-index: 200;
+    bottom: 0;
+    left: 0;
+    padding: 30px;
+}
+
+.video__filter {
+    z-index: 150;
+    @include classic-gradient($gradient);
+}
