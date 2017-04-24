@@ -44,9 +44,13 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
+        if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
+            return;
+        }
+
         $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
-            $this->manager->getCommitteeHosts($committee)->toArray(),
+            $hosts,
             $adherent,
             $this->urlGenerator->getUrl('app_commitee_list_members', $committee)
         ));
