@@ -94,9 +94,10 @@ class JeMarcheReport
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
      *
      * @Assert\GreaterThanOrEqual(value=0, message="jemarche.not_conviced.greater_than_or_equal_0")
+     * @Assert\LessThanOrEqual(value=65535, message="jemarche.not_conviced.less_than_or_equal_65000")
      */
     private $notConvinced;
 
@@ -117,7 +118,7 @@ class JeMarcheReport
      */
     public $recaptcha = '';
 
-    public static function createWithCaptcha(string $recaptcha)
+    public static function createWithCaptcha(string $recaptcha): self
     {
         $report = new self();
         $report->recaptcha = $recaptcha;
@@ -128,7 +129,7 @@ class JeMarcheReport
     /**
      * @Assert\Callback
      */
-    public function validateOneFieldNotBlank(ExecutionContextInterface $context)
+    public function validateOneFieldNotBlank(ExecutionContextInterface $context): void
     {
         if (!$this->notConvinced && !$this->almostConvinced && !$this->convinced) {
             $context->addViolation('Vous devez entrer au moins un contact que vous avez obtenu durant une action.');
@@ -140,7 +141,7 @@ class JeMarcheReport
         return $this->type.' de '.$this->emailAddress;
     }
 
-    public static function getTypes()
+    public static function getTypes(): array
     {
         return [
             self::TYPE_KIOSQUE,
@@ -153,7 +154,7 @@ class JeMarcheReport
         ];
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -163,7 +164,7 @@ class JeMarcheReport
         return $this->type;
     }
 
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
@@ -173,7 +174,7 @@ class JeMarcheReport
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -183,7 +184,7 @@ class JeMarcheReport
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode)
+    public function setPostalCode(string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
@@ -208,7 +209,7 @@ class JeMarcheReport
         return count($this->convinced);
     }
 
-    public function setConvinced(array $convinced)
+    public function setConvinced(array $convinced): void
     {
         $this->convinced = $convinced;
     }
@@ -233,7 +234,7 @@ class JeMarcheReport
         return count($this->almostConvinced);
     }
 
-    public function setAlmostConvinced(array $almostConvinced)
+    public function setAlmostConvinced(array $almostConvinced): void
     {
         $this->almostConvinced = $almostConvinced;
     }
@@ -243,7 +244,7 @@ class JeMarcheReport
         return $this->notConvinced;
     }
 
-    public function setNotConvinced(?int $notConvinced)
+    public function setNotConvinced(?int $notConvinced): void
     {
         $this->notConvinced = $notConvinced;
     }
@@ -253,8 +254,8 @@ class JeMarcheReport
         return $this->reaction;
     }
 
-    public function setReaction(?string $reaction)
+    public function setReaction(?string $reaction): void
     {
-        $this->reaction = EmojisRemover::remove($reaction);
+        $this->reaction = trim(EmojisRemover::remove($reaction));
     }
 }

@@ -112,7 +112,8 @@ referent.message.max_length: Le message doit contenir moins de {{ limit }} carac
 # Je Marche
 #
 jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.
-jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre positif ou zéro.
+jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre entier positif supérieur ou égal à zéro.
+jemarche.not_conviced.less_than_or_equal_65000: Vous devez entrer un nombre entier positif inférieur ou égal à 65 000.
 jemarche.postal_code.not_blank: Vous devez entrer un code postal.
 jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 
