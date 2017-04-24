@@ -20,7 +20,7 @@
             </div>
         {% endif %}
         <div class="legislatives__candidate__info">
-            <h1 class="text--large">{{ candidate.fullName }}</h1>
+            <h1 class="text--large text--pink">{{ candidate.fullName }}</h1>
             <span class="text--body" id="candidate-district-name">{{ candidate.districtName }}</span>
             {% if candidate.hasWebPages %}
                 {{ include('legislatives/_candidate_links.html.twig', {'show_name': true}) }}

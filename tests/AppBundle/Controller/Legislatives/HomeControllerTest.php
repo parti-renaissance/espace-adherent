@@ -15,6 +15,29 @@ class HomeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    public function testMap()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/la-carte');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testCandidatesApiNotXmlHttpRequest()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testCandidatesApi()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates', [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('application/json', $this->client->getResponse()->headers->get('Content-Type'));
+        $this->assertJson($this->client->getResponse()->getContent());
+    }
+
     public function testLegislativesCandidatesDirectory()
     {
         $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/');

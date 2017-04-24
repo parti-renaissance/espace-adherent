@@ -59,6 +59,13 @@ export default class ReqwestApiClient {
         });
     }
 
+    getCandidates(callback) {
+        this._createRequest(callback, {
+            url: '/api/candidates',
+            type: 'json'
+        });
+    }
+
     getProcurationRequests(queryString, page, callback) {
         this._createRequest(callback, {
             url: '/espace-responsable-procuration/plus?page='+page+'&'+queryString,
