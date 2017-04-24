@@ -100,8 +100,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testFollowCommittees()
     {
-        $adherentRepository = $this->getAdherentRepository();
-        $adherent = $adherentRepository->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
 
@@ -119,6 +118,17 @@ class CommitteeManagerTest extends MysqlWebTestCase
             /* @var CommitteeMembership $membership */
             $this->assertSame($committees[$i], $membership->getCommitteeUuid()->toString());
         }
+    }
+
+    public function testFollowCommitteesTwice()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
+
+        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+
+        $this->committeeManager->followCommittees($adherent, [LoadAdherentData::COMMITTEE_1_UUID]);
+
+        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
     }
 
     public function testGetAdherentCommittees()
