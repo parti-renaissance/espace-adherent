@@ -58,6 +58,7 @@
     padding: 30px;
     max-width: 500px;
     color: white;
+    pointer-events: none;
 
     h2 {
         @include text--larger;
@@ -81,9 +82,30 @@
 
 .video__filter {
     z-index: 150;
-    @include classic-gradient($gradient);
+    @include animate-gradient($gradient, 1);
+
+    &:hover {
+        @include animate-gradient($gradient, 0);
+    }
 
     @media (max-width: $tablet) {
         background: none;
+    }
+
+    &--hover {
+        z-index: 150;
+        @include animate-gradient($gradient-hover, 0);
+
+        @media (max-width: $tablet) {
+            background: none;
+        }
+
+        &:hover {
+            @include animate-gradient($gradient-hover, 1);
+
+            @media (max-width: $tablet) {
+                background: none;
+            }
+        }
     }
 }
