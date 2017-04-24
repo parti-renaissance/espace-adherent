@@ -49,6 +49,32 @@
     bottom: 0;
     left: 0;
     padding: 30px;
+    max-width: 500px;
+
+    @media (max-width: $tablet) {
+        max-width: 100%;
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        > p {
+            display: none;
+        }
+    }
+
+    @media (max-width: $mobile) {
+        h2 {
+            font-size: 24px;
+            line-height: 28px;
+            margin: 0;
+        }
+
+        > div {
+            display: none;
+        }
+    }
 }
 
 .video__filter {
