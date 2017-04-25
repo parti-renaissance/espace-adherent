@@ -3,8 +3,8 @@ $mobile: 650px;
 $h-iphone5: 570px;
 $h-iphone6: 670px;
 
-$zIndex__overlay-menu: 2;
-$zIndex__overlay-caret: 3;
+$zIndex__overlay-menu: 500;
+$zIndex__overlay-caret: 600;
 
 @mixin wrapper {
     width: 90%;
