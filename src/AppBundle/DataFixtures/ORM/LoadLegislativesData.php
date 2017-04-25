@@ -256,30 +256,30 @@ class LoadLegislativesData implements FixtureInterface
     private function createLegislativeZones(): array
     {
         // France Métropolitaine
-        $zones['0001'] = LegislativeDistrictZone::createDepartmentZone('0001', 'Ain', ['01']);
-        $zones['0002'] = LegislativeDistrictZone::createDepartmentZone('0002', 'Aisne', ['02']);
-        $zones['0019'] = LegislativeDistrictZone::createDepartmentZone('0019', 'Corrèze', ['19']);
-        $zones['002A'] = LegislativeDistrictZone::createDepartmentZone('002A', 'Corse Sud', ['20', '2A', '2B', 'Corse']);
-        $zones['002B'] = LegislativeDistrictZone::createDepartmentZone('002B', 'Haute Corse', ['20', '2A', '2B', 'Corse']);
-        $zones['0021'] = LegislativeDistrictZone::createDepartmentZone('0021', "Côte d'Or", ['21']);
-        $zones['0073'] = LegislativeDistrictZone::createDepartmentZone('0073', 'Savoie', ['73']);
-        $zones['0074'] = LegislativeDistrictZone::createDepartmentZone('0074', 'Haute-Savoie', ['74', 'Haute Savoie']);
-        $zones['0075'] = LegislativeDistrictZone::createDepartmentZone('0075', 'Paris', ['75']);
-        $zones['0092'] = LegislativeDistrictZone::createDepartmentZone('0092', 'Hauts-de-Seine', ['92', 'Hauts de Seine']);
+        $zones['0001'] = LegislativeDistrictZone::createDepartmentZone('01', 'Ain', ['01']);
+        $zones['0002'] = LegislativeDistrictZone::createDepartmentZone('02', 'Aisne', ['02']);
+        $zones['0019'] = LegislativeDistrictZone::createDepartmentZone('19', 'Corrèze', ['19']);
+        $zones['002A'] = LegislativeDistrictZone::createDepartmentZone('2A', 'Corse Sud', ['20', '2A', '2B', 'Corse']);
+        $zones['002B'] = LegislativeDistrictZone::createDepartmentZone('2B', 'Haute Corse', ['20', '2A', '2B', 'Corse']);
+        $zones['0021'] = LegislativeDistrictZone::createDepartmentZone('21', "Côte d'Or", ['21']);
+        $zones['0073'] = LegislativeDistrictZone::createDepartmentZone('73', 'Savoie', ['73']);
+        $zones['0074'] = LegislativeDistrictZone::createDepartmentZone('74', 'Haute-Savoie', ['74', 'Haute Savoie']);
+        $zones['0075'] = LegislativeDistrictZone::createDepartmentZone('75', 'Paris', ['75']);
+        $zones['0092'] = LegislativeDistrictZone::createDepartmentZone('92', 'Hauts-de-Seine', ['92', 'Hauts de Seine']);
 
         // Outre-Mer
-        $zones['0971'] = LegislativeDistrictZone::createDepartmentZone('0971', 'Guadeloupe', ['971']);
-        $zones['0972'] = LegislativeDistrictZone::createDepartmentZone('0972', 'Martinique', ['972']);
-        $zones['0973'] = LegislativeDistrictZone::createDepartmentZone('0973', 'Guyane', ['973']);
-        $zones['0974'] = LegislativeDistrictZone::createDepartmentZone('0974', 'La Réunion', ['974']);
-        $zones['0975'] = LegislativeDistrictZone::createDepartmentZone('0975', 'Saint-Pierre-et-Miquelon', ['975', 'Saint Pierre et Miquelon']);
-        $zones['0976'] = LegislativeDistrictZone::createDepartmentZone('0976', 'Mayotte', ['976']);
-        $zones['0977'] = LegislativeDistrictZone::createDepartmentZone('0977', 'Saint-Barthélemy', ['977', 'Saint Barthelemy']);
-        $zones['0978'] = LegislativeDistrictZone::createDepartmentZone('0978', 'Saint-Martin', ['978', 'Saint Martin']);
-        $zones['0986'] = LegislativeDistrictZone::createDepartmentZone('0986', 'Wallis-et-Futuna', ['986', 'Wallis et Futuna']);
-        $zones['0987'] = LegislativeDistrictZone::createDepartmentZone('0987', 'Polynésie française', ['987']);
-        $zones['0988'] = LegislativeDistrictZone::createDepartmentZone('0988', 'Nouvelle-Calédonie', ['988', 'Nouvelle Calédonie']);
-        $zones['0989'] = LegislativeDistrictZone::createDepartmentZone('0989', 'Clipperton', ['989']);
+        $zones['0971'] = LegislativeDistrictZone::createDepartmentZone('971', 'Guadeloupe', ['971']);
+        $zones['0972'] = LegislativeDistrictZone::createDepartmentZone('972', 'Martinique', ['972']);
+        $zones['0973'] = LegislativeDistrictZone::createDepartmentZone('973', 'Guyane', ['973']);
+        $zones['0974'] = LegislativeDistrictZone::createDepartmentZone('974', 'La Réunion', ['974']);
+        $zones['0975'] = LegislativeDistrictZone::createDepartmentZone('975', 'Saint-Pierre-et-Miquelon', ['975', 'Saint Pierre et Miquelon']);
+        $zones['0976'] = LegislativeDistrictZone::createDepartmentZone('976', 'Mayotte', ['976']);
+        $zones['0977'] = LegislativeDistrictZone::createDepartmentZone('977', 'Saint-Barthélemy', ['977', 'Saint Barthelemy']);
+        $zones['0978'] = LegislativeDistrictZone::createDepartmentZone('978', 'Saint-Martin', ['978', 'Saint Martin']);
+        $zones['0986'] = LegislativeDistrictZone::createDepartmentZone('986', 'Wallis-et-Futuna', ['986', 'Wallis et Futuna']);
+        $zones['0987'] = LegislativeDistrictZone::createDepartmentZone('987', 'Polynésie française', ['987']);
+        $zones['0988'] = LegislativeDistrictZone::createDepartmentZone('988', 'Nouvelle-Calédonie', ['988', 'Nouvelle Calédonie']);
+        $zones['0989'] = LegislativeDistrictZone::createDepartmentZone('989', 'Clipperton', ['989']);
 
         // Circonscriptions des français à l'étranger
         $zones['1001'] = LegislativeDistrictZone::createRegionZone('1001', 'USA et Canada', ['US', 'CA', 'USA', 'CAN', 'États-Unis', 'Etats Unis', 'Canada']);
