@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -24,6 +25,8 @@ trait EntityIdentityTrait
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid")
+     *
+     * @Algolia\Attribute
      */
     protected $uuid;
 

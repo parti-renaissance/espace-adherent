@@ -29,13 +29,13 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get(Coordinates $coordinates)
+    public function get(Coordinates $coordinates, ?string $size = null)
     {
-        $id = self::CACHE_KEY_PREFIX.md5($coordinates->getLatitude().'-'.$coordinates->getLongitude());
+        $id = self::CACHE_KEY_PREFIX.md5($coordinates->getLatitude().'-'.$coordinates->getLongitude().'_'.$size);
         $item = $this->cache->getItem($id);
 
         if (!$item->isHit()) {
-            if (!$contents = $this->fetch($coordinates)) {
+            if (!$contents = $this->fetch($coordinates, $size ?: '400x400')) {
                 return false;
             }
 
@@ -46,12 +46,12 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
         return $item->get();
     }
 
-    private function fetch(Coordinates $coordinates)
+    private function fetch(Coordinates $coordinates, string $size)
     {
         $parameters = http_build_query([
             'center' => $coordinates->getLatitude().','.$coordinates->getLongitude(),
             'zoom' => self::MAPS_ZOOM_LEVEL,
-            'size' => '400x400',
+            'size' => $size,
             'key' => $this->key,
             'markers' => $coordinates->getLatitude().','.$coordinates->getLongitude(),
         ], null, '&', PHP_QUERY_RFC3986);

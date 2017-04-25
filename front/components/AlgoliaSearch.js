@@ -13,6 +13,7 @@ export default class AlgoliaSearch extends React.Component {
         this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
         this.clarificationsIndex = client.initIndex(`Clarification_${props.environment}`);
         this.articlesIndex = client.initIndex(`Article_${props.environment}`);
+        this.eventsIndex = client.initIndex(`Event_${props.environment}`);
 
         this.state = {
             term: '',
@@ -56,6 +57,7 @@ export default class AlgoliaSearch extends React.Component {
             proposal: [],
             clarification: [],
             article: [],
+            event: [],
         };
 
         if (-1 < this.blacklist.indexOf(term)) {
@@ -81,6 +83,7 @@ export default class AlgoliaSearch extends React.Component {
         this.proposalsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('proposal'));
         this.clarificationsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('clarification'));
         this.articlesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('article'));
+        this.eventsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('event'));
     }
 
     _searchCallback(nbHits, hits) {
@@ -89,6 +92,7 @@ export default class AlgoliaSearch extends React.Component {
             .concat(hits.proposal)
             .concat(hits.clarification)
             .concat(hits.article)
+            .concat(hits.event)
         ;
 
         this.setState({
@@ -101,6 +105,10 @@ export default class AlgoliaSearch extends React.Component {
     _createImageURL(hit) {
         if ('custom' === hit.type) {
             return `/algolia/custom/${hit.id}`;
+        }
+
+        if ('event' === hit.type) {
+            return `/maps/${hit._geoloc.lat},${hit._geoloc.lng}?algolia`;
         }
 
         return `/algolia/${hit.type}/${hit.slug}`;
@@ -119,6 +127,10 @@ export default class AlgoliaSearch extends React.Component {
             return 'Actualité';
         }
 
+        if ('event' === hit.type) {
+            return 'Événement';
+        }
+
         return '';
     }
 
@@ -135,7 +147,19 @@ export default class AlgoliaSearch extends React.Component {
             return `/emmanuel-macron/desintox/${hit.slug}`;
         }
 
+        if ('event' === hit.type) {
+            return `/evenements/${hit.uuid}/${hit.slug}`;
+        }
+
         return hit.url;
+    }
+
+    _createTitle(hit) {
+        if ('event' === hit.type) {
+            return hit.name;
+        }
+
+        return hit.title;
     }
 
     render() {
@@ -169,7 +193,7 @@ export default class AlgoliaSearch extends React.Component {
                                     <div>
                                         <h2>
                                             <a href={link}>
-                                                {hit.title}
+                                                {this._createTitle(hit)}
                                             </a>
                                         </h2>
                                         <div>
@@ -178,11 +202,15 @@ export default class AlgoliaSearch extends React.Component {
                                         <div className="share">
                                             Partagez
                                             <span role="button"
-                                                  onClick={() => { App.share('facebook', link, hit.title); }}>
+                                                  onClick={() => {
+                                                      App.share('facebook', link, this._createTitle(hit));
+                                                  }}>
                                                 <i className="fa fa-facebook-square" />
                                             </span>
                                             <span role="button"
-                                                  onClick={() => { App.share('twitter', link, hit.title); }}>
+                                                  onClick={() => {
+                                                      App.share('twitter', link, this._createTitle(hit));
+                                                  }}>
                                                 <i className="fa fa-twitter" />
                                             </span>
                                         </div>
