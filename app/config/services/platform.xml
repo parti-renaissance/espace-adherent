@@ -4,6 +4,13 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Legislatives -->
+        <service id="app.legislatives.contact_handler" class="AppBundle\Legislative\LegislativeCampaignContactMessageHandler">
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument>%legislatives_financial_hotline_email%</argument>
+            <argument>%legislatives_standard_hotline_email%</argument>
+        </service>
+
         <!-- Api -->
         <service id="app.api.committee_provider" class="AppBundle\Api\CommitteeProvider">
             <argument type="service" id="app.repository.committee"/>

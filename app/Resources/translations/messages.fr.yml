@@ -117,6 +117,11 @@ ton_macron.invitation_form.friend_email: E-mail de votre ami
 ton_macron.invitation_form.submit_send: Envoyer
 
 #
+# Legislatives
+#
+legislatives.contact.success: "Votre demande d'information a été envoyée avec succès. Elle sera traitée dans les plus brefs délais par le service concerné."
+
+#
 # Legislative candidate
 #
 legislative_candidate.careers.1: Vient de la société civile
