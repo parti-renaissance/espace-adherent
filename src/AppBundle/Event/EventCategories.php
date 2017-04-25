@@ -15,6 +15,7 @@ final class EventCategories
         'Action ciblée' => 'CE008',
         'Événement innovant' => 'CE009',
         'Marche' => 'CE010',
+        'Soutien à un candidat aux législatives' => 'CE011',
     ];
 
     const ALL = [
@@ -28,6 +29,7 @@ final class EventCategories
         'CE008',
         'CE009',
         'CE010',
+        'CE011',
     ];
 
     private function __construct()
