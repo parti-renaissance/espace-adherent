@@ -17,6 +17,14 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class LegislativeCandidateAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'districtZone.rank',
+    ];
+    protected $maxPerPage = 100;
+    protected $perPageOptions = [];
+
     protected $formOptions = [
         'validation_groups' => ['Default', 'Admin'],
     ];
@@ -64,7 +72,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ->add('districtZone', null, [
                 'label' => 'Zone géographique',
             ])
-            ->add('districtName', null, [
+            ->add('districtNumber', null, [
                 'label' => 'Circonscription',
             ])
             ->add('_action', null, [

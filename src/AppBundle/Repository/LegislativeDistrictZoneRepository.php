@@ -7,6 +7,14 @@ use Doctrine\ORM\EntityRepository;
 
 class LegislativeDistrictZoneRepository extends EntityRepository
 {
+    public function findDistrictZone(string $areaCode): ?LegislativeDistrictZone
+    {
+        return $this->findOneBy(['areaCode' => $areaCode]);
+    }
+
+    /**
+     * @return LegislativeDistrictZone[]
+     */
     public function findAllGrouped(): array
     {
         $zones = $this
