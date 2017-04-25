@@ -4,6 +4,20 @@
 
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            var reasonSelector = dom('#{{ form.reason.vars.id }}');
+            var residencyWarning = dom('#reason-residency-warning');
+
+            on(reasonSelector, 'change', function() {
+                if ('residency' == reasonSelector.value) {
+                    show(residencyWarning);
+                } else {
+                    hide(residencyWarning);
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block procuration_content %}
@@ -55,7 +69,13 @@
                 <div class="form__row b__nudge--top-40">
                     {{ form_label(form.reason, 'Pour quelle raison vous est-il impossible de voter ?') }}
                     {{ form_errors(form.reason) }}
-                    {{ form_widget(form.reason, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(form.reason, { 'attr': { 'class': 'form--full b__nudge--top-5' } }) }}
+                </div>
+
+                <div class="text--summary" id="reason-residency-warning">
+                    Nous vous rappelons que pour faire valider votre procuration, il vous sera nécéssaire
+                    de vous déplacer dans un commissariat, gendarmerie ou tribunal d'instance (si vous habitez
+                    en France) ou dans une ambassade ou consulat de France (si vous résidez à l'étranger).
                 </div>
 
                 <div class="b__nudge--top-40">
