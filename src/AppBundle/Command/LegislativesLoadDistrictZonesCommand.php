@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Entity\LegislativeDistrictZone;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,14 +17,12 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 {
     private const DISTRICTS_TOTAL = 577;
 
-    private const RANK = 0;
-    private const AREA_CODE = 1;
-    private const NAME = 2;
-
-    private const DISTRICT_NUMBER = 3;
+    private const AREA_CODE = 0;
+    private const NAME = 1;
+    private const DISTRICT_NUMBER = 2;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var ObjectManager
      */
     private $manager;
 
@@ -39,10 +38,8 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $csvPath = $input->getArgument('csv-file');
-
         $fs = $this->getContainer()->get('filesystem');
-        if (!$fs->exists($csvPath)) {
+        if (!$fs->exists($csvPath = $input->getArgument('csv-file'))) {
             throw new \RuntimeException(sprintf('File "%s" does not exists.', $csvPath));
         }
 
@@ -61,53 +58,35 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
         $handle = fopen($input->getArgument('csv-file'), 'r');
         while (($data = fgetcsv($handle, 1000, $input->getOption('csv-delimiter'))) !== false) {
-            if (count($data) != 6) {
+            if (5 !== count($data)) {
                 continue;
             }
+
             if (!$firstLine) {
                 $firstLine = true;
                 continue;
             }
 
-            if (!isset($districts[$data[self::AREA_CODE]])) {
-                $district = $this->manager->getRepository(LegislativeDistrictZone::class)
-                    ->findOneByAreaCode($data[self::AREA_CODE]);
+            $areaCode = LegislativeDistrictZone::normalizeAreaCode($data[self::AREA_CODE]);
+
+            if (!isset($districts[$areaCode])) {
+                $district = $this->manager->getRepository(LegislativeDistrictZone::class)->findDistrictZone($areaCode);
                 if (!$district) {
-                    $create = intval($data[self::AREA_CODE]) < 1000 ? 'createDepartmentZone' : 'createRegionZone';
-                    $district = LegislativeDistrictZone::{$create}(
-                        $data[self::AREA_CODE],
-                        $data[self::NAME],
-                        [],
-                        $data[self::RANK]
-                    );
-                    $this->manager->persist($district);
+                    $this->manager->persist($district = $this->createDistrictZone($areaCode, $data[self::NAME]));
                 } else {
-                    /* @var LegislativeDistrictZone $district */
                     $district->setName($data[self::NAME]);
-                    $district->setRank($data[self::RANK]);
-                    $district->setAreaCode($data[self::AREA_CODE]);
+                    $district->setAreaCode($areaCode);
                 }
-                $districts[$data[self::AREA_CODE]] = $district;
+                $districts[$areaCode] = $district;
             } else {
-                $district = $districts[$data[self::AREA_CODE]];
+                $district = $districts[$areaCode];
             }
 
-            $candidate = $this->manager->getRepository(LegislativeCandidate::class)->findOneBy([
-                'districtNumber' => $data[self::DISTRICT_NUMBER],
-                'districtZone' => $district,
-            ]);
-            if (!$candidate) {
-                $candidate = new LegislativeCandidate();
-                $this->manager->persist($candidate);
-                $candidate->setDistrictZone($district);
-                $candidate->setDistrictNumber($data[self::DISTRICT_NUMBER]);
-                $candidate->setSlug(sprintf(
-                    'circonscription-%d-du-%s',
-                    $data[self::DISTRICT_NUMBER],
-                    $data[self::AREA_CODE]
-                ));
+            $areaNumber = $data[self::DISTRICT_NUMBER];
+            if (!$candidate = $this->manager->getRepository(LegislativeCandidate::class)->findDistrictZoneCandidate($areaCode, $areaNumber)) {
+                $this->manager->persist($candidate = $this->createCandidate($district, $areaNumber));
             }
-            $candidate->setFirstName('Le candidat En Marche à cette circonscription');
+            $candidate->setFirstName('Le candidat En Marche de cette circonscription');
             $candidate->setLastName('n\'est pas encore public');
             $candidate->setDistrictName($data[self::NAME]);
             $candidate->setGender('-');
@@ -128,5 +107,24 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
             $progress->finish();
             $output->writeln('');
         }
+    }
+
+    private function createCandidate(LegislativeDistrictZone $district, string $areaNumber): LegislativeCandidate
+    {
+        $candidate = new LegislativeCandidate();
+        $candidate->setDistrictZone($district);
+        $candidate->setDistrictNumber($areaNumber);
+        $candidate->setSlug(sprintf('circonscription-%d-du-%s', $areaNumber, $district->getZoneNumber()));
+
+        return $candidate;
+    }
+
+    private function createDistrictZone(string $areaCode, string $name): LegislativeDistrictZone
+    {
+        if ('0' === $areaCode[0]) {
+            return LegislativeDistrictZone::createDepartmentZone($areaCode, $name);
+        }
+
+        return LegislativeDistrictZone::createRegionZone($areaCode, $name);
     }
 }

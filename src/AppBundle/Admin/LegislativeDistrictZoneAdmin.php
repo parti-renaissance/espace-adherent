@@ -15,10 +15,12 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
-        '_per_page' => 150,
         '_sort_order' => 'ASC',
         '_sort_by' => 'rank',
     ];
+
+    protected $maxPerPage = 150;
+    protected $perPageOptions = [];
 
     protected $formOptions = [
         'validation_groups' => ['Admin'],
@@ -86,6 +88,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
             ->end()
             ->with('Mots-clés', ['class' => 'col-md-6'])
                 ->add('keywords', CollectionType::class, [
+                    'required' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'delete_empty' => true,

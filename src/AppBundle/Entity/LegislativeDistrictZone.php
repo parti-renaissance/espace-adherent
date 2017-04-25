@@ -74,24 +74,23 @@ class LegislativeDistrictZone
      */
     private $keywords;
 
-    public static function createDepartmentZone(string $areaCode, string $name, array $keywords = [], int $rank = 1): self
+    public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return self::create($areaCode, self::TYPE_DEPARTMENT, $name, $keywords, $rank);
+        return self::create($areaCode, self::TYPE_DEPARTMENT, $name, $keywords);
     }
 
-    public static function createRegionZone(string $areaCode, string $name, array $keywords = [], int $rank = 1): self
+    public static function createRegionZone(string $areaCode, string $name, array $keywords = []): self
     {
-        return self::create($areaCode, self::TYPE_REGION, $name, $keywords, $rank);
+        return self::create($areaCode, self::TYPE_REGION, $name, $keywords);
     }
 
-    private static function create(string $areaCode, string $areaType, string $name, array $keywords = [], int $rank = 1): self
+    private static function create(string $areaCode, string $areaType, string $name, array $keywords = []): self
     {
         $zone = new self();
         $zone->setAreaCode($areaCode);
         $zone->setAreaType($areaType);
         $zone->setKeywords($keywords);
         $zone->setName($name);
-        $zone->rank = $rank;
 
         return $zone;
     }
@@ -101,16 +100,31 @@ class LegislativeDistrictZone
         return array_values(self::TYPE_CHOICES);
     }
 
+    public static function normalizeAreaCode(string $code): string
+    {
+        return sprintf('%04s', $code);
+    }
+
     public function __toString(): string
     {
-        $areaCode = (int) $this->areaCode;
-        if ($areaCode < 10) {
-            $code = substr($this->areaCode, 2);
-        } else {
-            $code = ltrim($this->areaCode, '0');
+        if (!$this->areaCode) {
+            return 'n/a';
         }
 
-        return sprintf('%s - %s', $code, $this->name);
+        if (self::isCorsica($this->areaCode)) {
+            return sprintf('%s - %s', ltrim($this->areaCode, '0'), $this->name);
+        }
+
+        $areaCode = (int) $this->areaCode;
+        if ($areaCode >= 1000) {
+            return $this->name;
+        }
+
+        return sprintf(
+            '%s - %s',
+            $areaCode < 10 ? substr($this->areaCode, 2) : ltrim($this->areaCode, '0'),
+            $this->name
+        );
     }
 
     public function getId(): ?int
@@ -139,11 +153,58 @@ class LegislativeDistrictZone
 
     public function setAreaCode(string $code): void
     {
-        $this->areaCode = $code;
+        $this->areaCode = $code = self::normalizeAreaCode($code);
+
+        if (null === $this->rank) {
+            $this->rank = $this->guessRankFromAreaCode($code);
+        }
+    }
+
+    private function guessRankFromAreaCode(string $areaCode): int
+    {
+        // Corsica is split into 2 smaller department chunks (2A and 2B).
+        // Instead of having only rank 20 for Corsica, we have two:
+        //
+        // Rank 20 stands for South Corsica.
+        // Rank 21 stands for North Corsica.
+        if (self::isCorsica($areaCode)) {
+            return 'A' === substr($areaCode, -1) ? 20 : 21;
+        }
+
+        $rank = (int) ltrim($areaCode, '0');
+        if ($rank < 20 || $rank > 95) {
+            return $rank;
+        }
+
+        // Due to the Corsica exception, every department after Corsica has a
+        // position that doesn't exactly match its department number. This why
+        // there is a delta.
+        //
+        // Rank 20 stands for South Corsica department (20).
+        // Rank 21 stands for North Corsica department (20).
+        // Rank 22 stands for Côte d'Or department (21).
+        // etc.
+        return $rank + 1;
+    }
+
+    private static function isCorsica(string $areaCode): bool
+    {
+        $char = substr($areaCode, -1);
+
+        return 'A' === $char || 'B' === $char;
+    }
+
+    public function getZoneNumber(): string
+    {
+        return ltrim($this->areaCode, '0');
     }
 
     final public function getAreaTypeLabel(): string
     {
+        if (self::isCorsica($this->areaCode)) {
+            return self::ZONE_FRANCE;
+        }
+
         $areaCode = (int) $this->areaCode;
 
         if ($areaCode <= 95) {

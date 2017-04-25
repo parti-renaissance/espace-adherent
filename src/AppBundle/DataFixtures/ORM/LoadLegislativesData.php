@@ -15,9 +15,7 @@ class LoadLegislativesData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $rank = 0;
         foreach ($zones = $this->createLegislativeZones() as $zone) {
-            $zone->setRank(++$rank);
             $manager->persist($zone);
         }
 
