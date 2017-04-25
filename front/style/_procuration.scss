@@ -190,7 +190,7 @@
             display: block;
             padding: 5px 10px;
             color: $darker;
-            
+
             &:hover {
                 background: #e5e5e5;
                 color: $darker;
@@ -265,5 +265,13 @@
                 border-bottom: 0;
             }
         }
+    }
+}
+
+.procuration__reason__message {
+    display: block;
+
+    &.hide-me {
+        display: none;
     }
 }
