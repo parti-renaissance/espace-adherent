@@ -19,6 +19,8 @@ parameters:
     campaign_sender_email:       'jemarche@en-marche.fr'
     campaign_sender_name:        'En Marche !'
     feed_ttl:                    60 # in minutes
+    legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
+    legislatives_standard_hotline_email: 'campagne.legislatives@en-marche.fr'
 
 framework:
     translator:      { fallbacks: ["%locale%"] }

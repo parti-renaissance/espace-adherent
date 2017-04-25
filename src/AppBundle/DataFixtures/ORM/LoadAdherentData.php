@@ -222,6 +222,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'registered_at' => '2017-04-09 06:20:38',
         ]);
         $adherent12->enableCommitteesNotifications();
+        $adherent12->setLegislativeCandidate(true);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

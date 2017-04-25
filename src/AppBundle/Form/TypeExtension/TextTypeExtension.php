@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\TypeExtension;
 
+use AppBundle\Utils\EmojisRemover;
 use AppBundle\Utils\HtmlPurifier;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,6 +15,10 @@ class TextTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['filter_emojis']) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'filterEmojisOnPreSubmit']);
+        }
+
         if ($options['purify_html']) {
             $builder->addEventListener(FormEvents::SUBMIT, [$this, 'purifyOnSubmit']);
         }
@@ -21,9 +26,14 @@ class TextTypeExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults([
+            'purify_html' => false,
+            'filter_emojis' => false,
+        ]);
+
         $resolver
-            ->setDefault('purify_html', false)
             ->setAllowedTypes('purify_html', 'bool')
+            ->setAllowedTypes('filter_emojis', 'bool')
         ;
     }
 
@@ -32,8 +42,17 @@ class TextTypeExtension extends AbstractTypeExtension
         return TextType::class;
     }
 
+    public function filterEmojisOnPreSubmit(FormEvent $event)
+    {
+        if ($data = $event->getData()) {
+            $event->setData(trim(EmojisRemover::remove($event->getData())));
+        }
+    }
+
     public function purifyOnSubmit(FormEvent $event)
     {
-        $event->setData(HtmlPurifier::purify($event->getData()));
+        if ($data = $event->getData()) {
+            $event->setData(HtmlPurifier::purify($event->getData()));
+        }
     }
 }
