@@ -30,15 +30,11 @@
                 '{{ form.cityName.vars.id }}'
             );
 
-            App.createAddressSelector(
+            App.createVoteLocationSelector(
                 '{{ form.voteCountry.vars.id }}',
                 '{{ form.votePostalCode.vars.id }}',
                 '{{ form.voteCity.vars.id }}',
-                '{{ form.voteCityName.vars.id }}'
-            );
-
-            App.createVoteOfficeSelector(
-                '{{ form.voteCountry.vars.id }}',
+                '{{ form.voteCityName.vars.id }}',
                 '{{ form.voteOffice.vars.id }}'
             );
         });
@@ -175,7 +171,12 @@
                         </div>
 
                         <div class="form__row">
-                            {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
+                            <span id="vote-label-city-name">
+                                {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
+                            </span>
+                            <span id="vote-label-consulate" style="display: none;">
+                                {{ form_label(form.voteCity, 'Le consulat ou l\'ambassade dans lequel ou laquelle je vote') }}
+                            </span>
                             {{ form_widget(form.voteCity) }}
                             {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
                         </div>

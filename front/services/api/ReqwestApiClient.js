@@ -10,7 +10,7 @@ export default class ReqwestApiClient {
         });
     }
 
-    getVoteOffices(country, callback) {
+    getCountryConsulates(country, callback) {
         this._createRequest(callback, {
             url: '/api/vote-offices/'+country,
             type: 'json'

@@ -59,9 +59,9 @@ class App {
         form.attachEvents();
     }
 
-    createVoteOfficeSelector(country, voteOffice) {
-        const formFactory = this._di.get('vote_office.form_factory');
-        const form = formFactory.createVoteOfficeForm(country, voteOffice);
+    createVoteLocationSelector(country, postalCode, city, cityName, office) {
+        const formFactory = this._di.get('vote_location.form_factory');
+        const form = formFactory.createVoteLocationForm(country, postalCode, city, cityName, office);
 
         form.prepare();
         form.refresh();
