@@ -3,7 +3,7 @@ import Sharer from './services/sharer/Sharer';
 import TaxReturnProvider from './services/donation/TaxReturnProvider';
 import ReqwestApiClient from './services/api/ReqwestApiClient';
 import AddressFormFactory from './services/address/AddressFormFactory';
-import VoteOfficeFormFactory from './services/voteOffice/VoteOfficeFormFactory';
+import VoteLocationFormFactory from './services/vote/VoteLocationFormFactory';
 import Slugifier from './services/slugifier/Slugifier';
 import MapFactory from './services/map/MapFactory';
 
@@ -70,8 +70,8 @@ export default (di) => {
     /*
      * Vote office form
      */
-    di.set('vote_office.form_factory', () => {
-        return new VoteOfficeFormFactory(di.get('api'));
+    di.set('vote_location.form_factory', () => {
+        return new VoteLocationFormFactory(di.get('api'));
     });
 
     /*
