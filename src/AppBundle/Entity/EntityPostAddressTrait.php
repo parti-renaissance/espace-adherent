@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Intl;
 
 trait EntityPostAddressTrait
 {
@@ -31,6 +32,11 @@ trait EntityPostAddressTrait
     public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
+    }
+
+    public function getCountryName(): ?string
+    {
+        return Intl::getRegionBundle()->getCountryName($this->postAddress->getCountry());
     }
 
     public function getAddress(): ?string
