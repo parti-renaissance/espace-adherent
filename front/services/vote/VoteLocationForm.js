@@ -53,9 +53,6 @@ export default class VoteLocationForm {
         this.resetCity();
 
         if ('FR' !== this._state.country) {
-            hide(this._postalCode.parentNode);
-            hide(this._office.parentNode);
-
             hide(dom('#vote-label-city-name'));
             show(dom('#vote-label-consulate'));
 
@@ -65,9 +62,6 @@ export default class VoteLocationForm {
 
         hide(dom('#vote-label-consulate'));
         show(dom('#vote-label-city-name'));
-
-        show(this._postalCode.parentNode);
-        show(this._office.parentNode);
 
         this.displayVoteCitySelector();
     }
@@ -130,10 +124,10 @@ export default class VoteLocationForm {
     }
 
     resetCity() {
+        this.replaceCityNameInputWith(this._defaultInput);
+        
         hide(this._cityName);
         hide(this._city);
-
-        this.replaceCityNameInputWith(this._defaultInput);
 
         this._cityName.defaultValue = '';
         this._cityName.value = '';
