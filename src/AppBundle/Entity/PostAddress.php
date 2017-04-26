@@ -28,6 +28,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
+     *
+     * @Algolia\Attribute
      */
     private $address;
 
@@ -37,6 +39,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
+     *
+     * @Algolia\Attribute
      */
     private $postalCode;
 
@@ -55,6 +59,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Algolia\Attribute
      */
     private $cityName;
 
@@ -64,16 +70,22 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string
      *
      * @ORM\Column(length=2)
+     *
+     * @Algolia\Attribute
      */
     private $country;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Algolia\Attribute
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Algolia\Attribute
      */
     private $longitude;
 
