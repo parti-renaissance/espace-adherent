@@ -25,8 +25,8 @@
         <div>
             dans un rayon de
             {# this widget will be embedded in the ribbon text #}
-            <select name="{{ constant('AppBundle\\Search\\SearchParametersFilter::PARAMETER_RADIUS') }}">
-                {% for option in constant('AppBundle\\Search\\SearchParametersFilter::RADII') %}
+            <select name="{{ constant('PARAMETER_RADIUS', search) }}">
+                {% for option in constant('RADII', search) %}
                     <option value="{{ option }}" {% if constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_RADIUS') == option %}selected="selected"{% endif %}>{{ option }} Km</option>
                 {% endfor %}
             </select>
@@ -35,7 +35,7 @@
         <div>
             autour de
             {# this widget will be embedded in the ribbon text #}
-            <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{% if app.user.cityName is defined %}{{ app.user.cityName }}{% else %}{{ constant('DEFAULT_CITY', search) }}{% endif %}" placeholder="Ville ou code postal">
+            <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal">
             <input type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search_type }}"/>
         </div>
     </div>

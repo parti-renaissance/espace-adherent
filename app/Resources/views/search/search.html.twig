@@ -81,7 +81,7 @@
                 Voir la carte des {% block button_label %}comités{% endblock %}
             </a>
         </div>
-        {{ include('search/_filters.html.twig', {'type': search_type|default(constant('AppBundle\\Search\\SearchParametersFilter::TYPE_COMMITTEES')) }) }}
+        {{ include('search/_filters.html.twig', {'type': search_type|default(constant('TYPE_COMMITTEES', search)) }) }}
         {% set currentRoute = app.request.attributes.get('_route') %}
 
         <div class="search__results {{ currentRoute }}" id="search-results">

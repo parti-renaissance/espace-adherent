@@ -21,6 +21,9 @@ class SearchController extends Controller
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
 
         $search = $this->getSearch($request);
+        if ($user = $this->getUser()) {
+            $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+        }
 
         try {
             $results = $this->get('app.search.search_results_provider')->find($search);
