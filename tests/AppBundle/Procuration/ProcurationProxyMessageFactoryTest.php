@@ -8,6 +8,7 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
@@ -65,8 +66,8 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $message = $this->factory->createProxyFoundMessage(
             $this->createAdherentMock('john@smith.tld'),
-            $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld'),
-            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr')
+            $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld', '0102030405'),
+            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr', '0607080910')
         );
 
         $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
@@ -84,6 +85,8 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
                 'elections' => '',
                 'mandant_first_name' => 'Marie Bénédicte',
                 'mandant_last_name' => 'Dumont',
+                'mandant_phone' => '+33 1 02 03 04 05',
+                'voter_phone' => '+33 6 07 08 09 10',
             ],
             $message->getVars()
         );
@@ -96,22 +99,32 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function createProcurationRequestMock(string $firstNames, string $lastName, string $email)
+    private function createProcurationRequestMock(string $firstNames, string $lastName, string $email, string $phone = '')
     {
         $request = $this->createMock(ProcurationRequest::class);
         $request->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
         $request->expects($this->any())->method('getLastName')->willReturn($lastName);
         $request->expects($this->any())->method('getEmailAddress')->willReturn($email);
 
+        if ($phone) {
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            $request->expects($this->any())->method('getPhone')->willReturn($phoneUtil->parse($phone, 'FR'));
+        }
+
         return $request;
     }
 
-    private function createProcurationProxyMock(string $firstNames, string $lastName, string $email)
+    private function createProcurationProxyMock(string $firstNames, string $lastName, string $email, string $phone = '')
     {
         $proxy = $this->createMock(ProcurationProxy::class);
         $proxy->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
         $proxy->expects($this->any())->method('getLastName')->willReturn($lastName);
         $proxy->expects($this->any())->method('getEmailAddress')->willReturn($email);
+
+        if ($phone) {
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            $proxy->expects($this->any())->method('getPhone')->willReturn($phoneUtil->parse($phone, 'FR'));
+        }
 
         return $proxy;
     }
