@@ -320,6 +320,7 @@
             <argument />
             <argument>AppBundle\Entity\LegislativeCandidate</argument>
             <argument />
+            <argument type="service" id="app.admin.media" />
         </service>
 
         <service id="app.admin.legislative_district_zone" class="AppBundle\Admin\LegislativeDistrictZoneAdmin">

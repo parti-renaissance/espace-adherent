@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\LegislativeCandidate;
+use AppBundle\Entity\Media;
 use AppBundle\Form\GenderType;
 use AppBundle\ValueObject\Genders;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -28,6 +29,35 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     protected $formOptions = [
         'validation_groups' => ['Default', 'Admin'],
     ];
+
+    private $mediaAdmin;
+
+    public function __construct(string $code, string $class, string $baseControllerName, MediaAdmin $mediaAdmin)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->mediaAdmin = $mediaAdmin;
+    }
+
+    public function prePersist($legislativeCandidate)
+    {
+        parent::prePersist($legislativeCandidate);
+
+        /** @var Media $media */
+        $media = $legislativeCandidate->getMedia();
+        if ($media && $media->getFile()) {
+            $this->mediaAdmin->prePersist($media);
+        }
+    }
+
+    public function preUpdate($legislativeCandidate)
+    {
+        parent::preUpdate($legislativeCandidate);
+
+        /** @var Media $media */
+        if ($media = $legislativeCandidate->getMedia()) {
+            $this->mediaAdmin->preUpdate($media);
+        }
+    }
 
     protected function configureDatagridFilters(DatagridMapper $mapper)
     {
@@ -89,8 +119,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     {
         $mapper
             ->with('Photo de profil')
-                ->add('media', null, [
+                ->add('media', 'sonata_type_admin', [
                     'label' => 'Photo',
+                    'delete' => false,
                     'required' => false,
                 ])
             ->end()
