@@ -20,7 +20,7 @@ export default (di) => {
     const banner = dom('#header-banner');
     const header = dom('header');
     const content = dom('main');
-    const newsletter = dom('.newsletter__banner');
+    const newsletter = dom('#newsletter__footer');
     const footer = dom('footer');
 
     const searchButtons = findAll(document, '.je-cherche');
@@ -35,7 +35,7 @@ export default (di) => {
         on(button, 'click', () => {
             addClass(overlay, 'g-search');
 
-            [header, content, banner, newsletter, footer].forEach((item) => {
+            [banner, header, content, newsletter, footer].forEach((item) => {
                 if (item) {
                     addClass(item, 'hide-me');
                 }
@@ -48,7 +48,7 @@ export default (di) => {
     on(searchCloseButton, 'click', () => {
         removeClass(overlay, 'g-search');
 
-        [header, content, banner, newsletter, footer].forEach((item) => {
+        [banner, header, content, newsletter, footer].forEach((item) => {
             if (item) {
                 removeClass(item, 'hide-me');
             }
