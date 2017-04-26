@@ -125,7 +125,7 @@ export default class VoteLocationForm {
 
     resetCity() {
         this.replaceCityNameInputWith(this._defaultInput);
-        
+
         hide(this._cityName);
         hide(this._city);
 
