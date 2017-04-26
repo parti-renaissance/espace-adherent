@@ -100,14 +100,6 @@ class ProcurationProxyRepository extends EntityRepository
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC');
 
-        if ($procurationRequest->getElectionPresidentialFirstRound()) {
-            $qb->andWhere('pp.electionPresidentialFirstRound = TRUE');
-        }
-
-        if ($procurationRequest->getElectionPresidentialSecondRound()) {
-            $qb->andWhere('pp.electionPresidentialSecondRound = TRUE');
-        }
-
         if ($procurationRequest->getElectionLegislativeFirstRound()) {
             $qb->andWhere('pp.electionLegislativeFirstRound = TRUE');
         }
@@ -147,8 +139,6 @@ class ProcurationProxyRepository extends EntityRepository
     private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest)
     {
         $elections = [
-            'electionPresidentialFirstRound',
-            'electionPresidentialSecondRound',
             'electionLegislativeFirstRound',
             'electionLegislativeSecondRound',
         ];
@@ -159,8 +149,6 @@ class ProcurationProxyRepository extends EntityRepository
             $score[] = sprintf('(CASE WHEN (pp.%s = :%s) THEN 1 ELSE 0 END)', $election, $election);
         }
 
-        $qb->setParameter('electionPresidentialFirstRound', $procurationRequest->getElectionPresidentialFirstRound());
-        $qb->setParameter('electionPresidentialSecondRound', $procurationRequest->getElectionPresidentialSecondRound());
         $qb->setParameter('electionLegislativeFirstRound', $procurationRequest->getElectionLegislativeFirstRound());
         $qb->setParameter('electionLegislativeSecondRound', $procurationRequest->getElectionLegislativeSecondRound());
 

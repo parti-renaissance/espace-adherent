@@ -342,14 +342,6 @@ class ProcurationRequest
      */
     public function validateChosenElections(ExecutionContextInterface $context): void
     {
-        if ($this->electionPresidentialFirstRound) {
-            return;
-        }
-
-        if ($this->electionPresidentialSecondRound) {
-            return;
-        }
-
         if ($this->electionLegislativeFirstRound) {
             return;
         }
@@ -364,13 +356,13 @@ class ProcurationRequest
     public function importAdherentData(Adherent $adherent): void
     {
         $this->gender = $adherent->getGender();
-        $this->setFirstNames($adherent->getFirstName());
-        $this->setLastName($adherent->getLastName());
+        $this->firstNames = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->setAddress($adherent->getAddress());
+        $this->address = $adherent->getAddress();
         $this->postalCode = $adherent->getPostalCode();
         $this->setCity($adherent->getCity());
-        $this->setCityName($adherent->getCityName());
+        $this->cityName = $adherent->getCityName();
         $this->country = $adherent->getCountry();
 
         if ($adherent->getPhone()) {
@@ -407,27 +399,19 @@ class ProcurationRequest
 
     public function isProxyMatching(ProcurationProxy $proxy): bool
     {
-        if ($this->getVoteCountry() !== $proxy->getVoteCountry()) {
+        if ($this->voteCountry !== $proxy->getVoteCountry()) {
             return false;
         }
 
-        if ($this->voteCountry === 'FR' && 0 !== strpos($proxy->getVotePostalCode(), substr($this->getVotePostalCode(), 0, 2))) {
+        if ('FR' === $this->voteCountry && 0 !== strpos($proxy->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
             return false;
         }
 
-        if ($this->getElectionPresidentialFirstRound() && !$proxy->getElectionPresidentialFirstRound()) {
+        if ($this->electionLegislativeFirstRound && !$proxy->getElectionLegislativeFirstRound()) {
             return false;
         }
 
-        if ($this->getElectionPresidentialSecondRound() && !$proxy->getElectionPresidentialSecondRound()) {
-            return false;
-        }
-
-        if ($this->getElectionLegislativeFirstRound() && !$proxy->getElectionLegislativeFirstRound()) {
-            return false;
-        }
-
-        if ($this->getElectionLegislativeSecondRound() && !$proxy->getElectionLegislativeSecondRound()) {
+        if ($this->electionLegislativeSecondRound && !$proxy->getElectionLegislativeSecondRound()) {
             return false;
         }
 
@@ -695,9 +679,11 @@ class ProcurationRequest
     {
         if ($this->electionPresidentialFirstRound && $this->electionPresidentialSecondRound) {
             return 'Présidentielle : 1er et 2nd tour (23 avril et 7 mai)';
-        } elseif ($this->electionPresidentialFirstRound) {
+        }
+        if ($this->electionPresidentialFirstRound) {
             return 'Présidentielle : 1er tour (23 avril)';
-        } elseif ($this->electionPresidentialSecondRound) {
+        }
+        if ($this->electionPresidentialSecondRound) {
             return 'Présidentielle : 2nd tour (7 mai)';
         }
 
@@ -708,9 +694,11 @@ class ProcurationRequest
     {
         if ($this->electionLegislativeFirstRound && $this->electionLegislativeSecondRound) {
             return 'Législatives : 1er et 2nd tour';
-        } elseif ($this->electionLegislativeFirstRound) {
+        }
+        if ($this->electionLegislativeFirstRound) {
             return 'Législatives : 1er tour';
-        } elseif ($this->electionLegislativeSecondRound) {
+        }
+        if ($this->electionLegislativeSecondRound) {
             return 'Législatives : 2nd tour';
         }
 
