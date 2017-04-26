@@ -6,14 +6,6 @@
 {% block open_graph_image_width 1200 %}
 {% block open_graph_image_height 630 %}
 
-{% block stylesheets %}
-    <style type="text/css">
-        footer.footer--slim {
-            display: block;
-        }
-    </style>
-{% endblock %}
-
 {% block banner '' %}
 {% block header '' %}
 {% block footer '' %}
@@ -42,6 +34,5 @@
                 {% block procuration_content %}{% endblock %}
             </section>
         </div>
-        {{ include('components/footer--slim.html.twig') }}
     </main>
 {% endblock %}
