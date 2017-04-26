@@ -49,6 +49,9 @@ trait EntityPostAddressTrait
         return $this->postAddress->getPostalCode();
     }
 
+    /**
+     * @Algolia\Attribute(algoliaName="address_city")
+     */
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();

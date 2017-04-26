@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AssetsController extends Controller
 {
+    private const WIDTH = 250;
+    private const HEIGHT = 170;
+
     /**
      * @Route("/assets/{path}", defaults={"_enable_campaign_silence"=true}, requirements={"path"=".+"}, name="asset_url")
      * @Method("GET")
@@ -53,11 +56,12 @@ class AssetsController extends Controller
      *
      * @Method("GET")
      */
-    public function mapAction(string $latitude, string $longitude)
+    public function mapAction(Request $request, string $latitude, string $longitude)
     {
         $coordinates = new Coordinates($latitude, $longitude);
+        $size = $request->query->has('algolia') ? self::WIDTH.'x'.self::HEIGHT : null;
 
-        if (!$contents = $this->get('app.map.google_maps_static_provider')->get($coordinates)) {
+        if (!$contents = $this->get('app.map.google_maps_static_provider')->get($coordinates, $size)) {
             throw $this->createNotFoundException('Unable to retrieve the requested static map file');
         }
 
@@ -75,8 +79,8 @@ class AssetsController extends Controller
 
         try {
             return $glide->getImageResponse($this->getTypePath($type, $slug), [
-                'w' => 250,
-                'h' => 170,
+                'w' => self::WIDTH,
+                'h' => self::HEIGHT,
                 'fit' => 'crop',
                 'fm' => 'pjpg',
             ]);
