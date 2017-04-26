@@ -415,9 +415,9 @@ class ProcurationRequest
             return false;
         }
 
-        if ($this->getElectionPresidentialFirstRound() && !$proxy->getElectionPresidentialFirstRound()) {
+        /*if ($this->getElectionPresidentialFirstRound() && !$proxy->getElectionPresidentialFirstRound()) {
             return false;
-        }
+        }*/
 
         if ($this->getElectionPresidentialSecondRound() && !$proxy->getElectionPresidentialSecondRound()) {
             return false;

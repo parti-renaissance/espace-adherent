@@ -88,7 +88,9 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
-        $this->assertSame('Jean-Michel Carbonneau', trim($crawler->filter('.datagrid__table tbody tr td strong')->text()));
+        $proxies = $crawler->filter('.datagrid__table tbody tr td strong');
+        $this->assertSame('Maxime Michaux', trim($proxies->first()->text()));
+        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->last()->text()));
 
         // Associate the request with the proxy
         $linkNode = $crawler->filter('#associate-link-2');
@@ -129,7 +131,10 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertSame('Demande en attente', trim($crawler->filter('.procuration-manager__request__col-left h4')->text()));
-        $this->assertSame('Jean-Michel Carbonneau', trim($crawler->filter('.datagrid__table tbody tr td strong')->text()));
+
+        $proxies = $crawler->filter('.datagrid__table tbody tr td strong');
+        $this->assertSame('Maxime Michaux', trim($proxies->first()->text()));
+        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->last()->text()));
     }
 
     public function testProcurationManagerProxiesList()
@@ -206,13 +211,15 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => '18e']));
-        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => '75018']));
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
-        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_TYPE => ProcurationProxyProposalFilters::TYPE_PRESIDENTIAL_1_ROUND]));
-        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+        // Presidential first round is disabled at the moment
+        //
+        //$crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_TYPE => ProcurationProxyProposalFilters::TYPE_PRESIDENTIAL_1_ROUND]));
+        //$this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));

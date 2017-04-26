@@ -17,13 +17,13 @@ abstract class ProcurationFilters
     const PARAMETER_TYPE = 'type';
     const PARAMETER_STATUS = 'status';
 
-    const TYPE_PRESIDENTIAL_1_ROUND = 'electionPresidentialFirstRound';
+    //const TYPE_PRESIDENTIAL_1_ROUND = 'electionPresidentialFirstRound';
     const TYPE_PRESIDENTIAL_2_ROUND = 'electionPresidentialSecondRound';
     const TYPE_LEGISLATIVE_1_ROUND = 'electionLegislativeFirstRound';
     const TYPE_LEGISLATIVE_2_ROUND = 'electionLegislativeSecondRound';
 
     const TYPES = [
-        self::TYPE_PRESIDENTIAL_1_ROUND => 'Présidentielle : 1er tour',
+        //self::TYPE_PRESIDENTIAL_1_ROUND => 'Présidentielle : 1er tour',
         self::TYPE_PRESIDENTIAL_2_ROUND => 'Présidentielle : 2nd tour',
         self::TYPE_LEGISLATIVE_1_ROUND => 'Législatives : 1er tour',
         self::TYPE_LEGISLATIVE_2_ROUND => 'Législatives : 2nd tour',

@@ -36,7 +36,7 @@ class ProcurationRequestFilters extends ProcurationFilters
     {
         parent::apply($qb, $alias);
 
-        if (self::UNPROCESSED === $this->getStatus()) {
+        if ($this->matchUnprocessedRequests()) {
             $qb
                 ->andWhere(sprintf('%s.processed = :flag AND %s.processedAt IS NULL', $alias, $alias))
                 ->setParameter('flag', 0)
@@ -53,5 +53,10 @@ class ProcurationRequestFilters extends ProcurationFilters
             ->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC')
             ->addOrderBy(sprintf('%s.lastName', $alias), 'ASC')
         ;
+    }
+
+    public function matchUnprocessedRequests(): bool
+    {
+        return self::UNPROCESSED === $this->getStatus();
     }
 }
