@@ -35,6 +35,15 @@ class LegislativeCandidate
     private $id;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Assert\NotBlank
+     */
+    private $position = 0;
+
+    /**
      * @ORM\Column(length=6)
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
@@ -139,6 +148,16 @@ class LegislativeCandidate
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 
     public function setFirstName(string $firstName): void

@@ -57,7 +57,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         $districts = [];
         $progress = new ProgressBar($output, self::DISTRICTS_TOTAL);
 
-        $handle = fopen($input->getArgument('csv-file'), 'r');
+        $handle = fopen($input->getArgument('csv-file'), 'rb');
         while (($data = fgetcsv($handle, 1000, $input->getOption('csv-delimiter'))) !== false) {
             if (5 !== count($data)) {
                 continue;
@@ -111,7 +111,13 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
     {
         $slugifier = $this->getContainer()->get('sonata.core.slugify.cocur');
 
+        $position = ((int) $district->getZoneNumber()) * 100 + ((int) $areaNumber);
+        if (!is_numeric($district->getZoneNumber())) {
+            $position = 20 * 100 + ((int) $areaNumber);
+        }
+
         $candidate = new LegislativeCandidate();
+        $candidate->setPosition($position);
         $candidate->setDistrictZone($district);
         $candidate->setDistrictNumber($areaNumber);
         $candidate->setDistrictName($data[self::DISTRICT_LABEL].' de '.$data[self::NAME]);

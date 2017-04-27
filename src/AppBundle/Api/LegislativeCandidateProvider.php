@@ -22,6 +22,10 @@ class LegislativeCandidateProvider
     public function getForApi(): array
     {
         foreach ($this->repository->findAllForDirectory() as $candidate) {
+            if (!$candidate->getLatitude() || !$candidate->getLongitude()) {
+                continue;
+            }
+
             $data[] = [
                 'id' => $candidate->getId(),
                 'name' => $candidate->getFullName(),

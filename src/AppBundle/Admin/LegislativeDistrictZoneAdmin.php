@@ -33,7 +33,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
                 'label' => 'Code',
             ])
             ->add('name', null, [
-                'label' => 'Nom de la circonscription',
+                'label' => 'Nom de la zone',
             ])
             ->add('areaTypeLabel', null, [
                 'label' => 'Type de zone',

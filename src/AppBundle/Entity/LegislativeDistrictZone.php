@@ -18,7 +18,7 @@ class LegislativeDistrictZone
     private const TYPE_DEPARTMENT = 'departement';
     private const TYPE_REGION = 'region';
 
-    const ZONE_FRANCE = 'France métropolitaine';
+    const ZONE_FRANCE = 'Département';
     const ZONE_DOM_TOM = 'DOM-TOM';
     const ZONE_FOREIGN = 'Étranger';
 
@@ -116,9 +116,6 @@ class LegislativeDistrictZone
         }
 
         $areaCode = (int) $this->areaCode;
-        if ($areaCode >= 1000) {
-            return $this->name;
-        }
 
         return sprintf(
             '%s - %s',
