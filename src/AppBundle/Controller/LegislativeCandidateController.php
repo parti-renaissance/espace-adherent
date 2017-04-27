@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @Route("/espace-candidat-legislatives")
  * @Security("is_granted('ROLE_LEGISLATIVE_CANDIDATE')")
  */
-class LegislativesController extends Controller
+class LegislativeCandidateController extends Controller
 {
     /**
      * @Route("", name="app_legislative_candidates_platform")

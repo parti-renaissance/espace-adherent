@@ -92,12 +92,6 @@ class App {
         });
     }
 
-    runCandidatesMap() {
-        System.import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('map_factory'), this.get('api'));
-        });
-    }
-
     runReferentUsers(columns, users) {
         System.import('pages/referent_users').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('slugifier'), columns, users);
@@ -150,6 +144,18 @@ class App {
         System.import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
             module.default(urls, this.get('api'));
         })
+    }
+
+    runLegislativesCandidatesList() {
+        System.import('pages/candidates_list').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
+    runLegislativesCandidatesMap() {
+        System.import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('map_factory'), this.get('api'));
+        });
     }
 }
 

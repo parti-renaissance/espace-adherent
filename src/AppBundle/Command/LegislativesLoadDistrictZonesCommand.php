@@ -20,6 +20,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
     private const AREA_CODE = 0;
     private const NAME = 1;
     private const DISTRICT_NUMBER = 2;
+    private const DISTRICT_LABEL = 3;
 
     /**
      * @var ObjectManager
@@ -83,17 +84,14 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
             }
 
             $areaNumber = $data[self::DISTRICT_NUMBER];
+
             if (!$candidate = $this->manager->getRepository(LegislativeCandidate::class)->findDistrictZoneCandidate($areaCode, $areaNumber)) {
-                $this->manager->persist($candidate = $this->createCandidate($district, $areaNumber));
+                $this->manager->persist($candidate = $this->createCandidate($district, $areaNumber, $data));
             }
-            $candidate->setFirstName('Le candidat En Marche de cette circonscription');
-            $candidate->setLastName('n\'est pas encore public');
-            $candidate->setDistrictName($data[self::NAME]);
-            $candidate->setGender('-');
-            $candidate->setCareer('-');
 
             $progress->advance();
         }
+
         fclose($handle);
         $this->manager->flush();
 
@@ -109,12 +107,19 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         }
     }
 
-    private function createCandidate(LegislativeDistrictZone $district, string $areaNumber): LegislativeCandidate
+    private function createCandidate(LegislativeDistrictZone $district, string $areaNumber, array $data): LegislativeCandidate
     {
+        $slugifier = $this->getContainer()->get('sonata.core.slugify.cocur');
+
         $candidate = new LegislativeCandidate();
         $candidate->setDistrictZone($district);
         $candidate->setDistrictNumber($areaNumber);
-        $candidate->setSlug(sprintf('circonscription-%d-du-%s', $areaNumber, $district->getZoneNumber()));
+        $candidate->setDistrictName($data[self::DISTRICT_LABEL].' de '.$data[self::NAME]);
+        $candidate->setFirstName('Inconnu');
+        $candidate->setLastName('');
+        $candidate->setGender('-');
+        $candidate->setCareer('-');
+        $candidate->setSlug($slugifier->slugify($data[self::DISTRICT_LABEL].' de '.$data[self::NAME]));
 
         return $candidate;
     }
