@@ -54,32 +54,28 @@
             width: 100%;
             overflow: hidden;
         }
+        html {
+            overflow-y:auto
+        }
         iframe {
-            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
             width: 100%;
+            height: 100%;
             border: 0;
         }
         .frame__holder {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-        .frame__scroll {
-            overflow: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling:touch;
-            width: 100%;
+            position: relative;
             height: 100%;
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="frame__holder">
-        <div class="frame__scroll">
-            <iframe src="{{ legislatives_platform }}"></iframe>
-        </div>
+        <iframe src="{{ legislatives_platform }}"></iframe>
     </div>
 </body>
 </html>
