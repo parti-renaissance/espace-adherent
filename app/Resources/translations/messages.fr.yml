@@ -104,7 +104,7 @@ ton_macron.invitation_form.male: Homme
 ton_macron.invitation_form.female: Femme
 ton_macron.invitation_form.friend_first_name: Son prénom
 ton_macron.invitation_form.friend_age: Son âge
-ton_macron.invitation_form.friend_position: Sa situation professionnelle
+ton_macron.invitation_form.friend_position: Son choix au premier tour
 ton_macron.invitation_form.submit_fill_info: Continuer
 ton_macron.invitation_form.submit_fill_project: Continuer
 ton_macron.invitation_form.submit_fill_interests: Continuer
