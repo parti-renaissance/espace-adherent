@@ -15,7 +15,7 @@ final class EventCategories
         'Action ciblée' => 'CE008',
         'Événement innovant' => 'CE009',
         'Marche' => 'CE010',
-        'Soutien à un candidat aux législatives' => 'CE011',
+        'Support party' => 'CE011',
     ];
 
     const ALL = [
