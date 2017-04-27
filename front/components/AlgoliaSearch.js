@@ -74,7 +74,7 @@ export default class AlgoliaSearch extends React.Component {
                 return hit;
             });
 
-            if (4 === loaded) {
+            if (Object.keys(hits).length === loaded) {
                 this._searchCallback(nbHits, hits);
             }
         };
