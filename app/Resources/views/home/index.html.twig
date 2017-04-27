@@ -9,10 +9,9 @@
     <main>
         <section class="l__wrapper">
             <a href="{{ blocks[0].link }}" class="video__container link--no-decor">
-                <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}"
-                       playsinline autoplay muted loop>
-                    <source src="video-april-23.mp4" type="video/webm">
-                    <source src="video-april-23.mp4" type="video/mp4">
+                <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}" playsinline autoplay muted loop>
+                    <source src="{{ asset('videos/hp_v2.mp4') }}" type="video/webm">
+                    <source src="{{ asset('videos/hp_v2.mp4') }}" type="video/mp4">
                 </video>
                 <div class="video__filter"></div>
                 <div class="video__filter--hover"></div>
