@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Event\EventCategories;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
@@ -21,7 +22,8 @@ class SearchController extends Controller
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
 
         $search = $this->getSearch($request);
-        if ($user = $this->getUser()) {
+        $user = $this->getUser();
+        if ($user && in_array(EntityPostAddressTrait::class, class_uses($user))) {
             $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
