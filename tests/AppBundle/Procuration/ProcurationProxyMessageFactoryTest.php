@@ -79,14 +79,14 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             [
                 'target_firstname' => 'Marie Bénédicte',
-                'voter_first_name' => 'Monique',
-                'voter_last_name' => 'Clairefontaine',
                 'info_link' => $url,
                 'elections' => '',
+                'voter_first_name' => 'Monique',
+                'voter_last_name' => 'Clairefontaine',
+                'voter_phone' => '+33 6 07 08 09 10',
                 'mandant_first_name' => 'Marie Bénédicte',
                 'mandant_last_name' => 'Dumont',
                 'mandant_phone' => '+33 1 02 03 04 05',
-                'voter_phone' => '+33 6 07 08 09 10',
             ],
             $message->getVars()
         );
