@@ -6,58 +6,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            var department = dom("[name='department']");
-            var career = dom("[name='career']");
-            var search = dom("input[name='search']");
-            var results = findAll(document, '.legislatives__trombi__item');
-            var noResults = dom('.legislatives__no_results');
-            var filteredResults = findAll(document, '.legislatives__trombi__item:not(.hidden)');
-
-            on(department, 'change', filterCallback);
-            on(career, 'change', filterCallback);
-            on(search, 'keyup', searchOnFilteredResults);
-
-            function filterCallback() {
-                filteredResults = results;
-                filterResults(career.value, 'data-career');
-                filterResults(department.value, 'data-zone');
-                searchOnFilteredResults();
-                toggleNoResults(findAll(document, '.legislatives__trombi__item:not(.hidden)').length);
-            }
-
-            function filterResults(value, attribute) {
-                filteredResults.forEach(e => {
-                    let attributeValue = e.getAttribute(attribute);
-
-                    if ('' === value || attributeValue === value) {
-                        e.classList.remove('hidden');
-                    } else {
-                        e.classList.add('hidden');
-                    }
-                });
-
-                filteredResults = findAll(document, '.legislatives__trombi__item:not(.hidden)');
-            }
-
-            function searchOnFilteredResults() {
-                filteredResults.forEach(e => {
-                    let name = e.getAttribute('data-name');
-
-                    if (-1 !== name.search(new RegExp(search.value, 'i'))) {
-                        e.classList.remove('hidden');
-                    } else {
-                        e.classList.add('hidden');
-                    }
-                });
-            }
-
-            function toggleNoResults(length) {
-                if (0 === length) {
-                    noResults.classList.remove('hidden');
-                } else {
-                    noResults.classList.add('hidden');
-                }
-            }
+            App.runLegislativesCandidatesList();
         });
     </script>
 {% endblock %}
@@ -72,16 +21,16 @@
         </h2>
     </header>
 
-    <form class="l__wrapper--medium b__nudge--bottom-large">
+    <div class="l__wrapper--medium b__nudge--bottom-large legislatives__form">
         <div class="label text--summary text--block text--all-caps">
           Rechercher par :
         </div>
 
-        <input type="text" name="search" placeholder="Nom ou prénom..." />
+        <input type="text" id="search" placeholder="Nom ou prénom..." />
 
         <div class="l__row">
-            <select name="department" class="form">
-                <option value="" selected="selected">Département</option>
+            <select id="department" class="form">
+                <option value="" selected="selected">Tous les départements</option>
                 {% for group, zones in groupedZones %}
                     <optgroup label="{{ group }}">
                         {% for zone in zones %}
@@ -94,8 +43,8 @@
         </div>
 
         <div class="l__row">
-            <select name="career" class="form">
-                <option value="" selected="selected">Parcours professionnel</option>
+            <select id="career" class="form">
+                <option value="" selected="selected">Tous les parcours professionnel</option>
                 {% for career in constant('AppBundle\\Entity\\LegislativeCandidate::CAREERS') %}
                     <option value="{{ career }}">{{ career|trans }}</option>
                 {% endfor %}
@@ -103,7 +52,7 @@
             <i class="fa fa-angle-down"></i>
         </div>
 
-    </form>
+    </div>
 
     <div class="l__wrapper--medium l__row l__row--h-stretch l__row--wrap">
         <div class="legislatives__no_results hidden">
@@ -111,6 +60,7 @@
         </div>
 
         {% for candidate in candidates %}
+            {% dump(candidate) %}
             <div class="legislatives__trombi__item legislatives_candidate"
                  data-zone="{{ candidate.districtZone.id }}"
                  data-name="{{ candidate.fullName }}"
@@ -118,10 +68,13 @@
             >
                 <a href="{{ path('legislatives_candidate', {'slug': candidate.slug}) }}"
                    title="{{ candidate.fullName }}"
-                   class="legislatives__trombi__item__visual link--no-decor {{ candidate.profilePicture ? 'progressive-background' : '' }}"
-                   {% if candidate.profilePicture  %}
-                       data-sd="{{ media_asset(candidate.profilePicture, {'w': 100, 'q': 20}) }}"
-                       data-hd="{{ media_asset(candidate.profilePicture, {'w': 300, 'q': 70}) }}"
+                   class="legislatives__trombi__item__visual link--no-decor progressive-background"
+                    {% if candidate.profilePicture  %}
+                        data-sd="{{ media_asset(candidate.profilePicture, {'w': 50, 'q': 20}) }}"
+                        data-hd="{{ media_asset(candidate.profilePicture, {'w': 640, 'q': 70}) }}"
+                    {% else  %}
+                        data-sd="{{ static_asset('legislatives/unknown-candidate.jpg', {'w': 50, 'q': 20}) }}"
+                        data-hd="{{ static_asset('legislatives/unknown-candidate.jpg', {'w': 320, 'q': 70}) }}"
                    {% endif %}
                 >
                     <div class="text--white">

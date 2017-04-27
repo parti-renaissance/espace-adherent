@@ -1,5 +1,5 @@
 /*
- * Candidates map
+ * Legislatives candidates map
  */
 export default (mapFactory, api) => {
     api.getCandidates((candidates) => {
