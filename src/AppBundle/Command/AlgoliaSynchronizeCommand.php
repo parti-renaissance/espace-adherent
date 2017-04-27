@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\Proposal;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -20,6 +21,7 @@ class AlgoliaSynchronizeCommand extends ContainerAwareCommand
         Proposal::class,
         Clarification::class,
         CustomSearchResult::class,
+        Event::class,
     ];
 
     /**

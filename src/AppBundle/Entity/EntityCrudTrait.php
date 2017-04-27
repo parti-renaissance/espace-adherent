@@ -59,6 +59,13 @@ trait EntityCrudTrait
     {
         $class = get_class($this);
         $ucProperty = ucfirst($property);
+
+        // This prevent Algolia to try to modify for example "postAddress.latitude"
+        // https://github.com/algolia/AlgoliaSearchBundle/blob/4415de8d3d279fb68c97edeb54a1184b84ebbc9c/Mapping/Helper/ChangeAwareMethod.php#L21-L42
+        if (false !== strpos($property, '.')) {
+            return;
+        }
+
         foreach (['update', 'change', 'set'] as $mutatorPrefix) {
             $method = sprintf('%s%s', $mutatorPrefix, $ucProperty);
             if (method_exists($this, $method) && 1 === self::countNumberOfRequiredArguments($class, $method)) {
