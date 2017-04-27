@@ -14,7 +14,7 @@ class LegislativeDistrictZoneTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Étranger', $zone->getAreaTypeLabel());
         $this->assertSame('1002', $zone->getAreaCode());
         $this->assertSame('Amériques et Caraïbes', $zone->getName());
-        $this->assertSame('Amériques et Caraïbes', (string) $zone);
+        $this->assertSame('1002 - Amériques et Caraïbes', (string) $zone);
     }
 
     /**
@@ -39,11 +39,11 @@ class LegislativeDistrictZoneTest extends \PHPUnit_Framework_TestCase
     public static function provideCreateDepartmentDistrictZoneData(): array
     {
         return [
-            ['0001', 'France métropolitaine', '01 - Ain', '0001', 'Ain'],
-            ['0001', 'France métropolitaine', '01 - Ain', '01', 'Ain'],
-            ['002A', 'France métropolitaine', '2A - Corse Sud', '2A', 'Corse Sud'],
-            ['002B', 'France métropolitaine', '2B - Haute Corse', '2B', 'Haute Corse'],
-            ['0073', 'France métropolitaine', '73 - Savoie', '73', 'Savoie'],
+            ['0001', 'Département', '01 - Ain', '0001', 'Ain'],
+            ['0001', 'Département', '01 - Ain', '01', 'Ain'],
+            ['002A', 'Département', '2A - Corse Sud', '2A', 'Corse Sud'],
+            ['002B', 'Département', '2B - Haute Corse', '2B', 'Haute Corse'],
+            ['0073', 'Département', '73 - Savoie', '73', 'Savoie'],
             ['0974', 'DOM-TOM', '974 - La Réunion', '974', 'La Réunion'],
         ];
     }

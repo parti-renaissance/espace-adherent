@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,10 +18,12 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class LegislativeCandidateAdmin extends AbstractAdmin
 {
+    use MediaSynchronisedAdminTrait;
+
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'ASC',
-        '_sort_by' => 'districtZone.rank',
+        '_sort_by' => 'position',
     ];
     protected $maxPerPage = 100;
     protected $perPageOptions = [];
@@ -60,20 +63,20 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $mapper)
     {
         $mapper
-            ->add('id', null, [
+            ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
+            ->add('districtNumber', null, [
+                'label' => 'Circonscription',
             ])
             ->add('districtZone', null, [
                 'label' => 'Zone géographique',
             ])
-            ->add('districtNumber', null, [
-                'label' => 'Circonscription',
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -88,13 +91,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $mapper)
     {
         $mapper
-            ->with('Photo de profil')
-                ->add('media', null, [
-                    'label' => 'Photo',
-                    'required' => false,
-                ])
-            ->end()
-            ->with('Informations générales')
+            ->with('Informations personnelles', ['class' => 'col-md-4'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                     'expanded' => false,
@@ -127,15 +124,14 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                     'help' => 'Laissez le champ vide pour que le système génère cette valeur automatiquement',
                 ])
             ->end()
-            ->with('Circonscription')
+            ->with('Circonscription', ['class' => 'col-md-4'])
                 ->add('districtZone', null, [
                     'label' => 'Zone géographique',
+                    'disabled' => true,
                 ])
                 ->add('districtNumber', null, [
                     'label' => 'Numéro de la circonscription',
-                    'attr' => [
-                        'placeholder' => '2',
-                    ],
+                    'disabled' => true,
                 ])
                 ->add('districtName', null, [
                     'label' => 'Nom de la circonscription',
@@ -144,23 +140,44 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                     ],
                 ])
                 ->add('latitude', null, [
+                    'label' => 'Latitude d\'affichage sur la carte',
                     'attr' => [
                         'placeholder' => '48.8860166',
                     ],
                 ])
                 ->add('longitude', null, [
+                    'label' => 'Longitude d\'affichage sur la carte',
                     'attr' => [
                         'placeholder' => '2.2478122',
                     ],
                 ])
             ->end()
-            ->with('Liens Web')
+            ->with('Photo', ['class' => 'col-md-4'])
+                ->add('media', AdminType::class, [
+                    'label' => false,
+                ])
+            ->end()
+            ->with('Parcours personnel', ['class' => 'col-md-9'])
+                ->add('career', ChoiceType::class, [
+                    'label' => 'Carrière',
+                    'choices' => [
+                        'Vie civile' => LegislativeCandidate::CAREERS[0],
+                        'Vie politique' => LegislativeCandidate::CAREERS[1],
+                    ],
+                ])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Contenu',
+                    'required' => false,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
+            ->end()
+            ->with('Liens Web', ['class' => 'col-md-3'])
                 ->add('websiteUrl', UrlType::class, [
                     'label' => 'Page personnelle',
                     'required' => false,
                 ])
                 ->add('donationPageUrl', UrlType::class, [
-                    'label' => 'Page de donations',
+                    'label' => 'Page de dons',
                     'required' => false,
                 ])
                 ->add('twitterPageUrl', UrlType::class, [
@@ -176,20 +193,6 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                     'attr' => [
                         'placeholder' => 'https://facebook.com/alexandre-dumoulin',
                     ],
-                ])
-            ->end()
-            ->with('Parcours personnel')
-                ->add('career', ChoiceType::class, [
-                    'label' => 'Carrière',
-                    'choices' => [
-                        'Vie civile' => LegislativeCandidate::CAREERS[0],
-                        'Vie politique' => LegislativeCandidate::CAREERS[1],
-                    ],
-                ])
-                ->add('description', TextareaType::class, [
-                    'label' => 'Contenu',
-                    'required' => false,
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()
         ;
