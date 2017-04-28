@@ -217,6 +217,15 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter")
+     * @Method("GET")
+     */
+    public function legislativesConfirmNewsletterAction()
+    {
+        return $this->render('legislatives/confirm_newsletter.html.twig');
+    }
+
+    /**
      * @Route("/bot", name="page_bot")
      * @Method("GET")
      */
