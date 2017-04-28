@@ -142,8 +142,23 @@
             padding: 10px 15px;
             box-sizing: border-box;
 
+
             &:before {
-                @include classic-gradient($filter);
+                @include animate-gradient($filter, 1);
+            }
+
+            &:after {
+                @include animate-gradient($filter--dark, 0);
+            }
+
+            &:hover {
+                &:before {
+                    @include animate-gradient($filter, 0);
+                }
+
+                &:after {
+                    @include animate-gradient($filter--dark, 1);
+                }
             }
 
             > div {
