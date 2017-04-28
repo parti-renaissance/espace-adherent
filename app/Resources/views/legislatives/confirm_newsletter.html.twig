@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Votre inscription est confirmée' %}
+{% block canonical_url url('legislatives_confirm_newsletter') %}
+
+{% block content %}
+    <main>
+        <section class="legislatives__confirm">
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small text--center">
+                    Merci !
+                </h1>
+            </header>
+
+            <article class="l__wrapper--slim b__nudge--bottom-huge text--body">
+                <p class="text--medium">
+                    Nous avons bien enregistré votre souhait de suivre l'actualité
+                    du candidat ou de la candidate <em>En Marche</em> de votre circonscription.</p>
+                <p class="text--medium">
+                    Poursuivons, ensemble, cette aventure, cette révolution démocratique que nous avons lancée.
+                </p>
+
+                <p>
+                    Pour retourner à la page d'accueil <a href="{{ path('homepage') }}">cliquez ici</a>.
+                </p>
+            </article>
+        </section>
+    </main>
+{% endblock %}
