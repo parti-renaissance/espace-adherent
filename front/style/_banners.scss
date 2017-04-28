@@ -96,7 +96,9 @@
 
     @media (max-width: $mobile) {
         input,
-        button {
+        button,
+        form,
+        &__form {
             width: 100%;
         }
 
@@ -182,7 +184,6 @@
             justify-content: center;
 
             @media (max-width: $mobile) {
-                @include text--medium-small--bold;
                 margin: 0 0 10px 0;
             }
         }
