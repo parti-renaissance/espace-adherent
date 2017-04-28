@@ -92,28 +92,27 @@ final class InvitationProcessor
     /**
      * @Assert\NotBlank(groups={"send"})
      * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=100, maxMessage="ton_macron.invitation.message_subject.max_length", groups={"send"})
+     * @Assert\Length(max=100, groups={"send"})
      */
     public $messageSubject = '';
 
     /**
      * @Assert\NotBlank(groups={"send"})
      * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=5000, maxMessage="ton_macron.invitation.message_subject.max_length", groups={"send"})
      */
     public $messageContent = '';
 
     /**
      * @Assert\NotBlank(groups={"send"})
      * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, maxMessage="ton_macron.invitation.self_first_name.max_length", groups={"send"})
+     * @Assert\Length(max=50, groups={"send"})
      */
     public $selfFirstName = '';
 
     /**
      * @Assert\NotBlank(groups={"send"})
      * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, maxMessage="ton_macron.invitation.self_last_name.max_length", groups={"send"})
+     * @Assert\Length(max=50, groups={"send"})
      */
     public $selfLastName = '';
 
