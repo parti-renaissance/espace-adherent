@@ -65,13 +65,6 @@ class Event implements GeoPointInterface
     private $slug;
 
     /**
-     * @ORM\Column(length=5)
-     *
-     * @Algolia\Attribute
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="text")
      *
      * @Algolia\Attribute
@@ -114,6 +107,13 @@ class Event implements GeoPointInterface
     private $committee;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
+     *
+     * @Algolia\Attribute
+     */
+    private $category;
+
+    /**
      * @ORM\Column(length=20)
      */
     private $status;
@@ -123,7 +123,7 @@ class Event implements GeoPointInterface
         Adherent $organizer,
         ?Committee $committee,
         string $name,
-        string $category,
+        EventCategory $category,
         string $description,
         PostAddress $address,
         string $beginAt,
@@ -157,7 +157,7 @@ class Event implements GeoPointInterface
 
     public function update(
         string $name,
-        string $category,
+        EventCategory $category,
         string $description,
         PostAddress $address,
         string $beginAt,
@@ -191,14 +191,14 @@ class Event implements GeoPointInterface
         return $this->slug;
     }
 
-    public function getCategory(): string
+    public function getCategory(): EventCategory
     {
         return $this->category;
     }
 
     public function getCategoryName(): string
     {
-        return EventCategories::getCategoryName($this->category);
+        return $this->category->getName();
     }
 
     public function getDescription(): string
