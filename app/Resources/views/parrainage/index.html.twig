@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Invitez vos amis' %}
+{% block canonical_url url('app_parrainage') %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runJeMarche();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="content parrainage">
+    <section>
+        <header class="l__wrapper-500 text--center space--60-0">
+            <h1 class="text--large b__nudge--bottom-small">
+                Invitez vos amis à la newsletter d'<em>En Marche !</em>
+            </h1>
+        </header>
+        <hr class="l__wrapper"/>
+    </section>
+
+    <section class="l__wrapper--slim space--30-0">
+        <p class="text--body">Vous connaissez quelqu’un que ça intéresserait ? Une personne qui reste à convaincre et qui souhaite en savoir plus ? Dites-le nous en renseignant leurs coordonnées ci-dessous et nous irons directement leur proposer en votre nom de recevoir notre newsletter de campagne.</p>
+        <p class="text--body">La newsletter de campagne c'est : des détails sur nos propositions, des moyens d’agir, des appels signés par Emmanuel Macron ainsi que des exclusivités sur la campagne.</p>
+        <p class="text--body">Participez à faire gagner nos idées !</p>
+
+
+        <div class="text--body">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <div class="form__row">
+                {{ form_label(form.emailAddress, 'Votre e-mail') }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre e-mail', 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.emailAddress, 'Votre e-mail') }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre e-mail', 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+            {% endif %}
+
+            {{ form_rest(form) }}
+
+            <button type="submit" class="b__nudge--top btn btn--blue">
+                J'imvite mes amis
+            </button>
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+</main>
+{% endblock %}
