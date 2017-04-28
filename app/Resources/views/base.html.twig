@@ -329,7 +329,12 @@
         {% block content %}{% endblock %}
 
         {% block footer %}
-            {{ include('components/newsletter_footer.html.twig') }}
+            <section class="background--pink" id="footer-banner">
+                <div class="macron__banner macron__banner--row l__wrapper">
+                    {{ include('banner/macron.html.twig') }}
+                </div>
+            </section>
+
 
             <footer class="background--lighter space--30-0">
                 <div class="l__wrapper">
