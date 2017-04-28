@@ -81,7 +81,7 @@ class TonMacronInvitationType extends AbstractType
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
-                        'data' => 'Le 7 mai, la France a besoin de toi',
+                        'data' => 'Les raisons pour lesquelles je pense que tu devrais voter pour Macron',
                         'empty_data' => '',
                     ])
                     ->add('messageContent', TextareaType::class, [
