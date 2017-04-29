@@ -23,8 +23,10 @@ export default (mapFactory, api) => {
                 }
 
                 infowindow = new google.maps.InfoWindow({
-                    content: `<a href="${candidate.url}" target="_blank"><img src="${candidate.picture}" />
-                              <br/><strong>${candidate.name}</strong><br/>${candidate.district}</a>`,
+                    content: `<a href="${candidate.url}" target="_blank" class="candidate__overlay">
+                              <div style="background-image: url('${candidate.picture}')"></div>
+                              <h3>${candidate.name}</h3>
+                              ${candidate.district}</a>`,
                     position: candidate.position,
                     pixelOffset: new google.maps.Size(0, -8),
                 });
