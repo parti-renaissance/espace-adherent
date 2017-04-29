@@ -4,6 +4,8 @@
 
 .legislatives {
     &__header {
+        margin: 20px auto;
+
         @media (max-width: $mobile) {
             flex-direction: column;
             align-items: flex-start;
