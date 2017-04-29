@@ -1,5 +1,7 @@
 .legislatives__map {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .legislatives {
