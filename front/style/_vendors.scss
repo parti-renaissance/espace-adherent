@@ -51,12 +51,22 @@
 }
 
 .gm-style-iw a {
+    display: flex;
+    flex-direction: column;
     border: 0;
-    display: inline-block;
-    margin: 0 10px;
-    color: #009ac4;
+    max-width: 200px;
+    margin-top: 7px;
+    font-weight: 400;
+    font-size: 14px;
 
-    &:hover {
-        text-decoration: underline;
+    img {
+        width: 100%;
+    }
+
+    > div {
+        height: 120px;
+        background-size: cover;
+        overflow: hidden;
+        margin-bottom: 10px;
     }
 }
