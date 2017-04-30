@@ -19,11 +19,11 @@ class LegislativeDistrictZone
     private const TYPE_REGION = 'region';
 
     const ZONE_FRANCE = 'Département';
-    const ZONE_DOM_TOM = 'DOM-TOM';
+    const ZONE_DOM_TOM = 'Outre-Mer';
     const ZONE_FOREIGN = 'Étranger';
 
     const TYPE_CHOICES = [
-        'Département (DOM-TOM inclus)' => self::TYPE_DEPARTMENT,
+        'Département (Outre-Mer inclus)' => self::TYPE_DEPARTMENT,
         'Autre région du monde' => self::TYPE_REGION,
     ];
 
