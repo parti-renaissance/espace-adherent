@@ -109,14 +109,12 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.latitude.invalid", groups="Admin")
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.longitude.invalid", groups="Admin")
      */
     private $longitude;
