@@ -31,7 +31,7 @@ class LegislativeCampaignContactMessageType extends AbstractType
             ->add('departmentNumber', TextType::class, [
                 'filter_emojis' => true,
                 'attr' => [
-                    'placeholder' => '75',
+                    'placeholder' => '35',
                 ],
             ])
             ->add('electoralDistrictNumber', TextType::class, [
