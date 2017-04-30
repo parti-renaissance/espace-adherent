@@ -7,7 +7,7 @@
 <main class="adherent_profile">
     <section class="l__wrapper--medium space--30-0">
         <h2 class="text--large b__nudge--bottom-tiny">{{ app.user.fullname }}</h2>
-        <div class="text--body text--gray">{{ app.user.emailaddress }} | Membre depuis {{ app.user.activatedAt|date('M Y') }}</div>
+        <div class="text--body text--gray">{{ app.user.emailaddress }} | Membre depuis {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMM Y') }}</div>
     </section>
 
     <hr class="l__wrapper b__nudge--bottom-larger"/>
