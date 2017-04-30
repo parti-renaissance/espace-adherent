@@ -3,7 +3,15 @@
 {% block page_title 'Contact | Législatives' %}
 {% block canonical_url url('app_legislative_candidates_platform_contact') %}
 
+{% block banner '' %}
+{% block footer '' %}
+
 {% block content %}
+    <a href="{{ path('app_legislative_candidates_platform') }}"
+       class="l__wrapper icon--with-text">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à l'espace candidat
+    </a>
     <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
         <h1>Vous avez une question ?</h1>
         <h2>Contactez-nous</h2>
