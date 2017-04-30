@@ -20,8 +20,12 @@ class MarkdownExtension extends \Twig_Extension
         );
     }
 
-    public function parseMarkdown(string $content)
+    public function parseMarkdown(?string $content): string
     {
+        if (!$content) {
+            return '';
+        }
+
         return $this->markdownParser->convertToHtml($content);
     }
 }

@@ -74,14 +74,14 @@
     }
 
     select {
-      @include text--default;
-      border: 0;
-      background: 0;
-      border-radius: 0;
-      -webkit-appearance: none;
-      border-bottom: 1px solid black;
-      padding: 6px 0;
-      min-width: 272px;
+        @include text--default;
+        border: 0;
+        background: 0;
+        border-radius: 0;
+        -webkit-appearance: none;
+        border-bottom: 1px solid black;
+        padding: 6px 0;
+        min-width: 272px;
     }
 
     &__form {
@@ -145,7 +145,6 @@
             align-items: flex-end;
             padding: 10px 15px;
             box-sizing: border-box;
-
 
             &:before {
                 @include animate-gradient($filter, 1);
