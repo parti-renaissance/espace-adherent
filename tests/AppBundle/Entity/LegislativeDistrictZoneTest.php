@@ -44,7 +44,7 @@ class LegislativeDistrictZoneTest extends \PHPUnit_Framework_TestCase
             ['002A', 'Département', '2A - Corse Sud', '2A', 'Corse Sud'],
             ['002B', 'Département', '2B - Haute Corse', '2B', 'Haute Corse'],
             ['0073', 'Département', '73 - Savoie', '73', 'Savoie'],
-            ['0974', 'DOM-TOM', '974 - La Réunion', '974', 'La Réunion'],
+            ['0974', 'Outre-Mer', '974 - La Réunion', '974', 'La Réunion'],
         ];
     }
 
