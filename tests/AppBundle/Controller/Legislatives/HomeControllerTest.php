@@ -74,7 +74,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $description = $crawler->filter('#candidate-description');
         $links = $profile->filter('a');
 
-        $this->assertSame(0, $profile->filter('#candidate-profile-picture')->count());
+        $this->assertSame(1, $profile->filter('#candidate-profile-picture')->count());
         $this->assertSame('Alban Martin', $profile->filter('h1')->text());
         $this->assertSame("Troisième circonscription de l'Ain", $profile->filter('#candidate-district-name')->text());
         $this->assertSame('https://albanmartin.en-marche-dev.fr', $links->first()->attr('href'));
@@ -95,7 +95,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $profile = $crawler->filter('#candidate-profile');
         $description = $crawler->filter('#candidate-description');
 
-        $this->assertSame(0, $profile->filter('#candidate-profile-picture')->count());
+        $this->assertSame(1, $profile->filter('#candidate-profile-picture')->count());
         $this->assertSame('Emmanuelle Parfait', $profile->filter('h1')->text());
         $this->assertSame('Onzième circonscription des Français établis hors de France', $profile->filter('#candidate-district-name')->text());
         $this->assertSame(0, $profile->filter('.candidate_links')->count());

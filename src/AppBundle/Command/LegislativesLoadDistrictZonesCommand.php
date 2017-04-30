@@ -121,8 +121,9 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         $candidate->setDistrictZone($district);
         $candidate->setDistrictNumber($areaNumber);
         $candidate->setDistrictName($data[self::NAME].' - '.$data[self::DISTRICT_LABEL]);
-        $candidate->setFirstName('Bientôt annoncé');
+        $candidate->setFirstName('Bientôt annoncé(e)');
         $candidate->setLastName('');
+        $candidate->setDescription('Notre candidat(e) dans cette circonscription sera prochainement annoncé(e).');
         $candidate->setGender('-');
         $candidate->setCareer('-');
         $candidate->setSlug($slugifier->slugify($data[self::NAME].' - '.$data[self::DISTRICT_LABEL]));
