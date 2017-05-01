@@ -170,29 +170,25 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.2.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
+                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
-                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
+                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "require-dev": {
-                "chuyskywalker/rolling-curl": "^3.1",
-                "php-yaoi/php-yaoi": "^1.0"
-            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -210,7 +206,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2017-04-04T11:38:05+00:00"
+            "time": "2015-09-28T16:26:35+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -1541,16 +1537,16 @@
         },
         {
             "name": "facebook/graph-sdk",
-            "version": "5.4.4",
+            "version": "5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-graph-sdk.git",
-                "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1"
+                "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/5d0c4865e80e231d48a4571841bd018828fe58e1",
-                "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1",
+                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
+                "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
                 "shasum": ""
             },
             "require": {
@@ -1595,7 +1591,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2017-01-19T15:42:20+00:00"
+            "time": "2017-04-20T14:15:02+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -1690,20 +1686,20 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.27",
+            "version": "v2.4.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "fe152e1239f2f46287d369e43cc9fa817cc3cd36"
+                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/fe152e1239f2f46287d369e43cc9fa817cc3cd36",
-                "reference": "fe152e1239f2f46287d369e43cc9fa817cc3cd36",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/58038d5d217b6ba2c75de90cb2f6d424d86fab56",
+                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56",
                 "shasum": ""
             },
             "require": {
-                "behat/transliterator": "~1.0",
+                "behat/transliterator": "1.1",
                 "doctrine/common": "~2.4",
                 "php": ">=5.3.2"
             },
@@ -1764,7 +1760,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-03-22T09:48:22+00:00"
+            "time": "2017-04-23T08:59:41+00:00"
         },
         {
             "name": "geoip2/geoip2",
@@ -1819,16 +1815,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.4",
+            "version": "8.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "0613731935f03a799c28c5313fb647109a56d2be"
+                "reference": "01c72a52c38a0a55e4aebb972d65124f618d570a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/0613731935f03a799c28c5313fb647109a56d2be",
-                "reference": "0613731935f03a799c28c5313fb647109a56d2be",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/01c72a52c38a0a55e4aebb972d65124f618d570a",
+                "reference": "01c72a52c38a0a55e4aebb972d65124f618d570a",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1879,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2017-03-28T19:11:25+00:00"
+            "time": "2017-04-25T12:16:41+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -2401,16 +2397,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "2.3.11",
+            "version": "2.3.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "e8881fd99b9804b29e02d6d1c2c15ee459335cf1"
+                "reference": "15a517f052ee15d373ffa145c9642d5fec7ddf5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/e8881fd99b9804b29e02d6d1c2c15ee459335cf1",
-                "reference": "e8881fd99b9804b29e02d6d1c2c15ee459335cf1",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/15a517f052ee15d373ffa145c9642d5fec7ddf5c",
+                "reference": "15a517f052ee15d373ffa145c9642d5fec7ddf5c",
                 "shasum": ""
             },
             "require": {
@@ -2459,7 +2455,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2017-02-04T10:37:19+00:00"
+            "time": "2017-04-23T18:45:36+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -3054,16 +3050,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.37",
+            "version": "1.0.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd"
+                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
-                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3828f0b24e2c1918bb362d57a53205d6dc8fde61",
+                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61",
                 "shasum": ""
             },
             "require": {
@@ -3085,12 +3081,12 @@
                 "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
                 "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
                 "league/flysystem-copy": "Allows you to use Copy.com storage",
-                "league/flysystem-dropbox": "Allows you to use Dropbox storage",
                 "league/flysystem-eventable-filesystem": "Allows you to use EventableFilesystem",
                 "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
                 "league/flysystem-sftp": "Allows you to use SFTP server storage via phpseclib",
                 "league/flysystem-webdav": "Allows you to use WebDAV storage",
-                "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter"
+                "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter",
+                "spatie/flysystem-dropbox": "Allows you to use Dropbox storage"
             },
             "type": "library",
             "extra": {
@@ -3133,7 +3129,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-03-22T15:43:14+00:00"
+            "time": "2017-04-28T10:15:08+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -4317,26 +4313,26 @@
         },
         {
             "name": "ramsey/uuid-doctrine",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid-doctrine.git",
-                "reference": "503c5e0c22b17fe5a53af53124621360e9e07f41"
+                "reference": "2b80966f4c09b1c39a07b30fecdd24869374c66e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/503c5e0c22b17fe5a53af53124621360e9e07f41",
-                "reference": "503c5e0c22b17fe5a53af53124621360e9e07f41",
+                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/2b80966f4c09b1c39a07b30fecdd24869374c66e",
+                "reference": "2b80966f4c09b1c39a07b30fecdd24869374c66e",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.5",
-                "php": ">=5.4",
+                "php": "^5.4 || ^7.0",
                 "ramsey/uuid": "^3.0"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
-                "phpunit/phpunit": "^4.7|^5.0",
+                "phpunit/phpunit": "^4.7 || ^5.0",
                 "satooshi/php-coveralls": "^0.6.1",
                 "squizlabs/php_codesniffer": "^2.3"
             },
@@ -4369,7 +4365,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2016-03-23T17:44:03+00:00"
+            "time": "2017-04-13T16:09:49+00:00"
         },
         {
             "name": "rize/uri-template",
@@ -4881,16 +4877,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.18",
+            "version": "v5.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "17846680901003d26d823c2e3ac9228702837916"
+                "reference": "654c4fa3d11448c8005400a244987896243a990a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/17846680901003d26d823c2e3ac9228702837916",
-                "reference": "17846680901003d26d823c2e3ac9228702837916",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/654c4fa3d11448c8005400a244987896243a990a",
+                "reference": "654c4fa3d11448c8005400a244987896243a990a",
                 "shasum": ""
             },
             "require": {
@@ -4929,7 +4925,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-01-10T14:58:45+00:00"
+            "time": "2017-04-23T22:28:23+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -5173,16 +5169,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.16.0",
+            "version": "3.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "9ef795ae04735900280bc1ba96b9ffe93032dec3"
+                "reference": "e101c480220fc331e04e67460c11756ecaba1a51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9ef795ae04735900280bc1ba96b9ffe93032dec3",
-                "reference": "9ef795ae04735900280bc1ba96b9ffe93032dec3",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/e101c480220fc331e04e67460c11756ecaba1a51",
+                "reference": "e101c480220fc331e04e67460c11756ecaba1a51",
                 "shasum": ""
             },
             "require": {
@@ -5268,7 +5264,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2017-03-31T09:23:02+00:00"
+            "time": "2017-04-25T13:40:42+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -5694,26 +5690,35 @@
         },
         {
             "name": "sonata-project/google-authenticator",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/GoogleAuthenticator.git",
-                "reference": "72f47caddd09d09c0d3c3e046f6b435e0c004cd4"
+                "reference": "ccf7ecb68e875562c70b28a470fe0daf48625b39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/GoogleAuthenticator/zipball/72f47caddd09d09c0d3c3e046f6b435e0c004cd4",
-                "reference": "72f47caddd09d09c0d3c3e046f6b435e0c004cd4",
+                "url": "https://api.github.com/repos/sonata-project/GoogleAuthenticator/zipball/ccf7ecb68e875562c70b28a470fe0daf48625b39",
+                "reference": "ccf7ecb68e875562c70b28a470fe0daf48625b39",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "paragonie/random_compat": "^2.0",
+                "php": "^5.3 || ^7.0"
+            },
+            "require-dev": {
+                "sllh/php-cs-fixer-styleci-bridge": "^2.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Google\\Authenticator\\": "lib/",
-                    "Google\\Authenticator\\Tests\\": "tests/"
+                    "Google\\Authenticator\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5722,17 +5727,16 @@
             ],
             "authors": [
                 {
-                    "name": "Thomas Rabaix",
-                    "email": "thomas.rabaix@gmail.com",
-                    "homepage": "http://sonata-project.org/"
-                },
-                {
                     "name": "Christian Stocker",
                     "email": "me@chregu.tv"
                 },
                 {
                     "name": "Andre DeMarre",
                     "homepage": "http://www.devnetwork.net/viewtopic.php?f=50&t=94989"
+                },
+                {
+                    "name": "Thomas Rabaix",
+                    "email": "thomas.rabaix@gmail.com"
                 }
             ],
             "description": "Library to integrate Google Authenticator into a PHP project",
@@ -5740,7 +5744,7 @@
             "keywords": [
                 "google authenticator"
             ],
-            "time": "2014-03-31T09:18:53+00:00"
+            "time": "2017-04-19T14:00:07+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -6359,16 +6363,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64"
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
-                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/85959c2abbe4d2f050f950f39c9c3cf83819f3df",
+                "reference": "85959c2abbe4d2f050f950f39c9c3cf83819f3df",
                 "shasum": ""
             },
             "require": {
@@ -6499,7 +6503,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-05T12:52:29+00:00"
+            "time": "2017-05-01T17:47:03+00:00"
         },
         {
             "name": "tackk/cartographer",
@@ -6602,16 +6606,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.0",
+            "version": "v1.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a"
+                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dd6ca96227917e1e85b41c7c3cc6507b411e0927",
+                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927",
                 "shasum": ""
             },
             "require": {
@@ -6660,7 +6664,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-03-22T15:40:09+00:00"
+            "time": "2017-04-20T17:39:48+00:00"
         },
         {
             "name": "willdurand/geocoder",
@@ -6989,16 +6993,16 @@
         },
         {
             "name": "liip/functional-test-bundle",
-            "version": "1.7.2",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipFunctionalTestBundle.git",
-                "reference": "64c4e9d60198fab453e6e21d2b26669b501e6ee3"
+                "reference": "fac05bc216c88e8cc855e0cd5fb3e2e81e54593a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/64c4e9d60198fab453e6e21d2b26669b501e6ee3",
-                "reference": "64c4e9d60198fab453e6e21d2b26669b501e6ee3",
+                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/fac05bc216c88e8cc855e0cd5fb3e2e81e54593a",
+                "reference": "fac05bc216c88e8cc855e0cd5fb3e2e81e54593a",
                 "shasum": ""
             },
             "require": {
@@ -7063,20 +7067,20 @@
             "keywords": [
                 "Symfony2"
             ],
-            "time": "2017-03-23T20:46:55+00:00"
+            "time": "2017-04-21T17:22:21+00:00"
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
                 "shasum": ""
             },
             "require": {
@@ -7105,7 +7109,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-01-26T22:05:40+00:00"
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -8275,16 +8279,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef"
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/9103d17dd57c512a3a027bb5628f6701464d6fef",
-                "reference": "9103d17dd57c512a3a027bb5628f6701464d6fef",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/00916603c524b8048906de460b7ea0dfa1651281",
+                "reference": "00916603c524b8048906de460b7ea0dfa1651281",
                 "shasum": ""
             },
             "require": {
@@ -8333,7 +8337,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-03-09T12:58:16+00:00"
+            "time": "2017-04-12T14:13:17+00:00"
         },
         {
             "name": "webmozart/assert",
