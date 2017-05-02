@@ -55,7 +55,13 @@
             overflow: hidden;
         }
         html {
-            overflow-y:auto
+            overflow-y: auto;
+        }
+        .frame__holder {
+            position: relative;
+            height: 100%;
+            max-width: 100%;
+            overflow: hidden;
         }
         iframe {
             position: absolute;
@@ -65,12 +71,7 @@
             width: 100%;
             height: 100%;
             border: 0;
-        }
-        .frame__holder {
-            position: relative;
-            height: 100%;
-            max-width: 100%;
-            overflow-y: scroll;
+            overflow: scroll;
         }
     </style>
 </head>
