@@ -4,11 +4,12 @@
 {% block canonical_url url('app_legislative_candidates_platform_contact') %}
 
 {% block banner '' %}
+{% block header '' %}
 {% block footer '' %}
 
 {% block content %}
     <a href="{{ path('app_legislative_candidates_platform') }}"
-       class="l__wrapper icon--with-text">
+       class="l__wrapper icon--with-text space--20-0 text--body">
         {{ include('components/caret--left.html.twig') }}
         Retour à l'espace candidat
     </a>
