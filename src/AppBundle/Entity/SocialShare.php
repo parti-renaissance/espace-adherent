@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -112,16 +111,15 @@ class SocialShare
 
     public function __construct(string $name = '', int $position = 1, $published = false)
     {
+        $this->name = $name;
         $this->position = $position;
         $this->published = $published;
         $this->type = self::TYPE_IMAGE;
-
-        $this->setName($name);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name ?: '';
+        return (string) $this->name;
     }
 
     public function getId(): int
@@ -136,7 +134,7 @@ class SocialShare
 
     public function setName(?string $name)
     {
-        $this->name = $name ? EmojisRemover::remove($name) : '';
+        $this->name = (string) $name;
     }
 
     public function getSlug(): ?string

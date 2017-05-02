@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PageAdmin extends AbstractAdmin
 {
@@ -20,8 +21,9 @@ class PageAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         if ($this->getSubject()->getId() === null) {
-            $formMapper->add('title', null, [
+            $formMapper->add('title', TextType::class, [
                 'label' => 'Titre',
+                'filter_emojis' => true,
             ]);
         }
 
@@ -29,9 +31,11 @@ class PageAdmin extends AbstractAdmin
             ->with('Contenu', ['class' => 'col-md-8'])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
+                    'filter_emojis' => true,
                 ])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
+                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()

@@ -11,6 +11,7 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleAdmin extends AbstractAdmin
 {
@@ -40,11 +41,13 @@ class ArticleAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-8'])
-                ->add('title', null, [
+                ->add('title', TextType::class, [
                     'label' => 'Titre',
+                    'filter_emojis' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
+                    'filter_emojis' => true,
                 ])
                 ->add('keywords', null, [
                     'label' => 'Mots clés de recherche',
@@ -83,6 +86,7 @@ class ArticleAdmin extends AbstractAdmin
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
+                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end();

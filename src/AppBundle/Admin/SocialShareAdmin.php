@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SocialShareAdmin extends AbstractAdmin
@@ -92,10 +93,11 @@ class SocialShareAdmin extends AbstractAdmin
                 ->add('description', null, [
                     'label' => 'Description',
                 ])
-                ->add('name', null, [
+                ->add('name', TextType::class, [
                     'label' => 'Nom',
                     'required' => false,
                     'help' => 'Laissez vide pour réutiliser le nom du média',
+                    'filter_emojis' => true,
                 ])
                 ->add('defaultUrl', null, [
                     'label' => 'URL par défaut',

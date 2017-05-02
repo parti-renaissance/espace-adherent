@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonationAdmin extends AbstractAdmin
 {
@@ -29,11 +30,13 @@ class DonationAdmin extends AbstractAdmin
             ->add('amountInEuros', null, [
                 'label' => 'Montant',
             ])
-            ->add('firstName', null, [
+            ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
+                'filter_emojis' => true,
             ])
-            ->add('lastName', null, [
+            ->add('lastName', TextType::class, [
                 'label' => 'Nom',
+                'filter_emojis' => true,
             ])
             ->add('gender', null, [
                 'label' => 'Gentilé',

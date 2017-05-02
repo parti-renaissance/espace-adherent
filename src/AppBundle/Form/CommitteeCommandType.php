@@ -15,8 +15,13 @@ class CommitteeCommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('name', TextType::class, [
+                'filter_emojis' => true,
+            ])
+            ->add('description', TextareaType::class, [
+                'filter_emojis' => true,
+                'purify_html' => true,
+            ])
             ->add('address', AddressType::class)
             ->add('facebookPageUrl', UrlType::class, [
                 'required' => false,

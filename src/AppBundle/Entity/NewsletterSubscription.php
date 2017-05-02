@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -84,7 +83,7 @@ class NewsletterSubscription
 
     public function setPostalCode(string $postalCode = null)
     {
-        $this->postalCode = EmojisRemover::remove($postalCode);
+        $this->postalCode = $postalCode;
     }
 
     public function getCreatedAt(): ?\DateTime

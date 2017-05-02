@@ -3,7 +3,6 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Utils\HtmlPurifier;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventContactMembersCommand
@@ -38,7 +37,7 @@ class EventContactMembersCommand
 
     public function setMessage(?string $message)
     {
-        $this->message = HtmlPurifier::purify($message);
+        $this->message = $message;
     }
 
     public function getMessage(): ?string

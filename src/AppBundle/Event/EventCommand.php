@@ -6,8 +6,6 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
-use AppBundle\Utils\EmojisRemover;
-use AppBundle\Utils\HtmlPurifier;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -110,7 +108,7 @@ class EventCommand
 
     public function setName(string $name)
     {
-        $this->name = trim(EmojisRemover::remove(trim($name)));
+        $this->name = $name;
     }
 
     public function getCategory(): ?string
@@ -130,7 +128,7 @@ class EventCommand
 
     public function setDescription(?string $description)
     {
-        $this->description = HtmlPurifier::purify(trim(EmojisRemover::remove(trim($description))));
+        $this->description = $description;
     }
 
     public function getCapacity(): ?int

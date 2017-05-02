@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class LiveLinkAdmin extends AbstractAdmin
 {
@@ -22,8 +23,9 @@ class LiveLinkAdmin extends AbstractAdmin
             ->add('position', null, [
                 'label' => 'Position',
             ])
-            ->add('title', null, [
+            ->add('title', TextType::class, [
                 'label' => 'Titre',
+                'filter_emojis' => true,
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',

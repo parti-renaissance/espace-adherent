@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProcurationRequestAdmin extends AbstractAdmin
 {
@@ -35,11 +36,13 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', null, [
+                ->add('lastName', TextType::class, [
                     'label' => 'Nom de naissance',
+                    'filter_emojis' => true,
                 ])
-                ->add('firstNames', null, [
+                ->add('firstNames', TextType::class, [
                     'label' => 'Prénom(s)',
+                    'filter_emojis' => true,
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -57,11 +60,13 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('postalCode', null, [
                     'label' => 'Code postal',
                 ])
-                ->add('cityName', null, [
+                ->add('cityName', TextType::class, [
                     'label' => 'Ville',
+                    'filter_emojis' => true,
                 ])
-                ->add('address', null, [
+                ->add('address', TextType::class, [
                     'label' => 'Adresse postale',
+                    'filter_emojis' => true,
                 ])
             ->end()
             ->with('Lieu de vote', ['class' => 'col-md-6'])
@@ -71,8 +76,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('votePostalCode', null, [
                     'label' => 'Code postal',
                 ])
-                ->add('voteCityName', null, [
+                ->add('voteCityName', TextType::class, [
                     'label' => 'Ville',
+                    'filter_emojis' => true,
                 ])
                 ->add('voteOffice', null, [
                     'label' => 'Bureau de vote',

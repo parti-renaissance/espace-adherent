@@ -10,7 +10,6 @@ use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
-use AppBundle\Utils\EmojisRemover;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -165,8 +164,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->uuid = $uuid;
         $this->password = $password;
         $this->gender = $gender;
-        $this->firstName = EmojisRemover::remove($firstName);
-        $this->lastName = EmojisRemover::remove($lastName);
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->emailAddress = $emailAddress;
         $this->birthdate = $birthdate;
         $this->position = $position;

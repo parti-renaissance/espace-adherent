@@ -12,7 +12,9 @@ class ContactMembersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class, [
+                'purify_html' => true,
+            ])
         ;
     }
 

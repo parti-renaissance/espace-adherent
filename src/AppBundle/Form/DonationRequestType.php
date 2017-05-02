@@ -26,8 +26,12 @@ class DonationRequestType extends AbstractType
         if ($options['sponsor_form']) {
             $builder
                 ->add('gender', GenderType::class)
-                ->add('firstName', TextType::class)
-                ->add('lastName', TextType::class)
+                ->add('firstName', TextType::class, [
+                    'filter_emojis' => true,
+                ])
+                ->add('lastName', TextType::class, [
+                    'filter_emojis' => true,
+                ])
                 ->add('emailAddress', EmailType::class, [
                     'empty_data' => '',
                 ])

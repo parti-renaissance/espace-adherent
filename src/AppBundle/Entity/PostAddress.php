@@ -9,7 +9,6 @@ use AppBundle\Geocoder\Coordinates;
 use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
 
@@ -92,7 +91,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     private function __construct(string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, $longitude = null)
     {
         $this->country = $country;
-        $this->address = EmojisRemover::remove($street);
+        $this->address = $street;
         $this->postalCode = $postalCode;
         $this->cityName = $cityName;
         $this->latitude = $latitude;

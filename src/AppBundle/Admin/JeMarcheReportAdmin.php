@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class JeMarcheReportAdmin extends AbstractAdmin
 {
@@ -38,8 +39,9 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ->add('notConvinced', null, [
                 'label' => 'Non convaincus',
             ])
-            ->add('reaction', null, [
+            ->add('reaction', TextType::class, [
                 'label' => 'Réaction globale',
+                'filter_emojis' => true,
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

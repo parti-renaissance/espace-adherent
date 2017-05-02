@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -78,7 +77,7 @@ class CommitteeFeedItem
         string $createdAt = 'now'
     ): self {
         $item = new static(Uuid::uuid4(), self::MESSAGE, $committee, $author, $createdAt);
-        $item->content = EmojisRemover::remove($content);
+        $item->content = $content;
 
         return $item;
     }

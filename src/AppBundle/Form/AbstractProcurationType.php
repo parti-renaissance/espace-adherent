@@ -17,8 +17,12 @@ abstract class AbstractProcurationType extends AbstractType
     {
         $builder
             ->add('gender', GenderType::class)
-            ->add('lastName', TextType::class)
-            ->add('firstNames', TextType::class)
+            ->add('lastName', TextType::class, [
+                'filter_emojis' => true,
+            ])
+            ->add('firstNames', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('country', UnitedNationsCountryType::class)
             ->add('postalCode', TextType::class, [
                 'required' => false,
@@ -29,8 +33,11 @@ abstract class AbstractProcurationType extends AbstractType
             ])
             ->add('cityName', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
-            ->add('address', TextType::class)
+            ->add('address', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,

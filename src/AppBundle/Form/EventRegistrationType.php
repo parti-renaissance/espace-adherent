@@ -15,7 +15,9 @@ class EventRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class)
+            ->add('firstName', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('emailAddress', EmailType::class)
             ->add('postalCode', TextType::class)
             ->add('newsletterSubscriber', CheckboxType::class, [

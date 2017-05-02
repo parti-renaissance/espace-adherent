@@ -16,9 +16,14 @@ class EventCommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('category', EventCategoryType::class)
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'filter_emojis' => true,
+                'purify_html' => true,
+            ])
             ->add('address', AddressType::class)
             ->add('beginAt', DateTimeType::class, [
                 'years' => $options['years'],
