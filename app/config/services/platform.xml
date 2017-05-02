@@ -224,6 +224,12 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service id="app.event.invitation_handler" class="AppBundle\Event\EventInvitationHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.client.transactional"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
+        </service>
+
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
@@ -286,6 +292,11 @@
 
         <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
             <argument type="service" id="app.referent.message_handler.producer" />
+        </service>
+
+        <!-- Routing -->
+        <service id="app.routing.remote_url_generator" class="AppBundle\Routing\RemoteUrlGenerator">
+            <argument type="service" id="router"/>
         </service>
 
         <!-- Search -->

@@ -95,7 +95,6 @@
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
             <div class="committee__event__header">
-
                 <div class="committee__event__header__titles">
                     <h1 class="committee-event-name text--large text--white b__nudge--bottom-small">
                         {{- event.name -}}
@@ -110,7 +109,6 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="committee__event__header__cta">
                     {% if event.cancelled %}
                         <button class="btn btn--no-border btn--full btn--text-blue btn--disabled" disabled="disabled">
@@ -146,35 +144,30 @@
                     </ul>
                 </div>
             </div>
-
             <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
-                Retour à l'événement</a>
+                Retour à l'événement
+            </a>
         </section>
         <section class="l__wrapper--slim space--30-0 text--body">
             <div class="b__nudge--bottom-huge">
                 <h2 class="b__nudge--bottom-small text--medium">
                     Gérer les participants
                 </h2>
-
                 <div class="committee__members__nav">
                     <div>
                         <form method="post" action="{{ path('app_event_contact_members', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
                             <input type="hidden" name="contacts" value="" id="members-contact-selection" />
-
                             <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
                         </form>
-
                         <form method="post" action="{{ path('app_event_export_members', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.export_members') }}" id="members-export-token" />
                             <input type="hidden" name="exports" value="" id="members-export-selection" />
-
                             <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
                         </form>
                     </div>
                 </div>
-
                 <table class="committee__members__list" cellpadding="10">
                     <tr>
                         <th><input type="checkbox" id="members-check-all" /></th>

@@ -19,14 +19,13 @@
         <section class="l__wrapper--medium space--30-0">
             <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
-                Retour à l'événement</a>
-
+                Retour à l'événement
+            </a>
             <header class="space--30-0">
                 <h1 class="b__nudge--bottom-small text--medium">
                     Contacter des inscrits à mon événement
                 </h1>
             </header>
-
             {% if contacts is empty %}
                 <div class="error">
                     Vous n'avez pas selectionné de membre destinataire de ce message,
@@ -37,7 +36,9 @@
             {% endif %}
 
             {{ form_start(form) }}
+
                 {{ form_errors(form.message) }}
+
                 <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
 
                 {{ form_widget(form.message, { attr: {
@@ -51,7 +52,9 @@
                    class="btn">
                     Annuler
                 </a>
+
             {{ form_end(form) }}
+
         </section>
     </main>
 {% endblock %}

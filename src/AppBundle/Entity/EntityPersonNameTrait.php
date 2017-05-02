@@ -9,16 +9,16 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      */
-    private $firstName;
+    private $firstName = '';
 
     /**
      * @ORM\Column(length=50)
      */
-    private $lastName;
+    private $lastName = '';
 
     public function __toString(): string
     {
-        return $this->getFullName();
+        return trim($this->getFullName());
     }
 
     public function getFullName(): string
@@ -31,17 +31,17 @@ trait EntityPersonNameTrait
         return $this->firstName.' '.$this->getLastNameInitial();
     }
 
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    public function getLastNameInitial()
+    public function getLastNameInitial(): string
     {
         $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
 

@@ -16,7 +16,7 @@ class TextTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['filter_emojis']) {
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'filterEmojisOnPreSubmit']);
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'filterEmojisOnPreSubmit'], 10);
         }
 
         if ($options['purify_html']) {
@@ -45,7 +45,7 @@ class TextTypeExtension extends AbstractTypeExtension
     public function filterEmojisOnPreSubmit(FormEvent $event)
     {
         if ($data = $event->getData()) {
-            $event->setData(trim(EmojisRemover::remove($event->getData())));
+            $event->setData(EmojisRemover::remove($event->getData()));
         }
     }
 

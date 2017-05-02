@@ -5,10 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventContactMembersCommand;
+use AppBundle\Event\EventInvitation;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Entity\Event;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
+use AppBundle\Form\EventInvitationType;
 use AppBundle\Form\EventRegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 /**
  * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
@@ -27,7 +30,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class EventController extends Controller
 {
     /**
-     * @Route("", name="app_committee_show_event")
+     * @Route(name="app_committee_show_event")
      * @Method("GET")
      */
     public function showAction(Event $event): Response
@@ -39,7 +42,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route(path="/ical", name="app_committee_event_export_ical")
+     * @Route("/ical", name="app_committee_event_export_ical")
      * @Method("GET")
      */
     public function exportIcalAction(Event $event): Response
@@ -278,6 +281,49 @@ class EventController extends Controller
             'committee' => $event->getCommittee(),
             'contacts' => $uuids,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/invitation", name="app_event_invite")
+     * @Method("GET|POST")
+     */
+    public function inviteAction(Request $request, Event $event): Response
+    {
+        $form = $this->createForm(EventInvitationType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var EventInvitation $invitation */
+            $invitation = $form->getData();
+            $this->get('app.event.invitation_handler')->handle($invitation, $request->getClientIp(), $event);
+            $request->getSession()->set('event_invitations_count', count($invitation->guests));
+
+            return $this->redirectToRoute('app_event_invitation_sent', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        return $this->render('events/invitation.html.twig', [
+            'committee_event' => $event,
+            'invitation_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/invitation/merci", name="app_event_invitation_sent")
+     * @Method("GET")
+     */
+    public function invitationSentAction(Request $request, Event $event): Response
+    {
+        if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
+            throw new PreconditionFailedHttpException('Event invitations count is missing from session.');
+        }
+
+        return $this->render('events/invitation_sent.html.twig', [
+            'committee_event' => $event,
+            'invitations_count' => $invitationsCount,
         ]);
     }
 }

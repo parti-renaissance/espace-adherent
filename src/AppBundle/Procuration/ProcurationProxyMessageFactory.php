@@ -8,6 +8,7 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use AppBundle\Mailjet\Message\ProcurationProxyReminderMessage;
+use AppBundle\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProxyMessageFactory
@@ -15,7 +16,7 @@ class ProcurationProxyMessageFactory
     private $urlGenerator;
     private $replyToEmailAddress;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, string $replyToEmailAddress)
+    public function __construct(RemoteUrlGenerator $urlGenerator, string $replyToEmailAddress)
     {
         $this->urlGenerator = $urlGenerator;
         $this->replyToEmailAddress = $replyToEmailAddress;
@@ -44,14 +45,10 @@ class ProcurationProxyMessageFactory
 
     public function createProxyReminderMessage(ProcurationRequest $request): ProcurationProxyReminderMessage
     {
-        $url = str_replace(
-            'http://localhost',
-            'https://en-marche.fr',
-            $this->urlGenerator->generate('app_procuration_my_request', [
-                'id' => $request->getId(),
-                'token' => $request->generatePrivateToken(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        );
+        $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
+            'id' => $request->getId(),
+            'token' => $request->generatePrivateToken(),
+        ]);
 
         $message = ProcurationProxyReminderMessage::create($request, $url);
         $message->setReplyTo($this->replyToEmailAddress);

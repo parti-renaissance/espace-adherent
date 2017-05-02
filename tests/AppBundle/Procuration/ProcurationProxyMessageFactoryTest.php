@@ -8,8 +8,8 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
+use AppBundle\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -141,7 +141,7 @@ class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $this->urlGenerator = $this->createMock(RemoteUrlGenerator::class);
         $this->factory = new ProcurationProxyMessageFactory($this->urlGenerator, 'procurations@en-marche-dev.fr');
     }
 

@@ -126,3 +126,14 @@ legislatives.contact.success: "Votre demande d'information a été envoyée avec
 #
 legislative_candidate.careers.1: Vient de la société civile
 legislative_candidate.careers.2: Vient du monde politique
+
+#
+# Event
+#
+event.invitation.form.email: Votre e-mail
+event.invitation.form.first_name: Votre prénom
+event.invitation.form.last_name: Votre nom
+event.invitation.form.message: Votre message (200 caractères max)
+event.invitation.form.guest: E-mail d'un ami
+event.invitation.form.invite: Envoyer
+event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !

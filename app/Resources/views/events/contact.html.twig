@@ -19,7 +19,6 @@
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
             <div class="committee__event__header">
-
                 <div class="committee__event__header__titles">
                     <h1 class="committee-event-name text--large text--white b__nudge--bottom-small">
                         {{- event.name -}}
@@ -34,7 +33,6 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="committee__event__header__cta">
                     <a class="btn btn--no-border btn--full" href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
@@ -61,17 +59,16 @@
                     </ul>
                 </div>
             </div>
-
             <a href="{{ path('app_event_registrations', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
-                Retour à la liste</a>
+                Retour à la liste
+            </a>
         </section>
         <section class="l__wrapper--slim space--30-0 text--body">
             <div class="b__nudge--bottom-huge">
                 <h2 class="b__nudge--bottom-small text--medium">
                     Contacter des inscrits à mon événement
                 </h2>
-
                 <div class="b__nudge--bottom-medium">
                     {% if contacts is empty %}
                         <div class="error">
@@ -86,21 +83,25 @@
                 </div>
 
                 {{ form_start(form) }}
-                {{ form_errors(form.message) }}
-                <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
 
-                {{ form_widget(form.message, { attr: {
-                    class: 'form--full form__field--textarea-300 b__nudge--top-15',
-                    placeholder: 'Écrivez votre message'
-                } }) }}
+                    {{ form_errors(form.message) }}
 
-                {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+                    <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
 
-                <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
-                   class="btn">
-                    Annuler
-                </a>
+                    {{ form_widget(form.message, { attr: {
+                        class: 'form--full form__field--textarea-300 b__nudge--top-15',
+                        placeholder: 'Écrivez votre message'
+                    } }) }}
+
+                    {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+
+                    <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
+                       class="btn">
+                        Annuler
+                    </a>
+
                 {{ form_end(form) }}
+
             </div>
         </section>
     </main>
