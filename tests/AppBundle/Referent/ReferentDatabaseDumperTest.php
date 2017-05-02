@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Referent;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Referent\ReferentDatabaseDumper;
@@ -97,6 +98,7 @@ class ReferentDatabaseDumperTest extends SqliteWebTestCase
 
         $this->loadFixtures([
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
             LoadNewsletterSubscriptionData::class,
         ]);

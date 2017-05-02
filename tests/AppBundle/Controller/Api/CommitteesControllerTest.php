@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\Api;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +53,7 @@ class CommitteesControllerTest extends MysqlWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
     }

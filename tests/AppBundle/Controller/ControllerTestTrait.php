@@ -2,8 +2,10 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
@@ -66,6 +68,11 @@ trait ControllerTestTrait
         }
 
         return $client->followRedirect();
+    }
+
+    private function getEventCategoryIdForName(string $categoryName): int
+    {
+        return (string) $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 
     protected function init(array $fixtures = [])

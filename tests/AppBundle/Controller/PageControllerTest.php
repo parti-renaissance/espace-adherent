@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadClarificationData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadFacebookVideoData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
@@ -95,6 +96,7 @@ class PageControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
             LoadPageData::class,
             LoadProposalData::class,

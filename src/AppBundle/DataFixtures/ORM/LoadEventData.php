@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\EventCategory;
 use AppBundle\Event\EventFactory;
 use AppBundle\Committee\Feed\CommitteeEvent;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
@@ -14,6 +15,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -36,6 +38,13 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
+        $eventCategory1 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE001']]);
+        $eventCategory2 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE002']]);
+        $eventCategory3 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']]);
+        $eventCategory5 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE005']]);
+        $eventCategory6 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE006']]);
+        $eventCategory10 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE010']]);
+
         $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
         $author7 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_7_UUID);
         $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
@@ -61,7 +70,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Réunion de réflexion parisienne',
-            'category' => 'CE005',
+            'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => date('Y-m-d', strtotime('+3 days')).' 09:30:00',
@@ -75,7 +84,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author7,
             'committee' => $committee3,
             'name' => 'Réunion de réflexion dammarienne',
-            'category' => 'CE001',
+            'category' => $eventCategory1,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.518219, 2.622016),
             'begin_at' => date('Y-m-d', strtotime('+10 days')).' 09:30:00',
@@ -90,7 +99,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author7,
             'committee' => $committee4,
             'name' => 'Réunion de réflexion bellifontaine',
-            'category' => 'CE002',
+            'category' => $eventCategory2,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.404765, 2.698759),
             'begin_at' => date('Y-m-d', strtotime('tomorrow')).' 09:30:00',
@@ -104,7 +113,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author7,
             'committee' => $committee5,
             'name' => 'Réunion de réflexion évryenne',
-            'category' => 'CE003',
+            'category' => $eventCategory3,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.624157, 2.4266),
             'begin_at' => date('Y-m-d', strtotime('+15 days')).' 09:30:00',
@@ -118,7 +127,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author7,
             'committee' => $committee2,
             'name' => 'Réunion de réflexion marseillaise',
-            'category' => 'CE006',
+            'category' => $eventCategory6,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', 43.2984913, 5.3623771),
             'begin_at' => date('Y-m-d', strtotime('+17 days')).' 09:30:00',
@@ -132,7 +141,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Réunion de réflexion parisienne annulé',
-            'category' => 'CE005',
+            'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => date('Y-m-d', strtotime('+60 days')).' 09:30:00',
@@ -147,7 +156,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Grand Meeting de Paris',
-            'category' => 'CE005',
+            'category' => $eventCategory5,
             'description' => 'Unissons nos forces pour la Présidentielle !',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => '2017-02-20 09:30:00',
@@ -161,7 +170,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Grand Meeting de Marseille',
-            'category' => 'CE005',
+            'category' => $eventCategory5,
             'description' => 'Unissons nos forces pour la Présidentielle !',
             'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', 43.2984913, 5.3623771),
             'begin_at' => '2017-02-20 09:30:00',
@@ -175,7 +184,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Marche Parisienne',
-            'category' => 'CE010',
+            'category' => $eventCategory10,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => '2017-03-07 12:30:00',
@@ -189,7 +198,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author3,
             'committee' => $committee1,
             'name' => 'Grand débat parisien',
-            'category' => 'CE010',
+            'category' => $eventCategory10,
             'description' => 'Débatons ensemble du programme.',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => date('Y-m-d', strtotime('yesterday')).' 09:30:00',
@@ -203,7 +212,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author11,
             'committee' => $committee8,
             'name' => 'Meeting de Singapour',
-            'category' => 'CE010',
+            'category' => $eventCategory10,
             'description' => 'Ouvert aux français de Singapour.',
             'address' => PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', 1.2835627, 103.8606872),
             'begin_at' => (new \DateTime('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
@@ -217,7 +226,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'organizer' => $author12,
             'committee' => $committee9,
             'name' => 'Meeting de New York City',
-            'category' => 'CE010',
+            'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
             'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),

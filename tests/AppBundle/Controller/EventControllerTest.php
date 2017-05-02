@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\EventInvite;
@@ -224,7 +225,7 @@ class EventControllerTest extends MysqlWebTestCase
             'committee_event' => [
                 'name' => "Débat sur l'écologie",
                 'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
-                'category' => 'CE003',
+                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
                 'address' => [
                     'address' => '6 rue Neyret',
                     'country' => 'FR',
@@ -548,6 +549,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->init([
             LoadHomeBlockData::class,
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
 

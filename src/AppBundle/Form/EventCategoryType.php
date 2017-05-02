@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Event\EventCategories;
+use AppBundle\Entity\EventCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCategoryType extends AbstractType
@@ -12,12 +12,13 @@ class EventCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => EventCategories::CHOICES,
+            'class' => EventCategory::class,
+            'choice_label' => 'name',
         ]);
     }
 
     public function getParent()
     {
-        return ChoiceType::class;
+        return EntityType::class;
     }
 }

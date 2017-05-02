@@ -22,7 +22,7 @@ class EventCategory
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -30,6 +30,7 @@ class EventCategory
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max="100")
      */
     private $name = '';
 

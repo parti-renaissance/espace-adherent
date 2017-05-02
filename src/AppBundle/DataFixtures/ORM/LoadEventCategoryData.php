@@ -5,37 +5,29 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadEventCategoryData implements FixtureInterface, ContainerAwareInterface
+class LoadEventCategoryData implements FixtureInterface
 {
-    // Don't sort the list, they are used in the Doctrine migration 20170428100000
-    // You can add more at the end
-    const CATEGORIES = [
-        'Kiosque',
-        'Réunion d\'équipe',
-        'Conférence-débat',
-        'Porte-à-porte',
-        'Atelier du programme',
-        'Tractage',
-        'Convivialité',
-        'Action ciblée',
-        'Événement innovant',
-        'Marche',
-        'Support party',
+    const LEGACY_EVENT_CATEGORIES = [
+        'CE001' => 'Kiosque',
+        'CE002' => 'Réunion d\'équipe',
+        'CE003' => 'Conférence-débat',
+        'CE004' => 'Porte-à-porte',
+        'CE005' => 'Atelier du programme',
+        'CE006' => 'Tractage',
+        'CE007' => 'Convivialité',
+        'CE008' => 'Action ciblée',
+        'CE009' => 'Événement innovant',
+        'CE010' => 'Marche',
+        'CE011' => 'Support party',
     ];
-
-    use ContainerAwareTrait;
 
     public function load(ObjectManager $manager)
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-
-        foreach (self::CATEGORIES as $name) {
-            $em->persist(new EventCategory($name));
+        foreach (self::LEGACY_EVENT_CATEGORIES as $name) {
+            $manager->persist(new EventCategory($name));
         }
 
-        $em->flush();
+        $manager->flush();
     }
 }

@@ -107,7 +107,7 @@ class Event implements GeoPointInterface
     private $committee;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
+     * @ORM\ManyToOne(targetEntity="EventCategory")
      *
      * @Algolia\Attribute
      */
