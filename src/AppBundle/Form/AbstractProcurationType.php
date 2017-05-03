@@ -42,9 +42,7 @@ abstract class AbstractProcurationType extends AbstractType
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('emailAddress', EmailType::class, [
-                'empty_data' => '',
-            ])
+            ->add('emailAddress', EmailType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],

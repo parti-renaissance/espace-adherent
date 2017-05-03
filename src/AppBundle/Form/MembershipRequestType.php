@@ -26,9 +26,7 @@ class MembershipRequestType extends AbstractType
             ->add('lastName', TextType::class, [
                 'filter_emojis' => true,
             ])
-            ->add('emailAddress', EmailType::class, [
-                'empty_data' => '',
-            ])
+            ->add('emailAddress', EmailType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],
