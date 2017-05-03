@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Table(name="event_invitations")
+ * @ORM\Table(name="events_invitations")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
@@ -16,6 +17,13 @@ class EventInvite
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
+
+    /**
+     * @var Event|null
+     *
+     * @ORM\ManyToOne(targetEntity="Event")
+     */
+    private $event;
 
     /**
      * @var string
@@ -27,23 +35,16 @@ class EventInvite
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(type="text")
      */
     private $message = '';
 
     /**
-     * @var string|null
+     * @var array
      *
-     * @ORM\Column(length=50, nullable=true)
+     * @ORM\Column(type="simple_array")
      */
-    private $clientIp;
-
-    /**
-     * @var Event|null
-     *
-     * @ORM\ManyToOne(targetEntity="Event")
-     */
-    private $event;
+    private $guests = [];
 
     /**
      * @var \DateTime
@@ -56,29 +57,29 @@ class EventInvite
     {
         $this->uuid = Uuid::uuid4();
         $this->event = $event;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
     }
 
     public function __toString()
     {
-        return sprintf('Invitation à l\'évenement %s de %s à %s', $this->event, $this->getSenderFullName(), $this->email);
+        return sprintf('Invitation à l\'évenement %s de %s', $this->event, $this->getFullName());
     }
 
-    public static function create(string $firstName, string $lastName, string $email, string $clientIp, Event $event): self
+    public static function create(Event $event, EventInvitation $invitation): self
     {
         $invite = new static($event);
-
-        $invite->firstName = $firstName;
-        $invite->lastName = $lastName;
-        $invite->email = $email;
-        $invite->clientIp = $clientIp;
+        $invite->firstName = $invitation->firstName;
+        $invite->lastName = $invitation->lastName;
+        $invite->email = $invitation->email;
+        $invite->message = $invitation->message;
+        $invite->guests = $invitation->guests;
 
         return $invite;
     }
 
-    public function getSenderFullName(): string
+    public function getEvent(): ?Event
     {
-        return trim($this->firstName.' '.$this->lastName);
+        return $this->event;
     }
 
     public function getEmail(): string
@@ -91,22 +92,13 @@ class EventInvite
         return $this->message;
     }
 
-    public function getClientIp(): ?string
+    public function getGuests(): array
     {
-        return $this->clientIp;
+        return $this->guests;
     }
 
-    public function getEvent(): Event
+    public function getCreatedAt(): \DateTime
     {
-        return $this->event;
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        if ($this->createdAt instanceof \DateTime) {
-            $this->createdAt = \DateTimeImmutable::createFromMutable($this->createdAt);
-        }
-
         return $this->createdAt;
     }
 }

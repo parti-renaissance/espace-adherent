@@ -27,9 +27,9 @@ class EventInvitation
     public $lastName = '';
 
     /**
-     * @Assert\Length(max=200, maxMessage="event.invitation.message.max_length")
+     * @Assert\Length(max=500, maxMessage="event.invitation.message.max_length")
      */
-    public $message;
+    public $message = '';
 
     /**
      * @Assert\Type("array")

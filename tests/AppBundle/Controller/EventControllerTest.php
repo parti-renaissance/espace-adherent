@@ -454,17 +454,20 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
-        // Invitations should have been saved
-        $this->assertCount(2, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
+
+        // Invitation should have been saved
+        $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
 
         /** @var EventInvite $invite */
         $invite = $invitations[0];
 
-        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getEmail());
-        $this->assertSame('Titouan Galopin', $invite->getSenderFullName());
+        $this->assertSame('titouan@en-marche.fr', $invite->getEmail());
+        $this->assertSame('Titouan Galopin', $invite->getFullName());
+        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
+        $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(2, $messages = $this->getMailjetEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(EventInvitationMessage::class));
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
@@ -477,7 +480,7 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/invitation/merci', LoadEventData::EVENT_1_UUID, $event->getSlug()));
 
-        $this->assertResponseStatusCode(Response::HTTP_PRECONDITION_FAILED, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)

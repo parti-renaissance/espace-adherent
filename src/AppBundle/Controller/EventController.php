@@ -22,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 /**
  * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
@@ -296,7 +295,8 @@ class EventController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var EventInvitation $invitation */
             $invitation = $form->getData();
-            $this->get('app.event.invitation_handler')->handle($invitation, $request->getClientIp(), $event);
+
+            $this->get('app.event.invitation_handler')->handle($invitation, $event);
             $request->getSession()->set('event_invitations_count', count($invitation->guests));
 
             return $this->redirectToRoute('app_event_invitation_sent', [
@@ -318,7 +318,10 @@ class EventController extends Controller
     public function invitationSentAction(Request $request, Event $event): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
-            throw new PreconditionFailedHttpException('Event invitations count is missing from session.');
+            return $this->redirectToRoute('app_event_invite', [
+                'uuid' => $event->getUuid(),
+                'slug' => $event->getSlug(),
+            ]);
         }
 
         return $this->render('events/invitation_sent.html.twig', [

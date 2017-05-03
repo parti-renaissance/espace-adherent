@@ -22,19 +22,18 @@ class EventInvitationHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(EventInvitation $invitation, ?string $ip, Event $event)
+    public function handle(EventInvitation $invitation, Event $event)
     {
-        foreach ($invitation->guests as $guest) {
-            $invite = EventInvite::create($invitation->firstName, $invitation->lastName, $guest, $ip, $event);
-            $url = $this->urlGenerator->generateRemoteUrl('app_committee_show_event', [
-                'slug' => $event->getSlug(),
-                'uuid' => $event->getUuid()->toString(),
-            ]);
+        $invite = EventInvite::create($event, $invitation);
 
-            $this->manager->persist($invite);
-            $this->mailjet->sendMessage(EventInvitationMessage::createFromInvite($invite, $event->getName(), $url));
-        }
+        $url = $this->urlGenerator->generateRemoteUrl('app_committee_show_event', [
+            'slug' => $event->getSlug(),
+            'uuid' => $event->getUuid()->toString(),
+        ]);
 
+        $this->mailjet->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
+
+        $this->manager->persist($invite);
         $this->manager->flush();
     }
 }
