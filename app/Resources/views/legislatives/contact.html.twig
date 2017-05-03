@@ -85,7 +85,7 @@
                     {{ form_label(form.message, 'Mon message') }}
                     <br/>
                     {{ form_errors(form.message) }}
-                    {{ form_widget(form.message, {'attr': {'rows': 20, 'cols': 80, 'style': 'height: 170px; width: 100%'}}) }}
+                    {{ form_widget(form.message, { 'attr': { 'class': 'form--full form__field--textarea-300' } }) }}
                 </div>
 
                 <div class="register__form">

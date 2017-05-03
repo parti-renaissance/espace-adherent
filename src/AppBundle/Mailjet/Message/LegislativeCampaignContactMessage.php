@@ -16,21 +16,22 @@ final class LegislativeCampaignContactMessage extends MailjetMessage
             null,
             'Élections Législatives - Nouvelle demande de contact',
             [
-                'expediteur' => '', // @todo to be removed?
                 'email' => static::escape($contact->getEmailAddress()),
-                'prenom' => static::escape($contact->getFirstName()),
-                'nom' => static::escape($contact->getLastName()),
-                'numero_de_departement' => static::escape($contact->getDepartmentNumber()),
-                'numero_circonscription' => static::escape($contact->getElectoralDistrictNumber()),
+                'first_name' => static::escape($contact->getFirstName()),
+                'last_name' => static::escape($contact->getLastName()),
+                'department_number' => static::escape($contact->getDepartmentNumber()),
+                'electoral_district_number' => static::escape($contact->getElectoralDistrictNumber()),
                 'role' => static::escape($contact->getRole()),
-                'sujet' => static::escape($contact->getSubject()),
+                'subject' => static::escape($contact->getSubject()),
                 'message' => nl2br(static::escape($contact->getMessage())),
             ],
             [],
             $contact->getEmailAddress()
         );
+
         $message->setSenderName($contact->getFullName());
         $message->setSenderEmail($contact->getEmailAddress());
+        $message->setReplyTo($contact->getEmailAddress());
         $message->addCC($contact->getEmailAddress());
 
         return $message;
