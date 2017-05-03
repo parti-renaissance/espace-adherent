@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -67,8 +66,8 @@ class NewsletterInvite
     {
         $invite = new static();
 
-        $invite->firstName = EmojisRemover::remove($firstName);
-        $invite->lastName = EmojisRemover::remove($lastName);
+        $invite->firstName = $firstName;
+        $invite->lastName = $lastName;
         $invite->email = $email;
         $invite->clientIp = $clientIp;
 

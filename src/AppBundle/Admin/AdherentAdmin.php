@@ -37,11 +37,13 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', null, [
+                ->add('lastName', TextType::class, [
                     'label' => 'Nom',
+                    'filter_emojis' => true,
                 ])
-                ->add('firstName', null, [
+                ->add('firstName', TextType::class, [
                     'label' => 'Prénom',
+                    'filter_emojis' => true,
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',

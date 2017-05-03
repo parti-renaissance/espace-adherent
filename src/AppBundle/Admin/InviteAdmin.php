@@ -6,6 +6,8 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InviteAdmin extends AbstractAdmin
 {
@@ -19,17 +21,20 @@ class InviteAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('lastName', null, [
+            ->add('lastName', TextType::class, [
                 'label' => 'Nom',
+                'filter_emojis' => true,
             ])
-            ->add('firstName', null, [
+            ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
+                'filter_emojis' => true,
             ])
             ->add('email', null, [
                 'label' => 'E-mail de l\'invité',
             ])
-            ->add('message', null, [
+            ->add('message', TextareaType::class, [
                 'label' => 'Message',
+                'filter_emojis' => true,
             ])
             ->add('clientIp', null, [
                 'label' => 'IP du client',

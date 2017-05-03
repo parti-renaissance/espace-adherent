@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
@@ -23,8 +24,9 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
             ->add('email', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('postalCode', null, [
+            ->add('postalCode', TextType::class, [
                 'label' => 'Code postal',
+                'filter_emojis' => true,
             ])
         ;
     }

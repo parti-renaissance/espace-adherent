@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ClarificationAdmin extends AbstractAdmin
 {
@@ -42,11 +43,13 @@ class ClarificationAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-4'])
-                ->add('title', null, [
+                ->add('title', TextType::class, [
                     'label' => 'Titre',
+                    'filter_emojis' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
+                    'filter_emojis' => true,
                 ])
                 ->add('keywords', null, [
                     'label' => 'Mots clés de recherche',
@@ -77,6 +80,7 @@ class ClarificationAdmin extends AbstractAdmin
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
+                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end();

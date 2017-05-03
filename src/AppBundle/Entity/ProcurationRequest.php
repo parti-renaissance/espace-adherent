@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
@@ -468,7 +467,7 @@ class ProcurationRequest
 
     public function setLastName(?string $lastName): void
     {
-        $this->lastName = EmojisRemover::remove($lastName);
+        $this->lastName = $lastName;
     }
 
     public function getFirstNames(): ?string
@@ -478,7 +477,7 @@ class ProcurationRequest
 
     public function setFirstNames(?string $firstNames): void
     {
-        $this->firstNames = EmojisRemover::remove($firstNames);
+        $this->firstNames = $firstNames;
     }
 
     public function getAddress(): ?string
@@ -488,7 +487,7 @@ class ProcurationRequest
 
     public function setAddress(?string $address): void
     {
-        $this->address = EmojisRemover::remove($address);
+        $this->address = $address;
     }
 
     public function getPostalCode(): ?string
@@ -524,7 +523,7 @@ class ProcurationRequest
     public function setCityName(?string $cityName): void
     {
         if ($cityName) {
-            $this->cityName = EmojisRemover::remove($cityName);
+            $this->cityName = $cityName;
         }
     }
 
@@ -601,7 +600,7 @@ class ProcurationRequest
     public function setVoteCityName(?string $voteCityName): void
     {
         if ($voteCityName) {
-            $this->voteCityName = EmojisRemover::remove($voteCityName);
+            $this->voteCityName = $voteCityName;
         }
     }
 

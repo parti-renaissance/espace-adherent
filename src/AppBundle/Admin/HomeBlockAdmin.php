@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class HomeBlockAdmin extends AbstractAdmin
 {
@@ -53,11 +54,13 @@ class HomeBlockAdmin extends AbstractAdmin
                     'Vidéo' => 'video',
                 ],
             ])
-            ->add('title', null, [
+            ->add('title', TextType::class, [
                 'label' => 'Titre',
+                'filter_emojis' => true,
             ])
-            ->add('subtitle', null, [
+            ->add('subtitle', TextType::class, [
                 'label' => 'Sous-titre',
+                'filter_emojis' => true,
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',

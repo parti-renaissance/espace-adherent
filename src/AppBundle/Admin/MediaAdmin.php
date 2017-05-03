@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MediaAdmin extends AbstractAdmin
 {
@@ -84,8 +85,9 @@ class MediaAdmin extends AbstractAdmin
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
 
         $formMapper
-            ->add('name', null, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
+                'filter_emojis' => true,
             ])
             ->add('path', null, [
                 'label' => $isCreation ? 'URL (ne spécifier que la fin : http://en-marche.fr/assets/images/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',

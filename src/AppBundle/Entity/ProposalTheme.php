@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +38,7 @@ class ProposalTheme
 
     public function __construct(string $name = '', string $color = '000000')
     {
-        $this->name = EmojisRemover::remove($name) ?? '';
+        $this->name = $name;
         $this->color = $color;
     }
 
@@ -60,7 +59,7 @@ class ProposalTheme
 
     public function setName(?string $name): ProposalTheme
     {
-        $this->name = EmojisRemover::remove($name);
+        $this->name = $name;
 
         return $this;
     }

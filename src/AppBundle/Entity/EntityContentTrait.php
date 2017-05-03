@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -73,7 +72,7 @@ trait EntityContentTrait
 
     public function setTitle(?string $title)
     {
-        $this->title = EmojisRemover::remove($title);
+        $this->title = $title;
     }
 
     public function getSlug(): ?string
@@ -93,7 +92,7 @@ trait EntityContentTrait
 
     public function setDescription(?string $description)
     {
-        $this->description = EmojisRemover::remove($description);
+        $this->description = $description;
     }
 
     public function getContent(): ?string
@@ -103,7 +102,7 @@ trait EntityContentTrait
 
     public function setContent(?string $content)
     {
-        $this->content = EmojisRemover::remove($content);
+        $this->content = $content;
     }
 
     public function getKeywords(): ?string

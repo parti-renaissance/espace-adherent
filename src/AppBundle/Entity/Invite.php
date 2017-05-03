@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
@@ -124,18 +123,18 @@ class Invite
         string $email,
         string $message,
         string $clientIp
-    ) {
+    ): self {
         $invite = new static(Uuid::uuid4());
-        $invite->setFirstName($firstName);
-        $invite->setLastName($lastName);
-        $invite->setEmail($email);
-        $invite->setMessage($message);
-        $invite->setClientIp($clientIp);
+        $invite->firstName = $firstName;
+        $invite->lastName = $lastName;
+        $invite->email = $email;
+        $invite->message = $message;
+        $invite->clientIp = $clientIp;
 
         return $invite;
     }
 
-    public function getSenderFullName()
+    public function getSenderFullName(): string
     {
         return $this->firstName.' '.$this->lastName;
     }
@@ -155,7 +154,7 @@ class Invite
      */
     public function setLastName($lastName): Invite
     {
-        $this->lastName = EmojisRemover::remove($lastName);
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -175,7 +174,7 @@ class Invite
      */
     public function setFirstName($firstName): Invite
     {
-        $this->firstName = EmojisRemover::remove($firstName);
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -215,7 +214,7 @@ class Invite
      */
     public function setMessage($message): Invite
     {
-        $this->message = EmojisRemover::remove($message);
+        $this->message = $message;
 
         return $this;
     }

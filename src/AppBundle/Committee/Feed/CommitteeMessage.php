@@ -4,7 +4,6 @@ namespace AppBundle\Committee\Feed;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Utils\HtmlPurifier;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CommitteeMessage
@@ -49,6 +48,6 @@ class CommitteeMessage
 
     public function setContent(string $content)
     {
-        $this->content = HtmlPurifier::purify($content);
+        $this->content = $content;
     }
 }

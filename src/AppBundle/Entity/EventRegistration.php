@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\EmojisRemover;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -66,7 +65,7 @@ class EventRegistration
     ) {
         $this->uuid = $uuid;
         $this->event = $event;
-        $this->firstName = EmojisRemover::remove($firstName);
+        $this->firstName = $firstName;
         $this->emailAddress = $emailAddress;
         $this->postalCode = $postalCode;
         $this->newsletterSubscriber = $newsletterSubscriber;

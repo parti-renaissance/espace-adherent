@@ -22,6 +22,7 @@ class NewsletterInvitationType extends AbstractType
             ->add('firstName', TextType::class, [
                 'label' => false,
                 'empty_data' => '',
+                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => 'newsletter.invitation.form.first_name',
                     'class' => 'form--half',
@@ -30,6 +31,7 @@ class NewsletterInvitationType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => false,
                 'empty_data' => '',
+                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => 'newsletter.invitation.form.last_name',
                     'class' => 'form--half',

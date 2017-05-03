@@ -15,7 +15,9 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('address', TextType::class)
+            ->add('address', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('city', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,

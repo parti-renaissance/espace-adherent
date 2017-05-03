@@ -3,7 +3,6 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Utils\HtmlPurifier;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CommitteeContactMembersCommand
@@ -39,7 +38,7 @@ class CommitteeContactMembersCommand
 
     public function setMessage(?string $message)
     {
-        $this->message = HtmlPurifier::purify($message);
+        $this->message = $message;
     }
 
     public function getMessage(): ?string
