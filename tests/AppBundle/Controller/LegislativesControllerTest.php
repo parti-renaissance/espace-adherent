@@ -91,14 +91,13 @@ class LegislativesControllerTest extends MysqlWebTestCase
         $this->assertSame('143247', $payload['MJ-TemplateID']);
         $this->assertSame(
             [
-                'expediteur' => '',
                 'email' => 'marc1337@gmail.tld',
-                'prenom' => 'Marc',
-                'nom' => 'Dupont',
-                'numero_de_departement' => '92',
-                'numero_circonscription' => '3',
+                'first_name' => 'Marc',
+                'last_name' => 'Dupont',
+                'department_number' => '92',
+                'electoral_district_number' => '3',
                 'role' => 'Responsable communication',
-                'sujet' => 'Avez-vous pensez aux réseaux sociaux ?',
+                'subject' => 'Avez-vous pensez aux réseaux sociaux ?',
                 'message' => 'Puis-je avoir accès aux comptes Twitter  et Facebook  svp ?',
             ],
             $payload['Vars']
