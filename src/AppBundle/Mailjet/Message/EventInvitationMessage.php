@@ -2,33 +2,37 @@
 
 namespace AppBundle\Mailjet\Message;
 
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventInvite;
 use Ramsey\Uuid\Uuid;
 
 final class EventInvitationMessage extends MailjetMessage
 {
-    public static function createFromInvite(EventInvite $invite, string $eventName, string $eventUrl): self
+    public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
     {
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             '132747',
             $invite->getEmail(),
-            null,
-            'Rejoins cet événement En Marche !',
-            static::getTemplateVars($invite, $eventName, $eventUrl),
+            self::fixMailjetParsing(self::escape($invite->getFullName())),
+            $invite->getFullName().' vous invite à un événement En Marche !',
+            [
+                'sender_firstname' => self::escape($invite->getFirstName()),
+                'sender_message' => self::escape($invite->getMessage()),
+                'event_name' => self::escape($event->getName()),
+                'event_slug' => $eventUrl,
+            ],
             [],
             null,
             $invite->getUuid()
         );
-    }
 
-    private static function getTemplateVars(EventInvite $invite, string $eventName, string $eventUrl)
-    {
-        return [
-            'sender_firstname' => self::escape($invite->getFirstName()),
-            'sender_message' => self::escape($invite->getMessage()),
-            'event_name' => self::escape($eventName),
-            'event_slug' => $eventUrl,
-        ];
+        $message->setReplyTo($invite->getEmail());
+
+        foreach ($invite->getGuests() as $guest) {
+            $message->addCC($guest);
+        }
+
+        return $message;
     }
 }
