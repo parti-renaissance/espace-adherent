@@ -2,7 +2,6 @@
 
 namespace AppBundle\Procuration;
 
-use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailjet\MailjetService;
 
 class ProcurationReminderHandler
@@ -16,9 +15,12 @@ class ProcurationReminderHandler
         $this->factory = $factory;
     }
 
-    public function remind(ProcurationRequest $request)
+    public function remind(array $requests)
     {
-        $this->mailjet->sendMessage($this->factory->createProxyReminderMessage($request));
-        $request->remind();
+        $this->mailjet->sendMessage($this->factory->createProxyReminderMessage($requests));
+
+        foreach ($requests as $request) {
+            $request->remind();
+        }
     }
 }
