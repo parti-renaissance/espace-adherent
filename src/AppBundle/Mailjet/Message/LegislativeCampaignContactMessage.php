@@ -24,14 +24,10 @@ final class LegislativeCampaignContactMessage extends MailjetMessage
                 'role' => static::escape($contact->getRole()),
                 'subject' => static::escape($contact->getSubject()),
                 'message' => nl2br(static::escape($contact->getMessage())),
-            ],
-            [],
-            $contact->getEmailAddress()
+            ]
         );
 
         $message->setSenderName($contact->getFullName());
-        $message->setSenderEmail($contact->getEmailAddress());
-        $message->setReplyTo($contact->getEmailAddress());
         $message->addCC($contact->getEmailAddress());
 
         return $message;
