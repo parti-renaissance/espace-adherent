@@ -43,8 +43,19 @@ class ProcurationProxyMessageFactory
         return $message;
     }
 
-    public function createProxyReminderMessage(ProcurationRequest $request): ProcurationProxyReminderMessage
+    /**
+     * @param ProcurationRequest[] $requests
+     *
+     * @return ProcurationProxyReminderMessage
+     */
+    public function createProxyReminderMessage(array $requests): ProcurationProxyReminderMessage
     {
+        if (!$requests) {
+            return null;
+        }
+
+        $request = array_shift($requests);
+
         $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
             'id' => $request->getId(),
             'token' => $request->generatePrivateToken(),
@@ -52,6 +63,19 @@ class ProcurationProxyMessageFactory
 
         $message = ProcurationProxyReminderMessage::create($request, $url);
         $message->setReplyTo($this->replyToEmailAddress);
+
+        foreach ($requests as $request) {
+            $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
+                'id' => $request->getId(),
+                'token' => $request->generatePrivateToken(),
+            ]);
+
+            $message->addRecipient(
+                $request->getEmailAddress(),
+                null,
+                ProcurationProxyReminderMessage::createRecipientVariables($request, $url)
+            );
+        }
 
         return $message;
     }

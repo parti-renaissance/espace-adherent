@@ -22,6 +22,7 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
     private $reminder;
 
     public const COMMAND_NAME = 'app:procuration:send-reminder';
+    public const PER_PAGE = 200;
 
     protected function configure()
     {
@@ -42,7 +43,7 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
     {
         $procurationRequestRepository = $this->manager->getRepository(ProcurationRequest::class);
 
-        $totalCount = $procurationRequestRepository->countRemindersToSend();
+        $totalCount = ceil($procurationRequestRepository->countRemindersToSend() / self::PER_PAGE);
         if (!$totalCount) {
             $output->writeln('No reminder to send');
 
@@ -59,16 +60,17 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
         $progress->setFormat('debug');
 
         for ($i = 0; ; ++$i) {
-            $requests = $procurationRequestRepository->findRemindersBatchToSend($i * 25, 25);
+            $requests = $procurationRequestRepository->findRemindersBatchToSend($i * self::PER_PAGE, self::PER_PAGE);
 
             if (empty($requests)) {
                 break;
             }
 
-            foreach ($requests as $request) {
-                $this->reminder->remind($request);
-                $progress->advance();
-                usleep(250000);
+            $progress->advance();
+
+            try {
+                $this->reminder->remind($requests);
+            } catch (\Throwable $e) {
             }
 
             $this->manager->flush();
