@@ -25,6 +25,7 @@
         <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="request_stack" />
 
             <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
         </service>
@@ -41,6 +42,7 @@
         <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="request_stack" />
         </service>
 
         <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
