@@ -53,7 +53,8 @@ class TransactionCallbackHandler
             $this->entityManager->persist($donation);
             $this->entityManager->flush();
 
-            if ($donation->isSuccessful()) {
+            $campaignExpired = (bool) $request->attributes->get('_campaign_expired', false);
+            if (!$campaignExpired && $donation->isSuccessful()) {
                 $this->mailjet->sendMessage(DonationMessage::createFromDonation($donation));
             }
         }
