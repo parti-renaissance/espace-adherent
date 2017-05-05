@@ -8,19 +8,20 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
-            <a href="{{ blocks[0].link }}" class="video__container link--no-decor">
-                <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}" playsinline autoplay muted loop>
-                    <source src="{{ asset('videos/hp_v2.mp4') }}" type="video/webm">
-                    <source src="{{ asset('videos/hp_v2.mp4') }}" type="video/mp4">
-                </video>
-                <div class="video__filter"></div>
-                <div class="video__filter--hover"></div>
-                <div class="video__content">
-                    <h2>{{ blocks[0].title }}</h2>
-                    <p class="text--body">{{ blocks[0].subtitle }}</p>
-                    <div class="btn btn--no-border">Lire</div>
+            <div class="l__row l__tablet--col l__row--v-stretch">
+                <a href="{{ blocks[0].link }}" class="card card__background card--large  card--large__desktop l__hide--on-tablet l__col--bottom"
+                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}'); height: 370px;">
+                    <div class="background">
+                        <div class="content"></div>
+                    </div>
+                </a>
+                <div class="card card--large card--large__tablet l__hide--on-desktop">
+                    <a href="{{ blocks[0].link }}" class="background-container">
+                        <div class="background card__background"
+                             style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}')"></div>
+                    </a>
                 </div>
-            </a>
+            </div>
 
             {% if not campaign_expired %}
                 <div class="content b__nudge--top">
