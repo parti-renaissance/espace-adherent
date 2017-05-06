@@ -425,7 +425,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testInvitationLogged()
+    public function testAdherentCanInviteToEvent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
@@ -469,7 +469,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
-    public function testAnonymousInvitation()
+    public function testAnonymousCanInviteToEvent()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
         $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_3_UUID, $slug = $event->getSlug());
@@ -515,9 +515,6 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
-    /**
-     * @group functionnal
-     */
     public function testInvitationSentWithoutRedirection()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
