@@ -11,6 +11,7 @@ use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +26,7 @@ class AssetsController extends Controller
     /**
      * @Route("/assets/{path}", defaults={"_enable_campaign_silence"=true}, requirements={"path"=".+"}, name="asset_url")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function assetAction($path, Request $request)
     {
@@ -49,12 +51,14 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/maps/{latitude},{longitude}", defaults={"_enable_campaign_silence"=true}, requirements={
-     *     "latitude"="^%pattern_coordinate%$",
-     *     "longitude"="^%pattern_coordinate%$"
-     * }, name="map_url")
-     *
+     * @Route(
+     *     "/maps/{latitude},{longitude}",
+     *     defaults={"_enable_campaign_silence"=true},
+     *     requirements={"latitude"="^%pattern_coordinate%$", "longitude"="^%pattern_coordinate%$"},
+     *     name="map_url"
+     * )
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function mapAction(Request $request, string $latitude, string $longitude)
     {
@@ -69,8 +73,13 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", defaults={"_enable_campaign_silence"=true}, requirements={"type"="proposal|custom|article|clarification"})
+     * @Route(
+     *     "/algolia/{type}/{slug}",
+     *     defaults={"_enable_campaign_silence"=true},
+     *     requirements={"type"="proposal|custom|article|clarification"}
+     * )
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function algoliaAction(Request $request, string $type, string $slug)
     {

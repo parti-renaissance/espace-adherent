@@ -10,6 +10,7 @@ use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use AppBundle\Event\EventCategories;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,6 +25,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronAction()
     {
@@ -35,6 +37,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronRevolutionAction()
     {
@@ -58,6 +61,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/le-programme", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_programme")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronProgrammeAction()
     {
@@ -70,6 +74,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/le-programme/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_proposition")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronPropositionAction($slug)
     {
@@ -86,6 +91,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/desintox", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_list")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronDesintoxListAction()
     {
@@ -100,6 +106,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/desintox/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_view")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronDesintoxViewAction($slug)
     {
@@ -117,6 +124,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/videos", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_videos")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function emmanuelMacronVideosAction()
     {
@@ -128,6 +136,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function mouvementValeursAction()
     {
@@ -139,6 +148,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function mouvementOrganisationAction()
     {
@@ -150,6 +160,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function mouvementLegislativesAction()
     {
@@ -208,6 +219,7 @@ class PageController extends Controller
     /**
      * @Route("/mentions-legales", defaults={"_enable_campaign_silence"=true}, name="page_mentions_legales")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function mentionsLegalesAction()
     {
@@ -237,6 +249,7 @@ class PageController extends Controller
     /**
      * @Route("/elles-marchent", defaults={"_enable_campaign_silence"=true}, name="page_elles_marchent")
      * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
      */
     public function ellesMarchentAction()
     {
