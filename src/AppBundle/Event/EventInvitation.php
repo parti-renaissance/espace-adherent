@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventInvitation
@@ -41,8 +42,69 @@ class EventInvitation
      */
     public $guests = [];
 
+    public static function createFromAdherent(?Adherent $adherent): self
+    {
+        $dto = new self();
+
+        if ($adherent) {
+            $dto->setLastName($adherent->getLastName());
+            $dto->setFirstName($adherent->getFirstName());
+            $dto->setEmail($adherent->getEmailAddress());
+        }
+
+        return $dto;
+    }
+
     public function filter()
     {
         $this->guests = array_filter($this->guests);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
     }
 }
