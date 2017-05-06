@@ -2,20 +2,10 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventCategories;
-use AppBundle\Form\EventCategoryType;
-use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Form\Type\DateRangePickerType;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventCategoryAdmin extends AbstractAdmin

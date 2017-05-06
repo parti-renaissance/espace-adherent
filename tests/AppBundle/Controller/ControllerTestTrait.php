@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
