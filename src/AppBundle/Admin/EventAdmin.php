@@ -3,7 +3,6 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Event;
-use AppBundle\Event\EventCategories;
 use AppBundle\Form\EventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -95,9 +94,8 @@ class EventAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('category', ChoiceType::class, [
+                ->add('category', EventCategoryType::class, [
                     'label' => 'Catégorie',
-                    'choices' => EventCategories::CHOICES,
                 ])
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
