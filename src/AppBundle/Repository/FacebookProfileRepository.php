@@ -4,17 +4,19 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\FacebookProfile;
 use Doctrine\ORM\EntityRepository;
-use Ramsey\Uuid\Uuid;
 
 class FacebookProfileRepository extends EntityRepository
 {
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByUuid(?string $uuid): ?FacebookProfile
     {
-        if (!$uuid || !Uuid::isValid($uuid)) {
-            return null;
-        }
-
-        return $this->findOneBy(['uuid' => $uuid]);
+        return $this->findOneByValidUuid($uuid);
     }
 
     public function persistFromSDKResponse(string $accessToken, array $data): FacebookProfile

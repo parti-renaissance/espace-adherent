@@ -153,6 +153,22 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
     }
 
+    public function testCallbackWithNoId()
+    {
+        $this->appClient->request(Request::METHOD_GET, '/don/callback');
+
+        $this->assertClientIsRedirectedTo('/don', $this->appClient);
+    }
+
+    public function testCallbackWithWrongUuid()
+    {
+        $this->appClient->request(Request::METHOD_GET, '/don/callback', [
+            'id' => 'wrong_uuid',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->appClient);
+    }
+
     protected function setUp()
     {
         parent::setUp();

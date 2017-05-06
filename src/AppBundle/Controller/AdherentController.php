@@ -7,7 +7,9 @@ use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
@@ -169,7 +171,7 @@ class AdherentController extends Controller
     }
 
     /**
-     * @Route("/contacter/{uuid}", name="app_adherent_contact")
+     * @Route("/contacter/{uuid}", name="app_adherent_contact", requirements={"uuid": "%pattern_uuid%"})
      * @Method("GET|POST")
      */
     public function contactAction(Request $request, Adherent $adherent): Response
@@ -178,12 +180,16 @@ class AdherentController extends Controller
         $fromId = $request->query->get('id');
         $from = null;
 
-        if ($fromType && $fromId) {
-            if ($fromType === 'committee') {
-                $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
-            } else {
-                $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
+        try {
+            if ($fromType && $fromId) {
+                if ($fromType === 'committee') {
+                    $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
+                } else {
+                    $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
+                }
             }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         $message = new ContactMessage($this->getUser(), $adherent);

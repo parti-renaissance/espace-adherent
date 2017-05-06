@@ -8,6 +8,8 @@ use AppBundle\Event\EventContactMembersCommand;
 use AppBundle\Event\EventInvitation;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Entity\Event;
+use AppBundle\Exception\BadUuidRequestException;
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\EventInvitationType;
@@ -103,8 +105,12 @@ class EventController extends Controller
     {
         $manager = $this->get('app.event.registration_manager');
 
-        if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
-            throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
+        try {
+            if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
+                throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
+            }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         if (!$registration->matches($event, $this->getUser())) {
@@ -213,7 +219,11 @@ class EventController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-        $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        try {
+            $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
+        }
 
         if (!$registrations) {
             return $this->redirectToRoute('app_event_registrations', [
@@ -253,7 +263,11 @@ class EventController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-        $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        try {
+            $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
+        }
 
         $command = new EventContactMembersCommand($registrations, $this->getUser());
 

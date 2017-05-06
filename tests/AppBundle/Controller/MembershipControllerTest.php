@@ -400,11 +400,8 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
     {
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
-        $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
-
-        $this->assertFalse($adherent->isEnabled());
-
         $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
+        $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
@@ -416,6 +413,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $committees = $this->getCommitteeRepository()->findNearbyCommittees(3, $coordinates);
+
         $this->assertCount(3, $committees, 'New adherent should have 3 committee proposals');
 
         // We are 'checking' the first (0) and the last one (2)

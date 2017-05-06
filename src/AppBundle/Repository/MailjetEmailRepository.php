@@ -8,9 +8,16 @@ use Ramsey\Uuid\Uuid;
 
 class MailjetEmailRepository extends EntityRepository
 {
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByUuid(string $uuid): ?MailjetEmail
     {
-        return $this->findOneBy(['uuid' => Uuid::fromString($uuid)->toString()]);
+        return $this->findOneByValidUuid($uuid);
     }
 
     /**

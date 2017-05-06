@@ -11,8 +11,15 @@ use Ramsey\Uuid\Uuid;
 
 class EventRegistrationRepository extends EntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
+    /**
+     * @throws \InvalidArgumentException
+     */
     public function findOneByUuid(string $uuid): ?EventRegistration
     {
+        self::validUuid($uuid);
+
         $query = $this
             ->createQueryBuilder('r')
             ->select('r, e')
@@ -33,6 +40,8 @@ class EventRegistrationRepository extends EntityRepository
      */
     public function findByUuidAndEvent(Event $event, array $uuids): array
     {
+        self::validUuids($uuids);
+
         return array_filter($this->findBy(['event' => $event]), function (EventRegistration $reg) use ($uuids) {
             return in_array($reg->getUuid()->toString(), $uuids);
         });
