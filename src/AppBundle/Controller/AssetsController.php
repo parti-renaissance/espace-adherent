@@ -74,6 +74,25 @@ class AssetsController extends Controller
 
     /**
      * @Route(
+     *     "/video/homepage.{format}",
+     *     requirements={"format"="mov|mp4"},
+     *     defaults={"_enable_campaign_silence"=true},
+     *     name="homepage_video_url"
+     * )
+     * @Method("GET")
+     * @Cache(maxage=60, smaxage=60)
+     */
+    public function videoAction(string $format)
+    {
+        return new Response(
+            $this->get('app.storage')->read('static/videos/homepage.'.$format),
+            Response::HTTP_OK,
+            ['Content-Type' => 'video/'.$format]
+        );
+    }
+
+    /**
+     * @Route(
      *     "/algolia/{type}/{slug}",
      *     defaults={"_enable_campaign_silence"=true},
      *     requirements={"type"="proposal|custom|article|clarification"}
