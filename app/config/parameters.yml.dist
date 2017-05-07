@@ -58,3 +58,5 @@ parameters:
 
     env(DISABLE_AMERICA):       0
     env(DISABLE_EUROPE):        0
+
+    env(ENABLE_HP_VIDEO):       0
