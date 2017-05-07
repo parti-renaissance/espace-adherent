@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by tgalopin at 2017-05-03T13:04:37Z
+
+Is it possible to test our custom TextType?
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-05-03T15:33:17Z
+
+It is, but it does not bring actual value in such cases IMO, we only add two listeners and some options, so it would be like testing Symfony itself, whereas the current test suit fails if we remove the extension.
