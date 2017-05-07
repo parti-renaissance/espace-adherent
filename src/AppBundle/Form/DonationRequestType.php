@@ -32,9 +32,7 @@ class DonationRequestType extends AbstractType
                 ->add('lastName', TextType::class, [
                     'filter_emojis' => true,
                 ])
-                ->add('emailAddress', EmailType::class, [
-                    'empty_data' => '',
-                ])
+                ->add('emailAddress', EmailType::class)
                 ->add('address', TextType::class)
                 ->add('postalCode', TextType::class)
                 ->add('cityName', TextType::class, [

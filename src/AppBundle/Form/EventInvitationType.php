@@ -22,7 +22,6 @@ class EventInvitationType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => false,
-                'empty_data' => '',
                 'attr' => [
                     'placeholder' => 'event.invitation.form.email',
                     'class' => 'form--full',
@@ -30,7 +29,6 @@ class EventInvitationType extends AbstractType
             ])
             ->add('firstName', TextType::class, [
                 'label' => false,
-                'empty_data' => '',
                 'attr' => [
                     'placeholder' => 'event.invitation.form.first_name',
                     'class' => 'form--full',
@@ -39,7 +37,6 @@ class EventInvitationType extends AbstractType
             ])
             ->add('lastName', TextType::class, [
                 'label' => false,
-                'empty_data' => '',
                 'attr' => [
                     'placeholder' => 'event.invitation.form.last_name',
                     'class' => 'form--full',
@@ -58,7 +55,6 @@ class EventInvitationType extends AbstractType
                 'entry_type' => EmailType::class,
                 'entry_options' => [
                     'label' => false,
-                    'empty_data' => '',
                     'attr' => [
                         'placeholder' => 'event.invitation.form.guest',
                         'class' => 'form--full',

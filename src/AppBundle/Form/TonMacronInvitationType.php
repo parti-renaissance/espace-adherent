@@ -23,7 +23,6 @@ class TonMacronInvitationType extends AbstractType
             case InvitationProcessor::TRANSITION_FILL_INFO:
                 $builder
                     ->add('friendFirstName', TextType::class, [
-                        'empty_data' => '',
                         'label' => false,
                         'filter_emojis' => true,
                         'attr' => ['placeholder' => 'ton_macron.invitation_form.friend_first_name'],
@@ -83,31 +82,25 @@ class TonMacronInvitationType extends AbstractType
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
                         'data' => 'Les raisons pour lesquelles je pense que tu devrais voter pour Macron',
-                        'empty_data' => '',
                         'filter_emojis' => true,
                     ])
                     ->add('messageContent', TextareaType::class, [
                         'label' => false,
-                        'empty_data' => '',
                         'filter_emojis' => true,
                     ])
                     ->add('selfFirstName', TextType::class, [
                         'label' => false,
-                        'empty_data' => '',
                         'filter_emojis' => true,
                     ])
                     ->add('selfLastName', TextType::class, [
                         'label' => false,
-                        'empty_data' => '',
                         'filter_emojis' => true,
                     ])
                     ->add('selfEmail', EmailType::class, [
                         'label' => false,
-                        'empty_data' => '',
                     ])
                     ->add('friendEmail', EmailType::class, [
                         'label' => false,
-                        'empty_data' => '',
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_SEND);

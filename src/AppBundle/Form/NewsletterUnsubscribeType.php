@@ -13,11 +13,7 @@ class NewsletterUnsubscribeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('email', EmailType::class, [
-                'required' => true,
-            ])
-        ;
+        $builder->add('email', EmailType::class);
     }
 
     /**
