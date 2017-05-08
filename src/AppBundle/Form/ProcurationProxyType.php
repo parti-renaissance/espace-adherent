@@ -32,9 +32,6 @@ class ProcurationProxyType extends AbstractProcurationType
             ->add('voteOffice', TextType::class, [
                 'required' => false,
             ])
-            ->add('electionPresidentialSecondRound', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('electionLegislativeFirstRound', CheckboxType::class, [
                 'required' => false,
             ])

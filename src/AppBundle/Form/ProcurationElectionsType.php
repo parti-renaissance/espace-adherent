@@ -18,9 +18,6 @@ class ProcurationElectionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('electionPresidentialSecondRound', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('electionLegislativeFirstRound', CheckboxType::class, [
                 'required' => false,
             ])
