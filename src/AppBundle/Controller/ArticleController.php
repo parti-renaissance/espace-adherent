@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use Psr\Cache\CacheItemPoolInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,7 +22,6 @@ class ArticleController extends Controller
      *     name="articles_list"
      * )
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function actualitesAction(string $category, int $page): Response
     {
@@ -61,7 +59,6 @@ class ArticleController extends Controller
     /**
      * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function articleAction($slug): Response
     {
@@ -82,7 +79,6 @@ class ArticleController extends Controller
     /**
      * @Route("/feed.xml", defaults={"_enable_campaign_silence"=true}, name="articles_feed")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function feedAction(): Response
     {
