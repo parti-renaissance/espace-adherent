@@ -32,21 +32,11 @@
                 {{ form_errors(form) }}
 
                 <h5 class="procuration__title-elections">
-                    Je donne procuration pour ...
+                    Je donne procuration ...
                     <span class="text--small text--gray">(cocher les cases correspondantes)</span>
                 </h5>
 
                 <div class="procuration__choose-election">
-                    <div class="form__checkbox">
-                        {{ form_widget(form.electionPresidentialSecondRound) }}
-                        {{ form_label(form.electionPresidentialSecondRound, 'Pour le second tour de l\'élection présidentielle') }}
-                    </div>
-                    <div class="text--small text--body procuration__choose-election__day">
-                        Dimanche 7 mai 2017
-                    </div>
-                </div>
-
-                <div class="procuration__choose-election" style="display: none;">
                     <div class="form__checkbox">
                         {{ form_widget(form.electionLegislativeFirstRound) }}
                         {{ form_label(form.electionLegislativeFirstRound, 'Pour le premier tour des élections législatives') }}
@@ -56,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="procuration__choose-election" style="display: none;">
+                <div class="procuration__choose-election">
                     <div class="form__checkbox">
                         {{ form_widget(form.electionLegislativeSecondRound) }}
                         {{ form_label(form.electionLegislativeSecondRound, 'Pour le second tour des élections législatives') }}

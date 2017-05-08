@@ -115,7 +115,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_elections' => [
-                'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'reason' => ProcurationRequest::REASON_HEALTH,
@@ -188,7 +187,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
@@ -226,7 +224,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
@@ -351,7 +348,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
                 'voteCity' => '75018-75120',
                 'voteCityName' => '',
                 'voteOffice' => 'Mairie',
-                'electionPresidentialSecondRound' => false,
                 'electionLegislativeFirstRound' => true,
                 'electionLegislativeSecondRound' => false,
                 'conditions' => true,
