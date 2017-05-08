@@ -97,14 +97,14 @@ https://github.com/fzaninotto/Faker
 
 L'association de ces deux outils permet de générer des données aléatoires pour le développement et les tests.
 Il est par exemple possible grâce à ces outils de précharger la base de données au moment des tests avec des utilisateurs
-générés alétoirements.
+générés aléatoirement.
 
 #### League Flysystem
 
 https://flysystem.thephpleague.com
 https://packagist.org/packages/superbalist/flysystem-google-storage
 
-Flysystem fournit une abstration du système de fichiers qui permettant d'effectuer des tests automatisés
+Flysystem fournit une abstraction du système de fichiers qui permettant d'effectuer des tests automatisés
 aisément (simple de créer un faux système de fichiers) et de développer en local puis d'utiliser Google Storage en
 production.
 
@@ -113,7 +113,7 @@ production.
 
 ### Pré-requis
 
-Afin d'appréhender correctement la partie serveur du projet, nous vous conseillons de connaitre un minimum React.
+Afin d'appréhender correctement la partie serveur du projet, nous vous conseillons de connaître un minimum React.
 C'est un outil assez simple à comprendre tant que vous n'entrez pas dans les parties avancées.
 
 La plateforme En Marche utilise React non pas comme un framework d'application mais comme un élément additionnel
@@ -137,7 +137,7 @@ Pour travailler sur la partie cliente du projet, le dossier important est `front
 
 Vous y trouverez les styles en Sass (dossier `style`), les composants React et les tests automatisés.
 
-Les trois fichiers à la racine de ce dossier sont les suivantes :
+Les trois fichiers à la racine de ce dossier sont les suivants :
 
 - `app.js` constitue l'application en elle-même : chacune des méthodes de cette classe est une sorte de contrôleur
   (modèle MVC) ayant pour objectif d'appeler vos composants React. Chaque méthode de cette classe doit être très courte
