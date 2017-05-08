@@ -11,7 +11,6 @@ use AppBundle\Form\ProcurationVoteType;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\ProcurationRequestFlow;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,7 +25,6 @@ class ProcurationController extends Controller
     /**
      * @Route("", defaults={"_enable_campaign_silence"=true}, name="app_procuration_landing")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function landingAction(Request $request): Response
     {
@@ -36,7 +34,6 @@ class ProcurationController extends Controller
     /**
      * @Route("/je-demande", defaults={"_enable_campaign_silence"=true}, name="app_procuration_index")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function indexAction(Request $request): Response
     {

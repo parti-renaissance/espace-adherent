@@ -35,40 +35,40 @@
                         </a>
                     </div>
                 </div>
+            {% endif %}
 
-                {% if not campaign_expired %}
-                    <div class="content b__nudge--top">
-                        <article class="l__row l__row--v-stretch l__tablet--col">
-                            <div class="action action__home yellow">
-                                <p class="pink">J'agis pour la campagne !</p>
-                                <a href="{{ path('app_je_marche') }}" class="pink-yellow">
-                                    Voir les actions
-                                </a>
-                            </div>
-                            <div class="action action__home blue">
-                                <p>Chaque vote compte : je fais procuration</p>
-                                <a href="{{ path('app_procuration_landing') }}" class="white-blue" target="_blank" rel="noreferrer noopener">
-                                    En savoir plus
-                                </a>
-                            </div>
-                        </article>
-                    </div>
-                {% else %}
-                    <div class="newsletter background--light space--20-30">
-                        <div class="text--small text--center text--body space--10-0">
-                            <div class="b__nudge--bottom">
-                                La campagne du second tour des élections présidentielles est terminée.
-                                <br />
-                                Certains services du site sont donc temporairement indisponibles.
-                                <br />
-                                Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
-                            </div>
-                            <a href="{{ path('article_view', {'slug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
-                                En savoir plus sur le silence républicain
+            {% if not campaign_expired %}
+                <div class="content b__nudge--top">
+                    <article class="l__row l__row--v-stretch l__tablet--col">
+                        <div class="action action__home yellow">
+                            <p class="pink">J'agis pour la campagne !</p>
+                            <a href="{{ path('app_je_marche') }}" class="pink-yellow">
+                                Voir les actions
                             </a>
                         </div>
+                        <div class="action action__home blue">
+                            <p>Chaque vote compte : je fais procuration</p>
+                            <a href="{{ path('app_procuration_landing') }}" class="white-blue" target="_blank" rel="noreferrer noopener">
+                                En savoir plus
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="newsletter background--light space--20-30">
+                    <div class="text--small text--center text--body space--10-0">
+                        <div class="b__nudge--bottom">
+                            La campagne du second tour des élections présidentielles est terminée.
+                            <br />
+                            Certains services du site sont donc temporairement indisponibles.
+                            <br />
+                            Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
+                        </div>
+                        <a href="{{ path('article_view', {'slug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
+                            En savoir plus sur le silence républicain
+                        </a>
                     </div>
-                {% endif %}
+                </div>
             {% endif %}
 
             <div class="newsletter l__row l__row--h-stretch background--light space--20-30 l__row--wrap l__tablet--col b__nudge--top">

@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\NewsletterSubscriptionType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,7 +13,6 @@ class HomeController extends Controller
     /**
      * @Route("/", defaults={"_enable_campaign_silence"=true}, name="homepage")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function indexAction()
     {
@@ -28,7 +26,6 @@ class HomeController extends Controller
     /**
      * @Route("/sitemap.xml", defaults={"_enable_campaign_silence"=true}, name="app_sitemap_index")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function sitemapIndexAction()
     {
@@ -43,7 +40,6 @@ class HomeController extends Controller
      *     name="app_sitemap"
      * )
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function sitemapAction($type, $page): Response
     {

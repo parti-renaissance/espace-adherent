@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationRequestType;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,7 +18,6 @@ class DonationController extends Controller
     /**
      * @Route(defaults={"_enable_campaign_silence"=true}, name="donation_index")
      * @Method("GET")
-     * @Cache(maxage=60, smaxage=60)
      */
     public function indexAction(Request $request)
     {
