@@ -7,7 +7,7 @@ import 'core-js/modules/es6.object.keys';
 import 'core-js/modules/es6.promise';
 
 window.Kernel = class {
-    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist) {
+    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, firebaseMessagingSenderId) {
         Kernel.release = release;
         Kernel.sentryDsn = sentryDsn;
 
@@ -35,6 +35,7 @@ window.Kernel = class {
                     algoliaAppId: algoliaAppId,
                     algoliaAppPublicKey: algoliaAppPublicKey,
                     algoliaBlacklist: Base64.decode(algoliaBlacklist).split(','),
+                    firebaseMessagingSenderId: firebaseMessagingSenderId,
                 });
             }
         };

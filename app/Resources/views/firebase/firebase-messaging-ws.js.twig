@@ -1,0 +1,18 @@
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+
+firebase.initializeApp({
+    messagingSenderId: "{{ firebase_messaging_sender_id }}"
+});
+
+const messaging = firebase.messaging();
+messaging.setBackgroundMessageHandler(function(payload) {
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.icon,
+        click_action: payload.notification.click_action
+    };
+
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+});
