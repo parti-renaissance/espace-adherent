@@ -27,6 +27,11 @@ class Donation implements GeoPointInterface
     private $amount;
 
     /**
+     * @ORM\Column(type="smallint")
+     */
+    private $frequency;
+
+    /**
      * @ORM\Column(length=6)
      */
     private $gender;
@@ -85,7 +90,8 @@ class Donation implements GeoPointInterface
         string $emailAddress,
         PostAddress $postAddress,
         ?PhoneNumber $phone,
-        string $clientIp
+        string $clientIp,
+        int $frequency
     ) {
         $this->uuid = $uuid;
         $this->amount = $amount;
@@ -98,6 +104,7 @@ class Donation implements GeoPointInterface
         $this->clientIp = $clientIp;
         $this->finished = false;
         $this->createdAt = new \DateTime();
+        $this->frequency = $frequency;
     }
 
     public function __toString()
@@ -133,6 +140,16 @@ class Donation implements GeoPointInterface
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function getFrequency(): int
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(int $frequency): void
+    {
+        $this->frequency = $frequency;
     }
 
     public function getAmountInEuros()

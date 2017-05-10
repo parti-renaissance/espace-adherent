@@ -31,6 +31,10 @@
         }
     }
 
+    &__monthly {
+        margin: auto;
+    }
+
     &__button {
         outline: 0;
 
@@ -171,6 +175,10 @@
 
             &__other {
                 background: white;
+            }
+
+            &__monthly {
+                margin: auto;
             }
         }
     }
@@ -332,6 +340,28 @@
 
     &__form-steps {
         @include steps;
+    }
+
+    &__frequency {
+        input {
+            visibility: hidden;
+
+            &:checked + label {
+                background-color: $pink;
+                border-color: $pink;
+            }
+        }
+
+        .btn--frequency {
+            background: $gray;
+            border-color: $gray;
+            color: black;
+            width: 100px;
+        }
+
+        &--amount {
+            border: solid $gray 1px;
+        }
     }
 
     &__form-note {

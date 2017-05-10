@@ -36,6 +36,8 @@
             <argument type="service" id="app.mailjet.client.transactional" />
         </service>
 
+        <service id="app.donation_frequency_request.factory" class="AppBundle\Donation\DonationFrequencyRequestFactory"/>
+
         <!-- Newsletter -->
         <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
 

@@ -30,7 +30,8 @@ class DonationFactory
                 $request->getAddress()
             ),
             $request->getPhone(),
-            $request->getClientIp()
+            $request->getClientIp(),
+            $request->getFrequency()
         );
     }
 }

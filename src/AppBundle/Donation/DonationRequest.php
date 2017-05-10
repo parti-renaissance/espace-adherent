@@ -3,6 +3,8 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Donation;
+use AppBundle\Validator\DonationFrequency;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -12,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest
 {
+    const DEFAULT_AMOUNT = 50.0;
+
     private $uuid;
 
     /**
@@ -94,7 +98,12 @@ class DonationRequest
 
     private $clientIp;
 
-    public function __construct(UuidInterface $uuid, string $clientIp, float $amount = 50.0)
+    /**
+     * @DonationFrequency()
+     */
+    private $frequency;
+
+    public function __construct(UuidInterface $uuid, string $clientIp, float $amount = self::DEFAULT_AMOUNT)
     {
         $this->uuid = $uuid;
         $this->clientIp = $clientIp;
@@ -102,11 +111,9 @@ class DonationRequest
         $this->country = 'FR';
         $this->setAmount($amount);
         $this->phone = static::createPhoneNumber();
-
-        $this->setAmount($amount);
     }
 
-    public static function createFromAdherent(Adherent $adherent, string $clientIp, float $amount = 50.0): self
+    public static function createFromAdherent(Adherent $adherent, string $clientIp, float $amount = self::DEFAULT_AMOUNT): self
     {
         $dto = new self(Uuid::uuid4(), $clientIp, $amount);
         $dto->gender = $adherent->getGender();
@@ -253,5 +260,15 @@ class DonationRequest
     public function getClientIp(): string
     {
         return $this->clientIp;
+    }
+
+    public function getFrequency(): ?int
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(int $frequency): void
+    {
+        $this->frequency = $frequency;
     }
 }

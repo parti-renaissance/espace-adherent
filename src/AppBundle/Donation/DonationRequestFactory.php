@@ -19,6 +19,9 @@ class DonationRequestFactory
             $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount);
         }
 
+        $frequency = $request->query->get('frequence', PayboxPaymentFrequency::DEFAULT_FREQUENCY);
+        $donation->setFrequency(PayboxPaymentFrequency::fromString($frequency)->getFrequency());
+
         if (($gender = $request->query->get('ge')) && in_array($gender, ['male', 'female'], true)) {
             $donation->setGender($gender);
         }
