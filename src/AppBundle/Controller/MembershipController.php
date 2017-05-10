@@ -82,6 +82,10 @@ class MembershipController extends Controller
             }
 
             if ($form->isValid()) {
+                if ($request->request->has('abonnement')) {
+                    return $this->redirectToRoute('donation_subscription', ['montant' => $donationRequest->getAmount()]);
+                }
+
                 $this->get('app.donation_request.handler')->handle($donationRequest);
 
                 return $this->redirectToRoute('donation_pay', [

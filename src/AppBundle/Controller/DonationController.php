@@ -2,7 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Donation\DonationRequest;
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
+use AppBundle\Form\DonationSubscriptionRequestType;
 use AppBundle\Form\DonationRequestType;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -21,8 +24,43 @@ class DonationController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('donation/index.html.twig', [
-            'amount' => (float) $request->query->get('montant', 50),
+        if (!$amount = (float) $request->query->get('montant')) {
+            return $this->render('donation/index.html.twig', [
+                'amount' => DonationRequest::DEFAULT_AMOUNT,
+            ]);
+        }
+
+        if ($request->query->has('abonnement')) {
+            return $this->redirectToRoute('donation_subscription', ['montant' => $amount]);
+        }
+
+        return $this->redirectToRoute('donation_informations', ['montant' => $amount]);
+    }
+
+    /**
+     * @Route("/mensuel", name="donation_subscription")
+     * @Method("GET|POST")
+     */
+    public function subscriptionAction(Request $request)
+    {
+        if (!$amount = $request->query->get('montant')) {
+            return $this->redirectToRoute('donation_index');
+        }
+
+        $form = $this->createForm(DonationSubscriptionRequestType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('donation_informations', [
+                'montant' => $amount,
+                'abonnement' => $form->get('duration')->getData(),
+            ]);
+        }
+
+        return $this->render('donation/subscription.html.twig', [
+            'amount' => $amount,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -32,13 +70,20 @@ class DonationController extends Controller
      */
     public function informationsAction(Request $request)
     {
-        $amount = (float) $request->query->get('montant');
-
-        if (!$amount) {
+        if (!$amount = (float) $request->query->get('montant')) {
             return $this->redirectToRoute('donation_index');
         }
 
-        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request, $amount, $this->getUser());
+        $subscription = $request->query->getInt('abonnement', PayboxPaymentSubscription::NONE);
+
+        if (!PayboxPaymentSubscription::isValid($subscription)) {
+            return $this->redirectToRoute('donation_subscription', ['montant' => $amount]);
+        }
+
+        $donationRequest = $this
+            ->get('app.donation_request.factory')
+            ->createFromRequest($request, $amount, $subscription, $this->getUser());
+
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
