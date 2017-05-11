@@ -10,8 +10,8 @@ final class LegislativeCampaignContactMessage
     private const HOTLINE_STANDARD = 'standard';
 
     private const HOTLINE_CHOICES = [
-        'Hotline des mandataires financiers' => self::HOTLINE_FINANCIAL,
-        'Hotline standard' => self::HOTLINE_STANDARD,
+        'Hotline Comptes de campagne' => self::HOTLINE_FINANCIAL,
+        'Hotline Campagne électorale' => self::HOTLINE_STANDARD,
     ];
 
     private const CAMPAIGN_ROLES = [
