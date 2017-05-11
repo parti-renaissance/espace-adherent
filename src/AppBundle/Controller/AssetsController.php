@@ -79,7 +79,7 @@ class AssetsController extends Controller
      *     name="homepage_video_url"
      * )
      * @Method("GET")
-     * @Cache(maxage=900, smaxage=900)
+     * @Cache(maxage=60, smaxage=60)
      */
     public function videoAction(string $format)
     {
