@@ -11,6 +11,7 @@ use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +26,7 @@ class AssetsController extends Controller
     /**
      * @Route("/assets/{path}", defaults={"_enable_campaign_silence"=true}, requirements={"path"=".+"}, name="asset_url")
      * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
      */
     public function assetAction($path, Request $request)
     {
@@ -77,6 +79,7 @@ class AssetsController extends Controller
      *     name="homepage_video_url"
      * )
      * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
      */
     public function videoAction(string $format)
     {
