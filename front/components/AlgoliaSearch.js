@@ -108,7 +108,7 @@ export default class AlgoliaSearch extends React.Component {
         }
 
         if ('event' === hit.type) {
-            return `/maps/${hit._geoloc.lat},${hit._geoloc.lng}?algolia`;
+            return `/maps/${parseFloat(hit._geoloc.lat).toFixed(7)},${parseFloat(hit._geoloc.lng).toFixed(7)}?algolia`;
         }
 
         return `/algolia/${hit.type}/${hit.slug}`;

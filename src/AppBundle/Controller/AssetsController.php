@@ -58,6 +58,7 @@ class AssetsController extends Controller
      *     name="map_url"
      * )
      * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
      */
     public function mapAction(Request $request, string $latitude, string $longitude)
     {
@@ -97,6 +98,7 @@ class AssetsController extends Controller
      *     requirements={"type"="proposal|custom|article|clarification"}
      * )
      * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
      */
     public function algoliaAction(Request $request, string $type, string $slug)
     {
