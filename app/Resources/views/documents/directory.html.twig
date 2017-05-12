@@ -23,7 +23,9 @@
                     <h2>Documents adhérents</h2>
                 {% elseif type == 'animateurs' %}
                     <h2>Documents animateurs</h2>
-                {% else %}
+                {% elseif type == 'animateurs-etrangers' %}
+                    <h2>Documents animateurs à l'étranger</h2>
+                {% elseif type == 'referents' %}
                     <h2>Documents référents</h2>
                 {% endif %}
 

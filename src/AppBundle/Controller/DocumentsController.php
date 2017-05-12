@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Documents\DocumentRepository;
+use AppBundle\Entity\Adherent;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,17 +21,29 @@ class DocumentsController extends Controller
      */
     public function indexAction()
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        $isHost = $this->get('app.committee.manager')->isCommitteeHost($adherent);
+        $isReferent = $adherent->isReferent();
+
         $documents = [];
         $documents['adherent'] = $this->get('app.documents_repository')->listAdherentDirectory('/');
 
-        $isHost = $this->get('app.committee.manager')->isCommitteeHost($this->getUser());
+        if ($isHost || $isReferent) {
+            $documents['host'] = $this->get('app.documents_repository')->listHostDirectory('/');
+        }
 
-        if ($this->getUser()->isReferent()) {
+        if (($isHost || $isReferent) && 'FR' !== strtoupper($adherent->getCountry())) {
+            $documents['foreign_host'] = $this->get('app.documents_repository')->listForeignHostDirectory('/');
+        }
+
+        if ($isReferent) {
             $documents['referent'] = $this->get('app.documents_repository')->listReferentDirectory('/');
         }
 
-        if ($isHost || $this->getUser()->isReferent()) {
-            $documents['host'] = $this->get('app.documents_repository')->listHostDirectory('/');
+        if ($this->isGranted('ROLE_PREVIOUS_ADMIN')) {
+            $documents['legislative_candidate'] = $this->get('app.documents_repository')->listLegislativeCandidateDirectory('/');
         }
 
         return $this->render('documents/index.html.twig', [
@@ -41,13 +54,17 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/dossier/{type}/{path}",
-     *     requirements={"type"="adherents|animateurs|referents", "path"=".+"},
+     *     requirements={"type"="adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path"=".+"},
      *     name="app_documents_directory"
      * )
      * @Method("GET")
      */
     public function directoryAction($type, $path)
     {
+        if (DocumentRepository::DIRECTORY_LEGISLATIVE_CANDIDATES === $type && !$this->isGranted('ROLE_PREVIOUS_ADMIN')) {
+            throw $this->createNotFoundException();
+        }
+
         $this->checkDocumentTypeAccess($type);
 
         return $this->render('documents/directory.html.twig', [
@@ -60,7 +77,7 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/telecharger/{type}/{path}",
-     *     requirements={"type"="adherents|animateurs|referents", "path"=".+"},
+     *     requirements={"type"="adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path"=".+"},
      *     name="app_documents_file"
      * )
      * @Method("GET")
@@ -83,14 +100,26 @@ class DocumentsController extends Controller
 
     private function checkDocumentTypeAccess(string $type)
     {
-        $isHost = $this->get('app.committee.manager')->isCommitteeHost($this->getUser());
-        $isReferent = $this->getUser()->isReferent();
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
-        if (DocumentRepository::DIRECTORY_HOSTS === $type && !$isHost && !$isReferent) {
+        $isHost = $this->get('app.committee.manager')->isCommitteeHost($adherent);
+        $isReferent = $adherent->isReferent();
+        $isLegislativeCandidate = $adherent->isLegislativeCandidate();
+
+        if (DocumentRepository::DIRECTORY_HOSTS === $type && !($isHost || $isReferent)) {
+            throw $this->createNotFoundException();
+        }
+
+        if (DocumentRepository::DIRECTORY_FOREIGN_HOSTS === $type && !($isHost || $isReferent || 'FR' !== strtoupper($adherent->getCountry()))) {
             throw $this->createNotFoundException();
         }
 
         if (DocumentRepository::DIRECTORY_REFERENTS === $type && !$isReferent) {
+            throw $this->createNotFoundException();
+        }
+
+        if (DocumentRepository::DIRECTORY_LEGISLATIVE_CANDIDATES === $type && !$isLegislativeCandidate) {
             throw $this->createNotFoundException();
         }
     }
