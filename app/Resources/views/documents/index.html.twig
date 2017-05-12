@@ -28,11 +28,31 @@
                 </div>
             {% endif %}
 
+            {% if documents.foreign_host is defined %}
+                <div class="documents__category">
+                    <h2>Documents animateurs à l'étranger</h2>
+
+                    {{ include('documents/tree.html.twig', { treeType: 'animateurs-etrangers', documents: documents.foreign_host }) }}
+                </div>
+            {% endif %}
+
             {% if documents.referent is defined %}
                 <div class="documents__category">
                     <h2>Documents référents</h2>
 
                     {{ include('documents/tree.html.twig', { treeType: 'referents', documents: documents.referent }) }}
+                </div>
+            {% endif %}
+
+            {% if documents.legislative_candidate is defined %}
+                <div class="documents__category">
+                    <h2>Documents candidat législatives</h2>
+
+                    <div class="text--body b__nudge--top-10">
+                        Vous ne voyez cette catégorie que parce que vous êtes administrateur.
+                    </div>
+
+                    {{ include('documents/tree.html.twig', { treeType: 'candidats-legislatives', documents: documents.legislative_candidate }) }}
                 </div>
             {% endif %}
         </section>
