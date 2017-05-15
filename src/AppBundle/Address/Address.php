@@ -77,13 +77,15 @@ class Address implements AddressInterface, GeocodableInterface
 
     public function setCity(?string $city)
     {
-        $parts = explode('-', $city);
-        if (2 !== count($parts)) {
-            throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
-        }
+        if ($city) {
+            $parts = explode('-', $city);
+            if (2 !== count($parts)) {
+                throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
+            }
 
-        if (!$this->postalCode) {
-            $this->setPostalCode($parts[0]);
+            if (!$this->postalCode) {
+                $this->setPostalCode($parts[0]);
+            }
         }
 
         $this->city = $city;
