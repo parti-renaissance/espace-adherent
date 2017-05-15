@@ -5,10 +5,10 @@ firebase.initializeApp({
     messagingSenderId: "{{ firebase_messaging_sender_id }}"
 });
 
-const messaging = firebase.messaging();
+var messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
+    var notificationTitle = payload.notification.title;
+    var notificationOptions = {
         body: payload.notification.body,
         icon: payload.notification.icon,
         click_action: payload.notification.click_action
