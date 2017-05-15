@@ -50,32 +50,32 @@ class Address implements AddressInterface, GeocodableInterface
         $this->country = self::FRANCE;
     }
 
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function setAddress(?string $address)
+    public function setAddress(?string $address): void
     {
         $this->address = $address;
     }
 
-    public function getPostalCode()
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
-    public function setPostalCode(?string $postalCode)
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity(?string $city)
+    public function setCity(?string $city): void
     {
         if ($city) {
             $parts = explode('-', $city);
@@ -91,7 +91,7 @@ class Address implements AddressInterface, GeocodableInterface
         $this->city = $city;
     }
 
-    public function getCityName()
+    public function getCityName(): ?string
     {
         if ($this->cityName) {
             return $this->cityName;
@@ -104,22 +104,22 @@ class Address implements AddressInterface, GeocodableInterface
         return $this->cityName;
     }
 
-    public function setCityName(?string $cityName)
+    public function setCityName(?string $cityName): void
     {
         $this->cityName = $cityName;
     }
 
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country)
+    public function setCountry(string $country): void
     {
         $this->country = $country;
     }
 
-    public function isFrenchAddress()
+    public function isFrenchAddress(): bool
     {
         return 'FR' === $this->country && $this->city;
     }
