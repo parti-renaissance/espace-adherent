@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Donation\DonationRequest;
+use AppBundle\Form\DataTransformer\FloatToStringTransformer;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,6 +23,7 @@ class DonationRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('amount', HiddenType::class);
+        $builder->get('amount')->addModelTransformer(new FloatToStringTransformer());
 
         if ($options['sponsor_form']) {
             $builder
