@@ -3,6 +3,7 @@
 {% block banner '' %}
 {% block page_title clarification.title %}
 {% block meta_description clarification.description %}
+{% block meta_twitter_description clarification.twitterDescription ?: clarification.description %}
 
 {% block canonical_url url('page_emmanuel_macron_proposition', {'slug': clarification.slug}) %}
 

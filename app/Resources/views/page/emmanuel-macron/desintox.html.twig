@@ -3,6 +3,7 @@
 {% block banner '' %}
 {% block page_title page.title %}
 {% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
 {% block canonical_url url('page_emmanuel_macron_desintox_list') %}
 
 {% block open_graph_image (url('homepage')|trim('/') ~ static_asset('pages-sharers/desintox.png', {'q': 70}))|raw %}

@@ -2,6 +2,7 @@
 
 {% block page_title article.title %}
 {% block meta_description article.description %}
+{% block meta_twitter_description article.twitterDescription ?: article.description %}
 
 {% block canonical_url url('article_view', {'slug': article.slug}) %}
 
