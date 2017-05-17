@@ -33,7 +33,7 @@ class ManagedArea
         return $this->codes;
     }
 
-    public function setCodes(array $codes)
+    public function setCodes(array $codes): void
     {
         $this->codes = $codes;
     }
@@ -43,28 +43,36 @@ class ManagedArea
         return implode(', ', $this->codes);
     }
 
-    public function setCodesAsString(?string $codes)
+    public function setCodesAsString(?string $codes): void
     {
         $this->codes = $codes ? array_map('trim', explode(',', $codes)) : [];
     }
 
-    public function getMarkerLatitude()
+    public function getMarkerLatitude(): ?string
     {
         return $this->markerLatitude;
     }
 
-    public function setMarkerLatitude($markerLatitude)
+    public function setMarkerLatitude(?string $markerLatitude): void
     {
+        if (!$markerLatitude) {
+            $markerLatitude = null;
+        }
+
         $this->markerLatitude = $markerLatitude;
     }
 
-    public function getMarkerLongitude()
+    public function getMarkerLongitude(): ?string
     {
         return $this->markerLongitude;
     }
 
-    public function setMarkerLongitude($markerLongitude)
+    public function setMarkerLongitude(?string $markerLongitude): void
     {
+        if (!$markerLongitude) {
+            $markerLongitude = null;
+        }
+
         $this->markerLongitude = $markerLongitude;
     }
 }
