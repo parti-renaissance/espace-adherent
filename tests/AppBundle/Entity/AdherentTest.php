@@ -108,6 +108,15 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTime('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
+    public function testUserWithLegislativeCandidateRole()
+    {
+        $adherent = $this->createAdherent();
+        $this->assertFalse(in_array('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles()));
+
+        $adherent = $this->createAdherent('john.smith@en-marche.fr');
+        $this->assertTrue(in_array('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles()));
+    }
+
     private function createAdherent($email = 'john.smith@example.org'): Adherent
     {
         $phone = new PhoneNumber();
