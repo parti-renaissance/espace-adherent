@@ -194,7 +194,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->legislativeCandidate) {
+        if ($this->legislativeCandidate || false !== strpos($this->emailAddress, '@en-marche.fr')) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
