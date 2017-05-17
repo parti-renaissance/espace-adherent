@@ -33,6 +33,11 @@ class PageAdmin extends AbstractAdmin
                     'label' => 'Description',
                     'filter_emojis' => true,
                 ])
+                ->add('twitterDescription', TextareaType::class, [
+                    'label' => 'Description pour Twitter',
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'filter_emojis' => true,

@@ -47,6 +47,15 @@ trait EntityContentTrait
      *
      * @ORM\Column(length=255, nullable=true)
      *
+     * @Assert\Length(min=10, max=255)
+     */
+    private $twitterDescription;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=255, nullable=true)
+     *
      * @Algolia\Attribute
      */
     private $keywords;
@@ -93,6 +102,16 @@ trait EntityContentTrait
     public function setDescription(?string $description)
     {
         $this->description = $description;
+    }
+
+    public function getTwitterDescription(): ?string
+    {
+        return $this->twitterDescription;
+    }
+
+    public function setTwitterDescription(?string $twitterDescription): void
+    {
+        $this->twitterDescription = $twitterDescription;
     }
 
     public function getContent(): ?string

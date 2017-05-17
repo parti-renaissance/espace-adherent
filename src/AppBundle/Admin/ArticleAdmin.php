@@ -49,6 +49,11 @@ class ArticleAdmin extends AbstractAdmin
                     'label' => 'Description',
                     'filter_emojis' => true,
                 ])
+                ->add('twitterDescription', TextareaType::class, [
+                    'label' => 'Description pour Twitter',
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
                 ->add('keywords', null, [
                     'label' => 'Mots clés de recherche',
                     'required' => false,
