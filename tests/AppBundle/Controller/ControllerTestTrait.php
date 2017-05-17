@@ -71,7 +71,7 @@ trait ControllerTestTrait
 
     private function getEventCategoryIdForName(string $categoryName): int
     {
-        return (string) $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
+        return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 
     protected function init(array $fixtures = [])

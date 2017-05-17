@@ -6,7 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-class Version20170428100000 extends AbstractMigration
+class Version20170517100000 extends AbstractMigration
 {
     private $events;
 

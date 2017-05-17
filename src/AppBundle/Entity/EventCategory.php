@@ -24,7 +24,7 @@ class EventCategory
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(length=100, unique=true)
