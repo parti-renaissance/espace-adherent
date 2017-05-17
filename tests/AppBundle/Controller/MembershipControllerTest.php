@@ -248,6 +248,31 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
 
+    public function testDonateWithAFakeValue()
+    {
+        // register
+        $this->client->request(Request::METHOD_GET, '/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $data = static::createFormData();
+        $data['membership_request']['emailAddress'] = 'michel2@dupont.tld';
+        $data['membership_request']['address']['country'] = 'CH';
+        $data['membership_request']['address']['city'] = '';
+        $data['membership_request']['address']['cityName'] = 'Zürich';
+        $data['membership_request']['address']['postalCode'] = '8057';
+        $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
+
+        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
+
+        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $crawler = $this->client->followRedirect();
+        $form = $crawler->selectButton('Je soutiens maintenant')->form();
+        $this->client->submit($form, ['app_donation[amount]' => 'NaN']);
+
+        $this->assertNotSame(500, $this->client->getResponse()->getStatusCode());
+    }
+
     /**
      * @dataProvider provideRegistrationOnBoardingStepUrl
      */
