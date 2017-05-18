@@ -71,7 +71,7 @@
         </service>
 
         <!-- Imagine -->
-        <service id="app.imagine" class="Imagine\Gd\Imagine"></service>
+        <service id="app.imagine" class="Imagine\Gd\Imagine"/>
 
     </services>
 </container>

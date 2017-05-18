@@ -266,6 +266,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->gender;
     }
 
+    public function isForeignResident(): bool
+    {
+        return 'FR' !== strtoupper($this->getCountry());
+    }
+
     public function isFemale(): bool
     {
         return Genders::FEMALE === $this->gender;

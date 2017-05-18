@@ -45,8 +45,14 @@
         </service>
 
         <!-- Documents -->
-        <service id="app.documents_repository" class="AppBundle\Documents\DocumentRepository">
+        <service id="app.document_repository" class="AppBundle\Documents\DocumentRepository" public="false">
             <argument type="service" id="app.storage" />
+        </service>
+
+        <service id="app.document_manager" class="AppBundle\Documents\DocumentManager">
+            <argument type="service" id="app.document_repository"/>
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="security.authorization_checker"/>
         </service>
 
         <!-- Filesystem -->
