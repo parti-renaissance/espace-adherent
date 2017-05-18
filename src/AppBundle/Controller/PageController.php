@@ -10,6 +10,8 @@ use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use AppBundle\Event\EventCategories;
+use Doctrine\ORM\EntityRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,23 +26,21 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-ce-que-je-suis')")
      */
-    public function emmanuelMacronAction()
+    public function emmanuelMacronAction(Page $page)
     {
-        return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-ce-que-je-suis'),
-        ]);
+        return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', ['page' => $page]);
     }
 
     /**
      * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-revolution')")
      */
-    public function emmanuelMacronRevolutionAction()
+    public function emmanuelMacronRevolutionAction(Page $page)
     {
-        return $this->render('page/emmanuel-macron/revolution.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-revolution'),
-        ]);
+        return $this->render('page/emmanuel-macron/revolution.html.twig', ['page' => $page]);
     }
 
     /**
@@ -58,60 +58,47 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/le-programme", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_programme")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-propositions')")
      */
-    public function emmanuelMacronProgrammeAction()
+    public function emmanuelMacronProgrammeAction(Page $page)
     {
         return $this->render('page/emmanuel-macron/propositions.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('emmanuel-macron-propositions'),
-            'proposals' => $this->getDoctrine()->getRepository(Proposal::class)->findAllOrderedByPosition(),
+            'page' => $page,
+            'proposals' => $this->getRepository(Proposal::class)->findAllOrderedByPosition(),
         ]);
     }
 
     /**
      * @Route("/emmanuel-macron/le-programme/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_proposition")
      * @Method("GET")
+     * @Entity("proposal", expr="repository.findPublishedProposal(slug)")
      */
-    public function emmanuelMacronPropositionAction($slug)
+    public function emmanuelMacronPropositionAction(Proposal $proposal)
     {
-        $proposal = $this->getDoctrine()->getRepository(Proposal::class)->findOneBySlug($slug);
-        if (!$proposal || !$proposal->isPublished()) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render('page/emmanuel-macron/proposition.html.twig', [
-            'proposal' => $proposal,
-        ]);
+        return $this->render('page/emmanuel-macron/proposition.html.twig', ['proposal' => $proposal]);
     }
 
     /**
      * @Route("/emmanuel-macron/desintox", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_list")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('desintox')")
      */
-    public function emmanuelMacronDesintoxListAction()
+    public function emmanuelMacronDesintoxListAction(Page $page)
     {
-        $repository = $this->getDoctrine()->getRepository(Clarification::class);
-
         return $this->render('page/emmanuel-macron/desintox.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('desintox'),
-            'clarifications' => $repository->findAll(),
+            'page' => $page,
+            'clarifications' => $this->getRepository(Clarification::class)->findAll(),
         ]);
     }
 
     /**
      * @Route("/emmanuel-macron/desintox/{slug}", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_desintox_view")
      * @Method("GET")
+     * @Entity("clarification", expr="repository.findPublishedClarification(slug)")
      */
-    public function emmanuelMacronDesintoxViewAction($slug)
+    public function emmanuelMacronDesintoxViewAction(Clarification $clarification)
     {
-        $clarification = $this->getDoctrine()->getRepository(Clarification::class)->findOneBySlug($slug);
-
-        if (!$clarification || !$clarification->isPublished()) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render('page/emmanuel-macron/desintox_view.html.twig', [
-            'clarification' => $clarification,
-        ]);
+        return $this->render('page/emmanuel-macron/desintox_view.html.twig', ['clarification' => $clarification]);
     }
 
     /**
@@ -121,41 +108,38 @@ class PageController extends Controller
     public function emmanuelMacronVideosAction()
     {
         return $this->render('page/emmanuel-macron/videos.html.twig', [
-            'videos' => $this->getDoctrine()->getRepository(FacebookVideo::class)->findBy(['published' => true], ['position' => 'ASC']),
+            'videos' => $this->getRepository(FacebookVideo::class)->findPublishedVideos(),
         ]);
     }
 
     /**
      * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-nos-valeurs')")
      */
-    public function mouvementValeursAction()
+    public function mouvementValeursAction(Page $page)
     {
-        return $this->render('page/le-mouvement/nos-valeurs.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-nos-valeurs'),
-        ]);
+        return $this->render('page/le-mouvement/nos-valeurs.html.twig', ['page' => $page]);
     }
 
     /**
      * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-notre-organisation')")
      */
-    public function mouvementOrganisationAction()
+    public function mouvementOrganisationAction(Page $page)
     {
-        return $this->render('page/le-mouvement/notre-organisation.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-notre-organisation'),
-        ]);
+        return $this->render('page/le-mouvement/notre-organisation.html.twig', ['page' => $page]);
     }
 
     /**
      * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-legislatives')")
      */
-    public function mouvementLegislativesAction()
+    public function mouvementLegislativesAction(Page $page)
     {
-        return $this->render('page/le-mouvement/legislatives.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-legislatives'),
-        ]);
+        return $this->render('page/le-mouvement/legislatives.html.twig', ['page' => $page]);
     }
 
     /**
@@ -165,9 +149,9 @@ class PageController extends Controller
     public function mouvementCarteComitesAction()
     {
         return $this->render('page/la-carte.html.twig', [
-            'userCount' => $this->getDoctrine()->getRepository(Adherent::class)->count(),
-            'eventCount' => $this->getDoctrine()->getRepository(Event::class)->count(),
-            'committeeCount' => $this->getDoctrine()->getRepository(Committee::class)->count(),
+            'userCount' => $this->getRepository(Adherent::class)->count(),
+            'eventCount' => $this->getRepository(Event::class)->count(),
+            'committeeCount' => $this->getRepository(Committee::class)->count(),
         ]);
     }
 
@@ -178,7 +162,7 @@ class PageController extends Controller
     public function mouvementCarteEvenementsAction()
     {
         return $this->render('page/les-evenements/la-carte.html.twig', [
-            'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
+            'eventCount' => $this->getRepository(Event::class)->countUpcomingEvents(),
             'types' => EventCategories::CHOICES,
         ]);
     }
@@ -186,34 +170,31 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-les-comites')")
      */
-    public function mouvementComitesAction()
+    public function mouvementComitesAction(Page $page)
     {
-        return $this->render('page/le-mouvement/les-comites.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-les-comites'),
-        ]);
+        return $this->render('page/le-mouvement/les-comites.html.twig', ['page' => $page]);
     }
 
     /**
      * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-devenez-benevole')")
      */
-    public function mouvementBenevoleAction()
+    public function mouvementBenevoleAction(Page $page)
     {
-        return $this->render('page/le-mouvement/devenez-benevole.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('le-mouvement-devenez-benevole'),
-        ]);
+        return $this->render('page/le-mouvement/devenez-benevole.html.twig', ['page' => $page]);
     }
 
     /**
      * @Route("/mentions-legales", defaults={"_enable_campaign_silence"=true}, name="page_mentions_legales")
      * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('mentions-legales')")
      */
-    public function mentionsLegalesAction()
+    public function mentionsLegalesAction(Page $page)
     {
-        return $this->render('page/mentions-legales.html.twig', [
-            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('mentions-legales'),
-        ]);
+        return $this->render('page/mentions-legales.html.twig', ['page' => $page]);
     }
 
     /**
@@ -241,5 +222,10 @@ class PageController extends Controller
     public function ellesMarchentAction()
     {
         return $this->render('page/elles-marchent.html.twig');
+    }
+
+    private function getRepository(string $class): EntityRepository
+    {
+        return $this->getDoctrine()->getRepository($class);
     }
 }

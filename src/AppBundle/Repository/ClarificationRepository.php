@@ -18,10 +18,20 @@ class ClarificationRepository extends EntityRepository
         ;
     }
 
+    public function findPublishedClarification(string $slug): ?Clarification
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.slug = :slug')
+            ->andWhere('c.published = 1')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @return Clarification[]
      */
-    public function findAllPublished()
+    public function findAllPublished(): array
     {
         return $this->findBy(['published' => true], ['createdAt' => 'DESC']);
     }
