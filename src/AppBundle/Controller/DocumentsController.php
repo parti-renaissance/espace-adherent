@@ -21,33 +21,8 @@ class DocumentsController extends Controller
      */
     public function indexAction()
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
-        $isHost = $this->get('app.committee.manager')->isCommitteeHost($adherent);
-        $isReferent = $adherent->isReferent();
-
-        $documents = [];
-        $documents['adherent'] = $this->get('app.documents_repository')->listAdherentDirectory('/');
-
-        if ($isHost || $isReferent) {
-            $documents['host'] = $this->get('app.documents_repository')->listHostDirectory('/');
-        }
-
-        if (($isHost || $isReferent) && 'FR' !== strtoupper($adherent->getCountry())) {
-            $documents['foreign_host'] = $this->get('app.documents_repository')->listForeignHostDirectory('/');
-        }
-
-        if ($isReferent) {
-            $documents['referent'] = $this->get('app.documents_repository')->listReferentDirectory('/');
-        }
-
-        if ($this->isGranted('ROLE_PREVIOUS_ADMIN')) {
-            $documents['legislative_candidate'] = $this->get('app.documents_repository')->listLegislativeCandidateDirectory('/');
-        }
-
         return $this->render('documents/index.html.twig', [
-            'documents' => $documents,
+            'documents' => $this->get('app.document_manager')->listAdherentFiles($this->getUser()),
         ]);
     }
 
@@ -70,7 +45,7 @@ class DocumentsController extends Controller
         return $this->render('documents/directory.html.twig', [
             'type' => $type,
             'path' => $path,
-            'documents' => $this->get('app.documents_repository')->listDirectory($type, $path),
+            'documents' => $this->get('app.document_manager')->listDirectory($type, $path),
         ]);
     }
 
@@ -87,7 +62,7 @@ class DocumentsController extends Controller
         $this->checkDocumentTypeAccess($type);
 
         try {
-            $document = $this->get('app.documents_repository')->readDocument($type, $path);
+            $document = $this->get('app.document_manager')->readDocument($type, $path);
         } catch (FileNotFoundException $e) {
             throw $this->createNotFoundException('Document not found', $e);
         }
