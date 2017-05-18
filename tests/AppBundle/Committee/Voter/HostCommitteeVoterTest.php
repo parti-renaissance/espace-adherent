@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Committee\Voter;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Voter\HostCommitteeVoter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
@@ -21,8 +22,10 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
     /* @var HostCommitteeVoter */
     private $voter;
 
-    public function testHostCommitteePermissionIsGranted()
+    public function testCommitteeSupervisorCanHostApprovedCommittee()
     {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
+
         $this
             ->committeeManager
             ->expects($this->once())
@@ -30,11 +33,55 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->adherent, $this->committee)
             ->willReturn(true);
 
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, ['HOST_COMMITTEE']));
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
     }
 
-    public function testHostCommitteePermissionIsDenied()
+    public function testCommitteeSupervisorCanHostUnapprovedCommittee()
     {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
+
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('superviseCommittee')
+            ->with($this->adherent, $this->committee)
+            ->willReturn(true);
+
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+    }
+
+    public function testCommitteeHostCanHostApprovedCommittee()
+    {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
+
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('hostCommittee')
+            ->with($this->adherent, $this->committee)
+            ->willReturn(true);
+
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+    }
+
+    public function testCommitteeHostCannotHostUnapprovedCommittee()
+    {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
+
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('superviseCommittee')
+            ->with($this->adherent, $this->committee)
+            ->willReturn(false);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+    }
+
+    public function testNonCommitteeHostCannotHostApprovedCommittee()
+    {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
+
         $this
             ->committeeManager
             ->expects($this->once())
@@ -42,7 +89,7 @@ class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->adherent, $this->committee)
             ->willReturn(false);
 
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, ['HOST_COMMITTEE']));
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
     }
 
     public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()

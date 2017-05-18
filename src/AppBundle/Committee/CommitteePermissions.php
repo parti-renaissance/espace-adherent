@@ -10,7 +10,6 @@ final class CommitteePermissions
     const CREATE = 'CREATE_COMMITTEE';
     const HOST = 'HOST_COMMITTEE';
     const SUPERVISE = 'SUPERVISE_COMMITTEE';
-    const POST_MESSAGE = 'POST_MESSAGE_COMMITTEE';
 
     private function __construct()
     {

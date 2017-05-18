@@ -202,11 +202,6 @@
             <tag name="security.voter"/>
         </service>
 
-        <service id="app.voter.post_message_voter" class="AppBundle\Committee\Voter\PostMessageCommitteeVoter" public="false">
-            <argument type="service" id="app.committee.manager"/>
-            <tag name="security.voter"/>
-        </service>
-
         <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="app.committee.url_generator"/>
