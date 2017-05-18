@@ -22,10 +22,9 @@ class DonationRequestHandler
         $this->donationFactory = $donationFactory;
     }
 
-    public function handle(DonationRequest $request, string $clientIp): Donation
+    public function handle(DonationRequest $request): Donation
     {
         $donation = $this->donationFactory->createFromDonationRequest($request);
-        $donation->init($clientIp);
 
         $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
 

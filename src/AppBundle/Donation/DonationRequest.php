@@ -6,10 +6,14 @@ use AppBundle\Entity\Adherent;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest
 {
+    private $uuid;
+
     /**
      * @Assert\NotBlank(message="donation.amount.not_blank")
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
@@ -88,18 +92,23 @@ class DonationRequest
      */
     private $phone;
 
-    public function __construct(float $amount = 50.0)
+    private $clientIp;
+
+    public function __construct(UuidInterface $uuid, string $clientIp, float $amount = 50.0)
     {
+        $this->uuid = $uuid;
+        $this->clientIp = $clientIp;
         $this->emailAddress = '';
         $this->country = 'FR';
+        $this->setAmount($amount);
         $this->phone = static::createPhoneNumber();
 
         $this->setAmount($amount);
     }
 
-    public static function createFromAdherent(Adherent $adherent, float $amount = 50.0): self
+    public static function createFromAdherent(Adherent $adherent, string $clientIp, float $amount = 50.0): self
     {
-        $dto = new self($amount);
+        $dto = new self(Uuid::uuid4(), $clientIp, $amount);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
@@ -124,6 +133,11 @@ class DonationRequest
         }
 
         return $phone;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getAmount(): ?float
@@ -234,5 +248,10 @@ class DonationRequest
     public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
+    }
+
+    public function getClientIp(): string
+    {
+        return $this->clientIp;
     }
 }

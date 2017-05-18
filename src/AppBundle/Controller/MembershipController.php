@@ -82,10 +82,10 @@ class MembershipController extends Controller
             }
 
             if ($form->isValid()) {
-                $donation = $this->get('app.donation_request.handler')->handle($donationRequest, $request->getClientIp());
+                $this->get('app.donation_request.handler')->handle($donationRequest);
 
                 return $this->redirectToRoute('donation_pay', [
-                    'uuid' => $donation->getUuid()->toString(),
+                    'uuid' => $donationRequest->getUuid()->toString(),
                 ]);
             }
         }
