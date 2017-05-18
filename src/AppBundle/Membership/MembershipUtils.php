@@ -5,6 +5,7 @@ namespace AppBundle\Membership;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class MembershipUtils implements EventSubscriberInterface
@@ -14,11 +15,16 @@ final class MembershipUtils implements EventSubscriberInterface
 
     private $factory;
     private $session;
+    private $requestStack;
 
-    public function __construct(DonationRequestFactory $factory, SessionInterface $session)
-    {
+    public function __construct(
+        DonationRequestFactory $factory,
+        SessionInterface $session,
+        RequestStack $requestStack = null
+    ) {
         $this->factory = $factory;
         $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function getRegisteringDonation(): ?DonationRequest
@@ -49,7 +55,14 @@ final class MembershipUtils implements EventSubscriberInterface
 
     public function onAdherentAccountRegistrationCompleted(AdherentAccountWasCreatedEvent $event): void
     {
-        $donationRequest = $this->factory->createFromAdherent($adherent = $event->getAdherent());
+        if (!$this->requestStack) {
+            throw new \RuntimeException('Missing RequestStack dependency.');
+        }
+
+        $donationRequest = $this->factory->createFromAdherent(
+            $adherent = $event->getAdherent(),
+            $this->requestStack->getCurrentRequest()->getClientIp()
+        );
 
         $this->session->set(self::REGISTERING_DONATION, $donationRequest);
         $this->session->set(self::NEW_ADHERENT_ID, $adherent->getId());

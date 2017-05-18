@@ -3,11 +3,10 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\InitializedEntityException;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="donations")
@@ -78,14 +77,17 @@ class Donation implements GeoPointInterface
     private $createdAt;
 
     public function __construct(
+        UuidInterface $uuid,
         int $amount,
         string $gender,
         string $firstName,
         string $lastName,
         string $emailAddress,
         PostAddress $postAddress,
-        ?PhoneNumber $phone
+        ?PhoneNumber $phone,
+        string $clientIp
     ) {
+        $this->uuid = $uuid;
         $this->amount = $amount;
         $this->gender = $gender;
         $this->firstName = $firstName;
@@ -93,6 +95,7 @@ class Donation implements GeoPointInterface
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->phone = $phone;
+        $this->clientIp = $clientIp;
         $this->finished = false;
         $this->createdAt = new \DateTime();
     }
@@ -100,16 +103,6 @@ class Donation implements GeoPointInterface
     public function __toString()
     {
         return $this->lastName.' '.$this->firstName.' ('.($this->amount / 100).' €)';
-    }
-
-    public function init(string $clientIp)
-    {
-        if (null !== $this->uuid) {
-            throw new InitializedEntityException($this);
-        }
-
-        $this->uuid = Uuid::uuid4();
-        $this->clientIp = $clientIp;
     }
 
     public function finish(array $payboxPayload)

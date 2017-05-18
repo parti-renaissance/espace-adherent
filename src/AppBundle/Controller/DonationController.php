@@ -38,15 +38,14 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        $factory = $this->get('app.donation_request.factory');
-        $donationRequest = $factory->createFromRequest($request, $amount, $this->getUser());
+        $donationRequest = $this->get('app.donation_request.factory')->createFromRequest($request, $amount, $this->getUser());
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $donation = $this->get('app.donation_request.handler')->handle($donationRequest, $request->getClientIp());
+            $this->get('app.donation_request.handler')->handle($donationRequest);
 
             return $this->redirectToRoute('donation_pay', [
-                'uuid' => $donation->getUuid()->toString(),
+                'uuid' => $donationRequest->getUuid()->toString(),
             ]);
         }
 
