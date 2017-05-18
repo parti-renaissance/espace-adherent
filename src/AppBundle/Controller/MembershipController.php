@@ -38,10 +38,6 @@ class MembershipController extends Controller
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get('app.membership_request_handler')->handle($membership);
 
-            if ($membership->hasAdherent()) {
-                $this->get('app.membership_utils')->createRegisteringDonation($membership->getAdherent());
-            }
-
             return $this->redirectToRoute('app_membership_donate');
         }
 

@@ -49,8 +49,6 @@ class MembershipRequestHandler
         $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
         $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
-
-        $membershipRequest->setAdherent($adherent);
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)

@@ -92,11 +92,6 @@ class MembershipRequest
     private $phone;
 
     /**
-     * @var Adherent
-     */
-    private $adherent;
-
-    /**
      * @Assert\NotBlank(message="adherent.birthdate.not_blank")
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
      */
@@ -134,7 +129,7 @@ class MembershipRequest
         return $dto;
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode($countryCode);
@@ -146,74 +141,43 @@ class MembershipRequest
         return $phone;
     }
 
-    /**
-     * Sets an Address instance.
-     *
-     * @param Address|null $address
-     */
-    public function setAddress($address)
+    public function setAddress(Address $address = null): void
     {
         $this->address = $address;
     }
 
-    /**
-     * Returns an Address instance.
-     *
-     * @return Address|null
-     */
-    public function getAddress()
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = mb_strtolower($emailAddress);
     }
 
-    public function getEmailAddress()
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
 
-    public function setPhone(PhoneNumber $phone = null)
+    public function setPhone(PhoneNumber $phone = null): void
     {
         $this->phone = $phone;
     }
 
-    public function getPhone()
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
 
-    public function setBirthdate(\DateTime $birthdate = null)
+    public function setBirthdate(\DateTime $birthdate = null): void
     {
         $this->birthdate = $birthdate;
     }
 
-    public function getBirthdate()
+    public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
-    }
-
-    /**
-     * @return Adherent|null
-     */
-    public function getAdherent()
-    {
-        return $this->adherent;
-    }
-
-    /**
-     * @param Adherent|null $adherent
-     */
-    public function setAdherent(Adherent $adherent)
-    {
-        $this->adherent = $adherent;
-    }
-
-    public function hasAdherent(): bool
-    {
-        return null !== $this->adherent;
     }
 }
