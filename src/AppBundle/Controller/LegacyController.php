@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,15 +15,10 @@ class LegacyController extends Controller
     /**
      * @Route("/espaceperso/evenement/{id}-{slug}", requirements={"id"="\d+"})
      * @Method("GET")
+     * @Entity("event", expr="repository.find(id)")
      */
-    public function redirectEventAction($id): Response
+    public function redirectEventAction(Event $event): Response
     {
-        $event = $this->getDoctrine()->getRepository(Event::class)->find((int) $id);
-
-        if (!$event) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->redirectToRoute('app_committee_show_event', [
             'uuid' => $event->getUuid()->toString(),
             'slug' => $event->getSlug(),
@@ -32,15 +28,10 @@ class LegacyController extends Controller
     /**
      * @Route("/espaceperso/comite/{id}-{slug}", requirements={"id"="\d+"})
      * @Method("GET")
+     * @Entity("committee", expr="repository.find(id)")
      */
-    public function redirectCommitteeAction($id): Response
+    public function redirectCommitteeAction(Committee $committee): Response
     {
-        $committee = $this->getDoctrine()->getRepository(Committee::class)->find((int) $id);
-
-        if (!$committee) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->redirectToRoute('app_committee_show', [
             'uuid' => $committee->getUuid()->toString(),
             'slug' => $committee->getSlug(),
