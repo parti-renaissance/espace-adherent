@@ -2,12 +2,12 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestFactory;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class MembershipUtils
+final class MembershipUtils implements EventSubscriberInterface
 {
     const REGISTERING_DONATION = 'membership.registering_donation';
     const NEW_ADHERENT_ID = 'membership.new_adherent_id';
@@ -21,23 +21,12 @@ final class MembershipUtils
         $this->session = $session;
     }
 
-    public function createRegisteringDonation(Adherent $adherent)
-    {
-        $donationRequest = $this->factory->createFromAdherent($adherent);
-
-        $this->session->set(self::REGISTERING_DONATION, $donationRequest);
-        $this->session->set(self::NEW_ADHERENT_ID, $adherent->getId());
-    }
-
-    /**
-     * @return Donation|null
-     */
-    public function getRegisteringDonation()
+    public function getRegisteringDonation(): ?DonationRequest
     {
         return $this->session->get(self::REGISTERING_DONATION);
     }
 
-    public function clearRegisteringDonation()
+    public function clearRegisteringDonation(): void
     {
         $this->session->remove(self::REGISTERING_DONATION);
     }
@@ -58,8 +47,23 @@ final class MembershipUtils
         return (bool) $this->getNewAdherentId();
     }
 
-    public function clearNewAdherentId()
+    public function onAdherentAccountRegistrationCompleted(AdherentAccountWasCreatedEvent $event): void
+    {
+        $donationRequest = $this->factory->createFromAdherent($adherent = $event->getAdherent());
+
+        $this->session->set(self::REGISTERING_DONATION, $donationRequest);
+        $this->session->set(self::NEW_ADHERENT_ID, $adherent->getId());
+    }
+
+    public function clearNewAdherentId(): void
     {
         $this->session->remove(self::NEW_ADHERENT_ID);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentAccountRegistrationCompleted', 10],
+        ];
     }
 }
