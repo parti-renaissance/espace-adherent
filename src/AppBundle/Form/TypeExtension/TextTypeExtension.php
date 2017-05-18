@@ -46,14 +46,14 @@ class TextTypeExtension extends AbstractTypeExtension
     public function filterEmojisOnPreSubmit(FormEvent $event)
     {
         if ($data = $event->getData()) {
-            $event->setData(EmojisRemover::remove($event->getData()));
+            $event->setData(EmojisRemover::remove($data));
         }
     }
 
     public function purifyOnSubmit(FormEvent $event)
     {
         if ($data = $event->getData()) {
-            $event->setData(HtmlPurifier::purify($event->getData()));
+            $event->setData(HtmlPurifier::purify($data));
         }
     }
 }
