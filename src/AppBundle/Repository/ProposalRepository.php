@@ -10,7 +10,7 @@ class ProposalRepository extends EntityRepository
     /**
      * @return Proposal[]
      */
-    public function findAllOrderedByPosition()
+    public function findAllOrderedByPosition(): array
     {
         return $this->createQueryBuilder('p')
             ->select('p', 't')
@@ -25,13 +25,23 @@ class ProposalRepository extends EntityRepository
      *
      * @return Proposal
      */
-    public function findOneBySlug(string $slug)
+    public function findOneBySlug(string $slug): ?Proposal
     {
         return $this->createQueryBuilder('p')
             ->select('p', 'm', 't')
             ->leftJoin('p.media', 'm')
             ->leftJoin('p.themes', 't')
             ->where('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findPublishedProposal(string $slug): ?Proposal
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.slug = :slug')
+            ->andWhere('p.published = 1')
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult();

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FacebookVideoRepository")
  * @ORM\Table(name="facebook_videos")
  *
  * @Algolia\Index(autoIndex=false)
