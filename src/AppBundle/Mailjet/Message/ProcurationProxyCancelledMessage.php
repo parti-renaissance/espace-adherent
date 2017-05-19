@@ -24,7 +24,7 @@ final class ProcurationProxyCancelledMessage extends MailjetMessage
             ]
         );
 
-        $message->setSenderName('Procuration Macron');
+        $message->setSenderName('Procuration En Marche !');
         $message->addCC($proxy->getEmailAddress());
 
         if ($procurationManager) {

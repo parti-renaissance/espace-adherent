@@ -19,7 +19,7 @@ final class ProcurationProxyReminderMessage extends MailjetMessage
             self::createRecipientVariables($request, $infosUrl)
         );
 
-        $message->setSenderName('Procuration Macron');
+        $message->setSenderName('Procuration En Marche !');
 
         return $message;
     }
