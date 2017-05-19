@@ -25,6 +25,15 @@ class TonMacronController extends Controller
     }
 
     /**
+     * @Route("/pourquoi-voter-le-candidat-la-republique-en-marche")
+     * @Method("GET")
+     */
+    public function redirectLegislativesAction(): Response
+    {
+        return $this->redirectToRoute('app_ton_macron_invite');
+    }
+
+    /**
      * @Route("/pourquoivotermacron", name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
