@@ -84,6 +84,10 @@
             justify-content: space-around;
         }
 
+        &--h-start {
+            justify-content: flex-start;
+        }
+
         &--h-end {
             justify-content: flex-end;
         }
