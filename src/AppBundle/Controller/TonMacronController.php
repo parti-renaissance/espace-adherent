@@ -34,7 +34,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivotermacron", name="app_ton_macron_invite")
+     * @Route("/pourquoivoterenmarche", name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
     public function inviteAction(Request $request): Response
@@ -65,7 +65,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivotermacron/recommencer", name="app_ton_macron_invite_restart")
+     * @Route("/pourquoivoterenmarche/recommencer", name="app_ton_macron_invite_restart")
      * @Method("GET")
      */
     public function restartInviteAction(Request $request): Response
@@ -76,7 +76,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivotermacron/{uuid}/merci", name="app_ton_macron_invite_sent")
+     * @Route("/pourquoivoterenmarche/{uuid}/merci", name="app_ton_macron_invite_sent")
      * @Method("GET")
      */
     public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
