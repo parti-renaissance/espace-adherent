@@ -11,14 +11,6 @@
 {% block header '' %}
 {% block footer '' %}
 
-{% block stylesheets %}
-    <style type="text/css">
-        footer.footer--slim {
-            display: block;
-        }
-    </style>
-{% endblock %}
-
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="text/javascript">
@@ -257,6 +249,5 @@
                 {{ include('procuration/legal.html.twig') }}
             </div>
         </section>
-        {{ include('components/footer--slim.html.twig') }}
     </main>
 {% endblock %}
