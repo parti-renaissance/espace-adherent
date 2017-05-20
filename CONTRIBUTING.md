@@ -155,7 +155,6 @@ nous les marquons "easy pick", ce qui signifie que cette tâche est accessible a
 à bien lire toute l'issue pour vérifier que personne ne travaille déjà sur la tâche.
 
 La [documentation pour développeurs](docs) est aussi un bon moyen de commencer à apréhender le code et le projet.
-N'hésitez pas non plus à [nous rejoindre sur Slack](https://slack.en-marche.fr) pour discuter de ce que vous pourriez faire.
 
 
 ## J'ai fini mes modifications, je voudrais les proposer
