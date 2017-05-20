@@ -113,7 +113,7 @@ production.
 
 ### Pré-requis
 
-Afin d'appréhender correctement la partie serveur du projet, nous vous conseillons de connaître un minimum React.
+Afin d'appréhender correctement la partie client du projet, nous vous conseillons de connaître un minimum React.
 C'est un outil assez simple à comprendre tant que vous n'entrez pas dans les parties avancées.
 
 La plateforme En Marche utilise React non pas comme un framework d'application mais comme un élément additionnel
