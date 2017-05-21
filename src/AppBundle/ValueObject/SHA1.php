@@ -37,7 +37,7 @@ final class SHA1
     public function equals(SHA1 $other, $strict = false): bool
     {
         if (!$strict) {
-            return hash_equals (mb_strtolower($this->hash), mb_strtolower($other->getHash()));
+            return hash_equals(mb_strtolower($this->hash), mb_strtolower($other->getHash()));
         }
 
         return hash_equals($this->hash, $other->getHash());
