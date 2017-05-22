@@ -226,10 +226,11 @@ class ProcurationProxy
     private $voteCountry = 'FR';
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(length=50, nullable=true)
+     * @ORM\Column(length=50)
      *
+     * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(max=50, groups={"front"})
      */
     private $voteOffice;
@@ -612,7 +613,7 @@ class ProcurationProxy
         return $this->voteOffice;
     }
 
-    public function setVoteOffice(?string $voteOffice)
+    public function setVoteOffice(?string $voteOffice): void
     {
         $this->voteOffice = $voteOffice;
     }

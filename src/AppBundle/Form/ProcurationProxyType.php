@@ -30,7 +30,7 @@ class ProcurationProxyType extends AbstractProcurationType
                 'filter_emojis' => true,
             ])
             ->add('voteOffice', TextType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('electionLegislativeFirstRound', CheckboxType::class, [
                 'required' => false,

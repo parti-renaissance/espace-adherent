@@ -30,7 +30,7 @@ class ProcurationVoteType extends AbstractType
                 'filter_emojis' => true,
             ])
             ->add('voteOffice', TextType::class, [
-                'required' => false,
+                'required' => true,
             ])
         ;
     }

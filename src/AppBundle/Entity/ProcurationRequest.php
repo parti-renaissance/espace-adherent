@@ -220,10 +220,11 @@ class ProcurationRequest
     private $voteCountry = 'FR';
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(length=50, nullable=true)
+     * @ORM\Column(length=50)
      *
+     * @Assert\NotBlank(groups={"vote"})
      * @Assert\Length(max=50, groups={"vote"})
      */
     private $voteOffice;
