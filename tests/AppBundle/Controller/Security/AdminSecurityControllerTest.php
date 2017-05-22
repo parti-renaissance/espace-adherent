@@ -10,7 +10,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class AdminSecurityControllerTest extends SqliteWebTestCase
 {

@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class JeMarcheControllerTest extends SqliteWebTestCase
 {

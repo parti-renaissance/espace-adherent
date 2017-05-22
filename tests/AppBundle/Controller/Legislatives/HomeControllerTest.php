@@ -9,7 +9,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @functionnal
+ * @functional
  */
 class HomeControllerTest extends SqliteWebTestCase
 {

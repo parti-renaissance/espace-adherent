@@ -11,7 +11,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class CommitteesControllerTest extends MysqlWebTestCase
 {

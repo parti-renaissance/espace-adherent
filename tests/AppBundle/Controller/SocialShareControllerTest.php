@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class SocialShareControllerTest extends SqliteWebTestCase
 {

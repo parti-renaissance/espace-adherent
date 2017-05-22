@@ -20,7 +20,7 @@ class ProcurationSendReminderCommandTest extends SqliteWebTestCase
     private $procurationRequestRepository;
 
     /**
-     * @group functionnal
+     * @group functional
      */
     public function testCommand()
     {

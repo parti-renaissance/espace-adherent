@@ -23,14 +23,14 @@ dependencies:
             if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
               curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
             fi
-        - echo "memory_limit = 512M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
+        - echo "memory_limit = 1024M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
     override:
         - yarn install
         - composer install --no-interaction
 
 test:
     override:
-        - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml && yarn lint && yarn test && yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functionnal --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
+        - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml && yarn lint && yarn test && yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
               parallel: true
 
 deployment:
