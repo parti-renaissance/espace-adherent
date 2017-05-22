@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Repository\EventRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -38,6 +39,7 @@ class EventRepositoryTest extends SqliteWebTestCase
 
         $this->loadFixtures([
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
 

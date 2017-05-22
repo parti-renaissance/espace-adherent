@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
@@ -223,12 +224,14 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
+
         // Submit the committee event form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
                 'name' => 'F',
                 'description' => 'F',
-                'category' => 'CE003',
+                'category' => $eventCategory,
                 'address' => [
                     'country' => 'FR',
                     'postalCode' => '99999',
@@ -275,7 +278,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
             'committee_event' => [
                 'name' => " ♻ Débat sur l'écologie ♻ ",
                 'description' => ' ♻ Cette journée sera consacrée à un grand débat sur la question écologique. ♻ ',
-                'category' => 'CE003',
+                'category' => $eventCategory,
                 'address' => [
                     'address' => '6 rue Neyret',
                     'country' => 'FR',
@@ -832,6 +835,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
 

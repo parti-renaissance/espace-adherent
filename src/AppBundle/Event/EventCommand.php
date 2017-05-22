@@ -6,6 +6,7 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventCategory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,12 +23,7 @@ class EventCommand
     private $name;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *   callback="AppBundle\Event\EventCategories::all",
-     *   strict=true,
-     *   message="committee.event.invalid_category"
-     * )
+     * @Assert\NotNull
      */
     private $category;
 
@@ -111,12 +107,12 @@ class EventCommand
         $this->name = $name;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?EventCategory
     {
         return $this->category;
     }
 
-    public function setCategory(string $category)
+    public function setCategory(?EventCategory $category = null)
     {
         $this->category = $category;
     }

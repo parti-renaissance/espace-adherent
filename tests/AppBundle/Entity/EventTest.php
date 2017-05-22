@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
 use Ramsey\Uuid\UuidInterface;
 
@@ -22,7 +23,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             $this->createMock(Adherent::class),
             null,
             '',
-            '',
+            $this->createMock(EventCategory::class),
             '',
             $address,
             '',
@@ -56,7 +57,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             $this->createMock(Adherent::class),
             null,
             '',
-            '',
+            $this->createMock(EventCategory::class),
             '',
             $address,
             '',
@@ -87,7 +88,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             $this->createMock(Adherent::class),
             null,
             '',
-            '',
+            $this->createMock(EventCategory::class),
             '',
             $this->createMock(PostAddress::class),
             '',
@@ -110,7 +111,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             $this->createMock(Adherent::class),
             null,
             '',
-            '',
+            $this->createMock(EventCategory::class),
             '',
             $this->createMock(PostAddress::class),
             '',
