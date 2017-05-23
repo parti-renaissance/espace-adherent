@@ -258,8 +258,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationRequestUniqueEmailBirthdate()
     {
-        return;
-
         $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
 
         // Initial form
@@ -283,7 +281,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         // Profile
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_profile' => [
                 'gender' => 'female',
                 'firstNames' => 'Carine, Margaux',
@@ -306,8 +304,30 @@ class ProcurationControllerTest extends SqliteWebTestCase
             ],
         ]));
 
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/ma-procuration', $this->client);
+        $crawler = $this->client->followRedirect();
+
+        // Profile
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous êtes déjà inscrit comme mandant.', $crawler->filter('.procuration__banner__form')->text());
+        $this->client->submit($crawler->selectButton('Je continue')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_elections' => [
+                'electionLegislativeFirstRound' => true,
+                'electionLegislativeSecondRound' => false,
+                'reason' => ProcurationRequest::REASON_HEALTH,
+                'authorization' => true,
+            ],
+        ]));
+
+        // Procuration request should have been saved
+        /* @var ProcurationRequest $request */
+        $this->assertCount(6, $requests = $this->procurationRequestRepostitory->findAll());
+        $this->assertInstanceOf(ProcurationRequest::class, $request = end($requests));
+
+        // Redirected to thanks
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/merci', $this->client);
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testProcurationProposalUniqueEmailBirthdate()
@@ -320,7 +340,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
+        $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_proposal' => [
                 'gender' => 'male',
@@ -353,8 +373,15 @@ class ProcurationControllerTest extends SqliteWebTestCase
             ],
         ]));
 
+        // Procuration request should have been saved
+        /* @var ProcurationProxy $proposal */
+        $this->assertCount(4, $proposals = $this->procurationProxyRepostitory->findAll());
+        $this->assertInstanceOf(ProcurationProxy::class, $proposal = end($proposals));
+
+        // Redirected to thanks
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
+        $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Vous êtes déjà inscrit comme mandataire.', $crawler->filter('.procuration__banner__form')->text());
     }
 
     public function testProcurationProposalManagerUuid()
