@@ -31,8 +31,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationRequest()
     {
-        return;
-
         $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
 
         // Initial form
