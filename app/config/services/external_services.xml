@@ -22,7 +22,7 @@
         <!-- Mailjet (transactional) -->
         <service id="app.mailjet.client.transactional" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailjet.transport.transactional"/>
+            <argument type="service" id="app.mailjet.transport.rabbitmq_transactional"/>
             <argument type="service" id="app.mailjet.message_factory.transactional"/>
         </service>
 
@@ -30,6 +30,10 @@
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailjet.transport.rabbitmq_transactional" class="AppBundle\Mailjet\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailjet_transactional_producer" />
         </service>
 
         <service id="app.mailjet.message_factory.transactional" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
@@ -40,7 +44,7 @@
         <!-- Mailjet (campaign) -->
         <service id="app.mailjet.client.campaign" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailjet.transport.campaign"/>
+            <argument type="service" id="app.mailjet.transport.rabbitmq_campaign"/>
             <argument type="service" id="app.mailjet.message_factory.campaign"/>
         </service>
 
@@ -48,6 +52,10 @@
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailjet.transport.rabbitmq_campaign" class="AppBundle\Mailjet\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailjet_campaign_producer" />
         </service>
 
         <service id="app.mailjet.message_factory.campaign" class="AppBundle\Mailjet\MailjetTemplateEmailFactory" public="false">
