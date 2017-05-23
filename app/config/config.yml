@@ -207,6 +207,16 @@ old_sound_rabbit_mq:
             heartbeat: 0
 
     producers:
+        mailjet_transactional:
+            connection:       default
+            exchange_options: { name: 'mailjet-delayed-transactionnal', type: direct }
+            class:            AppBundle\Producer\MailjetProducer
+
+        mailjet_campaign:
+            connection:       default
+            exchange_options: { name: 'mailjet-delayed-campaign', type: direct }
+            class:            AppBundle\Producer\MailjetProducer
+
         mailjet_referent:
             connection:       default
             exchange_options: { name: 'mailjet-referent', type: direct }

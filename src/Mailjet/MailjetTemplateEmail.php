@@ -4,9 +4,12 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class MailjetTemplateEmail implements \JsonSerializable
 {
+    private $uuid;
     private $senderEmail;
     private $senderName;
     private $replyTo;
@@ -18,6 +21,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
     private $httpResponsePayload;
 
     public function __construct(
+        UuidInterface $uuid,
         string $template,
         string $subject,
         string $senderEmail,
@@ -25,6 +29,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         string $replyTo = null,
         array $cc = []
     ) {
+        $this->uuid = $uuid;
         $this->template = $template;
         $this->subject = $subject;
         $this->senderEmail = $senderEmail;
@@ -39,7 +44,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;
 
-        $email = new self($message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
+        $email = new self($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
 
         foreach ($message->getRecipients() as $recipient) {
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
@@ -61,6 +66,11 @@ final class MailjetTemplateEmail implements \JsonSerializable
         }
 
         $this->recipients[] = $recipient;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getBody(): array
