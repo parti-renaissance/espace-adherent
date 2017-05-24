@@ -9,8 +9,6 @@ La plateforme en-marche.fr est basée sur les outils open-source suivants :
 - [Webpack](https://webpack.github.io/docs/), aggrégateur de modules JavaScript
 - [MariaDB](https://mariadb.org/), moteur de base de donnée dérivé de MySQL
 
-Si vous avez la moindre question ou le moindre problème pour mettre en place votre environnement de développement,
-n'hésitez pas à nous poser la question [sur Slack](https://slack.en-marche.fr).
 
 ## 1.1.1 Installer les pré-requis du projet
 
@@ -137,14 +135,29 @@ latest: Pulling from library/mariadb
 
 Cela risque de prendre un peu de temps.
 
-Une fois terminé, votre environnement de développement devrait être prêt et le projet devrait être accessible sur
-[http://127.0.0.1:8000](http://127.0.0.1:8000) (ou si vous êtes sous macOS, sur le port 8000 de la machine virtuelle de
-votre instance Docker).
+## 1.1.3 Accéder au site local
 
-## 1.1.3 Accéder à l'espace d'administration
+Une fois le projet installé, renseignez le nom de domaine choisi pour l'application locale,
+par exemple `enmarche.dev`, dans le fichier `app/config/parameters.yml` :
+
+```
+env(ENMARCHE_DOMAIN): enmarche.dev
+```
+
+Puis, dans votre fichier `/etc/hosts` :
+
+```
+127.0.0.1       enmarche.dev
+```
+
+Le projet devrait être accessible sur
+[http://enmarche.dev:8000](http://enmarche.dev:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
+machine virtuelle de votre instance Docker).
+
+### 1.1.3.1 Accéder à l'espace d'administration
 
 Une fois le projet installé, vous pouvez accéder à l'espace d'administration en allant sur
-[http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
+[http://enmarche.dev:8000/admin](http://enmarche.dev:8000/admin).
 
 Vous pouvez alors y entrer les identifiants suivants :
 ```
@@ -153,7 +166,7 @@ writer@en-marche-dev.fr / writer      pour l'accès en mode rédacteur
 referent@en-marche-dev.fr / referent  pour l'accès en mode référent
 ```
 
-## 1.1.3 Accéder à l'espace adhérent
+### 1.1.3.2 Accéder à l'espace adhérent
 
 Une fois le projet installé, vous pouvez accéder à l'espace adhérent en cliquant sur "Connexion".
 Vous pouvez alors y entrer l'identifiant suivant :
