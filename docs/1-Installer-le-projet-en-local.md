@@ -138,13 +138,13 @@ Cela risque de prendre un peu de temps.
 ## 1.1.3 Accéder au site local
 
 Une fois le projet installé, renseignez le nom de domaine choisi pour l'application locale,
-par exemple `enmarche.dev`, dans le fichier `parameters.yml` :
+par exemple `enmarche.dev`, dans le fichier `app/config/parameters.yml` :
 
 ```
 env(ENMARCHE_DOMAIN): enmarche.dev
 ```
 
-Puis, dans votre fichier hosts :
+Puis, dans votre fichier `/etc/hosts` :
 
 ```
 127.0.0.1       enmarche.dev
