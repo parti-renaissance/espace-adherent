@@ -97,11 +97,11 @@ test: tu tf tj
 
 tu:             ## Run the PHP unit tests
 tu: vendor
-	$(RUN) vendor/bin/phpunit --exclude-group functionnal
+	$(RUN) vendor/bin/phpunit --exclude-group functional
 
 tf:             ## Run the PHP functional tests
 tf: vendor
-	$(RUN) vendor/bin/phpunit --group functionnal
+	$(RUN) vendor/bin/phpunit --group functional
 
 tj:             ## Run the Javascript tests
 tj: node_modules

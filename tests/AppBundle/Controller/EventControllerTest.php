@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\MysqlWebTestCase;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class EventControllerTest extends MysqlWebTestCase
 {

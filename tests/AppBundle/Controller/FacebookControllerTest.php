@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @group functionnal
+ * @group functional
  */
 class FacebookControllerTest extends WebTestCase
 {
