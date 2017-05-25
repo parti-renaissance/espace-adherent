@@ -141,6 +141,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 ])
                 ->add('geojson', TextareaType::class, [
                     'label' => 'Données GeoJSON',
+                    'required' => false,
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-4'])
