@@ -28,10 +28,9 @@ class LegislativeCandidateRepository extends EntityRepository
     {
         return $this
             ->createQueryBuilder('lc')
-            ->addSelect('dz', 'md', '(CASE WHEN lc.media IS NOT NULL THEN 1 ELSE 0 END) AS HIDDEN has_picture')
+            ->addSelect('dz', 'md')
             ->leftJoin('lc.districtZone', 'dz')
             ->leftJoin('lc.media', 'md')
-            ->orderBy('has_picture', 'DESC')
             ->addOrderBy('dz.rank', 'ASC')
             ->addOrderBy('lc.districtNumber', 'ASC')
             ->getQuery()

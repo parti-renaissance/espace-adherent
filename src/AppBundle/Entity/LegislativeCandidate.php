@@ -63,7 +63,7 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column(length=100)
-     * @Gedmo\Slug(fields={"firstName", "lastName"})
+     * @Gedmo\Slug(fields={"districtName"})
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
     private $slug;
