@@ -17,6 +17,11 @@ if (!isset($_SERVER['HTTP_CF_RAY'])) {
     exit;
 }
 
+if ((bool) $_SERVER['ENABLE_MAINTENANCE']) {
+    include __DIR__.'/maintenance.html';
+    exit;
+}
+
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
