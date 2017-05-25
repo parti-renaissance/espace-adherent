@@ -101,9 +101,8 @@ class LegislativeCandidate
     private $districtName;
 
     /**
-     * @ORM\Column(length=10)
+     * @ORM\Column(type="smallint")
      * @Assert\NotBlank(groups="Admin")
-     * @Assert\Regex(pattern="/^\d+$/", message="legislative_candidate.district_number.invalid", groups="Admin")
      */
     private $districtNumber;
 
