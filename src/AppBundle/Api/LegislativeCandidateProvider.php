@@ -22,7 +22,7 @@ class LegislativeCandidateProvider
     public function getForApi(): array
     {
         foreach ($this->repository->findAllForDirectory() as $candidate) {
-            if (!$candidate->getLatitude() || !$candidate->getLongitude()) {
+            if (!$candidate->getGeojson()) {
                 continue;
             }
 
@@ -30,12 +30,9 @@ class LegislativeCandidateProvider
                 'id' => $candidate->getId(),
                 'name' => $candidate->getFullName(),
                 'district' => $candidate->getDistrictName(),
-                'picture' => $candidate->getMedia() ? $this->asset->transformedMediaAsset($candidate->getMedia(), ['w' => 200, 'h' => 140, 'q' => 90, 'fit' => 'crop']) : '',
+                'picture' => $candidate->getMedia() ? $this->asset->transformedMediaAsset($candidate->getMedia(), ['w' => 200, 'h' => 140, 'q' => 70, 'fit' => 'crop']) : '',
                 'url' => $this->urlGenerator->generate('legislatives_candidate', ['slug' => $candidate->getSlug()]),
-                'position' => [
-                    'lat' => $candidate->getLatitude(),
-                    'lng' => $candidate->getLongitude(),
-                ],
+                'geojson' => \GuzzleHttp\json_decode($candidate->getGeojson()),
             ];
         }
 

@@ -108,16 +108,9 @@ class LegislativeCandidate
     private $districtNumber;
 
     /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.latitude.invalid", groups="Admin")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $latitude;
-
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     * @Assert\Regex(pattern="/^\-?\d+\.\d+$/", message="legislative_candidate.longitude.invalid", groups="Admin")
-     */
-    private $longitude;
+    private $geojson;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -243,24 +236,14 @@ class LegislativeCandidate
         $this->districtNumber = $districtNumber;
     }
 
-    public function getLatitude(): ?float
+    public function getGeojson(): ?string
     {
-        return $this->latitude;
+        return $this->geojson;
     }
 
-    public function setLatitude(?float $latitude): void
+    public function setGeojson(?string $geojson): void
     {
-        $this->latitude = $latitude;
-    }
-
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?float $longitude): void
-    {
-        $this->longitude = $longitude;
+        $this->geojson = $geojson;
     }
 
     public function getDescription(): ?string
