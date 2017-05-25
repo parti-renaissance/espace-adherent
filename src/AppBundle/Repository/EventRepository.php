@@ -26,7 +26,8 @@ class EventRepository extends EntityRepository
     {
         $query = $this
             ->createQueryBuilder('e')
-            ->select('e, c, o')
+            ->select('e', 'a', 'c', 'o')
+            ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
@@ -58,6 +59,10 @@ class EventRepository extends EntityRepository
     public function findOneActiveByUuid(string $uuid): ?Event
     {
         $query = $this->createQueryBuilder('e')
+            ->select('e', 'a', 'c', 'o')
+            ->leftJoin('e.category', 'a')
+            ->leftJoin('e.committee', 'c')
+            ->leftJoin('e.organizer', 'o')
             ->where('e.uuid = :uuid')
             ->andWhere('e.status IN (:statuses)')
             ->setParameter('uuid', $uuid)
@@ -73,7 +78,10 @@ class EventRepository extends EntityRepository
     public function findManagedBy(Adherent $referent): array
     {
         $qb = $this->createQueryBuilder('e')
-            ->select('e')
+            ->select('e', 'a', 'c', 'o')
+            ->leftJoin('e.category', 'a')
+            ->leftJoin('e.committee', 'c')
+            ->leftJoin('e.organizer', 'o')
             ->orderBy('e.beginAt', 'DESC')
             ->addOrderBy('e.name', 'ASC');
 
@@ -131,7 +139,10 @@ class EventRepository extends EntityRepository
         $qb = $this->createQueryBuilder('e');
 
         return $qb
+            ->select('e', 'a', 'c', 'o')
+            ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
+            ->leftJoin('e.organizer', 'o')
             ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
             ->orderBy('e.beginAt', 'ASC')
@@ -164,7 +175,10 @@ class EventRepository extends EntityRepository
     {
         return $this
             ->createQueryBuilder('e')
+            ->select('e', 'a', 'c', 'o')
+            ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
+            ->leftJoin('e.organizer', 'o')
             ->where('c.status = :status')
             ->setParameter('status', Committee::APPROVED);
     }
