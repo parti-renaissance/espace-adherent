@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  *   }
  * )
  *
- * @Algolia\Index()
+ * @Algolia\Index
  */
 class Event implements GeoPointInterface
 {
