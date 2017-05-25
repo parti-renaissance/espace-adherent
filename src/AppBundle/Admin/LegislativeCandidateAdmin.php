@@ -139,17 +139,8 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                         'placeholder' => 'Deuxième circonscription des Hauts-de-Seine',
                     ],
                 ])
-                ->add('latitude', null, [
-                    'label' => 'Latitude d\'affichage sur la carte',
-                    'attr' => [
-                        'placeholder' => '48.8860166',
-                    ],
-                ])
-                ->add('longitude', null, [
-                    'label' => 'Longitude d\'affichage sur la carte',
-                    'attr' => [
-                        'placeholder' => '2.2478122',
-                    ],
+                ->add('geojson', TextareaType::class, [
+                    'label' => 'Données GeoJSON',
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-4'])
@@ -228,8 +219,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 ->add('districtNumber', null, [
                     'label' => 'Numéro de la circonscription',
                 ])
-                ->add('latitude')
-                ->add('longitude')
+                ->add('geojson', null, [
+                    'label' => 'Données GeoJSON',
+                ])
             ->end()
             ->with('Photo de profil', ['class' => 'col-md-5'])
                 ->add('media', null)
