@@ -26,8 +26,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::MALE,
             'Alban',
             'Martin',
-            46.2600121,
-            5.5815357,
+            null,
             'alban-martin'
         );
         $candidate001->setEmailAddress('alban.martin@en-marche-dev.fr');
@@ -45,9 +44,7 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::FEMALE,
             'Michelle',
-            'Dumoulin',
-            45.6942366,
-            5.8744525
+            'Dumoulin'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -56,9 +53,7 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::MALE,
             'Pierre',
-            'Etchebest',
-            45.6647635,
-            6.3748451
+            'Etchebest'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -67,9 +62,7 @@ class LoadLegislativesData implements FixtureInterface
             '5',
             Genders::FEMALE,
             'Monique',
-            'Albert',
-            46.3910742,
-            6.5735429
+            'Albert'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -78,9 +71,7 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::MALE,
             'Etienne',
-            'de Monté-Cristo',
-            48.8620254,
-            2.318369
+            'de Monté-Cristo'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -89,9 +80,7 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::FEMALE,
             'Valérie',
-            'Langlade',
-            48.8677068,
-            2.3323267
+            'Langlade'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -100,9 +89,7 @@ class LoadLegislativesData implements FixtureInterface
             '3',
             Genders::FEMALE,
             'Isabelle',
-            'Piémontaise',
-            48.8625838,
-            2.3505278
+            'Piémontaise'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -111,9 +98,7 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::FEMALE,
             'Estelle',
-            'Antonov',
-            -20.9432,
-            55.3705662
+            'Antonov'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -122,9 +107,7 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::MALE,
             'Jacques',
-            'Arditi',
-            -21.014042,
-            55.2673329
+            'Arditi'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -133,9 +116,7 @@ class LoadLegislativesData implements FixtureInterface
             '3',
             Genders::MALE,
             'Albert',
-            'Bérégovoy',
-            -21.2917429,
-            55.4074309
+            'Bérégovoy'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -144,9 +125,7 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::MALE,
             'Franck',
-            'de Lavalle',
-            36.2305449,
-            -113.8245564
+            'de Lavalle'
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -156,8 +135,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::FEMALE,
             'Emmanuelle',
             'Parfait',
-            1.3150701,
-            103.7065847,
+            null,
             'emmanuelle-parfait'
         ));
 
@@ -168,8 +146,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::MALE,
             'Michel',
             'Patulacci',
-            41.9227051,
-            8.6356286,
+            null,
             'michel-patulacci'
         ));
 
@@ -180,8 +157,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::FEMALE,
             'Josiane',
             'Dupuis',
-            42.6860037,
-            9.3889053,
+            null,
             'josiane-dupuis'
         ));
 
@@ -192,8 +168,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::MALE,
             'Paul',
             'Arty',
-            45.26565,
-            1.7695031,
+            null,
             'paul-arty'
         ));
 
@@ -204,8 +179,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::MALE,
             'Nathan',
             'Enquillé',
-            47.3318596,
-            4.9620089,
+            null,
             'nathan-enquille'
         ));
 
@@ -219,8 +193,7 @@ class LoadLegislativesData implements FixtureInterface
         string $gender,
         string $firstName,
         string $lastName,
-        float $latitude,
-        float $longitude,
+        string $geojson = null,
         string $slug = null
     ): LegislativeCandidate {
         $directory = __DIR__.'/../../DataFixtures/legislatives';
@@ -236,8 +209,7 @@ class LoadLegislativesData implements FixtureInterface
         $candidate->setDistrictZone($zone);
         $candidate->setDistrictName($districtName);
         $candidate->setDistrictNumber($districtNumber);
-        $candidate->setLatitude($latitude);
-        $candidate->setLongitude($longitude);
+        $candidate->setGeojson($geojson);
         $candidate->setDescription(file_get_contents($description));
         $candidate->setCareer(LegislativeCandidate::CAREERS[1]);
 

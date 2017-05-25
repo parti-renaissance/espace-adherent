@@ -1,3 +1,5 @@
+import polylabel from '@mapbox/polylabel';
+
 /*
  * Legislatives candidates map
  */
@@ -9,29 +11,55 @@ export default (mapFactory, api) => {
             zoom: 5,
         });
 
+        map.data.setStyle({
+            fillColor: '#ff4e42',
+            strokeColor: '#c7736f',
+            strokeWeight: 1,
+        });
+
+        map.data.addListener('mouseover', (e) => {
+            map.data.revertStyle();
+            map.data.overrideStyle(e.feature, {
+                fillColor: 'green',
+            });
+        });
+
+        map.data.addListener('mouseout', (e) => {
+            map.data.revertStyle();
+        });
+
         let infowindow = null;
 
-        candidates.forEach((candidate) => {
-            const marker = mapFactory.addMarker(map, {
-                title: candidate.name,
-                position: candidate.position,
-            });
+        map.data.addListener('click', (e) => {
+            const candidate = e.feature.getProperty('candidate');
+            const center = polylabel(candidate.geojson.coordinates);
+            const picture = candidate.picture ? candidate.picture : '/images/unknown-candidate-small.jpg';
 
-            google.maps.event.addListener(marker, 'click', () => {
-                if (infowindow) {
-                    infowindow.close();
-                }
+            if (infowindow) {
+                infowindow.close();
+            }
 
-                infowindow = new google.maps.InfoWindow({
-                    content: `<a href="${candidate.url}" target="_blank" class="candidate__overlay">
-                              <div style="background-image: url('${candidate.picture}')"></div>
+            infowindow = new google.maps.InfoWindow({
+                content: `<a href="${candidate.url}" target="_blank" class="candidate__overlay">
+                              <div style="background-image: url('${picture}')"></div>
                               <h3>${candidate.name}</h3>
                               ${candidate.district}</a>`,
-                    position: candidate.position,
-                    pixelOffset: new google.maps.Size(0, -8),
-                });
+                position: {
+                    lat: center[1],
+                    lng: center[0],
+                },
+            });
 
-                infowindow.open(map);
+            infowindow.open(map);
+        });
+
+        candidates.forEach((candidate) => {
+            map.data.addGeoJson({
+                type: 'Feature',
+                geometry: candidate.geojson,
+                properties: {
+                    candidate,
+                },
             });
         });
     });

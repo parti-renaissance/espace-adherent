@@ -123,6 +123,10 @@ lj:             ## Lint the Javascript to follow the convention
 lj: node_modules
 	$(RUN) yarn lint
 
+ljfix:          ## Lint and try to fix the Javascript to follow the convention
+ljfix: node_modules
+	$(RUN) yarn lint -- --fix
+
 
 ##
 ## Dependencies
