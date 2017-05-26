@@ -22,7 +22,7 @@ class AdminTonMacronController extends Controller
     /**
      * @Route("/export/choices", name="app_admin_tonmacron_export_choices")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportChoicesAction(): Response
     {
@@ -38,7 +38,7 @@ class AdminTonMacronController extends Controller
     /**
      * @Route("/export/invitations", name="app_admin_tonmacron_export_invitations")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportInvitationsAction(): Response
     {
@@ -63,7 +63,7 @@ class AdminTonMacronController extends Controller
     /**
      * @Route("/export/invitations/partial", name="app_admin_tonmacron_export_invitations_partial")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportInvitationsPartialAction(Request $request): Response
     {

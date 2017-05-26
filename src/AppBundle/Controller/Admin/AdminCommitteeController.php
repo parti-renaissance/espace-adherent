@@ -24,7 +24,7 @@ class AdminCommitteeController extends Controller
      *
      * @Route("/{id}/approve", name="app_admin_committee_approve")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function approveAction(Committee $committee): Response
     {
@@ -43,7 +43,7 @@ class AdminCommitteeController extends Controller
      *
      * @Route("/{id}/refuse", name="app_admin_committee_refuse")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function refuseAction(Committee $committee): Response
     {
@@ -60,7 +60,7 @@ class AdminCommitteeController extends Controller
     /**
      * @Route("/{id}/members", name="app_admin_committee_members")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function membersAction(Committee $committee): Response
     {
@@ -76,7 +76,7 @@ class AdminCommitteeController extends Controller
     /**
      * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function changePrivilegeAction(Request $request, Committee $committee, Adherent $adherent, string $privilege): Response
     {

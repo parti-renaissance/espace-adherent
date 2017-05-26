@@ -23,7 +23,7 @@ class AdminProcurationController extends Controller
      *
      * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function referentsInvitationUrlsAction(): Response
     {
@@ -37,7 +37,7 @@ class AdminProcurationController extends Controller
     /**
      * @Route("/export")
      * @Method("GET")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function exportMailsAction(): Response
     {
@@ -55,7 +55,7 @@ class AdminProcurationController extends Controller
      *
      * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate")
      * @Method("GET|POST")
-     * @Security("has_role('ROLE_TERRITORY')")
+     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
     {
