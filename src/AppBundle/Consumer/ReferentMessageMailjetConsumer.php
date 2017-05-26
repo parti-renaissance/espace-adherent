@@ -1,8 +1,7 @@
 <?php
 
-namespace AppBundle\Consumer\Mailjet;
+namespace AppBundle\Consumer;
 
-use AppBundle\Consumer\AbstractConsumer;
 use AppBundle\Mailjet\Message\MailjetMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 use AppBundle\Mailjet\Message\ReferentMessage;
