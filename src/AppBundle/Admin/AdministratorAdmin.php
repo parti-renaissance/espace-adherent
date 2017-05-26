@@ -54,15 +54,30 @@ class AdministratorAdmin extends AbstractAdmin
             ->add('emailAddress', EmailType::class, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('role', ChoiceType::class, [
-                'label' => 'Rôle',
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Permissions',
+                'expanded' => true,
+                'multiple' => true,
                 'choices' => [
-                    'Rédacteur (articles, page d\'accueil, pages, programme)' => 'ROLE_WRITER',
-                    'Campagne (newsletter, invitations, Je Marche)' => 'ROLE_CAMPAIGN',
-                    'Territoire (Campagne + adhérent, comités, événements, référents, procurations)' => 'ROLE_TERRITORY',
-                    'Territoire (Adhérents uniquement)' => 'ROLE_TERRITORY_ADHERENT',
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Super-administrateur' => 'ROLE_SUPER_ADMIN',
+                    'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
+                    'ROLE_ADMIN_DASHBOARD' => 'ROLE_ADMIN_DASHBOARD',
+                    'ROLE_ADMIN_MEDIAS' => 'ROLE_ADMIN_MEDIAS',
+                    'ROLE_ADMIN_CONTENT' => 'ROLE_ADMIN_CONTENT',
+                    'ROLE_ADMIN_HOME' => 'ROLE_ADMIN_HOME',
+                    'ROLE_ADMIN_PROPOSALS' => 'ROLE_ADMIN_PROPOSALS',
+                    'ROLE_ADMIN_FACEBOOK_PROFILES' => 'ROLE_ADMIN_FACEBOOK_PROFILES',
+                    'ROLE_ADMIN_FACEBOOK_VIDEOS' => 'ROLE_ADMIN_FACEBOOK_VIDEOS',
+                    'ROLE_ADMIN_REDIRECTIONS' => 'ROLE_ADMIN_REDIRECTIONS',
+                    'ROLE_ADMIN_NEWSLETTER' => 'ROLE_ADMIN_NEWSLETTER',
+                    'ROLE_ADMIN_JE_MARCHE' => 'ROLE_ADMIN_JE_MARCHE',
+                    'ROLE_ADMIN_TON_MACRON' => 'ROLE_ADMIN_TON_MACRON',
+                    'ROLE_ADMIN_LEGISLATIVES' => 'ROLE_ADMIN_LEGISLATIVES',
+                    'ROLE_ADMIN_ADHERENTS' => 'ROLE_ADMIN_ADHERENTS',
+                    'ROLE_ADMIN_COMMITTEES' => 'ROLE_ADMIN_COMMITTEES',
+                    'ROLE_ADMIN_EVENTS' => 'ROLE_ADMIN_EVENTS',
+                    'ROLE_ADMIN_PROCURATIONS' => 'ROLE_ADMIN_PROCURATIONS',
+                    'ROLE_ADMIN_DONATIONS' => 'ROLE_ADMIN_DONATIONS',
+                    'ROLE_ADMIN_MAILJET' => 'ROLE_ADMIN_MAILJET',
                 ],
             ])
             ->add(
@@ -109,9 +124,6 @@ class AdministratorAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('emailAddress', null, [
                 'label' => 'Adresse e-mail',
-            ])
-            ->add('role', null, [
-                'label' => 'Rôle',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

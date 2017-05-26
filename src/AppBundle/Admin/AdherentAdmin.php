@@ -18,7 +18,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdherentAdmin extends AbstractAdmin
@@ -193,6 +192,7 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('lastName', null, [
                 'label' => 'Nom',
+                'show_filter' => true,
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
@@ -200,7 +200,6 @@ class AdherentAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
                 'show_filter' => true,
-                'field_type' => EmailType::class,
             ])
             ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date d\'adhésion',
@@ -252,7 +251,6 @@ class AdherentAdmin extends AbstractAdmin
                 },
             ])
             ->add('referent', CallbackFilter::class, [
-                'show_filter' => true,
                 'label' => 'N\'afficher que les référents',
                 'field_type' => CheckboxType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {

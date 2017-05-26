@@ -55,17 +55,15 @@ class Administrator implements UserInterface, TwoFactorInterface
     private $googleAuthenticatorSecret;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
+     * @ORM\Column(type="simple_array")
      */
-    private $role;
+    private $roles;
 
     public function __construct()
     {
-        $this->role = 'ROLE_WRITER';
+        $this->roles[] = 'ROLE_ADMIN_DASHBOARD';
     }
 
     public function __toString()
@@ -78,7 +76,22 @@ class Administrator implements UserInterface, TwoFactorInterface
      */
     public function getRoles()
     {
-        return [$this->role];
+        return $this->roles;
+    }
+
+    public function addRole(string $role)
+    {
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 
     /**
@@ -153,15 +166,5 @@ class Administrator implements UserInterface, TwoFactorInterface
     public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret)
     {
         $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role)
-    {
-        $this->role = $role;
     }
 }
