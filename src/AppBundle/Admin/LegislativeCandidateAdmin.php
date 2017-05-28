@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -147,7 +146,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-4'])
-                ->add('media', AdminType::class, [
+                ->add('media', null, [
                     'label' => false,
                 ])
             ->end()
