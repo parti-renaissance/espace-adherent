@@ -96,7 +96,8 @@ class MediaAdmin extends AbstractAdmin
             ->add('file', FileType::class, [
                 'label' => $isCreation ? 'Image' : 'Image (laisser vide pour ne pas modifier)',
                 'required' => $isCreation,
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -111,7 +112,8 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('mimeType', null, [
                 'label' => 'Type de fichier',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)

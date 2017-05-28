@@ -66,11 +66,10 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
-            ->add('districtNumber', null, [
-                'label' => 'Circonscription',
-            ])
-            ->add('districtZone', null, [
-                'label' => 'Zone géographique',
+            ->add('_thumbnail', null, [
+                'label' => 'Photo',
+                'virtual_field' => true,
+                'template' => 'admin/legislative_candidate_thumbnail.html.twig',
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
@@ -78,12 +77,15 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
+            ->add('districtNumber', null, [
+                'label' => 'Circonscription',
+            ])
+            ->add('districtZone', null, [
+                'label' => 'Zone géographique',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                ],
+                'template' => 'admin/legislative_candidate_actions.html.twig',
             ])
         ;
     }

@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="text-align: center; width: 100px; height: 50px;">
+        {% if object.media %}
+            <img src="{{ media_asset(object.media, {'w': 150}) }}" style="max-height: 50px; max-width: 100px;" />
+        {% else %}
+            Pas de photo
+        {% endif %}
+    </div>
+{% endblock %}
