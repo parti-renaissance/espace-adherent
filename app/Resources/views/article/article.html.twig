@@ -77,5 +77,37 @@
         </ul>
 
     </section>
+
+    <section class="l__wrapper--narrow">
+        <h2 class="text--large">Dernières actualités</h2>
+        <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
+            {% for article in latestArticles %}
+                <li class="card card--content card--content--article l__col--bottom">
+                    <div class="cs card--small">
+                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="background-container">
+                            <div class="background card__background progressive-background"
+                                 data-sd="{{ media_asset(article.media, {'w': 300, 'q': 20}) }}"
+                                 data-hd="{{ media_asset(article.media, {'w': 1200, 'q': 70}) }}"
+                                 style="background-color: #000000;">
+                            </div>
+                        </a>
+                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="headline link--no-decor">
+                            <h2>{{ article.title }}</h2>
+                        </a>
+                        <div class="share">
+                            Partagez
+                            <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                                <i class="fa fa-facebook-square"></i>
+                            </span>
+                            <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
 </main>
 {% endblock %}
