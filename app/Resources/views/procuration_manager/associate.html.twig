@@ -75,21 +75,10 @@
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                    Présidentielle : 1er et 2nd tour<br />
-                {% elseif request.electionPresidentialFirstRound %}
-                    Présidentielle : 1er tour<br />
-                {% elseif request.electionPresidentialSecondRound %}
-                    Présidentielle : 2nd tour<br />
-                {% endif %}
-
-                {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                    Législatives : 1er et 2nd tour<br />
-                {% elseif request.electionLegislativeFirstRound %}
-                    Législatives : 1er tour<br />
-                {% elseif request.electionLegislativeSecondRound %}
-                    Législatives : 2nd tour<br />
-                {% endif %}
+                {{ include('procuration_manager/_ballots.html.twig', {
+                    'legislative_first_round': request.electionLegislativeFirstRound,
+                    'legislative_second_round': request.electionLegislativeSecondRound,
+                }, with_context=false) }}
             </div>
 
             <div class="profile-label">

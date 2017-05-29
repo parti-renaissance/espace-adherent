@@ -20,8 +20,6 @@
         </td>
         <td class="datagrid__table__col--left">
             {{ include('procuration_manager/_ballots.html.twig', {
-                'presidential_first_round': request.data.electionPresidentialFirstRound,
-                'presidential_second_round': request.data.electionPresidentialSecondRound,
                 'legislative_first_round': request.data.electionLegislativeFirstRound,
                 'legislative_second_round': request.data.electionLegislativeSecondRound,
             }, with_context=false) }}

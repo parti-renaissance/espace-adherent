@@ -28,8 +28,6 @@
         </td>
         <td class="datagrid__table__col--left">
             {{ include('procuration_manager/_ballots.html.twig', {
-                'presidential_first_round': proxy.remainingAvailabilities.presidential.first,
-                'presidential_second_round': proxy.remainingAvailabilities.presidential.second,
                 'legislative_first_round': proxy.remainingAvailabilities.legislatives.first,
                 'legislative_second_round': proxy.remainingAvailabilities.legislatives.second,
             }, with_context=false) }}
