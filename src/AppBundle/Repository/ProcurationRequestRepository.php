@@ -88,7 +88,20 @@ class ProcurationRequestRepository extends EntityRepository
         $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr'), $manager);
         $filters->apply($qb, 'pr');
 
-        return $this->findRequests($qb);
+        $requests = $qb->getQuery()->getArrayResult();
+
+        if ($filters->matchUnprocessedRequests()) {
+            return $this->findRequests($requests);
+        }
+
+        foreach ($requests as $k => $request) {
+            $requests[$k] = [
+                'data' => $request,
+                'matchingProxiesCount' => 1,
+            ];
+        }
+
+        return $requests;
     }
 
     public function countMatchingRequests(Adherent $manager, ProcurationRequestFilters $filters): int
@@ -103,10 +116,16 @@ class ProcurationRequestRepository extends EntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    private function findRequests(QueryBuilder $qb): array
+    /**
+     * @param ProcurationRequest[] $requests
+     *
+     * @return array
+     */
+    private function findRequests(array $requests): array
     {
-        /** @var ProcurationRequest[] $requests */
-        $requests = $qb->getQuery()->getArrayResult();
+        if (!count($requests)) {
+            return [];
+        }
 
         $qb = $this->_em->createQueryBuilder();
 
