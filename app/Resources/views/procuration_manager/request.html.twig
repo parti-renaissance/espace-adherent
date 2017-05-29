@@ -95,19 +95,10 @@
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                <span id="request-election-presidential">
-                    {% set elections = request.electionsPresidential %}
-                    {% if elections %}
-                        {{ elections }}<br />
-                    {% endif %}
-                </span>
-
-                <span id="request-election-legislatives">
-                    {% set elections = request.electionsLegislative %}
-                    {% if elections %}
-                        {{ elections }}<br />
-                    {% endif %}
-                </span>
+                {{ include('procuration_manager/_ballots.html.twig', {
+                    'legislative_first_round': request.electionLegislativeFirstRound,
+                    'legislative_second_round': request.electionLegislativeSecondRound,
+                }, with_context=false) }}
             </div>
 
             <div class="profile-label">
@@ -198,21 +189,10 @@
                         Disponibilités
                     </div>
                     <div class="profile-value">
-                        {% if request.foundProxy.electionPresidentialFirstRound and request.foundProxy.electionPresidentialSecondRound %}
-                            Présidentielle : 1er et 2nd tour<br />
-                        {% elseif request.foundProxy.electionPresidentialFirstRound %}
-                            Présidentielle : 1er tour<br />
-                        {% elseif request.foundProxy.electionPresidentialSecondRound %}
-                            Présidentielle : 2nd tour<br />
-                        {% endif %}
-
-                        {% if request.foundProxy.electionLegislativeFirstRound and request.foundProxy.electionLegislativeSecondRound %}
-                            Législatives : 1er et 2nd tour<br />
-                        {% elseif request.foundProxy.electionLegislativeFirstRound %}
-                            Législatives : 1er tour<br />
-                        {% elseif request.foundProxy.electionLegislativeSecondRound %}
-                            Législatives : 2nd tour<br />
-                        {% endif %}
+                        {{ include('procuration_manager/_ballots.html.twig', {
+                            'legislative_first_round': request.foundProxy.electionLegislativeFirstRound,
+                            'legislative_second_round': request.foundProxy.electionLegislativeSecondRound,
+                        }, with_context=false) }}
                     </div>
                 {% endif %}
             {% else %}
@@ -273,21 +253,10 @@
                                     {% endif %}
                                     <br />
                                     <em>Disponibilités :</em><br />
-                                    {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                                        Présidentielle : 1er et 2nd tour<br />
-                                    {% elseif proxy.electionPresidentialFirstRound %}
-                                        Présidentielle : 1er tour<br />
-                                    {% elseif proxy.electionPresidentialSecondRound %}
-                                        Présidentielle : 2nd tour<br />
-                                    {% endif %}
-
-                                    {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
-                                        Législatives : 1er et 2nd tour<br />
-                                    {% elseif proxy.electionLegislativeFirstRound %}
-                                        Législatives : 1er tour<br />
-                                    {% elseif proxy.electionLegislativeSecondRound %}
-                                        Législatives : 2nd tour<br />
-                                    {% endif %}
+                                    {{ include('procuration_manager/_ballots.html.twig', {
+                                        'legislative_first_round': proxy.electionLegislativeFirstRound,
+                                        'legislative_second_round': proxy.electionLegislativeSecondRound,
+                                    }, with_context=false) }}
                                 </td>
                                 <td class="datagrid__table__col--left">
                                     <em>Lieu de vote :</em><br />

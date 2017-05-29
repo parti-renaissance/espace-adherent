@@ -1,11 +1,3 @@
-{% if presidential_first_round and presidential_second_round %}
-    Présidentielle : 1<sup title="premier">er</sup> et 2<sup title="second">nd</sup> tours<br />
-{% elseif presidential_first_round %}
-    Présidentielle : 1<sup title="premier">er</sup> tour<br />
-{% elseif presidential_second_round %}
-    Présidentielle : 2<sup title="second">nd</sup> tour<br />
-{% endif %}
-
 {% if legislative_first_round and legislative_second_round %}
     Législatives : 1<sup title="premier">er</sup> et 2<sup title="second">nd</sup> tours<br />
 {% elseif legislative_first_round %}

@@ -83,8 +83,6 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Aquarius', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('13, rue Reine Elisabeth', trim($crawler->filter('#request-address')->text()));
         $this->assertSame('77000 Melun FR', trim($crawler->filter('#request-city')->text()));
-        $this->assertSame('Présidentielle : 2nd tour (7 mai)', trim($crawler->filter('#request-election-presidential')->text()));
-        $this->assertSame('Législatives : 2nd tour', trim($crawler->filter('#request-election-legislatives')->text()));
         $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
@@ -108,8 +106,6 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Lycée général Zola', trim($crawler->filter('#proxy-vote-office')->text()));
         $this->assertSame('14 rue Jules Ferry', trim($crawler->filter('#proxy-address')->text()));
         $this->assertSame('75018 Paris 20e FR', trim($crawler->filter('#proxy-city')->text()));
-        $this->assertSame('Présidentielle : 1er et 2nd tour', trim($crawler->filter('#proxy-election-presidential')->text()));
-        $this->assertSame('Législatives : 1er et 2nd tour', trim($crawler->filter('#proxy-election-legislatives')->text()));
 
         $this->client->submit($crawler->filter('form[name=app_associate]')->form());
         $this->assertClientIsRedirectedTo('/espace-responsable-procuration/demande/3', $this->client);
