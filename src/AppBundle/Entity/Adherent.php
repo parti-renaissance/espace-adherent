@@ -122,6 +122,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $localHostEmailsSubscription = true;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $comMobile = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $comEmail = false;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $legislativeCandidate;
@@ -159,7 +169,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         PostAddress $postAddress,
         PhoneNumber $phone = null,
         string $status = self::DISABLED,
-        string $registeredAt = 'now'
+        string $registeredAt = 'now',
+        bool $comEmail = false,
+        bool $comMobile = false
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -175,6 +187,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->legislativeCandidate = false;
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
+        $this->comEmail = $comEmail;
+        $this->comMobile = $comMobile;
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -666,5 +680,25 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setLegislativeCandidate(bool $candidate): void
     {
         $this->legislativeCandidate = $candidate;
+    }
+
+    public function getComMobile(): ?bool
+    {
+        return $this->comMobile;
+    }
+
+    public function setComMobile(?bool $comMobile): void
+    {
+        $this->comMobile = $comMobile;
+    }
+
+    public function getComEmail(): ?bool
+    {
+        return $this->comEmail;
+    }
+
+    public function setComEmail(?bool $comEmail): void
+    {
+        $this->comEmail = $comEmail;
     }
 }

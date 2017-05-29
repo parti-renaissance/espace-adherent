@@ -74,9 +74,9 @@ class MembershipRequest
      */
     public $conditions;
 
-    public $comMobile;
+    public $comMobile = false;
 
-    public $comEmail;
+    public $comEmail = false;
 
     /**
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
