@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b67fcde26ace7a7d0f0bea4e1be53314",
+    "content-hash": "2e8eaa90fa324c29732cd96cc29f42c2",
     "packages": [
         {
             "name": "algolia/algolia-search-bundle",
@@ -4369,6 +4369,63 @@
                 "uuid"
             ],
             "time": "2017-04-13T16:09:49+02:00"
+        },
+        {
+            "name": "redjanym/php-firebase-cloud-messaging",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redjanym/php-firebase-cloud-messaging.git",
+                "reference": "5203666a3b228ded4dd534f829dc3c5e9854a429"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redjanym/php-firebase-cloud-messaging/zipball/5203666a3b228ded4dd534f829dc3c5e9854a429",
+                "reference": "5203666a3b228ded4dd534f829dc3c5e9854a429",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sngrl\\PhpFirebaseCloudMessaging\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sngrl",
+                    "email": "i@sngrl.ru"
+                },
+                {
+                    "name": "Redjan Ymeraj",
+                    "email": "ymerajr@yahoo.com"
+                }
+            ],
+            "description": "PHP API for Firebase Cloud Messaging from Google",
+            "homepage": "https://github.com/sngrl/php-firebase-cloud-messaging",
+            "keywords": [
+                "FCM",
+                "android",
+                "chrome",
+                "cloud",
+                "firebase",
+                "google",
+                "ios",
+                "notifications",
+                "php"
+            ],
+            "time": "2017-05-04T14:05:01+00:00"
         },
         {
             "name": "rize/uri-template",

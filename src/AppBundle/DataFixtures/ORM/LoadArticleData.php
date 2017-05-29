@@ -16,6 +16,9 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
+        $listener = $this->container->get('app.notification.send_on_article_published');
+        $manager->getEventManager()->removeEventListener($listener->getSubscribedEvents(), $listener);
+
         $faker = Factory::create('fr_FR');
 
         $factory = $this->container->get('app.content.article_factory');

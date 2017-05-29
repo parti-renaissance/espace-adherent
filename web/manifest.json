@@ -13,5 +13,6 @@
         }
     ],
     "theme_color": "#ffffff",
-    "background_color": "#ffffff"
+    "background_color": "#ffffff",
+    "gcm_sender_id": "103953800507"
 }

@@ -73,5 +73,12 @@
         <!-- Imagine -->
         <service id="app.imagine" class="Imagine\Gd\Imagine"/>
 
+        <!-- Firebase Cloud Messaging -->
+        <service id="app.firebase.cloud_messaging" class="sngrl\PhpFirebaseCloudMessaging\Client">
+            <call method="setApiKey">
+                <argument>%env(FIREBASE_API_KEY)%</argument>
+            </call>
+        </service>
+
     </services>
 </container>

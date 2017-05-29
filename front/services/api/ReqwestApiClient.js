@@ -120,6 +120,17 @@ export default class ReqwestApiClient {
         });
     }
 
+    addFirebaseToken(token) {
+        this._reqwest({
+            url: '/api/firebase-token',
+            type: 'html',
+            method: 'post',
+            data: {
+                'token': token
+            }
+        });
+    }
+
     _createRequest(callback, parameters) {
         let request = this._reqwest(parameters);
 

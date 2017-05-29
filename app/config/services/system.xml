@@ -124,5 +124,14 @@
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\TextType" />
         </service>
 
+        <!-- Doctrine Event -->
+        <service id="app.notification.send_on_article_published" class="AppBundle\Notification\SendOnArticlePublished">
+            <tag name="doctrine.event_subscriber" />
+
+            <argument type="service" id="app.firebase.cloud_messaging" />
+            <argument type="service" id="router" />
+            <argument type="service" id="monolog.logger" />
+        </service>
+
     </services>
 </container>
