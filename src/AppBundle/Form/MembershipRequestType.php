@@ -48,6 +48,12 @@ class MembershipRequestType extends AbstractType
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('comMobile', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('comEmail', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 
