@@ -105,6 +105,20 @@
         </div>
     {% endif %}
 
+    {% if form.comMobile is defined %}
+        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
+            {{ form_widget(form.comMobile) }}
+                <label class="form form__label" for="membership_request_comMobile"><span>J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
+        </div>
+    {% endif %}
+
+    {% if form.comEmail is defined %}
+        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
+            {{ form_widget(form.comEmail) }}
+                <label class="form form__label" for="membership_request_comEmail"><span>J'accepte de recevoir par courrier électronique des sollicitations ou informations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
+        </div>
+    {% endif %}
+
     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
     {% if recaptcha_public_key is not empty %}
         <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>

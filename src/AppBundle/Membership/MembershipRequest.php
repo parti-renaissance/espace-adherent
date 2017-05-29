@@ -74,6 +74,10 @@ class MembershipRequest
      */
     public $conditions;
 
+    public $comMobile;
+
+    public $comEmail;
+
     /**
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
      * @AssertRecaptcha(groups={"Registration"})
