@@ -34,7 +34,10 @@ class AdherentFactory
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),
-            Adherent::ENABLED
+            Adherent::ENABLED,
+            'now',
+            $request->comEmail,
+            $request->comMobile
         );
     }
 
