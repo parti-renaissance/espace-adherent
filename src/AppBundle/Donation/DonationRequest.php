@@ -3,15 +3,18 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest
 {
+    const DEFAULT_AMOUNT = 50.0;
+
     private $uuid;
 
     /**
@@ -94,21 +97,33 @@ class DonationRequest
 
     private $clientIp;
 
-    public function __construct(UuidInterface $uuid, string $clientIp, float $amount = 50.0)
-    {
+    /**
+     * @AssertPayboxSubscription
+     */
+    private $duration;
+
+    public function __construct(
+        UuidInterface $uuid,
+        string $clientIp,
+        float $amount = self::DEFAULT_AMOUNT,
+        int $duration = PayboxPaymentSubscription::NONE
+    ) {
         $this->uuid = $uuid;
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
         $this->country = 'FR';
         $this->setAmount($amount);
         $this->phone = static::createPhoneNumber();
-
-        $this->setAmount($amount);
+        $this->duration = $duration;
     }
 
-    public static function createFromAdherent(Adherent $adherent, string $clientIp, float $amount = 50.0): self
-    {
-        $dto = new self(Uuid::uuid4(), $clientIp, $amount);
+    public static function createFromAdherent(
+        Adherent $adherent,
+        string $clientIp,
+        float $amount = self::DEFAULT_AMOUNT,
+        int $duration = PayboxPaymentSubscription::NONE
+    ): self {
+        $dto = new self(Uuid::uuid4(), $clientIp, $amount, $duration);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
@@ -253,5 +268,15 @@ class DonationRequest
     public function getClientIp(): string
     {
         return $this->clientIp;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): void
+    {
+        $this->duration = $duration;
     }
 }

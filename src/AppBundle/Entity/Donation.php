@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -25,6 +26,11 @@ class Donation implements GeoPointInterface
      * @ORM\Column(type="integer")
      */
     private $amount;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default": 0})
+     */
+    private $duration = PayboxPaymentSubscription::NONE;
 
     /**
      * @ORM\Column(length=6)
@@ -85,7 +91,8 @@ class Donation implements GeoPointInterface
         string $emailAddress,
         PostAddress $postAddress,
         ?PhoneNumber $phone,
-        string $clientIp
+        string $clientIp,
+        int $frequency
     ) {
         $this->uuid = $uuid;
         $this->amount = $amount;
@@ -98,6 +105,7 @@ class Donation implements GeoPointInterface
         $this->clientIp = $clientIp;
         $this->finished = false;
         $this->createdAt = new \DateTime();
+        $this->duration = $frequency;
     }
 
     public function __toString()
@@ -133,6 +141,26 @@ class Donation implements GeoPointInterface
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function getDuration(): int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): void
+    {
+        $this->duration = $duration;
+    }
+
+    public function hasSubscription(): bool
+    {
+        return PayboxPaymentSubscription::NONE !== $this->duration;
+    }
+
+    public function hasUnlimitedSubscription(): bool
+    {
+        return PayboxPaymentSubscription::UNLIMITED === $this->duration;
     }
 
     public function getAmountInEuros()

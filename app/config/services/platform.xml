@@ -307,5 +307,10 @@
             <argument type="service" id="app.repository.event"/>
         </service>
 
+        <!--Donation Frequency-->
+        <service id="AppBundle\Validator\PayboxSubscriptionValidator">
+            <tag name="validator.constraint_validator" />
+        </service>
+
     </services>
 </container>
