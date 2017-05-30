@@ -233,7 +233,7 @@ class ProcurationProxy
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(max=50, groups={"front"})
      */
-    private $voteOffice;
+    private $voteOffice = '';
 
     /**
      * @var bool
@@ -608,12 +608,12 @@ class ProcurationProxy
         $this->voteCountry = $voteCountry;
     }
 
-    public function getVoteOffice(): ?string
+    public function getVoteOffice(): string
     {
         return $this->voteOffice;
     }
 
-    public function setVoteOffice(?string $voteOffice): void
+    public function setVoteOffice(string $voteOffice): void
     {
         $this->voteOffice = $voteOffice;
     }
