@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by tony-tran at 2017-05-23T14:00:39Z
+
+> required = true / false is just for HTML5 validation, you should update entity constraints too.
+
+Done.
