@@ -7,7 +7,17 @@
         <!-- Donation -->
         <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
 
-        <service id="app.donation_request.factory" class="AppBundle\Donation\DonationRequestFactory" />
+        <service id="AppBundle\Donation\DonationRequestUtils">
+            <argument type="service" id="app.donation_request.utils.locator" />
+        </service>
+
+        <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="validator" type="service" id="validator" />
+                <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
 
         <service id="app.donation_request.handler" class="AppBundle\Donation\DonationRequestHandler">
             <argument type="service" id="event_dispatcher" />
