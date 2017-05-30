@@ -66,7 +66,7 @@ class DonationRequestFactory
         Adherent $adherent,
         string $clientIp,
         int $defaultAmount = DonationRequest::DEFAULT_AMOUNT,
-        int $duration
+        int $duration = PayboxPaymentSubscription::NONE
     ): DonationRequest {
         return DonationRequest::createFromAdherent($adherent, $clientIp, $defaultAmount, $duration);
     }

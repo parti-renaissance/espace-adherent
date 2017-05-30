@@ -28,28 +28,25 @@ class DonationControllerTest extends SqliteWebTestCase
     /* @var DonationRepository */
     private $donationRepository;
 
-    public function getFrequenciesDonation(): array
+    public function getDonationSubscriptions(): iterable
     {
-        $frequencies = PayboxPaymentSubscription::DONATION_FREQUENCIES;
-        $frequencies[] = 1;
-        $data = [];
-        foreach ($frequencies as $frequency) {
-            $data[] = [$frequency];
+        foreach (PayboxPaymentSubscription::DURATIONS as $test => $duration) {
+            yield $test => [$duration];
         }
 
-        return $data;
+        yield 'None' => [PayboxPaymentSubscription::NONE];
     }
 
     /**
-     * @dataProvider getFrequenciesDonation
+     * @dataProvider getDonationSubscriptions
      */
-    public function testFullProcess(int $frequency)
+    public function testFullProcess(int $duration)
     {
         $appClient = $this->appClient;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
 
-        $crawler = $appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30&frequence=%s', $frequency));
+        $crawler = $appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30&abonnement=%d', $duration));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
@@ -86,7 +83,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
         $this->assertSame(33, $donation->getPhone()->getCountryCode());
         $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
-        $this->assertSame($frequency, $donation->getDuration());
+        $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
         $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
@@ -100,7 +97,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
-        if ($suffix = PayboxPaymentSubscription::fromInteger($donation->getDuration())->getPayboxSuffixCmd($donation->getAmount())) {
+        if ($suffix = PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())) {
             $this->assertContains($suffix, $formNode->attr('value'));
         }
 
@@ -130,7 +127,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $content = $this->payboxClient->getInternalResponse()->getContent();
 
         // Check payment was successful
-        $expectedCount = PayboxPaymentSubscription::DEFAULT_FREQUENCY === $donation->getDuration() ? PayboxPaymentSubscription::DEFAULT_FREQUENCY : 2;
+        $expectedCount = $donation->hasSubscription() ? 2 : 1;
         $this->assertSame($expectedCount, $crawler->filter('td:contains("30.00 EUR")')->count());
         $this->assertContains('Paiement r&eacute;alis&eacute; avec succ&egrave;s', $content);
 

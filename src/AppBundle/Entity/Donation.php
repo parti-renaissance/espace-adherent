@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -29,7 +30,7 @@ class Donation implements GeoPointInterface
     /**
      * @ORM\Column(type="smallint", options={"default": 0})
      */
-    private $duration;
+    private $duration = PayboxPaymentSubscription::NONE;
 
     /**
      * @ORM\Column(length=6)
@@ -150,6 +151,16 @@ class Donation implements GeoPointInterface
     public function setDuration(int $duration): void
     {
         $this->duration = $duration;
+    }
+
+    public function hasSubscription(): bool
+    {
+        return PayboxPaymentSubscription::NONE !== $this->duration;
+    }
+
+    public function hasUnlimitedSubscription(): bool
+    {
+        return PayboxPaymentSubscription::UNLIMITED === $this->duration;
     }
 
     public function getAmountInEuros()
