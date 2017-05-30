@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 $trustedProxies = [
     // Cloudflare
     '103.21.244.0/22',
@@ -31,4 +33,4 @@ if (!empty($_SERVER['GCLOUD_LB_IP'])) {
     $trustedProxies[] = $_SERVER['GCLOUD_LB_IP'];
 }
 
-Symfony\Component\HttpFoundation\Request::setTrustedProxies($trustedProxies);
+Request::setTrustedProxies($trustedProxies, Request::HEADER_X_FORWARDED_ALL);
