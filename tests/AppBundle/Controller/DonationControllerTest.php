@@ -166,7 +166,8 @@ class DonationControllerTest extends SqliteWebTestCase
             'id' => 'wrong_uuid',
         ]);
 
-        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->appClient);
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->appClient);
+        $this->assertClientIsRedirectedTo('/don', $this->appClient);
     }
 
     protected function setUp()
