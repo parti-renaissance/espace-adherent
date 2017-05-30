@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by hhamon at 2017-05-07T09:27:57Z
+
+Can't we manage the UuidException in a custom `kernel.exception` listener? We could then simplify the controllers and avoid all these try/catch blocks.
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-05-07T11:00:10Z
+
+>Can't we manage the UuidException in a custom kernel.exception listener? We could then simplify the controllers and avoid all these try/catch blocks.
+
+I'm not sure about the exception listener, there is already one in charge for the response because we throw an HttpExceptionInterface, this could not be done in a listener.
+
+Repository have to throw an InvalidArgumentException, letting the controller transform it to an HTTP one make it explicit also when we read the code, and allow to adjust handling things per actions.
+
+We already have other try catch/blocks in controllers so it looks consistent to me, especially the Facebook one.
+
+@tgalopin what do you think?
