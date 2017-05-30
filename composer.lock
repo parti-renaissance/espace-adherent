@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "16b2a5e7de84dfa9fdb01d3ac5cd8c90",
+    "content-hash": "88d6568efca685eaae88b4e9b51a155e",
     "packages": [
         {
             "name": "algolia/algolia-search-bundle",
@@ -6823,20 +6823,21 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.2",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927"
+                "reference": "85e8372c451510165c04bf781295f9d922fa524b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dd6ca96227917e1e85b41c7c3cc6507b411e0927",
-                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/85e8372c451510165c04bf781295f9d922fa524b",
+                "reference": "85e8372c451510165c04bf781295f9d922fa524b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.7"
+                "php": "^7.0",
+                "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -6846,7 +6847,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.33-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -6881,7 +6882,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-04-20T17:39:48+02:00"
+            "time": "2017-04-21T00:13:02+00:00"
         },
         {
             "name": "willdurand/geocoder",
