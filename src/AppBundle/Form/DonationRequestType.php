@@ -22,8 +22,14 @@ class DonationRequestType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', HiddenType::class);
-        $builder->get('amount')->addModelTransformer(new FloatToStringTransformer());
+        $builder
+            ->add(
+                $builder
+                    ->create('amount', HiddenType::class)
+                    ->addViewTransformer(new FloatToStringTransformer())
+            )
+            ->add('duration', HiddenType::class)
+        ;
 
         if ($options['sponsor_form']) {
             $builder

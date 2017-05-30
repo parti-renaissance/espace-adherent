@@ -9,18 +9,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DonationRequestFactory
 {
-    public function createFromRequest(Request $request, float $amount, $currentUser = null): DonationRequest
+    public function createFromRequest(Request $request, float $amount, int $duration, $currentUser = null): DonationRequest
     {
         $clientIp = $request->getClientIp();
 
         if ($currentUser instanceof Adherent) {
-            $donation = $this->createFromAdherent($currentUser, $clientIp, $amount);
+            $donation = $this->createFromAdherent($currentUser, $clientIp, $amount, $duration);
         } else {
-            $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount);
+            $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount, $duration);
         }
-
-        $frequency = $request->query->get('frequence', PayboxPaymentFrequency::DEFAULT_FREQUENCY);
-        $donation->setFrequency(PayboxPaymentFrequency::fromString($frequency)->getFrequency());
 
         if (($gender = $request->query->get('ge')) && in_array($gender, ['male', 'female'], true)) {
             $donation->setGender($gender);
@@ -65,9 +62,13 @@ class DonationRequestFactory
         return $donation;
     }
 
-    public function createFromAdherent(Adherent $adherent, string $clientIp, int $defaultAmount = 50): DonationRequest
-    {
-        return DonationRequest::createFromAdherent($adherent, $clientIp, $defaultAmount);
+    public function createFromAdherent(
+        Adherent $adherent,
+        string $clientIp,
+        int $defaultAmount = DonationRequest::DEFAULT_AMOUNT,
+        int $duration
+    ): DonationRequest {
+        return DonationRequest::createFromAdherent($adherent, $clientIp, $defaultAmount, $duration);
     }
 
     private function createPhoneNumber(string $phoneCode, string $nationalNumber): PhoneNumber

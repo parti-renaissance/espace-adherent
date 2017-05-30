@@ -26,7 +26,7 @@ class PayboxFormFactory
     public function createPayboxFormForDonation(Donation $donation)
     {
         $parameters = [
-            'PBX_CMD' => $donation->getUuid()->toString().'_'.$this->slugify->slugify($donation->getFullName()).$this->getPayboxSuffixCommand($donation),
+            'PBX_CMD' => $donation->getUuid()->toString().'_'.$this->slugify->slugify($donation->getFullName()).$this->getCommandSuffix($donation),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
             'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',
@@ -55,10 +55,10 @@ class PayboxFormFactory
     }
 
     /**
-     * Get suffix to PBX_CMD for monthly donations.
+     * Gets suffix to PBX_CMD for monthly donations.
      */
-    private function getPayboxSuffixCommand(Donation $donation): string
+    private function getCommandSuffix(Donation $donation): string
     {
-        return PayboxPaymentFrequency::fromInteger($donation->getFrequency())->getPayboxSuffixCmd($donation->getAmount());
+        return PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration());
     }
 }

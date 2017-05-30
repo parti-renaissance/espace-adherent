@@ -27,9 +27,9 @@ class Donation implements GeoPointInterface
     private $amount;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"default": 0})
      */
-    private $frequency;
+    private $duration;
 
     /**
      * @ORM\Column(length=6)
@@ -104,7 +104,7 @@ class Donation implements GeoPointInterface
         $this->clientIp = $clientIp;
         $this->finished = false;
         $this->createdAt = new \DateTime();
-        $this->frequency = $frequency;
+        $this->duration = $frequency;
     }
 
     public function __toString()
@@ -142,14 +142,14 @@ class Donation implements GeoPointInterface
         return $this->amount;
     }
 
-    public function getFrequency(): int
+    public function getDuration(): int
     {
-        return $this->frequency;
+        return $this->duration;
     }
 
-    public function setFrequency(int $frequency): void
+    public function setDuration(int $duration): void
     {
-        $this->frequency = $frequency;
+        $this->duration = $duration;
     }
 
     public function getAmountInEuros()

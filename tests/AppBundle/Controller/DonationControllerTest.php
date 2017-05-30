@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Donation\PayboxPaymentFrequency;
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Mailjet\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
@@ -30,7 +30,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function getFrequenciesDonation(): array
     {
-        $frequencies = PayboxPaymentFrequency::DONATION_FREQUENCIES;
+        $frequencies = PayboxPaymentSubscription::DONATION_FREQUENCIES;
         $frequencies[] = 1;
         $data = [];
         foreach ($frequencies as $frequency) {
@@ -86,7 +86,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
         $this->assertSame(33, $donation->getPhone()->getCountryCode());
         $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
-        $this->assertSame($frequency, $donation->getFrequency());
+        $this->assertSame($frequency, $donation->getDuration());
 
         // Email should not have been sent
         $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
@@ -100,7 +100,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
-        if ($suffix = PayboxPaymentFrequency::fromInteger($donation->getFrequency())->getPayboxSuffixCmd($donation->getAmount())) {
+        if ($suffix = PayboxPaymentSubscription::fromInteger($donation->getDuration())->getPayboxSuffixCmd($donation->getAmount())) {
             $this->assertContains($suffix, $formNode->attr('value'));
         }
 
@@ -130,7 +130,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $content = $this->payboxClient->getInternalResponse()->getContent();
 
         // Check payment was successful
-        $expectedCount = PayboxPaymentFrequency::DEFAULT_FREQUENCY === $donation->getFrequency() ? PayboxPaymentFrequency::DEFAULT_FREQUENCY : 2;
+        $expectedCount = PayboxPaymentSubscription::DEFAULT_FREQUENCY === $donation->getDuration() ? PayboxPaymentSubscription::DEFAULT_FREQUENCY : 2;
         $this->assertSame($expectedCount, $crawler->filter('td:contains("30.00 EUR")')->count());
         $this->assertContains('Paiement r&eacute;alis&eacute; avec succ&egrave;s', $content);
 

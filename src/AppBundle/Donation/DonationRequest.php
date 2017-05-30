@@ -3,11 +3,10 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Validator\DonationFrequency;
+use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -99,23 +98,32 @@ class DonationRequest
     private $clientIp;
 
     /**
-     * @DonationFrequency()
+     * @AssertPayboxSubscription
      */
-    private $frequency;
+    private $duration;
 
-    public function __construct(UuidInterface $uuid, string $clientIp, float $amount = self::DEFAULT_AMOUNT)
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        string $clientIp,
+        float $amount = self::DEFAULT_AMOUNT,
+        int $duration = PayboxPaymentSubscription::NONE
+    ) {
         $this->uuid = $uuid;
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
         $this->country = 'FR';
         $this->setAmount($amount);
         $this->phone = static::createPhoneNumber();
+        $this->duration = $duration;
     }
 
-    public static function createFromAdherent(Adherent $adherent, string $clientIp, float $amount = self::DEFAULT_AMOUNT): self
-    {
-        $dto = new self(Uuid::uuid4(), $clientIp, $amount);
+    public static function createFromAdherent(
+        Adherent $adherent,
+        string $clientIp,
+        float $amount = self::DEFAULT_AMOUNT,
+        int $duration = PayboxPaymentSubscription::NONE
+    ): self {
+        $dto = new self(Uuid::uuid4(), $clientIp, $amount, $duration);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
@@ -262,13 +270,13 @@ class DonationRequest
         return $this->clientIp;
     }
 
-    public function getFrequency(): ?int
+    public function getDuration(): ?int
     {
-        return $this->frequency;
+        return $this->duration;
     }
 
-    public function setFrequency(int $frequency): void
+    public function setDuration(int $duration): void
     {
-        $this->frequency = $frequency;
+        $this->duration = $duration;
     }
 }

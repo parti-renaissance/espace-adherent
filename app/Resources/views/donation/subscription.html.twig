@@ -14,22 +14,22 @@
         <div class="donation__frequency--amount text--medium b__nudge--bottom b__nudge--top">{{ amount }} / mois</div>
 
         {{ form_start(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form.frequency) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.duration) }}
 
-        <div class="b__nudge--top">
-            {{ form_widget(form.submit, {attr:{class: 'btn btn--primary'}}) }}
-        </div>
+            <div class="b__nudge--top">
+                {{ form_widget(form.submit, {attr:{class: 'btn btn--primary'}}) }}
+            </div>
 
         {{ form_end(form) }}
     </div>
 {% endblock %}
 
-{%- block _donation_frequency_request_frequency_widget -%}
+{%- block _donation_subscription_request_duration_widget -%}
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}
             {{- form_widget(child) -}}
             {{- form_label(child, null, {label_attr: {class: 'btn btn--frequency'}, translation_domain: choice_translation_domain}) -}}
         {% endfor -%}
     </div>
-{%- endblock _donation_frequency_request_frequency_widget -%}
+{%- endblock _donation_subscription_request_duration_widget -%}

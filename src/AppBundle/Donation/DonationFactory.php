@@ -31,7 +31,7 @@ class DonationFactory
             ),
             $request->getPhone(),
             $request->getClientIp(),
-            $request->getFrequency()
+            $request->getDuration()
         );
     }
 }
