@@ -12,7 +12,9 @@ class ContactMessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('content', TextareaType::class);
+        $builder->add('content', TextareaType::class, [
+            'filter_emojis' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
