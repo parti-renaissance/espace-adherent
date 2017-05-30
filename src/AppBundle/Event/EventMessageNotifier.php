@@ -56,11 +56,15 @@ class EventMessageNotifier implements EventSubscriberInterface
             return;
         }
 
-        $this->mailjet->sendMessage($this->createCancellationMessage(
-            $this->adherentManager->findByEvent($event->getEvent()),
-            $event->getEvent(),
-            $event->getAuthor()
-        ));
+        $subscriptions = $this->adherentManager->findByEvent($event->getEvent());
+
+        if (count($subscriptions) > 0) {
+            $this->mailjet->sendMessage($this->createCancellationMessage(
+                $subscriptions,
+                $event->getEvent(),
+                $event->getAuthor()
+            ));
+        }
     }
 
     private function createMessage(
