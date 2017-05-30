@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by hhamon at 2017-05-15T18:48:07Z
+
+I didn't check everything.
+
+---------------------------------------------------------------------------
+
+by hhamon at 2017-05-18T09:25:28Z
+
+I suggest we encapsulate the reccurring payment frequency in a value object class to ease reusability, immutability and self state validation. The API could be similar to this one below:
+
+```
+$frequency = PayboxPaymentFrequency::fromString('01');
+$frequency = PayboxPaymentFrequency::fromString(PayboxPaymentFrequency::MONTHLY);
+$frequency = PayboxPaymentFrequency::createMonthly();
+```
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-05-30T09:54:05Z
+
+Ok I've refactored a little. Review please :).
