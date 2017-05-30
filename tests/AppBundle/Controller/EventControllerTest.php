@@ -316,6 +316,23 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeMembersList($crawler, 2));
     }
 
+    public function testOrganizerCanExportRegistrationsWithWrongUuids()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
+
+        $exportUrl = $this->client->getRequest()->getPathInfo().'/exporter';
+
+        $this->client->request(Request::METHOD_POST, $exportUrl, [
+            'token' => $crawler->filter('#members-export-token')->attr('value'),
+            'exports' => json_encode(['wrong_uuid']),
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+    }
+
     public function testOrganizerCanExportRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -523,6 +540,52 @@ class EventControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/invitation/merci', LoadEventData::EVENT_1_UUID, $event->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+    }
+
+    public function testAttendConfirmationWithoutRegistration()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()));
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+    }
+
+    public function testAttendConfirmationWithWrongRegistration()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()), [
+            'registration' => 'wrong_uuid',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+    }
+
+    public function testAttendConfirmationAsAnonymous()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_3_UUID, $event->getSlug()), [
+            'registration' => $registration->getUuid()->toString(),
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+    }
+
+    public function testAttendConfirmationAsAdherent()
+    {
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_3_UUID, $event->getSlug()), [
+            'registration' => $registration->getUuid()->toString(),
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)

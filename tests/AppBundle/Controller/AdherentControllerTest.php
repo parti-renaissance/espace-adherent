@@ -198,6 +198,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Vos informations ont été mises à jour avec succès.', trim($crawler->filter('#notice-flashes')->text()));
 
         // We need to reload the manager reference to get the updated data
+        /** @var Adherent $adherent */
         $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findByEmail('carl999@example.fr');
 
         $this->assertSame('female', $adherent->getGender());
@@ -519,6 +520,29 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         // Email should have been sent
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(AdherentContactMessage::class));
+    }
+
+    public function testContactActionWithInvalidUuid()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/wrong-uuid');
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID, [
+            'id' => 'wrong-uuid',
+            'from' => 'event',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID, [
+            'id' => 'wrong-uuid',
+            'from' => 'committee',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
     protected function setUp()

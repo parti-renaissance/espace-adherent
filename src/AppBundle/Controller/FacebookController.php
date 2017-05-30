@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\CanaryControllerTrait;
 use AppBundle\Entity\FacebookProfile;
+use AppBundle\Exception\BadUuidRequestException;
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -66,6 +68,8 @@ class FacebookController extends Controller
             $fbProfile = $this->get('app.facebook.profile_importer')->import();
         } catch (FacebookSDKException $exception) {
             return $this->redirectToRoute('app_facebook_index');
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         return $this->redirectToRoute('app_facebook_picture_choose', [
@@ -79,10 +83,14 @@ class FacebookController extends Controller
      */
     public function choosePictureAction(Request $request): Response
     {
-        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
-            $this->addFlash('info', 'Une erreur s\'est produite, pouvez-vous réessayer ?');
+        try {
+            if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+                $this->addFlash('info', 'Une erreur s\'est produite, pouvez-vous réessayer ?');
 
-            return $this->redirectToRoute('app_facebook_index');
+                return $this->redirectToRoute('app_facebook_index');
+            }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         $router = $this->get('router');
@@ -112,8 +120,12 @@ class FacebookController extends Controller
      */
     public function buildPictureAction(Request $request): Response
     {
-        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
-            throw $this->createNotFoundException();
+        try {
+            if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+                throw $this->createNotFoundException();
+            }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         return new Response(base64_encode($this->buildFilteredPicture($fbProfile, $request)));
@@ -125,8 +137,12 @@ class FacebookController extends Controller
      */
     public function uploadPicturePermissionAction(Request $request): Response
     {
-        if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
-            throw $this->createNotFoundException();
+        try {
+            if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
+                throw $this->createNotFoundException();
+            }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         if (!$filterNumber = (int) $request->query->get('filter')) {
@@ -166,6 +182,8 @@ class FacebookController extends Controller
                 'uuid' => $request->query->get('uuid'),
                 'filter' => $request->query->get('filter'),
             ]);
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
         }
 
         return $this->redirect('https://www.facebook.com/photo.php?fbid='.$response['photo_id']);

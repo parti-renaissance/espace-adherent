@@ -6,6 +6,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
+use AppBundle\Exception\BadUuidRequestException;
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\MembershipChooseNearbyCommitteeType;
@@ -170,7 +172,11 @@ class MembershipController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.manager')->followCommittees($adherent, $form->get('committees')->getData());
+            try {
+                $this->get('app.committee.manager')->followCommittees($adherent, $form->get('committees')->getData());
+            } catch (InvalidUuidException $e) {
+                throw new BadUuidRequestException($e);
+            }
 
             return $this->redirectToRoute('app_membership_complete');
         }

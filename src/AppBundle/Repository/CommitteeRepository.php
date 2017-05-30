@@ -14,6 +14,9 @@ use Ramsey\Uuid\Uuid;
 class CommitteeRepository extends EntityRepository
 {
     use NearbyTrait;
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
 
     const ONLY_APPROVED = 1;
     const INCLUDE_UNAPPROVED = 2;
@@ -44,27 +47,11 @@ class CommitteeRepository extends EntityRepository
     }
 
     /**
-     * Finds a Committee instance by its unique UUID.
-     *
-     * @param string $uuid
-     *
-     * @return Committee|null
+     * {@inheritdoc}
      */
     public function findOneByUuid(string $uuid): ?Committee
     {
-        return $this->findOneBy(['uuid' => $uuid]);
-    }
-
-    /**
-     * Finds Committee instances by their unique UUIDs.
-     *
-     * @param string[] $uuids
-     *
-     * @return Committee[]
-     */
-    public function findByUuid(array $uuids)
-    {
-        return $this->findBy(['uuid' => $uuids]);
+        return $this->findOneByValidUuid($uuid);
     }
 
     /**
