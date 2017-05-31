@@ -5,6 +5,7 @@ namespace AppBundle\Donation;
 use AppBundle\Entity\Adherent;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -138,18 +139,6 @@ class DonationRequest
         return $dto;
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
-        }
-
-        return $phone;
-    }
-
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
@@ -278,5 +267,60 @@ class DonationRequest
     public function setDuration(int $duration): void
     {
         $this->duration = $duration;
+    }
+
+    public function retryPayload(array $payload): self
+    {
+        $retry = clone $this;
+
+        if (isset($payload['ge']) && in_array($payload['ge'], Genders::ALL, true)) {
+            $retry->gender = $payload['ge'];
+        }
+
+        if (isset($payload['ln'])) {
+            $retry->lastName = (string) $payload['ln'];
+        }
+
+        if (isset($payload['fn'])) {
+            $retry->firstName = (string) $payload['fn'];
+        }
+
+        if (isset($payload['em'])) {
+            $retry->emailAddress = urldecode((string) $payload['em']);
+        }
+
+        if ($payload['co']) {
+            $retry->country = (string) $payload['co'];
+        }
+
+        if (isset($payload['pc'])) {
+            $retry->postalCode = (string) $payload['pc'];
+        }
+
+        if (isset($payload['ci'])) {
+            $retry->cityName = (string) $payload['ci'];
+        }
+
+        if (isset($payload['ad'])) {
+            $retry->address = urldecode((string) $payload['ad']);
+        }
+
+        if (isset($payload['phc']) && isset($payload['phn'])) {
+            $retry->phone = self::createPhoneNumber((string) $payload['phc'], (string) $payload['phn']);
+        }
+
+        return $retry;
+    }
+
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
+    {
+        $phone = new PhoneNumber();
+        $phone->setCountryCode($countryCode);
+
+        if ($number) {
+            $phone->setNationalNumber($number);
+        }
+
+        return $phone;
     }
 }

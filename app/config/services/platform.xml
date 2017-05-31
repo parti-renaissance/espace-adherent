@@ -99,7 +99,6 @@
         </service>
 
         <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
-            <argument type="service" id="app.donation_request.factory"/>
             <argument type="service" id="session"/>
             <argument type="service" id="request_stack" on-invalid="ignore"/>
             <tag name="kernel.event_subscriber"/>

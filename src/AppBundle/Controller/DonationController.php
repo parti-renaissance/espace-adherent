@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Donation\DonationRequest;
+use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationSubscriptionRequestType;
@@ -24,7 +25,7 @@ class DonationController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if (!$amount = (float) $request->query->get('montant')) {
+        if (!$amount = $request->query->get('montant')) {
             return $this->render('donation/index.html.twig', [
                 'amount' => DonationRequest::DEFAULT_AMOUNT,
             ]);
@@ -70,7 +71,7 @@ class DonationController extends Controller
      */
     public function informationsAction(Request $request)
     {
-        if (!$amount = (float) $request->query->get('montant')) {
+        if (!$amount = $request->query->get('montant')) {
             return $this->redirectToRoute('donation_index');
         }
 
@@ -80,9 +81,8 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_subscription', ['montant' => $amount]);
         }
 
-        $donationRequest = $this
-            ->get('app.donation_request.factory')
-            ->createFromRequest($request, $amount, $subscription, $this->getUser());
+        $donationRequest = $this->get(DonationRequestUtils::class)
+            ->createFromRequest($request, (float) $amount, $subscription, $this->getUser());
 
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 
@@ -151,24 +151,10 @@ class DonationController extends Controller
      */
     public function resultAction(Request $request, Donation $donation)
     {
-        $parameters = [
-            'montant' => $donation->getAmount() / 100,
-            'ge' => $donation->getGender(),
-            'ln' => $donation->getLastName(),
-            'fn' => $donation->getFirstName(),
-            'em' => urlencode($donation->getEmailAddress()),
-            'co' => $donation->getCountry(),
-            'pc' => $donation->getPostalCode(),
-            'ci' => $donation->getCityName(),
-            'ad' => urlencode($donation->getAddress()),
-        ];
-
-        if ($donation->getPhone()) {
-            $parameters['phc'] = $donation->getPhone()->getCountryCode();
-            $parameters['phn'] = $donation->getPhone()->getNationalNumber();
-        }
-
-        $retryUrl = $this->generateUrl('donation_informations', $parameters);
+        $retryUrl = $this->generateUrl(
+            'donation_informations',
+            $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
+        );
 
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),

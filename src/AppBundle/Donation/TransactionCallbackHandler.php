@@ -16,31 +16,19 @@ class TransactionCallbackHandler
     private $router;
     private $entityManager;
     private $mailjet;
+    private $donationRequestUtils;
 
-    private static $errorCodes = [
-        // Platform or authorization center error
-        '00001' => 'paybox',
-        '00003' => 'paybox',
-
-        // Invalid card number/validity
-        '00004' => 'invalid-card',
-        '00008' => 'invalid-card',
-        '00021' => 'invalid-card',
-
-        // Timeout
-        '00030' => 'timeout',
-    ];
-
-    public function __construct(UrlGeneratorInterface $router, ObjectManager $entityManager, MailjetService $mailjet)
+    public function __construct(UrlGeneratorInterface $router, ObjectManager $entityManager, MailjetService $mailjet, DonationRequestUtils $donationRequestUtils)
     {
         $this->router = $router;
         $this->entityManager = $entityManager;
         $this->mailjet = $mailjet;
+        $this->mailjet = $mailjet;
+        $this->donationRequestUtils = $donationRequestUtils;
     }
 
     public function handle(string $uuid, Request $request): Response
     {
-        /** @var Donation $donation */
         $donation = $this->entityManager->getRepository(Donation::class)->findOneByUuid($uuid);
 
         if (!$donation) {
@@ -50,7 +38,6 @@ class TransactionCallbackHandler
         if (!$donation->isFinished()) {
             $donation->finish($this->extractPayboxPayloadFromRequest($request));
 
-            $this->entityManager->persist($donation);
             $this->entityManager->flush();
 
             $campaignExpired = (bool) $request->attributes->get('_campaign_expired', false);
@@ -69,43 +56,16 @@ class TransactionCallbackHandler
             'result' => $request->query->get('result'),
         ]);
 
-        if (isset($data['id'])) {
-            unset($data['id']);
-        }
-
-        if (isset($data['Sign'])) {
-            unset($data['Sign']);
-        }
+        unset($data['id'], $data['Sign']);
 
         return $data;
     }
 
     private function createRedirectResponseForDonation(Donation $donation): Response
     {
-        $code = $donation->getPayboxResultCode();
-
-        // Success
-        if ($code === '00000') {
-            return new RedirectResponse($this->router->generate('donation_result', [
-                'uuid' => $donation->getUuid()->toString(),
-                'status' => 'effectue',
-            ]));
-        }
-
-        // Known error
-        if (isset(self::$errorCodes[$code])) {
-            return new RedirectResponse($this->router->generate('donation_result', [
-                'uuid' => $donation->getUuid()->toString(),
-                'status' => 'erreur',
-                'code' => self::$errorCodes[$code],
-            ]));
-        }
-
-        // Unknown error
-        return new RedirectResponse($this->router->generate('donation_result', [
-            'uuid' => $donation->getUuid()->toString(),
-            'status' => 'erreur',
-            'code' => 'unknown',
-        ]));
+        return new RedirectResponse($this->router->generate(
+            'donation_result',
+            $this->donationRequestUtils->createCallbackStatus($donation)
+        ));
     }
 }
