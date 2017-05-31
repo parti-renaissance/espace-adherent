@@ -60,11 +60,17 @@ class HomeBlockAdmin extends AbstractAdmin
             ])
             ->add('subtitle', TextType::class, [
                 'label' => 'Sous-titre',
+                'required' => false,
                 'filter_emojis' => true,
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',
-            ]);
+            ])
+            ->add('displayFilter', null, [
+                'label' => 'Afficher le filtre',
+                'required' => false,
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
