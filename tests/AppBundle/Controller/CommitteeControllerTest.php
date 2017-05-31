@@ -73,7 +73,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
     }
 
-    public function testAutenticatedAdherentCanFollowCommittee()
+    public function testAuthenticatedAdherentCanFollowCommittee()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
@@ -378,7 +378,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         ]);
     }
 
-    public function testUnapprovedCommitteedIsViewableByItsCreator()
+    public function testUnapprovedCommitteeIsViewableByItsCreator()
     {
         $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
 
@@ -479,8 +479,9 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
         $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+        $this->assertCountTimelineMessages($crawler, 9);
 
-        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
+        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => ['content' => 'yo'],
         ]));
 
@@ -488,7 +489,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir au moins 10 caractères.']));
         $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
 
-        $this->client->submit($crawler->selectButton('committee_feed_message[publish]')->form([
+        $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => ['content' => 'Bienvenue !'],
         ]));
 
@@ -498,7 +499,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été envoyé.'));
+        $this->assertCountTimelineMessages($crawler, 9, 'Message should not be published');
 
         $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
@@ -509,6 +511,22 @@ class CommitteeControllerTest extends MysqlWebTestCase
             CommitteeMessageNotificationMessage::class,
             $message->getUuid()
         );
+
+        $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
+            'committee_feed_message' => [
+                'content' => 'Première publication !',
+                'published' => '1',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo($committeeUrl, $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageForm($crawler));
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
+        $this->assertSeeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'Première publication !');
     }
 
     /**
@@ -782,9 +800,9 @@ class CommitteeControllerTest extends MysqlWebTestCase
         return 1 === count($flash);
     }
 
-    private function assertCountTimelineMessages(Crawler $crawler, int $nb)
+    private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
     {
-        $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count());
+        $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
     }
 
     private function assertSeeTimelineMessages(Crawler $crawler, array $messages)

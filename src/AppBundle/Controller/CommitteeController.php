@@ -42,13 +42,17 @@ class CommitteeController extends Controller
         $form = null;
         if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
             $message = new CommitteeMessage($this->getUser(), $committee);
-            $form = $this->createForm(CommitteeFeedMessageType::class, $message);
-            $form->add('publish', SubmitType::class, ['label' => 'Publier']);
-            $form->handleRequest($request);
+            $form = $this->createForm(CommitteeFeedMessageType::class, $message)
+                ->handleRequest($request)
+            ;
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get('app.committee.feed_manager')->createMessage($message);
-                $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
+                if ($message->isPublished()) {
+                    $this->addFlash('info', $this->get('translator')->trans('committee.message_published'));
+                } else {
+                    $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
+                }
 
                 return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $committee));
             }

@@ -50,6 +50,11 @@ class CommitteeFeedItem
     private $content;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $published = true;
+
+    /**
      * @var \DateTime|\DateTime|null
      *
      * @ORM\Column(type="datetime")
@@ -61,12 +66,14 @@ class CommitteeFeedItem
         string $type,
         Committee $committee,
         Adherent $author,
+        bool $published = true,
         string $createdAt = 'now'
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
         $this->author = $author;
         $this->itemType = $type;
+        $this->published = $published;
         $this->createdAt = new \DateTime($createdAt);
     }
 
@@ -74,9 +81,10 @@ class CommitteeFeedItem
         Committee $committee,
         Adherent $author,
         string $content,
+        bool $published = true,
         string $createdAt = 'now'
     ): self {
-        $item = new static(Uuid::uuid4(), self::MESSAGE, $committee, $author, $createdAt);
+        $item = new static(Uuid::uuid4(), self::MESSAGE, $committee, $author, $published, $createdAt);
         $item->content = $content;
 
         return $item;
@@ -85,6 +93,7 @@ class CommitteeFeedItem
     public static function createEvent(
         Event $event,
         Adherent $author,
+        bool $published = true,
         string $createdAt = 'now'
     ): self {
         $item = new static(
@@ -92,6 +101,7 @@ class CommitteeFeedItem
             self::EVENT,
             $event->getCommittee(),
             $author,
+            $published,
             $createdAt
         );
         $item->event = $event;

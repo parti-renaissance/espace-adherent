@@ -133,6 +133,12 @@
         background: $gray--lighter;
         padding: 25px;
 
+        &__publish {
+            margin-top: 12px;
+            margin-right: 32px;
+            float: left;
+        }
+
         textarea {
             width: 100%;
             height: 80px;
@@ -140,7 +146,7 @@
         }
 
         button {
-            margin-top: 10px;
+            margin-top: 14px;
         }
     }
 

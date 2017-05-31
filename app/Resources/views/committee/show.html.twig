@@ -1,5 +1,12 @@
 {% extends 'committee/_layout.html.twig' %}
 
+{% block _committee_feed_message_published_row %}
+    <div class="committee__message__publish form__checkbox form__checkbox--large">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+    </div>
+{% endblock %}
+
 {% block page_title committee.name %}
 {% block canonical_url committee_url('app_committee_show', committee) %}
 
@@ -202,42 +209,7 @@
     {% else %}
         <nav>
             {% if is_host %}
-                <div id="committee-host-nav" class="committee__host__nav">
-                    <ul class="list__links list__links--default list__links--row list__links--row-left">
-                        <li>
-                            <a href="{{ committee_path('app_committee_edit', committee) }}" class="icon--with-text">
-                                <i class="fa fa-sliders"></i>
-                                Éditer le comité
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ committee_path('app_commitee_list_members', committee) }}" class="icon--with-text">
-                                <i class="fa fa-users"></i>
-                                Gérer les adhérents
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="comittee-host-menu" class="committee__host__menu">
-                    <ul class="list__links list__links--default list__links--row list__links--row-left">
-                        <li>
-                            Message à tous les adhérents du comité
-                        </li>
-                        <li>
-                            <a href="{{ committee_path('app_committee_add_event', committee) }}" class="link--no-decor">
-                                Créer un événement
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="committee-message-form" class="committee__message">
-                    <div class="text--body b__nudge--bottom-small">
-                        Vous serez systématiquement mis en copie des messages que vous envoyez.
-                    </div>
-                    {{ form(form) }}
-                </div>
+                {{ include('committee/_host_header.html.twig') }}
             {% endif %}
         </nav>
 

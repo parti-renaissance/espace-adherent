@@ -45,7 +45,8 @@ committee.creation.success: Votre comité a été créé avec succès. Il est n�
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
 
-committee.message_created: Votre message a bien été publié.
+committee.message_created: Votre message a bien été envoyé.
+committee.message_published: Votre message a bien été publié.
 
 committee.members_count: '1 adhérent|%count% adhérents'
 event.participants_count: '1 inscrit|%count% inscrits'
