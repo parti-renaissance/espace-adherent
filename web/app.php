@@ -25,7 +25,7 @@ if ((bool) $_SERVER['ENABLE_MAINTENANCE']) {
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__.'/../app/autoload.php';
+$loader = require __DIR__.'/../vendor/autoload.php';
 
 require __DIR__.'/../app/trusted_proxies.php';
 
