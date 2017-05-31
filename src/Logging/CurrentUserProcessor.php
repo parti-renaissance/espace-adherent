@@ -2,22 +2,22 @@
 
 namespace AppBundle\Logging;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 class CurrentUserProcessor
 {
-    private $container;
+    private $locator;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ServiceLocator $locator)
     {
-        $this->container = $container;
+        $this->locator = $locator;
     }
 
     public function processRecord(array $record)
     {
-        $tokenStorage = $this->container->get('security.token_storage');
-        $authorizationChecker = $this->container->get('security.authorization_checker');
+        $tokenStorage = $this->locator->get('security.token_storage');
+        $authorizationChecker = $this->locator->get('security.authorization_checker');
 
         $token = $tokenStorage->getToken();
         $record['extra']['user'] = 'anonymous';

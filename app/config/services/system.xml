@@ -111,8 +111,17 @@
             </argument>
         </service>
 
-        <service id="app.logging.user_process" class="AppBundle\Logging\CurrentUserProcessor" public="false">
-            <argument type="service" id="service_container" />
+        <service id="app.logging.user_processor" class="AppBundle\Logging\CurrentUserProcessor" public="false">
+            <argument type="service">
+                <service>
+                    <argument type="collection">
+                        <argument key="security.token_storage" type="service" id="security.token_storage" />
+                        <argument key="security.authorization_checker" type="service" id="security.authorization_checker" />
+                    </argument>
+
+                    <tag name="container.service_locator" />
+                </service>
+            </argument>
 
             <tag name="monolog.processor" method="processRecord" />
         </service>
