@@ -9,13 +9,13 @@
     <main>
         <section class="l__wrapper">
             <div class="l__row l__tablet--col l__row--v-stretch">
-                <a href="{{ blocks[0].link }}" class="card card__background card--large card--large--disable-gradient card--large__desktop l__hide--on-tablet l__col--bottom"
+                <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
                    style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
                     <div class="background">
                         <div class="content"></div>
                     </div>
                 </a>
-                <div class="card card--large card--large__tablet l__hide--on-desktop">
+                <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
                     <a href="{{ blocks[0].link }}" class="background-container">
                         <div class="background card__background"
                              style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>

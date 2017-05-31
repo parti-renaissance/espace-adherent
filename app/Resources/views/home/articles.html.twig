@@ -1,6 +1,6 @@
 <li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ block.type }} l__col--bottom">
     {% if block.type == 'video' %}
-        <div class="csv card--small card--small__video">
+        <div class="csv card--small card--small__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             <a href="{{ block.link }}" class="background-container">
                 <div class="background card__background progressive-background"
                      data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
@@ -22,7 +22,7 @@
                 </span>
             </div>
         </div>
-        <div class="cmv card--medium card--medium__video">
+        <div class="cmv card--medium card--medium__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
                data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
                data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
@@ -49,7 +49,7 @@
             </a>
         </div>
     {% else %}
-        <div class="cs card--small">
+        <div class="cs card--small {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             <a href="{{ block.link }}" class="background-container">
                 <div class="background card__background progressive-background"
                      data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
@@ -70,7 +70,7 @@
                     </span>
             </div>
         </div>
-        <div class="cm card--medium">
+        <div class="cm card--medium {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
                data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
                data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"

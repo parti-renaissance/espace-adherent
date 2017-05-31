@@ -105,12 +105,6 @@
             }
         }
 
-        &--disable-gradient {
-            &:before, &:after, &:hover:before, &:hover:after {
-                opacity: 0;
-            }
-        }
-
         @media (max-width: $tablet) {
             color: black;
             margin-bottom: 20px;
@@ -545,6 +539,14 @@
                         background-position: center;
                     }
                 }
+            }
+        }
+    }
+
+    &--no-gradient {
+        &, .background-container {
+            &:before, &:after, &:hover:before, &:hover:after {
+                opacity: 0 !important;
             }
         }
     }
