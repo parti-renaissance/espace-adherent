@@ -135,11 +135,10 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-legislatives')")
      */
-    public function mouvementLegislativesAction(Page $page)
+    public function mouvementLegislativesAction()
     {
-        return $this->render('page/le-mouvement/legislatives.html.twig', ['page' => $page]);
+        return $this->redirect($this->getParameter('legislatives_domain'), Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**
