@@ -39,6 +39,7 @@ class CommitteeCommand
 
     /**
      * @Assert\Url
+     * @Assert\Length(max=255)
      */
     public $facebookPageUrl;
 
@@ -50,6 +51,7 @@ class CommitteeCommand
 
     /**
      * @Assert\Url
+     * @Assert\Length(max=255)
      */
     public $googlePlusPageUrl;
 

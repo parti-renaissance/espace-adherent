@@ -87,6 +87,7 @@ class MembershipRequest
     /**
      * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration"})
      */
     private $emailAddress;
 

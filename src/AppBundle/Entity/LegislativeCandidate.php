@@ -45,6 +45,7 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column(length=6)
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
@@ -57,34 +58,43 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column(length=100, nullable=true)
+     *
      * @Assert\Email(groups="Admin")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
      */
     private $emailAddress;
 
     /**
      * @ORM\Column(length=100)
      * @Gedmo\Slug(fields={"districtName"})
+     *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
     private $slug;
 
     /**
      * @ORM\Column(nullable=true)
+     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
      */
     private $facebookPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
+     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
      */
     private $twitterPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
+     *
      * @Assert\Url(groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
      */
     private $donationPageUrl;
 
@@ -118,6 +128,7 @@ class LegislativeCandidate
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone", fetch="EAGER")
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Valid
      */
@@ -125,6 +136,7 @@ class LegislativeCandidate
 
     /**
      * @ORM\Column
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(callback="getCareerChoices", message="legislative_candidate.carreer.invalid", groups="Admin")
      */

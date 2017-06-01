@@ -39,6 +39,7 @@ class NewsletterSubscription
      *
      * @Assert\NotBlank(message="neswletter.email.not_blank")
      * @Assert\Email(message="neswletter.email.invalid")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $email;
 

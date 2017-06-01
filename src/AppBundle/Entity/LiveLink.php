@@ -36,18 +36,20 @@ class LiveLink
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $link;
 

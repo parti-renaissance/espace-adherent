@@ -29,7 +29,7 @@ class EventRegistration
     private $firstName;
 
     /**
-     * @ORM\Column(length=100)
+     * @ORM\Column
      */
     private $emailAddress;
 

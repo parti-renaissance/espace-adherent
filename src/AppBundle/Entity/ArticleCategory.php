@@ -40,6 +40,7 @@ class ArticleCategory
      * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=50)
      *
      * @Algolia\Attribute
      */

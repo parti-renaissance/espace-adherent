@@ -37,6 +37,7 @@ class Administrator implements UserInterface, TwoFactorInterface
      *
      * @Assert\Email
      * @Assert\NotBlank
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
 

@@ -32,18 +32,20 @@ class Media
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, unique=true)
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $path;
 
