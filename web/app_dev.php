@@ -10,7 +10,7 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'], true) && false ===
 }
 
 /** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__.'/../app/autoload.php';
+$loader = require __DIR__.'/../vendor/autoload.php';
 Debug::enable();
 
 $kernel = new AppKernel('dev', true);
