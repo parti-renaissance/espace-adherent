@@ -596,7 +596,7 @@ class ProcurationRequest
         $this->voteCountry = $voteCountry;
     }
 
-    public function getVoteOffice(): string
+    public function getVoteOffice(): ?string
     {
         return $this->voteOffice;
     }
