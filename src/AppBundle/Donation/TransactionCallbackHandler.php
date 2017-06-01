@@ -23,11 +23,10 @@ class TransactionCallbackHandler
         $this->router = $router;
         $this->entityManager = $entityManager;
         $this->mailjet = $mailjet;
-        $this->mailjet = $mailjet;
         $this->donationRequestUtils = $donationRequestUtils;
     }
 
-    public function handle(string $uuid, Request $request): Response
+    public function handle(string $uuid, Request $request, string $callbackToken): Response
     {
         $donation = $this->entityManager->getRepository(Donation::class)->findOneByUuid($uuid);
 
@@ -36,7 +35,7 @@ class TransactionCallbackHandler
         }
 
         if (!$donation->isFinished()) {
-            $donation->finish($this->extractPayboxPayloadFromRequest($request));
+            $donation->finish($this->donationRequestUtils->extractPayboxResultFromCallBack($request, $callbackToken));
 
             $this->entityManager->flush();
 
@@ -46,23 +45,6 @@ class TransactionCallbackHandler
             }
         }
 
-        return $this->createRedirectResponseForDonation($donation);
-    }
-
-    private function extractPayboxPayloadFromRequest(Request $request): array
-    {
-        $data = array_merge($request->query->all(), [
-            'authorization' => $request->query->get('authorization'),
-            'result' => $request->query->get('result'),
-        ]);
-
-        unset($data['id'], $data['Sign']);
-
-        return $data;
-    }
-
-    private function createRedirectResponseForDonation(Donation $donation): Response
-    {
         return new RedirectResponse($this->router->generate(
             'donation_result',
             $this->donationRequestUtils->createCallbackStatus($donation)

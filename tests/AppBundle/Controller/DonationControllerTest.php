@@ -131,13 +131,30 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame($expectedCount, $crawler->filter('td:contains("30.00 EUR")')->count());
         $this->assertContains('Paiement r&eacute;alis&eacute; avec succ&egrave;s', $content);
 
-        /*
-         * Emulate IPN callback to Symfony
-         */
-        $mockUrl = $crawler->filter('a')->first()->attr('href');
-        $ipnUrl = str_replace('https://httpbin.org/status/200', '/don/payment-ipn/'.$formTime, $mockUrl);
+        $callbackUrl = $crawler->filter('a')->attr('href');
+        $callbackUrlRegExp = 'http://localhost/don/callback/(.+)'; // token
+        $callbackUrlRegExp .= '\?id=(.+)_john-doe';
+        if (PayboxPaymentSubscription::NONE !== $duration) {
+            $durationRegExp = $duration < 0 ? 0 : $duration - 1;
+            $callbackUrlRegExp .= 'PBX_2MONT0000003000PBX_NBPAIE0'.$durationRegExp.'PBX_FREQ01PBX_QUAND00';
+        }
+        $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
+        $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
+        $callbackUrlRegExp .= '&card_type=CB&card_end=3212&card_print=(.+)&Sign=(.+)';
 
-        $appClient->request(Request::METHOD_GET, $ipnUrl);
+        $this->assertRegExp('#'.$callbackUrlRegExp.'#', $callbackUrl);
+
+        $appClient->request(Request::METHOD_GET, $callbackUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $appClient->getResponse());
+
+        $statusUrl = $appClient->getResponse()->headers->get('location');
+        $statusUrlRegExp = '/don/(.+)'; // uuid
+        $statusUrlRegExp .= '/effectue\?code=donation_paybox_success&_status_token=(.+)';
+
+        $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
+
+        $appClient->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
@@ -155,19 +172,51 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function testCallbackWithNoId()
     {
-        $this->appClient->request(Request::METHOD_GET, '/don/callback');
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token');
 
         $this->assertClientIsRedirectedTo('/don', $this->appClient);
     }
 
     public function testCallbackWithWrongUuid()
     {
-        $this->appClient->request(Request::METHOD_GET, '/don/callback', [
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token', [
             'id' => 'wrong_uuid',
         ]);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->appClient);
         $this->assertClientIsRedirectedTo('/don', $this->appClient);
+    }
+
+    public function testCallbackWithWrongToken()
+    {
+        $crawler = $this->appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30'));
+
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
+            'app_donation' => [
+                'gender' => 'male',
+                'lastName' => 'Doe',
+                'firstName' => 'John',
+                'emailAddress' => 'test@paybox.com',
+                'address' => '9 rue du Lycée',
+                'country' => 'FR',
+                'postalCode' => '06000',
+                'cityName' => 'Nice',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '04 01 02 03 04',
+                ],
+            ],
+        ]));
+
+        // Donation should have been saved
+        $this->assertCount(1, $donations = $this->donationRepository->findAll());
+        $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
+
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token', [
+            'id' => $donation->getUuid().'_',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->appClient);
     }
 
     protected function setUp()

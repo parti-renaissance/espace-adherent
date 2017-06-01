@@ -30,6 +30,7 @@
             <argument type="service" id="lexik_paybox.request_handler" />
             <argument type="service" id="router" />
             <argument type="service" id="sonata.core.slugify.cocur" />
+            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 
         <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
@@ -44,6 +45,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 
         <!-- Newsletter -->
