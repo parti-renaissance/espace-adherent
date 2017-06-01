@@ -73,6 +73,7 @@ class SocialShare
      * @ORM\Column
      *
      * @Assert\Url
+     * @Assert\Length(max=255)
      */
     private $defaultUrl = '';
 
@@ -80,6 +81,7 @@ class SocialShare
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
+     * @Assert\Length(max=255)
      */
     private $facebookUrl = '';
 
@@ -87,6 +89,7 @@ class SocialShare
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
+     * @Assert\Length(max=255)
      */
     private $twitterUrl = '';
 

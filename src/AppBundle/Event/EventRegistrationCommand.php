@@ -29,7 +29,7 @@ class EventRegistrationCommand
     /**
      * @Assert\NotBlank
      * @Assert\Email
-     * @Assert\Length(max=100)
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
 

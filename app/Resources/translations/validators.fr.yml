@@ -22,6 +22,7 @@ common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
 
 common.email.not_blank: Cette valeur ne doit pas être vide.
 common.email.invalid: Ceci n'est pas une adresse e-mail valide.
+common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
 
 common.country.not_blank: Cette valeur ne doit pas être vide.
 common.country.invalid: Ce pays n'est pas valide.

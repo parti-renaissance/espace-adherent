@@ -166,6 +166,7 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="common.email.not_blank", groups={"profile"})
      * @Assert\Email(message="common.email.invalid", groups={"profile"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"profile"})
      */
     private $emailAddress = '';
 

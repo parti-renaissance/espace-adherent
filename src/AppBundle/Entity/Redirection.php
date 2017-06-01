@@ -30,6 +30,7 @@ class Redirection
      * @ORM\Column(name="url_from")
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $from;
 
@@ -39,6 +40,7 @@ class Redirection
      * @ORM\Column(name="url_to")
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $to;
 

@@ -36,6 +36,7 @@ class LegislativeDistrictZone
 
     /**
      * @ORM\Column(length=4)
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(
      *   pattern="/^([0-1]\d{3}|002[A-B])$/",
@@ -47,6 +48,7 @@ class LegislativeDistrictZone
 
     /**
      * @ORM\Column(length=20)
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *   callback = "getAreaTypeChoices",
@@ -64,6 +66,7 @@ class LegislativeDistrictZone
 
     /**
      * @ORM\Column(length=100)
+     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Length(min=2, max=100, groups="Admin")
      */

@@ -59,10 +59,11 @@ class Invite
     /**
      * @var string
      *
-     * @ORM\Column(length=100)
+     * @ORM\Column
      *
      * @Assert\NotBlank(message="common.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $email;
 

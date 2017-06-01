@@ -58,6 +58,8 @@ class ProcurationProxy
      * @var string|null
      *
      * @ORM\Column(length=30, nullable=true)
+     *
+     * @Assert\Length(max=30)
      */
     private $reliabilityDescription = '';
 
@@ -172,6 +174,7 @@ class ProcurationProxy
      *
      * @Assert\NotBlank(message="common.email.not_blank", groups={"front"})
      * @Assert\Email(message="common.email.invalid", groups={"front"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"front"})
      */
     private $emailAddress = '';
 
