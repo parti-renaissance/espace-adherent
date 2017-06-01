@@ -27,6 +27,7 @@ class CommitteeFeedManager
         $item = CommitteeFeedItem::createEvent(
             $event->getEvent(),
             $event->getAuthor(),
+            true,
             $event->getCreatedAt()->format(DATE_RFC2822)
         );
 
@@ -42,6 +43,7 @@ class CommitteeFeedManager
             $message->getCommittee(),
             $message->getAuthor(),
             $message->getContent(),
+            $message->isPublished(),
             $message->getCreatedAt()->format(DATE_RFC2822)
         );
 

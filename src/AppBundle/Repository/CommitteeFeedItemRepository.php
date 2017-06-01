@@ -19,17 +19,17 @@ class CommitteeFeedItemRepository extends EntityRepository
         return new Paginator($qb);
     }
 
-    public function findMostRecentFeedMessage(string $committeeUuid = null): ?CommitteeFeedItem
+    public function findMostRecentFeedMessage(string $committeeUuid = null, ?bool $published = null): ?CommitteeFeedItem
     {
-        return $this->findMostRecentFeedItem(CommitteeFeedItem::MESSAGE, $committeeUuid);
+        return $this->findMostRecentFeedItem(CommitteeFeedItem::MESSAGE, $committeeUuid, $published);
     }
 
-    public function findMostRecentFeedEvent(string $committeeUuid = null): ?CommitteeFeedItem
+    public function findMostRecentFeedEvent(string $committeeUuid = null, ?bool $published = null): ?CommitteeFeedItem
     {
-        return $this->findMostRecentFeedItem(CommitteeFeedItem::EVENT, $committeeUuid);
+        return $this->findMostRecentFeedItem(CommitteeFeedItem::EVENT, $committeeUuid, $published);
     }
 
-    private function findMostRecentFeedItem(string $type, string $committeeUuid = null): ?CommitteeFeedItem
+    private function findMostRecentFeedItem(string $type, string $committeeUuid = null, ?bool $published = null): ?CommitteeFeedItem
     {
         $qb = $this
             ->createQueryBuilder('i')
@@ -37,9 +37,13 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->leftJoin('i.author', 'a')
             ->leftJoin('i.event', 'e')
             ->where('i.itemType = :type')
-            ->orderBy('i.createdAt', 'DESC')
             ->setMaxResults(1)
-            ->setParameter('type', $type);
+            ->setParameter('type', $type)
+            ->orderBy('i.createdAt', 'DESC');
+
+        if (null !== $published) {
+            $qb->andWhere('i.published = :published')->setParameter('published', $published);
+        }
 
         if ($committeeUuid) {
             $qb
@@ -61,8 +65,10 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->leftJoin('i.event', 'e')
             ->leftJoin('i.committee', 'c')
             ->where('c.uuid = :committee')
+            ->andWhere('i.published = :published')
             ->orderBy('i.id', 'DESC')
-            ->setParameter('committee', $committeeUuid);
+            ->setParameter('committee', $committeeUuid)
+            ->setParameter('published', true);
 
         return $qb;
     }
