@@ -152,10 +152,13 @@ class DonationController extends Controller
      */
     public function resultAction(Request $request, Donation $donation)
     {
-        $retryUrl = $this->generateUrl(
-            'donation_informations',
-            $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
-        );
+        $retryUrl = null;
+        if (!$donation->isSuccessful()) {
+            $retryUrl = $this->generateUrl(
+                'donation_informations',
+                $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
+            );
+        }
 
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),
