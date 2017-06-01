@@ -178,7 +178,7 @@
             }
 
             &__monthly {
-                margin: auto;
+                margin: 0 auto 10px auto;
             }
         }
     }
@@ -190,6 +190,12 @@
 
         .donate__text {
             max-width: 400px;
+        }
+
+        .amount-chooser__monthly {
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            padding: 3px 10px;
         }
     }
 }
@@ -349,6 +355,7 @@
             &:checked + label {
                 background-color: $pink;
                 border-color: $pink;
+                color: #fff;
             }
         }
 

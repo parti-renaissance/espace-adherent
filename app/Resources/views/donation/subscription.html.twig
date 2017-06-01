@@ -10,8 +10,13 @@
     </ul>
 
     <div class="donation__frequency">
-        <h2>Je veux soutenir chaque mois En Marche</h2>
-        <div class="donation__frequency--amount text--medium b__nudge--bottom b__nudge--top">{{ amount }} / mois</div>
+        <h2>Je veux soutenir chaque mois<br />En Marche !</h2>
+
+        <div class="donation__informations__amount b__nudge--top">
+            Je donne<br /><br />
+            <h3>{{ amount }}€ par mois</h3><br />
+            pendant
+        </div>
 
         {{ form_start(form) }}
             {{ form_errors(form) }}
@@ -20,7 +25,6 @@
             <div class="b__nudge--top">
                 {{ form_widget(form.submit, {attr:{class: 'btn btn--primary'}}) }}
             </div>
-
         {{ form_end(form) }}
     </div>
 {% endblock %}
