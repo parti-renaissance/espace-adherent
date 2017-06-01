@@ -22,7 +22,7 @@
     <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
     <meta name="theme-color" content="#ffffff" />
 
-    <title>Espace candidat aux législatives | En Marche !</title>
+    <title>{% block title %}Espace candidat aux législatives{% endblock %} | En Marche !</title>
 
     <link rel="canonical" href="{% block canonical_url %}{{ url('app_legislative_candidates_platform') }}{% endblock %}" />
     <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
