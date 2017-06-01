@@ -48,9 +48,10 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        $form = $this->createForm(DonationSubscriptionRequestType::class)
-            ->handleRequest($request)
-        ;
+        $form = $this->createForm(DonationSubscriptionRequestType::class, [
+            'duration' => PayboxPaymentSubscription::UNLIMITED
+        ]);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute('donation_informations', [
