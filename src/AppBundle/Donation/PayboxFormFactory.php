@@ -14,17 +14,21 @@ class PayboxFormFactory
     private $requestHandler;
     private $router;
     private $slugify;
+    private $donationRequestUtils;
 
-    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, Slugify $slugify)
+    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, Slugify $slugify, DonationRequestUtils $donationRequestUtils)
     {
         $this->environment = $environment;
         $this->requestHandler = $requestHandler;
         $this->router = $router;
         $this->slugify = $slugify;
+        $this->donationRequestUtils = $donationRequestUtils;
     }
 
     public function createPayboxFormForDonation(Donation $donation)
     {
+        $callbackParameters = $this->donationRequestUtils->buildCallbackParameters();
+
         $parameters = [
             'PBX_CMD' => $donation->getUuid()->toString().'_'.$this->slugify->slugify($donation->getFullName()).$this->getCommandSuffix($donation),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
@@ -34,24 +38,17 @@ class PayboxFormFactory
             'PBX_TYPEPAIEMENT' => 'CARTE',
             'PBX_TYPECARTE' => 'CB',
             'PBX_RUF1' => 'POST',
-            'PBX_EFFECTUE' => $this->router->generate('donation_callback', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'PBX_REFUSE' => $this->router->generate('donation_callback', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'PBX_ANNULE' => $this->router->generate('donation_callback', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'PBX_EFFECTUE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
+            'PBX_REFUSE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
+            'PBX_ANNULE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
             'PBX_REPONDRE_A' => $this->router->generate('lexik_paybox_ipn', ['time' => time()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        if ('test_sqlite' === $this->environment || 'test_mysql' === $this->environment) {
-            $parameters = array_merge($parameters, [
-                'PBX_EFFECTUE' => 'https://httpbin.org/status/200',
-                'PBX_REFUSE' => 'https://httpbin.org/status/200',
-                'PBX_ANNULE' => 'https://httpbin.org/status/200',
-                'PBX_REPONDRE_A' => 'https://httpbin.org/status/200',
-            ]);
+        if (0 === strpos($this->environment, 'test')) {
+            $parameters['PBX_REPONDRE_A'] = 'https://httpbin.org/status/200';
         }
 
-        $this->requestHandler->setParameters($parameters);
-
-        return $this->requestHandler;
+        return $this->requestHandler->setParameters($parameters);
     }
 
     /**

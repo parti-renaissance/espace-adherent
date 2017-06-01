@@ -49,7 +49,7 @@ class DonationController extends Controller
         }
 
         $form = $this->createForm(DonationSubscriptionRequestType::class, [
-            'duration' => PayboxPaymentSubscription::UNLIMITED
+            'duration' => PayboxPaymentSubscription::UNLIMITED,
         ]);
         $form->handleRequest($request);
 
@@ -127,10 +127,10 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/callback", defaults={"_enable_campaign_silence"=true}, name="donation_callback")
+     * @Route("/callback/{_callback_token}", defaults={"_enable_campaign_silence"=true}, name="donation_callback")
      * @Method("GET")
      */
-    public function callbackAction(Request $request)
+    public function callbackAction(Request $request, $_callback_token)
     {
         $id = explode('_', $request->query->get('id'))[0];
 
@@ -138,7 +138,7 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        return $this->get('app.donation.transaction_callback_handler')->handle($id, $request);
+        return $this->get('app.donation.transaction_callback_handler')->handle($id, $request, $_callback_token);
     }
 
     /**

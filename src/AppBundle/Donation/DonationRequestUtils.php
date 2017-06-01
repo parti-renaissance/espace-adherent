@@ -4,18 +4,20 @@ namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
+use AppBundle\Exception\InvalidDonationCallbackException;
 use AppBundle\Exception\InvalidDonationPayloadException;
+use AppBundle\Exception\InvalidDonationStatusException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zend\EventManager\Exception\InvalidCallbackException;
 
 class DonationRequestUtils
 {
     private const CALLBACK_TOKEN = 'donation_callback_token';
+    private const STATUS_TOKEN = 'donation_status_token';
     private const RETRY_TOKEN = 'donation_retry_token';
     private const RETRY_PAYLOAD = 'donation_retry_payload';
     private const PAYBOX_SUCCESS = 'donation_paybox_success';
@@ -67,12 +69,31 @@ class DonationRequestUtils
         return $donation;
     }
 
+    public function buildCallbackParameters()
+    {
+        return ['_callback_token' => $this->getTokenManager()->getToken(self::CALLBACK_TOKEN)];
+    }
+
+    public function extractPayboxResultFromCallBack(Request $request, string $token): array
+    {
+        $this->validateCallback($token);
+
+        $data = array_merge($request->query->all(), [
+            'authorization' => $request->query->get('authorization'),
+            'result' => $request->query->get('result'),
+        ]);
+
+        unset($data['id'], $data['Sign']);
+
+        return $data;
+    }
+
     public function createRetryPayload(Donation $donation, Request $request): array
     {
         $this->validateCallbackStatus($request);
 
         $payload = $donation->getRetryPayload();
-        $payload['_token'] = $this->getTokenManager()->getToken(self::RETRY_TOKEN);
+        $payload['_retry_token'] = $this->getTokenManager()->getToken(self::RETRY_TOKEN);
 
         return [
             self::RETRY_PAYLOAD => json_encode($payload),
@@ -88,7 +109,7 @@ class DonationRequestUtils
             'code' => $code,
             'uuid' => $donation->getUuid()->toString(),
             'status' => self::PAYBOX_SUCCESS === $code ? 'effectue' : 'erreur',
-            '_token' => $this->getTokenManager()->getToken(self::CALLBACK_TOKEN),
+            '_status_token' => (string) $this->getTokenManager()->getToken(self::STATUS_TOKEN),
         ];
     }
 
@@ -109,26 +130,39 @@ class DonationRequestUtils
         return $request;
     }
 
-    private function validateCallbackStatus(Request $request): void
+    private function validateCallback(string $token): void
     {
-        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::CALLBACK_TOKEN, $request->query->get(self::CALLBACK_TOKEN)))
-            && isset(self::PAYBOX_STATUSES[$request->query->getAlnum('code')])
-        ) {
+        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::CALLBACK_TOKEN, $token))) {
             return;
         }
 
-        throw new InvalidCallbackException();
+        throw new InvalidDonationCallbackException();
+    }
+
+    private function validateCallbackStatus(Request $request): void
+    {
+        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::STATUS_TOKEN, $request->query->get('_status_token')))
+            && $this->isValidStatus($request->query->get('code'))) {
+            return;
+        }
+
+        throw new InvalidDonationStatusException();
     }
 
     private function validateRetryPayload(DonationRequest $retry, array $payload): bool
     {
-        if (isset($payload[self::RETRY_TOKEN])
-            && $this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $payload[self::RETRY_TOKEN]))
+        if (isset($payload['_retry_token'])
+            && $this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $payload['_retry_token']))
         ) {
             return 0 === count($this->getValidator()->validate($retry));
         }
 
         throw new InvalidDonationPayloadException();
+    }
+
+    private function isValidStatus(string $status)
+    {
+        return in_array($status, self::PAYBOX_STATUSES, true);
     }
 
     private function getValidator(): ValidatorInterface
