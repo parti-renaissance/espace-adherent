@@ -9,13 +9,14 @@ final class EventCategories
         'Réunion d\'équipe' => 'CE002',
         'Conférence-débat' => 'CE003',
         'Porte-à-porte' => 'CE004',
-        'Atelier du programme' => 'CE005',
+        'Atelier de réflexion' => 'CE005',
         'Tractage' => 'CE006',
         'Convivialité' => 'CE007',
         'Action ciblée' => 'CE008',
         'Événement innovant' => 'CE009',
         'Marche' => 'CE010',
         'Support party' => 'CE011',
+        'Soutien au candidat aux législatives' => 'CE012',
     ];
 
     const ALL = [
@@ -30,6 +31,7 @@ final class EventCategories
         'CE009',
         'CE010',
         'CE011',
+        'CE012',
     ];
 
     private function __construct()
