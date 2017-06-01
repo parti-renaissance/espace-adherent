@@ -49,7 +49,7 @@ class DonationController extends Controller
         }
 
         $form = $this->createForm(DonationSubscriptionRequestType::class, [
-            'duration' => PayboxPaymentSubscription::UNLIMITED
+            'duration' => PayboxPaymentSubscription::UNLIMITED,
         ]);
         $form->handleRequest($request);
 
