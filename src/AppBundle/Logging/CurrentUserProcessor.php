@@ -2,27 +2,27 @@
 
 namespace AppBundle\Logging;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 class CurrentUserProcessor
 {
-    private $container;
+    private $tokenStorage;
+    private $authorizationChecker;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->container = $container;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function processRecord(array $record)
     {
-        $tokenStorage = $this->container->get('security.token_storage');
-        $authorizationChecker = $this->container->get('security.authorization_checker');
-
-        $token = $tokenStorage->getToken();
+        $token = $this->tokenStorage->getToken();
         $record['extra']['user'] = 'anonymous';
 
-        if (null !== $token && $authorizationChecker->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED)) {
+        if (null !== $token && $this->authorizationChecker->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED)) {
             $record['extra']['user'] = $token->getUsername();
         }
 

@@ -102,8 +102,9 @@
             </argument>
         </service>
 
-        <service id="app.logging.user_process" class="AppBundle\Logging\CurrentUserProcessor" public="false">
-            <argument type="service" id="service_container" />
+        <service id="app.logging.user_process" class="AppBundle\Logging\CurrentUserProcessor" public="false" lazy="true">
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
 
             <tag name="monolog.processor" method="processRecord" />
         </service>
