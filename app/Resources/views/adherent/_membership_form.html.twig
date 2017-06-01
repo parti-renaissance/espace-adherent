@@ -99,7 +99,7 @@
         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
             {{ form_widget(form.conditions) }}
             {% block _form_conditions_label %}
-                <label class="form form__label" for="membership_request_conditions"><span>Oui, j'adhère à la <a href="charte.pdf" target="_blank">charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</a></span></label>
+                <label class="form form__label" for="membership_request_conditions"><span><strong>Oui, j'adhère à la <a href="charte.pdf" target="_blank">charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</a> <sup>*</sup></strong></span></label>
             {% endblock %}
             {{ form_errors(form.conditions) }}
         </div>
