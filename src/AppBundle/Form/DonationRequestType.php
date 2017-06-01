@@ -28,7 +28,7 @@ class DonationRequestType extends AbstractType
                     ->create('amount', HiddenType::class)
                     ->addViewTransformer(new FloatToStringTransformer())
             )
-            ->add('duration', HiddenType::class)
+            //->add('duration', HiddenType::class)
         ;
 
         if ($options['sponsor_form']) {
