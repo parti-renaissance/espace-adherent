@@ -1,12 +1,5 @@
 {% extends 'committee/_layout.html.twig' %}
 
-{% block _committee_feed_message_published_row %}
-    <div class="committee__message__publish form__checkbox form__checkbox--large">
-        {{ form_widget(form) }}
-        {{ form_label(form) }}
-    </div>
-{% endblock %}
-
 {% block page_title committee.name %}
 {% block canonical_url committee_url('app_committee_show', committee) %}
 

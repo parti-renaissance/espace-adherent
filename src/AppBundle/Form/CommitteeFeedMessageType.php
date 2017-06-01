@@ -22,7 +22,7 @@ class CommitteeFeedMessageType extends AbstractType
                 'purify_html' => true,
             ])
             ->add('published', CheckboxType::class, [
-                'label' => 'Publier',
+                'label' => 'Rendre ce message visible sur la page du comité',
                 'attr' => ['class' => 'form__checkbox form__checkbox--large'],
                 'required' => false,
             ])
