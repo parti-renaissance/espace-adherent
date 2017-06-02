@@ -33,9 +33,9 @@ class CampaignSilenceProcessor
 
         if (!$ipCache->isHit()) {
             try {
-                $code = $this->geoip->country($ip)->country->isoCode;
+                $code = $this->geoip->country($ip)->country->isoCode ?: 'US';
             } catch (\Exception $e) {
-                $code = 'GP';
+                $code = 'US';
             }
 
             $ipCache->set([
