@@ -66,7 +66,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 continue;
             }
 
-            $mediaFile = new File(__DIR__.'/../../../../app/data/dist/'.$homeBlockData['path']);
+            $mediaFile = new File(__DIR__.'/../../../app/data/dist/'.$homeBlockData['path']);
             $this->storage->put('images/'.$homeBlockData['path'], file_get_contents($mediaFile->getPathname()));
 
             $media = $this->mediaFactory->createFromFile(
