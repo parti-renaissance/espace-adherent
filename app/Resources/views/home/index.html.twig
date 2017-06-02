@@ -8,33 +8,20 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
-            {% if enable_hp_video %}
-                <a href="{{ blocks[0].link }}" class="video__container link--no-decor">
-                    <video poster="{{ media_asset(blocks[0].media, {'w': 1000, 'q': 70}) }}" playsinline autoplay muted loop>
-                        <source src="{{ path('homepage_video_url', {'format': 'mov'}) }}" type="video/mov">
-                        <source src="{{ path('homepage_video_url', {'format': 'mp4'}) }}" type="video/mp4">
-                    </video>
-                    <div class="video__filter--hover"></div>
-                    <div class="video__content">
-                        <div class="btn btn--no-border">Voir</div>
+            <div class="l__row l__tablet--col l__row--v-stretch">
+                <a href="{{ blocks[0].link }}" class="card card__background card--large card--large--disable-gradient card--large__desktop l__hide--on-tablet l__col--bottom"
+                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
+                    <div class="background">
+                        <div class="content"></div>
                     </div>
                 </a>
-            {% else %}
-                <div class="l__row l__tablet--col l__row--v-stretch">
-                    <a href="{{ blocks[0].link }}" class="card card__background card--large card--large--disable-gradient card--large__desktop l__hide--on-tablet l__col--bottom"
-                       style="background-image: url('{{ asset('images/home-legislatives.gif') }}?v3'); height: 370px;">
-                        <div class="background">
-                            <div class="content"></div>
-                        </div>
+                <div class="card card--large card--large__tablet l__hide--on-desktop">
+                    <a href="{{ blocks[0].link }}" class="background-container">
+                        <div class="background card__background"
+                             style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
                     </a>
-                    <div class="card card--large card--large__tablet l__hide--on-desktop">
-                        <a href="{{ blocks[0].link }}" class="background-container">
-                            <div class="background card__background"
-                                 style="background-image: url('{{ asset('images/home-legislatives.gif') }}?v3')"></div>
-                        </a>
-                    </div>
                 </div>
-            {% endif %}
+            </div>
 
             {% if not campaign_expired %}
                 <div class="content b__nudge--top">
