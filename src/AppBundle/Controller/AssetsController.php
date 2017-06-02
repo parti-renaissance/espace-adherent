@@ -28,14 +28,20 @@ class AssetsController extends Controller
      * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */
-    public function assetAction($path, Request $request)
+    public function assetAction(string $path, Request $request)
     {
         $parameters = $request->query->all();
 
         try {
             SignatureFactory::create($this->getParameter('kernel.secret'))->validateRequest($path, $parameters);
         } catch (SignatureException $e) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('', $e);
+        }
+
+        if ('gif' === substr($path, -3)) {
+            return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
+                'Content-Type' => 'image/gif',
+            ]);
         }
 
         $glide = $this->get('app.glide');
@@ -44,7 +50,7 @@ class AssetsController extends Controller
         try {
             $response = $glide->getImageResponse($path, $request->query->all());
         } catch (FileNotFoundException $e) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('', $e);
         }
 
         return $response;
