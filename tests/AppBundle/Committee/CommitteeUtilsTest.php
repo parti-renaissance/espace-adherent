@@ -8,6 +8,9 @@ use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
+/**
+ * @group functional
+ */
 class CommitteeUtilsTest extends MysqlWebTestCase
 {
     use TestHelperTrait;

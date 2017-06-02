@@ -13,6 +13,9 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
+/**
+ * @group functional
+ */
 class CommitteeFeedManagerTest extends SqliteWebTestCase
 {
     use TestHelperTrait;

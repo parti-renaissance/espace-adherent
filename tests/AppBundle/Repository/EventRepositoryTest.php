@@ -9,6 +9,9 @@ use AppBundle\Repository\EventRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class EventRepositoryTest extends SqliteWebTestCase
 {
     /**

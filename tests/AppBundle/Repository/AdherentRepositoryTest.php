@@ -11,6 +11,9 @@ use AppBundle\Repository\AdherentRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class AdherentRepositoryTest extends SqliteWebTestCase
 {
     /**
