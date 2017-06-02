@@ -23,7 +23,7 @@ class FilesystemAdapterFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateProdAdapter()
     {
-        $adapter = FilesystemAdapterFactory::createAdapter('prod', '', 'project-id', __DIR__.'/../../Fixtures/gcloud-service-key.json', 'project-bucket');
+        $adapter = FilesystemAdapterFactory::createAdapter('prod', '', 'project-id', __DIR__.'/../Fixtures/gcloud-service-key.json', 'project-bucket');
 
         $this->assertInstanceOf(CachedAdapter::class, $adapter);
         $this->assertInstanceOf(GoogleStorageAdapter::class, $adapter->getAdapter());

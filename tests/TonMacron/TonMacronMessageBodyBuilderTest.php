@@ -42,7 +42,7 @@ EOF;
         $this->createBuilder()->buildMessageBody($invitation = $this->createInvitationProcessor());
 
         $this->assertSame(
-            file_get_contents(__DIR__.'/../../Fixtures/files/ton_macron_mail.html'),
+            file_get_contents(__DIR__.'/../Fixtures/files/ton_macron_mail.html'),
             $invitation->messageContent
         );
     }
@@ -91,7 +91,7 @@ EOF;
     private function createBuilder(): TonMacronMessageBodyBuilder
     {
         return new TonMacronMessageBodyBuilder(
-            new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../../Fixtures/views')),
+            new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/views')),
             $this->repository
         );
     }

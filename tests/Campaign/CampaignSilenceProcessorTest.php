@@ -149,7 +149,7 @@ class CampaignSilenceProcessorTest extends \PHPUnit_Framework_TestCase
     private function createProcessor(string $rule)
     {
         return new CampaignSilenceProcessor(
-            new Reader(__DIR__.'/../../../app/data/geolite2-countries.mmdb'),
+            new Reader(__DIR__.'/../../app/data/geolite2-countries.mmdb'),
             new ExpressionLanguage(),
             $this->cache,
             $rule

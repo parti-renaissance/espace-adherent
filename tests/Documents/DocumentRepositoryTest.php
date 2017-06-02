@@ -39,7 +39,7 @@ class DocumentRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testReadDocument()
     {
-        $fixture = file_get_contents(__DIR__.'/../../Fixtures/document.pdf');
+        $fixture = file_get_contents(__DIR__.'/../Fixtures/document.pdf');
         $this->put(DocumentRepository::DIRECTORY_ADHERENTS, 'document.pdf', $fixture);
 
         $document = $this->repository->readDocument(DocumentRepository::DIRECTORY_ADHERENTS, 'document.pdf');
