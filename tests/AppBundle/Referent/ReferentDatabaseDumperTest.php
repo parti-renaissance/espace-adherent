@@ -9,6 +9,9 @@ use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Referent\ReferentDatabaseDumper;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class ReferentDatabaseDumperTest extends SqliteWebTestCase
 {
     /**

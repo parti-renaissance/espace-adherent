@@ -8,6 +8,9 @@ use AppBundle\Repository\TonMacronChoiceRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class TonMacronChoiceRepositoryTest extends SqliteWebTestCase
 {
     /**

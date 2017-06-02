@@ -8,6 +8,9 @@ use AppBundle\Repository\CommitteeMembershipRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
 {
     /**

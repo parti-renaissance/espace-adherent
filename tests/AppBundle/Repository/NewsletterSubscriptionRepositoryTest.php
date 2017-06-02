@@ -8,6 +8,9 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
+/**
+ * @group functional
+ */
 class NewsletterSubscriptionRepositoryTest extends SqliteWebTestCase
 {
     /** @var NewsletterSubscriptionRepository */

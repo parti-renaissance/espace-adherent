@@ -4,32 +4,29 @@ namespace AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Mailjet\Message\ProcurationProxyReminderMessage;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
+/**
+ * @group functional
+ */
 class ProcurationSendReminderCommandTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 
-    /* @var MailjetEmailRepository */
-    private $mailjetEmailRepository;
-
     /** @var ProcurationRequestRepository */
     private $procurationRequestRepository;
 
-    /**
-     * @group functional
-     */
     public function testCommand()
     {
         $this->decorated = false;
         $output = $this->runCommand(ProcurationSendReminderCommand::COMMAND_NAME);
 
         $this->assertContains('1 reminders sent', $output);
-        $this->assertCount(1, $this->mailjetEmailRepository->findByMessageClass('ProcurationProxyReminderMessage'));
-        $this->assertCount(1, $this->procurationRequestRepository->findByReminded(1));
+        $this->assertCountMails(1, ProcurationProxyReminderMessage::class);
+        $this->assertCount(1, $this->procurationRequestRepository->findBy(['reminded' => 1]));
     }
 
     public function setUp()
@@ -40,7 +37,6 @@ class ProcurationSendReminderCommandTest extends SqliteWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->mailjetEmailRepository = $this->getMailjetEmailRepository();
         $this->procurationRequestRepository = $this->getProcurationRequestRepository();
 
         parent::setUp();
@@ -51,7 +47,6 @@ class ProcurationSendReminderCommandTest extends SqliteWebTestCase
         $this->loadFixtures([]);
 
         $this->container = null;
-        $this->mailjetEmailRepository = null;
         $this->procurationRequestRepository = null;
 
         parent::tearDown();
