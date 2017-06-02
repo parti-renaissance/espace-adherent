@@ -10,27 +10,36 @@
         </service>
 
         <!-- Redirections from old website -->
-        <service id="app.feature_flag.redirections_subscriber" class="AppBundle\FeatureFlag\RedirectionSubscriber">
-            <tag name="kernel.event_subscriber" />
-        </service>
-
-        <!-- Campaign silence listener -->
-        <service id="app.feature_flag.campaign_silence_listener.geoip" class="GeoIp2\Database\Reader" public="false">
-            <argument>%kernel.root_dir%/data/GeoLite2-Country.mmdb</argument>
-        </service>
-
-        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\FeatureFlag\CampaignSilenceListener">
-            <argument type="service" id="app.feature_flag.campaign_silence_listener.geoip" />
-            <argument type="service" id="twig" />
-            <argument>%env(DISABLE_AMERICA)%</argument>
-            <argument>%env(DISABLE_EUROPE)%</argument>
-
+        <service id="app.legacy_redirections_subscriber" class="AppBundle\Redirection\LegacyRedirectionsSubscriber">
             <tag name="kernel.event_subscriber" />
         </service>
 
         <!-- Dynamic redirections -->
         <service id="app.dynamic_redirections_subscriber" class="AppBundle\Redirection\DynamicRedirectionsSubscriber">
             <argument type="service" id="app.repository.redirection" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <!-- Campaign silence -->
+        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\Campaign\CampaignSilenceSubscriber">
+            <argument type="service">
+                <service class="AppBundle\Campaign\CampaignSilenceProcessor">
+                    <argument type="service">
+                        <service class="GeoIp2\Database\Reader">
+                            <argument>%kernel.project_dir%/app/data/geolite2-countries.mmdb</argument>
+                        </service>
+                    </argument>
+                    <argument type="service">
+                        <service class="Symfony\Component\ExpressionLanguage\ExpressionLanguage">
+                            <argument type="service" id="cache.app" />
+                        </service>
+                    </argument>
+                    <argument type="service" id="cache.app" />
+                    <argument>%env(ENABLE_SILENCE_RULE)%</argument>
+                </service>
+            </argument>
+            <argument type="service" id="twig" />
+
             <tag name="kernel.event_subscriber" />
         </service>
 
