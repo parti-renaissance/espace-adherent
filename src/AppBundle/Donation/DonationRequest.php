@@ -140,6 +140,11 @@ class DonationRequest
         return $dto;
     }
 
+    public static function createFromGuest(string $clientIp, float $amount = 50.0): self
+    {
+        return new self(Uuid::uuid4(), $clientIp, $amount);
+    }
+
     public function getUuid(): UuidInterface
     {
         return $this->uuid;

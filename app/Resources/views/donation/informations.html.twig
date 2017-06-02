@@ -113,3 +113,20 @@
         {{ form_end(form) }}
     </div>
 {% endblock %}
+
+{% block final_javascripts %}
+    {% if google_tag_manager_api_key is not empty %}
+        {{ include('third_party/gtm.html.twig') }}
+        <script type="text/javascript">
+            dataLayer.push({
+                product:[{
+                    id: '{{ donation.uuid }}',
+                    name: 'don hors adhésion En Marche',
+                    price: '{{ donation.amount }}',
+                    category: '{{ donation.donorProfile }}'
+                }],
+                event:'info_event'
+            });
+        </script>
+    {% endif %}
+{% endblock %}

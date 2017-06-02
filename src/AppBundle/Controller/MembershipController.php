@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Donation\DonationView;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -98,6 +99,7 @@ class MembershipController extends Controller
 
         return $this->render('membership/donate.html.twig', [
             'form' => $form->createView(),
+            'donation' => DonationView::createFromDonationRequest($donationRequest),
         ]);
     }
 

@@ -37,7 +37,11 @@ parameters:
     env(MAILJET_CAMPAIGN_PUBLIC_KEY):          ''
     env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
 
+    # Google Maps
     env(GMAPS_API_KEY):         ''
+
+    # Google Tag Manager
+    env(GTM_API_KEY):           ''
 
     env(FACEBOOK_APP_ID):         'app_id'
     env(FACEBOOK_APP_SECRET):     'app_secret'
