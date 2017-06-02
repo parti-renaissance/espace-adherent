@@ -131,6 +131,15 @@
                 <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
                 Suivre ce comité
             </button>
+        {% elseif can_unfollow(committee) %}
+            <button role="button"
+                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap"
+                    id="committee-toggle-membership"
+                    data-action="quitter"
+                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">
+                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                Quitter ce comité
+            </button>
         {% elseif is_host %}
             <div class="committee-follow--anonymous">
                 <button role="button"
@@ -143,15 +152,6 @@
                     En tant qu'animateur, vous ne pouvez pas cesser de suivre votre comité.
                 </div>
             </div>
-        {% elseif can_unfollow(committee) %}
-            <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap"
-                    id="committee-toggle-membership"
-                    data-action="quitter"
-                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">
-                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
-                Quitter ce comité
-            </button>
         {% endif %}
 
         <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">

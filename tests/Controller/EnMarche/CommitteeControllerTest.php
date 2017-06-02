@@ -56,19 +56,59 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeRegisterLink($crawler));
     }
 
-    /**
-     * @dataProvider provideHostCredentials
-     */
-    public function testAuthenticatedCommitteeHostCannotUnfollowCommittee(string $emailAddress, string $password)
+    public function testAuthenticatedCommitteeHostCannotUnfollowCommittee()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress, $password);
+        // Login as supervisor
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        // Unfollow link must be disabled
-        $this->assertSame('disabled', $crawler->filter('.committee-unfollow')->attr('disabled'));
+        // Unfollow link must be enabled because there is another host
+        $this->assertNull($crawler->filter('.committee-unfollow')->attr('disabled'));
+        // Other follower/register links must not exist
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
 
+        // Clear security token
+        $this->client->getCookieJar()->clear();
+
+        // Login as host
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $unfollowButton = $crawler->filter('.committee-unfollow');
+
+        // Button should be enabled for there is another supervisor
+        $this->assertNull($unfollowButton->attr('disabled'));
+
+        // Unfollowing
+        $committeeUrl = $this->client->getRequest()->getRequestUri();
+        $this->client->request(Request::METHOD_POST, $committeeUrl.'/quitter', [
+            'token' => $unfollowButton->attr('data-csrf-token'),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        // Ex-host should be allow to follow again
+        $this->assertTrue($this->seeFollowLink($crawler));
+
+        // Clear security token
+        $this->client->getCookieJar()->clear();
+
+        // Login again as supervisor
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        // Unfollow link must be disabled because there is no other host
+        $this->assertSame('disabled', $crawler->filter('.committee-unfollow')->attr('disabled'));
         // Other follower/register links must not exist
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));

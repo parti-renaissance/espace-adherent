@@ -54,6 +54,6 @@ class FollowCommitteeVoter extends AbstractCommitteeVoter
 
         // Any basic follower of a committee can unfollow the committee
         // at any point in time.
-        return $membership->isFollower();
+        return $membership->isFollower() || 1 < $this->manager->countCommitteeHosts($committee);
     }
 }

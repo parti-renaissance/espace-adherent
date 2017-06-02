@@ -21,6 +21,7 @@ services:
         public: false
 
 parameters:
+    env(DATABASE_NAME): "enmarche_test"
     adherent_interests:
         agriculture: Agriculture
         culture: Culture
