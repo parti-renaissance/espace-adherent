@@ -25,7 +25,6 @@ class ProcurationProxyMessageFactory
     public function createProxyCancelledMessage(ProcurationRequest $request, ProcurationProxy $proxy, ?Adherent $procurationManager): ProcurationProxyCancelledMessage
     {
         $message = ProcurationProxyCancelledMessage::create($request, $proxy, $procurationManager);
-        $message->setReplyTo($this->replyToEmailAddress);
 
         return $message;
     }
@@ -38,7 +37,6 @@ class ProcurationProxyMessageFactory
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $message = ProcurationProxyFoundMessage::create($procurationManager, $request, $proxy, $url);
-        $message->setReplyTo($this->replyToEmailAddress);
 
         return $message;
     }
@@ -62,7 +60,6 @@ class ProcurationProxyMessageFactory
         ]);
 
         $message = ProcurationProxyReminderMessage::create($request, $url);
-        $message->setReplyTo($this->replyToEmailAddress);
 
         foreach ($requests as $request) {
             $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
