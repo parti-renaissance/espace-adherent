@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\FeatureFlag;
+namespace AppBundle\Redirection;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class RedirectionSubscriber implements EventSubscriberInterface
+class LegacyRedirectionsSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
