@@ -39,7 +39,8 @@ clean: clear
 
 cc:             ## Clear the cache in dev env
 cc:
-	$(RUN) $(CONSOLE) cache:clear
+	$(RUN) $(CONSOLE) cache:clear --no-warmup
+	$(RUN) $(CONSOLE) cache:warmup
 
 
 ##
