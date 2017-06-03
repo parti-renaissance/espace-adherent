@@ -98,15 +98,22 @@ test: tu tf tj
 
 tu:             ## Run the PHP unit tests
 tu: vendor
-	$(RUN) vendor/bin/phpunit --exclude-group functional
+	$(EXEC) vendor/bin/phpunit --exclude-group functional || true
 
 tf:             ## Run the PHP functional tests
-tf: vendor
-	$(RUN) vendor/bin/phpunit --group functional
+tf: tfp
+	$(EXEC) vendor/bin/phpunit --group functional || true
+
+tfp:            ## Prepare the PHP functional tests
+tfp: vendor
+	$(EXEC) rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users && cp -R app/data/dumped_referents_users.dist app/data/dumped_referents_users
+	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
+	$(EXEC) $(CONSOLE) doctrine:schema:drop --force --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
 tj: node_modules
-	$(RUN) yarn test
+	$(EXEC) yarn test
 
 lint:           ## Run lint on Twig, YAML and Javascript files
 lint: ls ly lt lj
