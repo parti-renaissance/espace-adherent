@@ -30,8 +30,23 @@ dependencies:
 
 test:
     override:
-        - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml && yarn lint && yarn test && yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
-              parallel: true
+        # Lint and test JS
+        - yarn lint
+        - yarn test
+
+        # Prepare PHP tests
+        - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users
+        - cp -R app/data/dumped_referents_users.dist app/data/dumped_referents_users
+        - ./bin/console doctrine:schema:create --env=test_sqlite
+        - ./bin/console doctrine:schema:drop --force --env=test_mysql
+        - ./bin/console doctrine:schema:create --env=test_mysql
+        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+
+        # PHP unit and functional tests
+        - ./vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+
+        # Try to build production JS
+        - yarn run build-prod
 
 deployment:
     staging:
