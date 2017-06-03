@@ -22,4 +22,13 @@ class HomeController extends Controller
             'groupedZones' => $this->getDoctrine()->getRepository(LegislativeDistrictZone::class)->findAllGrouped(),
         ]);
     }
+
+    /**
+     * @Route("/redirection-en-marche", name="legislatives_redirect_en_marche")
+     * @Method("GET")
+     */
+    public function redirectEnMarcheAction(): Response
+    {
+        return $this->redirect('https://en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
+    }
 }

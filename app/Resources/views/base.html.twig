@@ -128,7 +128,7 @@
                                 <div class="nav__user__menu__comites">
                                     {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
                                     {% set adherent_committees %}
-                                        {{ render(controller('AppBundle:Adherent:listMyCommittees')) }}
+                                        {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
                                     {% endset %}
                                     {{ adherent_committees }}
                                 </div>

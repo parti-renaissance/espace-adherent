@@ -20,7 +20,7 @@ class MapController extends Controller
     }
 
     /**
-     * @Route("/api/candidates", name="api_legislatives_candidates", condition="request.isXmlHttpRequest()")
+     * @Route("/api/candidates", name="api_legislatives_candidates")
      * @Method("GET")
      */
     public function getCandidatesListAction(): JsonResponse

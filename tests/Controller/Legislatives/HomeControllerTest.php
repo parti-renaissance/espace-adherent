@@ -22,16 +22,9 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testCandidatesApiNotXmlHttpRequest()
-    {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
     public function testCandidatesApi()
     {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates', [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('application/json', $this->client->getResponse()->headers->get('Content-Type'));

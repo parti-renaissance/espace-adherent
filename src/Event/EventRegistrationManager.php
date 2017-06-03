@@ -20,8 +20,12 @@ class EventRegistrationManager
         $this->repository = $repository;
     }
 
-    public function findRegistration(string $uuid): ?EventRegistration
+    public function findRegistration(?string $uuid): ?EventRegistration
     {
+        if (!$uuid) {
+            return null;
+        }
+
         return $this->repository->findOneByUuid($uuid);
     }
 
