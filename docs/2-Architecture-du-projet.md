@@ -45,7 +45,7 @@ Pour travailler sur la partie Symfony du projet, les dossiers importants sont `a
 Symfony suit le modèle MVC (Modèle - Vue - Contrôleur) : à chaque page du site internet est donc associée un contrôleur
 et une ou plusieurs vues.
 
-Pour trouver toutes les pages du site internet, allez dans le dossier `src/AppBundle/Controller`. Chaque fichier contient
+Pour trouver toutes les pages du site internet, allez dans le dossier `src/Controller`. Chaque fichier contient
 une classe de contrôleur contenant plus actions (plusieurs pages).
 
 Si vous souhaitez créer une nouvelle page, créez simplement une nouvelle action avec une route dédiée (l'URL à laquelle
