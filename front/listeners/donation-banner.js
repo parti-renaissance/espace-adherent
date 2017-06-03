@@ -11,12 +11,12 @@ export default (di) => {
 
     const cookies = di.get('cookies');
 
-    if ('undefined' === typeof cookies.get('banner_newsletter')) {
+    if ('undefined' === typeof cookies.get('banner_legislatives')) {
         show(banner);
 
         on(bannerButton, 'click', () => {
             hide(banner);
-            cookies.set('banner_newsletter', 'dismiss', { expires: 1 });
+            cookies.set('banner_legislatives', 'dismiss', { expires: 1 });
         });
     }
 };
