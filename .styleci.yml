@@ -2,4 +2,4 @@ preset: symfony
 
 finder:
     not-path:
-        - "src/AppBundle/Intl/FranceCitiesBundle.php"
+        - "src/Intl/FranceCitiesBundle.php"
