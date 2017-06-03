@@ -1,6 +1,11 @@
 imports:
     - { resource: config.yml }
 
+doctrine:
+    orm:
+        metadata_cache_driver: apcu
+        query_cache_driver: apcu
+
 monolog:
     handlers:
         main:

@@ -42,6 +42,7 @@ RUN apt-get update -q && \
         php7.1-phar \
         php7.1-xml \
         php7.1-zip \
+        php-apcu \
         redis-server \
         supervisor \
         tzdata \
