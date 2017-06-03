@@ -163,6 +163,12 @@
 {% block side_bar_after_nav %}
     <ul class="sidebar-menu">
         <li>
+            <a href="{{ path('homepage') }}">
+                <i class="fa fa-reply"></i>
+                <span>Retour au site</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ path('app_admin_logout') }}">
                 <i class="fa fa-sign-out"></i>
                 <span>Déconnexion</span>
