@@ -87,7 +87,15 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        auto_mapping: false
+        mappings:
+            AppBundle:
+                mapping: true
+                type: annotation
+                dir: 'Entity'
+                alias: 'AppBundle'
+                prefix: 'AppBundle\Entity'
+                is_bundle: true
 
         filters:
             softdeleteable:
