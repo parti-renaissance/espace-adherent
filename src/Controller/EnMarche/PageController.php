@@ -6,10 +6,10 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
-use AppBundle\Event\EventCategories;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -162,7 +162,7 @@ class PageController extends Controller
     {
         return $this->render('page/les-evenements/la-carte.html.twig', [
             'eventCount' => $this->getRepository(Event::class)->countUpcomingEvents(),
-            'types' => EventCategories::CHOICES,
+            'categories' => $this->getRepository(EventCategory::class)->findBy([], ['name' => 'ASC']),
         ]);
     }
 

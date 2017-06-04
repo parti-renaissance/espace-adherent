@@ -33,16 +33,18 @@
                     <div class="committees-map__counter">
                         <div>
                             <ul class="events-map-categories text--summary">
-                                    <li class="events-map-categories--all">
-                                        <a href="{{ path('page_les_evenements_la_carte') }}"
-                                           class="link--no-decor {{ currentParam ? '' : 'active' }}">
-                                            Tous ({{ eventCount|number_format(0, ',', ' ') }})
-                                        </a>
-                                    </li>
-                                {% for label, type in types %}
+                                <li class="events-map-categories--all">
+                                    <a href="{{ path('page_les_evenements_la_carte') }}"
+                                       class="link--no-decor {{ currentParam ? '' : 'active' }}">
+                                        Tous ({{ eventCount|number_format(0, ',', ' ') }})
+                                    </a>
+                                </li>
+                                {% for category in categories %}
                                     <li>
-                                        <a href="{{ path('page_les_evenements_la_carte', {'type': type}) }}"
-                                           class="link--no-decor {{ currentParam == type ? 'active' }}">{{ label }}</a>
+                                        <a href="{{ path('page_les_evenements_la_carte', {'type': category.id}) }}"
+                                           class="link--no-decor {{ currentParam == category.id ? 'active' }}">
+                                            {{ category.name }}
+                                        </a>
                                     </li>
                                 {% endfor %}
                             </ul>
