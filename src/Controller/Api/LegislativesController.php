@@ -1,26 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\Legislatives;
+namespace AppBundle\Controller\Api;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
-class MapController extends Controller
+class LegislativesController extends Controller
 {
     /**
-     * @Route("/la-carte", name="legislatives_map")
-     * @Method("GET")
-     */
-    public function mapAction(): Response
-    {
-        return $this->render('legislatives/map.html.twig');
-    }
-
-    /**
-     * @Route("/api/candidates", name="api_legislatives_candidates")
+     * @Route("/candidates", name="api_legislatives_candidates")
      * @Method("GET")
      */
     public function getCandidatesListAction(): JsonResponse

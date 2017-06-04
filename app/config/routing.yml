@@ -1,13 +1,24 @@
 #
-# Common endpoints
+# Health
 #
 app_health:
     resource: "@AppBundle/Controller/HealthController.php"
     type:     "annotation"
 
+#
+# Assets
+#
 app_assets:
     resource: "@AppBundle/Controller/AssetsController.php"
     type:     "annotation"
+
+#
+# API
+#
+app_api:
+    resource: "@AppBundle/Controller/Api"
+    type:     "annotation"
+    prefix:   "/api"
 
 #
 # Admin panel

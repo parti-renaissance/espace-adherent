@@ -15,22 +15,6 @@ class HomeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testMap()
-    {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/la-carte');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    public function testCandidatesApi()
-    {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/api/candidates');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('application/json', $this->client->getResponse()->headers->get('Content-Type'));
-        $this->assertJson($this->client->getResponse()->getContent());
-    }
-
     public function testLegislativesCandidatesDirectory()
     {
         $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/');

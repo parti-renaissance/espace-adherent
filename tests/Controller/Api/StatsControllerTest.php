@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\AppBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,14 @@ class StatsControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/api/stats');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertJson($this->client->getResponse()->getContent());
+
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content);
+
+        $data = \GuzzleHttp\json_decode($content, true);
+        $this->assertArrayHasKey('userCount', $data);
+        $this->assertArrayHasKey('eventCount', $data);
+        $this->assertArrayHasKey('committeeCount', $data);
     }
 
     protected function setUp()

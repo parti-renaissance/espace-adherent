@@ -22,7 +22,7 @@ class LegislativeCandidateController extends Controller
      */
     public function indexAction(): Response
     {
-        return $this->render('legislatives/platform.html.twig');
+        return $this->render('legislative_candidate/platform.html.twig');
     }
 
     /**
@@ -41,7 +41,7 @@ class LegislativeCandidateController extends Controller
             return $this->redirectToRoute('app_legislative_candidates_platform_contact');
         }
 
-        return $this->render('legislatives/contact.html.twig', [
+        return $this->render('legislative_candidate/contact.html.twig', [
             'form' => $form->createView(),
         ]);
     }

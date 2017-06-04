@@ -44,7 +44,8 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::FEMALE,
             'Michelle',
-            'Dumoulin'
+            'Dumoulin',
+            file_get_contents(__DIR__.'/../legislatives/geojson.json')
         ));
 
         $manager->persist($this->createLegislativeCandidate(

@@ -31,4 +31,15 @@ class HomeController extends Controller
     {
         return $this->redirect('https://en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
     }
+
+    /**
+     * @Route("/candidat/{slug}", name="legislatives_candidate")
+     * @Method("GET")
+     */
+    public function candidateAction(LegislativeCandidate $candidate): Response
+    {
+        return $this->render('legislatives/candidate.html.twig', [
+            'candidate' => $candidate,
+        ]);
+    }
 }

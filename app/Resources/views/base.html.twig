@@ -24,7 +24,7 @@
         <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
         <meta name="theme-color" content="#ffffff" />
 
-        <title>{% block title %}{% block page_title %}{% endblock %} | En Marche !{% endblock %}</title>
+        <title>{% block title %}{% block page_title %}{% endblock %} | {% block app_title %}En Marche !{% endblock %}{% endblock %}</title>
 
         <link rel="canonical" href="{% block canonical_url %}{{ url('homepage')|trim('/') }}{% endblock %}" />
         <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
@@ -46,7 +46,9 @@
         <meta name="twitter:description" content="{% block meta_twitter_description %}{{ block('meta_description') }}{% endblock %}" />
         <meta name="twitter:image:src" content="{{ block('open_graph_image') }}" />
 
-        <link rel="alternate" type="application/rss+xml" title="En Marche !" href="{{ url('articles_feed') }}" />
+        {% block meta_rss %}
+            <link rel="alternate" type="application/rss+xml" title="En Marche !" href="{{ url('articles_feed') }}" />
+        {% endblock %}
 
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />

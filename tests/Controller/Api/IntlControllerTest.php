@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche\Api;
+namespace Tests\AppBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
