@@ -58,6 +58,11 @@ class EventCommand
      */
     private $address;
 
+    /**
+     * @var bool
+     */
+    private $isForLegislatives;
+
     private $author;
     private $committee;
     private $event;
@@ -68,7 +73,8 @@ class EventCommand
         UuidInterface $uuid = null,
         Address $address = null,
         \DateTimeInterface $beginAt = null,
-        \DateTimeInterface $finishAt = null
+        \DateTimeInterface $finishAt = null,
+        bool $isForLegislatives = false
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->committee = $committee;
@@ -76,9 +82,10 @@ class EventCommand
         $this->address = $address ?: new Address();
         $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
         $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
+        $this->isForLegislatives = $isForLegislatives;
     }
 
-    public static function createFromEvent(Event $event)
+    public static function createFromEvent(Event $event): self
     {
         $command = new self(
             $event->getOrganizer(),
@@ -86,7 +93,8 @@ class EventCommand
             $event->getUuid(),
             Address::createFromAddress($event->getPostAddressModel()),
             $event->getBeginAt(),
-            $event->getFinishAt()
+            $event->getFinishAt(),
+            $event->isForLegislatives()
         );
 
         $command->name = $event->getName();
@@ -102,7 +110,7 @@ class EventCommand
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -112,7 +120,7 @@ class EventCommand
         return $this->category;
     }
 
-    public function setCategory(?EventCategory $category = null)
+    public function setCategory(?EventCategory $category = null): void
     {
         $this->category = $category;
     }
@@ -122,7 +130,7 @@ class EventCommand
         return $this->description;
     }
 
-    public function setDescription(?string $description)
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
@@ -132,7 +140,7 @@ class EventCommand
         return null !== $this->capacity ? (int) $this->capacity : null;
     }
 
-    public function setCapacity($capacity)
+    public function setCapacity($capacity): void
     {
         if (null !== $capacity) {
             $capacity = (string) $capacity;
@@ -146,7 +154,7 @@ class EventCommand
         return $this->beginAt;
     }
 
-    public function setBeginAt(\DateTime $beginAt)
+    public function setBeginAt(\DateTime $beginAt): void
     {
         $this->beginAt = $beginAt;
     }
@@ -156,12 +164,22 @@ class EventCommand
         return $this->finishAt;
     }
 
-    public function setFinishAt(\DateTime $finishAt)
+    public function setFinishAt(\DateTime $finishAt): void
     {
         $this->finishAt = $finishAt;
     }
 
-    public function setAddress(Address $address)
+    public function isForLegislatives(): bool
+    {
+        return $this->isForLegislatives;
+    }
+
+    public function setIsForLegislatives(bool $isForLegislatives): void
+    {
+        $this->isForLegislatives = $isForLegislatives;
+    }
+
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
@@ -184,7 +202,7 @@ class EventCommand
     /**
      * @Assert\Callback
      */
-    public static function validateDateRange(self $command, ExecutionContextInterface $context)
+    public static function validateDateRange(self $command, ExecutionContextInterface $context): void
     {
         $beginAt = $command->getBeginAt();
         $finishAt = $command->getFinishAt();
@@ -201,7 +219,7 @@ class EventCommand
         }
     }
 
-    public function setEvent(Event $event)
+    public function setEvent(Event $event): void
     {
         $this->event = $event;
     }

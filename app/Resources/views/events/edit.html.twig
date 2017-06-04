@@ -42,23 +42,26 @@
                         {{ form_label(form.name, "Nom de l'événement") }}
                         {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
                     </div>
+
                     <div class="form__row" id="committee-event-description-field">
                         {{ form_errors(form.category) }}
                         {{ form_label(form.category, "Type") }}
                         {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', 'placeholder': "Choisissez le type de l'événement" } }) }}
                     </div>
+
                     <div class="form__row" id="committee-event-beginat-field">
                         {{ form_errors(form.beginAt) }}
                         {{ form_label(form.beginAt, 'Début') }}
                         {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at' } }) }}
                     </div>
+
                     <div class="form__row" id="committee-event-finishat-field">
                         {{ form_errors(form.finishAt) }}
                         {{ form_label(form.finishAt, 'Fin') }}
                         {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at' } }) }}
                     </div>
-                    <div id="committee-event-address">
 
+                    <div id="committee-event-address">
                         {{ form_errors(form.address) }}
 
                         <div class="form__row committee_event__form--trunc" id="committee-event-address-address-field">
@@ -84,6 +87,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form__row" id="committee-event-description-field">
                         {{ form_errors(form.description) }}
                         {{ form_label(form.description, 'À propos') }}
@@ -92,11 +96,18 @@
                             'placeholder': 'Entrez un paragraphe afin de décrire cet événement.'
                         } }) }}
                     </div>
+
                     <div class="form__row" id="committee-event-capacity-field">
                         {{ form_errors(form.capacity) }}
                         {{ form_label(form.capacity, 'Capacité') }}
                         {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
                     </div>
+
+                    <div class="form__row form__checkbox form__checkbox--large">
+                        {{ form_widget(form.isForLegislatives) }}
+                        {{ form_label(form.isForLegislatives, 'Cet événement est lié à la campagne des législatives') }}
+                    </div>
+
                     <div class="form__row b__nudge--top">
                         <button type="submit" class="btn btn--blue">Enregistrer</button>
                         <a href="{{ path('app_committee_show_event', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"

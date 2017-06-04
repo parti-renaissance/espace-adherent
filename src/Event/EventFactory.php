@@ -35,7 +35,8 @@ class EventFactory
             $data['address'],
             $data['begin_at'],
             $data['finish_at'],
-            $data['capacity']
+            $data['capacity'],
+            $data['is_for_legislatives'] ?? false
         );
     }
 
@@ -51,7 +52,8 @@ class EventFactory
             $this->addressFactory->createFromAddress($command->getAddress()),
             $command->getBeginAt()->format(DATE_ATOM),
             $command->getFinishAt()->format(DATE_ATOM),
-            $command->getCapacity()
+            $command->getCapacity(),
+            $command->isForLegislatives()
         );
     }
 
@@ -64,7 +66,8 @@ class EventFactory
             $this->addressFactory->createFromAddress($command->getAddress()),
             $command->getBeginAt()->format(DATE_ATOM),
             $command->getFinishAt()->format(DATE_ATOM),
-            $command->getCapacity()
+            $command->getCapacity(),
+            $command->isForLegislatives()
         );
 
         return $event;

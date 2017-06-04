@@ -75,6 +75,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
             'begin_at' => date('Y-m-d', strtotime('+3 days')).' 09:30:00',
             'finish_at' => date('Y-m-d', strtotime('+3 days')).' 19:00:00',
             'capacity' => 50,
+            'is_for_legislatives' => true,
         ]);
         $event1->incrementParticipantsCount();
 

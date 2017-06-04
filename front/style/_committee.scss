@@ -429,6 +429,9 @@
         label {
             display: block;
         }
+        .form__checkbox label {
+            display: flex;
+        }
 
         textarea {
             width: 100%;
