@@ -138,7 +138,7 @@ class PageController extends Controller
      */
     public function mouvementLegislativesAction()
     {
-        return $this->redirect($this->getParameter('legislatives_domain'), Response::HTTP_MOVED_PERMANENTLY);
+        return $this->redirect('https://legislatives.en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**
