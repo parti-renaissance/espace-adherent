@@ -2,7 +2,6 @@
 
 namespace AppBundle\Api;
 
-use AppBundle\Event\EventCategories;
 use AppBundle\Exception\EventException;
 use AppBundle\Repository\EventRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,11 +20,9 @@ class EventProvider
     /**
      * @throws EventException
      */
-    public function getUpcomingEvents(string $type = null): array
+    public function getUpcomingEvents(int $type = null): array
     {
-        if ($type && !EventCategories::getCategoryName($type)) {
-            throw new EventException(sprintf('Given event category "%s" is invalid.', $type));
-        }
+        $data = [];
 
         foreach ($this->repository->findUpcomingEvents($type) as $event) {
             if (!$event->isGeocoded()) {
@@ -61,6 +58,6 @@ class EventProvider
             $data[] = $el;
         }
 
-        return $data ?? [];
+        return $data;
     }
 }

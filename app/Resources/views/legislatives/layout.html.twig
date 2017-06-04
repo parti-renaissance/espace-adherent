@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block app_title 'La République En Marche !' %}
+{% block meta_description 'Une majorité pour rassembler, agir et réussir !' %}
+{% block meta_rss '' %}
+{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/sharer_legislatives.jpg') }}{% endblock %}
+{% block open_graph_image_width 938 %}
+{% block open_graph_image_height 430 %}
+
 {% block banner '' %}
 {% block header '' %}
 {% block footer '' %}
@@ -27,7 +34,7 @@
                 {% for route, title in {
                     'legislatives_homepage': 'Tous les candidats',
                     'legislatives_map': 'La carte',
-                    'app_procuration_landing': 'Donner procuration'
+                    'legislatives_events': 'Les événements'
                 } %}
                     <li class="{{ route == currentRoute ? 'active' }}">
                         <a href="{{ path(route) }}">
@@ -35,6 +42,11 @@
                         </a>
                     </li>
                 {% endfor %}
+                <li>
+                    <a href="http://procuration-macron.fr">
+                        Donner procuration
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>

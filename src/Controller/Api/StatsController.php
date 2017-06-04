@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Api;
+namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
@@ -10,9 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * @Route("/api")
- */
 class StatsController extends Controller
 {
     /**

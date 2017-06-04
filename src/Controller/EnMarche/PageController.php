@@ -202,7 +202,7 @@ class PageController extends Controller
      */
     public function legislativesConfirmNewsletterAction()
     {
-        return $this->render('legislatives/confirm_newsletter.html.twig');
+        return $this->render('legislative_candidate/confirm_newsletter.html.twig');
     }
 
     /**

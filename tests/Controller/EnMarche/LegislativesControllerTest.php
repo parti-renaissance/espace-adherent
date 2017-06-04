@@ -46,9 +46,9 @@ class LegislativesControllerTest extends MysqlWebTestCase
     }
 
     /**
-     * @dataProvider provideLegislativeAdherentIsAllowedToSendContactMessageData
+     * @dataProvider provideLegislativeCandidatesContacts
      */
-    public function testLegislativeAdherentIsAllowedToSendContactMessage(string $expectedRecipient, string $selectedRecipient)
+    public function testLegislativeCandidateIsAllowedToSendContactMessage(string $expectedRecipient, string $selectedRecipient)
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
 
@@ -112,7 +112,7 @@ class LegislativesControllerTest extends MysqlWebTestCase
         $this->assertCount(1, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
     }
 
-    public static function provideLegislativeAdherentIsAllowedToSendContactMessageData(): array
+    public static function provideLegislativeCandidatesContacts(): array
     {
         return [
             ['comptes.legislatives@en-marche.fr', 'financial'],
