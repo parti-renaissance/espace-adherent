@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Event\EventCommand;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -34,6 +35,9 @@ class EventCommandType extends AbstractType
                 'minutes' => $options['minutes'],
             ])
             ->add('capacity', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('isForLegislatives', CheckboxType::class, [
                 'required' => false,
             ])
         ;

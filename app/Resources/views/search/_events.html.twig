@@ -11,6 +11,9 @@
     <div class="search__results__row l__row l__row--h-stretch l__row--v-center {{ event.organizer and event.organizer.isReferent ? 'search__results__row--referent-event' : '' }}">
         <div class="search__results__info l__col l__col--v-stretch l__col--left">
             <div class="search__results__meta">
+                {% if event.isForLegislatives %}
+                    <em style="text-transform: uppercase;">Législatives</em>
+                {% endif %}
                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                     <a class="link--no-decor"
                        href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">

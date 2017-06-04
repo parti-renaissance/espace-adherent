@@ -94,6 +94,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             '',
             '',
             2,
+            false,
             null,
             null,
             0
@@ -117,6 +118,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
             '',
             '',
             null,
+            false,
             null,
             null,
             10000000

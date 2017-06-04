@@ -117,6 +117,11 @@ class Event implements GeoPointInterface
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isForLegislatives = false;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
@@ -128,6 +133,7 @@ class Event implements GeoPointInterface
         string $beginAt,
         string $finishAt,
         int $capacity = null,
+        bool $isForLegislatives = false,
         string $slug = null,
         string $createdAt = null,
         int $participantsCount = 0
@@ -147,6 +153,7 @@ class Event implements GeoPointInterface
         $this->createdAt = new \DateTime($createdAt ?: 'now');
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
         $this->status = self::STATUS_SCHEDULED;
+        $this->isForLegislatives = $isForLegislatives;
     }
 
     public function __toString(): string
@@ -161,7 +168,8 @@ class Event implements GeoPointInterface
         PostAddress $address,
         string $beginAt,
         string $finishAt,
-        int $capacity = null
+        int $capacity = null,
+        bool $isForLegislatives = false
     ) {
         $this->setName($name);
         $this->category = $category;
@@ -169,6 +177,7 @@ class Event implements GeoPointInterface
         $this->beginAt = new \DateTime($beginAt);
         $this->finishAt = new \DateTime($finishAt);
         $this->description = $description;
+        $this->isForLegislatives = $isForLegislatives;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
@@ -339,6 +348,11 @@ class Event implements GeoPointInterface
     public function isCancelled(): bool
     {
         return self::STATUS_CANCELLED === $this->status;
+    }
+
+    public function isForLegislatives()
+    {
+        return $this->isForLegislatives;
     }
 
     /**
