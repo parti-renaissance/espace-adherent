@@ -318,6 +318,17 @@ $text--size-extra-large: 48px;
     }
 }
 
+.tag {
+  &--orange {
+    @include text--all-caps;
+    @include text--smallest;
+    background: $orange;
+    color: white;
+    display: inline;
+    padding: 2px 5px;
+  }
+}
+
 .list {
     &__links {
         display: flex;

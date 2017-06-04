@@ -12,7 +12,7 @@
         <div class="search__results__info l__col l__col--v-stretch l__col--left">
             <div class="search__results__meta">
                 {% if event.isForLegislatives %}
-                    <em style="text-transform: uppercase;">Législatives</em>
+                    <div class="tag--orange">Législatives</div>
                 {% endif %}
                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                     <a class="link--no-decor"
@@ -38,7 +38,7 @@
                         Cet événement est terminé
                     </div>
                 {% elseif event.cancelled %}
-                    <div class="text--body">
+                    <div class="text--body b__nudge--right">
                         Cet événement est annulé
                     </div>
                 {% elseif not event.full %}

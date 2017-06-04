@@ -146,7 +146,7 @@
             }
 
             .search-map {
-                height: 190px;
+                height: 220px;
 
                 @media (max-width: $mobile) {
                     display: none;
@@ -164,7 +164,6 @@
 
         &__info {
             padding: 20px;
-            height: 150px;
             flex-grow: 1;
             margin-right: 20px;
 
@@ -176,7 +175,14 @@
 
         &__cta {
             display: flex;
-            margin-top: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+
+            > div,
+            > a {
+              margin-top: 5px;
+            }
 
             .btn {
                 margin-right: 20px;
