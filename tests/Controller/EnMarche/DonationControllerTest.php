@@ -41,7 +41,7 @@ class DonationControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider getDonationSubscriptions
      */
-    public function testFullProcess(int $duration)
+    public function testSuccessFulProcess(int $duration)
     {
         $appClient = $this->appClient;
         // There should not be any donation for the moment
@@ -109,7 +109,6 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->assertSame('https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi', $formNode->attr('action'));
 
-        $formTime = time();
         $crawler = $this->payboxClient->submit($formNode->form());
 
         /*
@@ -169,6 +168,130 @@ class DonationControllerTest extends SqliteWebTestCase
 
         // Email should have been sent
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+    }
+
+    /**
+     * @dataProvider getDonationSubscriptions
+     */
+    public function testRetryProcess(int $duration)
+    {
+        $appClient = $this->appClient;
+        // There should not be any donation for the moment
+        $this->assertCount(0, $this->donationRepository->findAll());
+
+        $crawler = $appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30&abonnement=%d', $duration));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
+
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
+            'app_donation' => [
+                'gender' => 'male',
+                'lastName' => 'Doe',
+                'firstName' => 'John',
+                'emailAddress' => 'test@paybox.com',
+                'address' => '9 rue du Lycée',
+                'country' => 'FR',
+                'postalCode' => '06000',
+                'cityName' => 'Nice',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '04 01 02 03 04',
+                ],
+            ],
+        ]));
+
+        // Donation should have been saved
+        $this->assertCount(1, $donations = $this->donationRepository->findAll());
+        $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
+
+        /* @var Donation $donation */
+        $this->assertEquals(3000, $donation->getAmount());
+        $this->assertSame('male', $donation->getGender());
+        $this->assertSame('Doe', $donation->getLastName());
+        $this->assertSame('John', $donation->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
+        $this->assertSame('FR', $donation->getCountry());
+        $this->assertSame('06000', $donation->getPostalCode());
+        $this->assertSame('Nice', $donation->getCityName());
+        $this->assertSame('9 rue du Lycée', $donation->getAddress());
+        $this->assertSame(33, $donation->getPhone()->getCountryCode());
+        $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
+        $this->assertSame($duration, $donation->getDuration());
+
+        // Email should not have been sent
+        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+
+        // We should be redirected to payment
+        $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
+
+        $crawler = $appClient->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
+
+        $formNode = $crawler->filter('input[name=PBX_CMD]');
+
+        if ($suffix = PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())) {
+            $this->assertContains($suffix, $formNode->attr('value'));
+        }
+
+        /*
+         * En-Marche payment page (verification and form to Paybox)
+         */
+        $formNode = $crawler->filter('form[name=app_donation_payment]');
+
+        $this->assertSame('https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi', $formNode->attr('action'));
+
+        /*
+         * Paybox cancellation of payment form
+         */
+        $crawler = $this->payboxClient->submit($formNode->form());
+        $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
+        $cancelUrl = $crawler->filter('#pbx-annuler a')->attr('href');
+        $cancelUrlRegExp = 'http://localhost/don/callback/(.+)'; // token
+        $cancelUrlRegExp .= '\?id=(.+)_john-doe';
+        if (PayboxPaymentSubscription::NONE !== $duration) {
+            $durationRegExp = $duration < 0 ? 0 : $duration - 1;
+            $cancelUrlRegExp .= 'PBX_2MONT0000003000PBX_NBPAIE0'.$durationRegExp.'PBX_FREQ01PBX_QUAND00';
+        }
+        $cancelUrlRegExp .= '&result=00001'; // error code
+        $cancelUrlRegExp .= '&transaction=0&Sign=(.+)';
+
+        $this->assertRegExp('#'.$cancelUrlRegExp.'#', $cancelUrl);
+
+        $appClient->request(Request::METHOD_GET, $cancelUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $appClient->getResponse());
+
+        $statusUrl = $appClient->getResponse()->headers->get('location');
+        $statusUrlRegExp = '/don/(.+)'; // uuid
+        $statusUrlRegExp .= '/erreur\?code=paybox&_status_token=(.+)';
+
+        $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
+
+        $crawler = $appClient->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
+
+        // Donation should have been aborted
+        $this->getEntityManager(Donation::class)->refresh($donation);
+
+        $this->assertTrue($donation->isFinished());
+        $this->assertNull($donation->getDonatedAt());
+        $this->assertSame('00001', $donation->getPayboxResultCode());
+        $this->assertNull($donation->getPayboxAuthorizationCode());
+
+        // Email should not have been sent
+        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+
+        $retryUrl = $crawler->selectLink('Je souhaite réessayer')->attr('href');
+        $retryUrlRegExp = '/don/coordonnees\?donation_retry_payload=(.*)&montant=30';
+
+        $this->assertRegExp('#'.$retryUrlRegExp.'#', $retryUrl);
+
+        $crawler = $this->appClient->request(Request::METHOD_GET, $retryUrl);
+
+        $this->assertStatusCode(Response::HTTP_OK, $appClient);
+        $this->assertContains('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
     }
 
     public function testCallbackWithNoId()
