@@ -53,7 +53,7 @@
                 }
             ],
             "description": "Seamless integration of Algolia Search into your Symfony project.",
-            "time": "2017-03-27T16:32:15+02:00"
+            "time": "2017-03-27T16:32:15+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
@@ -170,25 +170,29 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
+            "require-dev": {
+                "chuyskywalker/rolling-curl": "^3.1",
+                "php-yaoi/php-yaoi": "^1.0"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -206,7 +210,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28T16:26:35+02:00"
+            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -270,7 +274,7 @@
                 "slug",
                 "slugify"
             ],
-            "time": "2017-03-23T21:52:55+01:00"
+            "time": "2017-03-23T21:52:55+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -329,7 +333,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2017-03-06T11:59:08+01:00"
+            "time": "2017-03-06T11:59:08+00:00"
         },
         {
             "name": "csa/guzzle-bundle",
@@ -388,7 +392,7 @@
                 }
             ],
             "description": "A bundle integrating GuzzleHttp >= 4.0",
-            "time": "2016-10-28T06:34:28+02:00"
+            "time": "2016-10-28T06:34:28+00:00"
         },
         {
             "name": "danhunsaker/flysystem-redis",
@@ -434,7 +438,7 @@
                 }
             ],
             "description": "A Flysystem adapter for storing files in Redis",
-            "time": "2015-10-26T02:54:19+01:00"
+            "time": "2015-10-26T02:54:19+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -502,7 +506,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24T16:22:25+01:00"
+            "time": "2017-02-24T16:22:25+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -572,7 +576,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-10-29T11:16:17+02:00"
+            "time": "2016-10-29T11:16:17+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -639,7 +643,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2017-01-03T10:49:41+01:00"
+            "time": "2017-01-03T10:49:41+00:00"
         },
         {
             "name": "doctrine/common",
@@ -712,7 +716,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2017-01-13T14:02:13+01:00"
+            "time": "2017-01-13T14:02:13+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -771,7 +775,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2016-09-20T10:07:57+02:00"
+            "time": "2016-09-20T10:07:57+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -842,7 +846,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-02-08T12:53:47+01:00"
+            "time": "2017-02-08T12:53:47+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1011,7 +1015,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-01-26T17:28:51+01:00"
+            "time": "2016-01-26T17:28:51+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -1068,7 +1072,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2015-11-04T21:23:23+01:00"
+            "time": "2015-11-04T21:23:23+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -1129,7 +1133,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2016-12-05T18:36:37+01:00"
+            "time": "2016-12-05T18:36:37+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -1196,7 +1200,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06T14:35:42+01:00"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1250,7 +1254,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+02:00"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1304,7 +1308,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09T13:34:57+02:00"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -1378,7 +1382,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-12-25T22:54:00+01:00"
+            "time": "2016-12-25T22:54:00+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -1454,7 +1458,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2016-12-18T15:42:34+01:00"
+            "time": "2016-12-18T15:42:34+00:00"
         },
         {
             "name": "egeloen/http-adapter",
@@ -1533,7 +1537,7 @@
                 "psr-7"
             ],
             "abandoned": "php-http/httplug",
-            "time": "2015-08-12T09:35:40+02:00"
+            "time": "2015-08-12T09:35:40+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -1591,7 +1595,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2017-04-20T14:15:02+02:00"
+            "time": "2017-04-20T14:15:02+00:00"
         },
         {
             "name": "fig/link-util",
@@ -1688,7 +1692,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2016-07-18T04:51:16+02:00"
+            "time": "2016-07-18T04:51:16+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -1736,24 +1740,24 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29T12:21:54+02:00"
+            "time": "2016-04-29T12:21:54+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.28",
+            "version": "v2.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56"
+                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/58038d5d217b6ba2c75de90cb2f6d424d86fab56",
-                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
+                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
                 "shasum": ""
             },
             "require": {
-                "behat/transliterator": "1.1",
+                "behat/transliterator": "~1.2",
                 "doctrine/common": "~2.4",
                 "php": ">=5.3.2"
             },
@@ -1814,7 +1818,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-04-23T08:59:41+02:00"
+            "time": "2017-05-29T17:33:48+00:00"
         },
         {
             "name": "geoip2/geoip2",
@@ -1983,7 +1987,7 @@
                 }
             ],
             "description": "Locale functions required by libphonenumber-for-php",
-            "time": "2017-04-07T18:45:42+02:00"
+            "time": "2017-04-07T18:45:42+00:00"
         },
         {
             "name": "google/auth",
@@ -2031,7 +2035,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2016-11-02T14:59:14+01:00"
+            "time": "2016-11-02T14:59:14+00:00"
         },
         {
             "name": "google/cloud",
@@ -2117,7 +2121,7 @@
                 "translate",
                 "vision"
             ],
-            "time": "2016-11-28T23:08:14+01:00"
+            "time": "2016-11-28T23:08:14+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2179,7 +2183,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+01:00"
+            "time": "2017-02-28T22:50:30+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2230,7 +2234,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20T10:07:11+01:00"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2295,7 +2299,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20T17:10:46+01:00"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "igorw/get-in",
@@ -2340,7 +2344,7 @@
                 "assoc-array",
                 "hash-map"
             ],
-            "time": "2014-12-15T23:03:51+01:00"
+            "time": "2014-12-15T23:03:51+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -2397,7 +2401,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2015-09-19T16:54:05+02:00"
+            "time": "2015-09-19T16:54:05+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2448,7 +2452,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2015-11-10T17:04:01+01:00"
+            "time": "2015-11-10T17:04:01+00:00"
         },
         {
             "name": "intervention/image",
@@ -2510,7 +2514,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2017-04-23T18:45:36+02:00"
+            "time": "2017-04-23T18:45:36+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2560,7 +2564,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-12T16:20:24+01:00"
+            "time": "2014-01-12T16:20:24+00:00"
         },
         {
             "name": "jms-serializer/serializer",
@@ -2637,7 +2641,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2016-05-03T11:37:27+02:00"
+            "time": "2016-05-03T11:37:27+00:00"
         },
         {
             "name": "jms-serializer/serializer-bundle",
@@ -2710,7 +2714,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2016-04-25T15:25:41+02:00"
+            "time": "2016-04-25T15:25:41+00:00"
         },
         {
             "name": "jms/metadata",
@@ -2761,7 +2765,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2016-12-05T10:18:33+01:00"
+            "time": "2016-12-05T10:18:33+00:00"
         },
         {
             "name": "jms/parser-lib",
@@ -2796,7 +2800,7 @@
                 "Apache2"
             ],
             "description": "A library for easily creating recursive-descent parsers.",
-            "time": "2012-11-18T18:08:43+01:00"
+            "time": "2012-11-18T18:08:43+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -2862,7 +2866,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2016-09-22T07:36:19+02:00"
+            "time": "2016-09-22T07:36:19+00:00"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -2919,7 +2923,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2016-09-22T12:24:40+02:00"
+            "time": "2016-09-22T12:24:40+00:00"
         },
         {
             "name": "knplabs/knp-time-bundle",
@@ -2984,7 +2988,7 @@
                 "knplabs",
                 "time"
             ],
-            "time": "2017-03-04T18:34:22+01:00"
+            "time": "2017-03-04T18:34:22+00:00"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -3032,7 +3036,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2015-06-25T17:26:56+02:00"
+            "time": "2015-06-25T17:26:56+00:00"
         },
         {
             "name": "league/commonmark",
@@ -3184,7 +3188,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-04-28T10:15:08+02:00"
+            "time": "2017-04-28T10:15:08+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -3232,7 +3236,7 @@
                 }
             ],
             "description": "An adapter decorator to enable meta-data caching.",
-            "time": "2017-03-20T09:59:34+01:00"
+            "time": "2017-03-20T09:59:34+00:00"
         },
         {
             "name": "league/flysystem-memory",
@@ -3283,7 +3287,7 @@
                 "adapter",
                 "memory"
             ],
-            "time": "2016-06-04T03:57:11+02:00"
+            "time": "2016-06-04T03:57:11+00:00"
         },
         {
             "name": "league/glide",
@@ -3387,7 +3391,7 @@
             ],
             "description": "Glide adapter for Symfony",
             "homepage": "http://glide.thephpleague.com",
-            "time": "2016-07-01T16:05:08+02:00"
+            "time": "2016-07-01T16:05:08+00:00"
         },
         {
             "name": "lexik/paybox-bundle",
@@ -3449,7 +3453,7 @@
                 "paybox",
                 "payment"
             ],
-            "time": "2016-10-12T11:12:48+02:00"
+            "time": "2016-10-12T11:12:48+00:00"
         },
         {
             "name": "maxmind-db/reader",
@@ -3504,7 +3508,7 @@
                 "geolocation",
                 "maxmind"
             ],
-            "time": "2017-01-19T23:49:38+01:00"
+            "time": "2017-01-19T23:49:38+00:00"
         },
         {
             "name": "maxmind/web-service-common",
@@ -3548,7 +3552,7 @@
             ],
             "description": "Internal MaxMind Web Service API",
             "homepage": "https://github.com/maxmind/mm-web-service-api-php",
-            "time": "2016-08-18T16:36:52+02:00"
+            "time": "2016-08-18T16:36:52+00:00"
         },
         {
             "name": "misd/phone-number-bundle",
@@ -3615,7 +3619,7 @@
                 "phonenumber",
                 "telephone number"
             ],
-            "time": "2016-12-17T17:15:49+01:00"
+            "time": "2016-12-17T17:15:49+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3693,7 +3697,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+01:00"
+            "time": "2017-03-13T07:08:03+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -3741,7 +3745,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2016-12-30T09:49:15+01:00"
+            "time": "2016-12-30T09:49:15+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -3858,7 +3862,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:27:32+01:00"
+            "time": "2017-03-13T16:27:32+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -3928,7 +3932,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2016-04-11T14:30:01+02:00"
+            "time": "2016-04-11T14:30:01+00:00"
         },
         {
             "name": "php-amqplib/rabbitmq-bundle",
@@ -3993,7 +3997,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2016-12-09T12:58:28+01:00"
+            "time": "2016-12-09T12:58:28+00:00"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4041,7 +4045,7 @@
                 "sequence",
                 "set"
             ],
-            "time": "2015-05-17T12:39:23+02:00"
+            "time": "2015-05-17T12:39:23+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -4091,7 +4095,7 @@
                 "php",
                 "type"
             ],
-            "time": "2015-07-25T16:39:46+02:00"
+            "time": "2015-07-25T16:39:46+00:00"
         },
         {
             "name": "predis/predis",
@@ -4141,7 +4145,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16T16:22:20+02:00"
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "psr/cache",
@@ -4187,7 +4191,7 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06T20:24:11+02:00"
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/container",
@@ -4286,7 +4290,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06T14:39:51+02:00"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/link",
@@ -4382,7 +4386,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+02:00"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -4512,7 +4516,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2017-03-26T20:37:53+02:00"
+            "time": "2017-03-26T20:37:53+00:00"
         },
         {
             "name": "ramsey/uuid-doctrine",
@@ -4568,7 +4572,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2017-04-13T16:09:49+02:00"
+            "time": "2017-04-13T16:09:49+00:00"
         },
         {
             "name": "rize/uri-template",
@@ -4612,7 +4616,7 @@
                 "template",
                 "uri"
             ],
-            "time": "2017-02-21T15:25:22+01:00"
+            "time": "2017-02-21T15:25:22+00:00"
         },
         {
             "name": "sabre/dav",
@@ -4695,7 +4699,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2017-02-15T03:06:08+01:00"
+            "time": "2017-02-15T03:06:08+00:00"
         },
         {
             "name": "sabre/event",
@@ -4752,7 +4756,7 @@
                 "promise",
                 "signal"
             ],
-            "time": "2015-11-05T20:14:39+01:00"
+            "time": "2015-11-05T20:14:39+00:00"
         },
         {
             "name": "sabre/http",
@@ -4808,7 +4812,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2017-01-02T19:38:42+01:00"
+            "time": "2017-01-02T19:38:42+00:00"
         },
         {
             "name": "sabre/uri",
@@ -4859,7 +4863,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-02-20T19:59:28+01:00"
+            "time": "2017-02-20T19:59:28+00:00"
         },
         {
             "name": "sabre/vobject",
@@ -4956,7 +4960,7 @@
                 "xCal",
                 "xCard"
             ],
-            "time": "2016-12-06T04:14:09+01:00"
+            "time": "2016-12-06T04:14:09+00:00"
         },
         {
             "name": "sabre/xml",
@@ -5019,7 +5023,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2016-10-09T22:57:52+02:00"
+            "time": "2016-10-09T22:57:52+00:00"
         },
         {
             "name": "scheb/two-factor-bundle",
@@ -5076,7 +5080,7 @@
                 "two-factor",
                 "two-step"
             ],
-            "time": "2017-02-14T18:39:39+01:00"
+            "time": "2017-02-14T18:39:39+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -5242,7 +5246,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-03-31T14:50:32+02:00"
+            "time": "2017-03-31T14:50:32+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -5303,7 +5307,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-02-03T07:32:53+01:00"
+            "time": "2017-02-03T07:32:53+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -5368,7 +5372,7 @@
                 "redis",
                 "symfony"
             ],
-            "time": "2017-02-16T12:02:10+01:00"
+            "time": "2017-02-16T12:02:10+00:00"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -5539,7 +5543,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2017-03-23T12:54:15+01:00"
+            "time": "2017-03-23T12:54:15+00:00"
         },
         {
             "name": "sonata-project/cache",
@@ -5602,7 +5606,7 @@
                 "mongodb",
                 "redis"
             ],
-            "time": "2015-09-18T14:40:58+02:00"
+            "time": "2015-09-18T14:40:58+00:00"
         },
         {
             "name": "sonata-project/core-bundle",
@@ -5742,7 +5746,7 @@
                 "datagrid",
                 "sonata"
             ],
-            "time": "2017-02-09T16:25:20+01:00"
+            "time": "2017-02-09T16:25:20+00:00"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
@@ -5821,7 +5825,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2017-03-23T12:35:00+01:00"
+            "time": "2017-03-23T12:35:00+00:00"
         },
         {
             "name": "sonata-project/exporter",
@@ -5890,7 +5894,7 @@
                 "export",
                 "xls"
             ],
-            "time": "2017-02-09T16:39:40+01:00"
+            "time": "2017-02-09T16:39:40+00:00"
         },
         {
             "name": "sonata-project/google-authenticator",
@@ -5948,7 +5952,7 @@
             "keywords": [
                 "google authenticator"
             ],
-            "time": "2017-04-19T14:00:07+02:00"
+            "time": "2017-04-19T14:00:07+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -6009,7 +6013,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2016-01-26T23:58:32+01:00"
+            "time": "2016-01-26T23:58:32+00:00"
         },
         {
             "name": "suin/php-rss-writer",
@@ -6058,7 +6062,7 @@
                 "rss",
                 "writer"
             ],
-            "time": "2016-07-21T14:05:32+02:00"
+            "time": "2016-07-21T14:05:32+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -6105,7 +6109,7 @@
                 }
             ],
             "description": "Flysystem adapter for Google Cloud Storage",
-            "time": "2017-01-03T13:52:40+01:00"
+            "time": "2017-01-03T13:52:40+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -6165,7 +6169,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-03-26T11:55:59+02:00"
+            "time": "2017-03-26T11:55:59+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -6218,7 +6222,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -6276,7 +6280,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -6335,7 +6339,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -6391,7 +6395,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -6450,7 +6454,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-util",
@@ -6502,7 +6506,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+01:00"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/security-acl",
@@ -6563,20 +6567,20 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28T09:39:46+01:00"
+            "time": "2015-12-28T09:39:46+00:00"
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "5a7e31c48e7cd4831efa409fffb661beb9995174"
+                "reference": "de4db89980282f960211efd029bb6ca754999dbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/5a7e31c48e7cd4831efa409fffb661beb9995174",
-                "reference": "5a7e31c48e7cd4831efa409fffb661beb9995174",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/de4db89980282f960211efd029bb6ca754999dbd",
+                "reference": "de4db89980282f960211efd029bb6ca754999dbd",
                 "shasum": ""
             },
             "require": {
@@ -6593,7 +6597,7 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "twig/twig": "~1.32|~2.2"
+                "twig/twig": "~1.34|~2.4"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "<3.0",
@@ -6716,7 +6720,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-05-29T21:02:32+00:00"
+            "time": "2017-06-05T17:32:18+00:00"
         },
         {
             "name": "tackk/cartographer",
@@ -6763,7 +6767,7 @@
                 "Sitemap",
                 "generator"
             ],
-            "time": "2015-05-01T18:41:15+02:00"
+            "time": "2015-05-01T18:41:15+00:00"
         },
         {
             "name": "twig/extensions",
@@ -6823,16 +6827,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.3.2",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "85e8372c451510165c04bf781295f9d922fa524b"
+                "reference": "e3bdc12cba135d632a5bb2bcf23717c7af65ae2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/85e8372c451510165c04bf781295f9d922fa524b",
-                "reference": "85e8372c451510165c04bf781295f9d922fa524b",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e3bdc12cba135d632a5bb2bcf23717c7af65ae2c",
+                "reference": "e3bdc12cba135d632a5bb2bcf23717c7af65ae2c",
                 "shasum": ""
             },
             "require": {
@@ -6847,12 +6851,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
                     "Twig_": "lib/"
+                },
+                "psr-4": {
+                    "Twig\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6882,7 +6889,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-04-21T00:13:02+00:00"
+            "time": "2017-06-05T17:24:44+00:00"
         },
         {
             "name": "willdurand/geocoder",
@@ -6942,7 +6949,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2015-12-06T20:17:20+01:00"
+            "time": "2015-12-06T20:17:20+00:00"
         },
         {
             "name": "willdurand/geocoder-bundle",
@@ -6997,7 +7004,7 @@
                 "geocoder",
                 "geocoding"
             ],
-            "time": "2016-02-25T16:40:59+01:00"
+            "time": "2016-02-25T16:40:59+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -7050,7 +7057,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-10-24T13:23:32+02:00"
+            "time": "2016-10-24T13:23:32+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -7102,7 +7109,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-04-06T16:18:34+02:00"
+            "time": "2017-04-06T16:18:34+00:00"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -7156,7 +7163,7 @@
                 "events",
                 "zf2"
             ],
-            "time": "2016-12-19T21:47:12+01:00"
+            "time": "2016-12-19T21:47:12+00:00"
         }
     ],
     "packages-dev": [
@@ -7207,7 +7214,7 @@
             "keywords": [
                 "scraper"
             ],
-            "time": "2017-01-03T13:21:43+01:00"
+            "time": "2017-01-03T13:21:43+00:00"
         },
         {
             "name": "liip/functional-test-bundle",
@@ -7285,7 +7292,7 @@
             "keywords": [
                 "Symfony2"
             ],
-            "time": "2017-04-21T17:22:21+02:00"
+            "time": "2017-04-21T17:22:21+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -7327,7 +7334,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12T18:52:22+02:00"
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -7381,7 +7388,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27T11:43:31+01:00"
+            "time": "2015-12-27T11:43:31+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -7426,7 +7433,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30T07:12:33+02:00"
+            "time": "2016-09-30T07:12:33+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -7473,7 +7480,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-11-25T06:54:22+01:00"
+            "time": "2016-11-25T06:54:22+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -7536,7 +7543,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02T20:05:34+01:00"
+            "time": "2017-03-02T20:05:34+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -7599,7 +7606,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-02T07:44:40+02:00"
+            "time": "2017-04-02T07:44:40+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -7646,7 +7653,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03T07:40:28+02:00"
+            "time": "2016-10-03T07:40:28+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -7687,7 +7694,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+02:00"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -7736,7 +7743,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+01:00"
+            "time": "2017-02-26T11:10:40+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -7785,7 +7792,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+01:00"
+            "time": "2017-02-27T10:12:30+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -7926,7 +7933,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-12-08T20:27:08+01:00"
+            "time": "2016-12-08T20:27:08+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -7971,7 +7978,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2017-03-04T06:30:41+01:00"
+            "time": "2017-03-04T06:30:41+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -8035,7 +8042,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29T09:50:25+01:00"
+            "time": "2017-01-29T09:50:25+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -8137,7 +8144,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-11-26T07:53:53+01:00"
+            "time": "2016-11-26T07:53:53+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -8204,7 +8211,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-11-19T08:54:04+01:00"
+            "time": "2016-11-19T08:54:04+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -8255,7 +8262,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12T03:26:01+02:00"
+            "time": "2015-10-12T03:26:01+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -8301,7 +8308,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-02-18T15:18:39+01:00"
+            "time": "2017-02-18T15:18:39+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -8354,7 +8361,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-11-19T07:33:16+01:00"
+            "time": "2016-11-19T07:33:16+00:00"
         },
         {
             "name": "sebastian/resource-operations",
@@ -8396,7 +8403,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "time": "2015-07-28T20:34:47+02:00"
+            "time": "2015-07-28T20:34:47+00:00"
         },
         {
             "name": "sebastian/version",
@@ -8439,7 +8446,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03T07:35:21+02:00"
+            "time": "2016-10-03T07:35:21+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -8493,20 +8500,20 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-03-15T01:02:10+01:00"
+            "time": "2017-03-15T01:02:10+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "1a09124ea479cca85fc66a6f21e59aa952ebed1f"
+                "reference": "acae7416018ebe5a7a2d79b4221203b2b8aca5d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/1a09124ea479cca85fc66a6f21e59aa952ebed1f",
-                "reference": "1a09124ea479cca85fc66a6f21e59aa952ebed1f",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/acae7416018ebe5a7a2d79b4221203b2b8aca5d3",
+                "reference": "acae7416018ebe5a7a2d79b4221203b2b8aca5d3",
                 "shasum": ""
             },
             "require": {
@@ -8555,7 +8562,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28T11:10:04+00:00"
+            "time": "2017-06-01T14:45:22+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -8605,7 +8612,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23T20:04:58+01:00"
+            "time": "2016-11-23T20:04:58+00:00"
         }
     ],
     "aliases": [],
