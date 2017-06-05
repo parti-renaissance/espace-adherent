@@ -64,6 +64,7 @@ Il ne comporte AUCUNE GARANTIE, dans la mesure de ce que permet la loi.
 > **Note**: si vous utilisez Windows, nous vous recommandons très fortement d'utiliser la console Linux intgrée à
 > Windows 10 (https://msdn.microsoft.com/fr-fr/commandline/wsl/install_guide) ou d'utiliser un émulateur de ligne de
 > commande pour pouvoir utiliser `make` qui vous facilitera grandement le travail.
+**Note**: Pour les utilisateurs de Windows, vous pouvez utiliser [l'équivalent Windows de make](http://gnuwin32.sourceforge.net/packages/make.htm) 
 
 Si Docker, docker-compose et make fonctionnent correctement, vous êtes prêt à préparer le projet pour développer.
 
