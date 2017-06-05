@@ -3,6 +3,5 @@ imports:
 
 parameters:
     env(DATABASE_HOST): "db"
-    env(DATABASE_NAME): "enmarche_test"
     env(DATABASE_USER): "root"
     env(DATABASE_PASSWORD): "root"
