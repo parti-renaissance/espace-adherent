@@ -44,7 +44,7 @@
 
         <div class="l__row">
             <select id="career" class="form">
-                <option value="" selected="selected">Tous les parcours professionnel</option>
+                <option value="" selected="selected">Tous les parcours professionnels</option>
                 {% for career in constant('AppBundle\\Entity\\LegislativeCandidate::CAREERS') %}
                     <option value="{{ career }}">{{ career|trans }}</option>
                 {% endfor %}
