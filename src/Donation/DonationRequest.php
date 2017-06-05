@@ -287,7 +287,7 @@ class DonationRequest
         }
 
         if (isset($payload['em'])) {
-            $retry->emailAddress = urldecode((string) $payload['em']);
+            $retry->emailAddress = (string) $payload['em'];
         }
 
         if ($payload['co']) {
@@ -303,8 +303,11 @@ class DonationRequest
         }
 
         if (isset($payload['ad'])) {
-            $retry->address = urldecode((string) $payload['ad']);
+            $retry->address = (string) $payload['ad'];
         }
+
+        // remove previous invalid state
+        $retry->phone = null;
 
         if (isset($payload['phc']) && isset($payload['phn'])) {
             $retry->phone = self::createPhoneNumber((string) $payload['phc'], (string) $payload['phn']);

@@ -63,7 +63,7 @@ class DonationRequestUtils
         }
 
         if ($request->query->has(self::RETRY_PAYLOAD)) {
-            return $this->hydrateFromRetryPayload($donation, $request->query->getAlnum(self::RETRY_PAYLOAD, '{}'));
+            return $this->hydrateFromRetryPayload($donation, $request->query->get(self::RETRY_PAYLOAD, '{}'));
         }
 
         return $donation;
@@ -93,7 +93,7 @@ class DonationRequestUtils
         $this->validateCallbackStatus($request);
 
         $payload = $donation->getRetryPayload();
-        $payload['_retry_token'] = $this->getTokenManager()->getToken(self::RETRY_TOKEN);
+        $payload['_retry_token'] = (string) $this->getTokenManager()->getToken(self::RETRY_TOKEN);
 
         return [
             self::RETRY_PAYLOAD => json_encode($payload),
@@ -115,15 +115,20 @@ class DonationRequestUtils
 
     private function hydrateFromRetryPayload(DonationRequest $request, string $payload): DonationRequest
     {
-        $data = array_filter(json_decode($payload, true));
+        try {
+            $data = \GuzzleHttp\json_decode(urldecode($payload), true);
+        } catch (\InvalidArgumentException $e) {
+            return $request;
+        }
 
+        $data = array_filter($data);
         if (!is_array($data) || !$data) {
             return $request;
         }
 
         $retry = $request->retryPayload($data);
 
-        if ($this->validateRetryPayload($retry, $data)) {
+        if ($this->validateRetryPayload($retry, $data['_retry_token'])) {
             return $retry;
         }
 
@@ -149,10 +154,9 @@ class DonationRequestUtils
         throw new InvalidDonationStatusException();
     }
 
-    private function validateRetryPayload(DonationRequest $retry, array $payload): bool
+    private function validateRetryPayload(DonationRequest $retry, string $token): bool
     {
-        if (isset($payload['_retry_token'])
-            && $this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $payload['_retry_token']))
+        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))
         ) {
             return 0 === count($this->getValidator()->validate($retry));
         }
