@@ -396,17 +396,17 @@
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
                             {% if not campaign_expired %}
-                                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S’engager</a></h4></li>
+                                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
                                 <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
                                 <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
                             {% else %}
-                                <li><h4><a href="#" class="text--bold text--medium-small">S’engager</a></h4></li>
+                                <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>
                             {% endif %}
                             <li><a href="{{ path('donation_index') }}">Je donne en ligne</a></li>
                             <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Je donne par chèque</a></li>
                             {% if not campaign_expired %}
                                 <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
-                                <li><a href="{{ path('app_search_events') }}">S’inscrire à un événement</a></li>
+                                <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
                                 <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                                 <li><a href="{{ path('app_je_marche') }}">J'agis</a></li>
                                 <li><a href="{{ path('app_je_marche_action') }}">Je Marche</a></li>
