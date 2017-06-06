@@ -88,12 +88,14 @@ donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
 #
 # Newsletter
 #
-neswletter.already_registered: Vous êtes déjà inscrit à la newsletter d'En Marche.
+newsletter.already_registered: Vous êtes déjà inscrit à la newsletter d'En Marche.
 
-neswletter.email.not_blank: Cette valeur est requise.
-neswletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
+newsletter.email.not_blank: Cette valeur est requise.
+newsletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
 
-neswletter.postalCode.invalid: Ce code postal n'est pas valide.
+newsletter.postalCode.invalid: Ce code postal n'est pas valide.
+
+newsletter.conditions.required: Veuillez cocher cette case et accepter nos termes.
 
 newsletter.guests.min: Merci de saisir au moins une adresse e-mail.
 

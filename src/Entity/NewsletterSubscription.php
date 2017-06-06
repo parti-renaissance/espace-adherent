@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 
 /**
- * @AssertUniqueEntity(fields={"email"}, message="neswletter.already_registered")
+ * @AssertUniqueEntity(fields={"email"}, message="newsletter.already_registered")
  *
  * @ORM\Table(name="newsletter_subscriptions")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterSubscriptionRepository")
@@ -37,8 +37,8 @@ class NewsletterSubscription
      *
      * @ORM\Column(type="string", length=100, unique=true)
      *
-     * @Assert\NotBlank(message="neswletter.email.not_blank")
-     * @Assert\Email(message="neswletter.email.invalid")
+     * @Assert\NotBlank(message="newsletter.email.not_blank")
+     * @Assert\Email(message="newsletter.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $email;
@@ -51,11 +51,16 @@ class NewsletterSubscription
      * @Assert\Length(
      *     min=2,
      *     max=11,
-     *     minMessage="neswletter.postalCode.invalid",
-     *     maxMessage="neswletter.postalCode.invalid"
+     *     minMessage="newsletter.postalCode.invalid",
+     *     maxMessage="newsletter.postalCode.invalid"
      * )
      */
     private $postalCode;
+
+    /**
+     * @Assert\IsTrue(message="newsletter.conditions.required")
+     */
+    public $conditions;
 
     public function __toString()
     {
