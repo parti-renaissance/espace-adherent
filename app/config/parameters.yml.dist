@@ -52,3 +52,5 @@ parameters:
     env(LEGISLATIVES_PLATFORM): https://www.google.fr
 
     env(ENABLE_SILENCE_RULE):   'false'
+
+    env(SESSION_MAX_IDLE_TIME): 1800
