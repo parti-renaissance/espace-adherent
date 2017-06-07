@@ -22,4 +22,4 @@ tests:
     "No Doctrine annotation or metadata should have been parsed at runtime":
         path: '/.*'
         assertions:
-            - 'metrics.doctrine.annotations.parsed.count + metrics.doctrine.annotations.read.count + metrics.doctrine.entities.metadata.count + metrics.doctrine.dql.parsed == 0'
+            - 'metrics.doctrine.annotations.parsed.count + metrics.doctrine.annotations.read.count + metrics.doctrine.entities.metadata.count + metrics.doctrine.dql.parsed.count == 0'
