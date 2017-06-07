@@ -1,14 +1,4 @@
 tests:
-    "A page should take less than 150ms to render":
-        path: '/.*'
-        assertions:
-            - 'main.wall_time < 150ms'
-
-    "A page should take less than 10MB of memory":
-        path: '/.*'
-        assertions:
-            - 'main.peak_memory < 10mb'
-
     "A page should use less than 10 SQL queries":
         path: '/.*'
         assertions:
