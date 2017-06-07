@@ -21,15 +21,14 @@ abstract class ProcurationFilters
     const TYPE_LEGISLATIVE_2_ROUND = 'electionLegislativeSecondRound';
 
     const TYPES = [
-        self::TYPE_LEGISLATIVE_1_ROUND => 'Législatives : 1er tour',
         self::TYPE_LEGISLATIVE_2_ROUND => 'Législatives : 2nd tour',
     ];
 
-    private $currentPage;
-    private $country;
-    private $city;
-    private $type;
-    private $status;
+    protected $currentPage;
+    protected $country;
+    protected $city;
+    protected $type;
+    protected $status;
 
     final private function __construct()
     {
@@ -155,8 +154,8 @@ abstract class ProcurationFilters
     public function apply(QueryBuilder $qb, string $alias): void
     {
         if ($this->country) {
-            $qb->andWhere(sprintf('%s.voteCountry = :filterVotreCountry', $alias));
-            $qb->setParameter('filterVotreCountry', $this->country);
+            $qb->andWhere(sprintf('%s.voteCountry = :filterVoteCountry', $alias));
+            $qb->setParameter('filterVoteCountry', $this->country);
         }
 
         if ($this->city) {
