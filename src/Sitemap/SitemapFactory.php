@@ -235,7 +235,7 @@ class SitemapFactory
 
         foreach ($events as $event) {
             $sitemap->add(
-                $this->generateUrl('app_committee_show_event', [
+                $this->generateUrl('app_event_show', [
                     'uuid' => $event['uuid'],
                     'slug' => $event['slug'],
                 ]),

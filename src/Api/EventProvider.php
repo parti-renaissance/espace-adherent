@@ -33,7 +33,7 @@ class EventProvider
                 'uuid' => $event->getUuid()->toString(),
                 'slug' => $event->getSlug(),
                 'name' => $event->getName(),
-                'url' => $this->urlGenerator->generate('app_committee_show_event', [
+                'url' => $this->urlGenerator->generate('app_event_show', [
                     'uuid' => $event->getUuid()->toString(),
                     'slug' => $event->getSlug(),
                 ]),

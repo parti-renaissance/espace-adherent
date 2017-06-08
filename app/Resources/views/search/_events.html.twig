@@ -16,7 +16,7 @@
                 {% endif %}
                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                     <a class="link--no-decor"
-                       href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}">
+                       href="{{ path('app_event_show', { uuid: event.uuid, slug: event.slug }) }}">
                       {{ event.name }}
                     </a>
                 </h2>
@@ -42,7 +42,7 @@
                         Cet événement est annulé
                     </div>
                 {% elseif not event.full %}
-                    <a href="{{ path('app_committee_attend_event', {uuid: event.uuid.toString, slug: event.slug}) }}"
+                    <a href="{{ path('app_event_attend', {uuid: event.uuid.toString, slug: event.slug}) }}"
                        class="btn btn--blue" target="_blank" rel="noopener noreferrer">
                         Je participe
                     </a>
@@ -51,7 +51,7 @@
                         Événement complet
                     </div>
                 {% endif %}
-                <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+                <a href="{{ path('app_event_show', { uuid: event.uuid, slug: event.slug }) }}"
                    class="btn" target="_blank" rel="noopener noreferrer">
                     En savoir plus
                 </a>
@@ -67,7 +67,7 @@
              title="Carte d'accès à l'événement {{ event.name }}"
              alt="{{ event.inlineFormattedAddress }}" />
 
-        <a href="{{ path('app_committee_show_event', { uuid: event.uuid, slug: event.slug }) }}"
+        <a href="{{ path('app_event_show', { uuid: event.uuid, slug: event.slug }) }}"
            class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
             En savoir plus
         </a>

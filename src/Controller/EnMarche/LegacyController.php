@@ -19,7 +19,7 @@ class LegacyController extends Controller
      */
     public function redirectEventAction(Event $event): Response
     {
-        return $this->redirectToRoute('app_committee_show_event', [
+        return $this->redirectToRoute('app_event_show', [
             'uuid' => $event->getUuid()->toString(),
             'slug' => $event->getSlug(),
         ], Response::HTTP_MOVED_PERMANENTLY);
