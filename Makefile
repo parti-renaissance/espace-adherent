@@ -159,7 +159,7 @@ up:
 	$(FIG) up -d
 
 perm:
-	-$(EXEC) chmod 777 -R var
+	-$(EXEC) chmod -R 777 var
 
 # Rules from files
 

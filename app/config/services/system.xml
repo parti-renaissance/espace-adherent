@@ -65,6 +65,14 @@
             <tag name="kernel.event_listener" event="security.interactive_login" method="onSecurityInteractiveLogin" />
         </service>
 
+        <service id="AppBundle\Security\InactiveAdminListener">
+            <argument type="service" id="Psr\Container\ContainerInterface"/>
+            <argument>%env(SESSION_MAX_IDLE_TIME)%</argument>
+
+            <tag name="container.service_subscriber" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+
         <!-- Cache -->
         <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
             <argument/>
