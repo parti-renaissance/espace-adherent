@@ -169,6 +169,7 @@ class CommitteeAdmin extends AbstractAdmin
             ])
             ->add('name', null, [
                 'label' => 'Nom',
+                'show_filter' => true,
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
