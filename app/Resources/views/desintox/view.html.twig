@@ -5,7 +5,7 @@
 {% block meta_description clarification.description %}
 {% block meta_twitter_description clarification.twitterDescription ?: clarification.description %}
 
-{% block canonical_url url('page_emmanuel_macron_proposition', {'slug': clarification.slug}) %}
+{% block canonical_url url('program_proposal', {'slug': clarification.slug}) %}
 
 {% block open_graph_image %}{% spaceless %}
     {% if clarification.media %}
@@ -26,7 +26,7 @@
         <section class="programme">
             <nav class="text--body">
                 <a class="l__wrapper space--20-0 icon--with-text"
-                   href="{{ path('page_emmanuel_macron_desintox_list') }}">
+                   href="{{ path('desintox_list') }}">
                     {{ include('components/caret--left.html.twig') }}
                     Retour à la liste
                 </a>

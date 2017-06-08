@@ -5,7 +5,7 @@
 {% block meta_description proposal.description %}
 {% block meta_twitter_description proposal.twitterDescription ?: proposal.description %}
 
-{% block canonical_url url('page_emmanuel_macron_proposition', {'slug': proposal.slug}) %}
+{% block canonical_url url('program_proposal', {'slug': proposal.slug}) %}
 
 {% block open_graph_image %}{% spaceless %}
     {% if proposal.media %}
@@ -26,7 +26,7 @@
     <section class="programme">
         <nav class="text--body">
             <a class="l__wrapper space--20-0 icon--with-text"
-               href="{{ path('page_emmanuel_macron_programme') }}">
+               href="{{ path('program_index') }}">
                     {{ include('components/caret--left.html.twig') }}
                     Retour aux propositions
             </a>
@@ -85,7 +85,7 @@
             </li>
         </ul>
 
-        <a href="{{ path('page_emmanuel_macron_programme') }}" class="icon--with-text b__nudge--bottom-60 l__wrapper--slim text--body">
+        <a href="{{ path('program_index') }}" class="icon--with-text b__nudge--bottom-60 l__wrapper--slim text--body">
             {{ include('components/caret--left.html.twig') }}
             Retour aux propositions
         </a>
