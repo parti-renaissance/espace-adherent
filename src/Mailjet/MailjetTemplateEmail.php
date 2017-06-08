@@ -136,10 +136,6 @@ final class MailjetTemplateEmail implements \JsonSerializable
 
     public function jsonSerialize(): string
     {
-        $body = $this->getBody();
-
-        $this->httpRequestPayload = json_encode($body);
-
-        return $body;
+        return $this->httpRequestPayload = json_encode($this->getBody());
     }
 }
