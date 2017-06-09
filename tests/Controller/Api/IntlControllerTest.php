@@ -43,6 +43,7 @@ class IntlControllerTest extends SqliteWebTestCase
             'Hambourg',
             'Francfort',
             'Munich',
+            'Nuremberg',
             'Sarrebruck',
             'Stuttgart',
         ], \GuzzleHttp\json_decode($client->getResponse()->getContent(), true));
