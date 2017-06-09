@@ -4,7 +4,6 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\MailjetEmail;
 use Doctrine\ORM\EntityRepository;
-use Ramsey\Uuid\Uuid;
 
 class MailjetEmailRepository extends EntityRepository
 {
@@ -51,10 +50,17 @@ class MailjetEmailRepository extends EntityRepository
 
         if ($batch) {
             $qb
-                ->andWhere('e.uuid = :batch')
+                ->andWhere('e.batch = :batch')
                 ->setParameter('batch', $batch);
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function setDelivered(MailjetEmail $email, string $response)
+    {
+        $email->delivered($response);
+
+        $this->_em->flush();
     }
 }

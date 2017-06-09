@@ -1,14 +1,11 @@
 <?php
 
-namespace AppBundle\Geocoder;
+namespace Tests\AppBundle\Test\Geocoder;
 
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Geocoder\GeocoderInterface;
 
-/**
- * This class is only meant for unit and functional tests purposes.
- *
- * @internal
- */
 class DummyGeocoder implements GeocoderInterface
 {
     private static $coordinates = [

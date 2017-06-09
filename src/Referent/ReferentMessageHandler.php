@@ -2,17 +2,17 @@
 
 namespace AppBundle\Referent;
 
+use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\ReferentMessage;
-use AppBundle\Producer\Mailjet\ReferentMessageProducerInterface;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 
 class ReferentMessageHandler
 {
-    private $producer;
+    private $mailjet;
 
-    public function __construct(ReferentMessageProducerInterface $producer)
+    public function __construct(MailjetService $mailjet)
     {
-        $this->producer = $producer;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(ReferentMessageModel $model)
@@ -23,7 +23,7 @@ class ReferentMessageHandler
         $chunks = array_chunk($message->getRecipients(), 100);
 
         foreach ($chunks as $chunk) {
-            $this->producer->scheduleMessage(ReferentMessage::createChunk($chunk, $message));
+            $this->mailjet->sendMessage(ReferentMessage::createChunk($chunk, $message));
         }
     }
 }

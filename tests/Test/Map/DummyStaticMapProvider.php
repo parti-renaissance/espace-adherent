@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Map;
+namespace Tests\AppBundle\Test\Map;
 
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Map\StaticMapProviderInterface;
 
 class DummyStaticMapProvider implements StaticMapProviderInterface
 {

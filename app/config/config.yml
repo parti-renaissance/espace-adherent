@@ -217,15 +217,17 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'mailjet-delayed-campaign', type: direct }
             class:            AppBundle\Producer\MailjetProducer
 
-        mailjet_referent:
-            connection:       default
-            exchange_options: { name: 'mailjet-referent', type: direct }
-            class:            AppBundle\Producer\Mailjet\ReferentMessageMailjetProducer
-
     consumers:
-        mailjet_referent:
+        mailjet_campaign:
             connection:        default
-            exchange_options:  { name: 'mailjet-referent', type: direct }
-            queue_options:     { name: 'mailjet-referent', durable: false }
-            callback:          app.consumer.mailjet.referent
+            exchange_options:  { name: 'mailjet-delayed-campaign', type: direct }
+            queue_options:     { name: 'mailjet-delayed-campaign', durable: false }
+            callback:          AppBundle\Consumer\CampaignMailjetConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        mailjet_transactional:
+            connection:        default
+            exchange_options:  { name: 'mailjet-delayed-transactional', type: direct }
+            queue_options:     { name: 'mailjet-delayed-transactional', durable: false }
+            callback:          AppBundle\Consumer\TransactionalMailjetConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }

@@ -2,7 +2,8 @@
 
 namespace Tests\AppBundle\Mailjet\Transport;
 
-use AppBundle\Mailjet\Transport\MailjetNullTransport;
+use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport;
 use AppBundle\Mailjet\MailjetTemplateEmail;
 use Psr\Log\LoggerInterface;
 
@@ -17,7 +18,7 @@ class MailjetNullTransportTest extends \PHPUnit_Framework_TestCase
             ->with('[mailjet] sending email with Mailjet.')
         ;
 
-        $email = new MailjetTemplateEmail('12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $transport = new MailjetNullTransport($logger);
