@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class MapsController extends Controller
 {
     /**
-     * @Route("/la-carte", name="legislatives_map")
+     * @Route("/la-carte", defaults={"_enable_campaign_silence"=true}, name="legislatives_map")
      * @Method("GET")
      */
     public function candidatesAction(): Response
@@ -20,7 +20,7 @@ class MapsController extends Controller
     }
 
     /**
-     * @Route("/les-evenements", name="legislatives_events")
+     * @Route("/les-evenements", defaults={"_enable_campaign_silence"=true}, name="legislatives_events")
      * @Method("GET")
      */
     public function eventsAction(): Response
