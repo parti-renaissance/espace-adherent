@@ -26,6 +26,7 @@ class VoteOfficeBundle
             'Hambourg',
             'Francfort',
             'Munich',
+            'Nuremberg',
             'Sarrebruck',
             'Stuttgart',
         ],
@@ -481,6 +482,7 @@ class VoteOfficeBundle
             'Colombo',
         ],
         'SE' => [ // SUEDE
+            'Göteborg',
             'Stockholm',
         ],
         'CH' => [ // SUISSE
