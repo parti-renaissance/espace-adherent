@@ -4,7 +4,6 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class MailjetTemplateEmail implements \JsonSerializable
@@ -121,7 +120,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         return $body;
     }
 
-    public function delivered(string $httpResponsePayload, string $httpRequestPayload = null)
+    public function delivered(string $httpResponsePayload, string $httpRequestPayload = null): void
     {
         if ($httpRequestPayload) {
             $this->httpRequestPayload = $httpRequestPayload;
@@ -144,12 +143,8 @@ final class MailjetTemplateEmail implements \JsonSerializable
         return $this->httpResponsePayload;
     }
 
-    public function jsonSerialize(): string
+    public function jsonSerialize()
     {
-        $body = $this->getBody();
-
-        $this->httpRequestPayload = json_encode($body);
-
-        return $body;
+        return $this->getBody();
     }
 }

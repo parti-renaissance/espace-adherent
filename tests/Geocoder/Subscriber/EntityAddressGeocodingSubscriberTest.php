@@ -6,7 +6,6 @@ use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Geocoder\DummyGeocoder;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use AppBundle\Membership\ActivityPositions;
@@ -14,6 +13,7 @@ use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
 
 class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
 {

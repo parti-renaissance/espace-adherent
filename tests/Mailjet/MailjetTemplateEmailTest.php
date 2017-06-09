@@ -3,7 +3,8 @@
 namespace Tests\AppBundle\Mailjet;
 
 use AppBundle\Mailjet\MailjetTemplateEmail;
-use AppBundle\Mailjet\Message\DummyMessage;
+use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 
 class MailjetTemplateEmailTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,13 +14,13 @@ class MailjetTemplateEmailTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMailjetTemplateEmailWithoutRecipients()
     {
-        $email = new MailjetTemplateEmail('12345', 'Votre donation !', 'contact@en-marche.fr');
+        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
         $email->getBody();
     }
 
     public function testCreateMailjetTemplateEmail()
     {
-        $email = new MailjetTemplateEmail('12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
         $email->addRecipient('vincent777h@example.tld', 'Vincent Durand', ['name' => 'Vincent Durand']);
 
@@ -52,7 +53,7 @@ class MailjetTemplateEmailTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateMailjetTemplateEmailWithReplyTo()
     {
-        $email = new MailjetTemplateEmail('12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
+        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $body = [

@@ -1,9 +1,10 @@
 <?php
 
-namespace AppBundle\Mailjet\Transport;
+namespace Tests\AppBundle\Test\Mailjet\Transport;
 
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\Transport\MailjetMessageTransportInterface;
 
 class MailjetFailingTransport implements MailjetMessageTransportInterface
 {

@@ -5,8 +5,34 @@
     <services>
 
         <!-- RabbitMQ -->
-        <service id="app.consumer.mailjet.referent" class="AppBundle\Consumer\ReferentMessageMailjetConsumer">
-            <argument type="service" id="service_container" />
+        <service id="app.consumer.service_locator">
+            <argument type="collection">
+                <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
+                <argument key="Symfony\Component\Validator\ValidatorInterface" type="service" id="validator" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="app.consumer.mailjet.campaign.service_locator" parent="app.consumer.service_locator">
+            <argument type="collection">
+                <argument key="app.mailjet.campaign_client" type="service" id="app.mailjet.campaign_client" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="app.consumer.mailjet.transactional.service_locator" parent="app.consumer.service_locator">
+            <argument type="collection">
+                <argument key="app.mailjet.transactional_client" type="service" id="app.mailjet.campaign_client" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="AppBundle\Consumer\CampaignMailjetConsumer">
+            <argument type="service" id="app.consumer.mailjet.campaign.service_locator" />
+        </service>
+
+        <service id="AppBundle\Consumer\TransactionalMailjetConsumer">
+            <argument type="service" id="app.consumer.mailjet.transactional.service_locator" />
         </service>
 
         <!-- Redirections from old website -->

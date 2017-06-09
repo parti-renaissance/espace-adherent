@@ -9,10 +9,10 @@ use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber;
 use AppBundle\Mailjet\MailjetTemplateEmail;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
-use AppBundle\Mailjet\Message\DummyMessage;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 
 class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_TestCase
 {
