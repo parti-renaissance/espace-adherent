@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class LegislativesController extends Controller
 {
     /**
-     * @Route("/candidates", name="api_legislatives_candidates")
+     * @Route("/candidates", defaults={"_enable_campaign_silence"=true}, name="api_legislatives_candidates")
      * @Method("GET")
      */
     public function getCandidatesListAction(): JsonResponse
