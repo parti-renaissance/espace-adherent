@@ -3,13 +3,13 @@
 namespace AppBundle\Mailjet\Transport;
 
 use AppBundle\Mailjet\MailjetTemplateEmail;
-use AppBundle\Producer\MailjetProducer;
+use AppBundle\Producer\MailjetProducerInterface;
 
 class RabbitMQTransport implements MailjetMessageTransportInterface
 {
     private $producer;
 
-    public function __construct(MailjetProducer $producer)
+    public function __construct(MailjetProducerInterface $producer)
     {
         $this->producer = $producer;
     }

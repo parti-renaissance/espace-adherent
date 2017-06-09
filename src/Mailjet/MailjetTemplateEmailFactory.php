@@ -15,7 +15,7 @@ class MailjetTemplateEmailFactory
         $this->senderName = $senderName;
     }
 
-    public function createFromMailjetMessage(MailjetMessage $message)
+    public function createFromMailjetMessage(MailjetMessage $message): MailjetTemplateEmail
     {
         return MailjetTemplateEmail::createWithMailjetMessage($message, $this->senderEmail, $this->senderName);
     }

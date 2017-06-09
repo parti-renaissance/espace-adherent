@@ -20,13 +20,13 @@
         </service>
 
         <!-- Mailjet (transactional) -->
-        <service id="app.mailjet.client.transactional" class="AppBundle\Mailjet\MailjetService" public="false">
+        <service id="app.mailjet.transactional_mailer" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport.rabbitmq_transactional"/>
             <argument type="service" id="app.mailjet.message_factory.transactional"/>
         </service>
 
-        <service id="app.mailjet.transport.transactional" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
+        <service id="app.mailjet.transactional_client" class="AppBundle\Mailjet\MailjetClient" public="false">
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
@@ -42,13 +42,13 @@
         </service>
 
         <!-- Mailjet (campaign) -->
-        <service id="app.mailjet.client.campaign" class="AppBundle\Mailjet\MailjetService" public="false">
+        <service id="app.mailjet.campaign_mailer" class="AppBundle\Mailjet\MailjetService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailjet.transport.rabbitmq_campaign"/>
             <argument type="service" id="app.mailjet.message_factory.campaign"/>
         </service>
 
-        <service id="app.mailjet.transport.campaign" class="AppBundle\Mailjet\Transport\MailjetApiTransport" public="false">
+        <service id="app.mailjet.campaign_client" class="AppBundle\Mailjet\MailjetClient" public="false">
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
@@ -63,7 +63,7 @@
             <argument>%campaign_sender_name%</argument>
         </service>
 
-        <service id="app.mailjet.mailjet_email_doctrine_backup_subscriber" class="AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber">
+        <service id="AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.repository.mailjet_email"/>
             <tag name="kernel.event_subscriber"/>

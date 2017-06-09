@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Geocoder;
 
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\DummyGeocoder;
+use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
 
 class DummyGeocoderTest extends \PHPUnit_Framework_TestCase
 {

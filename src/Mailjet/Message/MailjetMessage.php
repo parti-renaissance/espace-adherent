@@ -39,7 +39,7 @@ abstract class MailjetMessage
         array $commonVars = [],
         array $recipientVars = [],
         string $replyTo = null,
-        UuidInterface $batch = null
+        ?UuidInterface $batch = null
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
@@ -47,7 +47,7 @@ abstract class MailjetMessage
         $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
-        $this->batch = $batch ?? $uuid;
+        $this->batch = $batch;
         $this->cc = [];
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
@@ -69,7 +69,7 @@ abstract class MailjetMessage
         return $this->uuid;
     }
 
-    final public function getBatch(): UuidInterface
+    final public function getBatch(): ?UuidInterface
     {
         return $this->batch;
     }

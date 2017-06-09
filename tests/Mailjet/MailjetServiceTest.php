@@ -6,9 +6,9 @@ use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\MailjetTemplateEmailFactory;
-use AppBundle\Mailjet\Message\DummyMessage;
-use AppBundle\Mailjet\Transport\MailjetFailingTransport;
-use AppBundle\Mailjet\Transport\MailjetNullTransport;
+use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
+use Tests\AppBundle\Test\Mailjet\Transport\MailjetFailingTransport;
+use Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailjetServiceTest extends \PHPUnit_Framework_TestCase

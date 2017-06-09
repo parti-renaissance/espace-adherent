@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Mailjet\Transport;
+namespace Tests\AppBundle\Test\Mailjet\Transport;
 
 use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\Transport\MailjetMessageTransportInterface;
 use Psr\Log\LoggerInterface;
 
 class MailjetNullTransport implements MailjetMessageTransportInterface

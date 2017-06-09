@@ -19,6 +19,11 @@ class MailjetEmail
     use EntityTimestampableTrait;
 
     /**
+     * @ORM\Column(type="uuid", nullable=true)
+     */
+    private $batch;
+
+    /**
      * The Mailjet message class namespace.
      *
      * @ORM\Column(length=50, nullable=true)
@@ -49,16 +54,17 @@ class MailjetEmail
      */
     private $responsePayload;
 
-    public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload)
+    public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload, ?UuidInterface $batch)
     {
         $this->uuid = $uuid;
+        $this->batch = $batch;
         $this->messageClass = $messageClass;
         $this->sender = $sender;
         $this->recipients = $recipients;
         $this->requestPayload = base64_encode($requestPayload);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->messageClass.' de '.$this->sender.' à '.count($this->recipients).' destinataires';
     }
@@ -72,60 +78,66 @@ class MailjetEmail
         }
 
         return new self(
-            $message->getBatch(),
+            $message->getUuid(),
             str_replace('AppBundle\\Mailjet\\Message\\', '', get_class($message)),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
-            $requestPayload
+            $requestPayload,
+            $message->getBatch()
         );
     }
 
-    public function delivered(?string $responsePayload)
+    public function delivered(?string $responsePayload): void
     {
         $this->responsePayload = base64_encode($responsePayload);
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMessageClass()
+    public function getMessageClass(): string
     {
         return $this->messageClass;
     }
 
-    public function getSender()
+    public function getSender(): string
     {
         return $this->sender;
     }
 
-    public function getRecipients()
+    public function getRecipients(): array
     {
         return $this->recipients;
     }
 
-    public function getRecipientsAsString()
+    public function getBatch(): ?UuidInterface
+    {
+        return $this->batch;
+    }
+
+    public function getRecipientsAsString(): string
     {
         return implode("\n", $this->recipients);
     }
 
-    public function getRequestPayload()
+    public function getRequestPayload(): array
     {
         return json_decode(base64_decode($this->requestPayload), true);
     }
 
-    public function getRequestPayloadJson()
+    public function getRequestPayloadJson(): string
     {
         return base64_decode($this->requestPayload);
     }
 
-    public function getResponsePayload()
+    public function getResponsePayload(): array
     {
         return json_decode(base64_decode($this->responsePayload), true);
     }
 
-    public function getResponsePayloadJson()
+    public function getResponsePayloadJson(): string
     {
         return base64_decode($this->responsePayload);
     }

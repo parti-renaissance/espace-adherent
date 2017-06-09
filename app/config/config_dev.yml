@@ -10,17 +10,17 @@ parameters:
 
 services:
     app.mailjet.transport.transactional:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
+        class: 'Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport'
         arguments: ['@?logger']
         public: false
 
     app.mailjet.transport.campaign:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
+        class: 'Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport'
         arguments: ['@?logger']
         public: false
 
     app.recaptcha.api_client:
-        class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
+        class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
 framework:

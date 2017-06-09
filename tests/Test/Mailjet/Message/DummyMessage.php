@@ -1,10 +1,11 @@
 <?php
 
-namespace AppBundle\Mailjet\Message;
+namespace Tests\AppBundle\Test\Mailjet\Message;
 
+use AppBundle\Mailjet\Message\MailjetMessage;
 use Ramsey\Uuid\Uuid;
 
-final class DummyMessage extends MailjetMessage
+class DummyMessage extends MailjetMessage
 {
     public static function create()
     {

@@ -1,11 +1,10 @@
 <?php
 
-namespace AppBundle\Recaptcha;
+namespace Tests\AppBundle\Test\Recaptcha;
 
-/**
- * This class is only meant for internal and functional test purpose.
- */
-final class DummyRecaptchaApiClient extends RecaptchaApiClient
+use AppBundle\Recaptcha\RecaptchaApiClient;
+
+class DummyRecaptchaApiClient extends RecaptchaApiClient
 {
     public function __construct()
     {

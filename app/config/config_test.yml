@@ -2,22 +2,22 @@ imports:
     - { resource: config_dev.yml }
 
 services:
-    app.recaptcha.api_client:
-        class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
-        public: false
-
     app.geocoder:
-        class: 'AppBundle\Geocoder\DummyGeocoder'
+        class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
         public: false
 
     app.map.google_maps_static_provider:
-        class: 'AppBundle\Map\DummyStaticMapProvider'
+        class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
 
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
-    app.referent.message_handler.producer:
-        class: 'AppBundle\Producer\Mailjet\ReferentMessageNullProducer'
+    old_sound_rabbit_mq.mailjet_campaign_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailjetNullProducer'
+        public: false
+
+    old_sound_rabbit_mq.mailjet_transactional_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailjetNullProducer'
         public: false
 
 parameters:

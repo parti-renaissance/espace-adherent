@@ -46,7 +46,7 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         }
 
         $message = $event->getMessage();
-        if (!$email = $this->repository->findOneByUuid($message->getBatch()->toString())) {
+        if (!$email = $this->repository->findOneByUuid($message->getUuid()->toString())) {
             return;
         }
 
