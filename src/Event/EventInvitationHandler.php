@@ -26,7 +26,7 @@ class EventInvitationHandler
     {
         $invite = EventInvite::create($event, $invitation);
 
-        $url = $this->urlGenerator->generateRemoteUrl('app_committee_show_event', [
+        $url = $this->urlGenerator->generateRemoteUrl('app_event_show', [
             'slug' => $event->getSlug(),
             'uuid' => $event->getUuid()->toString(),
         ]);

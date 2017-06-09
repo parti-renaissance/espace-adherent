@@ -178,10 +178,10 @@ class SitemapFactory
     {
         $sitemap->add($this->generateUrl('page_emmanuel_macron'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_emmanuel_macron_revolution'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_emmanuel_macron_programme'), null, ChangeFrequency::WEEKLY, 0.6);
+        $sitemap->add($this->generateUrl('program_index'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_notre_organisation'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement_la_carte'), null, ChangeFrequency::WEEKLY, 0.6);
+        $sitemap->add($this->generateUrl('map_committees'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_les_comites'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_devenez_benevole'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_mentions_legales'), null, ChangeFrequency::WEEKLY, 0.2);
@@ -193,7 +193,7 @@ class SitemapFactory
 
         foreach ($clarifications as $clarification) {
             $sitemap->add(
-                $this->generateUrl('page_emmanuel_macron_desintox_view', ['slug' => $clarification->getSlug()]),
+                $this->generateUrl('desintox_view', ['slug' => $clarification->getSlug()]),
                 $clarification->getUpdatedAt()->format(\DATE_ATOM),
                 ChangeFrequency::WEEKLY,
                 0.6
@@ -235,7 +235,7 @@ class SitemapFactory
 
         foreach ($events as $event) {
             $sitemap->add(
-                $this->generateUrl('app_committee_show_event', [
+                $this->generateUrl('app_event_show', [
                     'uuid' => $event['uuid'],
                     'slug' => $event['slug'],
                 ]),

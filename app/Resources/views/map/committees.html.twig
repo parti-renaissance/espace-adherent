@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'La carte des comités' %}
-{% block canonical_url url('page_le_mouvement_la_carte') %}
+{% block canonical_url url('map_committees') %}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -32,7 +32,7 @@
                 {{- block('page_title') -}}
             </h1>
             <div class="text--summary b__nudge--top-5">
-                (<a href="{{ path('page_les_evenements_la_carte') }}">voir la carte des événements</a>)
+                (<a href="{{ path('map_events') }}">voir la carte des événements</a>)
             </div>
         </header>
         <section class="l__wrapper--wide text--body">

@@ -4,7 +4,7 @@
 
 {% block content %}
     <section class="l__wrapper">
-        <a href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}"
+        <a href="{{ path('app_event_show', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}"
            class="previous-link icon--with-text text--summary">
             {{ include('components/caret--left.html.twig') }}
             Retour à la page de l'événement
@@ -20,7 +20,7 @@
                 Votre participation est bien enregistrée !
             </p>
             <div class="text--center">
-                <a class="btn" href="{{ path('app_committee_show_event', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}">Retour à l'événement</a>
+                <a class="btn" href="{{ path('app_event_show', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}">Retour à l'événement</a>
             </div>
         </div>
     </section>

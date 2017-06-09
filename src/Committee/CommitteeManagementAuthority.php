@@ -52,7 +52,7 @@ class CommitteeManagementAuthority
             $committee,
             $hosts,
             $adherent,
-            $this->urlGenerator->getUrl('app_commitee_list_members', $committee)
+            $this->urlGenerator->getUrl('app_commitee_manager_list_members', $committee)
         ));
     }
 }

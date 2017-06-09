@@ -1,9 +1,9 @@
 {% set currentParam = app.request.get('type') %}
 
-{% extends 'page/la-carte.html.twig' %}
+{% extends 'map/committees.html.twig' %}
 
 {% block page_title 'La carte des événements' %}
-{% block canonical_url url('page_les_evenements_la_carte') %}
+{% block canonical_url url('map_events') %}
 
 {% block javascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
@@ -24,7 +24,7 @@
                 {{- block('page_title') -}}
             </h1>
             <div class="text--summary b__nudge--top-5">
-                (<a href="{{ path('page_le_mouvement_la_carte') }}">voir la carte des comités</a>)
+                (<a href="{{ path('map_committees') }}">voir la carte des comités</a>)
             </div>
         </header>
         <section class="l__wrapper--wide text--body">
@@ -34,14 +34,14 @@
                         <div>
                             <ul class="events-map-categories text--summary">
                                 <li class="events-map-categories--all">
-                                    <a href="{{ path('page_les_evenements_la_carte') }}"
+                                    <a href="{{ path('map_events') }}"
                                        class="link--no-decor {{ currentParam ? '' : 'active' }}">
                                         Tous ({{ eventCount|number_format(0, ',', ' ') }})
                                     </a>
                                 </li>
                                 {% for category in categories %}
                                     <li>
-                                        <a href="{{ path('page_les_evenements_la_carte', {'type': category.id}) }}"
+                                        <a href="{{ path('map_events', {'type': category.id}) }}"
                                            class="link--no-decor {{ currentParam == category.id ? 'active' }}">
                                             {{ category.name }}
                                         </a>

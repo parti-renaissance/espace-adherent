@@ -158,7 +158,7 @@ class ReferentController extends Controller
 
             $this->addFlash('info', $this->get('translator')->trans('referent.event.creation.success'));
 
-            return $this->redirectToRoute('app_committee_show_event', [
+            return $this->redirectToRoute('app_event_show', [
                 'uuid' => (string) $command->getEvent()->getUuid(),
                 'slug' => (string) $command->getEvent()->getSlug(),
             ]);
