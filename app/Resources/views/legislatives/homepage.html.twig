@@ -65,6 +65,15 @@
                  data-name="{{ candidate.fullName }}"
                  data-career="{{ candidate.career }}"
             >
+                {% if candidate.status == constant('STATUS_QUALIFIED', candidate) %}
+                    <span class="legislatives__trombi__item__status legislatives__trombi__item__status--qualified">
+                        Qualifié(e)
+                    </span>
+                {% elseif candidate.status == constant('STATUS_WON', candidate) %}
+                    <span class="legislatives__trombi__item__status legislatives__trombi__item__status--won">
+                        Élu(e)
+                    </span>
+                {% endif %}
                 <a href="{{ path('legislatives_candidate', {'slug': candidate.slug}) }}"
                    title="{{ candidate.fullName }}"
                    class="legislatives__trombi__item__visual link--no-decor progressive-background"

@@ -82,6 +82,10 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ->add('districtZone', null, [
                 'label' => 'Zone géographique',
             ])
+            ->add('status', null, [
+                'label' => 'Résultat',
+                'template' => 'admin/legislative_candidate_status.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'template' => 'admin/legislative_candidate_actions.html.twig',
@@ -126,6 +130,15 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Circonscription', ['class' => 'col-md-4'])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Résultat',
+                    'choices' => [
+                        'Pas de résultat' => LegislativeCandidate::STATUS_NONE,
+                        'Non qualifié(e)' => LegislativeCandidate::STATUS_LOST,
+                        'Qualifié(e)' => LegislativeCandidate::STATUS_QUALIFIED,
+                        'Elu(e)' => LegislativeCandidate::STATUS_WON,
+                    ],
+                ])
                 ->add('districtZone', null, [
                     'label' => 'Zone géographique',
                     'disabled' => true,

@@ -27,6 +27,11 @@ class LegislativeCandidate
         'legislative_candidate.careers.2',
     ];
 
+    const STATUS_NONE = 'none';
+    const STATUS_LOST = 'lost';
+    const STATUS_QUALIFIED = 'qualified';
+    const STATUS_WON = 'won';
+
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
      * @ORM\Id
@@ -142,9 +147,26 @@ class LegislativeCandidate
      */
     private $career;
 
+    /**
+     * @ORM\Column(length=20)
+     * @Assert\NotBlank(groups="Admin")
+     * @Assert\Choice(callback="getStatuses", groups="Admin")
+     */
+    private $status = self::STATUS_NONE;
+
     public static function getCareerChoices(): array
     {
         return self::CAREERS;
+    }
+
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS_NONE,
+            self::STATUS_LOST,
+            self::STATUS_QUALIFIED,
+            self::STATUS_WON,
+        ];
     }
 
     public function getId(): ?int
@@ -310,5 +332,15 @@ class LegislativeCandidate
     public function setCareer(string $career): void
     {
         $this->career = $career;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
     }
 }
