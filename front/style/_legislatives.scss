@@ -297,29 +297,55 @@
         }
     }
 
-    &__candidate__photo {
-        background-color: $filter;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        width: 40%;
-        height: 250px;
+    &__candidate {
+        &__photo {
+            background-color: $filter;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 40%;
+            height: 250px;
 
-        @media (max-width: $tablet) {
-            height: 175px;
+            @media (max-width: $tablet) {
+                height: 175px;
+            }
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
         }
 
-        @media (max-width: $mobile) {
-            width: 100%;
-        }
-    }
+        &__info {
+            width: 57%;
 
-    &__candidate__info {
-        width: 57%;
+            @media (max-width: $mobile) {
+                width: 100%;
+                margin-top: 20px;
+            }
 
-        @media (max-width: $mobile) {
-            width: 100%;
-            margin-top: 20px;
+            &__label {
+                display: inline-flex;
+                color: white;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 7px 15px 7px;
+                margin: 0 0 15px 0;
+                text-transform: uppercase;
+                font-size: $text--size-small;
+                letter-spacing: 1.5px;
+                transition: all 0.45s;
+                box-sizing: border-box;
+                font-family: $font-gillsans;
+
+                &--qualified {
+                    background: $blue;
+                }
+
+                &--won {
+                    background: $pink;
+                }
+            }
         }
     }
 }

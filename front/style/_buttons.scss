@@ -173,6 +173,10 @@
         @include btn--blue;
     }
 
+    &--muted {
+        @include btn--muted;
+    }
+
     &--text-blue {
         color: $blue;
     }
