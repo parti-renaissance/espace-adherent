@@ -77,7 +77,7 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 #
 # Referent
 #
-referent.message.success: Votre message a été envoyé avec succès.
+referent.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 referent.event.creation.success: Le nouvel événement a bien été créé.
 
 #

@@ -181,53 +181,10 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
      */
     public function findAllManagedBy(Adherent $referent): array
     {
-        return $this->createManagedByQueryBuilder($referent)->getQuery()->getResult();
-    }
+        if (!$referent->getManagedArea()) {
+            return [];
+        }
 
-    /**
-     * Finds the list of non-followers managed by the given referent.
-     *
-     * @param Adherent $referent
-     *
-     * @return Adherent[]
-     */
-    public function findNonFollowersManagedBy(Adherent $referent): array
-    {
-        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
-            return 0 === $adherent->getMemberships()->count();
-        });
-    }
-
-    /**
-     * Finds the list of followers managed by the given referent.
-     *
-     * @param Adherent $referent
-     *
-     * @return Adherent[]
-     */
-    public function findFollowersManagedBy(Adherent $referent): array
-    {
-        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
-            return $adherent->getMemberships()->count() > 0;
-        });
-    }
-
-    /**
-     * Finds the list of hosts managed by the given referent.
-     *
-     * @param Adherent $referent
-     *
-     * @return Adherent[]
-     */
-    public function findHostsManagedBy(Adherent $referent): array
-    {
-        return array_filter($this->findAllManagedBy($referent), function (Adherent $adherent) {
-            return $adherent->isHost();
-        });
-    }
-
-    private function createManagedByQueryBuilder(Adherent $referent)
-    {
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
             ->leftJoin('a.memberships', 'm')
@@ -258,7 +215,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         $qb->andWhere($codesFilter);
 
-        return $qb;
+        return $qb->getQuery()->getResult();
     }
 
     /**

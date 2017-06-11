@@ -1,0 +1,169 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <h3>
+        Marcheurs
+    </h3>
+
+    <div class="referent__filters">
+        <h4 class="referent__filters__title">
+            Filtres
+        </h4>
+
+        <form method="get" action="{{ path('app_referent_users') }}">
+            <div class="l__row l__row--top l__mobile--col">
+                <div class="l__col--grow-1 b__nudge--right">
+                    <label class="form form__label">
+                        Rechercher par ID, prénom ou code postal :<br />
+                        <input type="text"
+                               name="{{ constant('PARAMETER_QUERY', filter) }}"
+                               value="{{ filter.query }}"
+                               placeholder="Rechercher ..."
+                               class="form form__field form--full" />
+                    </label>
+                </div>
+
+                <div class="l__col--grow-1 b__nudge--right">
+                    <div class="form__row form__checkbox">
+                        <input type="checkbox" value="1" id="parameter_include_newsletter"
+                               name="{{ constant('PARAMETER_INCLUDE_NEWSLETTER', filter) }}"
+                                {{ filter.includeNewsletter ? 'checked="checked"' : '' }} />
+                        <label for="parameter_include_newsletter">
+                            Abonnés à la newsletter
+                        </label>
+                    </div>
+
+                    <div class="form__row form__checkbox">
+                        <input type="checkbox" value="1" id="parameter_include_adherents_no_committee"
+                               name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE', filter) }}"
+                                {{ filter.includeAdherentsNoCommittee ? 'checked="checked"' : '' }} />
+                        <label for="parameter_include_adherents_no_committee">
+                            Adhérents en dehors de tout comité
+                        </label>
+                    </div>
+                </div>
+
+                <div class="l__col--grow-1 b__nudge--right">
+                    <div class="form__row form__checkbox">
+                        <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
+                               name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
+                                {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
+                        <label for="parameter_include_adherents_in_committee">
+                            Adhérents dans un comité (hors animateurs)
+                        </label>
+                    </div>
+
+                    <div class="form__row form__checkbox">
+                        <input type="checkbox" value="1" id="parameter_include_hosts"
+                               name="{{ constant('PARAMETER_INCLUDE_HOSTS', filter) }}"
+                                {{ filter.includeHosts ? 'checked="checked"' : '' }} />
+                        <label for="parameter_include_hosts">
+                            Animateurs de comités locaux
+                        </label>
+                    </div>
+                </div>
+
+                <div class="referent__filters__button">
+                    <input type="submit" class="btn btn--small btn--blue b__nudge--bottom-tiny" value="Filtrer" />
+                    {% if filter.hasToken %}<br />
+                        <a href="{{ path('app_referent_users') }}" class="btn btn--small btn--no-border">
+                            Réinitialiser
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
+        </form>
+    </div>
+
+    <div class="datagrid">
+        <div class="datagrid__search">
+            {{ results_count }} résultat(s) :
+            <a href="{{ path('app_referent_users_message') ~ filter }}" type="button" class="btn btn--small btn--primary">
+                Leur envoyer un message
+            </a>
+        </div>
+
+        <div class="datagrid__pager">
+            {% block pager %}
+                {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+                {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+
+                {% if filter.offset > 0 %}
+                    <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
+                        Première
+                    </a>
+                    <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="btn btn--small">
+                        Précédente
+                    </a>
+                {% endif %}
+
+                <span class="btn btn--small btn--no-border">
+                    Page {{ current_page }} / {{ last_page }}
+                </span>
+
+                {% if filter.offset + constant('PER_PAGE', filter) < results_count %}
+                    <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="btn btn--small">
+                        Suivante
+                    </a>
+                    <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
+                        Dernière
+                    </a>
+                {% endif %}
+            {% endblock %}
+        </div>
+
+        <div class="b__nudge--bottom-larger">
+            <table class="datagrid__table">
+                <thead>
+                <tr>
+                    <th style="width: 85px;">ID</th>
+                    <th style="width: 100px;">Code postal</th>
+                    <th class="datagrid__table__col--left">Informations</th>
+                    <th style="width: 300px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
+                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Inscription</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in results %}
+                    <tr class="referent__item referent__item--{{ user.styleType }}">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.postalCode }}</td>
+                        <td class="datagrid__table__col--left">
+                            {% if user.type == constant('TYPE_NEWSLETTER', user) %}
+                                Abonné newsletter
+                            {% else %}
+                                <strong>
+                                    {{ user.firstName|slice(0, 1)|upper ~ user.firstName|slice(1) }}
+                                    {{ user.isCommitteeHost ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
+                                </strong>
+                                <small class="referent__item__metadata">
+                                    {{ user.age }} ans, {{ user.city }}, {{ user.country }},
+                                    {{ user.isMailSubscriber ? 'abonné(e) aux mails' : 'non abonné(e) aux mails' }}
+                                </small>
+                                <br />
+                                <small>
+                                    {{ user.isCommitteeHost ? 'Animateur local' : '' }}
+                                </small>
+                            {% endif %}
+                        </td>
+                        <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
+                            {{ user.committees|e|join('<br />')|raw }}
+                        </td>
+                        <td class="datagrid__table__col--hide-mobile">
+                            12/05/2017 10:13
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr />
+
+        <div class="text--center">
+            {{ block('pager') }}
+        </div>
+    </div>
+{% endblock %}

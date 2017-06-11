@@ -160,6 +160,19 @@ class ReferentManagedUser
         return $this->type;
     }
 
+    public function getStyleType(): string
+    {
+        if (self::TYPE_NEWSLETTER === $this->type) {
+            return 'newsletter';
+        }
+
+        if ($this->isCommitteeHost) {
+            return 'host';
+        }
+
+        return 'adherent';
+    }
+
     public function getOriginalId(): int
     {
         return $this->originalId;
@@ -193,6 +206,11 @@ class ReferentManagedUser
     public function getLastName(): ?string
     {
         return $this->lastName;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->firstName ? $this->firstName.' '.$this->lastName : null;
     }
 
     public function getAge(): ?int

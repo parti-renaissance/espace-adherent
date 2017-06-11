@@ -257,35 +257,12 @@
         </service>
 
         <!-- Referents -->
-        <service id="app.referent.database_dumper" class="AppBundle\Referent\ReferentDatabaseDumper">
-            <argument type="service" id="app.repository.adherent"/>
-            <argument type="service" id="app.referent.managed_users.factory"/>
-            <argument type="service" id="app.referent.managed_users.exporter"/>
-            <argument type="service" id="app.storage"/>
-        </service>
-
-        <service id="app.referent.dumped_database_reader" class="AppBundle\Referent\ReferentDumpedDatabaseReader">
-            <argument type="service" id="app.storage"/>
-        </service>
-
-        <service id="app.referent.managed_users.factory" class="AppBundle\Referent\ManagedUserFactory">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-        </service>
-
-        <service id="app.referent.managed_users.exporter" class="AppBundle\Referent\ManagedUserExporter">
-            <argument type="service" id="app.repository.committee" />
-        </service>
-
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
             <argument type="service" id="router" />
         </service>
 
         <service id="app.referent.managed_committees.exporter" class="AppBundle\Referent\ManagedCommitteesExporter">
             <argument type="service" id="router" />
-        </service>
-
-        <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
-            <argument type="service" id="app.mailjet.campaign_mailer" />
         </service>
 
         <!-- Routing -->
@@ -304,7 +281,7 @@
             <argument type="service" id="app.repository.event"/>
         </service>
 
-        <!--Donation Frequency-->
+        <!-- Donation Frequency -->
         <service id="AppBundle\Validator\PayboxSubscriptionValidator">
             <tag name="validator.constraint_validator" />
         </service>

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Consumer;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Container\ContainerInterface;
@@ -72,6 +73,11 @@ abstract class AbstractConsumer implements ConsumerInterface
     private function getValidator(): ValidatorInterface
     {
         return $this->container->get(ValidatorInterface::class);
+    }
+
+    protected function getDoctrine(): Registry
+    {
+        return $this->container->get('doctrine');
     }
 
     /**

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace référent' %}
+{% block canonical_url url('app_referent_users') %}
+
+{% block content %}
+    <main>
+        <section class="referent procuration-manager b__nudge--bottom-huge">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    {{ block('page_title') }}
+                </h1>
+                <p class="text--center">
+                    Zones gérées : {{ app.user.managedAreaCodesAsString }}
+                </p>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content">
+                {% set pages = [
+                    {
+                        'route': 'app_referent_users',
+                        'label': 'Marcheurs'
+                    },
+                    {
+                        'route': 'app_referent_events',
+                        'label': 'Événements'
+                    },
+                    {
+                        'route': 'app_referent_commitees',
+                        'label': 'Comités'
+                    }
+                ] %}
+
+                <ul class="procuration-manager__tabs">
+                    {% for page in pages %}
+                        <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
+                            <a href="{{ path(page.route) }}">
+                                {{ page.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <hr />
+
+                {% block referent_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

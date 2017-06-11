@@ -1,86 +1,51 @@
 .referent {
-    font-family: $font-roboto;
+    &__filters {
+        background: $gray--lighter;
+        padding: 10px;
+        margin: 20px 0 50px 0;
 
-    &__sidebar {
-        min-width: 275px;
-        border-right: 2px solid #f2f2f2;
-        padding: 0 20px 20px 20px;
-
-        h4 {
-            text-transform: uppercase;
-            font-weight: normal;
-            margin-top: 20px;
-            color: #828282;
-            font-size: 16px;
-            padding: 10px 15px;
+        &__title {
+            margin: 0;
+            padding: 0;
         }
 
-        a {
-            font-size: 14px;
-            display: block;
-            border: 0;
-            text-decoration: none;
-            transition: 0s;
-            padding: 10px 15px;
-
-            &:hover {
-                color: black;
-                text-decoration: underline;
-            }
+        .form__row {
+            margin-bottom: 0;
         }
 
-        li.active a {
-            background: #e9e9e9;
-            color: black;
-
-            &:hover {
-                text-decoration: none;
-            }
+        &__button {
+            text-align: center;
+            width: 200px;
+            height: 75px;
         }
     }
 
-    &__content {
-        padding: 20px;
-        flex-grow: 1;
-
-        &__loader {
-            width: 100%;
-            height: 300px;
-            background: url('/images/loader-sm.gif') no-repeat 50% 50%;
-        }
-
-        &__list {
-            width: 100%;
-        }
-    }
-
-    &__btn-send-mail {
-        float: left;
-        margin: -8px 20px 0 0;
-    }
-
-    &__btn-export-csv {
+    &__btn-create-event {
         float: right;
-        margin: -8px 20px 0 0;
+        margin: -8px 0 0 0;
     }
 
-    &__users-count-container {
-        @media (max-width: $mobile) {
-            display: block;
-            clear: both;
-            padding-top: 10px;
+    .datagrid__table {
+        font-family: $font-roboto;
+        font-size: 14px;
+    }
+
+    &__item {
+        td {
+            padding: 10px 0;
         }
-    }
 
-    #csv-export {
-        display: inline;
-    }
+        &__metadata {
+            margin-left: 10px;
+            color: $gray--muted;
+        }
 
-    a.disabled {
-        opacity: 0.7;
-        background: #E5E5E5;
-        color: rgba(0, 0, 0, 0.5);
-        border-color: #BCBCBC;
-        cursor: not-allowed;
+        &--host {
+            background: #fffad3;
+
+            &:hover {
+                background: #f4efcb !important;
+            }
+        }
     }
 }

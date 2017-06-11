@@ -13,9 +13,9 @@ class ReferentMessage
     private $from;
 
     /**
-     * @var ManagedUser[]
+     * @var ManagedUsersFilter
      */
-    private $to;
+    private $filter;
 
     /**
      * @var string|null
@@ -37,18 +37,37 @@ class ReferentMessage
      */
     private $content;
 
-    public function __construct(Adherent $from, array $to)
+    public function __construct(Adherent $from, ManagedUsersFilter $filter)
     {
-        $this->to = $to;
+        $this->filter = $filter;
         $this->from = $from;
     }
 
-    public function setSubject(string $subject)
+    public static function createFromArray(Adherent $referent, array $data): self
+    {
+        $message = new self($referent, ManagedUsersFilter::createFromArray($data['filter']));
+        $message->subject = $data['subject'];
+        $message->content = $data['content'];
+
+        return $message;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'referent_uuid' => $this->from->getUuid()->toString(),
+            'filter' => $this->filter->toArray(),
+            'subject' => $this->subject,
+            'content' => $this->content,
+        ];
+    }
+
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
     }
 
-    public function setContent(string $content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
@@ -58,26 +77,9 @@ class ReferentMessage
         return $this->from;
     }
 
-    /**
-     * @return ManagedUser[]
-     */
-    public function getTo(): array
+    public function getFilter(): ManagedUsersFilter
     {
-        return $this->to;
-    }
-
-    public function countAdherents(): int
-    {
-        return count(array_filter($this->to, function (ManagedUser $item) {
-            return $item->getType() === ManagedUser::TYPE_ADHERENT;
-        }));
-    }
-
-    public function countNewsletterSubscribers(): int
-    {
-        return count(array_filter($this->to, function (ManagedUser $item) {
-            return $item->getType() === ManagedUser::TYPE_NEWSLETTER_SUBSCRIBER;
-        }));
+        return $this->filter;
     }
 
     public function getSubject(): ?string
