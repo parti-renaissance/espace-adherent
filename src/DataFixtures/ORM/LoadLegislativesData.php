@@ -45,7 +45,9 @@ class LoadLegislativesData implements FixtureInterface
             Genders::FEMALE,
             'Michelle',
             'Dumoulin',
-            file_get_contents(__DIR__.'/../legislatives/geojson.json')
+            file_get_contents(__DIR__.'/../legislatives/geojson.json'),
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -54,7 +56,10 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::MALE,
             'Pierre',
-            'Etchebest'
+            'Etchebest',
+            null,
+            null,
+            LegislativeCandidate::STATUS_LOST
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -63,7 +68,10 @@ class LoadLegislativesData implements FixtureInterface
             '5',
             Genders::FEMALE,
             'Monique',
-            'Albert'
+            'Albert',
+            null,
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -72,7 +80,10 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::MALE,
             'Etienne',
-            'de Monté-Cristo'
+            'de Monté-Cristo',
+            null,
+            null,
+            LegislativeCandidate::STATUS_QUALIFIED
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -81,7 +92,10 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::FEMALE,
             'Valérie',
-            'Langlade'
+            'Langlade',
+            null,
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -90,7 +104,10 @@ class LoadLegislativesData implements FixtureInterface
             '3',
             Genders::FEMALE,
             'Isabelle',
-            'Piémontaise'
+            'Piémontaise',
+            null,
+            null,
+            LegislativeCandidate::STATUS_QUALIFIED
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -99,7 +116,10 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::FEMALE,
             'Estelle',
-            'Antonov'
+            'Antonov',
+            null,
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -108,7 +128,10 @@ class LoadLegislativesData implements FixtureInterface
             '2',
             Genders::MALE,
             'Jacques',
-            'Arditi'
+            'Arditi',
+            null,
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -117,7 +140,10 @@ class LoadLegislativesData implements FixtureInterface
             '3',
             Genders::MALE,
             'Albert',
-            'Bérégovoy'
+            'Bérégovoy',
+            null,
+            null,
+            LegislativeCandidate::STATUS_WON
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -126,7 +152,10 @@ class LoadLegislativesData implements FixtureInterface
             '1',
             Genders::MALE,
             'Franck',
-            'de Lavalle'
+            'de Lavalle',
+            null,
+            null,
+            LegislativeCandidate::STATUS_LOST
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -137,7 +166,8 @@ class LoadLegislativesData implements FixtureInterface
             'Emmanuelle',
             'Parfait',
             null,
-            'emmanuelle-parfait'
+            'emmanuelle-parfait',
+            LegislativeCandidate::STATUS_QUALIFIED
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -148,7 +178,8 @@ class LoadLegislativesData implements FixtureInterface
             'Michel',
             'Patulacci',
             null,
-            'michel-patulacci'
+            'michel-patulacci',
+            LegislativeCandidate::STATUS_LOST
         ));
 
         $manager->persist($this->createLegislativeCandidate(
@@ -195,7 +226,8 @@ class LoadLegislativesData implements FixtureInterface
         string $firstName,
         string $lastName,
         string $geojson = null,
-        string $slug = null
+        string $slug = null,
+        string $status = LegislativeCandidate::STATUS_NONE
     ): LegislativeCandidate {
         $directory = __DIR__.'/../../DataFixtures/legislatives';
         $description = sprintf('%s/description.txt', $directory);
@@ -213,6 +245,7 @@ class LoadLegislativesData implements FixtureInterface
         $candidate->setGeojson($geojson);
         $candidate->setDescription(file_get_contents($description));
         $candidate->setCareer(LegislativeCandidate::CAREERS[1]);
+        $candidate->setStatus($status);
 
         if ($slug) {
             $candidate->setSlug($slug);
