@@ -1,0 +1,62 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.ckeditor('referent_message_content') }}
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+    <p>
+        <a href="{{ path('app_referent_users') ~ filter }}" class="icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour
+        </a>
+    </p>
+
+    <div class="l__wrapper--slim">
+        <h3>Envoyer un message</h3>
+
+        <div class="space--30-0">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="form__row">
+                {{ form_label(form.subject, 'Destinataires (n\'inclut que les abonnés aux e-mails)') }}
+                <input type="text" disabled="disabled" class="form form__field form--full" value="{{ results_count }} marcheurs(s)" />
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.subject, 'Expéditeur') }}
+                <input type="text" disabled="disabled" class="form form__field form--full" value="{{ app.user.fullName }}" />
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.subject, 'Objet') }}
+                {{ form_errors(form.subject) }}
+                {{ form_widget(form.subject, {'attr': {'class': 'form--full'}}) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.content, 'Message') }}
+                {{ form_errors(form.content) }}
+                {{ form_widget(form.content, {'attr': {'class': 'form--full form__field--textarea-300'}}) }}
+            </div>
+
+            <button class="btn btn--blue b__nudge--bottom-small" type="submit">
+                Envoyer le message
+            </button>
+            <a href="{{ path('app_referent_users') }}" class="btn">
+                Annuler
+            </a>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,4 @@
-{% extends 'referent/layout.html.twig' %}
-
-{% block referent_menu_commitees_list 'class="active"' %}
+{% extends 'referent/_layout.html.twig' %}
 
 {% block javascripts %}
     <script type="text/javascript">
@@ -20,6 +18,13 @@
                         link: true
                     },
                     {
+                        key: 'beginAt',
+                        name: 'Date',
+                        style: {
+                            width: 150
+                        }
+                    },
+                    {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
@@ -27,23 +32,35 @@
                         }
                     },
                     {
-                        key: 'members',
-                        name: 'Suiveurs',
+                        key: 'organizer',
+                        name: 'Organisateur',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 150
+                        }
+                    },
+                    {
+                        key: 'participants',
+                        name: 'Participants',
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
                             width: 50
                         }
                     }
                 ],
-                {{ managedCommitteesJson|raw }}
+                {{ managedEventsJson|raw }}
             );
         });
     </script>
 {% endblock %}
 
 {% block referent_content %}
+    <a href="{{ path('app_referent_events_create') }}" class="btn btn--blue referent__btn-create-event">
+        Créer un événement
+    </a>
+
     <h3>
-        Comités
+        Événements
     </h3>
 
     <hr />

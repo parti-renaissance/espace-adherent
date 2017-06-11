@@ -2,6 +2,7 @@
 
 namespace AppBundle\Consumer;
 
+use AppBundle\Entity\MailjetEmail;
 use AppBundle\Mailjet\ClientInterface;
 use AppBundle\Repository\MailjetEmailRepository;
 use GuzzleHttp\Exception\ConnectException;
@@ -9,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AbstractMailjetConsumer extends AbstractConsumer
 {
-    const NAME = 'mailjet-delayed-abstract';
     const CLIENT_ID = 'to_override';
 
     protected function configureDataConstraints(): array
@@ -24,11 +24,9 @@ class AbstractMailjetConsumer extends AbstractConsumer
         $logger = $this->getLogger();
 
         try {
-            $this->writeln($data['uuid'], 'Message received');
-
             if (!$message = $this->getMailjetRepository()->findOneByUuid($data['uuid'])) {
-                $logger->error('Message not not found for uuid "%s"', $data['uuid']);
-                $this->writeln(static::NAME, 'Message not found');
+                $logger->error('MailjetEmail not found', $data);
+                $this->writeln($data['uuid'], 'MailjetEmail not found, rejecting');
 
                 return true;
             }
@@ -48,7 +46,7 @@ class AbstractMailjetConsumer extends AbstractConsumer
 
             return false;
         } catch (\Exception $error) {
-            $logger->error('Consumer '.static::NAME.' failed', ['exception' => $error]);
+            $logger->error('Consumer failed', ['exception' => $error]);
 
             throw $error;
         }
@@ -61,6 +59,6 @@ class AbstractMailjetConsumer extends AbstractConsumer
 
     protected function getMailjetRepository(): MailjetEmailRepository
     {
-        return $this->container->get('app.repository.mailjet_email');
+        return $this->getDoctrine()->getRepository(MailjetEmail::class);
     }
 }

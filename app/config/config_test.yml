@@ -20,6 +20,10 @@ services:
         class: 'Tests\AppBundle\Test\Producer\MailjetNullProducer'
         public: false
 
+    old_sound_rabbit_mq.referent_message_dispatcher_producer:
+        class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
+        public: false
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     adherent_interests:

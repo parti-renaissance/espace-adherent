@@ -11,12 +11,10 @@ parameters:
 services:
     app.mailjet.transactional_client:
         class: 'Tests\AppBundle\Test\Mailjet\NullClient'
-        arguments: ['@?logger']
         public: false
 
     app.mailjet.campaign_client:
         class: 'Tests\AppBundle\Test\Mailjet\NullClient'
-        arguments: ['@?logger']
         public: false
 
     app.recaptcha.api_client:
