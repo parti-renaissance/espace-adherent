@@ -5,6 +5,96 @@
 }
 
 .legislatives {
+    &__status-selector {
+        margin-bottom: 40px;
+        text-align: center;
+
+        &__won {
+            &--inactive {
+                @include btn;
+                color: $pink-hover;
+                border-color: white;
+                background-color: white;
+
+                &:hover {
+                    color: $pink-hover;
+                    border-color: white;
+                    background-color: white;
+                    text-decoration: underline;
+                }
+            }
+
+            &--active {
+                @include btn;
+                color: white;
+                border-color: $pink;
+                background-color: $pink;
+
+                &:hover {
+                    background-color: $pink-hover;
+                    border-color: $pink-hover;
+                }
+            }
+        }
+
+        &__qualified {
+            &--inactive {
+                @include btn;
+                color: $blue-hover;
+                border-color: white;
+                background-color: white;
+
+                &:hover {
+                    color: $blue-hover;
+                    border-color: white;
+                    background-color: white;
+                    text-decoration: underline;
+                }
+            }
+
+            &--active {
+                @include btn;
+                color: white;
+                border-color: $blue;
+                background-color: $blue;
+
+                &:hover {
+                    background-color: $blue-hover;
+                    border-color: $blue-hover;
+                }
+            }
+        }
+
+        &__all {
+            &--inactive {
+                @include btn;
+                color: $dark;
+                border-color: white;
+                background-color: white;
+
+                &:hover {
+                    color: $dark;
+                    border-color: white;
+                    background-color: white;
+                    text-decoration: underline;
+                }
+            }
+
+            &--active {
+                @include btn;
+                color: $dark;
+                border-color: $gray--light;
+                background-color: $gray--light;
+
+                &:hover {
+                    color: $dark;
+                    background-color: $gray;
+                    border-color: $gray;
+                }
+            }
+        }
+    }
+
     &__header {
         margin: 20px auto;
 

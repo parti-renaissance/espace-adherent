@@ -64,6 +64,18 @@
     }
 }
 
+@mixin btn--muted {
+    color: $darker;
+    background: $gray--light;
+    border-color: $gray--light;
+
+    &:hover {
+        color: $darker;
+        background: $gray;
+        border-color: $gray;
+    }
+}
+
 @mixin btn--yellow {
     background: $yellow;
     border-color: $yellow;

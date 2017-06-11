@@ -7,6 +7,7 @@ use AppBundle\Entity\LegislativeDistrictZone;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
@@ -15,11 +16,21 @@ class HomeController extends Controller
      * @Route("/", defaults={"_enable_campaign_silence"=true}, name="legislatives_homepage")
      * @Method("GET")
      */
-    public function indexAction(): Response
+    public function indexAction(Request $request): Response
     {
+        $doctrine = $this->getDoctrine();
+        $candidatesRepository = $doctrine->getRepository(LegislativeCandidate::class);
+        $districtZonesRepository = $doctrine->getRepository(LegislativeDistrictZone::class);
+
+        $status = $request->query->get('status');
+        if (!in_array($status, LegislativeCandidate::getStatuses(), true)) {
+            $status = null;
+        }
+
         return $this->render('legislatives/homepage.html.twig', [
-            'candidates' => $this->getDoctrine()->getRepository(LegislativeCandidate::class)->findAllForDirectory(),
-            'groupedZones' => $this->getDoctrine()->getRepository(LegislativeDistrictZone::class)->findAllGrouped(),
+            'status' => $status,
+            'candidates' => $candidatesRepository->findAllForDirectory($status),
+            'groupedZones' => $districtZonesRepository->findAllGrouped(),
         ]);
     }
 
