@@ -21,6 +21,18 @@
         </h2>
     </header>
 
+    <div class="legislatives__status-selector">
+        <a href="?" class="legislatives__status-selector__all--{{ not status ? 'active' : 'inactive' }}">
+            Tous les candidats
+        </a>
+        <a href="?status=qualified" class="legislatives__status-selector__qualified--{{ status == 'qualified' ? 'active' : 'inactive' }}">
+            Qualifié(e)s
+        </a>
+        <a href="?status=won" class="legislatives__status-selector__won--{{ status == 'won' ? 'active' : 'inactive' }}">
+            Élu(e)s
+        </a>
+    </div>
+
     <div class="l__wrapper--medium b__nudge--bottom-large legislatives__form">
         <div class="label text--summary text--block text--all-caps">
           Rechercher par :

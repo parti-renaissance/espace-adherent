@@ -22,19 +22,28 @@ class LegislativeCandidateRepository extends EntityRepository
     }
 
     /**
+     * @param string|null $status
+     *
      * @return LegislativeCandidate[]
      */
-    public function findAllForDirectory(): array
+    public function findAllForDirectory(string $status = null): array
     {
-        return $this
-            ->createQueryBuilder('lc')
+        $qb = $this->createQueryBuilder('lc');
+        $qb
             ->addSelect('dz', 'md')
             ->leftJoin('lc.districtZone', 'dz')
             ->leftJoin('lc.media', 'md')
             ->addOrderBy('dz.rank', 'ASC')
             ->addOrderBy('lc.districtNumber', 'ASC')
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($status) {
+            $qb
+                ->where('lc.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
