@@ -2,11 +2,11 @@
 
 namespace Tests\AppBundle\Test\Mailjet\Transport;
 
-use AppBundle\Mailjet\MailjetTemplateEmail;
-use AppBundle\Mailjet\Transport\MailjetMessageTransportInterface;
+use AppBundle\Mailjet\EmailTemplate;
+use AppBundle\Mailjet\Transport\TransportInterface;
 use Psr\Log\LoggerInterface;
 
-class MailjetNullTransport implements MailjetMessageTransportInterface
+class NullTransport implements TransportInterface
 {
     private $logger;
 
@@ -15,7 +15,7 @@ class MailjetNullTransport implements MailjetMessageTransportInterface
         $this->logger = $logger;
     }
 
-    public function sendTemplateEmail(MailjetTemplateEmail $email)
+    public function sendTemplateEmail(EmailTemplate $email): void
     {
         if ($this->logger) {
             $this->logger->info('[mailjet] sending email with Mailjet.', [

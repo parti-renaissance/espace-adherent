@@ -33,8 +33,7 @@ final class EventContactMembersMessage extends MailjetMessage
             [
                 'target_firstname' => self::escape($recipient->getFirstName()),
             ],
-            $organizer->getEmailAddress(),
-            Uuid::uuid4()
+            $organizer->getEmailAddress()
         );
 
         foreach ($recipients as $recipient) {

@@ -6,17 +6,17 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Mailjet\Event\MailjetEvent;
-use AppBundle\Mailjet\EventSubscriber\MailjetEmailDoctrineBackupEventSubscriber;
-use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\EventSubscriber\EmailPersisterEventSubscriber;
+use AppBundle\Mailjet\EmailTemplate;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 
-class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_TestCase
+class EmailPersisterEventSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var MailjetEmailDoctrineBackupEventSubscriber */
+    /** @var EmailPersisterEventSubscriber */
     private $subscriber;
     private $repository;
     private $manager;
@@ -33,7 +33,7 @@ class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_T
 
         $this->subscriber->onMailjetDeliveryMessage(new MailjetEvent(
             $message = CommitteeMessageNotificationMessage::create($adherents, $item),
-            MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr')
+            EmailTemplate::createWithMailjetMessage($message, 'noreply@en-marche.fr')
         ));
     }
 
@@ -44,7 +44,7 @@ class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_T
 
         $this->subscriber->onMailjetDeliverySuccess(new MailjetEvent(
             $message = DummyMessage::create(),
-            MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr')
+            EmailTemplate::createWithMailjetMessage($message, 'noreply@en-marche.fr')
         ));
     }
 
@@ -59,7 +59,7 @@ class MailjetEmailDoctrineBackupEventSubscriberTest extends \PHPUnit_Framework_T
 EOF;
 
         $message = DummyMessage::create();
-        $email = MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr');
+        $email = EmailTemplate::createWithMailjetMessage($message, 'noreply@en-marche.fr');
         $email->delivered($responsePayload, $email->getHttpRequestPayload());
 
         $this->repository->expects($this->once())->method('findOneByUuid')->willReturn(null);
@@ -82,7 +82,7 @@ EOF;
 }
 EOF;
 
-        $email = MailjetTemplateEmail::createWithMailjetMessage($message, 'noreply@en-marche.fr');
+        $email = EmailTemplate::createWithMailjetMessage($message, 'noreply@en-marche.fr');
         $email->delivered($responsePayload, $requestPayload = $email->getHttpRequestPayload());
 
         $this->repository
@@ -126,7 +126,7 @@ EOF;
         $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
         $this->repository = $this->getMockBuilder(MailjetEmailRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->subscriber = new MailjetEmailDoctrineBackupEventSubscriber(
+        $this->subscriber = new EmailPersisterEventSubscriber(
             $this->manager,
             $this->repository
         );

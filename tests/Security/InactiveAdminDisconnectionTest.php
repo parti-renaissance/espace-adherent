@@ -11,6 +11,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group time-sensitive
+ * @group functional
  */
 class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 {

@@ -9,13 +9,13 @@ parameters:
     timeline_max_messages: 10
 
 services:
-    app.mailjet.transport.transactional:
-        class: 'Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport'
+    app.mailjet.transactional_client:
+        class: 'Tests\AppBundle\Test\Mailjet\NullClient'
         arguments: ['@?logger']
         public: false
 
-    app.mailjet.transport.campaign:
-        class: 'Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport'
+    app.mailjet.campaign_client:
+        class: 'Tests\AppBundle\Test\Mailjet\NullClient'
         arguments: ['@?logger']
         public: false
 

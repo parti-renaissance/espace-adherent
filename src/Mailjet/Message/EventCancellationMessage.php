@@ -43,8 +43,7 @@ final class EventCancellationMessage extends MailjetMessage
             sprintf('L\'événement "%s" a été annulé.', $event->getName()),
             static::getTemplateVars($event->getName(), $eventsLink),
             $recipientVarsGenerator($recipient),
-            $host->getEmailAddress(),
-            $event->getUuid()
+            $host->getEmailAddress()
         );
 
         /* @var Adherent[] $recipients */

@@ -288,11 +288,8 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
-        $this->assertMailCountRecipients(
-            $this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID),
-            CommitteeMessageNotificationMessage::class,
-            $message->getUuid()
-        );
+        $mail = $this->getMailjetEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
+        $this->assertMailCountRecipients($this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID), $mail);
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => [

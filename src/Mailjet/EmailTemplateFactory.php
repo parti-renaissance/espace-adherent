@@ -4,7 +4,7 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailjet\Message\MailjetMessage;
 
-class MailjetTemplateEmailFactory
+class EmailTemplateFactory
 {
     private $senderEmail;
     private $senderName;
@@ -15,8 +15,8 @@ class MailjetTemplateEmailFactory
         $this->senderName = $senderName;
     }
 
-    public function createFromMailjetMessage(MailjetMessage $message): MailjetTemplateEmail
+    public function createFromMailjetMessage(MailjetMessage $message): EmailTemplate
     {
-        return MailjetTemplateEmail::createWithMailjetMessage($message, $this->senderEmail, $this->senderName);
+        return EmailTemplate::createWithMailjetMessage($message, $this->senderEmail, $this->senderName);
     }
 }

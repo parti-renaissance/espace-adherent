@@ -7,7 +7,6 @@ use Ramsey\Uuid\UuidInterface;
 abstract class MailjetMessage
 {
     protected $uuid;
-    protected $batch;
     protected $vars;
     protected $subject;
     protected $template;
@@ -28,7 +27,6 @@ abstract class MailjetMessage
      * @param array         $commonVars     The common variables shared by all recipients
      * @param array         $recipientVars  The recipient's specific variables
      * @param string        $replyTo        The email address to use for the Reply-to header
-     * @param UuidInterface $batch
      */
     final public function __construct(
         UuidInterface $uuid,
@@ -38,8 +36,7 @@ abstract class MailjetMessage
         string $subject,
         array $commonVars = [],
         array $recipientVars = [],
-        string $replyTo = null,
-        ?UuidInterface $batch = null
+        string $replyTo = null
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
@@ -47,7 +44,6 @@ abstract class MailjetMessage
         $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
-        $this->batch = $batch;
         $this->cc = [];
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
@@ -59,7 +55,7 @@ abstract class MailjetMessage
      * @param string $name  The variable name
      * @param string $value The variable value
      */
-    protected function setVar(string $name, $value)
+    protected function setVar(string $name, $value): void
     {
         $this->vars[$name] = (string) $value;
     }
@@ -67,11 +63,6 @@ abstract class MailjetMessage
     final public function getUuid(): UuidInterface
     {
         return $this->uuid;
-    }
-
-    final public function getBatch(): ?UuidInterface
-    {
-        return $this->batch;
     }
 
     /**
@@ -99,7 +90,7 @@ abstract class MailjetMessage
         return $this->replyTo;
     }
 
-    final public function addRecipient(string $recipientEmail, $recipientName, array $vars = [])
+    final public function addRecipient(string $recipientEmail, $recipientName, array $vars = []): void
     {
         $key = mb_strtolower($recipientEmail);
         $vars = array_merge($this->vars, $vars);

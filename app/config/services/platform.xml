@@ -284,8 +284,6 @@
             <argument type="service" id="router" />
         </service>
 
-        <service id="app.referent.message_handler.producer" alias="old_sound_rabbit_mq.mailjet_campaign_producer" public="false" />
-
         <service id="app.referent.message_handler" class="AppBundle\Referent\ReferentMessageHandler">
             <argument type="service" id="app.mailjet.campaign_mailer" />
         </service>
