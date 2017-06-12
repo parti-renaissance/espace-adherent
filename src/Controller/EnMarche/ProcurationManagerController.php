@@ -7,7 +7,9 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Exception\ProcurationException;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
+use Doctrine\DBAL\Driver\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -192,16 +194,13 @@ class ProcurationManagerController extends Controller
      *     name="app_procuration_manager_request_associate"
      * )
      * @Method("GET|POST")
+     * @ParamConverter("proxy", class="AppBundle\Entity\ProcurationProxy", options={"id": "proxyId"})
      */
-    public function requestAssociateAction(Request $sfRequest, ProcurationRequest $request, int $proxyId): Response
+    public function requestAssociateAction(Request $sfRequest, ProcurationRequest $request, ProcurationProxy $proxy): Response
     {
         $manager = $this->getDoctrine()->getManager();
 
         if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
-            throw $this->createNotFoundException();
-        }
-
-        if (!($proxy = $manager->getRepository(ProcurationProxy::class)->find($proxyId))) {
             throw $this->createNotFoundException();
         }
 
@@ -213,10 +212,24 @@ class ProcurationManagerController extends Controller
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.procuration.process_handler')->process($this->getUser(), $request, $proxy);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.associate.success'));
+            try {
+                $this->get('app.procuration.process_handler')->process($this->getUser(), $request, $proxy);
+                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.associate.success'));
 
-            return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+            } catch (\Exception $e) {
+                if ($e instanceof DriverException && stripos($e->getMessage(), 'deadlock')) {
+                    // Let the user retry
+                    $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
+
+                    return $this->redirectToRoute('app_procuration_manager_request_associate', [
+                        'id' => $request->getId(),
+                        'proxyId' => $proxy->getId(),
+                    ]);
+                }
+
+                throw $e;
+            }
         }
 
         return $this->render('procuration_manager/associate.html.twig', [
@@ -250,10 +263,21 @@ class ProcurationManagerController extends Controller
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.procuration.process_handler')->unprocess($this->getUser(), $request);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.deassociate.success'));
+            try {
+                $this->get('app.procuration.process_handler')->unprocess($this->getUser(), $request);
+                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.deassociate.success'));
 
-            return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+            } catch (\Exception $e) {
+                if ($e instanceof DriverException && stripos($e->getMessage(), 'deadlock')) {
+                    // Let the user retry
+                    $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
+
+                    return $this->redirectToRoute('app_procuration_manager_request_deassociate', ['id' => $request->getId()]);
+                }
+
+                throw $e;
+            }
         }
 
         return $this->render('procuration_manager/deassociate.html.twig', [
