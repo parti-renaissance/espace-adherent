@@ -12,7 +12,12 @@
                 <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
                    style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
                     <div class="background">
-                        <div class="content"></div>
+                        <div class="content">
+                            {% if blocks[0].hasDisplayTitles %}
+                                <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
+                                <div class="text--body">{{ blocks[0].subtitle }}</div>
+                            {% endif %}
+                        </div>
                     </div>
                 </a>
                 <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">

@@ -71,6 +71,15 @@ class HomeBlockAdmin extends AbstractAdmin
                 'required' => false,
             ])
         ;
+
+        if ('Bannière - Gauche' == $this->getSubject()->getPositionName()) {
+            $formMapper
+                ->add('displayTitles', null, [
+                    'label' => 'Afficher le titre et sous-titre',
+                    'required' => false,
+                ])
+            ;
+        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
