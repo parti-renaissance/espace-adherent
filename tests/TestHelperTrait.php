@@ -45,7 +45,6 @@ use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -64,28 +63,23 @@ trait TestHelperTrait
         return $this->container->get($id);
     }
 
-    public function assertMailExists(string $type, UuidInterface $batch)
+    public function assertMailCountRecipients(int $count, ?MailjetEmail $mail): void
     {
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages($type, $batch->toString()));
+        $this->assertNotNull($mail);
+        $this->assertCount($count, $mail->getRecipients());
     }
 
-    public function assertMailCountRecipients(int $count, string $type, UuidInterface $batch)
-    {
-        $repository = $this->getMailjetEmailRepository();
-
-        $this->assertCount(1, $messages = $repository->findMessages($type, $batch->toString()));
-        $this->assertCount($count, $messages[0]->getRecipients());
-    }
-
-    public function assertCountMails(int $count, string $type, ?string $recipient = null)
+    public function assertCountMails(int $count, string $type, ?string $recipient = null): void
     {
         $repository = $this->getMailjetEmailRepository();
 
         if ($recipient) {
             $this->assertCount($count, $repository->findRecipientMessages($type, $recipient));
-        } else {
-            $this->assertCount($count, $repository->findMessages($type));
+
+            return;
         }
+
+        $this->assertCount($count, $repository->findMessages($type));
     }
 
     public function getManagerRegistry(): ManagerRegistry
@@ -198,10 +192,7 @@ trait TestHelperTrait
         return $this->container->get('app.committee.feed_manager');
     }
 
-    /**
-     * @return Adherent|null
-     */
-    protected function getAdherent(string $uuid)
+    protected function getAdherent(string $uuid): ?Adherent
     {
         return $this->getAdherentRepository()->findByUuid($uuid);
     }
@@ -228,7 +219,7 @@ trait TestHelperTrait
      *
      * @return Adherent
      */
-    protected function createAdherent(string $email = null)
+    protected function createAdherent(string $email = null): Adherent
     {
         $email = $email ?: 'john.smith@example.org';
         $phone = new PhoneNumber();

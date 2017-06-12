@@ -65,8 +65,7 @@ class EventNotificationMessage extends MailjetMessage
             ),
             $vars,
             $recipientVarsGenerator($recipient),
-            $host->getEmailAddress(),
-            $event->getUuid()
+            $host->getEmailAddress()
         );
 
         /* @var Adherent[] $recipients */

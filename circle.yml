@@ -66,11 +66,13 @@ deployment:
             - yarn run build-prod
             - docker build -t enmarche-common -f prod.common.dockerfile .
             - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.app.dockerfile .
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1 -f prod.worker-mailjet.dockerfile .
+            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet-campaign:$CIRCLE_SHA1 -f prod.worker-mailjet-campaign.dockerfile .
+            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet-transactional:$CIRCLE_SHA1 -f prod.worker-mailjet-transactional.dockerfile .
 
             # Push the images to Google Cloud
             - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1
+            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet-campaign:$CIRCLE_SHA1
+            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet-transactional:$CIRCLE_SHA1
 
             # Deploy to staging
             - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl

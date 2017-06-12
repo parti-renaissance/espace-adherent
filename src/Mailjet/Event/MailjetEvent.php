@@ -3,7 +3,7 @@
 namespace AppBundle\Mailjet\Event;
 
 use AppBundle\Mailjet\Exception\MailjetException;
-use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\EmailTemplate;
 use AppBundle\Mailjet\Message\MailjetMessage;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -15,7 +15,7 @@ class MailjetEvent extends Event
 
     public function __construct(
         MailjetMessage $message,
-        MailjetTemplateEmail $email,
+        EmailTemplate $email,
         MailjetException $exception = null
     ) {
         $this->message = $message;
@@ -28,7 +28,7 @@ class MailjetEvent extends Event
         return $this->message;
     }
 
-    public function getEmail(): MailjetTemplateEmail
+    public function getEmail(): EmailTemplate
     {
         return $this->email;
     }

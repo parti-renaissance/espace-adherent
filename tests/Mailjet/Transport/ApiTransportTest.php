@@ -2,14 +2,14 @@
 
 namespace Tests\AppBundle\Mailjet\Transport;
 
-use AppBundle\Mailjet\MailjetClient;
-use AppBundle\Mailjet\Transport\MailjetApiTransport;
-use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\ApiClient;
+use AppBundle\Mailjet\Transport\ApiTransport;
+use AppBundle\Mailjet\EmailTemplate;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Psr7\Response as HttpResponse;
 use Ramsey\Uuid\Uuid;
 
-class MailjetApiTransportTest extends \PHPUnit_Framework_TestCase
+class ApiTransportTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \AppBundle\Mailjet\Exception\MailjetException
@@ -20,8 +20,8 @@ class MailjetApiTransportTest extends \PHPUnit_Framework_TestCase
         $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
         $httpClient->expects($this->once())->method('request')->willReturn(new HttpResponse(400));
 
-        $client = new MailjetClient($httpClient, 'public-key', 'private-key');
-        $transport = new MailjetApiTransport($client);
+        $client = new ApiClient($httpClient, 'public-key', 'private-key');
+        $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($this->createDummyEmail());
     }
 
@@ -51,8 +51,8 @@ EOF;
             ->willReturn(new HttpResponse(200, [], $body))
         ;
 
-        $client = new MailjetClient($httpClient, 'public-key', 'private-key');
-        $transport = new MailjetApiTransport($client);
+        $client = new ApiClient($httpClient, 'public-key', 'private-key');
+        $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($email);
 
         $this->assertSame($body, $email->getHttpResponsePayload());
@@ -60,7 +60,7 @@ EOF;
 
     private function createDummyEmail()
     {
-        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         return $email;

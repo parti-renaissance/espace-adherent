@@ -15,10 +15,7 @@ final class TonMacronFriendMessage extends MailjetMessage
             $invitation->getFriendEmailAddress(),
             null,
             $invitation->getMailSubject(),
-            ['message' => $invitation->getMailBody()],
-            [],
-            null,
-            $invitation->getUuid()
+            ['message' => $invitation->getMailBody()]
         );
 
         $message->setReplyTo($invitation->getAuthorEmailAddress());

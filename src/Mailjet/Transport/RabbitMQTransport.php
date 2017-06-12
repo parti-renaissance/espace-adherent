@@ -2,10 +2,10 @@
 
 namespace AppBundle\Mailjet\Transport;
 
-use AppBundle\Mailjet\MailjetTemplateEmail;
+use AppBundle\Mailjet\EmailTemplate;
 use AppBundle\Producer\MailjetProducerInterface;
 
-class RabbitMQTransport implements MailjetMessageTransportInterface
+class RabbitMQTransport implements TransportInterface
 {
     private $producer;
 
@@ -14,7 +14,7 @@ class RabbitMQTransport implements MailjetMessageTransportInterface
         $this->producer = $producer;
     }
 
-    public function sendTemplateEmail(MailjetTemplateEmail $email): void
+    public function sendTemplateEmail(EmailTemplate $email): void
     {
         $this->producer->scheduleEmail($email);
     }
