@@ -130,6 +130,8 @@ class MembershipRequest
         $dto->position = $adherent->getPosition();
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
+        $dto->comMobile = $adherent->getComMobile();
+        $dto->comEmail = $adherent->getComEmail();
 
         return $dto;
     }
