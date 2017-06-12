@@ -89,6 +89,7 @@ procuration_manager.associate.success: La demande de procuration a bien été as
 procuration_manager.deassociate.success: La demande de procuration a bien été désassociée du mandataire.
 procuration_manager.disabled.success: La proposition du mandataire a bien été désactivée.
 procuration_manager.enabled.success: La proposition du mandataire a bien été réactivée.
+procuration_manager.db_error: Vous avez modifié la base de données exactement au même moment qu'un autre responsable procuration, ce qui a provoqué une erreur. Pourriez-vous réessayer ?
 
 #
 # Newsletter

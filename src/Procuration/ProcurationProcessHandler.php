@@ -25,8 +25,6 @@ class ProcurationProcessHandler
     {
         $request->process($proxy, $procurationManager);
 
-        $this->manager->persist($request);
-        $this->manager->persist($proxy);
         $this->manager->flush();
 
         $this->mailjet->sendMessage($this->factory->createProxyFoundMessage($procurationManager, $request, $proxy));
@@ -38,8 +36,6 @@ class ProcurationProcessHandler
 
         $request->unprocess();
 
-        $this->manager->persist($request);
-        $this->manager->persist($proxy);
         $this->manager->flush();
 
         if ($proxy) {
