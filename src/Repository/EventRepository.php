@@ -16,12 +16,19 @@ class EventRepository extends EntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function count(): int
+    public function count(bool $onlyPublished = true): int
     {
-        return (int) $this
+        $qb = $this
             ->createQueryBuilder('e')
             ->select('COUNT(e)')
-            ->getQuery()
+        ;
+
+        if ($onlyPublished) {
+            $qb->where('e.published = :published')
+                ->setParameter('published', true);
+        }
+
+        return (int) $qb->getQuery()
             ->getSingleScalarResult();
     }
 
@@ -34,8 +41,10 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
+            ->andWhere('e.published = :published')
             ->andWhere('c.status = :status')
             ->setParameter('slug', $slug)
+            ->setParameter('published', true)
             ->setParameter('status', Committee::APPROVED)
             ->getQuery()
         ;
@@ -47,6 +56,8 @@ class EventRepository extends EntityRepository
     {
         $query = $this
             ->createQueryBuilder('ce')
+            ->where('ce.published = :published')
+            ->setParameter('published', true)
             ->orderBy('ce.createdAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery();
@@ -76,8 +87,10 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.organizer', 'o')
             ->where('e.uuid = :uuid')
             ->andWhere('e.status IN (:statuses)')
+            ->andWhere('e.published = :published')
             ->setParameter('uuid', $uuid)
             ->setParameter('statuses', Event::ACTIVE_STATUSES)
+            ->setParameter('published', true)
             ->getQuery();
 
         return $query->getOneOrNullResult();
@@ -93,8 +106,11 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
+            ->where('e.published = :published')
             ->orderBy('e.beginAt', 'DESC')
-            ->addOrderBy('e.name', 'ASC');
+            ->addOrderBy('e.name', 'ASC')
+            ->setParameter('published', true)
+        ;
 
         $codesFilter = $qb->expr()->orX();
 
@@ -154,9 +170,11 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
+            ->where('e.published = :published')
             ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
             ->orderBy('e.beginAt', 'ASC')
+            ->setParameter('published', true)
             ->setParameter('today', date('Y-m-d'))
         ;
     }
@@ -191,7 +209,10 @@ class EventRepository extends EntityRepository
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('c.status = :status')
-            ->setParameter('status', Committee::APPROVED);
+            ->andWhere('e.published = :published')
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('published', true)
+        ;
     }
 
     /**
@@ -212,6 +233,9 @@ class EventRepository extends EntityRepository
         } else {
             $qb = $this->createQueryBuilder('n');
         }
+
+        $qb->andWhere('e.published = :published')
+           ->setParameter('published', true);
 
         if (!empty($query = $search->getQuery())) {
             $qb->andWhere('n.name like :query');

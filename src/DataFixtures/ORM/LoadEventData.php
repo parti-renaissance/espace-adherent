@@ -32,6 +32,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
     const EVENT_10_UUID = '5c2471c7-8def-4757-9bec-8e0fa24361d8';
     const EVENT_11_UUID = 'f48c4863-dc9b-404c-8fd5-72b1c002788c';
     const EVENT_12_UUID = '50dd58d7-f370-4874-8fbb-3746ca06d5d5';
+    const EVENT_13_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d5d5';
 
     use ContainerAwareTrait;
 
@@ -235,6 +236,21 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         ]);
         $event12->incrementParticipantsCount(2);
 
+        $event13 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_13_UUID,
+            'organizer' => $author12,
+            'committee' => $committee9,
+            'name' => 'Meeting de Brooklyn',
+            'category' => $eventCategory10,
+            'description' => 'Ouvert aux français de New York.',
+            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'capacity' => 55,
+        ]);
+        //
+        $event13->setPublished(false);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -247,6 +263,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($event10);
         $manager->persist($event11);
         $manager->persist($event12);
+        $manager->persist($event13);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));

@@ -118,6 +118,13 @@ class Event implements GeoPointInterface
     private $status;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $published = true;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $isForLegislatives = false;
@@ -348,6 +355,16 @@ class Event implements GeoPointInterface
     public function isCancelled(): bool
     {
         return self::STATUS_CANCELLED === $this->status;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published)
+    {
+        $this->published = $published;
     }
 
     public function isForLegislatives()

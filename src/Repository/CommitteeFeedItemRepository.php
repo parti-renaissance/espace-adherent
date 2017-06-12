@@ -33,9 +33,8 @@ class CommitteeFeedItemRepository extends EntityRepository
     {
         $qb = $this
             ->createQueryBuilder('i')
-            ->select('i, a, e')
+            ->select('i, a')
             ->leftJoin('i.author', 'a')
-            ->leftJoin('i.event', 'e')
             ->where('i.itemType = :type')
             ->setMaxResults(1)
             ->setParameter('type', $type)
@@ -43,6 +42,15 @@ class CommitteeFeedItemRepository extends EntityRepository
 
         if (null !== $published) {
             $qb->andWhere('i.published = :published')->setParameter('published', $published);
+        }
+
+        if (CommitteeFeedItem::EVENT === $type) {
+            $qb
+                ->addSelect('e')
+                ->leftJoin('i.event', 'e')
+                ->having('e.published = :published_event')
+                ->setParameter('published_event', true)
+            ;
         }
 
         if ($committeeUuid) {
@@ -62,13 +70,15 @@ class CommitteeFeedItemRepository extends EntityRepository
         $qb
             ->select('i, a, e')
             ->leftJoin('i.author', 'a')
-            ->leftJoin('i.event', 'e')
+            ->leftJoin('i.event', 'e', 'WITH', 'e.id = :e_null OR e.published = :e_published')
             ->leftJoin('i.committee', 'c')
             ->where('c.uuid = :committee')
             ->andWhere('i.published = :published')
             ->orderBy('i.id', 'DESC')
             ->setParameter('committee', $committeeUuid)
-            ->setParameter('published', true);
+            ->setParameter('published', true)
+            ->setParameter('e_null', null)
+            ->setParameter('e_published', true);
 
         return $qb;
     }
