@@ -105,6 +105,13 @@ class HomeBlock
     private $displayFilter = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $displayTitles = true;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -263,6 +270,16 @@ class HomeBlock
     public function setDisplayFilter(bool $displayFilter)
     {
         $this->displayFilter = $displayFilter;
+    }
+
+    public function hasDisplayTitles(): bool
+    {
+        return $this->displayTitles;
+    }
+
+    public function setDisplayTitles(bool $displayTitles)
+    {
+        $this->displayTitles = $displayTitles;
     }
 
     public function getUpdatedAt(): \DateTime
