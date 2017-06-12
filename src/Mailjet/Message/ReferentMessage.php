@@ -16,8 +16,6 @@ final class ReferentMessage extends MailjetMessage
             throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
-        $batchUuid = Uuid::uuid4();
-
         $message = new self(
             Uuid::uuid4(),
             '63336',
@@ -31,8 +29,7 @@ final class ReferentMessage extends MailjetMessage
             [
                 'target_firstname' => self::escape($referent->getFirstName() ?: ''),
             ],
-            $referent->getEmailAddress(),
-            $batchUuid
+            $referent->getEmailAddress()
         );
 
         $message->setSenderName(sprintf('Votre référent%s En Marche !', $referent->isFemale() ? 'e' : ''));

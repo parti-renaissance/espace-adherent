@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Mailjet;
 use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
 use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\MailjetTemplateEmailFactory;
+use AppBundle\Mailjet\EmailTemplateFactory;
 use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
-use Tests\AppBundle\Test\Mailjet\Transport\MailjetFailingTransport;
-use Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport;
+use Tests\AppBundle\Test\Mailjet\Transport\FailingTransport;
+use Tests\AppBundle\Test\Mailjet\Transport\NullTransport;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailjetServiceTest extends \PHPUnit_Framework_TestCase
@@ -27,7 +27,7 @@ class MailjetServiceTest extends \PHPUnit_Framework_TestCase
             $this->isInstanceOf(MailjetEvent::class)
         );
 
-        $service = new MailjetService($dispatcher, new MailjetNullTransport(), new MailjetTemplateEmailFactory('contact@en-marche.fr', 'En Marche'));
+        $service = new MailjetService($dispatcher, new NullTransport(), new EmailTemplateFactory('contact@en-marche.fr', 'En Marche'));
 
         $this->assertTrue($service->sendMessage(DummyMessage::create()));
     }
@@ -46,7 +46,7 @@ class MailjetServiceTest extends \PHPUnit_Framework_TestCase
             $this->isInstanceOf(MailjetEvent::class)
         );
 
-        $service = new MailjetService($dispatcher, new MailjetFailingTransport(), new MailjetTemplateEmailFactory('contact@en-marche.fr', 'En Marche'));
+        $service = new MailjetService($dispatcher, new FailingTransport(), new EmailTemplateFactory('contact@en-marche.fr', 'En Marche'));
 
         $this->assertFalse($service->sendMessage(DummyMessage::create()));
     }

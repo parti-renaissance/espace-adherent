@@ -29,8 +29,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             [
                 'target_firstname' => self::escape($host->getFirstName()),
             ],
-            $host->getEmailAddress(),
-            Uuid::uuid4()
+            $host->getEmailAddress()
         );
 
         $message->setSenderName('Votre comité En Marche !');

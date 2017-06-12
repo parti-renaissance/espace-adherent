@@ -19,8 +19,8 @@ class MailjetEmailAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('id', null, [
-                'label' => 'ID',
+            ->add('uuid', null, [
+                'label' => 'UUID',
             ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
@@ -44,25 +44,31 @@ class MailjetEmailAdmin extends AbstractAdmin
             ->add('responsePayload', null, [
                 'label' => 'Réponse',
                 'template' => 'admin/mailjet_response.html.twig',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('uuid', null, [
+                'label' => 'UUID',
+                'show_filter' => true,
+            ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
             ])
             ->add('sender', null, [
                 'label' => 'Expéditeur',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id', null, [
-                'label' => 'ID',
+            ->add('uuid', null, [
+                'label' => 'UUID',
             ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
@@ -81,6 +87,7 @@ class MailjetEmailAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

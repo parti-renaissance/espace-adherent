@@ -9,7 +9,7 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterface
+class EmailPersisterEventSubscriber implements EventSubscriberInterface
 {
     private $manager;
     private $repository;
@@ -20,7 +20,7 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         $this->repository = $repository;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             MailjetEvents::DELIVERY_MESSAGE => 'onMailjetDeliveryMessage',
@@ -28,7 +28,7 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         ];
     }
 
-    public function onMailjetDeliveryMessage(MailjetEvent $event)
+    public function onMailjetDeliveryMessage(MailjetEvent $event): void
     {
         $email = $event->getEmail();
         $message = $event->getMessage();
@@ -37,7 +37,7 @@ class MailjetEmailDoctrineBackupEventSubscriber implements EventSubscriberInterf
         $this->manager->flush();
     }
 
-    public function onMailjetDeliverySuccess(MailjetEvent $event)
+    public function onMailjetDeliverySuccess(MailjetEvent $event): void
     {
         $templateEmail = $event->getEmail();
 

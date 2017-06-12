@@ -35,8 +35,7 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
             static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
-            $feedItem->getAuthor()->getEmailAddress(),
-            $feedItem->getUuid()
+            $feedItem->getAuthor()->getEmailAddress()
         );
 
         $message->setSenderName('Votre comité En Marche !');

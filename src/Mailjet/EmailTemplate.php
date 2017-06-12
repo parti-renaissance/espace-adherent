@@ -6,7 +6,7 @@ use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
 use Ramsey\Uuid\UuidInterface;
 
-final class MailjetTemplateEmail implements \JsonSerializable
+final class EmailTemplate implements \JsonSerializable
 {
     private $uuid;
     private $senderEmail;
@@ -52,7 +52,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         return $email;
     }
 
-    public function addRecipient(string $email, string $name = null, array $vars = [])
+    public function addRecipient(string $email, string $name = null, array $vars = []): void
     {
         $recipient['Email'] = $email;
 
@@ -143,7 +143,7 @@ final class MailjetTemplateEmail implements \JsonSerializable
         return $this->httpResponsePayload;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->getBody();
     }

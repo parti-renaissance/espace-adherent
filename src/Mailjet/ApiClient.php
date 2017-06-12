@@ -3,19 +3,16 @@
 namespace AppBundle\Mailjet;
 
 use AppBundle\Mailjet\Exception\MailjetException;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as Guzzle;
 
-class MailjetClient
+class ApiClient implements ClientInterface
 {
     private $httpClient;
     private $publicKey;
     private $privateKey;
 
-    public function __construct(
-        ClientInterface $httpClient,
-        string $publicKey,
-        string $privateKey
-    ) {
+    public function __construct(Guzzle $httpClient, string $publicKey, string $privateKey)
+    {
         $this->httpClient = $httpClient;
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;

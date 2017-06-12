@@ -20,11 +20,14 @@ class MailjetEmailRepository extends EntityRepository
     }
 
     /**
+     * @param string $messageClass
+     * @param string $recipient
+     *
      * @return MailjetEmail[]
      */
     public function findRecipientMessages(string $messageClass, string $recipient): array
     {
-        $query = $this
+        return $this
             ->createQueryBuilder('e')
             ->where('e.messageClass = :class')
             ->andWhere('e.recipients LIKE :recipient')
@@ -32,32 +35,46 @@ class MailjetEmailRepository extends EntityRepository
             ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass))
             ->setParameter('recipient', '%'.$recipient.'%')
             ->getQuery()
+            ->getResult()
         ;
-
-        return $query->getResult();
     }
 
-    /**
-     * @return MailjetEmail[]
-     */
-    public function findMessages(string $messageClass, string $batch = null): array
+    public function findMostRecentMessage(string $messageClass = null): ?MailjetEmail
     {
         $qb = $this
             ->createQueryBuilder('e')
-            ->where('e.messageClass = :class')
+            ->setMaxResults(1)
             ->orderBy('e.createdAt', 'DESC')
-            ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass));
+        ;
 
-        if ($batch) {
+        if ($messageClass) {
             $qb
-                ->andWhere('e.batch = :batch')
-                ->setParameter('batch', $batch);
+                ->where('e.messageClass = :class')
+                ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass))
+            ;
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function setDelivered(MailjetEmail $email, string $response)
+    /**
+     * @param string $messageClass
+     *
+     * @return MailjetEmail[]
+     */
+    public function findMessages(string $messageClass): array
+    {
+        return $this
+            ->createQueryBuilder('e')
+            ->where('e.messageClass = :class')
+            ->orderBy('e.createdAt', 'DESC')
+            ->setParameter('class', str_replace('AppBundle\\Mailjet\\Message\\', '', $messageClass))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function setDelivered(MailjetEmail $email, string $response): void
     {
         $email->delivered($response);
 

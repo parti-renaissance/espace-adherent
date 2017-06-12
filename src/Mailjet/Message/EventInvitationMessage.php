@@ -21,10 +21,7 @@ final class EventInvitationMessage extends MailjetMessage
                 'sender_message' => self::escape($invite->getMessage()),
                 'event_name' => self::escape($event->getName()),
                 'event_slug' => $eventUrl,
-            ],
-            [],
-            null,
-            $invite->getUuid()
+            ]
         );
 
         $message->setReplyTo($invite->getEmail());

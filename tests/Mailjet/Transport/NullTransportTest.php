@@ -3,11 +3,11 @@
 namespace Tests\AppBundle\Mailjet\Transport;
 
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailjet\Transport\MailjetNullTransport;
-use AppBundle\Mailjet\MailjetTemplateEmail;
+use Tests\AppBundle\Test\Mailjet\Transport\NullTransport;
+use AppBundle\Mailjet\EmailTemplate;
 use Psr\Log\LoggerInterface;
 
-class MailjetNullTransportTest extends \PHPUnit_Framework_TestCase
+class NullTransportTest extends \PHPUnit_Framework_TestCase
 {
     public function testSendTemplateEmail()
     {
@@ -18,10 +18,10 @@ class MailjetNullTransportTest extends \PHPUnit_Framework_TestCase
             ->with('[mailjet] sending email with Mailjet.')
         ;
 
-        $email = new MailjetTemplateEmail(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
-        $transport = new MailjetNullTransport($logger);
+        $transport = new NullTransport($logger);
         $transport->sendTemplateEmail($email);
     }
 }

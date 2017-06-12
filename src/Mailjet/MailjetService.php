@@ -6,7 +6,7 @@ use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
 use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Mailjet\Message\MailjetMessage;
-use AppBundle\Mailjet\Transport\MailjetMessageTransportInterface;
+use AppBundle\Mailjet\Transport\TransportInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailjetService
@@ -17,8 +17,8 @@ class MailjetService
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        MailjetMessageTransportInterface $transport,
-        MailjetTemplateEmailFactory $factory
+        TransportInterface $transport,
+        EmailTemplateFactory $factory
     ) {
         $this->dispatcher = $dispatcher;
         $this->transport = $transport;

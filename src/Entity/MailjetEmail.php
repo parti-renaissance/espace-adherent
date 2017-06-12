@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="mailjet_logs")
+ * @ORM\Table(name="mailjet_emails")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MailjetEmailRepository")
  *
  * @Algolia\Index(autoIndex=false)
@@ -17,11 +17,6 @@ class MailjetEmail
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-
-    /**
-     * @ORM\Column(type="uuid", nullable=true)
-     */
-    private $batch;
 
     /**
      * The Mailjet message class namespace.
@@ -38,7 +33,7 @@ class MailjetEmail
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $recipients = [];
+    private $recipients;
 
     /**
      * The API request JSON payload.
@@ -54,10 +49,9 @@ class MailjetEmail
      */
     private $responsePayload;
 
-    public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload, ?UuidInterface $batch)
+    public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload)
     {
         $this->uuid = $uuid;
-        $this->batch = $batch;
         $this->messageClass = $messageClass;
         $this->sender = $sender;
         $this->recipients = $recipients;
@@ -67,6 +61,11 @@ class MailjetEmail
     public function __toString(): string
     {
         return $this->messageClass.' de '.$this->sender.' à '.count($this->recipients).' destinataires';
+    }
+
+    public function getEnglishLog(): string
+    {
+        return $this->messageClass.' from '.$this->sender.' to '.count($this->recipients).' recipients';
     }
 
     public static function createFromMessage(MailjetMessage $message, $requestPayload): self
@@ -82,8 +81,7 @@ class MailjetEmail
             str_replace('AppBundle\\Mailjet\\Message\\', '', get_class($message)),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
-            $requestPayload,
-            $message->getBatch()
+            $requestPayload
         );
     }
 
@@ -112,34 +110,29 @@ class MailjetEmail
         return $this->recipients;
     }
 
-    public function getBatch(): ?UuidInterface
-    {
-        return $this->batch;
-    }
-
     public function getRecipientsAsString(): string
     {
         return implode("\n", $this->recipients);
     }
 
-    public function getRequestPayload(): array
+    public function getRequestPayload(): ?array
     {
-        return json_decode(base64_decode($this->requestPayload), true);
+        return $this->requestPayload ? json_decode(base64_decode($this->requestPayload), true) : null;
     }
 
-    public function getRequestPayloadJson(): string
+    public function getRequestPayloadJson(): ?string
     {
-        return base64_decode($this->requestPayload);
+        return $this->requestPayload ? base64_decode($this->requestPayload) : null;
     }
 
-    public function getResponsePayload(): array
+    public function getResponsePayload(): ?array
     {
-        return json_decode(base64_decode($this->responsePayload), true);
+        return $this->responsePayload ? json_decode(base64_decode($this->responsePayload), true) : null;
     }
 
-    public function getResponsePayloadJson(): string
+    public function getResponsePayloadJson(): ?string
     {
-        return base64_decode($this->responsePayload);
+        return $this->responsePayload ? base64_decode($this->responsePayload) : null;
     }
 
     public function isDelivered(): bool
