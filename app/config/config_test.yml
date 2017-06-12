@@ -29,17 +29,18 @@ parameters:
         education: Éducation
         egalite: Egalité F / H
         emploi: Emploi
-        environement: Environement
+        environement: Environnement
         europe: Europe
         international: International
-        institution: Institution
+        institution: Vie publique & institutions
         jeunesse: Jeunesse
         justice: Justice
-        logement: Logement
         numerique: Numérique
         sante: Santé
         securite: Sécurité
         territoire: Territoire
+        sociale: Affaires sociales
+        sport: Sport
 
 framework:
     test: ~

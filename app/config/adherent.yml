@@ -9,11 +9,12 @@ parameters:
         environement: Environnement
         europe: Europe
         international: International
-        institution: Institution
+        institution: Vie publique & institutions
         jeunesse: Jeunesse
         justice: Justice
-        logement: Logement
         numerique: Numérique
         sante: Santé
         securite: Sécurité
         territoire: Territoire
+        social: Affaires sociales
+        sport: Sport
