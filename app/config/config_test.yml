@@ -39,7 +39,7 @@ parameters:
         sante: Santé
         securite: Sécurité
         territoire: Territoire
-        sociale: Affaires sociales
+        social: Affaires sociales
         sport: Sport
 
 framework:
