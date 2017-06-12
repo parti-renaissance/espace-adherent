@@ -326,7 +326,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $checkBoxPattern = '#app_adherent_pin_interests '.
                            'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
-        $this->assertCount(17, $checkboxes = $crawler->filter($checkBoxPattern));
+        $this->assertCount(18, $checkboxes = $crawler->filter($checkBoxPattern));
 
         $interests = $this->client->getContainer()->getParameter('adherent_interests');
         $interestsValues = array_keys($interests);
