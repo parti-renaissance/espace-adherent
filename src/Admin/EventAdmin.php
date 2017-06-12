@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -62,6 +63,9 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'choices' => array_combine(Event::STATUSES, Event::STATUSES),
                     'catalogue' => 'forms',
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -116,6 +120,9 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'choices' => array_combine(Event::STATUSES, Event::STATUSES),
                     'choice_translation_domain' => 'forms',
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié',
                 ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
@@ -221,6 +228,10 @@ class EventAdmin extends AbstractAdmin
 
                     return true;
                 },
+            ])
+            ->add('published', null, [
+                'label' => 'Publié',
+                'field_type' => BooleanFilter::class,
             ])
         ;
     }
