@@ -103,7 +103,7 @@ class DonationRequestUtils
 
     public function createCallbackStatus(Donation $donation): array
     {
-        $code = self::PAYBOX_STATUSES[$donation->getPayboxResultCode()] ?? self::PAYBOX_UNKNOWN;
+        $code = self::PAYBOX_STATUSES[$donation->getPayboxResultCode()] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
 
         return [
             'code' => $code,
