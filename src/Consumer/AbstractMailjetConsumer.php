@@ -24,7 +24,7 @@ class AbstractMailjetConsumer extends AbstractConsumer
         $logger = $this->getLogger();
 
         try {
-            $this->writeln(static::NAME, $data['uuid'].' | Message received');
+            $this->writeln($data['uuid'], 'Message received');
 
             if (!$message = $this->getMailjetRepository()->findOneByUuid($data['uuid'])) {
                 $logger->error('Message not not found for uuid "%s"', $data['uuid']);
@@ -33,18 +33,18 @@ class AbstractMailjetConsumer extends AbstractConsumer
                 return true;
             }
 
-            $this->writeln(static::NAME, $data['uuid'].' | Delivering '.$message->getEnglishLog());
+            $this->writeln($data['uuid'], 'Delivering '.$message->getEnglishLog());
             $delivered = $this->getMailjetClient()->sendEmail($message->getRequestPayloadJson());
 
             if (!$delivered) {
-                $this->writeln(static::NAME, 'An issue occured, requeuing');
+                $this->writeln($data['uuid'], 'An issue occured, requeuing');
             } else {
                 $this->getMailjetRepository()->setDelivered($message, $delivered);
             }
 
             return $delivered;
         } catch (ConnectException $error) {
-            $this->writeln(static::NAME, 'API timeout, requeuing');
+            $this->writeln($data['uuid'], 'API timeout, requeuing');
 
             return false;
         } catch (\Exception $error) {
