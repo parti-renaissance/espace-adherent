@@ -148,7 +148,7 @@ class LegislativeCandidate
     private $career;
 
     /**
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20, options={"default": "none"})
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(callback="getStatuses", groups="Admin")
      */
