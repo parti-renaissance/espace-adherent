@@ -59,9 +59,9 @@ abstract class AbstractConsumer implements ConsumerInterface
         return $this->doExecute($data);
     }
 
-    public function writeln($name, $message)
+    public function writeln($name, $message): void
     {
-        echo date('Y-m-d H:i:s').' | '.$name.' | '.$message."\n";
+        echo $name.' | '.$message."\n";
     }
 
     protected function getLogger(): LoggerInterface
