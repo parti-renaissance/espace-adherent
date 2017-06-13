@@ -107,9 +107,9 @@ class HomeBlock
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $displayTitles = true;
+    private $displayTitles = false;
 
     /**
      * @var \DateTime
