@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadClarificationData;
-use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -12,18 +10,18 @@ use Tests\AppBundle\SqliteWebTestCase;
 /**
  * @group functional
  */
-class DesintoxControllerTest extends SqliteWebTestCase
+class ObsoleteControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
     /**
      * @dataProvider provideActions
      */
-    public function testActions(string $path)
+    public function testActions(string $path, bool $permanent = false)
     {
         $this->client->request(Request::METHOD_GET, $path);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->assertStatusCode($permanent ? Response::HTTP_GONE : Response::HTTP_NOT_FOUND, $this->client);
     }
 
     public function provideActions()
@@ -36,10 +34,7 @@ class DesintoxControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadPageData::class,
-            LoadClarificationData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()
