@@ -28,7 +28,7 @@ class UniqueMembershipValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, MembershipRequest::class);
         }
 
-        $adherent = $this->repository->findByEmail($value->getEmailAddress());
+        $adherent = $this->repository->findByUuid(Adherent::createUuid($value->getEmailAddress()));
 
         if ($adherent instanceof Adherent) {
             $this
