@@ -61,4 +61,12 @@ app_legislatives:
     type:     "annotation"
     condition: "context.getHost() matches '/legislatives/i'"
 
-
+#
+# Legacy
+#
+app_desintox:
+    path: /emmanuel-macron/desintox/{slug}
+    defaults:
+        slug: ~
+        _controller: FrameworkBundle:Redirect:redirect
+        route: ~
