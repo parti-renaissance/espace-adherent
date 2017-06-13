@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-06-09T08:53:20Z
+
+Conflicts with #1242. Could we please merge this one first, I need to remove the"desintox" there too.
+
+---------------------------------------------------------------------------
+
+by tgalopin at 2017-06-09T08:54:02Z
+
+We will merge https://github.com/EnMarche/en-marche.fr/pull/1242 first, yes.
+
+---------------------------------------------------------------------------
+
+by tgalopin at 2017-06-09T14:49:19Z
+
+@marineb now https://github.com/EnMarche/en-marche.fr/pull/1242 is merged, can you rebase this? Thanks :) !
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2017-06-13T15:41:06Z
+
+Rebased and updated.
