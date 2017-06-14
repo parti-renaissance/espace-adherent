@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\EntityPostAddressTrait;
-use AppBundle\Event\EventCategories;
+use AppBundle\Entity\EventCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,7 +36,7 @@ class SearchController extends Controller
         return $this->render('search/search_events.html.twig', [
             'search_max_results' => $this->getParameter('search_max_results'),
             'search_type' => SearchParametersFilter::TYPE_EVENTS,
-            'event_categories' => EventCategories::CHOICES,
+            'event_categories' => $this->getDoctrine()->getRepository(EventCategory::class)->findAllOrderedByName(),
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],
