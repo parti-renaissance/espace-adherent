@@ -16,18 +16,20 @@ final class CommitteeContactMembersMessage extends MailjetMessage
      */
     public static function create(array $recipients, Adherent $host, string $content): self
     {
+        $first = array_shift($recipients);
+
         $message = new self(
             Uuid::uuid4(),
             '63337',
-            $host->getEmailAddress(),
-            self::fixMailjetParsing($host->getFullName()),
+            $first->getEmailAddress(),
+            self::fixMailjetParsing($first->getFullName()),
             "L'animateur d'un comité que vous suivez vous a envoyé un message",
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
                 'target_message' => $content,
             ],
             [
-                'target_firstname' => self::escape($host->getFirstName()),
+                'target_firstname' => self::escape($first->getFirstName()),
             ],
             $host->getEmailAddress()
         );
