@@ -14,12 +14,15 @@ class EventContactMembersCommandHandler
         $this->mailjet = $mailjet;
     }
 
-    public function handle(EventContactMembersCommand $command)
+    public function handle(EventContactMembersCommand $command): void
     {
-        $this->mailjet->sendMessage(EventContactMembersMessage::create(
-            $command->getRecipients(),
-            $command->getSender(),
-            $command->getMessage()
-        ));
+        $chunks = array_chunk($command->getRecipients(), 100);
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage(EventContactMembersMessage::create(
+                $chunk,
+                $command->getSender(),
+                $command->getMessage()
+            ));
+        }
     }
 }

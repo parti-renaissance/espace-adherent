@@ -20,7 +20,7 @@ class EventUpdatedEvent extends BaseEvent
         $this->event = $event;
     }
 
-    public function getAuthor()
+    public function getAuthor(): Adherent
     {
         return $this->author;
     }

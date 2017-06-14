@@ -48,7 +48,7 @@ class EventRegistrationManager
         return $this->repository->findAdherentRegistration($eventUuid, (string) $adherent->getUuid());
     }
 
-    public function create(EventRegistration $registration, bool $flush = true)
+    public function create(EventRegistration $registration, bool $flush = true): void
     {
         $event = $registration->getEvent();
         $event->incrementParticipantsCount();
@@ -60,7 +60,7 @@ class EventRegistrationManager
         }
     }
 
-    public function remove(EventRegistration $registration, bool $flush = true)
+    public function remove(EventRegistration $registration, bool $flush = true): void
     {
         $event = $registration->getEvent();
         $event->decrementParticipantsCount();
@@ -77,7 +77,7 @@ class EventRegistrationManager
      */
     public function getAdherentRegistrations(Adherent $adherent, string $type = 'upcoming'): array
     {
-        if (!in_array($type = strtolower($type), ['upcoming', 'past'])) {
+        if (!in_array($type = strtolower($type), ['upcoming', 'past'], true)) {
             throw new EventRegistrationException(sprintf('Invalid "type" query string parameter. It must be eiter "upcoming" or "past" but "%s" given.', $type));
         }
 

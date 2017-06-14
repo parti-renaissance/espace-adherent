@@ -21,7 +21,7 @@ class EventRegistrationCommandHandler
         $this->mailjet = $mailjet;
     }
 
-    public function handle(EventRegistrationCommand $command)
+    public function handle(EventRegistrationCommand $command): void
     {
         $registration = $this->manager->searchRegistration(
             $command->getEvent(),
