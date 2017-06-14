@@ -49,6 +49,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => -17.5416521,
             'lon' => -149.5684174,
         ],
+        'pilgerweg 58, 8802 kilchberg, ch' => [
+            'lat' => 47.316558,
+            'lon' => 8.55319899999995,
+        ],
     ];
 
     public function geocode(string $address): Coordinates

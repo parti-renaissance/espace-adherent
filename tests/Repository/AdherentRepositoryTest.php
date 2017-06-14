@@ -44,7 +44,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(11, $this->repository->countActiveAdherents());
+        $this->assertSame(12, $this->repository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()
@@ -55,11 +55,12 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
         $managedByReferent = $this->repository->findAllManagedBy($referent);
 
-        $this->assertCount(4, $managedByReferent, 'Referent should manage 3 adherents + himself in his area.');
-        $this->assertSame('Michelle Dufour', $managedByReferent[0]->getFullName());
-        $this->assertSame('Francis Brioul', $managedByReferent[1]->getFullName());
-        $this->assertSame('Referent Referent', $managedByReferent[2]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[3]->getFullName());
+        $this->assertCount(5, $managedByReferent, 'Referent should manage 4 adherents + himself in his area.');
+        $this->assertSame('Michel VASSEUR', $managedByReferent[0]->getFullName());
+        $this->assertSame('Michelle Dufour', $managedByReferent[1]->getFullName());
+        $this->assertSame('Francis Brioul', $managedByReferent[2]->getFullName());
+        $this->assertSame('Referent Referent', $managedByReferent[3]->getFullName());
+        $this->assertSame('Gisele Berthoux', $managedByReferent[4]->getFullName());
     }
 
     public function testFindByEvent()
