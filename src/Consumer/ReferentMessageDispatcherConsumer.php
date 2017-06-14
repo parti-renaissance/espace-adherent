@@ -52,7 +52,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 ++$count;
                 $chunk[] = $result[0];
 
-                if ($i === 100) {
+                if ($i === 50) {
                     $mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
                     $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
 
