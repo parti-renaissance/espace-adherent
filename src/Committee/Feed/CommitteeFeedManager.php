@@ -55,10 +55,15 @@ class CommitteeFeedManager
         return $item;
     }
 
-    private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee)
+    private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee): void
     {
-        $followers = $this->committeeManager->getOptinCommitteeFollowers($committee);
+        $chunks = array_chunk(
+            $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
+            MailjetService::PAYLOAD_MAXSIZE
+        );
 
-        $this->mailjet->sendMessage(CommitteeMessageNotificationMessage::create($followers->toArray(), $message));
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message));
+        }
     }
 }
