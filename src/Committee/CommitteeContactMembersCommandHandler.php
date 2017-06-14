@@ -16,7 +16,10 @@ class CommitteeContactMembersCommandHandler
 
     public function handle(CommitteeContactMembersCommand $command): void
     {
-        $chunks = array_chunk($command->getRecipients(), MailjetService::PAYLOAD_MAXSIZE);
+        $chunks = array_chunk(
+            array_merge([$command->getSender()], $command->getRecipients()),
+            MailjetService::PAYLOAD_MAXSIZE
+        );
 
         foreach ($chunks as $chunk) {
             $this->mailjet->sendMessage(CommitteeContactMembersMessage::create(
