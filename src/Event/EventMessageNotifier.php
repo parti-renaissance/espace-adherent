@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Collection\AdherentCollection;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
@@ -33,20 +32,19 @@ class EventMessageNotifier implements EventSubscriberInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function onEventCreated(EventCreatedEvent $event)
+    public function onEventCreated(EventCreatedEvent $event): void
     {
         if (!$committee = $event->getCommittee()) {
             return;
         }
 
-        $this->mailjet->sendMessage($this->createMessage(
-            $this->committeeManager->getOptinCommitteeFollowers($committee),
-            $event->getEvent(),
-            $event->getAuthor()
-        ));
+        $chunks = array_chunk($this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(), 100);
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage($this->createMessage($chunk, $event->getEvent(), $event->getAuthor()));
+        }
     }
 
-    public function onEventCancelled(EventCancelledEvent $event)
+    public function onEventCancelled(EventCancelledEvent $event): void
     {
         if (!$event->getCommittee()) {
             return;
@@ -59,26 +57,26 @@ class EventMessageNotifier implements EventSubscriberInterface
         $subscriptions = $this->adherentManager->findByEvent($event->getEvent());
 
         if (count($subscriptions) > 0) {
-            $this->mailjet->sendMessage($this->createCancellationMessage(
-                $subscriptions,
-                $event->getEvent(),
-                $event->getAuthor()
-            ));
+            $chunks = array_chunk($subscriptions->toArray(), 100);
+            foreach ($chunks as $chunk) {
+                $this->mailjet->sendMessage($this->createCancelMessage(
+                    $chunk,
+                    $event->getEvent(),
+                    $event->getAuthor()
+                ));
+            }
         }
     }
 
-    private function createMessage(
-        AdherentCollection $followers,
-        Event $event,
-        Adherent $host
-    ): EventNotificationMessage {
+    private function createMessage(array $followers, Event $event, Adherent $host): EventNotificationMessage
+    {
         $params = [
             'uuid' => (string) $event->getUuid(),
             'slug' => $event->getSlug(),
         ];
 
         return EventNotificationMessage::create(
-            $followers->toArray(),
+            $followers,
             $host,
             $event,
             $this->generateUrl('app_event_show', $params),
@@ -89,13 +87,10 @@ class EventMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCancellationMessage(
-        AdherentCollection $registeredAdherents,
-        Event $event,
-        Adherent $host
-    ): EventCancellationMessage {
+    private function createCancelMessage(array $registered, Event $event, Adherent $host): EventCancellationMessage
+    {
         return EventCancellationMessage::create(
-            $registeredAdherents->toArray(),
+            $registered,
             $host,
             $event,
             $this->generateUrl('app_search_events'),
@@ -110,7 +105,7 @@ class EventMessageNotifier implements EventSubscriberInterface
         return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::EVENT_CREATED => ['onEventCreated', -128],
