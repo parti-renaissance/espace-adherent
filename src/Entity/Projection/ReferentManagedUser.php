@@ -62,9 +62,9 @@ class ReferentManagedUser
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      */
     private $postalCode;
 
