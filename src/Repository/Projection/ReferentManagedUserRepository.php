@@ -41,12 +41,7 @@ class ReferentManagedUserRepository extends EntityRepository
         }
 
         $qb = $this->createFilterQueryBuilder($referent, $filter);
-        $qb
-            ->addSelect('ABS(u.id - :referentId) AS HIDDEN ref_id_diff')
-            ->setParameter('referentId', $referent->getId())
-            ->andWhere('u.isMailSubscriber = 1')
-            ->orderBy('ref_id_diff', 'ASC')
-        ;
+        $qb->andWhere('u.isMailSubscriber = 1');
 
         return $qb->getQuery()->iterate();
     }
