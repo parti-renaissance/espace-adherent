@@ -36,7 +36,6 @@ test:
 
         # Prepare PHP tests
         - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users
-        - cp -R app/data/dumped_referents_users.dist app/data/dumped_referents_users
         - ./bin/console doctrine:schema:create --env=test_sqlite
         - ./bin/console doctrine:schema:drop --force --env=test_mysql
         - ./bin/console doctrine:schema:create --env=test_mysql
