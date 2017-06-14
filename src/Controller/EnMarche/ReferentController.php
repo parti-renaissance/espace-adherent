@@ -46,6 +46,7 @@ class ReferentController extends Controller
 
         return $this->render('referent/users_list.html.twig', [
             'filter' => $filter,
+            'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
             'results' => $results->getQuery()->getResult(),
         ]);
