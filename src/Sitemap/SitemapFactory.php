@@ -4,7 +4,6 @@ namespace AppBundle\Sitemap;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -115,7 +114,6 @@ class SitemapFactory
             $this->addArticlesCategories($sitemap);
             $this->addPages($sitemap);
             $this->addArticles($sitemap);
-            $this->addClarifications($sitemap);
 
             $content->set((string) $sitemap);
             $content->expiresAfter(3600);
@@ -185,20 +183,6 @@ class SitemapFactory
         $sitemap->add($this->generateUrl('page_le_mouvement_les_comites'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_devenez_benevole'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_mentions_legales'), null, ChangeFrequency::WEEKLY, 0.2);
-    }
-
-    private function addClarifications(Sitemap $sitemap)
-    {
-        $clarifications = $this->manager->getRepository(Clarification::class)->findAllPublished();
-
-        foreach ($clarifications as $clarification) {
-            $sitemap->add(
-                $this->generateUrl('desintox_view', ['slug' => $clarification->getSlug()]),
-                $clarification->getUpdatedAt()->format(\DATE_ATOM),
-                ChangeFrequency::WEEKLY,
-                0.6
-            );
-        }
     }
 
     private function addArticles(Sitemap $sitemap)
