@@ -38,7 +38,11 @@ class EventMessageNotifier implements EventSubscriberInterface
             return;
         }
 
-        $chunks = array_chunk($this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(), 100);
+        $chunks = array_chunk(
+            $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
+            MailjetService::PAYLOAD_MAXSIZE
+        );
+
         foreach ($chunks as $chunk) {
             $this->mailjet->sendMessage($this->createMessage($chunk, $event->getEvent(), $event->getAuthor()));
         }
@@ -57,7 +61,8 @@ class EventMessageNotifier implements EventSubscriberInterface
         $subscriptions = $this->adherentManager->findByEvent($event->getEvent());
 
         if (count($subscriptions) > 0) {
-            $chunks = array_chunk($subscriptions->toArray(), 100);
+            $chunks = array_chunk($subscriptions->toArray(), MailjetService::PAYLOAD_MAXSIZE);
+
             foreach ($chunks as $chunk) {
                 $this->mailjet->sendMessage($this->createCancelMessage(
                     $chunk,

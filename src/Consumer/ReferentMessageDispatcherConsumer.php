@@ -4,6 +4,7 @@ namespace AppBundle\Consumer;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\ReferentMessage as MailjetMessage;
 use AppBundle\Referent\ReferentMessage;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -52,7 +53,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 ++$count;
                 $chunk[] = $result[0];
 
-                if ($i === 50) {
+                if ($i === MailjetService::PAYLOAD_MAXSIZE) {
                     $mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
                     $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
 

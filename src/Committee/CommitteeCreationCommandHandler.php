@@ -27,7 +27,7 @@ class CommitteeCreationCommandHandler
         $this->mailjet = $mailjet;
     }
 
-    public function handle(CommitteeCreationCommand $command)
+    public function handle(CommitteeCreationCommand $command): void
     {
         $adherent = $command->getAdherent();
         $committee = $this->factory->createFromCommitteeCreationCommand($command);

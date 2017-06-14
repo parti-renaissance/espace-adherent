@@ -14,12 +14,16 @@ class CommitteeContactMembersCommandHandler
         $this->mailjet = $mailjet;
     }
 
-    public function handle(CommitteeContactMembersCommand $command)
+    public function handle(CommitteeContactMembersCommand $command): void
     {
-        $this->mailjet->sendMessage(CommitteeContactMembersMessage::create(
-            $command->getRecipients(),
-            $command->getSender(),
-            $command->getMessage()
-        ));
+        $chunks = array_chunk($command->getRecipients(), MailjetService::PAYLOAD_MAXSIZE);
+
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage(CommitteeContactMembersMessage::create(
+                $chunk,
+                $command->getSender(),
+                $command->getMessage()
+            ));
+        }
     }
 }

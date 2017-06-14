@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailjetService
 {
+    const PAYLOAD_MAXSIZE = 50;
+
     private $dispatcher;
     private $transport;
     private $factory;
