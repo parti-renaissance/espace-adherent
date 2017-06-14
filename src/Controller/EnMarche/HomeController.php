@@ -14,7 +14,7 @@ class HomeController extends Controller
      * @Route("/", defaults={"_enable_campaign_silence"=true}, name="homepage")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('home/index.html.twig', [
             'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
@@ -27,7 +27,7 @@ class HomeController extends Controller
      * @Route("/sitemap.xml", defaults={"_enable_campaign_silence"=true}, name="app_sitemap_index")
      * @Method("GET")
      */
-    public function sitemapIndexAction()
+    public function sitemapIndexAction(): Response
     {
         return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemapIndex());
     }
@@ -46,7 +46,7 @@ class HomeController extends Controller
         return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemap($type, (int) $page));
     }
 
-    private function createXmlResponse(string $content)
+    private function createXmlResponse(string $content): Response
     {
         $response = new Response($content);
         $response->headers->set('Content-Type', 'text/xml');
