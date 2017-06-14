@@ -16,7 +16,8 @@ class EventContactMembersCommandHandler
 
     public function handle(EventContactMembersCommand $command): void
     {
-        $chunks = array_chunk($command->getRecipients(), 100);
+        $chunks = array_chunk($command->getRecipients(), MailjetService::PAYLOAD_MAXSIZE);
+
         foreach ($chunks as $chunk) {
             $this->mailjet->sendMessage(EventContactMembersMessage::create(
                 $chunk,
