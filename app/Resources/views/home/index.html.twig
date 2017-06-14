@@ -11,12 +11,13 @@
             <div class="l__row l__tablet--col l__row--v-stretch">
                 <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
                    style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
-                    <div class="background">
+                    <div class="background" style="justify-content: flex-end;">
                         <div class="content">
                             {% if blocks[0].hasDisplayTitles %}
                                 <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
                                 <div class="text--body">{{ blocks[0].subtitle }}</div>
                             {% endif %}
+                            <div class="btn btn--no-border">Je découvre</div>
                         </div>
                     </div>
                 </a>
@@ -25,6 +26,12 @@
                         <div class="background card__background"
                              style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
                     </a>
+                    {% if blocks[0].hasDisplayTitles %}
+                        <a class="content" href="{{ blocks[0].link }}">
+                            <h2>{{ blocks[0].title }}</h2>
+                            <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
 
