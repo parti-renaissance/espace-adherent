@@ -183,7 +183,7 @@ class ReferentManagedUser
         return $this->email;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
