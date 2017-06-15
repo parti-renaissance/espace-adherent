@@ -2,12 +2,15 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadNewsletterSubscriptionData implements FixtureInterface, ContainerAwareInterface
+class LoadNewsletterSubscriptionData extends AbstractFixture
+    implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -16,12 +19,23 @@ class LoadNewsletterSubscriptionData implements FixtureInterface, ContainerAware
         $em = $this->container->get('doctrine.orm.entity_manager');
         $factory = $this->container->get('app.newsletter_subscription.factory');
 
+        $newsletterSubscription92 = $factory->create('abc@en-marche-dev.fr', '92110');
+        $this->addReference('news-sub-92', $newsletterSubscription92);
+
+        $newsletterSubscription77 = $factory->create('def@en-marche-dev.fr', '77000');
+        $this->addReference('news-sub-77', $newsletterSubscription77);
+
         $em->persist($factory->create('foobar@en-marche-dev.fr', '35420'));
         $em->persist($factory->create('referent@en-marche-dev.fr', '35420'));
-        $em->persist($factory->create('abc@en-marche-dev.fr', '92110'));
-        $em->persist($factory->create('def@en-marche-dev.fr', '77000'));
+        $em->persist($newsletterSubscription92);
+        $em->persist($newsletterSubscription77);
         $em->persist($factory->create('ghi@en-marche-dev.fr', '77123'));
 
         $em->flush();
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }

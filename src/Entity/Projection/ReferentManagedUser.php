@@ -145,6 +145,42 @@ class ReferentManagedUser
      */
     private $createdAt;
 
+    public function __construct(
+        int $status,
+        string $type,
+        int $originalId,
+        string $email,
+        string $postalCode,
+        string $city = null,
+        string $country = null,
+        string $firstName = null,
+        string $lastName = null,
+        int $age = null,
+        PhoneNumber $phone = null,
+        string $committees = null,
+        int $isCommitteeMember = 0,
+        int $isCommitteeHost = 0,
+        int $isMailSubscriber = 0,
+        \DateTime $createdAt = null
+    ) {
+        $this->status = $status;
+        $this->type = $type;
+        $this->originalId = $originalId;
+        $this->email = $email;
+        $this->postalCode = $postalCode;
+        $this->city = $city;
+        $this->country = $country;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->age = $age;
+        $this->phone = $phone;
+        $this->committees = $committees;
+        $this->isCommitteeMember = $isCommitteeMember;
+        $this->isCommitteeHost = $isCommitteeHost;
+        $this->isMailSubscriber = $isMailSubscriber;
+        $this->createdAt = $createdAt;
+    }
+
     public function getId(): int
     {
         return $this->id;

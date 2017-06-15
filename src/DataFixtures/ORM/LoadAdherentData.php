@@ -6,13 +6,15 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Membership\AdherentFactory;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
+class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
     const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -56,6 +58,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
+        $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
@@ -236,6 +239,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
         ]);
+        $this->addReference('adherent-13', $adherent13);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
