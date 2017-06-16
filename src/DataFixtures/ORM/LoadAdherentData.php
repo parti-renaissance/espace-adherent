@@ -6,7 +6,6 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;

@@ -4,6 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
+use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
+use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,6 +115,97 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertContains('100 inscrits', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
     }
 
+    public function testSearchUserToSendMail()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            'pc' => 77,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+    }
+
+    public function testCancelSendMail()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('http://localhost/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
+
+        $this->client->click($this->client->getCrawler()->selectLink('Annuler')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertEquals('http://localhost/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
+    }
+
+    public function testSendMailFailed()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+
+        $data = [];
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
+
+        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('label[for=referent_message_subject] + .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('label[for=referent_message_content] + .form__errors > li')->text());
+    }
+
+    public function testSendMailSuccessful()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('4 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
+
+        $data = [];
+        $data['referent_message']['subject'] = 'Event reminder';
+        $data['referent_message']['content'] = 'One event is planned.';
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('http://localhost/espace-referent/utilisateurs?', $this->client->getRequest()->getUri());
+    }
+
     public function providePages()
     {
         return [
@@ -128,8 +221,10 @@ class ReferentControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadNewsletterSubscriptionData::class,
             LoadEventCategoryData::class,
             LoadAdherentData::class,
+            LoadReferentManagedUserData::class,
         ]);
     }
 

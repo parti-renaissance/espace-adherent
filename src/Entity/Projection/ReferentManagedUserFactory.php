@@ -22,7 +22,7 @@ class ReferentManagedUserFactory
             $data['is_committee_member'],
             $data['is_committee_host'],
             $data['is_mail_subscriber'],
-            $data['created_at'] instanceOf \DateTime ?: new \DateTime($data['created_at'])
+            $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at'])
         );
     }
 

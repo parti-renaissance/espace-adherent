@@ -9,8 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadNewsletterSubscriptionData extends AbstractFixture
-    implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadNewsletterSubscriptionData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
     use ContainerAwareTrait;
 
