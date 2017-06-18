@@ -69,6 +69,13 @@ trait EntityContentTrait
      */
     private $content;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $ampContent;
+
     public function __toString(): string
     {
         return $this->title ?: '';
@@ -79,7 +86,7 @@ trait EntityContentTrait
         return $this->title;
     }
 
-    public function setTitle(?string $title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
@@ -89,7 +96,7 @@ trait EntityContentTrait
         return $this->slug;
     }
 
-    public function setSlug(?string $slug)
+    public function setSlug(?string $slug): void
     {
         $this->slug = $slug;
     }
@@ -99,7 +106,7 @@ trait EntityContentTrait
         return $this->description;
     }
 
-    public function setDescription(?string $description)
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
@@ -119,9 +126,19 @@ trait EntityContentTrait
         return $this->content;
     }
 
-    public function setContent(?string $content)
+    public function setContent(?string $content): void
     {
         $this->content = $content;
+    }
+
+    public function getAmpContent(): ?string
+    {
+        return $this->ampContent;
+    }
+
+    public function setAmpContent(?string $ampContent): void
+    {
+        $this->ampContent = $ampContent;
     }
 
     public function getKeywords(): ?string
@@ -129,7 +146,7 @@ trait EntityContentTrait
         return $this->keywords;
     }
 
-    public function setKeywords(?string $keywords)
+    public function setKeywords(?string $keywords): void
     {
         $this->keywords = $keywords;
     }

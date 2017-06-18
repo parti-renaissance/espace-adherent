@@ -50,6 +50,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -62,6 +63,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -74,11 +76,12 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         // A lot of articles for listing
         foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
-            for ($i = 0; $i < 150; ++$i) {
+            for ($i = 0; $i < 25; ++$i) {
                 $manager->persist($factory->createFromArray([
                     'title' => $faker->sentence(),
                     'slug' => $faker->slug(),
@@ -89,6 +92,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
                     'publishedAt' => $faker->dateTimeThisDecade,
                     'category' => $category,
                     'content' => file_get_contents(__DIR__.'/../content.md'),
+                    'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
                 ]));
             }
         }

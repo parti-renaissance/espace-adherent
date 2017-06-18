@@ -56,6 +56,10 @@
                     <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
                 </argument>
             </call>
+
+            <call method="setMarkdown">
+                <argument type="service" id="app.content.markdown_parser" />
+            </call>
         </service>
 
         <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
@@ -64,6 +68,10 @@
             <argument />
             <argument>AppBundle\Entity\Page</argument>
             <argument />
+
+            <call method="setMarkdown">
+                <argument type="service" id="app.content.markdown_parser" />
+            </call>
         </service>
 
         <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
@@ -152,27 +160,9 @@
                     <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
                 </argument>
             </call>
-        </service>
 
-        <service id="app.admin.clarification" class="AppBundle\Admin\ClarificationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désintox" group="Communication" />
-
-            <argument />
-            <argument>AppBundle\Entity\Clarification</argument>
-            <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
-
-            <call method="setStorage">
-                <argument type="service" id="app.storage" />
-            </call>
-
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
+            <call method="setMarkdown">
+                <argument type="service" id="app.content.markdown_parser" />
             </call>
         </service>
 
@@ -242,7 +232,7 @@
                 <argument>admin/ton_macron_choice_list.html.twig</argument>
             </call>
         </service>
-        
+
         <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Campagne" />
 

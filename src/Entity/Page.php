@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Page
+class Page implements EntityMediaInterface, EntityContentInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;

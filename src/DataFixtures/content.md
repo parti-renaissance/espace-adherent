@@ -76,7 +76,30 @@ It's sometimes handy for breaking things up.
 
 Markdown can also contain images. I'll need to add something here sometime.
 
-![macron](http://www.eric-lafond.fr/wp-content/uploads/2016/09/Macron.jpg)
+<center>
+
+<figure>
+    <img src="https://pbs.twimg.com/media/DBRPMmMXcAAwdtK.jpg:large">
+    <figcaption></figcaption>
+</figure>
+
+</center>
+
+## Videos
+
+<center>
+
+<div class="video">
+   <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FEmmanuelMacron%2Fvideos%2F1973801359519107%2F&show_text=0&width=560" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+</div>
+
+</center>
+
+## Twitter
+
+<center>
+<blockquote class="twitter-tweet" data-lang="fr"><p lang="fr" dir="ltr">À tout de suite sur TF1. <a href="https://twitter.com/hashtag/MacronPr%C3%A9sident?src=hash">#MacronPrésident</a> <a href="https://t.co/lZALwnfZ8Y">pic.twitter.com/lZALwnfZ8Y</a></p>&mdash; Emmanuel Macron (@EmmanuelMacron) <a href="https://twitter.com/EmmanuelMacron/status/854030102673444864">17 avril 2017</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
 
 ## Finally
 
