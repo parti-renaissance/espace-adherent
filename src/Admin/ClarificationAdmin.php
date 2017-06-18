@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ClarificationAdmin extends AbstractAdmin
 {
+    use AmpSynchronisedAdminTrait;
     use MediaSynchronisedAdminTrait;
 
     protected $datagridValues = [

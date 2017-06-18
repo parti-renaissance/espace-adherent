@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PageAdmin extends AbstractAdmin
 {
+    use AmpSynchronisedAdminTrait;
+
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 64,

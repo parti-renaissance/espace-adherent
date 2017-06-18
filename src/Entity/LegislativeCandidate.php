@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Algolia\Index(autoIndex=false)
  * @UniqueEntity(fields="slug", groups="Admin")
  */
-class LegislativeCandidate
+class LegislativeCandidate implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
     use EntityMediaTrait;

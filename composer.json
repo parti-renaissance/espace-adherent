@@ -61,7 +61,8 @@
         "facebook/graph-sdk": "^5.4",
         "imagine/imagine": "^0.6.3",
         "algolia/algolia-search-bundle": "^2.2",
-        "geoip2/geoip2": "^2.4"
+        "geoip2/geoip2": "^2.4",
+        "lullabot/amp": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
