@@ -15,7 +15,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:          ## Install and start the project
-start: build up app/config/parameters.yml db web/built perm
+start: build up app/config/parameters.yml db web/built assets-amp perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -87,6 +87,10 @@ assets: node_modules
 assets-prod:    ## Build the production version of the assets
 assets-prod: node_modules
 	$(RUN) yarn build-prod
+
+assets-amp:     ## Build the production version of the AMP CSS
+assets-amp: node_modules
+	$(RUN) yarn build-amp
 
 
 ##

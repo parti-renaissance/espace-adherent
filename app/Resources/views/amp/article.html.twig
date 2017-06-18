@@ -1,0 +1,62 @@
+{% extends 'amp/_layout.html.twig' %}
+
+{% block page_title article.title %}
+{% block canonical_url url('article_view', {'slug': article.slug}) %}
+
+{% block image %}{% spaceless %}
+    {% if article.media %}
+        {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endspaceless %}{% endblock %}
+
+{% block json_ld %}
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "name": "{{ block('page_title') }}",
+    "section": "{{ article.category.name }}",
+    "headline": "{{ article.description }}",
+    "description": "{{ article.description }}",
+    "url": "{{ block('canonical_url') }}",
+    "image": "{{ block('image') }}",
+    "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="amp-warning">
+        <a href="{{ block('canonical_url') }}">Retrouvez cet article sur en-marche.fr</a>
+    </div>
+
+    <main class="b__nudge--bottom">
+        <section class="content b__nudge--bottom-huge">
+            <header class="b__nudge--top l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ article.title }}
+                </h1>
+                <h2 class="text--gray bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+            </header>
+
+            {% if article.media and article.displayMedia %}
+                <amp-img src="{{ media_asset(article.media, {'q': 70}) }}"
+                         width="{{ article.media.width }}"
+                         height="{{ article.media.height }}"
+                         layout="responsive">
+                    <noscript>
+                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
+                             width="{{ article.media.width }}"
+                             height="{{ article.media.height }}" />
+                    </noscript>
+                </amp-img>
+            {% endif %}
+
+            <article class="l__wrapper--slim">
+                {{ article.ampContent|raw }}
+            </article>
+        </section>
+    </main>
+{% endblock %}
