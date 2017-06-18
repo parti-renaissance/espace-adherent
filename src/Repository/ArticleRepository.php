@@ -39,7 +39,7 @@ class ArticleRepository extends EntityRepository
      *
      * @return Article[]
      */
-    public function findByCategoryPaginated(string $category, int $page, int $perPage)
+    public function findByCategoryPaginated(string $category, int $page, int $perPage): array
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
@@ -48,27 +48,22 @@ class ArticleRepository extends EntityRepository
             ->setParameter('published', true)
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($perPage)
-            ->setFirstResult(($page - 1) * $perPage);
+            ->setFirstResult(($page - 1) * $perPage)
+        ;
 
         if (!ArticleCategory::isDefault($category)) {
             $qb
                 ->addSelect('c')
                 ->leftJoin('a.category', 'c')
                 ->andWhere('c.slug = :category')
-                ->setParameter('category', $category);
+                ->setParameter('category', $category)
+            ;
         }
 
-        return $qb
-            ->getQuery()
-            ->getResult();
+        return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return Article
-     */
-    public function findOneBySlug(string $slug)
+    public function findOneBySlug(string $slug): ?Article
     {
         return $this->createQueryBuilder('a')
             ->select('a', 'm', 'c')
@@ -77,32 +72,49 @@ class ArticleRepository extends EntityRepository
             ->where('a.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
-    /**
-     * @return Article[]
-     */
-    public function findAllPublished()
+    public function findOnePublishedBySlug(string $slug): ?Article
     {
-        return $this->createFindAllQueryBuilder()
+        return $this->createQueryBuilder('a')
+            ->select('a', 'm', 'c')
+            ->leftJoin('a.media', 'm')
+            ->leftJoin('a.category', 'c')
+            ->where('a.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->andWhere('a.published = :published')
+            ->setParameter('published', true)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
      * @return Article[]
      */
-    public function findAllForFeed()
+    public function findAllPublished(): array
+    {
+        return $this->createFindAllQueryBuilder()->getQuery()->getResult();
+    }
+
+    /**
+     * @return Article[]
+     */
+    public function findAllForFeed(): array
     {
         return $this->createFindAllQueryBuilder()
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults(20)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
+     * @param Article $article
+     *
      * @return Article[]
      */
     public function findThreeLatestOtherThan(Article $article): array
@@ -126,13 +138,14 @@ class ArticleRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function createFindAllQueryBuilder()
+    private function createFindAllQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('a')
             ->select('a', 'm', 'c')
             ->leftJoin('a.media', 'm')
             ->leftJoin('a.category', 'c')
             ->andWhere('a.published = :published')
-            ->setParameter('published', true);
+            ->setParameter('published', true)
+        ;
     }
 }

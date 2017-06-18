@@ -28,6 +28,7 @@
 
         <link rel="canonical" href="{% block canonical_url %}{{ url('homepage')|trim('/') }}{% endblock %}" />
         <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
+        {% block amp_link %}{% endblock %}
 
         <meta property="og:site_name" content="En Marche !" />
         <meta property="og:type" content="{% block open_graph_type %}website{% endblock %}" />

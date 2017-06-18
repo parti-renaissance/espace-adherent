@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use Psr\Cache\CacheItemPoolInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -59,20 +60,15 @@ class ArticleController extends Controller
     /**
      * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
      * @Method("GET")
+     * @Entity("article", expr="repository.findOnePublishedBySlug(slug)")
      */
-    public function articleAction($slug): Response
+    public function articleAction(Article $article): Response
     {
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBySlug($slug);
-
-        if (!$article || !$article->isPublished()) {
-            throw $this->createNotFoundException();
-        }
-
-        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
+        $latestArticles = $this->getDoctrine()->getRepository(Article::class)->findThreeLatestOtherThan($article);
 
         return $this->render('article/article.html.twig', [
             'article' => $article,
-            'latestArticles' => $articlesRepo->findThreeLatestOtherThan($article),
+            'latestArticles' => $latestArticles,
         ]);
     }
 

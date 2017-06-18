@@ -6,6 +6,10 @@
 
 {% block canonical_url url('article_view', {'slug': article.slug}) %}
 
+{% block amp_link %}
+    {% if enable_canary %}<link rel="amphtml" href="{{ url('amp_article_view', {'slug': article.slug}) }}" />{% endif %}
+{% endblock %}
+
 {% block open_graph_image %}{% spaceless %}
     {% if article.media %}
         {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
@@ -16,6 +20,22 @@
 
 {% block open_graph_image_width (article.media ? article.media.width : 628) %}
 {% block open_graph_image_height (article.media ? article.media.height : 288) %}
+
+{% block json_ld %}
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "name": "{{ block('page_title') }}",
+    "section": "{{ article.category.name }}",
+    "headline": "{{ block('meta_description') }}",
+    "description": "{{ block('meta_description') }}",
+    "url": "{{ block('canonical_url') }}",
+    "image": "{{ block('open_graph_image') }}",
+    "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}"
+}
+</script>
+{% endblock %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
