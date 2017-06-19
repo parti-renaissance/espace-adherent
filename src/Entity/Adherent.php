@@ -8,6 +8,7 @@ use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\ValueObject\Genders;
@@ -157,6 +158,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $memberships;
 
+    /**
+     * @var Summary|null
+     *
+     * @ORM\OneToOne(targetEntity="Summary", mappedBy="member", cascade={"all"})
+     */
+    private $summary;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -305,6 +313,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->position;
     }
 
+    public function setPosition(string $position): void
+    {
+        if (!ActivityPositions::exists($position)) {
+            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositions::ALL)));
+        }
+
+        $this->position = $position;
+    }
+
     public function isEnabled(): bool
     {
         return self::ENABLED === $this->status;
@@ -435,23 +452,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->lastLoggedAt;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getInterests(): ?array
+    public function getInterests(): array
     {
         return $this->interests;
     }
 
-    public function getInterestsAsJson(): ?string
+    public function getInterestsAsJson(): string
     {
         return \GuzzleHttp\json_encode($this->interests, JSON_PRETTY_PRINT);
     }
 
-    /**
-     * @param array|null $interests
-     */
-    public function setInterests(array $interests = null): void
+    public function setInterests(array $interests): void
     {
         $this->interests = $interests;
     }
@@ -702,5 +713,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setComEmail(?bool $comEmail): void
     {
         $this->comEmail = $comEmail;
+    }
+
+    public function getSummary(): ?Summary
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(?Summary $summary): void
+    {
+        $this->summary = $summary;
     }
 }
