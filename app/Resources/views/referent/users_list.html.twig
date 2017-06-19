@@ -85,7 +85,9 @@
                         Réinitialiser le filtre
                     </a>
                     {% endif %}
-                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">Filtrer</button>
+                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
+                        Filtrer pour envoyer un message
+                    </button>
                 </div>
 
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
