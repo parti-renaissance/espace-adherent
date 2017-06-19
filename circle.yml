@@ -63,6 +63,7 @@ deployment:
 
             # Build the image
             - yarn run build-prod
+            - yarn run build-amp
             - docker build -t enmarche-common -f prod.common.dockerfile .
             - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.app.dockerfile .
             - docker build -t eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet-campaign:$CIRCLE_SHA1 -f prod.worker-mailjet-campaign.dockerfile .
