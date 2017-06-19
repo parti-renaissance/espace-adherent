@@ -72,7 +72,7 @@ class AssetsController extends Controller
         $size = $request->query->has('algolia') ? self::WIDTH.'x'.self::HEIGHT : null;
 
         if (!$contents = $this->get('app.map.google_maps_static_provider')->get($coordinates, $size)) {
-            throw $this->createNotFoundException('Unable to retrieve the requested static map file');
+            $contents = file_get_contents($this->createWhiteImage());
         }
 
         return new Response($contents, 200, ['content-type' => 'image/png']);
@@ -159,5 +159,23 @@ class AssetsController extends Controller
         }
 
         return $manager->getRepository(Article::class);
+    }
+
+    /**
+     * Creates a transparent image PNG with sizes 1px x 1px.
+     *
+     * @return string Image path
+     */
+    private function createWhiteImage(): string
+    {
+        $imagePath = $this->container->get('kernel')->getCacheDir().DIRECTORY_SEPARATOR.'white_image.png';
+
+        $image = imagecreatetruecolor(1, 1);
+        imagesavealpha($image, true);
+        $color = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        imagefill($image, 0, 0, $color);
+        imagepng($image, $imagePath);
+
+        return $imagePath;
     }
 }
