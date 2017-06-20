@@ -70,33 +70,6 @@ committee.promote_host.success: Le membre a été promu animateur du comité ave
 committee.demote_host.success: Le membre a été redéfini simple membre du comité avec succès.
 
 #
-# Summary
-#
-member_summary.contract.internship: Stage
-member_summary.contract.permanent: CDI
-member_summary.contract.temporary: CDD
-member_summary.contract.volunteering: Bénévolat
-member_summary.contract.assignment: Mission
-member_summary.contract.other: Autre
-
-member_summary.contribution.volunteer: En tant que bénévole
-member_summary.contribution.contractor: En tant que prestataire
-member_summary.contribution.employee: En tant que salarié
-
-member_summary.job_duration.part_time: Temps plein
-member_summary.job_duration.full_time: Temps partiel
-member_summary.job_duration.punctually: Intervention ponctuelle
-
-member_summary.job_location.on_site: A distance
-member_summary.job_location.on_remote: Sur site
-
-member_summary.language.level.low: Connaissance limitée
-member_summary.language.level.basic: Maîtrise basique
-member_summary.language.level.medium: Bonne maîtrise
-member_summary.language.level.high: Maitrise parfaite
-member_summary.language.level.fluent: Langue maternelle
-
-#
 # Search
 #
 search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville que vous avez saisie.
