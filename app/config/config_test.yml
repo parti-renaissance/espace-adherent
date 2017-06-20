@@ -26,6 +26,7 @@ services:
 
 parameters:
     env(DATABASE_NAME): "enmarche_test"
+    env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
     adherent_interests:
         agriculture: Agriculture
         culture: Culture
