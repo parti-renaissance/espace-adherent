@@ -1,0 +1,476 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Language;
+use AppBundle\Entity\MemberSummary\MissionType;
+use AppBundle\Entity\MemberSummary\Skill;
+use AppBundle\Entity\MemberSummary\Training;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="summaries")
+ */
+class Summary
+{
+    /**
+     * @var int|null
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var Adherent
+     *
+     * @ORM\OneToOne(targetEntity="Adherent", inversedBy="summary")
+     */
+    private $member;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=200)
+     */
+    private $currentProfession;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"})
+     */
+    private $contributionWish = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\JobDuration", "all"})
+     */
+    private $availability = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\JobLocation", "all"})
+     */
+    private $jobLocation = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=10, max=300)
+     */
+    private $professionalSynopsis = '';
+
+    /**
+     * @var MissionType[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\MemberSummary\MissionType")
+     * @ORM\JoinTable(
+     *     name="summary_mission_type_wishes",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="summary_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="mission_type_id", referencedColumnName="id")
+     *     }
+     * )
+     *
+     * @Assert\Count(min=1)
+     */
+    private $missionTypeWishes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=10, max=300)
+     */
+    private $motivation = '';
+
+    /**
+     * @var JobExperience[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     */
+    private $experiences;
+
+    /**
+     * @var Skill[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     * @Assert\Count(min=1)
+     */
+    private $skills;
+
+    /**
+     * @var Language[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Language", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     * @Assert\Count(min=1)
+     */
+    private $languages;
+
+    /**
+     * @var Training[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     */
+    private $trainings;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Email
+     * @Assert\Length(max=255)
+     */
+    private $contactEmail = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $linkedInUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $websiteUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $facebookUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $twitterNickname;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $viadeoUrl;
+
+    public function __construct(Adherent $adherent)
+    {
+        $adherent->setSummary($this);
+
+        $this->member = $adherent;
+        $this->missionTypeWishes = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
+        $this->skills = new ArrayCollection();
+        $this->languages = new ArrayCollection();
+        $this->trainings = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getMember(): Adherent
+    {
+        return $this->member;
+    }
+
+    public function getCurrentProfession(): ?string
+    {
+        return $this->currentProfession;
+    }
+
+    public function setCurrentProfession(?string $currentProfession): void
+    {
+        $this->currentProfession = $currentProfession;
+    }
+
+    public function getCurrentPosition(): string
+    {
+        return $this->member->getPosition();
+    }
+
+    public function setCurrentPosition(string $position): void
+    {
+        $this->member->setPosition($position);
+    }
+
+    public function getContributionWish(): string
+    {
+        return $this->contributionWish;
+    }
+
+    public function setContributionWish(string $contributionWish): void
+    {
+        $this->contributionWish = $contributionWish;
+    }
+
+    public function getAvailability(): string
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(string $availability): void
+    {
+        $this->availability = $availability;
+    }
+
+    public function getJobLocation(): string
+    {
+        return $this->jobLocation;
+    }
+
+    public function setJobLocation(string $jobLocation): void
+    {
+        $this->jobLocation = $jobLocation;
+    }
+
+    public function getProfessionalSynopsis(): string
+    {
+        return $this->professionalSynopsis;
+    }
+
+    public function setProfessionalSynopsis(string $professionalSynopsis): void
+    {
+        $this->professionalSynopsis = $professionalSynopsis;
+    }
+
+    /**
+     * @return MissionType[]|Collection
+     */
+    public function getMissionTypeWishes(): iterable
+    {
+        return $this->missionTypeWishes;
+    }
+
+    /**
+     * @param MissionType[]|Collection $missionTypeWishes
+     */
+    public function setMissionTypeWishes(iterable $missionTypeWishes): void
+    {
+        $this->missionTypeWishes = $missionTypeWishes;
+    }
+
+    public function getMotivation(): string
+    {
+        return $this->motivation;
+    }
+
+    public function setMotivation(string $motivation): void
+    {
+        $this->motivation = $motivation;
+    }
+
+    /**
+     * @return JobExperience[]|Collection
+     */
+    public function getExperiences(): iterable
+    {
+        return $this->experiences;
+    }
+
+    public function addExperience(JobExperience $experience): void
+    {
+        if (!$this->experiences->contains($experience)) {
+            $experience->setSummary($this);
+            $this->experiences->add($experience);
+        }
+    }
+
+    public function removeExperience(JobExperience $experience): void
+    {
+        $this->experiences->removeElement($experience);
+    }
+
+    /**
+     * @return Skill[]|Collection
+     */
+    public function getSkills(): iterable
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): void
+    {
+        if (!$this->skills->contains($skill)) {
+            $skill->setSummary($this);
+            $this->skills->add($skill);
+        }
+    }
+
+    public function removeSkill(Skill $skill): void
+    {
+        $this->skills->removeElement($skill);
+    }
+
+    /**
+     * @return Language[]|Collection
+     */
+    public function getLanguages(): iterable
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(Language $language): void
+    {
+        if (!$this->languages->contains($language)) {
+            $language->setSummary($this);
+            $this->languages->add($language);
+        }
+    }
+
+    public function removeLanguage(Language $language): void
+    {
+        $this->languages->removeElement($language);
+    }
+
+    public function getMemberInterests(): array
+    {
+        return $this->member->getInterests();
+    }
+
+    public function setMemberInterests(array $interests): void
+    {
+        $this->member->setInterests($interests);
+    }
+
+    /**
+     * @return Training[]|Collection
+     */
+    public function getTrainings(): iterable
+    {
+        return $this->trainings;
+    }
+
+    public function addTraining(Training $training): void
+    {
+        if (!$this->trainings->contains($training)) {
+            $training->setSummary($this);
+            $this->trainings->add($training);
+        }
+    }
+
+    public function removeTraining(Training $training): void
+    {
+        $this->trainings->removeElement($training);
+    }
+
+    public function getContactEmail(): string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(string $contactEmail): void
+    {
+        $this->contactEmail = $contactEmail;
+    }
+
+    public function getLinkedInUrl(): ?string
+    {
+        return $this->linkedInUrl;
+    }
+
+    public function setLinkedInUrl(?string $linkedInUrl): void
+    {
+        $this->linkedInUrl = $linkedInUrl;
+    }
+
+    public function getWebsiteUrl(): ?string
+    {
+        return $this->websiteUrl;
+    }
+
+    public function setWebsiteUrl(?string $websiteUrl): void
+    {
+        $this->websiteUrl = $websiteUrl;
+    }
+
+    public function getFacebookUrl(): ?string
+    {
+        return $this->facebookUrl;
+    }
+
+    public function setFacebookUrl(?string $facebookUrl): void
+    {
+        $this->facebookUrl = $facebookUrl;
+    }
+
+    public function getTwitterNickname(): ?string
+    {
+        return $this->twitterNickname;
+    }
+
+    public function setTwitterNickname(?string $twitterNickname): void
+    {
+        $this->twitterNickname = $twitterNickname;
+    }
+
+    public function getViadeoUrl(): ?string
+    {
+        return $this->viadeoUrl;
+    }
+
+    public function setViadeoUrl(?string $viadeoUrl): void
+    {
+        $this->viadeoUrl = $viadeoUrl;
+    }
+
+    public static function createFromMember(Adherent $adherent): self
+    {
+        $self = new self($adherent);
+
+        return $self;
+    }
+}
