@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Snc\RedisBundle\SncRedisBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
 
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
