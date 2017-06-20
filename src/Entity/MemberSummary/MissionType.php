@@ -3,11 +3,19 @@
 namespace AppBundle\Entity\MemberSummary;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="member_summary_mission_types")
+ * @ORM\Table(
+ *   name="member_summary_mission_types",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="member_summary_mission_type_name_unique", columns="name")
+ *   }
+ * )
+ *
+ * @UniqueEntity("name")
  */
 class MissionType
 {
@@ -22,6 +30,8 @@ class MissionType
 
     /**
      * @var string
+     *
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
