@@ -438,6 +438,20 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertCount(2, $memberships);
     }
 
+    public function testCannotCreateMembershipAccountRecaptchaConnexionFailure()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $data = static::createFormData();
+        $data['g-recaptcha-response'] = 'connection_failure';
+        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Une erreur s\'est produite, pouvez-vous réessayer ?', $crawler->filter('#recapture_error')->text());
+    }
+
     private static function createFormData()
     {
         return [

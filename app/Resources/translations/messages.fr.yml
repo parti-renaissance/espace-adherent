@@ -140,3 +140,8 @@ event.invitation.form.message: Votre message (200 caractères max)
 event.invitation.form.guest: E-mail d'un ami
 event.invitation.form.invite: Envoyer
 event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !
+
+#
+# Errors
+#
+recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
