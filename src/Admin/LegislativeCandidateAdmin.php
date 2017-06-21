@@ -68,7 +68,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ->add('_thumbnail', null, [
                 'label' => 'Photo',
                 'virtual_field' => true,
-                'template' => 'admin/legislative_candidate_thumbnail.html.twig',
+                'template' => 'admin/legislative_candidate/list_thumbnail.html.twig',
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
@@ -84,11 +84,11 @@ class LegislativeCandidateAdmin extends AbstractAdmin
             ])
             ->add('status', null, [
                 'label' => 'Résultat',
-                'template' => 'admin/legislative_candidate_status.html.twig',
+                'template' => 'admin/legislative_candidate/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/legislative_candidate_actions.html.twig',
+                'template' => 'admin/legislative_candidate/list_actions.html.twig',
             ])
         ;
     }

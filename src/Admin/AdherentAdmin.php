@@ -29,6 +29,19 @@ class AdherentAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    public function getTemplate($name)
+    {
+        if ('show' === $name) {
+            return 'admin/adherent/show.html.twig';
+        }
+
+        if ('edit' === $name) {
+            return 'admin/adherent/edit.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -278,7 +291,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('lastName', null, [
+            ->addIdentifier('lastName', null, [
                 'label' => 'Nom',
             ])
             ->add('firstName', null, [
@@ -289,7 +302,7 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('phone', null, [
                 'label' => 'Téléphone',
-                'template' => 'admin/adherent_phone.html.twig',
+                'template' => 'admin/adherent/list_phone.html.twig',
             ])
             ->add('postAddress.postalCode', null, [
                 'label' => 'Code postal',
@@ -311,11 +324,11 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('type', null, [
                 'label' => 'Type',
-                'template' => 'admin/adherent_status.html.twig',
+                'template' => 'admin/adherent/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/adherent_actions.html.twig',
+                'template' => 'admin/adherent/list_actions.html.twig',
             ])
         ;
     }

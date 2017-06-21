@@ -30,6 +30,15 @@ class HomeBlockAdmin extends AbstractAdmin
         return new Metadata($object->getTitle(), $object->getSubtitle(), $object->getMedia()->getPath());
     }
 
+    public function getTemplate($name)
+    {
+        if ('outer_list_rows_mosaic' === $name) {
+            return 'admin/media/mosaic.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         if (null === $this->getSubject()->getId()) {
@@ -72,7 +81,7 @@ class HomeBlockAdmin extends AbstractAdmin
             ])
         ;
 
-        if ('Bannière - Gauche' == $this->getSubject()->getPositionName()) {
+        if ('Bannière - Gauche' === $this->getSubject()->getPositionName()) {
             $formMapper
                 ->add('displayTitles', null, [
                     'label' => 'Afficher le titre et sous-titre',

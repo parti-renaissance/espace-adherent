@@ -55,6 +55,19 @@ class CommitteeAdmin extends AbstractAdmin
         return $this->cachedDatagrid;
     }
 
+    public function getTemplate($name)
+    {
+        if ('show' === $name) {
+            return 'admin/committee/show.html.twig';
+        }
+
+        if ('edit' === $name) {
+            return 'admin/committee/edit.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -326,15 +339,15 @@ class CommitteeAdmin extends AbstractAdmin
             ])
             ->add('hosts', TextType::class, [
                 'label' => 'Animateur(s)',
-                'template' => 'admin/committee_hosts.html.twig',
+                'template' => 'admin/committee/list_hosts.html.twig',
             ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
-                'template' => 'admin/committee_status.html.twig',
+                'template' => 'admin/committee/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/committee_actions.html.twig',
+                'template' => 'admin/committee/list_actions.html.twig',
             ])
         ;
     }

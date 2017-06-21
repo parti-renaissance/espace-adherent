@@ -29,7 +29,7 @@ class AdminProcurationController extends Controller
     {
         $referents = $this->getDoctrine()->getRepository(Adherent::class)->findReferents();
 
-        return $this->render('admin/procuration_referents_invitation_urls.html.twig', [
+        return $this->render('admin/procuration/referents_invitation_urls.html.twig', [
             'referents' => $referents,
         ]);
     }
@@ -73,7 +73,7 @@ class AdminProcurationController extends Controller
             return $this->redirectAfterDeassociation($sfRequest);
         }
 
-        return $this->render('admin/procuration_request_deassociate.html.twig', [
+        return $this->render('admin/procuration/request_deassociate.html.twig', [
             'form' => $form->createView(),
             'request' => $request,
         ]);

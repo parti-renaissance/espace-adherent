@@ -80,6 +80,15 @@ class MediaAdmin extends AbstractAdmin
         return new Metadata($object->getName(), null, $object->getPath());
     }
 
+    public function getTemplate($name)
+    {
+        if ('outer_list_rows_mosaic' === $name) {
+            return 'admin/media/mosaic.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
@@ -122,7 +131,7 @@ class MediaAdmin extends AbstractAdmin
             ->add('_thumbnail', null, [
                 'label' => 'Miniature',
                 'virtual_field' => true,
-                'template' => 'admin/media_thumbnail.html.twig',
+                'template' => 'admin/media/list_thumbnail.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
@@ -147,7 +156,7 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/media_actions.html.twig',
+                'template' => 'admin/media/list_actions.html.twig',
             ])
         ;
     }

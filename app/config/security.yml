@@ -72,6 +72,8 @@ security:
             - ROLE_APP_ADMIN_ADHERENT_LIST
             - ROLE_APP_ADMIN_ADHERENT_VIEW
             - ROLE_APP_ADMIN_ADHERENT_EDIT
+
+        ROLE_ADMIN_SUMMARY:
             - ROLE_APP_ADMIN_SUMMARY_MISSION_TYPE_ALL
 
         ROLE_ADMIN_COMMITTEES:
@@ -116,6 +118,7 @@ security:
             - ROLE_ADMIN_TON_MACRON
             - ROLE_ADMIN_LEGISLATIVES
             - ROLE_ADMIN_ADHERENTS
+            - ROLE_ADMIN_SUMMARY
             - ROLE_ADMIN_COMMITTEES
             - ROLE_ADMIN_EVENTS
             - ROLE_ADMIN_PROCURATIONS

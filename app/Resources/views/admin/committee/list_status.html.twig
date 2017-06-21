@@ -1,9 +1,9 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.isRefused %}
+    {% if object.refused %}
         <span class="label label-danger">Refusé</span>
-    {% elseif object.isApproved %}
+    {% elseif object.approved %}
         <span class="label label-success">Accepté</span>
     {% else %}
         <span class="label label-primary">En attente</span>

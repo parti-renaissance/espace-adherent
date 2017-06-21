@@ -1,0 +1,23 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block actions %}
+    <li>
+        <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+            Impersonnifier
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-action-element" title="Éditer">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Éditer
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_app_adherent_list') }}" class="sonata-action-element" title="Éditer">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Retourner à la liste
+        </a>
+    </li>
+{% endblock %}
+

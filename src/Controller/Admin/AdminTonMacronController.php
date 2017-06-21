@@ -42,7 +42,7 @@ class AdminTonMacronController extends Controller
      */
     public function exportInvitationsAction(): Response
     {
-        return $this->render('admin/ton_macron_export_invitations.html.twig', [
+        return $this->render('admin/ton_macron/invitation_export.html.twig', [
             'total_count' => $this->getDoctrine()->getRepository(TonMacronFriendInvitation::class)->countForExport(),
             'csv_header' => implode(',', [
                 'id',

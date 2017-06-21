@@ -12,11 +12,14 @@
             Afficher
         </a>
     </div>
-    <div style="width: 160px; margin-top: 5px;">
-        <a href="{{ path('app_event_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
-           class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            Voir sur le site
-        </a>
-    </div>
+
+    {% if object.published %}
+        <div style="width: 160px; margin-top: 5px;">
+            <a href="{{ path('app_event_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
+               class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                Voir sur le site
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}

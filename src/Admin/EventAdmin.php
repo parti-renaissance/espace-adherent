@@ -27,6 +27,19 @@ class EventAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    public function getTemplate($name)
+    {
+        if ('show' === $name) {
+            return 'admin/event/show.html.twig';
+        }
+
+        if ('edit' === $name) {
+            return 'admin/event/edit.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -36,7 +49,6 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
-                    'template' => 'admin/event_category.html.twig',
                 ])
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
@@ -246,27 +258,29 @@ class EventAdmin extends AbstractAdmin
             ])
             ->add('organizer', null, [
                 'label' => 'Organisateur',
-                'template' => 'admin/event_organizer.html.twig',
+                'template' => 'admin/event/list_organizer.html.twig',
             ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',
             ])
-            ->add('cityName', null, [
-                'label' => 'Ville',
+            ->add('_location', null, [
+                'label' => 'Lieu',
+                'virtual_field' => true,
+                'template' => 'admin/event/list_location.html.twig',
             ])
-            ->add('categoryName', null, [
-                'label' => 'Type d\'évenement',
+            ->add('category', null, [
+                'label' => 'Catégorie',
             ])
             ->add('participantsCount', null, [
                 'label' => 'Participants',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
-                'template' => 'admin/event_status.html.twig',
+                'template' => 'admin/event/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/event_actions.html.twig',
+                'template' => 'admin/event/list_actions.html.twig',
             ])
         ;
     }

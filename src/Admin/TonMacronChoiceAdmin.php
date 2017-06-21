@@ -18,6 +18,23 @@ class TonMacronChoiceAdmin extends AbstractAdmin
         '_sort_by' => 'contentKey',
     ];
 
+    public function getTemplate($name)
+    {
+        if ('list' === $name) {
+            return 'admin/ton_macron/choice_list.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
+    public function getBatchActions()
+    {
+        $actions = parent::getBatchActions();
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -53,16 +70,8 @@ class TonMacronChoiceAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/ton_macron_actions.html.twig',
+                'template' => 'admin/ton_macron/choice_list_actions.html.twig',
             ])
         ;
-    }
-
-    public function getBatchActions()
-    {
-        $actions = parent::getBatchActions();
-        unset($actions['delete']);
-
-        return $actions;
     }
 }
