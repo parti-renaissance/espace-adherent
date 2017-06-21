@@ -234,7 +234,7 @@ class EventRepository extends EntityRepository
             $qb = $this->createQueryBuilder('n');
         }
 
-        $qb->andWhere('e.published = :published')
+        $qb->andWhere('n.published = :published')
            ->setParameter('published', true);
 
         if (!empty($query = $search->getQuery())) {
