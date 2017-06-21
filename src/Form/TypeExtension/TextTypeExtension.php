@@ -26,13 +26,12 @@ class TextTypeExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'empty_data' => '',
-            'purify_html' => false,
-            'filter_emojis' => false,
-        ]);
-
         $resolver
+            ->setDefaults([
+                'empty_data' => '',
+                'purify_html' => false,
+                'filter_emojis' => false,
+            ])
             ->setAllowedTypes('purify_html', 'bool')
             ->setAllowedTypes('filter_emojis', 'bool')
         ;

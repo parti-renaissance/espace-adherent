@@ -121,7 +121,7 @@ class Summary
     /**
      * @var JobExperience[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */
@@ -130,7 +130,7 @@ class Summary
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      * @Assert\Count(min=1)
@@ -140,7 +140,7 @@ class Summary
     /**
      * @var Language[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Language", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Language", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      * @Assert\Count(min=1)
@@ -150,7 +150,7 @@ class Summary
     /**
      * @var Training[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */
