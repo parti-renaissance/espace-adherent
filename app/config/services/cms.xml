@@ -5,13 +5,7 @@
     <services>
 
         <!-- Markdown -->
-        <service id="app.content.markdown_parser" class="League\CommonMark\CommonMarkConverter" />
-
-        <service id="app.twig.markdown" class="AppBundle\Twig\MarkdownExtension" public="false">
-            <argument type="service" id="app.content.markdown_parser" />
-
-            <tag name="twig.extension" />
-        </service>
+        <service id="League\CommonMark\CommonMarkConverter" />
 
         <!-- Content -->
         <service id="app.content.media_factory" class="AppBundle\Content\MediaFactory" />
@@ -34,7 +28,7 @@
             <argument>%locale%</argument>
             <argument>%feed_ttl%</argument>
             <argument type="service" id="router" />
-            <argument type="service" id="app.content.markdown_parser" />
+            <argument type="service" id="League\CommonMark\CommonMarkConverter" />
         </service>
 
         <!-- Sitemap -->
@@ -45,12 +39,12 @@
         </service>
 
         <!-- Documents -->
-        <service id="app.document_repository" class="AppBundle\Documents\DocumentRepository" public="false">
+        <service id="AppBundle\Documents\DocumentRepository" public="false">
             <argument type="service" id="app.storage" />
         </service>
 
         <service id="app.document_manager" class="AppBundle\Documents\DocumentManager">
-            <argument type="service" id="app.document_repository"/>
+            <argument type="service" id="AppBundle\Documents\DocumentRepository"/>
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="security.authorization_checker"/>
         </service>
@@ -88,16 +82,6 @@
                 <!-- Max image size in numer of pixels (2000x2000) -->
                 <argument key="max_image_size">4000000</argument>
             </argument>
-        </service>
-
-        <service id="app.twig.media_asset_extension" class="AppBundle\Twig\AssetExtension" public="false">
-            <argument type="service" id="router" />
-            <argument type="service" id="twig.extension.assets" />
-            <argument>%kernel.secret%</argument>
-            <argument>%kernel.environment%</argument>
-            <argument>%assets_hash%</argument>
-
-            <tag name="twig.extension" />
         </service>
 
     </services>

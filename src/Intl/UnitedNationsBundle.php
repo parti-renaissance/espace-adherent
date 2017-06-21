@@ -7,15 +7,17 @@ use Symfony\Component\Intl\Intl;
 
 class UnitedNationsBundle
 {
+    private static $countries;
+
     /**
      * Returns the list of the United Nations member states translated in a given locale.
-     *
-     * @param string $locale
-     *
-     * @return array
      */
-    public static function getCountries($locale = 'fr'): array
+    public static function getCountries(?string $locale = 'fr'): array
     {
+        if (self::$countries[$locale]) {
+            return self::$countries[$locale];
+        }
+
         $intlCountries = Intl::getRegionBundle()->getCountryNames($locale);
         $names = [];
 
@@ -24,22 +26,17 @@ class UnitedNationsBundle
         }
 
         // Sort by name
-        $collator = new Collator($locale);
-        $collator->asort($names);
+        (new Collator($locale))->asort($names);
 
-        return $names;
+        return self::$countries[$locale] = $names;
     }
 
     /**
      * Returns whether the given code is a valid United Nations country.
-     *
-     * @param string $code
-     *
-     * @return bool
      */
     public static function isCountryCode(string $code): bool
     {
-        return in_array($code, self::$unitedNationsCodes);
+        return in_array($code, self::$unitedNationsCodes, true);
     }
 
     private static $unitedNationsCodes = [

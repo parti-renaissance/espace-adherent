@@ -46,7 +46,7 @@
             <argument />
 
             <call method="setMarkdown">
-                <argument type="service" id="app.content.markdown_parser" />
+                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
             </call>
         </service>
 
@@ -58,7 +58,7 @@
             <argument />
 
             <call method="setMarkdown">
-                <argument type="service" id="app.content.markdown_parser" />
+                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
             </call>
         </service>
 
@@ -117,8 +117,8 @@
                 <argument type="service" id="app.glide" />
             </call>
 
-            <call method="setAssetExtension">
-                <argument type="service" id="app.twig.media_asset_extension" />
+            <call method="setAssetRuntime">
+                <argument type="service" id="AppBundle\Twig\AssetRuntime" />
             </call>
         </service>
 
@@ -138,7 +138,7 @@
             <argument />
 
             <call method="setMarkdown">
-                <argument type="service" id="app.content.markdown_parser" />
+                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
             </call>
         </service>
 
