@@ -51,6 +51,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    paths:
+        '%kernel.project_dir%/templates/TwigBundle': Twig
+        '%kernel.project_dir%/templates': ~
     globals:
         assets_hash:            "%assets_hash%"
         sentry_dsn:             "%env(SENTRY_PUBLIC_DSN)%"
