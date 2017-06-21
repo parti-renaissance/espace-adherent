@@ -23,7 +23,7 @@ parameters:
     legislatives_standard_hotline_email: 'campagne.legislatives@en-marche.fr'
 
 framework:
-    translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }
     secret:          "%env(SECRET)%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
