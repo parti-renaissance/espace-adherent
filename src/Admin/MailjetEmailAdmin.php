@@ -30,9 +30,11 @@ class MailjetEmailAdmin extends AbstractAdmin
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
+                'format' => 'Y-m-d H:i:s',
             ])
-            ->add('updatedAt', null, [
+            ->add('deliveredAt', null, [
                 'label' => 'Date de traitement',
+                'format' => 'Y-m-d H:i:s',
             ])
             ->add('recipientsAsString', null, [
                 'label' => 'Destinataires',
@@ -78,9 +80,11 @@ class MailjetEmailAdmin extends AbstractAdmin
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
+                'format' => 'Y-m-d H:i:s',
             ])
-            ->add('updatedAt', null, [
+            ->add('deliveredAt', null, [
                 'label' => 'Date de traitement',
+                'format' => 'Y-m-d H:i:s',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
