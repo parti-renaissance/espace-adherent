@@ -1,7 +1,7 @@
 {
   "name": "enmarche_fr",
   "scripts": {
-    "build-amp": "node_modules/.bin/node-sass --output-style compressed front/style/amp.scss > app/Resources/views/amp/style.css.twig",
+    "build-amp": "node_modules/.bin/node-sass --output-style compressed front/style/amp.scss > templates/amp/style.css.twig",
     "build-prod": "node_modules/.bin/webpack --config webpack.config.prod.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.config.dev.js",
     "watch": "node_modules/.bin/webpack --config webpack.config.dev.js --progress --colors --watch",

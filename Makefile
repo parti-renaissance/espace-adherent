@@ -131,7 +131,7 @@ ly:
 	$(RUN) $(CONSOLE) lint:yaml app/config
 
 lt:
-	$(RUN) $(CONSOLE) lint:twig app/Resources
+	$(RUN) $(CONSOLE) lint:twig templates
 
 lj:             ## Lint the Javascript to follow the convention
 lj: node_modules
