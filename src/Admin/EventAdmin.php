@@ -229,9 +229,8 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('published', null, [
+            ->add('published', BooleanFilter::class, [
                 'label' => 'Publié',
-                'field_type' => BooleanFilter::class,
             ])
         ;
     }
