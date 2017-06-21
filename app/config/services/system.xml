@@ -168,7 +168,11 @@
         </service>
 
         <!-- Form -->
-        <service id="app.form.text_type_extension" class="AppBundle\Form\TypeExtension\TextTypeExtension">
+        <service id="AppBundle\Form\TypeExtension\FormTypeExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
+        </service>
+
+        <service id="AppBundle\Form\TypeExtension\TextTypeExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\TextType" />
         </service>
 
