@@ -39,11 +39,11 @@ class MailjetEmailAdmin extends AbstractAdmin
             ])
             ->add('requestPayload', null, [
                 'label' => 'Requête',
-                'template' => 'admin/mailjet_request.html.twig',
+                'template' => 'admin/mailjet/show_request.html.twig',
             ])
             ->add('responsePayload', null, [
                 'label' => 'Réponse',
-                'template' => 'admin/mailjet_response.html.twig',
+                'template' => 'admin/mailjet/show_response.html.twig',
             ])
         ;
     }

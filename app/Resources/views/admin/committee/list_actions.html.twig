@@ -2,14 +2,14 @@
 
 {% block field %}
     <div style="width: 160px">
-        {% if not object.isApproved %}
+        {% if not object.approved %}
             <a href="{{ path('app_admin_committee_approve', {id: object.id}) }}" class="btn btn-xs btn-default" title="Approuver">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Approuver
             </a>
         {% endif %}
 
-        {% if not object.isRefused %}
+        {% if not object.refused %}
             <a href="{{ path('app_admin_committee_refuse', {id: object.id}) }}" class="btn btn-xs btn-default view_link" title="Refuser">
                 <i class="fa fa-ban" aria-hidden="true"></i>
                 Refuser
@@ -29,11 +29,13 @@
         </a>
     </div>
 
-    <div style="width: 160px; margin-top: 5px;">
-        <a href="{{ path('app_committee_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
-           class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            Voir sur le site
-        </a>
-    </div>
+    {% if object.approved %}
+        <div style="width: 160px; margin-top: 5px;">
+            <a href="{{ path('app_committee_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
+               class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                Voir sur le site
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}

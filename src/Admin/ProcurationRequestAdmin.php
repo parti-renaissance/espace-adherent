@@ -29,6 +29,15 @@ class ProcurationRequestAdmin extends AbstractAdmin
         'validation_groups' => ['admin'],
     ];
 
+    public function getTemplate($name)
+    {
+        if ('list' === $name) {
+            return 'admin/procuration/list_invitations_link.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -218,19 +227,19 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->add('_profile', null, [
                 'virtual_field' => true,
                 'label' => 'Demande',
-                'template' => 'admin/procuration_request_summary.html.twig',
+                'template' => 'admin/procuration/request_list_summary.html.twig',
             ])
             ->add('_status', null, [
                 'label' => 'Statut',
                 'virtual_field' => true,
-                'template' => 'admin/procuration_request_status.html.twig',
+                'template' => 'admin/procuration/request_list_status.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/procuration_request_actions.html.twig',
+                'template' => 'admin/procuration/request_list_actions.html.twig',
             ])
         ;
     }

@@ -15,6 +15,15 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    public function getTemplate($name)
+    {
+        if ('list' === $name) {
+            return 'admin/ton_macron/invitation_list.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -74,7 +83,7 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
             ])
             ->add('mailBody', null, [
                 'label' => 'Contenu',
-                'template' => 'admin/ton_macron_friend_invitation_mail_body.html.twig',
+                'template' => 'admin/ton_macron/invitation_mail_body.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

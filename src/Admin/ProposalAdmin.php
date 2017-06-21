@@ -33,6 +33,15 @@ class ProposalAdmin extends AbstractAdmin
         return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
     }
 
+    public function getTemplate($name)
+    {
+        if ('outer_list_rows_mosaic' === $name) {
+            return 'admin/media/mosaic.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $slugEditable =
@@ -120,7 +129,7 @@ class ProposalAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'preview' => [
-                        'template' => 'admin/proposal_preview.html.twig',
+                        'template' => 'admin/proposal/list_preview.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],

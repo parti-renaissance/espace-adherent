@@ -28,12 +28,6 @@
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
             </call>
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
         </service>
 
         <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
@@ -50,12 +44,6 @@
             <argument />
             <argument>AppBundle\Entity\Article</argument>
             <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
 
             <call method="setMarkdown">
                 <argument type="service" id="app.content.markdown_parser" />
@@ -96,12 +84,6 @@
             <argument />
             <argument>AppBundle\Entity\HomeBlock</argument>
             <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
         </service>
 
         <service id="app.admin.live_link" class="AppBundle\Admin\LiveLinkAdmin">
@@ -154,12 +136,6 @@
             <argument />
             <argument>AppBundle\Entity\Proposal</argument>
             <argument />
-
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">admin/media_mosaic.html.twig</argument>
-                </argument>
-            </call>
 
             <call method="setMarkdown">
                 <argument type="service" id="app.content.markdown_parser" />
@@ -227,10 +203,6 @@
             <argument />
             <argument>AppBundle\Entity\TonMacronChoice</argument>
             <argument />
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/ton_macron_choice_list.html.twig</argument>
-            </call>
         </service>
 
         <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
@@ -239,11 +211,6 @@
             <argument />
             <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
             <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/ton_macron_invitations_list.html.twig</argument>
-            </call>
         </service>
 
         <!--
@@ -279,7 +246,7 @@
         </service>
 
         <service id="app.admin.event_category" class="AppBundle\Admin\EventCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories d'Événement" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements" group="Territoire" />
 
             <argument />
             <argument>AppBundle\Entity\EventCategory</argument>
@@ -300,11 +267,6 @@
             <argument />
             <argument>AppBundle\Entity\ProcurationProxy</argument>
             <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/procuration_list.html.twig</argument>
-            </call>
         </service>
 
         <!--

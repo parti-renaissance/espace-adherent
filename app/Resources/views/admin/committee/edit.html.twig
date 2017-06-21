@@ -1,0 +1,32 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block actions %}
+    <li>
+        <a href="{{ path('app_admin_committee_members', {id: object.id}) }}" class="sonata-action-element" title="Approuver">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Membres
+        </a>
+    </li>
+    {% if object.isApproved %}
+        <li>
+            <a href="{{ path('app_committee_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
+               class="sonata-action-element" title="Voir sur le site">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                Voir sur le site
+            </a>
+        </li>
+    {% endif %}
+    <li>
+        <a href="{{ path('admin_app_committee_show', {id: object.id}) }}" class="sonata-action-element" title="Afficher">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            Afficher
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_app_committee_list') }}" class="sonata-action-element" title="Éditer">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Retourner à la liste
+        </a>
+    </li>
+{% endblock %}
+

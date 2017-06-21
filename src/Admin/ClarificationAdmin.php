@@ -118,7 +118,7 @@ class ClarificationAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'preview' => [
-                        'template' => 'admin/clarification_preview.html.twig',
+                        'template' => 'admin/clarification/list_preview.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],

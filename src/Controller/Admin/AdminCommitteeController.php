@@ -66,7 +66,7 @@ class AdminCommitteeController extends Controller
     {
         $manager = $this->get('app.committee.manager');
 
-        return $this->render('admin/committee_members.html.twig', [
+        return $this->render('admin/committee/members.html.twig', [
             'committee' => $committee,
             'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
             'supervisors_count' => $memberships->countCommitteeSupervisorMemberships(),
