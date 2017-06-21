@@ -49,6 +49,13 @@ class MailjetEmail
      */
     private $responsePayload;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deliveredAt;
+
     public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload)
     {
         $this->uuid = $uuid;
@@ -88,6 +95,7 @@ class MailjetEmail
     public function delivered(?string $responsePayload): void
     {
         $this->responsePayload = base64_encode($responsePayload);
+        $this->deliveredAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -143,5 +151,10 @@ class MailjetEmail
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
+    }
+
+    public function getDeliveredAt(): ?\DateTime
+    {
+        return $this->deliveredAt;
     }
 }
