@@ -85,7 +85,21 @@ class ProcurationRequestRepository extends EntityRepository
             return [];
         }
 
-        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr'), $manager);
+        $sql = 'SELECT * FROM unprocessed_proxy_requests_list pr';
+
+        [$conditions, $params] = $filters->getSQLConditions($manager);
+
+        $sql .= ' '.$conditions;
+
+        $query = $this->_em->getConnection()->query($sql);
+        foreach ($params as $param => $value) {
+            $query->bindValue($param, $value);
+        }
+
+        die(dump($query->fetchAll()));
+
+        //$qb = $this->createQueryBuilder('pr');
+        $this->addAndWhereManagedBy($qb, $manager);
         $filters->apply($qb, 'pr');
 
         $requests = $qb->getQuery()->getArrayResult();
