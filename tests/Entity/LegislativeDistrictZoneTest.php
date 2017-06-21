@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\LegislativeDistrictZone;
+use PHPUnit\Framework\TestCase;
 
-class LegislativeDistrictZoneTest extends \PHPUnit_Framework_TestCase
+class LegislativeDistrictZoneTest extends TestCase
 {
     public function testCreateRegionDistrictZone()
     {

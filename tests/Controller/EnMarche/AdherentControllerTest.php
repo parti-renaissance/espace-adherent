@@ -17,12 +17,12 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
  */
-class AdherentControllerTest extends MysqlWebTestCase
+class AdherentControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 

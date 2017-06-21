@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Documents;
 use AppBundle\Documents\DocumentRepository;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
+use PHPUnit\Framework\TestCase;
 
-class DocumentRepositoryTest extends \PHPUnit_Framework_TestCase
+class DocumentRepositoryTest extends TestCase
 {
     /** @var Filesystem */
     private $filesystem;

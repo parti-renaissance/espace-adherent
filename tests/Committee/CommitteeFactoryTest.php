@@ -8,8 +8,9 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 
-class CommitteeFactoryTest extends \PHPUnit_Framework_TestCase
+class CommitteeFactoryTest extends TestCase
 {
     public function testCreateCommitteeFromCommitteeCreationCommand()
     {

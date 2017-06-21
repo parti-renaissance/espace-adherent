@@ -7,9 +7,10 @@ use AppBundle\Mailjet\Transport\ApiTransport;
 use AppBundle\Mailjet\EmailTemplate;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Psr7\Response as HttpResponse;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ApiTransportTest extends \PHPUnit_Framework_TestCase
+class ApiTransportTest extends TestCase
 {
     /**
      * @expectedException \AppBundle\Mailjet\Exception\MailjetException

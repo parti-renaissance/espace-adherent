@@ -11,12 +11,12 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
  */
-class CommitteeControllerTest extends MysqlWebTestCase
+class CommitteeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 

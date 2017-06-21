@@ -12,10 +12,11 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
 
-class EntityAddressGeocodingSubscriberTest extends \PHPUnit_Framework_TestCase
+class EntityAddressGeocodingSubscriberTest extends TestCase
 {
     private $manager;
 

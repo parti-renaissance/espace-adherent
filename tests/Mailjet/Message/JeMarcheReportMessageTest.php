@@ -4,9 +4,10 @@ namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Mailjet\Message\JeMarcheReportMessage;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
-class JeMarcheReportMessageTest extends \PHPUnit_Framework_TestCase
+class JeMarcheReportMessageTest extends TestCase
 {
     public function testCreateJeMarcheReportMessageFromJeMarcheReport()
     {

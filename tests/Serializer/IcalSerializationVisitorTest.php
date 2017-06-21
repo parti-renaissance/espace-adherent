@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Serializer;
 
 use AppBundle\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use PHPUnit\Framework\TestCase;
 
-class IcalSerializationVisitorTest extends \PHPUnit_Framework_TestCase
+class IcalSerializationVisitorTest extends TestCase
 {
     protected $propertyNamingStrategy;
     /**

@@ -2,12 +2,13 @@
 
 namespace Tests\AppBundle\Mailjet\Transport;
 
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Mailjet\Transport\NullTransport;
 use AppBundle\Mailjet\EmailTemplate;
 use Psr\Log\LoggerInterface;
 
-class NullTransportTest extends \PHPUnit_Framework_TestCase
+class NullTransportTest extends TestCase
 {
     public function testSendTemplateEmail()
     {

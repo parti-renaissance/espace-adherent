@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Address;
 use AppBundle\Address\Address;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 
-class PostAddressFactoryTest extends \PHPUnit_Framework_TestCase
+class PostAddressFactoryTest extends TestCase
 {
     public function testCreateFrenchAddress()
     {

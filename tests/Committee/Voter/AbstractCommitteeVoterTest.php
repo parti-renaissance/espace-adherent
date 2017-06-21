@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-abstract class AbstractCommitteeVoterTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractCommitteeVoterTest extends TestCase
 {
     const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     const ADHERENT_2_UUID = '91ed3e73-0384-4963-9159-3505c849fe39';

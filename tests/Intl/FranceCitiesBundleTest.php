@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Intl;
 
 use AppBundle\Intl\FranceCitiesBundle;
+use PHPUnit\Framework\TestCase;
 
-class FranceCitiesBundleTest extends \PHPUnit_Framework_TestCase
+class FranceCitiesBundleTest extends TestCase
 {
     /**
      * @dataProvider providePostalCodes

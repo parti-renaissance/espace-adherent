@@ -5,9 +5,10 @@ namespace Tests\AppBundle\Storage;
 use AppBundle\Storage\FilesystemAdapterFactory;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
+use PHPUnit\Framework\TestCase;
 use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter;
 
-class FilesystemAdapterFactoryTest extends \PHPUnit_Framework_TestCase
+class FilesystemAdapterFactoryTest extends TestCase
 {
     public function testCreateDevAdapter()
     {

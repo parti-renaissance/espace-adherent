@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Mailjet\Message;
 use AppBundle\Entity\Invite;
 use AppBundle\Mailjet\Message\InvitationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
+use PHPUnit\Framework\TestCase;
 
-class InvitationMessageTest extends \PHPUnit_Framework_TestCase
+class InvitationMessageTest extends TestCase
 {
     public function testCreateInvitationMessageFromInvite()
     {

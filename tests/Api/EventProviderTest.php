@@ -5,11 +5,12 @@ namespace Tests\AppBundle\Api;
 use AppBundle\Api\EventProvider;
 use AppBundle\Entity\Event;
 use AppBundle\Repository\EventRepository;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\TestHelperTrait;
 
-class EventProviderTest extends \PHPUnit_Framework_TestCase
+class EventProviderTest extends TestCase
 {
     use TestHelperTrait;
 

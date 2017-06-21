@@ -11,10 +11,11 @@ use AppBundle\Mailjet\EmailTemplate;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\MailjetEmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 
-class EmailPersisterEventSubscriberTest extends \PHPUnit_Framework_TestCase
+class EmailPersisterEventSubscriberTest extends TestCase
 {
     /** @var EmailPersisterEventSubscriber */
     private $subscriber;

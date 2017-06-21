@@ -10,8 +10,9 @@ use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
 use AppBundle\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
+use PHPUnit\Framework\TestCase;
 
-class ProcurationProxyMessageFactoryTest extends \PHPUnit_Framework_TestCase
+class ProcurationProxyMessageFactoryTest extends TestCase
 {
     private $urlGenerator;
 

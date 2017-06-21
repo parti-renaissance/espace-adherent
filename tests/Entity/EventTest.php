@@ -6,9 +6,10 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
-class EventTest extends \PHPUnit_Framework_TestCase
+class EventTest extends TestCase
 {
     /**
      * @dataProvider provideNotFinishedEventDate

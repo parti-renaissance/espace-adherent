@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\ValueObject;
 
 use AppBundle\Utils\EmojisRemover;
+use PHPUnit\Framework\TestCase;
 
-class EmojisRemoverTest extends \PHPUnit_Framework_TestCase
+class EmojisRemoverTest extends TestCase
 {
     public function testEmojis()
     {

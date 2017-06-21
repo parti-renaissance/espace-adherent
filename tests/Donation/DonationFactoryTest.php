@@ -7,10 +7,11 @@ use AppBundle\Donation\DonationFactory;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Donation;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class DonationFactoryTest extends \PHPUnit_Framework_TestCase
+class DonationFactoryTest extends TestCase
 {
     const DONATION_REQUEST_UUID = 'cfd3c04f-cce0-405d-865f-f5f3a2c1792e';
 

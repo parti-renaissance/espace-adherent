@@ -3,10 +3,11 @@
 namespace Tests\AppBundle\Mailjet;
 
 use AppBundle\Mailjet\EmailTemplate;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 
-class EmailTemplateTest extends \PHPUnit_Framework_TestCase
+class EmailTemplateTest extends TestCase
 {
     /**
      * @expectedException \AppBundle\Mailjet\Exception\MailjetException

@@ -9,11 +9,12 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use AppBundle\Membership\MembershipRequest;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
-class AdherentFactoryTest extends \PHPUnit_Framework_TestCase
+class AdherentFactoryTest extends TestCase
 {
     public function testCreateNonFrenchAdherentFromArray()
     {

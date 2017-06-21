@@ -6,10 +6,11 @@ use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
-class AdherentCsvSerializerTest extends \PHPUnit_Framework_TestCase
+class AdherentCsvSerializerTest extends TestCase
 {
     public function testSerialize()
     {

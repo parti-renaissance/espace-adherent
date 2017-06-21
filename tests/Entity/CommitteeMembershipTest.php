@@ -5,10 +5,11 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class CommitteeMembershipTest extends \PHPUnit_Framework_TestCase
+class CommitteeMembershipTest extends TestCase
 {
     const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
     const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';

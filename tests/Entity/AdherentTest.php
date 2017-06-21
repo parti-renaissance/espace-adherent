@@ -5,14 +5,14 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\ActivityPositions;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Tests\AppBundle\TestHelperTrait;
 
-class AdherentTest extends \PHPUnit_Framework_TestCase
+class AdherentTest extends TestCase
 {
     use TestHelperTrait;
 
@@ -84,6 +84,9 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\DateTime::class, $activationToken->getUsageDate());
     }
 
+    /**
+     * @expectedException \AppBundle\Exception\AdherentAlreadyEnabledException
+     */
     public function testActivateAdherentAccountTwice()
     {
         $adherent = $this->createAdherent();
@@ -91,11 +94,7 @@ class AdherentTest extends \PHPUnit_Framework_TestCase
 
         $adherent->activate($activationToken);
 
-        try {
-            $adherent->activate($activationToken);
-            $this->fail('Adherent account cannot be enabled more than once.');
-        } catch (AdherentAlreadyEnabledException $exception) {
-        }
+        $adherent->activate($activationToken);
     }
 
     public function testAuthenticateAdherentAccount()

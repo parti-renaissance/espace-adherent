@@ -6,12 +6,13 @@ use AppBundle\Mailjet\Event\MailjetEvent;
 use AppBundle\Mailjet\Event\MailjetEvents;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\EmailTemplateFactory;
+use PHPUnit\Framework\TestCase;
 use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
 use Tests\AppBundle\Test\Mailjet\Transport\FailingTransport;
 use Tests\AppBundle\Test\Mailjet\Transport\NullTransport;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MailjetServiceTest extends \PHPUnit_Framework_TestCase
+class MailjetServiceTest extends TestCase
 {
     public function testSendMessage()
     {

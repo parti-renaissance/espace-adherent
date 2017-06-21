@@ -7,9 +7,10 @@ use AppBundle\Serializer\EventICalHandler;
 use AppBundle\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\SerializationContext;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
-class EventIcalHandlerTest extends \PHPUnit_Framework_TestCase
+class EventIcalHandlerTest extends TestCase
 {
     /**
      * @var EventICalHandler

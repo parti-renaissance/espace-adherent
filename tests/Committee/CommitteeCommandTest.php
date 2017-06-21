@@ -5,9 +5,10 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeCommandTest extends \PHPUnit_Framework_TestCase
+class CommitteeCommandTest extends TestCase
 {
     const CREATOR_UUID = '3966af25-2b09-407c-9283-c4d2103d0448';
 
