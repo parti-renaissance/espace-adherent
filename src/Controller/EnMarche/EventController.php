@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Entity("event", expr="repository.findOnePublishedByUuid(uuid)")
  */
 class EventController extends Controller
 {
@@ -40,14 +41,13 @@ class EventController extends Controller
      */
     public function exportIcalAction(Event $event): Response
     {
-        return new Response(
-            $this->get('jms_serializer')->serialize($event, 'ical'),
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'text/calendar',
-                'Content-Disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics',
-            ]
-        );
+        $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
+
+        $response = new Response($this->get('jms_serializer')->serialize($event, 'ical'), Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/calendar');
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
     }
 
     /**

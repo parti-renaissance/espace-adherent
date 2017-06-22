@@ -73,27 +73,41 @@ class EventRepository extends EntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
+    public function findOnePublishedByUuid(string $uuid): ?Event
+    {
+        return $this
+            ->createUuidQueryBuilder($uuid)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findOneActiveByUuid(string $uuid): ?Event
+    {
+        return $this
+            ->createUuidQueryBuilder($uuid)
+            ->andWhere('e.status IN (:statuses)')
+            ->setParameter('statuses', Event::ACTIVE_STATUSES)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    private function createUuidQueryBuilder(string $uuid): QueryBuilder
     {
         self::validUuid($uuid);
 
-        $query = $this->createQueryBuilder('e')
+        return $this
+            ->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.uuid = :uuid')
-            ->andWhere('e.status IN (:statuses)')
-            ->andWhere('e.published = :published')
             ->setParameter('uuid', $uuid)
-            ->setParameter('statuses', Event::ACTIVE_STATUSES)
+            ->andWhere('e.published = :published')
             ->setParameter('published', true)
-            ->getQuery();
-
-        return $query->getOneOrNullResult();
+        ;
     }
 
     /**
