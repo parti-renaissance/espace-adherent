@@ -1,9 +1,9 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if not object.published %}
+    {% if not object.isPublished %}
         <span class="label label-warning">Dépublié</span>
-    {% elseif object.cancelled %}
+    {% elseif object.isCancelled %}
         <span class="label label-danger">Annulé</span>
     {% else %}
         <span class="label label-primary">Programmé</span>

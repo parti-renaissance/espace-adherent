@@ -13,7 +13,7 @@
         </a>
     </div>
 
-    {% if object.published %}
+    {% if object.isPublished %}
         <div style="width: 160px; margin-top: 5px;">
             <a href="{{ path('app_event_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
                class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
