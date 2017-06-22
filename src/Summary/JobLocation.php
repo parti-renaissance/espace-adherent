@@ -25,4 +25,9 @@ class JobLocation
     {
         return self::ALL;
     }
+
+    public static function exists(string $duration): bool
+    {
+        return in_array($duration, self::ALL, true);
+    }
 }

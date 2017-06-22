@@ -15,7 +15,7 @@ class JobDurationChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => JobDuration::CHOICES,
                 'expanded' => true,
-                'cast_null_to_string' => true,
+                'multiple' => true,
             ])
         ;
     }

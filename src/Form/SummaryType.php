@@ -17,6 +17,7 @@ class SummaryType extends AbstractType
 {
     const STEP_SYNTHESIS = 'synthèse';
     const STEP_MISSION_WISHES = 'missions';
+    const STEP_MOTIVATION = 'motivation';
     const STEP_EXPERIENCES = 'expériences';
     const STEP_SKILLS = 'compétences';
     const STEP_INTERESTS = 'centre d\'intérêts';
@@ -42,8 +43,8 @@ class SummaryType extends AbstractType
                     ])
                     ->add('current_position', ActivityPositionType::class)
                     ->add('contribution_wish', ContributionChoiceType::class)
-                    ->add('availability', JobDurationChoiceType::class)
-                    ->add('job_location', JobLocationChoiceType::class)
+                    ->add('availabilities', JobDurationChoiceType::class)
+                    ->add('job_locations', JobLocationChoiceType::class)
                     ->add('professional_synopsis', TextareaType::class)
                 ;
                 break;
@@ -51,6 +52,11 @@ class SummaryType extends AbstractType
             case self::STEP_MISSION_WISHES:
                 $builder
                     ->add('mission_type_wishes', MissionTypeEntityType::class)
+                ;
+                break;
+
+            case self::STEP_MOTIVATION:
+                $builder
                     ->add('motivation', TextareaType::class)
                 ;
                 break;
@@ -99,6 +105,10 @@ class SummaryType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Summary::class,
+                'error_mapping' => [
+                    'validAvailabilities' => 'availabilities',
+                    'validJobLocations' => 'job_locations',
+                ],
             ])
             ->setRequired('step')
             ->setAllowedTypes('step', self::STEPS)

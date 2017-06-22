@@ -20,6 +20,12 @@ class Contribution
         'member_summary.contribution.employee' => self::EMPLOYEE,
     ];
 
+    const MISSION_LABELS = [
+        self::VOLUNTEER => 'Missions de bénévolat',
+        self::CONTRACTOR => 'Prestations',
+        self::EMPLOYEE => 'Salariat',
+    ];
+
     private function __construct()
     {
     }

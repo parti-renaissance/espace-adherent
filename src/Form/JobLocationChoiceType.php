@@ -15,7 +15,7 @@ class JobLocationChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => JobLocation::CHOICES,
                 'expanded' => true,
-                'cast_null_to_string' => true,
+                'multiple' => true,
             ])
         ;
     }
