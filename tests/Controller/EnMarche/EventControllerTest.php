@@ -304,6 +304,16 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
+    public function testUnpublishedEventNotFound()
+    {
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_13_UUID);
+        $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_13_UUID, $event->getSlug());
+
+        $this->client->request(Request::METHOD_GET, $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
     {
         $flash = $crawler->filter('#notice-flashes');
