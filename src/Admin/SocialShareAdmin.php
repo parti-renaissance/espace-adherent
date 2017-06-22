@@ -3,7 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\SocialShare;
-use AppBundle\Twig\AssetExtension;
+use AppBundle\Twig\AssetRuntime;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -18,9 +18,9 @@ class SocialShareAdmin extends AbstractAdmin
     use MediaSynchronisedAdminTrait;
 
     /**
-     * @var AssetExtension
+     * @var AssetRuntime
      */
-    protected $assetExtension;
+    protected $assetRuntime;
 
     protected $datagridValues = [
         '_page' => 1,
@@ -58,7 +58,7 @@ class SocialShareAdmin extends AbstractAdmin
             $object->getMedia()->setUpdatedAt(new \DateTime());
 
             $object->setDefaultUrl(
-                $this->assetExtension->transformedMediaAsset($object->getMedia(), [], UrlGeneratorInterface::ABSOLUTE_URL)
+                $this->assetRuntime->transformedMediaAsset($object->getMedia(), [], UrlGeneratorInterface::ABSOLUTE_URL)
             );
         }
 
@@ -155,8 +155,8 @@ class SocialShareAdmin extends AbstractAdmin
         ;
     }
 
-    public function setAssetExtension(AssetExtension $assetExtension)
+    public function setAssetRuntime(AssetRuntime $assetRuntime)
     {
-        $this->assetExtension = $assetExtension;
+        $this->assetRuntime = $assetRuntime;
     }
 }

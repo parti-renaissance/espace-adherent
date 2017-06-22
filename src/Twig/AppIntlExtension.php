@@ -3,19 +3,21 @@
 namespace AppBundle\Twig;
 
 use AppBundle\Intl\UnitedNationsBundle;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class AppIntlExtension extends \Twig_Extension
+class AppIntlExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('list_united_nations', [$this, 'getUnitedNationsList'], [
+            new TwigFunction('list_united_nations', [__CLASS__, 'getUnitedNationsList'], [
                 'needs_context' => true,
             ]),
         ];
     }
 
-    public function getUnitedNationsList($context)
+    public static function getUnitedNationsList(array $context): array
     {
         return UnitedNationsBundle::getCountries($context['app']->getRequest()->getLocale());
     }

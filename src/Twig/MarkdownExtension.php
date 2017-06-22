@@ -2,30 +2,15 @@
 
 namespace AppBundle\Twig;
 
-use League\CommonMark\CommonMarkConverter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class MarkdownExtension extends \Twig_Extension
+class MarkdownExtension extends AbstractExtension
 {
-    private $markdownParser;
-
-    public function __construct(CommonMarkConverter $markdownParser)
-    {
-        $this->markdownParser = $markdownParser;
-    }
-
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('markdown', [$this, 'parseMarkdown'], ['is_safe' => ['html']]),
+            new TwigFilter('markdown', [MarkdownRuntime::class, 'parseMarkdown'], ['is_safe' => ['html']]),
         );
-    }
-
-    public function parseMarkdown(?string $content): string
-    {
-        if (!$content) {
-            return '';
-        }
-
-        return $this->markdownParser->convertToHtml($content);
     }
 }

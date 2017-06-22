@@ -24,7 +24,7 @@
 
         <service id="app.api.legislative_candidate_provider" class="AppBundle\Api\LegislativeCandidateProvider">
             <argument type="service" id="app.repository.legislative_candidate"/>
-            <argument type="service" id="app.twig.media_asset_extension"/>
+            <argument type="service" id="AppBundle\Twig\AssetRuntime"/>
             <argument type="service" id="router"/>
         </service>
 
@@ -200,13 +200,6 @@
         <service id="app.voter.host_committee_voter" class="AppBundle\Committee\Voter\HostCommitteeVoter" public="false">
             <argument type="service" id="app.committee.manager"/>
             <tag name="security.voter"/>
-        </service>
-
-        <service id="app.twig.committee_extension" class="AppBundle\Twig\CommitteeExtension">
-            <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="app.committee.url_generator"/>
-            <argument type="service" id="app.committee.manager"/>
-            <tag name="twig.extension"/>
         </service>
 
         <!-- Events -->

@@ -45,7 +45,7 @@ class BuildAmpContentCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->markdown = $this->getContainer()->get('app.content.markdown_parser');
+        $this->markdown = $this->getContainer()->get(CommonMarkConverter::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

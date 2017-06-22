@@ -3,7 +3,7 @@
 namespace AppBundle\Api;
 
 use AppBundle\Repository\LegislativeCandidateRepository;
-use AppBundle\Twig\AssetExtension;
+use AppBundle\Twig\AssetRuntime;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LegislativeCandidateProvider
@@ -12,7 +12,7 @@ class LegislativeCandidateProvider
     private $asset;
     private $urlGenerator;
 
-    public function __construct(LegislativeCandidateRepository $repository, AssetExtension $asset, UrlGeneratorInterface $urlGenerator)
+    public function __construct(LegislativeCandidateRepository $repository, AssetRuntime $asset, UrlGeneratorInterface $urlGenerator)
     {
         $this->repository = $repository;
         $this->asset = $asset;
