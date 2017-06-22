@@ -1,9 +1,7 @@
-<section class="l__wrapper--medium">
+{% extends 'summary/_block/motivation.html.twig' %}
 
-    <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
-        <h2>Vos motivations</h2>
-        <a href="#" class="button">Modifer</a>
-        <p>{{ summary.motivation }}</p>
-    </div>
+{% block summary_motivation %}
+    {{ parent() }}
+    <a href="#" class="button">Modifer</a>
+{% endblock %}
 
-</section>

@@ -1,0 +1,38 @@
+<section class="l__wrapper--medium">
+    {% block summary_synthesis %}
+        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+            <div class="l__wrapper--main">
+                {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
+                {% if summary.currentProfession %}
+                    <h2>{{ summary.currentProfession }}</h2>
+                    <h3>{{ currentPosition }}</h3>
+                {% else %}
+                    <h2>{{ currentPosition }}</h2>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+            <div class="l__col--left">
+                <p>Recherche</p>
+                <p>{{ summary.contributionWishLabel }}</p>
+            </div>
+            <div class="l__col--center">
+                <p>Disponibilité</p>
+                <p>{{ summary.availabilities|join(' ou ')|capitalize }}</p>
+            </div>
+            <div class="l__col--right">
+                <p>Travail</p>
+                <p>{{ summary.jobLocations|join(' ou ')|capitalize }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+            <p>{{ summary.professionalSynopsis }}</p>
+        </div>
+    {% endblock %}
+</section>

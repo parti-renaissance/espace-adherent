@@ -1,17 +1,25 @@
-<section class="l__wrapper--medium">
-    <div> {# left part #}
+{% extends 'summary/_block/header.html.twig' %}
+
+{% block summary_left_part %}
+    <div>
         <div>Ajouter une photo</div>
         <h2 class="text--large b__nudge--bottom-tiny">{{ app.user.fullname }}</h2>
         <div class="text--body text--gray">{{ app.user.age }} ans, {{ app.user.cityName }}</div>
     </div>
-    <div> {# right part #}
+{% endblock %}
+
+{% block summary_right_part %}
+    <div>
         <div>CV <br> {{ summary.public ? 'public' : 'non public' }}</div>
         <a href="#">{{ summary.public ? 'dépublier' : 'publier' }} mon CV</a>
         {% if summary.public %}
             <a href="#">Voir mon CV en ligne</a>
         {% endif %}
     </div>
-    <div> {# bottom part #}
+{% endblock %}
+
+{% block summary_bottom_part %}
+    <div>
         <div>
             {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}<br>
             Date d'adhésion
@@ -23,4 +31,5 @@
             65% <br> profile complété
         </div>
     </div>
-</section>
+{% endblock %}
+
