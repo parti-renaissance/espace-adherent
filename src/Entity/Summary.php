@@ -7,13 +7,16 @@ use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\MissionType;
 use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
+use AppBundle\Summary\Contribution;
+use AppBundle\Summary\JobDuration;
+use AppBundle\Summary\JobLocation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SummaryRepository")
  * @ORM\Table(name="summaries")
  */
 class Summary
@@ -61,24 +64,22 @@ class Summary
     private $contributionWish = '';
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column
+     * @ORM\Column(type="simple_array")
      *
      * @Assert\NotBlank
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\JobDuration", "all"})
      */
-    private $availability = '';
+    private $availabilities = [];
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column
+     * @ORM\Column(type="simple_array")
      *
      * @Assert\NotBlank
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\JobLocation", "all"})
      */
-    private $jobLocation = '';
+    private $jobLocations = [];
 
     /**
      * @var string
@@ -117,6 +118,13 @@ class Summary
      * @Assert\Length(min=10, max=300)
      */
     private $motivation = '';
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $showingRecentActivities = false;
 
     /**
      * @var JobExperience[]|Collection
@@ -216,6 +224,13 @@ class Summary
      */
     private $viadeoUrl;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $public = false;
+
     public function __construct(Adherent $adherent, string $slug)
     {
         $adherent->setSummary($this);
@@ -237,6 +252,11 @@ class Summary
     public function getMember(): Adherent
     {
         return $this->member;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 
     public function getCurrentProfession(): ?string
@@ -269,24 +289,29 @@ class Summary
         $this->contributionWish = $contributionWish;
     }
 
-    public function getAvailability(): string
+    public function getContributionWishLabel(): string
     {
-        return $this->availability;
+        return Contribution::MISSION_LABELS[$this->contributionWish] ?? '';
     }
 
-    public function setAvailability(string $availability): void
+    public function getAvailabilities(): array
     {
-        $this->availability = $availability;
+        return $this->availabilities;
     }
 
-    public function getJobLocation(): string
+    public function setAvailabilities(array $availabilities): void
     {
-        return $this->jobLocation;
+        $this->availabilities = $availabilities;
     }
 
-    public function setJobLocation(string $jobLocation): void
+    public function getJobLocations(): array
     {
-        $this->jobLocation = $jobLocation;
+        return $this->jobLocations;
+    }
+
+    public function setJobLocations(array $jobLocations): void
+    {
+        $this->jobLocations = $jobLocations;
     }
 
     public function getProfessionalSynopsis(): string
@@ -323,6 +348,16 @@ class Summary
     public function setMotivation(string $motivation): void
     {
         $this->motivation = $motivation;
+    }
+
+    public function isShowingRecentActivities(): bool
+    {
+        return $this->showingRecentActivities;
+    }
+
+    public function setShowingRecentActivities(bool $showingRecentActivities): void
+    {
+        $this->showingRecentActivities = $showingRecentActivities;
     }
 
     /**
@@ -477,6 +512,44 @@ class Summary
     public function setViadeoUrl(?string $viadeoUrl): void
     {
         $this->viadeoUrl = $viadeoUrl;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): void
+    {
+        $this->public = $public;
+    }
+
+    /**
+     * @Assert\IsTrue
+     */
+    public function hasValidAvailabilities(): bool
+    {
+        foreach ($this->availabilities as $availability) {
+            if (!JobDuration::exists($availability)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @Assert\IsTrue
+     */
+    public function hasValidJobLocations(): bool
+    {
+        foreach ($this->jobLocations as $location) {
+            if (!JobLocation::exists($location)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static function createFromMember(Adherent $adherent, string $slug): self

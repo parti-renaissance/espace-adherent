@@ -145,5 +145,15 @@
             <argument>%kernel.cache_dir%</argument>
         </service>
 
+        <!-- Summary -->
+        <service id="AppBundle\Summary\SummaryFactory">
+            <argument type="service" id="cocur_slugify" />
+        </service>
+
+        <service id="AppBundle\Summary\SummaryManager">
+            <argument type="service" id="AppBundle\Summary\SummaryFactory" />
+            <argument type="service" id="app.repository.summary" />
+        </service>
+
     </services>
 </container>

@@ -4,6 +4,7 @@ namespace AppBundle\Entity\MemberSummary;
 
 use AppBundle\Entity\Summary;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,6 +70,11 @@ class Language
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Summary", inversedBy="languages")
      */
     private $summary;
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s', Intl::getLanguageBundle()->getLanguageName($this->code), ucfirst($this->level));
+    }
 
     public function getId(): ?int
     {

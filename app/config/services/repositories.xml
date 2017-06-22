@@ -64,5 +64,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.summary" class="AppBundle\Repository\SummaryRepository" public="false">
+            <argument>AppBundle\Entity\Summary</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

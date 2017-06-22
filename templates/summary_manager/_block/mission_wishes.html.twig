@@ -1,0 +1,13 @@
+<section class="l__wrapper--medium">
+
+    <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+        <h2>Votre ambition chez En Marche</h2>
+        <a href="#" class="button">Modifer</a>
+        <p>
+            {% for wish in summary.missionTypeWishes %}
+                {{ wish|upper }}{% if not loop.last %}<br>{% endif %}
+            {% endfor %}
+        </p>
+    </div>
+
+</section>
