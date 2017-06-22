@@ -2,7 +2,7 @@
 /app/config/assets_version.yml
 /app/data/images/
 /app/data/dumped_referents_users
-/app/Resources/views/amp/style.css.twig
+/templates/amp/style.css.twig
 /build/
 /node_modules/
 /var/
