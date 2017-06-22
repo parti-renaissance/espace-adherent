@@ -52,6 +52,11 @@ class FollowCommitteeVoter extends AbstractCommitteeVoter
             return false;
         }
 
+        // Supervisor cannot unfollow (or leave) the committee.
+        if ($membership->isSupervisor()) {
+            return false;
+        }
+
         // Any basic follower of a committee can unfollow the committee
         // at any point in time.
         return $membership->isFollower() || 1 < $this->manager->countCommitteeHosts($committee);
