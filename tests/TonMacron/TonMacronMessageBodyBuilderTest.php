@@ -6,9 +6,10 @@ use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\TonMacronMessageBodyBuilder;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class TonMacronMessageBodyBuilderTest extends \PHPUnit_Framework_TestCase
+class TonMacronMessageBodyBuilderTest extends TestCase
 {
     private $repository;
 

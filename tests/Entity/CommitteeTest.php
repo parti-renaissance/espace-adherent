@@ -4,11 +4,11 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Geocoder\Coordinates;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeTest extends \PHPUnit_Framework_TestCase
+class CommitteeTest extends TestCase
 {
     public function testConstructor()
     {
@@ -88,16 +88,15 @@ class CommitteeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTime($timestamp), $committee->getApprovedAt());
     }
 
+    /**
+     * @expectedException \AppBundle\Exception\CommitteeAlreadyApprovedException
+     */
     public function testApproveCommitteeTwice()
     {
         $committee = $this->createCommittee();
         $committee->approved();
 
-        try {
-            $committee->approved();
-            $this->fail();
-        } catch (CommitteeAlreadyApprovedException $exception) {
-        }
+        $committee->approved();
     }
 
     private function createCommittee(): Committee

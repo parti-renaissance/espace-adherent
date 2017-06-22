@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\ValueObject;
 
 use AppBundle\ValueObject\SHA1;
+use PHPUnit\Framework\TestCase;
 
-class SHA1Test extends \PHPUnit_Framework_TestCase
+class SHA1Test extends TestCase
 {
     /**
      * @dataProvider provideInvalidHash

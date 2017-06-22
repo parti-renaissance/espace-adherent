@@ -5,9 +5,10 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class EventRegistrationTest extends \PHPUnit_Framework_TestCase
+class EventRegistrationTest extends TestCase
 {
     const REGISTRATION_UUID = '75aac96a-9cba-4bd8-91f4-414d269ca0b0';
 

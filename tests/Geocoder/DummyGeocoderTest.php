@@ -3,9 +3,10 @@
 namespace Tests\AppBundle\Geocoder;
 
 use AppBundle\Geocoder\Coordinates;
+use PHPUnit\Framework\TestCase;
 use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
 
-class DummyGeocoderTest extends \PHPUnit_Framework_TestCase
+class DummyGeocoderTest extends TestCase
 {
     /**
      * @expectedException \AppBundle\Geocoder\Exception\GeocodingException

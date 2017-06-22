@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Intl;
 
 use AppBundle\Intl\UnitedNationsBundle;
+use PHPUnit\Framework\TestCase;
 
-class UnitedNationsBundleTest extends \PHPUnit_Framework_TestCase
+class UnitedNationsBundleTest extends TestCase
 {
     public function testGetCountries()
     {

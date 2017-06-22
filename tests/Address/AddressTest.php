@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Address;
 
 use AppBundle\Address\Address;
+use PHPUnit\Framework\TestCase;
 
-class AddressTest extends \PHPUnit_Framework_TestCase
+class AddressTest extends TestCase
 {
     public function testCreateValidForeignAddress()
     {

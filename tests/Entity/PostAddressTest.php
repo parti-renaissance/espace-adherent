@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 
-class PostAddressTest extends \PHPUnit_Framework_TestCase
+class PostAddressTest extends TestCase
 {
     public function testCreateFullFrenchAddress()
     {

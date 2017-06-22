@@ -68,9 +68,9 @@
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^6.2",
         "fabpot/goutte": "^3.2",
-        "liip/functional-test-bundle": "^1.7"
+        "liip/functional-test-bundle": "^1.8"
     },
     "scripts": {
         "symfony-scripts": [

@@ -2,12 +2,12 @@
 
 namespace Tests\AppBundle\Entity;
 
-use AppBundle\Exception\AdherentTokenAlreadyUsedException;
 use AppBundle\ValueObject\SHA1;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Tests\AppBundle\TestHelperTrait;
 
-abstract class AbstractAdherentTokenTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractAdherentTokenTest extends TestCase
 {
     use TestHelperTrait;
 
@@ -36,6 +36,9 @@ abstract class AbstractAdherentTokenTest extends \PHPUnit_Framework_TestCase
         $token->consume($adherent2);
     }
 
+    /**
+     * @expectedException \AppBundle\Exception\AdherentTokenAlreadyUsedException
+     */
     public function testCannotActivateSameAdherentActivationTokenTwice()
     {
         $adherent = $this->createAdherent();
@@ -44,11 +47,7 @@ abstract class AbstractAdherentTokenTest extends \PHPUnit_Framework_TestCase
 
         $token->consume($adherent);
 
-        try {
-            $token->consume($adherent);
-            $this->fail('Adherent activation token cannot be activated more than once.');
-        } catch (AdherentTokenAlreadyUsedException $e) {
-        }
+        $token->consume($adherent);
     }
 
     public function testConsumeTokenIsSuccessful()

@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Mailjet\Message;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
+use PHPUnit\Framework\TestCase;
 
-class AdherentAccountConfirmationMessageTest extends \PHPUnit_Framework_TestCase
+class AdherentAccountConfirmationMessageTest extends TestCase
 {
     public function testCreateAdherentAccountConfirmationMessage()
     {

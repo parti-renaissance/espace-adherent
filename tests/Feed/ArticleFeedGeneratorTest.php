@@ -7,10 +7,11 @@ use AppBundle\Entity\ArticleCategory;
 use AppBundle\Feed\ArticleFeedGenerator;
 use AppBundle\Feed\Exception\FeedGeneratorException;
 use League\CommonMark\CommonMarkConverter;
+use PHPUnit\Framework\TestCase;
 use Suin\RSSWriter\FeedInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ArticleFeedGeneratorTest extends \PHPUnit_Framework_TestCase
+class ArticleFeedGeneratorTest extends TestCase
 {
     protected $locale = 'fr';
     protected $ttl = 120;

@@ -6,8 +6,9 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\PostAddress;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractEventMessageTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractEventMessageTest extends TestCase
 {
     protected function createEventMock(string $name, string $beginAt, string $street, string $cityCode, ?string $committeeName = null): Event
     {

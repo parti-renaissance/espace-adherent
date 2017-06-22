@@ -7,10 +7,11 @@ use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Voter\HostCommitteeVoter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class HostCommitteeVoterTest extends \PHPUnit_Framework_TestCase
+class HostCommitteeVoterTest extends TestCase
 {
     const COMMITTEE_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
 

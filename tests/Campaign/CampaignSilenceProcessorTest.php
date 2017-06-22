@@ -4,12 +4,13 @@ namespace Tests\AppBundle\Campaign;
 
 use AppBundle\Campaign\CampaignSilenceProcessor;
 use GeoIp2\Database\Reader;
+use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\Request;
 
-class CampaignSilenceProcessorTest extends \PHPUnit_Framework_TestCase
+class CampaignSilenceProcessorTest extends TestCase
 {
     const IP_AU_SYDNEY = '45.63.31.236';
     const IP_CA_TORONTO = '159.203.18.38';

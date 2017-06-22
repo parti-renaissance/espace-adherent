@@ -8,8 +8,9 @@ use Geocoder\Geocoder as BazingaGeocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
 use Geocoder\Model\Coordinates as BazingaCoordinates;
+use PHPUnit\Framework\TestCase;
 
-class GeocoderTest extends \PHPUnit_Framework_TestCase
+class GeocoderTest extends TestCase
 {
     const ADDRESS = '92 bld victor hugo, 92110 clichy, france';
 

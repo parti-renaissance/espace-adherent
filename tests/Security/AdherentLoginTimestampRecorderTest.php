@@ -7,11 +7,12 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Security\AdherentLoginTimestampRecorder;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-class AdherentLoginTimestampRecorderTest extends \PHPUnit_Framework_TestCase
+class AdherentLoginTimestampRecorderTest extends TestCase
 {
     public function testRecordLastLoginTimestamp()
     {

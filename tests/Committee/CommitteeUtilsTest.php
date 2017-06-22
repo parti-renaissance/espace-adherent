@@ -5,13 +5,13 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Committee\CommitteeUtils;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  */
-class CommitteeUtilsTest extends MysqlWebTestCase
+class CommitteeUtilsTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 

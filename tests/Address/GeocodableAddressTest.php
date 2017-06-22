@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Address;
 
 use AppBundle\Address\Address;
 use AppBundle\Address\GeocodableAddress;
+use PHPUnit\Framework\TestCase;
 
-class GeocodableAddressTest extends \PHPUnit_Framework_TestCase
+class GeocodableAddressTest extends TestCase
 {
     public function testCreateGeocodableAddressFromAddress()
     {

@@ -6,9 +6,10 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
-class DonationRequestTest extends \PHPUnit_Framework_TestCase
+class DonationRequestTest extends TestCase
 {
     public function testCreateDonationRequestFromAdherent()
     {

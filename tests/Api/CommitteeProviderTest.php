@@ -6,9 +6,10 @@ use AppBundle\Api\CommitteeProvider;
 use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\CommitteeRepository;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeProviderTest extends \PHPUnit_Framework_TestCase
+class CommitteeProviderTest extends TestCase
 {
     public function testGetApprovedCommittees()
     {

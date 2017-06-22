@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\ProcurationRequest;
+use PHPUnit\Framework\TestCase;
 
-class ProcurationRequestTest extends \PHPUnit_Framework_TestCase
+class ProcurationRequestTest extends TestCase
 {
     public function testGetElectionsRoundsCount()
     {
