@@ -34,24 +34,23 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeRegisterLink($crawler));
     }
 
-    public function testAuthenticatedCommitteeHostCannotUnfollowCommittee()
+    public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee()
     {
         // Login as supervisor
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        // Unfollow link must be enabled because there is another host
-        $this->assertNull($crawler->filter('.committee-unfollow')->attr('disabled'));
-        // Other follower/register links must not exist
-        $this->assertFalse($this->seeFollowLink($crawler));
-        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        // Clear security token
-        $this->client->getCookieJar()->clear();
+        // There is another animator (2 = supervisor + host)
+        $this->assertSame(2, $crawler->filter('.committee__members__list__host')->count());
+    }
 
+    public function testAuthenticatedCommitteeHostCanUnfollowCommittee()
+    {
         // Login as host
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
@@ -60,7 +59,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
 
         $unfollowButton = $crawler->filter('.committee-unfollow');
 
-        // Button should be enabled for there is another supervisor
+        // Button should be enabled for there is a supervisor
         $this->assertNull($unfollowButton->attr('disabled'));
 
         // Unfollowing
@@ -271,6 +270,13 @@ class CommitteeControllerTest extends SqliteWebTestCase
         $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
         $this->assertTrue($this->seeMessageForm($crawler));
+    }
+
+    private function seeDemonteLink(Crawler $crawler, $nb = 1): bool
+    {
+        $this->assertCount($nb, $crawler->filter('.demote-host-link'));
+
+        return 1 === count($crawler->filter('#committee-register-link'));
     }
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
