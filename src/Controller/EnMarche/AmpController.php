@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Proposal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -16,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AmpController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="amp_article_view")
      * @Method("GET")
@@ -25,7 +22,6 @@ class AmpController extends Controller
      */
     public function articleAction(Article $article): Response
     {
-        $this->disableInProduction();
         $this->disableProfiler();
 
         return $this->render('amp/article.html.twig', ['article' => $article]);
@@ -38,7 +34,6 @@ class AmpController extends Controller
      */
     public function proposalAction(Proposal $proposal): Response
     {
-        $this->disableInProduction();
         $this->disableProfiler();
 
         return $this->render('amp/proposal.html.twig', ['proposal' => $proposal]);
