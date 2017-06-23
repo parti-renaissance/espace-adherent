@@ -7,9 +7,7 @@
 
 {% block canonical_url url('program_proposal', {'slug': proposal.slug}) %}
 
-{% block amp_link %}
-    {% if enable_canary %}<link rel="amphtml" href="{{ url('amp_proposal_view', {'slug': proposal.slug}) }}" />{% endif %}
-{% endblock %}
+{% block amp_link %}<link rel="amphtml" href="{{ url('amp_proposal_view', {'slug': proposal.slug}) }}" />{% endblock %}
 
 {% block open_graph_image %}{% spaceless %}
     {% if proposal.media %}
