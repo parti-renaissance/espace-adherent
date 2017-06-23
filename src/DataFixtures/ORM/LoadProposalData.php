@@ -49,6 +49,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
             'published' => true,
             'themes' => [$agriculture, $environment],
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -61,6 +62,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
             'published' => false,
             'themes' => [$work],
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -73,6 +75,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
             'published' => true,
             'themes' => [$education],
             'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->flush();
