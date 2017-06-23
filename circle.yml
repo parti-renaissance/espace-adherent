@@ -42,6 +42,7 @@ test:
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
 
         # PHP unit and functional tests
+        - yarn run build-amp
         - ./vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
 
         # Try to build production JS

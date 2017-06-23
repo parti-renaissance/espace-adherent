@@ -7,7 +7,7 @@
     {% if article.media %}
         {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
     {% else %}
-        {{ parent() }}
+        {{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}
     {% endif %}
 {% endspaceless %}{% endblock %}
 
