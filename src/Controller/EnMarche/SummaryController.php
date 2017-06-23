@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * @Route("/member/{slug}")
+ * @Route("/membre/{slug}")
  */
 class SummaryController extends Controller
 {

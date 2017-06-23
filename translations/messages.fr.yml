@@ -72,6 +72,9 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 #
 # Summary
 #
+summary.handle_experience.success: L'expérience a bien été sauvegardée.
+summary.remove_experience.success: L'expérience a bien été supprimée.
+
 member_summary.contract.internship: Stage
 member_summary.contract.permanent: CDI
 member_summary.contract.temporary: CDD

@@ -21,6 +21,7 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Membership\ActivityPositions;
@@ -40,6 +41,7 @@ use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
+use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -175,6 +177,11 @@ trait TestHelperTrait
     public function getMailjetEmailRepository(): MailjetEmailRepository
     {
         return $this->getRepository(MailjetEmail::class);
+    }
+
+    public function getSummaryRepository(): SummaryRepository
+    {
+        return $this->getRepository(Summary::class);
     }
 
     public function getTonMacronChoiceRepository(): TonMacronChoiceRepository

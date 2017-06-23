@@ -24,6 +24,16 @@
     {{- parent() -}}
 {%- endblock %}
 
+{%- block month_choice_widget -%}
+    <div {{ block('widget_container_attributes') }}>
+        {{- date_pattern|replace({
+            '{{ year }}':  form_widget(form.year),
+            '{{ month }}': form_widget(form.month),
+            '{{ day }}': '',
+        })|raw -}}
+    </div>
+{%- endblock month_choice_widget -%}
+
 {# Labels #}
 
 {% block form_label -%}

@@ -4,6 +4,7 @@
             <h2>Votre ambition chez En Marche</h2>
             <p>
                 {% for wish in summary.missionTypeWishes %}
+                    <div class="summary-wish"></div>
                     {{ wish.name|upper }}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
             </p>

@@ -33,7 +33,7 @@ class Summary
     /**
      * @var Adherent
      *
-     * @ORM\OneToOne(targetEntity="Adherent", inversedBy="summary")
+     * @ORM\OneToOne(targetEntity="Adherent")
      */
     private $member;
 
@@ -66,18 +66,18 @@ class Summary
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\Count(min=1)
      */
     private $availabilities = [];
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\Count(min=1)
      */
     private $jobLocations = [];
 
@@ -130,8 +130,7 @@ class Summary
      * @var JobExperience[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
+     * @ORM\OrderBy({"displayOrder"="ASC"})
      */
     private $experiences;
 
@@ -159,6 +158,7 @@ class Summary
      * @var Training[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OrderBy({"displayOrder"="ASC"})
      *
      * @Assert\Valid
      */
@@ -233,8 +233,6 @@ class Summary
 
     public function __construct(Adherent $adherent, string $slug)
     {
-        $adherent->setSummary($this);
-
         $this->member = $adherent;
         $this->slug = $slug;
         $this->missionTypeWishes = new ArrayCollection();

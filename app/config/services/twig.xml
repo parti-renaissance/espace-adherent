@@ -29,6 +29,13 @@
             <tag name="twig.runtime"/>
         </service>
 
+        <service id="AppBundle\Twig\FormExtension" />
+
+        <service id="AppBundle\Twig\FormRuntime">
+            <argument type="service" id="form.factory"/>
+            <tag name="twig.runtime"/>
+        </service>
+
         <service id="AppBundle\Twig\AppIntlExtension" />
 
         <service id="Twig\Extensions\IntlExtension" />

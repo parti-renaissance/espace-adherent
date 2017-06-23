@@ -1,10 +1,12 @@
 <section class="l__wrapper--medium">
     {% block summary_skills %}
-        <div id="summary_skills" class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
             <h2>Compétences</h2>
             <a href="#" class="button">Modifier</a>
             {% for skill in summary.skills %}
-                <p>{{ skill.name }}</p>
+                <div class="summary-skill">
+                    <p>{{ skill.name }}</p>
+                </div>
             {% endfor %}
         </div>
     {% endblock %}

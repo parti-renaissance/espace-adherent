@@ -63,7 +63,7 @@ class Training
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -92,7 +92,7 @@ class Training
      *
      * @Assert\Length(min=2, max=200)
      */
-    private $extracurricular;
+    private $extraCurricular;
 
     /**
      * @var int
@@ -191,14 +191,14 @@ class Training
         $this->description = $description;
     }
 
-    public function getExtracurricular(): ?string
+    public function getExtraCurricular(): ?string
     {
-        return $this->extracurricular;
+        return $this->extraCurricular;
     }
 
-    public function setExtracurricular(?string $extracurricular): void
+    public function setExtraCurricular(?string $extraCurricular): void
     {
-        $this->extracurricular = $extracurricular;
+        $this->extraCurricular = $extraCurricular;
     }
 
     public function getDisplayOrder(): int
