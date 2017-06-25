@@ -22,7 +22,11 @@
 @import "layout/layout";
 @import "layout/nav";
 
-@import "pages/content";
+@import "content/header";
+@import "content/inside-common";
+@import "content/inside-amp";
+@import "content/program";
+
 @import "pages/listing";
 @import "pages/videos";
 

@@ -1,0 +1,136 @@
+.content.je-marche {
+    header {
+        position: relative;
+        z-index: 1;
+        padding-bottom: 70px;
+        margin-bottom: 0;
+
+        @media (max-width: $mobile) {
+            padding-bottom: 30px;
+        }
+
+        svg {
+            width: 300px;
+            height: 120px;
+
+            @media (max-width: $mobile) {
+                width: 280px;
+            }
+        }
+
+        h2 {
+            @include text--medium;
+            @include text--bold;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .action__block {
+        padding: 20px 0 85px;
+    }
+
+    .action__items {
+        ul {
+            width: 55%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            @media (max-width: $tablet) {
+                width: 100%;
+                flex-wrap: nowrap;
+                overflow-x: scroll;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            li {
+                width: 47.5%;
+                height: 92px;
+
+                &:nth-child(-n+3) {
+                    margin-bottom: 22px;
+                }
+
+                @media (max-width: $tablet) {
+                    width: auto;
+                    margin-right: 10px;
+                    height: auto;
+                }
+            }
+        }
+
+        .action__menu__item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 0;
+            line-height: 18px;
+            text-align: center;
+            background: white;
+            @include text--body;
+            padding: 20px;
+            box-sizing: border-box;
+
+            &:hover {
+                color: black;
+                background: $gray--light;
+            }
+
+            &--active {
+                background: $dark;
+                color: white;
+
+                &:hover {
+                    background: $darker;
+                    color: white;
+                }
+            }
+        }
+
+        .action__item {
+            width: 42%;
+            padding: 30px;
+            box-sizing: border-box;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            height: 320px;
+
+            @media (max-width: $tablet) {
+                width: 100%;
+                height: auto;
+            }
+
+            h4 {
+                @include text--body;
+                text-transform: uppercase;
+            }
+
+            p {
+                margin: 0;
+                @include text--summary;
+            }
+
+            a {
+                margin-top: 20px;
+                @include btn;
+                @include btn--dark;
+            }
+        }
+    }
+
+    label {
+        @include text--body;
+        font-size: 20px;
+    }
+
+    textarea {
+        padding: 15px 10px;
+    }
+}
