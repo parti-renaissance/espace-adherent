@@ -19,12 +19,20 @@
 @import "layout/search";
 @import "layout/vendors";
 
+@import "content/header";
+@import "content/inside-common";
+@import "content/inside-html";
+@import "content/movement";
+@import "content/program";
+
 @import "pages/bot";
 @import "pages/committee";
-@import "pages/content";
 @import "pages/desintox";
 @import "pages/documents";
+@import "pages/elles-marchent";
 @import "pages/errors";
+@import "pages/facebook";
+@import "pages/je-marche";
 @import "pages/legislatives";
 @import "pages/listing";
 @import "pages/donation";
@@ -34,6 +42,5 @@
 @import "pages/search";
 @import "pages/procuration";
 @import "pages/ton_macron";
-@import "pages/facebook";
 @import "pages/videos";
 @import "pages/wall";

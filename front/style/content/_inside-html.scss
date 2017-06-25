@@ -1,0 +1,7 @@
+.content article figure {
+    &.tweet, &.youtube, &.facebook, &.image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
