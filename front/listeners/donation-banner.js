@@ -2,6 +2,11 @@
  * Handle the click on the donation banner close button by saving the information in a cookie.
  */
 export default (di) => {
+    // Always hide on small devices
+    if (1000 > window.innerWidth) {
+        return;
+    }
+
     const banner = dom('#header-banner');
     const bannerButton = dom('#header-banner-close-btn');
 
