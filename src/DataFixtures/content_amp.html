@@ -48,23 +48,37 @@
 <p>A horizontal rule is a line that goes across the middle of the page.</p>
 <hr>
 <p>It's sometimes handy for breaking things up.</p>
-<h2>Images</h2>
+<h2>Image</h2>
 <p>Markdown can also contain images. I'll need to add something here sometime.</p>
-<center>
-    <figure>
-        <amp-img src="https://pbs.twimg.com/media/DBRPMmMXcAAwdtK.jpg:large" width="1290" height="1290" layout="responsive"></amp-img>
-        <figcaption></figcaption>
-    </figure>
-</center>
-<h2>Videos</h2>
-<center>
-    <div class="video">
-        <amp-facebook layout="responsive" data-href="https://www.facebook.com/EmmanuelMacron/videos/1973801359519107/" data-embed-as="post" height="315" width="560"></amp-facebook>
-    </div>
-</center>
-<h2>Twitter</h2>
-<center>
-    <amp-twitter data-lang="fr" height="694" width="486" layout="responsive" data-tweetid="854030102673444864"></amp-twitter>
-</center>
+<figure class="image">
+    <amp-img src="https://pbs.twimg.com/media/DBRPMmMXcAAwdtK.jpg:large" width="1290" height="1290" layout="responsive"></amp-img>
+    <figcaption></figcaption>
+</figure>
+<h2>Tweet simple</h2>
+<figure class="tweet">
+    <amp-twitter data-lang="en" height="694" width="486" layout="responsive" data-tweetid="877938286077001729"></amp-twitter>
+</figure>
+<h2>Tweet vidéo</h2>
+<figure class="tweet">
+    <amp-twitter data-lang="en" height="694" width="486" layout="responsive" data-tweetid="836661517990920193"></amp-twitter>
+
+</figure>
+<h2>Tweet image</h2>
+<figure class="tweet">
+    <amp-twitter data-lang="en" height="694" width="486" layout="responsive" data-tweetid="878258345043308544"></amp-twitter>
+
+</figure>
+<h2>Facebook post</h2>
+<figure class="facebook">
+    <amp-facebook layout="responsive" data-href="https://www.facebook.com/EmmanuelMacron/posts/1986040634961846" data-embed-as="post" height="504" width="500"></amp-facebook>
+</figure>
+<h2>Facebook vidéo</h2>
+<figure class="facebook">
+    <amp-facebook layout="responsive" data-href="https://www.facebook.com/EmmanuelMacron/videos/1973801359519107/" data-embed-as="post" height="315" width="560"></amp-facebook>
+</figure>
+<h2>Youtube</h2>
+<figure class="youtube">
+    <amp-youtube data-videoid="6L_abJPsfmQ" layout="responsive" height="315" width="560"></amp-youtube>
+</figure>
 <h2>Finally</h2>
 <p>There's actually a lot more to Markdown than this. See the official <a href="http://daringfireball.net/projects/markdown/basics">introduction</a> and <a href="http://daringfireball.net/projects/markdown/syntax">syntax</a> for more information. However, be aware that this is not using the official implementation, and this might work subtly differently in some of the little things.</p>

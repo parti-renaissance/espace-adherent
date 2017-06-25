@@ -11,20 +11,20 @@
     src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v16/d-6IYplOFocCacKzxwXSOLO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
 }
 
-@import "vars";
-@import "fonts";
-@import "icons";
-@import "colors";
-@import "text";
+@import "mixins/vars";
+@import "mixins/fonts";
+@import "mixins/icons";
+@import "mixins/colors";
+@import "mixins/text";
 
-@import "base";
-@import "buttons";
-@import "layout";
-@import "nav";
+@import "layout/base";
+@import "layout/buttons";
+@import "layout/layout";
+@import "layout/nav";
 
-@import "content";
-@import "listing";
-@import "videos";
+@import "pages/content";
+@import "pages/listing";
+@import "pages/videos";
 
 .amp-warning {
     background: #fcecc2;

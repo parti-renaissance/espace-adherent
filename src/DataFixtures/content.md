@@ -72,34 +72,52 @@ A horizontal rule is a line that goes across the middle of the page.
 
 It's sometimes handy for breaking things up.
 
-## Images
+## Image
 
 Markdown can also contain images. I'll need to add something here sometime.
 
-<center>
-
-<figure>
+<figure class="image">
     <img src="https://pbs.twimg.com/media/DBRPMmMXcAAwdtK.jpg:large">
     <figcaption></figcaption>
 </figure>
 
-</center>
+## Tweet simple
 
-## Videos
+<figure class="tweet">
+<blockquote class="twitter-tweet" data-lang="en"><p lang="fr" dir="ltr">Nos engagements nationaux sont considérables. D&#39;ici 2025, nous engagerons 2% de notre PIB en matière de défense.</p>&mdash; Emmanuel Macron (@EmmanuelMacron) <a href="https://twitter.com/EmmanuelMacron/status/877938286077001729">June 22, 2017</a></blockquote>
+</figure>
 
-<center>
+## Tweet vidéo
 
-<div class="video">
-   <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FEmmanuelMacron%2Fvideos%2F1973801359519107%2F&show_text=0&width=560" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
-</div>
+<figure class="tweet">
+<blockquote class="twitter-tweet" data-lang="en"><p lang="fr" dir="ltr">La patrie de l’innovation, de la recherche, du futur, ce sera la France. <a href="https://twitter.com/hashtag/MacronAngers?src=hash">#MacronAngers</a> <a href="https://t.co/ygRINqQrMb">pic.twitter.com/ygRINqQrMb</a></p>&mdash; Emmanuel Macron (@EmmanuelMacron) <a href="https://twitter.com/EmmanuelMacron/status/836661517990920193">February 28, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</figure>
 
-</center>
+## Tweet image
 
-## Twitter
+<figure class="tweet">
+<blockquote class="twitter-tweet" data-lang="en"><p lang="fr" dir="ltr">Le Conseil européen a traité de nombreux sujets avec une conviction : l&#39;Europe est notre meilleure protection pour faire face à nos défis. <a href="https://t.co/XEkvlDTHOP">pic.twitter.com/XEkvlDTHOP</a></p>&mdash; Emmanuel Macron (@EmmanuelMacron) <a href="https://twitter.com/EmmanuelMacron/status/878258345043308544">June 23, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</figure>
 
-<center>
-<blockquote class="twitter-tweet" data-lang="fr"><p lang="fr" dir="ltr">À tout de suite sur TF1. <a href="https://twitter.com/hashtag/MacronPr%C3%A9sident?src=hash">#MacronPrésident</a> <a href="https://t.co/lZALwnfZ8Y">pic.twitter.com/lZALwnfZ8Y</a></p>&mdash; Emmanuel Macron (@EmmanuelMacron) <a href="https://twitter.com/EmmanuelMacron/status/854030102673444864">17 avril 2017</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-</center>
+## Facebook post
+
+<figure class="facebook">
+<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FEmmanuelMacron%2Fposts%2F1986040634961846&width=500" width="500" height="504" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+</figure>
+
+## Facebook vidéo
+
+<figure class="facebook">
+<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FEmmanuelMacron%2Fvideos%2F1973801359519107%2F&show_text=0&width=560" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+</figure>
+
+## Youtube
+
+<figure class="youtube">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/6L_abJPsfmQ" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ## Finally
 
