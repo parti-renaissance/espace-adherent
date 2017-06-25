@@ -193,7 +193,7 @@
 
         &--on-tablet {
             @media (max-width: $tablet) {
-                display: none !important;
+                display: none;
             }
         }
 
