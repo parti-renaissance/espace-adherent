@@ -138,6 +138,13 @@
         font-size: $text--size-large;
         letter-spacing: 3.5px;
         height: 70px;
+
+        @media(max-width: $mobile) {
+          padding: 0 18px;
+          font-size: $text--size-medium--small;
+          letter-spacing: 2px;
+          height: 50px;
+        }
     }
 
     &--no-border {
