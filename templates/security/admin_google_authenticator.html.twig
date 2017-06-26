@@ -13,7 +13,7 @@
                     <p class="login__form__title">Code d'authentification</p>
 
                     <form class="form" action="" method="post">
-                        {% for flashMessage in app.session.flashbag.get("two_factor") %}
+                        {% for flashMessage in app.flashes("two_factor") %}
                             <p class="error">{{ flashMessage|trans }}</p>
                         {% endfor %}
 

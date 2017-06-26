@@ -37,4 +37,9 @@ class Contract
     {
         return self::ALL;
     }
+
+    public static function getLabel($contract): string
+    {
+        return in_array($contract, self::CHOICES, true) && self::OTHER !== $contract ? ucfirst($contract) : '';
+    }
 }

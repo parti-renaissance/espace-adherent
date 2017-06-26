@@ -158,13 +158,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $memberships;
 
-    /**
-     * @var Summary|null
-     *
-     * @ORM\OneToOne(targetEntity="Summary", mappedBy="member", cascade={"all"})
-     */
-    private $summary;
-
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -713,15 +706,5 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setComEmail(?bool $comEmail): void
     {
         $this->comEmail = $comEmail;
-    }
-
-    public function getSummary(): ?Summary
-    {
-        return $this->summary;
-    }
-
-    public function setSummary(?Summary $summary): void
-    {
-        $this->summary = $summary;
     }
 }

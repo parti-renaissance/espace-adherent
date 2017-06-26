@@ -3,6 +3,8 @@
 namespace AppBundle\Entity\MemberSummary;
 
 use AppBundle\Entity\Summary;
+use AppBundle\Summary\Contract;
+use AppBundle\Summary\SummaryItemPositionableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="member_summary_job_experiences")
  */
-class JobExperience
+class JobExperience implements SummaryItemPositionableInterface
 {
     /**
      * @var int|null
@@ -83,7 +85,9 @@ class JobExperience
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date")
+     *
+     * @Assert\LessThanOrEqual("today")
      */
     private $startedAt;
 
@@ -91,6 +95,8 @@ class JobExperience
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Assert\LessThanOrEqual("today")
      */
     private $endedAt;
 
@@ -257,6 +263,11 @@ class JobExperience
         $this->contract = $contract;
     }
 
+    public function getContractLabel(): string
+    {
+        return Contract::getLabel($this->contract);
+    }
+
     public function getDuration(): string
     {
         return $this->duration;
@@ -277,6 +288,11 @@ class JobExperience
         $this->description = $description;
     }
 
+    public function isNew(): bool
+    {
+        return null === $this->id;
+    }
+
     public function getDisplayOrder(): int
     {
         return $this->displayOrder;
@@ -295,5 +311,25 @@ class JobExperience
     public function setSummary(?Summary $summary)
     {
         $this->summary = $summary;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->getContractLabel().' '.$this->position;
+    }
+
+    public function getLength(): string
+    {
+        $length = '';
+        $period = $this->startedAt->diff($this->endedAt ?: new \DateTime());
+
+        if ($period->y) {
+            $length .= $period->y.' an'.($period->y > 1 ? 's' : '');
+        }
+        if ($period->m) {
+            return $length.($period->y ? ' et ' : '').$period->m.' mois';
+        }
+
+        return '1 mois';
     }
 }

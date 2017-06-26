@@ -109,7 +109,7 @@ tf: tfp
 	$(EXEC) vendor/bin/phpunit --group functional || true
 
 tfp:            ## Prepare the PHP functional tests
-tfp: vendor
+tfp: vendor assets-amp
 	$(EXEC) rm -rf var/cache/test var/cache/test_sqlite var/cache/test_mysql /tmp/data.db app/data/dumped_referents_users || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true

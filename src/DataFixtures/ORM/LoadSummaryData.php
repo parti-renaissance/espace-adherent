@@ -24,19 +24,19 @@ class LoadSummaryData implements FixtureInterface
         $summaryFactory = $this->getSummaryFactory();
 
         $summary1 = $summaryFactory->createFromArray([
-            'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_1_UUID),
-            'slug' => 'michelle-dufour',
+            'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID),
+            'slug' => 'lucie-olivera',
             'availabilities' => [JobDuration::PART_TIME],
-            'contactEmail' => 'michelle.dufour.2@example.ch',
+            'contactEmail' => 'luciole1989@spambox.fr',
             'contributionWish' => Contribution::VOLUNTEER,
             'jobLocations' => [JobLocation::ON_REMOTE],
             'motivation' => 'C\'est mon secret',
             'professionalSynopsis' => '30 ans de travail dans le domaine scientifique',
-            'currentProfession' => 'Bio-informaticien',
-            'websiteUrl' => 'https://michelle-dufour-fake.en-marche-dev.fr',
-            'viadeoUrl' => 'https://fr.viadeo.com/michelle-dufour-fake',
-            'facebookUr' => 'https://www.facebook.com/michelle-dufour-fake',
-            'twitterNickname' => 'https://twitter.com/michelle-dufour-fake',
+            'currentProfession' => 'Bio-informaticienne',
+            'websiteUrl' => 'https://lucie-olivera-fake.en-marche-dev.fr',
+            'viadeoUrl' => 'https://fr.viadeo.com/lucie-olivera-fake',
+            'facebookUr' => 'https://www.facebook.com/lucie-olivera-fake',
+            'twitterNickname' => 'https://twitter.com/lucie-olivera-fake',
             'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Missions de bénévolat']),
         ]);
         $manager->persist($summary1);

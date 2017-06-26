@@ -18,33 +18,33 @@ class SummaryControllerTest extends SqliteWebTestCase
 
     public function testAccessAndDisplaySummaryPage()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/member/michelle-dufour');
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame(1, $crawler->filter('.summary-contact-email')->count());
-        $this->assertSame(2, $crawler->filter('#summary_experiences h3')->count());
-        $this->assertSame(1, $crawler->filter('#summary_experiences h3:contains("Bio-informaticien")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_experiences h4:contains("INSTITUT KNURE")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_experiences h3:contains("Professeur")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_experiences h4:contains("UNIVÉRSITÉ LYON 1")')->count());
-        $this->assertSame(3, $crawler->filter('#summary_languages p')->count());
-        $this->assertSame(1, $crawler->filter('#summary_languages p:contains("Français - Langue maternelle")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_languages p:contains("Anglais - Maîtrise parfaite")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_languages p:contains("Espagnol - Bonne maîtrise")')->count());
-        $this->assertSame(4, $crawler->filter('#summary_skills p')->count());
-        $this->assertSame(1, $crawler->filter('#summary_skills p:contains("Software")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_skills p:contains("Analyze")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_skills p:contains("Mathématiques")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_skills p:contains("Statistique")')->count());
-        $this->assertSame(2, $crawler->filter('#summary_training p')->count());
-        $this->assertSame(1, $crawler->filter('#summary_training h3:contains("Diplôme d\'ingénieur - Bio-Informatique")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_training h3:contains("DUT Génie biologique - Bio-Informatique")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_training p:contains("Master en Bio-Informatique")')->count());
-        $this->assertSame(1, $crawler->filter('#summary_training p:contains("Génie biologique option Bio-Informatique")')->count());
-        $this->assertSame('mailto:michelle.dufour.2@example.ch', $crawler->filter('.summary-contact-email a')->attr('href'));
-        $this->assertSame('https://www.facebook.com/michelle-dufour-fake', $crawler->filter('.summary-contact-facebook a')->attr('href'));
-        $this->assertSame('https://twitter.com/michelle-dufour-fake', $crawler->filter('.summary-contact-twitter a')->attr('href'));
+        $this->assertSame(2, $crawler->filter('.summary-experience h3')->count());
+        $this->assertSame('CDI Bio-informaticien', $crawler->filter('.summary-experience h3')->eq(0)->text());
+        $this->assertSame('Institut KNURE', $crawler->filter('.summary-experience h4')->eq(0)->text());
+        $this->assertSame('CDI Professeur', $crawler->filter('.summary-experience h3')->eq(1)->text());
+        $this->assertSame('Univérsité Lyon 1', $crawler->filter('.summary-experience h4')->eq(1)->text());
+        $this->assertSame(3, $crawler->filter('.summary-language p')->count());
+        $this->assertSame(1, $crawler->filter('.summary-language p:contains("Français - Langue maternelle")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-language p:contains("Anglais - Maîtrise parfaite")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-language p:contains("Espagnol - Bonne maîtrise")')->count());
+        $this->assertSame(4, $crawler->filter('.summary-skill p')->count());
+        $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Software")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Analyze")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Mathématiques")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Statistique")')->count());
+        $this->assertSame(2, $crawler->filter('.summary-training p')->count());
+        $this->assertSame(1, $crawler->filter('.summary-training h3:contains("Diplôme d\'ingénieur - Bio-Informatique")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-training h3:contains("DUT Génie biologique - Bio-Informatique")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-training p:contains("Master en Bio-Informatique")')->count());
+        $this->assertSame(1, $crawler->filter('.summary-training p:contains("Génie biologique option Bio-Informatique")')->count());
+        $this->assertSame('mailto:luciole1989@spambox.fr', $crawler->filter('.summary-contact-email a')->attr('href'));
+        $this->assertSame('https://www.facebook.com/lucie-olivera-fake', $crawler->filter('.summary-contact-facebook a')->attr('href'));
+        $this->assertSame('https://twitter.com/lucie-olivera-fake', $crawler->filter('.summary-contact-twitter a')->attr('href'));
 
         $this->assertSame(0, $crawler->filter('.button:contains("Modifer")')->count());
     }

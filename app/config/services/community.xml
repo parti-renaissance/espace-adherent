@@ -153,6 +153,7 @@
         <service id="AppBundle\Summary\SummaryManager">
             <argument type="service" id="AppBundle\Summary\SummaryFactory" />
             <argument type="service" id="app.repository.summary" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
     </services>
