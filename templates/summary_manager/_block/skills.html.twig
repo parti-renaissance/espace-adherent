@@ -2,6 +2,6 @@
 
 {% block summary_skills %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SKILLS') }) }}" class="button">Modifer</a>
+    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SKILLS') }) }}" class="summary-modify button">Modifer</a>
 {% endblock %}
 

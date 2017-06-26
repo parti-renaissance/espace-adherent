@@ -1,0 +1,9 @@
+{% block _summary_skills_entry_name_row %}
+    {% spaceless %}
+        <div class="summary-skill">
+            <span class="summary-skill-remove">X</span>
+            <span class="summary-skill-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+            {{ block('hidden_widget') }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

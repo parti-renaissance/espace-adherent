@@ -57,6 +57,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         yield 'Handle experience' => ['/espace-adherent/mon-cv/experience'];
         yield 'Handle training' => ['/espace-adherent/mon-cv/formation'];
         yield 'Handle language' => ['/espace-adherent/mon-cv/langue'];
+        yield 'Handle skills' => ['/espace-adherent/mon-cv/competences'];
 
         foreach (SummaryType::STEPS as $step) {
             yield 'Handle step '.$step => ['/espace-adherent/mon-cv/'.$step];
@@ -593,6 +594,83 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(2, $crawler->filter('.summary-language'));
         $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(0)->text());
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testAddSkillWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertCount(0, $crawler->filter('.summary-skill'));
+
+        $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
+
+        $skill1 = 'Développement';
+        $skill2 = 'Gestion des bases';
+
+        $form = $crawler->filter('form[name=summary]')->form();
+        $form->setValues(array(
+            'summary[skills][1][name]' => $skill1,
+            'summary[skills][2][name]' => $skill2,
+        ));
+        $formData = array(
+            'summary[skills][1][name]' => $skill1,
+            'summary[skills][2][name]' => $skill2,
+        );
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $form->getPhpFiles(), array(), http_build_query($formData));
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Les compétences ont bien été modifiées.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
+        $this->assertSame($skill1, $skills[0]->filter('p')->text());
+        $this->assertSame($skill2, $skills[1]->filter('p')->text());
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testModifySkillsWithSummary()
+    {
+        // This adherent has a summary and skills already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertCount(4, $crawler->filter('.summary-skill'));
+
+        $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
+
+        $skill1 = 'Développement';
+        $skill2 = 'Gestion des bases';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[skills][1][name]' => $skill1,
+            'summary[skills][2][name]' => $skill2,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertSame('Les compétences ont bien été modifiées.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
+        $this->assertSame($skill1, $skills[0]->filter('p')->text());
+        $this->assertSame($skill2, $skills[1]->filter('p')->text());
     }
 
     /**

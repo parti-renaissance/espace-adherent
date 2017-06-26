@@ -6,6 +6,7 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
+use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
@@ -16,6 +17,7 @@ use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -216,6 +218,23 @@ class SummaryManagerController extends Controller
         }
 
         return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
+     * @Route("/competences/autocompletion",
+     *     name="app_summary_manager_skills_autocomplete",
+     *     condition="request.isXlmHttpRequest()"
+     * )
+     * @Method("GET")
+     */
+    public function skillsAutocompleteAction(Request $request)
+    {
+        $this->disableInProduction();
+
+        $skills = $this->getDoctrine()->getRepository(Skill::class)
+            ->findAvailableSkillsForAdherent(trim(strip_tags($request->get('term'))), $this->getUser());
+
+        return new JsonResponse($skills);
     }
 
     /**
