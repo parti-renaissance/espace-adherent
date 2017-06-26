@@ -4,6 +4,7 @@ namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeMessageNotificationMessage extends MailjetMessage
@@ -32,13 +33,17 @@ class CommitteeMessageNotificationMessage extends MailjetMessage
             '63337',
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
-            "L'animateur d'un comité que vous suivez vous a envoyé un message",
+            'Des nouvelles de votre comité',
             static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
             $feedItem->getAuthor()->getEmailAddress()
         );
 
-        $message->setSenderName('Votre comité En Marche !');
+        $sender = $feedItem->getAuthor()->getFirstName().', ';
+        $sender .= $feedItem->getAuthor()->getGender() === Genders::FEMALE ? 'animatrice' : 'animateur';
+        $sender .= ' de votre comité';
+
+        $message->setSenderName($sender);
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(

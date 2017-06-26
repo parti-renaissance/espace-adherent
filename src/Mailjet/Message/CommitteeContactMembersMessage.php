@@ -3,6 +3,7 @@
 namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeContactMembersMessage extends MailjetMessage
@@ -23,7 +24,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             '63337',
             $first->getEmailAddress(),
             self::fixMailjetParsing($first->getFullName()),
-            "L'animateur d'un comité que vous suivez vous a envoyé un message",
+            'Des nouvelles de votre comité',
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
                 'target_message' => $content,
@@ -34,7 +35,11 @@ final class CommitteeContactMembersMessage extends MailjetMessage
             $host->getEmailAddress()
         );
 
-        $message->setSenderName('Votre comité En Marche !');
+        $sender = $host->getFirstName().', ';
+        $sender .= $host->getGender() === Genders::FEMALE ? 'animatrice' : 'animateur';
+        $sender .= ' de votre comité';
+
+        $message->setSenderName($sender);
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
