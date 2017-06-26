@@ -2,7 +2,7 @@
 
 {% block summary_trainings %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_handle_training') }}" class="button"><i class="fa fa-plus fa-3x"></i></a>
+    <a href="{{ path('app_summary_manager_handle_training') }}" class="button summary-add-item"><i class="fa fa-plus fa-3x"></i></a>
     {% block modify %}
         {{ parent() }}
         {% if training is defined and not training.new %}
