@@ -1,4 +1,25 @@
 .adherent_profile {
+    &__header {
+        &--outer {
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            @include gradient-container;
+
+            h1 {
+                display: inline;
+            }
+
+            &:before {
+                @include classic-gradient($filter--pink);
+            }
+        }
+
+        &--inner {
+            position: relative;
+        }
+    }
+
     form {
         border: 1px solid $gray--light;
         padding: 40px;
