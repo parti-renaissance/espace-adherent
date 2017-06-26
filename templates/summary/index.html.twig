@@ -8,8 +8,10 @@
 
 {% block content %}
 
-    <main class="adherent_summary">
+    <main class="adherent_cv">
         {{ include('summary/_block/header.html.twig') }}
+
+        {{ include('summary/_block/contact.html.twig') }}
 
         {{ include('summary/_block/synthesis.html.twig') }}
 
@@ -28,8 +30,6 @@
         {{ include('summary/_block/trainings.html.twig') }}
 
         {{ include('summary/_block/interests.html.twig') }}
-
-        {{ include('summary/_block/contact.html.twig') }}
     </main>
 
 {% endblock %}

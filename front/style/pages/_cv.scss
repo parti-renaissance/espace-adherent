@@ -1,0 +1,33 @@
+.cv {
+    &__header {
+        position: relative;
+        top: -110px;
+
+        &__photo {
+            margin: 0 auto;
+            height: 210px;
+            width: 210px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background-position: 9% 60%; // Change once we have the right image
+        }
+    }
+
+    &__contact {
+        top: -85px;
+        position: relative;
+
+        div {
+            margin-right: 20px;
+            font-size: $text--size-medium;
+
+            a {
+                border: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}

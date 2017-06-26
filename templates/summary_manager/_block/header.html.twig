@@ -22,21 +22,3 @@
         {% endif %}
     </div>
 {% endblock %}
-
-{% block summary_bottom_part %}
-    <div>
-        <div>
-            {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}<br>
-            Date d'adhésion
-        </div>
-        <div>
-            {{ recent_activities.eventParticipationsCount }}
-            <br>
-            participation{{ recent_activities.eventParticipationsCount > 1 ? 's' }} à des events
-        </div>
-        <div class="summary-completion">
-            {{ summary.completion }}% <br> profile complété
-        </div>
-    </div>
-{% endblock %}
-
