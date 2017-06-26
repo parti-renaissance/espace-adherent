@@ -73,7 +73,7 @@ class Language
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', Intl::getLanguageBundle()->getLanguageName($this->code), ucfirst($this->level));
+        return sprintf('%s - %s', ucfirst(Intl::getLanguageBundle()->getLanguageName($this->code)), ucfirst($this->level));
     }
 
     public function getId(): ?int

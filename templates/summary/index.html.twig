@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block page_title 'CV ' ~ summary.member.fullname %}
+
+{% block content %}
+
+    <main class="adherent_summary">
+        {{ include('summary/_block/header.html.twig') }}
+
+        {{ include('summary/_block/synthesis.html.twig') }}
+
+        {{ include('summary/_block/mission_wishes.html.twig') }}
+
+        {{ include('summary/_block/motivation.html.twig') }}
+
+        {{ include('summary/_block/recent_activities.html.twig') }}
+
+        {{ include('summary/_block/experiences.html.twig') }}
+
+        {{ include('summary/_block/skills.html.twig') }}
+
+        {{ include('summary/_block/languages.html.twig') }}
+
+        {{ include('summary/_block/trainings.html.twig') }}
+
+        {{ include('summary/_block/interests.html.twig') }}
+
+        {{ include('summary/_block/contact.html.twig') }}
+    </main>
+
+{% endblock %}

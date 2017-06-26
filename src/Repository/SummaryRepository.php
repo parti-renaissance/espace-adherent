@@ -24,4 +24,21 @@ class SummaryRepository extends EntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOneBySlug(string $slug): ?Summary
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'm', 'mt', 'e', 'sk', 'l', 't')
+            ->leftJoin('s.member', 'm')
+            ->leftJoin('s.missionTypeWishes', 'mt')
+            ->leftJoin('s.experiences', 'e')
+            ->leftJoin('s.skills', 'sk')
+            ->leftJoin('s.languages', 'l')
+            ->leftJoin('s.trainings', 't')
+            ->where('s.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
