@@ -192,6 +192,16 @@
         @include btn--black;
     }
 
+    &--hollow {
+        background: transparent;
+        color: white;
+        border-color: white;
+
+        &:hover {
+            background: black;
+        }
+    }
+
     &--social {
         font-size: $text--size-smallest;
         font-family: $font-roboto;
