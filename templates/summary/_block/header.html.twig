@@ -1,23 +1,28 @@
-<section class="l__wrapper--medium">
+<section>
     {% block summary_left_part %}
-        <div>
-            <div>Photo</div>
-            <h2 class="text--large b__nudge--bottom-tiny">{{ summary.member.fullname }}</h2>
-            <div class="text--body text--gray">{{ summary.member.age }} ans, {{ summary.member.cityName }}</div>
+    <div class="progressive-background space--100-0"
+         data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
+         data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
+    </div>
+    <div class="background--yellow">
+        <div class="l__wrapper--medium text--center cv__header">
+            <div class="cv__header__photo progressive-background"
+                data-sd="{{ static_asset('elles-marchent/zineb.jpg', {'w': 100, 'q': 20}) }}"
+                data-hd="{{ static_asset('elles-marchent/zineb.jpg', {'h': 450, 'q': 70}) }}">
+            </div>
+            <h2 class="text--large b__nudge--top">{{ summary.member.fullname }}</h2>
+
+            {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
+            {% if summary.currentProfession %}
+                <div class="text--all-caps">{{ summary.currentProfession }}</div>
+                <div class="text--body text--italic">{{ currentPosition }}</div>
+            {% else %}
+                <div class="text--all-caps">{{ currentPosition }}</div>
+            {% endif %}
+
+            <p class="text--body">{{ summary.professionalSynopsis }}</p>
         </div>
+    </div>
     {% endblock %}
     {% block summary_right_part %}{% endblock %}
-    {% block summary_bottom_part %}
-        <div>
-            <div>
-                {{ summary.member.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}<br>
-                Date d'adhésion
-            </div>
-            <div>
-                {{ recent_activities.eventParticipationsCount }}
-                <br>
-                participation{{ recent_activities.eventParticipationsCount > 1 ? 's' }} à des events
-            </div>
-        </div>
-    {% endblock %}
 </section>

@@ -30,9 +30,16 @@
         </div>
 
         <hr>
-
-        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
-            <p>{{ summary.professionalSynopsis }}</p>
+    {% endblock %}
+    {% block summary_bottom_part %}
+        <div>
+            <div>
+                {{ summary.member.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}<br>
+                Date d'adhésion
+            </div>
+            <div>
+                23 <br> participations à des events
+            </div>
         </div>
     {% endblock %}
 </section>
