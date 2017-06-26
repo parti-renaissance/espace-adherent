@@ -22,6 +22,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     {
         yield 'Index' => ['/espace-adherent/mon-cv'];
         yield 'Handle experience' => ['/espace-adherent/mon-cv/experience'];
+        yield 'Handle training' => ['/espace-adherent/mon-cv/formation'];
     }
 
     /**
@@ -211,6 +212,152 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertSame('Univérsité Lyon 1', $firstExperience->getCompany());
         $this->assertSame(1, $firstExperience->getDisplayOrder());
+    }
+
+    public function testCreateTraining()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/formation');
+
+        $organization = 'Example';
+        $diploma = 'Master';
+        $studyField = 'Web development';
+
+        $this->client->submit($crawler->filter('form[name=training]')->form([
+            'training[organization]' => $organization,
+            'training[diploma]' => $diploma,
+            'training[study_field]' => $studyField,
+            'training[started_at][month]' => '2',
+            'training[started_at][year]' => '2012',
+            'training[ended_at][month]' => '2',
+            'training[ended_at][year]' => '2012',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('La formation a bien été sauvegardée.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(1, $experience = $crawler->filter('.summary-training'));
+        $this->assertSame($diploma.' - '.$studyField, $experience->filter('h3')->text());
+        $this->assertSame(strtoupper($organization), $experience->filter('h4')->text());
+    }
+
+    public function testCreateTrainingChangesOrder()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/formation');
+
+        $diploma = 'Master';
+
+        $this->client->submit($crawler->filter('form[name=training]')->form([
+            'training[organization]' => 'Example',
+            'training[diploma]' => $diploma,
+            'training[study_field]' => 'Web development',
+            'training[started_at][month]' => '2',
+            'training[started_at][year]' => '2012',
+            'training[ended_at][month]' => '2',
+            'training[ended_at][year]' => '2012',
+            'training[display_order][entry]' => '1',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
+
+        $this->assertCount(3, $trainings = $summary->getTrainings());
+
+        foreach ($trainings as $training) {
+            switch ($training->getDisplayOrder()) {
+                case 1:
+                    $this->assertSame($diploma, $training->getDiploma());
+                    break;
+                case 2:
+                    $this->assertSame('Diplôme d\'ingénieur', $training->getDiploma());
+                    break;
+                case 3:
+                    $this->assertSame('DUT Génie biologique', $training->getDiploma());
+                    break;
+            }
+        }
+    }
+
+    public function testEditTraingChangesOrder()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $lastTraining = $crawler->filter('.summary-training')->eq(1);
+
+        $this->assertSame('DUT Génie biologique - Bio-Informatique', $lastTraining->filter('h3')->text());
+
+        $crawler = $this->client->click($lastTraining->selectLink('Modifier')->link());
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $newPosition = 1;
+
+        $this->client->submit($crawler->filter('form[name=training]')->form([
+            'training[display_order][entry]' => $newPosition,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame('DUT Génie biologique - Bio-Informatique', $crawler->filter('.summary-training')->eq(0)->filter('h3')->text());
+    }
+
+    public function testDeleteTrainingChangesOrder()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $lastTraining = $crawler->filter('.summary-training')->eq(1);
+
+        $this->assertSame('DUT Génie biologique - Bio-Informatique', $lastTraining->filter('h3')->text());
+
+        $this->client->submit($crawler->filter('.summary-training')->eq(0)->selectButton('Supprimer')->form());
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
+
+        $this->assertCount(1, $trainings = $summary->getTrainings());
+
+        $firstTraining = $trainings->first();
+
+        $this->assertSame('DUT Génie biologique', $firstTraining->getDiploma());
+        $this->assertSame(1, $firstTraining->getDisplayOrder());
     }
 
     protected function setUp()

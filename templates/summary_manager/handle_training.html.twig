@@ -1,0 +1,39 @@
+{% extends 'summary_manager/layout.twig' %}
+
+{% block summary_content %}
+    <section class="l__wrapper--medium">
+
+    <h2>Éditer la formation</h2>
+
+    <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
+        {{ form_start(training_form) }}
+
+            {{ form_errors(training_form) }}
+
+            {{ form_row(training_form.organization, { label: 'Organisme/Université/Mooc' }) }}
+            {{ form_row(training_form.diploma, { label: 'Diplôme' }) }}
+            {{ form_row(training_form.study_field, { label: 'Domaine d\'étude' }) }}
+            {{ form_row(training_form.started_at, { label: 'Début' }) }}
+            {{ form_row(training_form.ended_at, { label: 'Fin' }) }}
+            {{ form_row(training_form.on_going, { label: 'J\'y étudie actuellement' }) }}
+            {{ form_row(training_form.description, { label: 'Description du poste' }) }}
+            {{ form_row(training_form.extra_curricular, { label: 'Participation à des activités extra-scolaires' }) }}
+
+            {% if training_form.display_order.vars.choices is defined %}
+                {{ form_row(training_form.display_order, { label: 'Position dans la liste des formations' }) }}
+            {% else %}
+                {{ form_widget(training_form.display_order) }}
+            {% endif %}
+
+        {{ form_end(training_form) }}
+
+        {% if training_form.vars.data and not training_form.vars.data.new %}
+            {{ delete_form(path('app_summary_manager_remove_training', { id: training_form.vars.data.id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_TRAINING_TOKEN')) }}
+        {% endif %}
+        <a href="{{ path('app_summary_manager_index') }}">
+            Retourner au CV
+        </a>
+    </div>
+
+</section>
+{% endblock %}

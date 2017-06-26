@@ -4,6 +4,7 @@ namespace AppBundle\Summary;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Entity\Summary;
 use AppBundle\Repository\SummaryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,6 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class SummaryManager
 {
     const DELETE_EXPERIENCE_TOKEN = 'delete_summary_experience';
+    const DELETE_TRAINING_TOKEN = 'delete_summary_training';
 
     private $factory;
     private $repository;
@@ -47,6 +49,26 @@ class SummaryManager
         SummaryItemDisplayOrderer::removeItem($summary->getExperiences(), $experience);
 
         $summary->removeExperience($experience);
+        $this->updateSummary($summary);
+
+        return true;
+    }
+
+    public function updateTrainings(Summary $summary, Training $training): void
+    {
+        $summary->addTraining($training);
+        $this->updateSummary($summary);
+    }
+
+    public function removeTraining(Adherent $adherent, Training $training): bool
+    {
+        if (!$summary = $this->repository->findOneForAdherent($adherent)) {
+            return false;
+        }
+
+        SummaryItemDisplayOrderer::removeItem($summary->getTrainings(), $training);
+
+        $summary->removeTraining($training);
         $this->updateSummary($summary);
 
         return true;

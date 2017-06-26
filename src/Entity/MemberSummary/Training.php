@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity\MemberSummary;
 
+use AppBundle\Entity\EntitySpanTrait;
 use AppBundle\Entity\Summary;
+use AppBundle\Summary\SummaryItemPositionableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,8 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="member_summary_trainings")
  */
-class Training
+class Training implements SummaryItemPositionableInterface
 {
+    use EntitySpanTrait;
+
     /**
      * @var int|null
      *
@@ -50,31 +54,6 @@ class Training
      * @Assert\Length(min=2, max=200)
      */
     private $studyField = '';
-
-    /**
-     * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="date")
-     *
-     * @Assert\NotBlank
-     */
-    private $startedAt;
-
-    /**
-     * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="date", nullable=true)
-     *
-     * @Assert\NotBlank
-     */
-    private $endedAt;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default"=false})
-     */
-    private $onGoing = false;
 
     /**
      * @var string|null
@@ -143,44 +122,6 @@ class Training
         $this->studyField = $studyField;
     }
 
-    public function getStartedAt(): ?\DateTimeInterface
-    {
-        if ($this->startedAt instanceof \DateTime) {
-            $this->startedAt = \DateTimeImmutable::createFromMutable($this->startedAt);
-        }
-
-        return $this->startedAt;
-    }
-
-    public function setStartedAt(?\DateTimeInterface $startedAt): void
-    {
-        $this->startedAt = $startedAt;
-    }
-
-    public function getEndedAt(): ?\DateTimeInterface
-    {
-        if ($this->endedAt instanceof \DateTime) {
-            $this->endedAt = \DateTimeImmutable::createFromMutable($this->endedAt);
-        }
-
-        return $this->endedAt;
-    }
-
-    public function setEndedAt(?\DateTimeInterface $endedAt): void
-    {
-        $this->endedAt = $endedAt;
-    }
-
-    public function isOnGoing(): bool
-    {
-        return $this->onGoing;
-    }
-
-    public function setOnGoing(bool $onGoing): void
-    {
-        $this->onGoing = $onGoing;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -201,6 +142,11 @@ class Training
         $this->extraCurricular = $extraCurricular;
     }
 
+    public function isNew(): bool
+    {
+        return null === $this->id;
+    }
+
     public function getDisplayOrder(): int
     {
         return $this->displayOrder;
@@ -219,5 +165,10 @@ class Training
     public function setSummary(?Summary $summary)
     {
         $this->summary = $summary;
+    }
+
+    public function getTitle()
+    {
+        return $this->diploma.' - '.$this->studyField;
     }
 }

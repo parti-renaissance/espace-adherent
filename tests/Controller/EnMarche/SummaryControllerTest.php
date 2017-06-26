@@ -37,7 +37,7 @@ class SummaryControllerTest extends SqliteWebTestCase
         $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Analyze")')->count());
         $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Mathématiques")')->count());
         $this->assertSame(1, $crawler->filter('.summary-skill p:contains("Statistique")')->count());
-        $this->assertSame(2, $crawler->filter('.summary-training p')->count());
+        $this->assertSame(4, $crawler->filter('.summary-training p')->count());
         $this->assertSame(1, $crawler->filter('.summary-training h3:contains("Diplôme d\'ingénieur - Bio-Informatique")')->count());
         $this->assertSame(1, $crawler->filter('.summary-training h3:contains("DUT Génie biologique - Bio-Informatique")')->count());
         $this->assertSame(1, $crawler->filter('.summary-training p:contains("Master en Bio-Informatique")')->count());

@@ -169,3 +169,8 @@ legislative_candidate.carreer.invalid: Cette carrière est invalide.
 
 legislative_campaign_contact_message.role.invalid: Le role que vous occupez dans la campagne est invalide.
 legislative_campaign_contact_message.recipient.invalid: Le service auquel vous souhaitez adresser ce message est invalide.
+
+#
+# Summary
+#
+summary.spanable_item.length.invalid: L'événement doit être en cours ou avoir une date de fin.

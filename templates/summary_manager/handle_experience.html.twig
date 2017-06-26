@@ -8,6 +8,8 @@
     <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
         {{ form_start(experience_form) }}
 
+            {{ form_errors(experience_form) }}
+
             {{ form_row(experience_form.company, { label: 'Organisation' }) }}
             {{ form_row(experience_form.website, { label: 'Site internet de l\'organisation' }) }}
             {{ form_row(experience_form.position, { label: 'Poste' }) }}
