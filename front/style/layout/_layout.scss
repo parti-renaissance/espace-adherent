@@ -11,9 +11,7 @@
     }
 
     &__wrapper--medium {
-        width: 90%;
-        max-width: 1000px;
-        margin: 0 auto;
+        @include wrapper--medium;
     }
 
     &__wrapper--narrow {
@@ -127,7 +125,7 @@
         }
 
         &--left {
-            align-items:flex-start;
+            align-items: flex-start;
         }
 
         &--top {

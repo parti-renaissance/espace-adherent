@@ -596,6 +596,7 @@
         font-weight: bold;
         font-size: 22px;
         padding: 15px 0;
+        color: white;
 
         @media (max-width: $mobile) {
             flex-direction: column;
@@ -617,6 +618,12 @@
         }
     }
 
+    &--wide {
+        ul {
+            @include wrapper--medium;
+        }
+    }
+
     &--one {
         li {
             width: 100%;
@@ -631,6 +638,14 @@
 
     &--green {
         background-color: $green;
+    }
+
+    &--blue {
+        background-color: $blue;
+
+        li {
+            border-color: white;
+        }
     }
 
     &--yellow {

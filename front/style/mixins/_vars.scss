@@ -12,6 +12,12 @@ $zIndex__overlay-caret: 600;
     margin: 0 auto;
 }
 
+@mixin wrapper--medium {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
 @mixin wrapper--slim {
     width: 90%;
     max-width: 700px;
