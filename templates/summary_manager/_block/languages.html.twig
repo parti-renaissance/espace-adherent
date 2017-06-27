@@ -2,9 +2,14 @@
 
 {% block summary_languages %}
     {{ parent() }}
-    <a href="#" class="button"><i class="fa fa-plus fa-3x"></i></a>
+    <a href="{{ path('app_summary_manager_handle_language') }}" class="summary-add-item"><i class="fa fa-plus fa-3x"></i></a>
     {% block modify %}
         {{ parent() }}
-        <a href="#" class="button">Modifer</a>
+        {% if language|default(false) and language.id %}
+            <a href="{{ path('app_summary_manager_handle_language', { id: language_id }) }}" class="btn">
+                Modifier
+            </a>
+            {{ delete_form(path('app_summary_manager_remove_language', { id: language_id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_LANGUAGE_TOKEN')) }}
+        {% endif %}
     {% endblock %}
 {% endblock %}

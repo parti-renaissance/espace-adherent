@@ -4,6 +4,7 @@ namespace AppBundle\Summary;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Entity\Summary;
 use AppBundle\Repository\SummaryRepository;
@@ -13,6 +14,7 @@ class SummaryManager
 {
     const DELETE_EXPERIENCE_TOKEN = 'delete_summary_experience';
     const DELETE_TRAINING_TOKEN = 'delete_summary_training';
+    const DELETE_LANGUAGE_TOKEN = 'delete_summary_language';
 
     private $factory;
     private $repository;
@@ -69,6 +71,26 @@ class SummaryManager
         SummaryItemDisplayOrderer::removeItem($summary->getTrainings(), $training);
 
         $summary->removeTraining($training);
+        $this->updateSummary($summary);
+
+        return true;
+    }
+
+    public function updateLanguages(Adherent $adherent, Language $language): void
+    {
+        $summary = $this->getForAdherent($adherent);
+
+        $summary->addLanguage($language);
+        $this->updateSummary($summary);
+    }
+
+    public function removeLanguage(Adherent $adherent, Language $language): bool
+    {
+        if (!$summary = $this->repository->findOneForAdherent($adherent)) {
+            return false;
+        }
+
+        $summary->removeLanguage($language);
         $this->updateSummary($summary);
 
         return true;

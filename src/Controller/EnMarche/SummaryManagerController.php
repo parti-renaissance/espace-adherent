@@ -5,8 +5,10 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Form\JobExperienceType;
+use AppBundle\Form\LanguageType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -58,14 +60,8 @@ class SummaryManagerController extends Controller
             return $this->redirectToRoute('app_summary_manager_index');
         }
 
-        $deleteForm = $experience ? $this->createDeleteForm(
-            $this->generateUrl('app_summary_manager_remove_experience', ['id' => $experience->getId()]),
-            SummaryManager::DELETE_EXPERIENCE_TOKEN
-        )->createView() : null;
-
         return $this->render('summary_manager/handle_experience.html.twig', [
             'experience_form' => $form->createView(),
-            'delete_form' => $deleteForm,
         ]);
     }
 
@@ -112,14 +108,8 @@ class SummaryManagerController extends Controller
             return $this->redirectToRoute('app_summary_manager_index');
         }
 
-        $deleteForm = $training ? $this->createDeleteForm(
-            $this->generateUrl('app_summary_manager_remove_training', ['id' => $training->getId()]),
-            SummaryManager::DELETE_TRAINING_TOKEN
-        )->createView() : null;
-
         return $this->render('summary_manager/handle_training.html.twig', [
             'training_form' => $form->createView(),
-            'delete_form' => $deleteForm,
         ]);
     }
 
@@ -139,6 +129,49 @@ class SummaryManagerController extends Controller
 
         if ($this->get(SummaryManager::class)->removeTraining($this->getUser(), $training)) {
             $this->addFlash('info', $this->get('translator')->trans('summary.remove_training.success'));
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
+     * @Route("/langue/{id}", defaults={"id": ""}, name="app_summary_manager_handle_language")
+     * @Method("GET|POST")
+     */
+    public function handleLanguageAction(Request $request, ?Language $language)
+    {
+        $this->disableInProduction();
+
+        $form = $this->createForm(LanguageType::class, $language);
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get(SummaryManager::class)->updateLanguages($this->getUser(), $language ?: $form->getData());
+            $this->addFlash('info', $this->get('translator')->trans('summary.handle_language.success'));
+
+            return $this->redirectToRoute('app_summary_manager_index');
+        }
+
+        return $this->render('summary_manager/handle_language.html.twig', [
+            'language_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/langue/{id}/supprimer", name="app_summary_manager_remove_language")
+     * @Method("DELETE")
+     */
+    public function removeLanguageAction(Request $request, Language $language)
+    {
+        $this->disableInProduction();
+
+        $form = $this->createDeleteForm('', SummaryManager::DELETE_LANGUAGE_TOKEN, $request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
+        }
+
+        if ($this->get(SummaryManager::class)->removeLanguage($this->getUser(), $language)) {
+            $this->addFlash('info', $this->get('translator')->trans('summary.remove_language.success'));
         }
 
         return $this->redirectToRoute('app_summary_manager_index');

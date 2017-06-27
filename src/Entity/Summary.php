@@ -421,6 +421,11 @@ class Summary
         $this->languages->removeElement($language);
     }
 
+    public function getLanguagesByLevel(): iterable
+    {
+        return Language::sortByLevel($this->languages);
+    }
+
     public function getMemberInterests(): array
     {
         return $this->member->getInterests();

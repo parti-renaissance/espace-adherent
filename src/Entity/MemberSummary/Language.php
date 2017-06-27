@@ -115,4 +115,18 @@ class Language
     {
         return self::LEVELS;
     }
+
+    public static function sortByLevel(iterable $languages): iterable
+    {
+        foreach (array_reverse(self::LEVELS) as $level) {
+            foreach ($languages as $language) {
+                if (!$language instanceof self) {
+                    throw new \InvalidArgumentException(sprintf('Expected an instance of self "%s", got "%s."', __CLASS__, is_object($language) ? get_class($language) : gettype($language)));
+                }
+                if ($level === $language->level) {
+                    yield $language->id => $language;
+                }
+            }
+        }
+    }
 }
