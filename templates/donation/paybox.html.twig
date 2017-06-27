@@ -1,13 +1,13 @@
 {% extends 'donation/layout.html.twig' %}
 
 {% block javascripts %}
-<script type="text/javascript">
-    Kernel.onLoad(function() {
-        hide(dom('#app-donation-redirect-form'));
-        show(dom('#app-donation-redirect-loader'));
-        document.getElementById('app-donation-redirect-form').submit();
-    });
-</script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            hide(dom('#app-donation-redirect-form'));
+            show(dom('#app-donation-redirect-loader'));
+            document.getElementById('app-donation-redirect-form').submit();
+        });
+    </script>
 {% endblock %}
 
 {% block donation_content %}

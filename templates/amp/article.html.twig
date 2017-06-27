@@ -1,6 +1,6 @@
 {% extends 'amp/_layout.html.twig' %}
 
-{% block page_title article.title %}
+{% block title article.title %}
 {% block canonical_url url('article_view', {'slug': article.slug}) %}
 
 {% block json_ld %}
@@ -12,7 +12,7 @@
     {
         "@context": "http://schema.org",
         "@type": "NewsArticle",
-        "name": "{{ block('page_title') }}",
+        "name": "{{ article.title }}",
         "articleSection": "{{ article.category.name }}",
         "headline": "{{ article.description|slice(0, 110) }}",
         "description": "{{ article.description }}",
