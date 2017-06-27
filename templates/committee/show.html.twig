@@ -10,7 +10,13 @@
         "@type": "Organization",
         "name": "{{ committee.name }}",
         "url": "{{ block('open_graph_url') }}",
-        "image": "{{ block('open_graph_image') }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
         "description": "{{ committee.description }}",
         "funder": {
             "@type": "Person",
@@ -20,7 +26,7 @@
         "parentOrganization": {
             "@type": "Organization",
             "name": "En Marche !",
-            "url": "{{ url('homepage') }}"
+            "url": "{{ homepage_url }}"
         },
         "location": {
             "@type": "PostalAddress",

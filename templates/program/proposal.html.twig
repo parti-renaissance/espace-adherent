@@ -9,16 +9,9 @@
 
 {% block amp_link %}<link rel="amphtml" href="{{ url('amp_proposal_view', {'slug': proposal.slug}) }}" />{% endblock %}
 
-{% block open_graph_image %}{% spaceless %}
-    {% if proposal.media %}
-        {{ (url('homepage')|trim('/')~media_asset(proposal.media, {'q': 70}))|raw }}
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{% endspaceless %}{% endblock %}
-
-{% block open_graph_image_width (proposal.media ? proposal.media.width : 628) %}
-{% block open_graph_image_height (proposal.media ? proposal.media.height : 288) %}
+{% block open_graph_image (proposal.media ? (homepage_url ~ media_asset(proposal.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (proposal.media ? proposal.media.width : default_sharer_width) %}
+{% block open_graph_image_height (proposal.media ? proposal.media.height : default_sharer_height) %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
