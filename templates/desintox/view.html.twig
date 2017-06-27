@@ -7,16 +7,9 @@
 
 {% block canonical_url url('program_proposal', {'slug': clarification.slug}) %}
 
-{% block open_graph_image %}{% spaceless %}
-    {% if clarification.media %}
-        {{ (url('homepage')|trim('/')~media_asset(clarification.media, {'q': 70}))|raw }}
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{% endspaceless %}{% endblock %}
-
-{% block open_graph_image_width (clarification.media ? clarification.media.width : 628) %}
-{% block open_graph_image_height (clarification.media ? clarification.media.height : 288) %}
+{% block open_graph_image (clarification.media ? (homepage_url ~ media_asset(clarification.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (clarification.media ? clarification.media.width : default_sharer_width) %}
+{% block open_graph_image_height (clarification.media ? clarification.media.height : default_sharer_height) %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}

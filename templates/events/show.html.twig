@@ -10,7 +10,13 @@
         "@type": "Event",
         "name": "{{ event.name }}",
         "url": "{{ block('open_graph_url') }}",
-        "image": "{{ block('open_graph_image') }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
         "description": "{{ event.description }}",
         "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
         "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",

@@ -3,28 +3,53 @@
 {% block page_title article.title %}
 {% block canonical_url url('article_view', {'slug': article.slug}) %}
 
-{% block image %}{% spaceless %}
-    {% if article.media %}
-        {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
-    {% else %}
-        {{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}
-    {% endif %}
-{% endspaceless %}{% endblock %}
-
 {% block json_ld %}
-<script type="application/ld+json">
-{
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "name": "{{ block('page_title') }}",
-    "section": "{{ article.category.name }}",
-    "headline": "{{ article.description }}",
-    "description": "{{ article.description }}",
-    "url": "{{ block('canonical_url') }}",
-    "image": "{{ block('image') }}",
-    "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}"
-}
-</script>
+    {% set image = article.media ? (homepage_url ~ (media_asset(article.media)|raw)) : default_sharer %}
+    {% set image_width = article.media ? article.media.width : default_sharer_width %}
+    {% set image_height = article.media ? article.media.height : default_sharer_height %}
+
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "name": "{{ block('page_title') }}",
+        "articleSection": "{{ article.category.name }}",
+        "headline": "{{ article.description|slice(0, 110) }}",
+        "description": "{{ article.description }}",
+        "url": "{{ block('canonical_url') }}",
+        "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}",
+        "dateModified": "{{ max(article.publishedAt, article.updatedAt)|date(constant('DATE_ISO8601')) }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ image|raw }}",
+            "contentUrl": "{{ image|raw }}",
+            "width": {{ image_width }},
+            "height": {{ image_height }}
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "contentUrl": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "width": 357,
+                "height": 60
+            }
+        }
+    }
+    </script>
 {% endblock %}
 
 {% block content %}

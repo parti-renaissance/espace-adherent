@@ -8,31 +8,53 @@
 
 {% block amp_link %}<link rel="amphtml" href="{{ url('amp_article_view', {'slug': article.slug}) }}" />{% endblock %}
 
-{% block open_graph_image %}{% spaceless %}
-    {% if article.media %}
-        {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{% endspaceless %}{% endblock %}
-
-{% block open_graph_image_width (article.media ? article.media.width : 628) %}
-{% block open_graph_image_height (article.media ? article.media.height : 288) %}
+{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
+{% block open_graph_image_height (article.media ? article.media.height : default_sharer_height) %}
 
 {% block json_ld %}
-<script type="application/ld+json">
-{
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "name": "{{ block('page_title') }}",
-    "section": "{{ article.category.name }}",
-    "headline": "{{ block('meta_description') }}",
-    "description": "{{ block('meta_description') }}",
-    "url": "{{ block('canonical_url') }}",
-    "image": "{{ block('open_graph_image') }}",
-    "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}"
-}
-</script>
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "name": "{{ block('page_title') }}",
+        "articleSection": "{{ article.category.name }}",
+        "headline": "{{ article.description|slice(0, 110) }}",
+        "description": "{{ article.description }}",
+        "url": "{{ block('canonical_url') }}",
+        "datePublished": "{{ article.publishedAt|date(constant('DATE_ISO8601')) }}",
+        "dateModified": "{{ max(article.publishedAt, article.updatedAt)|date(constant('DATE_ISO8601')) }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "contentUrl": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "width": 357,
+                "height": 60
+            }
+        }
+    }
+    </script>
 {% endblock %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}

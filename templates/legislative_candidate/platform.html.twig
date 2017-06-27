@@ -22,29 +22,9 @@
     <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
     <meta name="theme-color" content="#ffffff" />
 
-    <title>{% block title %}Espace candidat aux législatives{% endblock %} | En Marche !</title>
+    <title>Espace candidat aux législatives | En Marche !</title>
 
-    <link rel="canonical" href="{% block canonical_url %}{{ url('app_legislative_candidates_platform') }}{% endblock %}" />
-    <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
-
-    <meta property="og:site_name" content="En Marche !" />
-    <meta property="og:type" content="{% block open_graph_type %}website{% endblock %}" />
-    <meta property="og:url" content="{% block open_graph_url %}{{ block('canonical_url') }}{% endblock %}" />
-    <meta property="og:title" content="{% block open_graph_title %}{{ block('title') }}{% endblock %}" />
-    <meta property="og:description" content="{% block open_graph_description %}{{ block('meta_description') }}{% endblock %}" />
-    <meta property="og:image" content="{% block open_graph_image %}{{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}{% endblock %}" />
-    <meta property="og:image:width" content="{% block open_graph_image_width %}628{% endblock %}" />
-    <meta property="og:image:height" content="{% block open_graph_image_height %}288{% endblock %}" />
-    {% block open_graph %}{% endblock %}
-
-    <meta property="fb:pages" content="543099962534877" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{ block('open_graph_title') }}" />
-    <meta name="twitter:description" content="{% block meta_twitter_description %}{{ block('meta_description') }}{% endblock %}" />
-    <meta name="twitter:image:src" content="{{ block('open_graph_image') }}" />
-
-    <link rel="alternate" type="application/rss+xml" title="En Marche !" href="{{ url('articles_feed') }}" />
+    <link rel="canonical" href="{{ url('app_legislative_candidates_platform')|raw }}" />
 
     <style>
         html, body {

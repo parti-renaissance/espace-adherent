@@ -3,7 +3,8 @@
 {% block app_title 'La République En Marche !' %}
 {% block meta_description 'Une majorité pour rassembler, agir et réussir !' %}
 {% block meta_rss '' %}
-{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('pages-sharers/legislatives-trombi.jpg', {'q': 80, 'w': 1200, 'h': 630, 'fit': 'crop'}))|raw %}
+
+{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/legislatives-trombi.jpg', {'q': 80, 'w': 1200, 'h': 630, 'fit': 'crop'}))|raw %}
 {% block open_graph_image_width 1200 %}
 {% block open_graph_image_height 630 %}
 
