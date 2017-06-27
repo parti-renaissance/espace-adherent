@@ -2,35 +2,22 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Training;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JobExperienceType extends AbstractType
+class TrainingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('company', TextType::class)
-            ->add('position', TextType::class)
-            ->add('location', TextType::class)
-            ->add('website', UrlType::class, [
-                'required' => false,
-                'empty_data' => null,
-            ])
-            ->add('company_facebook_page', UrlType::class, [
-                'required' => false,
-                'empty_data' => null,
-            ])
-            ->add('company_twitter_nickname', TextType::class, [
-                'required' => false,
-                'empty_data' => null,
-            ])
+            ->add('organization', TextType::class)
+            ->add('diploma', TextType::class)
+            ->add('study_field', TextType::class)
             ->add('started_at', MonthChoiceType::class, [
                 'pre_set_now' => true,
             ])
@@ -40,12 +27,10 @@ class JobExperienceType extends AbstractType
             ->add('on_going', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('contract', ContractChoiceType::class)
-            ->add('duration', JobDurationChoiceType::class, [
-                'expanded' => false,
-                'multiple' => false,
-            ])
             ->add('description', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('extra_curricular', TextareaType::class, [
                 'required' => false,
             ])
         ;
@@ -55,7 +40,7 @@ class JobExperienceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => JobExperience::class,
+                'data_class' => Training::class,
                 'error_mapping' => ['validDuration' => 'on_going'],
             ])
         ;

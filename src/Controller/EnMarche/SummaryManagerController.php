@@ -5,7 +5,9 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\MemberSummary\JobExperience;
+use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Form\JobExperienceType;
+use AppBundle\Form\TrainingType;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,6 +48,7 @@ class SummaryManagerController extends Controller
         $summary = $summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(JobExperienceType::class, $experience, [
             'summary' => $summary,
+            'collection' => $summary->getExperiences(),
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -77,11 +80,65 @@ class SummaryManagerController extends Controller
         $form = $this->createDeleteForm('', SummaryManager::DELETE_EXPERIENCE_TOKEN, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            throw $this->createNotFoundException($form->isValid() ? 'Invalid token' : 'No form submitted');
+            throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
         if ($this->get(SummaryManager::class)->removeExperience($this->getUser(), $experience)) {
             $this->addFlash('info', $this->get('translator')->trans('summary.remove_experience.success'));
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
+     * @Route("/formation/{id}", defaults={"id": ""}, name="app_summary_manager_handle_training")
+     * @Method("GET|POST")
+     */
+    public function handleTrainingAction(Request $request, ?Training $training)
+    {
+        $this->disableInProduction();
+
+        $summaryManager = $this->get(SummaryManager::class);
+        $summary = $summaryManager->getForAdherent($this->getUser());
+        $form = $this->createForm(TrainingType::class, $training, [
+            'summary' => $summary,
+            'collection' => $summary->getTrainings(),
+        ]);
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $summaryManager->updateTrainings($summary, $training ?: $form->getData());
+            $this->addFlash('info', $this->get('translator')->trans('summary.handle_training.success'));
+
+            return $this->redirectToRoute('app_summary_manager_index');
+        }
+
+        $deleteForm = $training ? $this->createDeleteForm(
+            $this->generateUrl('app_summary_manager_remove_training', ['id' => $training->getId()]),
+            SummaryManager::DELETE_TRAINING_TOKEN
+        )->createView() : null;
+
+        return $this->render('summary_manager/handle_training.html.twig', [
+            'training_form' => $form->createView(),
+            'delete_form' => $deleteForm,
+        ]);
+    }
+
+    /**
+     * @Route("/formation/{id}/supprimer", name="app_summary_manager_remove_training")
+     * @Method("DELETE")
+     */
+    public function removeTrainingAction(Request $request, Training $training)
+    {
+        $this->disableInProduction();
+
+        $form = $this->createDeleteForm('', SummaryManager::DELETE_TRAINING_TOKEN, $request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
+        }
+
+        if ($this->get(SummaryManager::class)->removeTraining($this->getUser(), $training)) {
+            $this->addFlash('info', $this->get('translator')->trans('summary.remove_training.success'));
         }
 
         return $this->redirectToRoute('app_summary_manager_index');

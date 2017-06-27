@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\MemberSummary;
 
+use AppBundle\Entity\EntitySpanTrait;
 use AppBundle\Entity\Summary;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\SummaryItemPositionableInterface;
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class JobExperience implements SummaryItemPositionableInterface
 {
+    use EntitySpanTrait;
+
     /**
      * @var int|null
      *
@@ -81,31 +84,6 @@ class JobExperience implements SummaryItemPositionableInterface
      * @Assert\Length(min=2, max=200)
      */
     private $companyTwitterNickname;
-
-    /**
-     * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="date")
-     *
-     * @Assert\LessThanOrEqual("today")
-     */
-    private $startedAt;
-
-    /**
-     * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="date", nullable=true)
-     *
-     * @Assert\LessThanOrEqual("today")
-     */
-    private $endedAt;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default"=false})
-     */
-    private $onGoing = false;
 
     /**
      * @var string
@@ -215,44 +193,6 @@ class JobExperience implements SummaryItemPositionableInterface
         $this->companyTwitterNickname = $companyTwitterNickname;
     }
 
-    public function getStartedAt(): ?\DateTimeInterface
-    {
-        if ($this->startedAt instanceof \DateTime) {
-            $this->startedAt = \DateTimeImmutable::createFromMutable($this->startedAt);
-        }
-
-        return $this->startedAt;
-    }
-
-    public function setStartedAt(?\DateTimeInterface $startedAt): void
-    {
-        $this->startedAt = $startedAt;
-    }
-
-    public function getEndedAt(): ?\DateTimeInterface
-    {
-        if ($this->endedAt instanceof \DateTime) {
-            $this->endedAt = \DateTimeImmutable::createFromMutable($this->endedAt);
-        }
-
-        return $this->endedAt;
-    }
-
-    public function setEndedAt(?\DateTimeInterface $endedAt): void
-    {
-        $this->endedAt = $endedAt;
-    }
-
-    public function isOnGoing(): bool
-    {
-        return $this->onGoing;
-    }
-
-    public function setOnGoing(bool $onGoing): void
-    {
-        $this->onGoing = $onGoing;
-    }
-
     public function getContract(): string
     {
         return $this->contract;
@@ -316,20 +256,5 @@ class JobExperience implements SummaryItemPositionableInterface
     public function getTitle(): string
     {
         return $this->getContractLabel().' '.$this->position;
-    }
-
-    public function getLength(): string
-    {
-        $length = '';
-        $period = $this->startedAt->diff($this->endedAt ?: new \DateTime());
-
-        if ($period->y) {
-            $length .= $period->y.' an'.($period->y > 1 ? 's' : '');
-        }
-        if ($period->m) {
-            return $length.($period->y ? ' et ' : '').$period->m.' mois';
-        }
-
-        return '1 mois';
     }
 }
