@@ -13,7 +13,7 @@
         <div>CV <br> {{ summary.public ? 'public' : 'non public' }}</div>
         <a href="#">{{ summary.public ? 'dépublier' : 'publier' }} mon CV</a>
         {% if summary.public %}
-            <a href="#">Voir mon CV en ligne</a>
+            <a href="{{ path('app_summary_index', { slug: summary.slug }) }}">Voir mon CV en ligne</a>
         {% endif %}
     </div>
 {% endblock %}

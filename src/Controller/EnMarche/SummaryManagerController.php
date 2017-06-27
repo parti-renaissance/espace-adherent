@@ -9,6 +9,7 @@ use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
+use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -55,7 +56,7 @@ class SummaryManagerController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $summaryManager->updateExperiences($summary, $experience ?: $form->getData());
-            $this->addFlash('info', $this->get('translator')->trans('summary.handle_experience.success'));
+            $this->addFlash('info', 'summary.handle_experience.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
         }
@@ -80,7 +81,7 @@ class SummaryManagerController extends Controller
         }
 
         if ($this->get(SummaryManager::class)->removeExperience($this->getUser(), $experience)) {
-            $this->addFlash('info', $this->get('translator')->trans('summary.remove_experience.success'));
+            $this->addFlash('info', 'summary.remove_experience.success');
         }
 
         return $this->redirectToRoute('app_summary_manager_index');
@@ -103,7 +104,7 @@ class SummaryManagerController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $summaryManager->updateTrainings($summary, $training ?: $form->getData());
-            $this->addFlash('info', $this->get('translator')->trans('summary.handle_training.success'));
+            $this->addFlash('info', 'summary.handle_training.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
         }
@@ -128,7 +129,7 @@ class SummaryManagerController extends Controller
         }
 
         if ($this->get(SummaryManager::class)->removeTraining($this->getUser(), $training)) {
-            $this->addFlash('info', $this->get('translator')->trans('summary.remove_training.success'));
+            $this->addFlash('info', 'summary.remove_training.success');
         }
 
         return $this->redirectToRoute('app_summary_manager_index');
@@ -146,7 +147,7 @@ class SummaryManagerController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get(SummaryManager::class)->updateLanguages($this->getUser(), $language ?: $form->getData());
-            $this->addFlash('info', $this->get('translator')->trans('summary.handle_language.success'));
+            $this->addFlash('info', 'summary.handle_language.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
         }
@@ -171,9 +172,39 @@ class SummaryManagerController extends Controller
         }
 
         if ($this->get(SummaryManager::class)->removeLanguage($this->getUser(), $language)) {
-            $this->addFlash('info', $this->get('translator')->trans('summary.remove_language.success'));
+            $this->addFlash('info', 'summary.remove_language.success');
         }
 
         return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
+     * @Route("/{step}", name="app_summary_manager_step")
+     * @Method("GET|POST")
+     */
+    public function stepAction(Request $request, string $step)
+    {
+        $this->disableInProduction();
+
+        if (!SummaryType::stepExists($step)) {
+            throw $this->createNotFoundException(sprintf('Invalid step "%s", known steps are "%s".', $step, implode('", "', SummaryType::STEPS)));
+        }
+
+        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+        $form = $this->createForm(SummaryType::class, $summary, [
+            'step' => $step,
+        ]);
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get(SummaryManager::class)->updateSummary($summary);
+            $this->addFlash('info', 'summary.step.success');
+
+            return $this->redirectToRoute('app_summary_manager_index');
+        }
+
+        return $this->render('summary_manager/step.html.twig', [
+            'summary_form' => $form->createView(),
+            'step' => $step,
+        ]);
     }
 }

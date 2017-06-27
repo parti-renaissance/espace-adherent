@@ -3,10 +3,16 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadMissionTypeData;
 use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use AppBundle\Entity\MemberSummary\Language;
+use AppBundle\Form\SummaryType;
+use AppBundle\Membership\ActivityPositions;
 use AppBundle\Summary\Contract;
+use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
+use AppBundle\Summary\JobLocation;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -19,12 +25,42 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    private const SECTION_HEADER = 'summary.header';
+    private const SECTION_SYNTHESIS = 'summary.synthesis';
+    private const SECTION_MISSIONS = 'summary.missions';
+    private const SECTION_MOTIVATION = 'summary.motivation';
+    private const SECTION_EXPERIENCES = 'summary.experiences';
+    private const SECTION_RECENT_ACTIVITIES = 'summary.recent_activities';
+    private const SECTION_SKILLS = 'summary.skills';
+    private const SECTION_LANGUAGES = 'summary.languages';
+    private const SECTION_TRAININGS = 'summary.trainings';
+    private const SECTION_INTERESTS = 'summary.interests';
+    private const SECTION_CONTACT = 'summary.contact';
+
+    private const SECTIONS = [
+        self::SECTION_HEADER,
+        self::SECTION_SYNTHESIS,
+        self::SECTION_MISSIONS,
+        self::SECTION_MOTIVATION,
+        self::SECTION_RECENT_ACTIVITIES,
+        self::SECTION_EXPERIENCES,
+        self::SECTION_SKILLS,
+        self::SECTION_LANGUAGES,
+        self::SECTION_TRAININGS,
+        self::SECTION_INTERESTS,
+        self::SECTION_CONTACT,
+    ];
+
     public function provideActions()
     {
         yield 'Index' => ['/espace-adherent/mon-cv'];
         yield 'Handle experience' => ['/espace-adherent/mon-cv/experience'];
         yield 'Handle training' => ['/espace-adherent/mon-cv/formation'];
         yield 'Handle language' => ['/espace-adherent/mon-cv/langue'];
+
+        foreach (SummaryType::STEPS as $step) {
+            yield 'Handle step '.$step => ['/espace-adherent/mon-cv/'.$step];
+        }
     }
 
     /**
@@ -537,6 +573,390 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(0)->text());
     }
 
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepSynthesisWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
+
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
+
+        $profession = 'Professeur';
+        $synopsis = 'This should be a professional synopsis.';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[current_profession]' => $profession,
+            'summary[current_position]' => ActivityPositions::UNEMPLOYED,
+            'summary[contribution_wish]' => Contribution::VOLUNTEER,
+            'summary[availabilities]' => [JobDuration::PART_TIME],
+            'summary[job_locations][0]' => JobLocation::ON_SITE,
+            'summary[job_locations][1]' => JobLocation::ON_REMOTE,
+            'summary[professional_synopsis]' => $synopsis,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $synthesis = $this->getSummarySection($crawler, self::SECTION_SYNTHESIS);
+
+        $this->assertSame($profession, $synthesis->filter('h2')->text());
+        $this->assertSame('En recherche d\'emploi', $synthesis->filter('h3')->text());
+        $this->assertCount(1, $synthesis->filter('p:contains("Missions de bénévolat")'));
+        $this->assertCount(1, $synthesis->filter('p:contains("Temps partiel")'));
+        $this->assertCount(1, $synthesis->filter('p:contains("Sur site ou à distance")'));
+        $this->assertCount(1, $synthesis->filter(sprintf('p:contains("%s")', $synopsis)));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepSynthesisWithSummary()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
+
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
+
+        $profession = 'Professeur';
+        $synopsis = 'This should be a professional synopsis.';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[current_profession]' => $profession,
+            'summary[current_position]' => ActivityPositions::UNEMPLOYED,
+            'summary[contribution_wish]' => Contribution::VOLUNTEER,
+            'summary[availabilities]' => [JobDuration::PART_TIME],
+            'summary[job_locations][1]' => JobLocation::ON_REMOTE,
+            'summary[professional_synopsis]' => $synopsis,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $synthesis = $this->getSummarySection($crawler, self::SECTION_SYNTHESIS);
+
+        $this->assertSame($profession, $synthesis->filter('h2')->text());
+        $this->assertSame('En recherche d\'emploi', $synthesis->filter('h3')->text());
+        $this->assertCount(1, $synthesis->filter('p:contains("Missions de bénévolat")'));
+        $this->assertCount(1, $synthesis->filter('p:contains("Temps partiel")'));
+        $this->assertCount(1, $synthesis->filter('p:contains("À distance")'));
+        $this->assertCount(1, $synthesis->filter(sprintf('p:contains("%s")', $synopsis)));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepMissionsWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
+
+        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[mission_type_wishes][0]' => '1',
+            'summary[mission_type_wishes][2]' => '3',
+            'summary[mission_type_wishes][4]' => '5',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
+
+        $this->assertCount(3, $missions->filter('.summary-wish'));
+        $this->assertSame('MISSIONS DE BÉNÉVOLAT', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('ACTION PUBLIQUE', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('ECONOMIE', trim($missions->filter('.summary-wish')->eq(2)->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepMissionsWithSummary()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
+
+        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[mission_type_wishes][1]' => '2',
+            'summary[mission_type_wishes][3]' => '4',
+            'summary[mission_type_wishes][5]' => '6',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
+
+        $this->assertCount(3, $missions->filter('.summary-wish'));
+        $this->assertSame('MISSION LOCALE', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('ENGAGEMENT', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('EMPLOI', trim($missions->filter('.summary-wish')->eq(2)->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepMotivationWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/motivation');
+
+        $this->assertCount(1, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
+
+        $motivation = 'I\'m motivated.';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[motivation]' => $motivation,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_MOTIVATION);
+
+        $this->assertCount(1, $missions->filter('p'));
+        $this->assertSame($motivation, trim($missions->filter('p')->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepMotivationWithSummary()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/motivation');
+
+        $this->assertCount(1, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
+
+        $motivation = 'I\'m motivated.';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[motivation]' => $motivation,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_MOTIVATION);
+
+        $this->assertCount(1, $missions->filter('p'));
+        $this->assertSame($motivation, trim($missions->filter('p')->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepInterestsWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/interests');
+
+        $this->assertCount(19, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[member_interests][0]' => 'agriculture',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+
+        $this->assertCount(1, $missions->filter('p'));
+        $this->assertSame('Agriculture', trim($missions->filter('p')->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepInterestsWithSummary()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/interests');
+
+        $this->assertCount(19, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[member_interests][4]' => 'egalite',
+            'summary[member_interests][10]' => 'jeunesse',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+
+        $this->assertCount(2, $missions->filter('p'));
+        $this->assertSame('Egalité F / H', trim($missions->filter('p')->eq(0)->text()));
+        $this->assertSame('Jeunesse', trim($missions->filter('p')->eq(1)->text()));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepContactWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/contact');
+
+        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[contact_email]' => 'toto@example.org',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_CONTACT);
+
+        $this->assertCount(1, $missions->filter('.summary-contact-email'));
+        $this->assertCount(0, $missions->filter('.summary-contact-facebook'));
+        $this->assertCount(0, $missions->filter('.summary-contact-linked_in'));
+        $this->assertCount(0, $missions->filter('.summary-contact-twitter'));
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testStepContactWithSummary()
+    {
+        // This adherent has a summary and trainings already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/contact');
+
+        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[contact_email]' => 'toto@example.org',
+            'summary[linked_in_url]' => 'https://linkedin.com/in/lucieoliverafake',
+            'summary[website_url]' => 'https://lucieoliverafake.com',
+            'summary[facebook_url]' => 'https://facebook.com/lucieoliverafake',
+            'summary[twitter_nickname]' => 'lucieoliverafake',
+            'summary[viadeo_url]' => 'http://fr.viadeo.com/fr/profile/lucie.olivera.fake',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+
+        $missions = $this->getSummarySection($crawler, self::SECTION_CONTACT);
+
+        $this->assertCount(1, $missions->filter('.summary-contact-email'));
+        $this->assertCount(1, $missions->filter('.summary-contact-facebook'));
+        $this->assertCount(1, $missions->filter('.summary-contact-linked_in'));
+        $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -544,6 +964,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadSummaryData::class,
+            LoadMissionTypeData::class,
         ]);
     }
 
@@ -552,5 +973,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->kill();
 
         parent::tearDown();
+    }
+
+    private function getSummarySection(Crawler $crawler, string $section): Crawler
+    {
+        return $crawler->filter('.adherent_summary section')->eq(array_search($section, self::SECTIONS));
     }
 }

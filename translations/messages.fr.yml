@@ -78,6 +78,7 @@ summary.handle_training.success: La formation a bien été sauvegardée.
 summary.remove_training.success: La formation a bien été supprimée.
 summary.handle_language.success: La langue a bien été sauvegardée.
 summary.remove_language.success: La langue a bien été supprimée.
+summary.step.success: Vos modifications ont bien été enregistrées.
 
 member_summary.contract.internship: Stage
 member_summary.contract.permanent: CDI
@@ -94,8 +95,8 @@ member_summary.job_duration.part_time: Temps plein
 member_summary.job_duration.full_time: Temps partiel
 member_summary.job_duration.punctually: Intervention ponctuelle
 
-member_summary.job_location.on_site: A distance
-member_summary.job_location.on_remote: Sur site
+member_summary.job_location.on_site: Sur site
+member_summary.job_location.on_remote: À distance
 
 member_summary.language.level.low: Connaissance limitée
 member_summary.language.level.basic: Maîtrise basique

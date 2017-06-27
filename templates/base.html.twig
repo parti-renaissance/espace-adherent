@@ -91,7 +91,7 @@
     <body>
         {% for message in app.flashes('info') %}
             <div class="flash" id="notice-flashes">
-                <div class="flash__inner">{{ message }}</div>
+                <div class="flash__inner">{{ message|trans }}</div>
             </div>
         {% endfor %}
 

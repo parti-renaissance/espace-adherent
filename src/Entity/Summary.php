@@ -49,7 +49,7 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=200)
+     * @Assert\Length(max=200, groups={"synthese"})
      */
     private $currentProfession;
 
@@ -58,8 +58,8 @@ class Summary
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"})
+     * @Assert\NotBlank(groups={"synthese"})
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"}, groups={"synthese"})
      */
     private $contributionWish = '';
 
@@ -68,7 +68,7 @@ class Summary
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, groups={"synthese"})
      */
     private $availabilities = [];
 
@@ -77,7 +77,7 @@ class Summary
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, groups={"synthese"})
      */
     private $jobLocations = [];
 
@@ -86,8 +86,8 @@ class Summary
      *
      * @ORM\Column(type="text")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min=10, max=300)
+     * @Assert\NotBlank(groups={"synthese"})
+     * @Assert\Length(min=10, max=300, groups={"synthese"})
      */
     private $professionalSynopsis = '';
 
@@ -105,7 +105,7 @@ class Summary
      *     }
      * )
      *
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, groups={"missions"})
      */
     private $missionTypeWishes;
 
@@ -114,8 +114,8 @@ class Summary
      *
      * @ORM\Column(type="text")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min=10, max=300)
+     * @Assert\NotBlank(groups={"motivation"})
+     * @Assert\Length(min=10, max=300, groups={"motivation"})
      */
     private $motivation = '';
 
@@ -137,10 +137,10 @@ class Summary
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, groups={"competences"})
      */
     private $skills;
 
@@ -169,9 +169,9 @@ class Summary
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
-     * @Assert\Email
-     * @Assert\Length(max=255)
+     * @Assert\NotBlank(groups={"contact"})
+     * @Assert\Email(groups={"contact"})
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $contactEmail = '';
 
@@ -180,8 +180,8 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Url
-     * @Assert\Length(max=255)
+     * @Assert\Url(groups={"contact"})
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $linkedInUrl;
 
@@ -190,8 +190,8 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Url
-     * @Assert\Length(max=255)
+     * @Assert\Url(groups={"contact"})
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $websiteUrl;
 
@@ -200,8 +200,8 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Url
-     * @Assert\Length(max=255)
+     * @Assert\Url(groups={"contact"})
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $facebookUrl;
 
@@ -210,7 +210,7 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $twitterNickname;
 
@@ -219,8 +219,8 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Url
-     * @Assert\Length(max=255)
+     * @Assert\Url(groups={"contact"})
+     * @Assert\Length(max=255, groups={"contact"})
      */
     private $viadeoUrl;
 
@@ -267,6 +267,14 @@ class Summary
         $this->currentProfession = $currentProfession;
     }
 
+    /**
+     * @Assert\Choice(
+     *     callback = {"AppBundle\Membership\ActivityPositions", "all"},
+     *     message="adherent.activity_position.invalid_choice",
+     *     strict=true,
+     *     groups={"synthese"}
+     * )
+     */
     public function getCurrentPosition(): string
     {
         return $this->member->getPosition();
