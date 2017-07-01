@@ -77,7 +77,7 @@ class LoadSummaryData implements FixtureInterface
         $training11 = new Training();
         $training11->setDescription('Master en Bio-Informatique');
         $training11->setOrganization('Lyon 1');
-        $training11->setDiploma('Diplôme d\'ingénieur');
+        $training11->setDiploma('DIPLÔME D\'INGÉNIEUR');
         $training11->setDisplayOrder(1);
         $training11->setStartedAt(new \DateTime('1993-09-01 00:00:00'));
         $training11->setEndedAt(new \DateTime('1995-10-01 00:00:00'));
@@ -88,7 +88,7 @@ class LoadSummaryData implements FixtureInterface
         $training12 = new Training();
         $training12->setDescription('Génie biologique option Bio-Informatique');
         $training12->setOrganization('Lyon 1');
-        $training12->setDiploma('DUT Génie biologique');
+        $training12->setDiploma('DUT GÉNIE BIOLOGIQUE');
         $training12->setDisplayOrder(2);
         $training11->setExtracurricular('Les activités musicales');
         $training12->setStartedAt(new \DateTime('1990-09-01 00:00:00'));

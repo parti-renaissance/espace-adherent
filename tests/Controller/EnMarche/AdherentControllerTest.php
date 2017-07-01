@@ -98,7 +98,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $current = $crawler->filter('.adherent_profile .adherent_profile-menu ul li a.active'));
         $this->assertSame($profilePage, $current->attr('href'));
         $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent_profile > section > h2')->text());
-        $this->assertSame('carl999@example.fr | Membre depuis nov. 2016', $crawler->filter('.adherent_profile > section > div')->text());
+        $this->assertSame('carl999@example.fr | Membre depuis nov. 2016', $crawler->filter('.adherent_profile__membership > div')->text());
         $this->assertSame($title, $crawler->filter('.adherent_profile h3')->text());
     }
 
