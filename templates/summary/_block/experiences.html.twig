@@ -1,21 +1,23 @@
-<section id="summary-experiences" class="l__wrapper--medium">
+<section id="summary-experiences" class="l__wrapper--medium space--30-0">
     {% block summary_experiences %}
-        <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
-            <h2>Expériences</h2>
+        <div>
+            <h2 class="b__nudge--bottom">Mes expériences</h2>
             {% for experience_id, experience in summary.experiences %}
-                <div class="summary-experience">
-                    <h3>{{ experience.title }}</h3>
-                    <h4>{{ experience.company }}</h4>
-                    <p class="text--small">
+            <div class="cv__experience">
+                <div>
+                    <h3 class="text--body">{{ experience.title|upper }}</h3>
+                    <h4 class="text--body">{{ experience.company }}</h4>
+                    <div class="text--body b__nudge--bottom">
                         {{ experience.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
                         {% if experience.endedAt %}
                             - {{ experience.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
                         {% endif %}
                         ({{ experience.length }})
-                    </p>
-                    <p>{{ experience.description }}</p>
+                    </div>
+                    <div class="text--body">{{ experience.description }}</div>
                     {% block modify %}{% endblock %}
                 </div>
+            </div>
             {% endfor %}
         </div>
     {% endblock %}

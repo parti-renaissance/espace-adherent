@@ -4,23 +4,24 @@
          data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
          data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
     </div>
-    <div class="background--yellow">
-        <div class="l__wrapper--medium text--center cv__header">
+    <div class="background--yellow cv__header">
+        <div class="l__wrapper--medium text--center">
             <div class="cv__header__photo progressive-background"
                 data-sd="{{ static_asset('elles-marchent/zineb.jpg', {'w': 100, 'q': 20}) }}"
                 data-hd="{{ static_asset('elles-marchent/zineb.jpg', {'h': 450, 'q': 70}) }}">
             </div>
-            <h2 class="text--large b__nudge--top">{{ summary.member.fullname }}</h2>
+            <div class="cv__header__about">
+                <h2 class="text--large b__nudge--top">{{ summary.member.fullname }}</h2>
 
-            {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
-            {% if summary.currentProfession %}
-                <div class="text--all-caps">{{ summary.currentProfession }}</div>
-                <div class="text--body text--italic">{{ currentPosition }}</div>
-            {% else %}
-                <div class="text--all-caps">{{ currentPosition }}</div>
-            {% endif %}
-
-            <p class="text--body">{{ summary.professionalSynopsis }}</p>
+                {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
+                {% if summary.currentProfession %}
+                    <div class="text--all-caps">{{ summary.currentProfession }}</div>
+                    <div class="text--body text--italic">{{ currentPosition }}</div>
+                {% else %}
+                    <div class="text--all-caps">{{ currentPosition }}</div>
+                {% endif %}
+                <p class="text--body">{{ summary.professionalSynopsis }}</p>
+            </div>
         </div>
     </div>
     {% endblock %}

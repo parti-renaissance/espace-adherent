@@ -1,38 +1,72 @@
 .cv {
     &__header {
-        position: relative;
-        top: -110px;
+        margin-bottom: -41px;
 
         &__photo {
             margin: 0 auto;
+            top: -110px;
+            position: relative;
             height: 210px;
             width: 210px;
             border-radius: 50%;
             border: 6px solid white;
             background-position: 9% 60%; // Change once we have the right image
         }
+
+        &__about {
+            top: -110px;
+            position: relative;
+        }
+
+        &__contact {
+            top: -41px;
+            position: relative;
+
+            div {
+                margin-right: 20px;
+                font-size: $text--size-medium;
+
+                a {
+                    border: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
     }
 
-    &__contact {
-        top: -85px;
-        position: relative;
+    &__experience,
+    &__training {
+        > div {
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid $gray--light;
 
-        div {
-            margin-right: 20px;
-            font-size: $text--size-medium;
-
-            a {
+            &:last-child {
                 border: 0;
+                margin-bottom: 0;
             }
+        }
+    }
+
+    &__skills {
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        li {
+            background: $blue;
+            color: white;
+            @include text--body;
+            padding: 5px 10px;
+            margin-right: 10px;
 
             &:last-child {
                 margin-right: 0;
             }
         }
-    }
-
-    &__work-status {
-        position: relative;
-        top: -41px;
     }
 }
