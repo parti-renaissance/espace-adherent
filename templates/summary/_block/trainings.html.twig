@@ -1,17 +1,15 @@
 <section id="summary-trainings" class="l__wrapper--medium space--30-0">
     {% block summary_trainings %}
-        <div class="cv__training">
-            <h2 class="b__nudge--bottom">Formations</h2>
-            {% for training_id, training in summary.trainings %}
-                <div>
-                    <h3 class="text--body">{{ training.diploma|upper }} - {{ training.studyField|upper }}</h3>
-                    <h4 class="text--body">{{ training.organization }}</h4>
-                    <div class="text--body">{{ training.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y')|capitalize }} - {{ training.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y')|capitalize }} ( 3 mois --> todo )</div>
-                    <div class="text--body b__nudge--top">{{ training.description }}</div>
-                    <div class="text--body text--italic">{{ training.extraCurricular }}</div>
-                    {% block modify %}{% endblock %}
-                </div>
-            {% endfor %}
-        </div>
+        <h2 class="b__nudge--bottom">Formations</h2>
+        {% for training_id, training in summary.trainings %}
+            <div class="cv__training">
+                <h3 class="text--body">{{ training.diploma|upper }} - {{ training.studyField|upper }}</h3>
+                <h4 class="text--body">{{ training.organization }}</h4>
+                <div class="text--body">{{ training.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y')|capitalize }} - {{ training.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y')|capitalize }} ( 3 mois --> todo )</div>
+                <div class="cv__training__desc text--body b__nudge--top">{{ training.description }}</div>
+                <span class="text--body text--italic">{{ training.extraCurricular }}</span>
+                {% block modify %}{% endblock %}
+            </div>
+        {% endfor %}
     {% endblock %}
 </section>
