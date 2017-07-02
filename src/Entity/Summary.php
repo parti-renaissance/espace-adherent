@@ -530,9 +530,25 @@ class Summary
         return $this->public;
     }
 
-    public function setPublic(bool $public): void
+    public function publish(): bool
     {
-        $this->public = $public;
+        if ($this->isCompleted()) {
+            return $this->public = true;
+        }
+
+        return false;
+    }
+
+
+    public function unpublish(): bool
+    {
+        if ($this->public) {
+            $this->public = false;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -561,6 +577,58 @@ class Summary
         }
 
         return true;
+    }
+
+    public function isCompleted(): int
+    {
+        return 100 === $this->getCompletion();
+    }
+
+    public function getCompletion(): int
+    {
+        $complete = 0;
+
+        if ($this->member->getPosition()) {
+            ++$complete;
+        }
+        if ($this->contributionWish) {
+            ++$complete;
+        }
+        if (0 < count($this->availabilities)) {
+            ++$complete;
+        }
+        if (0 < count($this->jobLocations)) {
+            ++$complete;
+        }
+        if ($this->professionalSynopsis) {
+            ++$complete;
+        }
+        if (0 < count($this->missionTypeWishes)) {
+            ++$complete;
+        }
+        if ($this->motivation) {
+            ++$complete;
+        }
+        if (0 < $this->experiences->count()) {
+            ++$complete;
+        }
+        if (0 < $this->skills->count()) {
+            ++$complete;
+        }
+        if (0 < $this->languages->count()) {
+            ++$complete;
+        }
+        if (0 < $this->trainings->count()) {
+            ++$complete;
+        }
+        if (0 < count($this->member->getInterests())) {
+            ++$complete;
+        }
+        if ($this->contactEmail) {
+            ++$complete;
+        }
+
+        return round(ceil($complete / 13 * 100));
     }
 
     public static function createFromMember(Adherent $adherent, string $slug): self

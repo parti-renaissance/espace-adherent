@@ -10,10 +10,15 @@
 
 {% block summary_right_part %}
     <div>
-        <div>CV <br> {{ summary.public ? 'public' : 'non public' }}</div>
-        <a href="#">{{ summary.public ? 'dépublier' : 'publier' }} mon CV</a>
         {% if summary.public %}
+            <div>CV <br> public</div>
+            <a href="{{ path('app_summary_manager_unpublish') }}">dépublier mon CV</a>
             <a href="{{ path('app_summary_index', { slug: summary.slug }) }}">Voir mon CV en ligne</a>
+        {% else %}
+            <div>CV <br> non public</div>
+            {% if summary.completed %}
+                <a href="{{ path('app_summary_manager_publish') }}">publier mon CV</a>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
@@ -27,8 +32,8 @@
         <div>
             23 <br> participations à des events
         </div>
-        <div>
-            65% <br> profile complété
+        <div class="summary-completion">
+            {{ summary.completion }}% <br> profile complété
         </div>
     </div>
 {% endblock %}

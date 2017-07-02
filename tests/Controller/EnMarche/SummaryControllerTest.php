@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadMissionTypeData;
 use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,23 @@ use Tests\AppBundle\SqliteWebTestCase;
 class SummaryControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
+
+    public function provideSummarySlug()
+    {
+        yield ['carl-mirabeau'];
+
+        yield ['jacques-picard'];
+    }
+
+    /**
+     * @dataProvider provideSummarySlug
+     */
+    public function testUnpublishedSummaryAreNotFound(string $slug)
+    {
+        $this->client->request(Request::METHOD_GET, '/membre/'.$slug);
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+    }
 
     public function testAccessAndDisplaySummaryPage()
     {
@@ -55,6 +73,7 @@ class SummaryControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadMissionTypeData::class,
             LoadSummaryData::class,
         ]);
     }
