@@ -20,7 +20,7 @@ class SummaryType extends AbstractType
     const STEP_SYNTHESIS = 'synthesis';
     const STEP_MISSION_WISHES = 'missions';
     const STEP_MOTIVATION = 'motivation';
-    const STEP_SKILLS = 'competences';
+    const STEP_SKILLS = 'skills';
     const STEP_INTERESTS = 'interests';
     const STEP_CONTACT = 'contact';
 

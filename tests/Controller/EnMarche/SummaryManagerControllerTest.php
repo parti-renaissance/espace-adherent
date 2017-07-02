@@ -57,7 +57,6 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         yield 'Handle experience' => ['/espace-adherent/mon-cv/experience'];
         yield 'Handle training' => ['/espace-adherent/mon-cv/formation'];
         yield 'Handle language' => ['/espace-adherent/mon-cv/langue'];
-        yield 'Handle skills' => ['/espace-adherent/mon-cv/competences'];
 
         foreach (SummaryType::STEPS as $step) {
             yield 'Handle step '.$step => ['/espace-adherent/mon-cv/'.$step];
@@ -615,16 +614,15 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $skill1 = 'Développement';
         $skill2 = 'Gestion des bases';
 
-        $form = $crawler->filter('form[name=summary]')->form();
-        $form->setValues(array(
-            'summary[skills][1][name]' => $skill1,
-            'summary[skills][2][name]' => $skill2,
-        ));
-        $formData = array(
-            'summary[skills][1][name]' => $skill1,
-            'summary[skills][2][name]' => $skill2,
-        );
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $form->getPhpFiles(), array(), http_build_query($formData));
+        $skillCollection = $crawler->filter('#summary_skills')->getNode(0);
+        $this->appendCollectionFormPrototype($skillCollection, '0');
+        $this->appendCollectionFormPrototype($skillCollection, '1');
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form(), [
+            'summary[skills][0][name]' => $skill1,
+            'summary[skills][1][name]' => $skill2,
+        ]);
+
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
 
@@ -632,10 +630,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
-        $this->assertSame('Les compétences ont bien été modifiées.', $crawler->filter('.flash__inner')->text());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
-        $this->assertSame($skill1, $skills[0]->filter('p')->text());
-        $this->assertSame($skill2, $skills[1]->filter('p')->text());
+        $this->assertSame($skill1, $skills->eq(0)->filter('p')->text());
+        $this->assertSame($skill2, $skills->eq(1)->filter('p')->text());
     }
 
     /**
@@ -667,10 +665,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertSame('Les compétences ont bien été modifiées.', $crawler->filter('.flash__inner')->text());
-        $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
-        $this->assertSame($skill1, $skills[0]->filter('p')->text());
-        $this->assertSame($skill2, $skills[1]->filter('p')->text());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(4, $skills = $crawler->filter('.summary-skill'));
+        $this->assertSame($skill1, $skills->eq(1)->filter('p')->text());
+        $this->assertSame($skill2, $skills->eq(2)->filter('p')->text());
     }
 
     /**
