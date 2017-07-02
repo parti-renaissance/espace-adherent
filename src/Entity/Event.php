@@ -226,12 +226,12 @@ class Event implements GeoPointInterface
         return $this->capacity;
     }
 
-    public function getBeginAt(): \DateTimeInterface
+    public function getBeginAt(): \DateTime
     {
         return $this->beginAt;
     }
 
-    public function getFinishAt(): \DateTimeInterface
+    public function getFinishAt(): \DateTime
     {
         return $this->finishAt;
     }

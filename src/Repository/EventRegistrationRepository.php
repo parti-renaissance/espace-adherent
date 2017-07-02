@@ -93,6 +93,11 @@ class EventRegistrationRepository extends EntityRepository
         ;
     }
 
+    /**
+     * @param string $adherentUuid
+     *
+     * @return EventRegistration[]
+     */
     public function findPastAdherentRegistrations(string $adherentUuid): array
     {
         $registrations = $this
