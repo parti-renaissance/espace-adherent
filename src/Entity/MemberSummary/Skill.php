@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SkillRepository")
  * @ORM\Table(name="member_summary_skills")
  */
 class Skill
@@ -36,7 +36,7 @@ class Skill
      * @var string|null
      *
      * @ORM\Column
-     * @Gedmo\Slug(fields={"name"})
+     * @Gedmo\Slug(fields={"name"}, unique=false)
      */
     private $slug;
 

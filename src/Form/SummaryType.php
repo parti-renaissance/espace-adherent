@@ -20,7 +20,7 @@ class SummaryType extends AbstractType
     const STEP_SYNTHESIS = 'synthesis';
     const STEP_MISSION_WISHES = 'missions';
     const STEP_MOTIVATION = 'motivation';
-    const STEP_SKILLS = 'competences';
+    const STEP_SKILLS = 'skills';
     const STEP_INTERESTS = 'interests';
     const STEP_CONTACT = 'contact';
 
@@ -64,10 +64,19 @@ class SummaryType extends AbstractType
 
             case self::STEP_SKILLS:
                 $builder
+                    ->add('skill_search', TextType::class, [
+                        'mapped' => false,
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => 'Sasissez une compétence',
+                        ],
+                    ])
                     ->add('skills', CollectionType::class, [
                         'entry_type' => SkillType::class,
+                        'entry_options' => ['label' => false],
                         'allow_add' => true,
                         'allow_delete' => true,
+                        'by_reference' => false,
                     ])
                 ;
                 break;

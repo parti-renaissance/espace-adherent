@@ -69,6 +69,17 @@ trait ControllerTestTrait
         return $client->followRedirect();
     }
 
+    protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void
+    {
+        $prototypeHTML = $collection->getAttribute('data-prototype');
+        $prototypeHTML = str_replace($prototypeName, $newIndex, $prototypeHTML);
+        $prototypeFragment = new \DOMDocument();
+        $prototypeFragment->loadHTML($prototypeHTML);
+        foreach ($prototypeFragment->getElementsByTagName('body')->item(0)->childNodes as $prototypeNode) {
+            $collection->appendChild($collection->ownerDocument->importNode($prototypeNode, true));
+        }
+    }
+
     private function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();

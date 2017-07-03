@@ -595,6 +595,122 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(0)->text());
     }
 
+    public function testSearchSkillUserHasNot()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        // Search the skill that user has not, should find one skill
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=outi');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content);
+
+        $this->assertNotEmpty(\GuzzleHttp\json_decode($content, true));
+        $skills = \GuzzleHttp\json_decode($content, true);
+        $this->assertSame(1, count($skills));
+        foreach ($skills as $skill) {
+            $this->assertSame('Outils médias', $skill);
+        }
+    }
+
+    public function testSearchSkillUserHas()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        // Search the skill that user already has, nothing should be found
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=sof');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content);
+
+        $this->assertEmpty(\GuzzleHttp\json_decode($content, true));
+        $this->client->followRedirects(true);
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testAddSkillWithoutSummary()
+    {
+        $summariesCount = count($this->getSummaryRepository()->findAll());
+
+        // This adherent has no summary yet
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertCount(0, $crawler->filter('.summary-skill'));
+        $this->assertSummaryCompletion(8, $crawler);
+
+        $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
+
+        $skill1 = 'Développement';
+        $skill2 = 'Gestion des bases';
+
+        $skillCollection = $crawler->filter('#summary_skills')->getNode(0);
+        $this->appendCollectionFormPrototype($skillCollection, '0');
+        $this->appendCollectionFormPrototype($skillCollection, '1');
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form(), [
+            'summary[skills][0][name]' => $skill1,
+            'summary[skills][1][name]' => $skill2,
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
+        $this->assertSame($skill1, $skills->eq(0)->filter('p')->text());
+        $this->assertSame($skill2, $skills->eq(1)->filter('p')->text());
+        $this->assertSummaryCompletion(16, $crawler);
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
+    public function testModifySkillsWithSummary()
+    {
+        // This adherent has a summary and skills already
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+
+        $this->assertCount(4, $crawler->filter('.summary-skill'));
+        $this->assertSummaryCompletion(100, $crawler);
+
+        $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
+
+        $skill1 = 'Développement';
+        $skill2 = 'Gestion des bases';
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[skills][1][name]' => $skill1,
+            'summary[skills][2][name]' => $skill2,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+        $this->assertCount(4, $skills = $crawler->filter('.summary-skill'));
+        $this->assertSame($skill1, $skills->eq(1)->filter('p')->text());
+        $this->assertSame($skill2, $skills->eq(2)->filter('p')->text());
+        $this->assertSummaryCompletion(100, $crawler);
+    }
+
     /**
      * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
      */
