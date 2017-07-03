@@ -2,21 +2,27 @@
 
 {% block summary_synthesis %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SYNTHESIS') }) }}" class="button">Modifer</a>
+    <div class="cv__work-status--modify">
+        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SYNTHESIS') }) }}" class="button">Modifer</a>
+    </div>
 {% endblock %}
 
 
 {% block summary_bottom_part %}
-    <div>
-        <div>
-            {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}<br>
-            Date d'adhésion
-        </div>
-        <div>
-            23 <br> participations à des events
-        </div>
-        <div>
-            65% <br> profile complété
-        </div>
+    <div class="bandeau bandeau--wide bandeau--blue">
+        <ul>
+            <li>
+                <div class="text--normal">Date d'adhésion</div>
+                {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+            </li>
+            <li>
+                <div class="text--normal">Participation</div>
+                23 évènements
+            </li>
+            <li>
+                <div class="text--normal">Profil complété</div>
+                65%
+            </li>
+        </ul>
     </div>
 {% endblock %}

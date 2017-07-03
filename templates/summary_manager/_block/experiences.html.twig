@@ -2,7 +2,9 @@
 
 {% block summary_experiences %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_handle_experience') }}" class="button summary-add-item"><i class="fa fa-plus fa-3x"></i></a>
+    <a href="{{ path('app_summary_manager_handle_experience') }}" class="button btn summary-add-item icon--with-text">
+        <i class="fa fa-plus"></i> Ajouter
+    </a>
     {% block modify %}
         {{ parent() }}
         {% if experience|default(false) and not experience.new %}

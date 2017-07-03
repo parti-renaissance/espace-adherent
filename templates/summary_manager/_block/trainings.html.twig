@@ -2,14 +2,19 @@
 
 {% block summary_trainings %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_handle_training') }}" class="button summary-add-item"><i class="fa fa-plus fa-3x"></i></a>
+    <a href="{{ path('app_summary_manager_handle_training') }}" class="btn summary-add-item icon--with-text">
+        <i class="fa fa-plus"></i> Ajouter
+    </a>
+
     {% block modify %}
         {{ parent() }}
         {% if training is defined and not training.new %}
-            <a href="{{ path('app_summary_manager_handle_training', { id: training_id }) }}" class="btn">
+        <div class="cv__training--options">
+            <a href="{{ path('app_summary_manager_handle_training', { id: training_id }) }}">
                 Modifier
             </a>
             {{ delete_form(path('app_summary_manager_remove_training', { id: training_id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_TRAINING_TOKEN')) }}
+        </div>
         {% endif %}
     {% endblock %}
 {% endblock %}

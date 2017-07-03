@@ -58,6 +58,16 @@
         }
     }
 
+    &__work-status--modify {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 20px;
+
+        > a {
+            @include link--white;
+        }
+    }
+
     &__training,
     &__experience {
         padding-bottom: 25px;
@@ -86,6 +96,46 @@
             &:last-child {
                 margin-right: 0;
             }
+        }
+    }
+
+    &__languages,
+    &__training--options {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 5px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > a {
+            margin: 0 15px;
+        }
+
+        button {
+            border: 0;
+            letter-spacing: 0;
+            text-transform: capitalize;
+            padding: 0;
+            border-bottom: 1px solid black;
+            font-size: $text--size-default;
+            line-height: 24px;
+
+            &:hover {
+                background: white;
+                color: black;
+                @include hover(black);
+            }
+        }
+    }
+
+    &__training--options {
+        margin-top: 10px;
+        
+        > a {
+            margin-left: 0;
         }
     }
 }
