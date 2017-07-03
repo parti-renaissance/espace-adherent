@@ -17,11 +17,13 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SummaryType extends AbstractType
 {
+    const STEP_PHOTO = 'photo';
     const STEP_SYNTHESIS = 'synthesis';
     const STEP_MISSION_WISHES = 'missions';
     const STEP_MOTIVATION = 'motivation';
@@ -30,6 +32,7 @@ class SummaryType extends AbstractType
     const STEP_CONTACT = 'contact';
 
     const STEPS = [
+        self::STEP_PHOTO,
         self::STEP_SYNTHESIS,
         self::STEP_MISSION_WISHES,
         self::STEP_MOTIVATION,
@@ -57,21 +60,13 @@ class SummaryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch ($options['step']) {
-            case self::STEP_SYNTHESIS:
+            case self::STEP_PHOTO:
                 $builder
-                    ->add('current_profession', TextType::class, [
-                        'required' => false,
-                        'empty_data' => null,
-                    ])
-                    ->add('current_position', ActivityPositionType::class)
-                    ->add('contribution_wish', ContributionChoiceType::class)
-                    ->add('availabilities', JobDurationChoiceType::class)
-                    ->add('job_locations', JobLocationChoiceType::class)
-                    ->add('professional_synopsis', TextareaType::class)
-                    ->add('profilePicture', FileType::class, [
+                    ->add('profile_picture', FileType::class, [
                         'required' => false,
                         'label' => false,
-                    ]);
+                    ])
+                ;
 
                 $builder
                     ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
@@ -82,7 +77,7 @@ class SummaryType extends AbstractType
                         /** @var Summary $summary */
                         $summary = $event->getData();
                         // Save profile picture to cloud storage
-                        if ($summary->getProfilePicture()) {
+                        if ($summary->getProfilePicture() && $summary->getProfilePicture() instanceof UploadedFile) {
                             $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
                             $this->storage->put($pathImage, file_get_contents($summary->getProfilePicture()->getPathname()));
                             $this->glide->deleteCache($pathImage);
@@ -96,6 +91,20 @@ class SummaryType extends AbstractType
                             $this->glide->deleteCache($pathImage);
                         }
                     }, -10);
+                break;
+
+            case self::STEP_SYNTHESIS:
+                $builder
+                    ->add('current_profession', TextType::class, [
+                        'required' => false,
+                        'empty_data' => null,
+                    ])
+                    ->add('current_position', ActivityPositionType::class)
+                    ->add('contribution_wish', ContributionChoiceType::class)
+                    ->add('availabilities', JobDurationChoiceType::class)
+                    ->add('job_locations', JobLocationChoiceType::class)
+                    ->add('professional_synopsis', TextareaType::class)
+                ;
                 break;
 
             case self::STEP_MISSION_WISHES:

@@ -1,0 +1,7 @@
+{% extends 'summary/_block/photo.html.twig' %}
+
+{% block summary_photo %}
+    {{ parent() }}
+    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifer</a>
+{% endblock %}
+

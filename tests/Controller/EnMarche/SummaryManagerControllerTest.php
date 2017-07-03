@@ -11,11 +11,12 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use League\Glide\Signatures\SignatureFactory;
 use AppBundle\Summary\JobLocation;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -722,7 +723,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
 
-        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -769,7 +770,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
 
-        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -1149,32 +1150,63 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    public function testAddProfilePictureToSummary()
+    public function testAddProfilePictureAndCreateSummary()
     {
-        // This adherent has a summary
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
-        $this->client->request(Request::METHOD_GET, '/images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
-        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        // This adherent has no summary
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthese');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
 
-        $profilePicture = new UploadedFile(
-            __DIR__.'/../../Fixtures/image.jpg',
-            'image.jpg',
-            'image/jpeg',
-            631
+        $files = array(
+            'summary' => array(
+                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'name' => array('profile_picture' => 'image.jpg'),
+                'size' => array('profile_picture' => 631),
+                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
+                'type' => array('profile_picture' => 'image/jpeg'),
+            ),
         );
 
         $form = $crawler->filter('form[name=summary]')->form();
-        $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), ['profilePicture' => $profilePicture]);
+
+        $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->request(Request::METHOD_GET, '/images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
+        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
+    }
+
+    public function testAddProfilePictureToSummary()
+    {
+        // This adherent has a summary
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
+
+        $files = array(
+            'summary' => array(
+                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'name' => array('profile_picture' => 'image.jpg'),
+                'size' => array('profile_picture' => 631),
+                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
+                'type' => array('profile_picture' => 'image/jpeg'),
+            ),
+        );
+
+        $form = $crawler->filter('form[name=summary]')->form();
+        $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
     }
 
     protected function setUp()
@@ -1203,5 +1235,22 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     private function assertSummaryCompletion(int $completion, Crawler $crawler)
     {
         $this->assertSame($completion.'%', trim($crawler->filter('.summary-completion')->text()));
+    }
+
+    private function assertFileInStorage(string $path, bool $isPresent = true)
+    {
+        $signature = SignatureFactory::create($this->client->getContainer()->getParameter('kernel.secret'))->generateSignature($path, []);
+
+        $path = $this->client->getContainer()->get('router')->generate('asset_url', [
+            'path' => $path,
+            's' => $signature,
+        ], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $this->client->request(Request::METHOD_GET, $path);
+
+        if ($isPresent) {
+            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        } else {
+            $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        }
     }
 }

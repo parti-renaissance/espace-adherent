@@ -45,7 +45,7 @@ class SummaryManagerController extends Controller
         return $this->render('summary_manager/index.html.twig', [
             'summary' => $summary,
             'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
-            'urlPhoto' => $this->generateUrl('asset_url', [
+            'url_photo' => $this->generateUrl('asset_url', [
                 'path' => $pathImage,
                 's' => $signature,
             ]),

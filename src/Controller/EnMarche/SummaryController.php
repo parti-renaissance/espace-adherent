@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Summary;
 use AppBundle\Membership\MemberActivityTracker;
+use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,9 +27,16 @@ class SummaryController extends Controller
     {
         $this->disableInProduction();
 
+        $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
+        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, []);
+
         return $this->render('summary/index.html.twig', [
             'summary' => $summary,
             'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($summary->getMember()),
+            'url_photo' => $this->generateUrl('asset_url', [
+                'path' => $pathImage,
+                's' => $signature,
+            ]),
         ]);
     }
 }
