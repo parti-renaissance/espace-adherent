@@ -36,7 +36,9 @@ class SummaryRepository extends EntityRepository
             ->leftJoin('s.languages', 'l')
             ->leftJoin('s.trainings', 't')
             ->where('s.slug = :slug')
+            ->andWhere('s.public = :public')
             ->setParameter('slug', $slug)
+            ->setParameter('public', true)
             ->getQuery()
             ->getOneOrNullResult()
         ;

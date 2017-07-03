@@ -179,6 +179,43 @@ class SummaryManagerController extends Controller
     }
 
     /**
+     * @Route("/publier", name="app_summary_manager_publish")
+     * @Method("GET")
+     */
+    public function publishAction()
+    {
+        $this->disableInProduction();
+
+        $manager = $this->get(SummaryManager::class);
+        $summary = $manager->getForAdherent($this->getUser());
+
+        if (!$manager->publishSummary($summary)) {
+            $this->addFlash('info', 'summary.not_complete');
+
+            return $this->redirectToRoute('app_summary_manager_index');
+        }
+
+        return $this->redirectToRoute('app_summary_index', ['slug' => $summary->getSlug()]);
+    }
+
+    /**
+     * @Route("/depublier", name="app_summary_manager_unpublish")
+     * @Method("GET")
+     */
+    public function unpublishAction()
+    {
+        $this->disableInProduction();
+
+        if ($this->get(SummaryManager::class)->unpublishSummaryForAdherent($this->getUser())) {
+            $this->addFlash('info', 'summary.unpublished.success');
+        } else {
+            $this->addFlash('info', 'summary.unpublished.error');
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
      * @Route("/{step}", name="app_summary_manager_step")
      * @Method("GET|POST")
      */
