@@ -108,12 +108,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(0, $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(8, $crawler);
-=======
         $this->assertCount(0, $crawler->filter('.cv__experience'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(8, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-experiences .summary-add-item')->link());
 
@@ -186,12 +182,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-<<<<<<< HEAD
-        $this->assertCount(3, $experiences = $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(3, $experiences = $crawler->filter('.cv__experience'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame($company, $experiences->eq(0)->filter('h4')->text());
 
         $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
@@ -223,12 +215,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(2, $experiences = $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(2, $experiences = $crawler->filter('.cv__experience'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $lastExperience = $experiences->eq(1);
 
@@ -249,14 +237,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-<<<<<<< HEAD
-        $this->assertCount(2, $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(100, $crawler);
-        $this->assertSame('Univérsité Lyon 1', $crawler->filter('.summary-experience h4')->eq(0)->text());
-=======
         $this->assertCount(2, $crawler->filter('.cv__experience'));
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame('Univérsité Lyon 1', $crawler->filter('.cv__experience h4')->eq(0)->text());
->>>>>>> Fix tests
     }
 
     /**
@@ -269,12 +252,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(2, $experiences = $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(2, $experiences = $crawler->filter('.cv__experience'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $lastExperience = $experiences->eq(1);
 
@@ -288,12 +267,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-<<<<<<< HEAD
-        $this->assertCount(1, $crawler->filter('.summary-experience'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(1, $crawler->filter('.cv__experience'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
 
@@ -317,12 +292,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(0, $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(8, $crawler);
-=======
         $this->assertCount(0, $crawler->filter('.cv__training'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(8, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-trainings .summary-add-item')->link());
 
@@ -364,12 +335,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(2, $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(2, $crawler->filter('.cv__training'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-trainings .summary-add-item')->link());
 
@@ -392,14 +359,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-<<<<<<< HEAD
-        $this->assertCount(3, $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-        $this->assertContains($diploma, $crawler->filter('.summary-training h3')->eq(0)->text());
-=======
         $this->assertCount(3, $crawler->filter('.cv__training'));
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertContains($diploma, $crawler->filter('.cv__training h3')->eq(0)->text());
->>>>>>> Fix tests
 
         $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
 
@@ -430,12 +392,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(2, $trainings = $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(2, $trainings = $crawler->filter('.cv__training'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $lastTraining = $trainings->eq(1);
 
@@ -456,14 +414,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-<<<<<<< HEAD
-        $this->assertCount(2, $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-        $this->assertSame('DUT Génie biologique - Bio-Informatique', $crawler->filter('.summary-training h3')->eq(0)->text());
-=======
         $this->assertCount(2, $crawler->filter('.cv__training'));
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame('DUT GÉNIE BIOLOGIQUE - BIO-INFORMATIQUE', $crawler->filter('.cv__training h3')->eq(0)->text());
->>>>>>> Fix tests
     }
 
     /**
@@ -476,12 +429,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(2, $trainings = $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(2, $trainings = $crawler->filter('.cv__training'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $lastTraining = $trainings->eq(1);
 
@@ -495,12 +444,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-<<<<<<< HEAD
-        $this->assertCount(1, $crawler->filter('.summary-training'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(1, $crawler->filter('.cv__training'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $summary = $this->getSummaryRepository()->findOneForAdherent($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID));
 
@@ -524,12 +469,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(0, $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(8, $crawler);
-=======
         $this->assertCount(0, $crawler->filter('.cv__languages'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(8, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-languages .summary-add-item')->link());
 
@@ -549,14 +490,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('La langue a bien été sauvegardée.', $crawler->filter('.flash__inner')->text());
-<<<<<<< HEAD
-        $this->assertCount(1, $language = $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(16, $crawler);
-        $this->assertSame('Français - '.ucfirst($level), $language->filter('p')->text());
-=======
         $this->assertCount(1, $language = $crawler->filter('.cv__languages'));
+        $this->assertSummaryCompletion(16, $crawler);
         $this->assertSame('Français - '.ucfirst($level), $language->filter('.cv__languages > div')->text());
->>>>>>> Fix tests
     }
 
     /**
@@ -569,12 +505,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(3, $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(3, $crawler->filter('.cv__languages'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-languages .summary-add-item')->link());
 
@@ -593,12 +525,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-<<<<<<< HEAD
-        $this->assertCount(4, $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(4, $crawler->filter('.cv__languages'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
     }
 
     /**
@@ -611,13 +539,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
         $this->assertSummaryCompletion(100, $crawler);
 
-        $firstLanguage = $crawler->filter('.summary-language')->eq(2);
-=======
         $firstLanguage = $crawler->filter('.cv__languages')->eq(2);
->>>>>>> Fix tests
 
         $this->assertSame('Espagnol - Bonne maîtrise', $firstLanguage->filter('.cv__languages > div')->text());
 
@@ -636,14 +560,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-<<<<<<< HEAD
-        $this->assertCount(3, $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(100, $crawler);
-        $this->assertSame('Espagnol - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(2)->text());
-=======
         $this->assertCount(3, $crawler->filter('.cv__languages'));
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame('Espagnol - Maîtrise parfaite', $crawler->filter('.cv__languages > div')->eq(2)->text());
->>>>>>> Fix tests
     }
 
     /**
@@ -656,12 +575,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-<<<<<<< HEAD
-        $this->assertCount(3, $languages = $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(100, $crawler);
-=======
         $this->assertCount(3, $languages = $crawler->filter('.cv__languages'));
->>>>>>> Fix tests
+        $this->assertSummaryCompletion(100, $crawler);
 
         $firstLanguage = $languages->eq(0);
 
@@ -675,14 +590,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-<<<<<<< HEAD
-        $this->assertCount(2, $crawler->filter('.summary-language'));
-        $this->assertSummaryCompletion(100, $crawler);
-        $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(0)->text());
-=======
         $this->assertCount(2, $crawler->filter('.cv__languages'));
+        $this->assertSummaryCompletion(100, $crawler);
         $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.cv__languages > div')->eq(0)->text());
->>>>>>> Fix tests
     }
 
     public function testSearchSkillUserHasNot()
