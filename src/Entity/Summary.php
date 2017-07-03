@@ -49,7 +49,7 @@ class Summary
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=200, groups={"synthese"})
+     * @Assert\Length(max=200, groups={"synthesis"})
      */
     private $currentProfession;
 
@@ -58,8 +58,8 @@ class Summary
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(groups={"synthese"})
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"}, groups={"synthese"})
+     * @Assert\NotBlank(groups={"synthesis"})
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"}, groups={"synthesis"})
      */
     private $contributionWish = '';
 
@@ -68,7 +68,7 @@ class Summary
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Count(min=1, groups={"synthese"})
+     * @Assert\Count(min=1, groups={"synthesis"})
      */
     private $availabilities = [];
 
@@ -77,7 +77,7 @@ class Summary
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Count(min=1, groups={"synthese"})
+     * @Assert\Count(min=1, groups={"synthesis"})
      */
     private $jobLocations = [];
 
@@ -86,8 +86,8 @@ class Summary
      *
      * @ORM\Column(type="text")
      *
-     * @Assert\NotBlank(groups={"synthese"})
-     * @Assert\Length(min=10, max=300, groups={"synthese"})
+     * @Assert\NotBlank(groups={"synthesis"})
+     * @Assert\Length(min=10, max=300, groups={"synthesis"})
      */
     private $professionalSynopsis = '';
 
@@ -272,7 +272,7 @@ class Summary
      *     callback = {"AppBundle\Membership\ActivityPositions", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
-     *     groups={"synthese"}
+     *     groups={"synthesis"}
      * )
      */
     public function getCurrentPosition(): string
