@@ -4,15 +4,15 @@
             <ul>
                 <li>
                     <div class="text--normal">Recherche</div>
-                    {{ summary.contributionWishLabel }}
+                    <span class="summary-contributionwish">{{ summary.contributionWishLabel }}</span>
                 </li>
                 <li>
                     <div class="text--normal">Disponibilité</div>
-                    {{ summary.availabilities|join(' ou ')|capitalize }}
+                    <span class="summary-availability">{{ summary.availabilities|join(' ou ')|capitalize }}</span>
                 </li>
                 <li>
                     <div class="text--normal">Travail</div>
-                    {{ summary.jobLocations|join(' ou ')|capitalize }}
+                    <span class="summary-location">{{ summary.jobLocations|join(' ou ')|capitalize }}</span>
                 </li>
             </ul>
         </div>
@@ -26,11 +26,12 @@
                 </li>
                 <li>
                     <div class="text--normal">Participation</div>
-                    23 évènements
+                    {{ recent_activities.eventParticipationsCount }}
+                    évènement{{ recent_activities.eventParticipationsCount > 1 ? 's' }}
                 </li>
                 <li>
                     <div class="text--normal">Profil complété</div>
-                    56%
+                    <span class="summary-completion">{{ summary.completion }}%</span>
                 </li>
             </ul>
         </div>
