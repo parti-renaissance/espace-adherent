@@ -539,7 +539,6 @@ class Summary
         return false;
     }
 
-
     public function unpublish(): bool
     {
         if ($this->public) {
