@@ -11,6 +11,7 @@ use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
+use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,9 +34,11 @@ class SummaryManagerController extends Controller
     {
         $this->disableInProduction();
 
+        $member = $this->getUser();
+
         return $this->render('summary_manager/index.html.twig', [
-            'summary' => $this->get(SummaryManager::class)->getForAdherent($this->getUser()),
-            'recent_activities' => [], // TODO $this->get(MembershipTracker::class)->getRecentActivitiesForAdherent($this->getUser()),
+            'summary' => $this->get(SummaryManager::class)->getForAdherent($member),
+            'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
         ]);
     }
 

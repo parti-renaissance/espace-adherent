@@ -108,6 +108,11 @@ class EventRegistration
         return $this->event->isFinished();
     }
 
+    public function getAttendedAt(): \DateTimeImmutable
+    {
+        return \DateTimeImmutable::createFromMutable($this->event->getBeginAt());
+    }
+
     public function matches(Event $event, Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {

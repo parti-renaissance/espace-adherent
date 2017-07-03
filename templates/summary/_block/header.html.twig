@@ -14,7 +14,9 @@
                 Date d'adhésion
             </div>
             <div>
-                23 <br> participations à des events
+                {{ recent_activities.eventParticipationsCount }}
+                <br>
+                participation{{ recent_activities.eventParticipationsCount > 1 ? 's' }} à des events
             </div>
         </div>
     {% endblock %}
