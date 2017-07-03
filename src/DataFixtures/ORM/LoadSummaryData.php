@@ -55,8 +55,7 @@ class LoadSummaryData implements FixtureInterface
         $experience11->setLocation('Genève');
         $experience11->setPosition('Bio-informaticien');
         $experience11->setWebsite('http://khure.bioinformatique.ch');
-        $experience11->setSummary($summary1);
-        $manager->persist($experience11);
+        $summary1->addExperience($experience11);
 
         $experience12 = new JobExperience();
         $experience12->setCompany('Univérsité Lyon 1');
@@ -72,8 +71,7 @@ class LoadSummaryData implements FixtureInterface
         $experience12->setLocation('Lyon');
         $experience12->setPosition('Professeur');
         $experience12->setWebsite('http://lyon.bioinformatique.fr');
-        $experience12->setSummary($summary1);
-        $manager->persist($experience12);
+        $summary1->addExperience($experience12);
 
         // Trainings
         $training11 = new Training();
@@ -85,8 +83,7 @@ class LoadSummaryData implements FixtureInterface
         $training11->setEndedAt(new \DateTime('1995-10-01 00:00:00'));
         $training11->setOnGoing(false);
         $training11->setStudyField('Bio-Informatique');
-        $training11->setSummary($summary1);
-        $manager->persist($training11);
+        $summary1->addTraining($training11);
 
         $training12 = new Training();
         $training12->setDescription('Génie biologique option Bio-Informatique');
@@ -98,48 +95,42 @@ class LoadSummaryData implements FixtureInterface
         $training12->setEndedAt(new \DateTime('1992-10-01 00:00:00'));
         $training12->setOnGoing(false);
         $training12->setStudyField('Bio-Informatique');
-        $training12->setSummary($summary1);
-        $manager->persist($training12);
+        $summary1->addTraining($training12);
 
         // Languages
         $language11 = new Language();
         $language11->setCode('fr');
         $language11->setLevel(Language::LEVEL_FLUENT);
-        $language11->setSummary($summary1);
-        $manager->persist($language11);
+        $summary1->addLanguage($language11);
 
         $language12 = new Language();
         $language12->setCode('en');
         $language12->setLevel(Language::LEVEL_HIGH);
-        $language12->setSummary($summary1);
-        $manager->persist($language12);
+        $summary1->addLanguage($language12);
 
         $language13 = new Language();
         $language13->setCode('es');
         $language13->setLevel(Language::LEVEL_MEDIUM);
-        $language13->setSummary($summary1);
-        $manager->persist($language13);
+        $summary1->addLanguage($language13);
 
         // Skills
         $skill11 = new Skill();
         $skill11->setName('Software');
-        $skill11->setSummary($summary1);
-        $manager->persist($skill11);
+        $summary1->addSkill($skill11);
 
         $skill12 = new Skill();
         $skill12->setName('Analyze');
-        $skill12->setSummary($summary1);
-        $manager->persist($skill12);
+        $summary1->addSkill($skill12);
 
         $skill13 = new Skill();
         $skill13->setName('Mathématiques');
-        $skill13->setSummary($summary1);
-        $manager->persist($skill13);
+        $summary1->addSkill($skill13);
 
         $skill14 = new Skill();
         $skill14->setName('Statistique');
-        $skill14->setSummary($summary1);
-        $manager->persist($skill14);
+        $summary1->addSkill($skill14);
+
+        $summary1->publish();
 
         $summary2 = $summaryFactory->createFromArray([
             'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_2_UUID),

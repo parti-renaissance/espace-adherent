@@ -11,6 +11,7 @@ use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
+use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,9 +34,11 @@ class SummaryManagerController extends Controller
     {
         $this->disableInProduction();
 
+        $member = $this->getUser();
+
         return $this->render('summary_manager/index.html.twig', [
-            'summary' => $this->get(SummaryManager::class)->getForAdherent($this->getUser()),
-            'recent_activities' => [], // TODO $this->get(MembershipTracker::class)->getRecentActivitiesForAdherent($this->getUser()),
+            'summary' => $this->get(SummaryManager::class)->getForAdherent($member),
+            'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
         ]);
     }
 
@@ -173,6 +176,43 @@ class SummaryManagerController extends Controller
 
         if ($this->get(SummaryManager::class)->removeLanguage($this->getUser(), $language)) {
             $this->addFlash('info', 'summary.remove_language.success');
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
+    }
+
+    /**
+     * @Route("/publier", name="app_summary_manager_publish")
+     * @Method("GET")
+     */
+    public function publishAction()
+    {
+        $this->disableInProduction();
+
+        $manager = $this->get(SummaryManager::class);
+        $summary = $manager->getForAdherent($this->getUser());
+
+        if (!$manager->publishSummary($summary)) {
+            $this->addFlash('info', 'summary.not_complete');
+
+            return $this->redirectToRoute('app_summary_manager_index');
+        }
+
+        return $this->redirectToRoute('app_summary_index', ['slug' => $summary->getSlug()]);
+    }
+
+    /**
+     * @Route("/depublier", name="app_summary_manager_unpublish")
+     * @Method("GET")
+     */
+    public function unpublishAction()
+    {
+        $this->disableInProduction();
+
+        if ($this->get(SummaryManager::class)->unpublishSummaryForAdherent($this->getUser())) {
+            $this->addFlash('info', 'summary.unpublished.success');
+        } else {
+            $this->addFlash('info', 'summary.unpublished.error');
         }
 
         return $this->redirectToRoute('app_summary_manager_index');

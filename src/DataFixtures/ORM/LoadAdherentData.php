@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -98,6 +99,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'phone' => '33 727363643',
             'registered_at' => '2017-01-18 13:15:28',
         ]);
+        $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
+        $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130');
 

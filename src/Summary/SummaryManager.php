@@ -45,6 +45,30 @@ class SummaryManager
         $this->manager->flush();
     }
 
+    public function publishSummary(Summary $summary): bool
+    {
+        if ($summary->publish()) {
+            $this->updateSummary($summary);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function unpublishSummaryForAdherent(Adherent $adherent): bool
+    {
+        $summary = $this->getForAdherent($adherent);
+
+        if ($summary->unpublish()) {
+            $this->updateSummary($summary);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function updateExperiences(Summary $summary, JobExperience $experience): void
     {
         $summary->addExperience($experience);
