@@ -1,23 +1,48 @@
 {% extends 'summary/_block/header.html.twig' %}
 
 {% block summary_left_part %}
-    <div>
-        <div>Ajouter une photo</div>
-        <h2 class="text--large b__nudge--bottom-tiny">{{ app.user.fullname }}</h2>
-        <div class="text--body text--gray">{{ app.user.age }} ans, {{ app.user.cityName }}</div>
+    <div class="progressive-background space--100-0"
+         data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
+         data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
+    </div>
+    <div class="background--yellow cv__header">
+        <div class="l__wrapper--medium text--center">
+            <div class="cv__header__photo progressive-background">
+                Ajouter une photo
+            </div>
+            <div class="cv__header__about">
+                <h2 class="text--large b__nudge--top">{{ app.user.fullname }}</h2>
+
+                {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
+                {% if summary.currentProfession %}
+                    <div class="text--all-caps">{{ summary.currentProfession }}</div>
+                    <div class="text--body text--italic">{{ currentPosition }}</div>
+                {% else %}
+                    <div class="text--all-caps">{{ currentPosition }}</div>
+                {% endif %}
+                <p class="text--body">{{ summary.professionalSynopsis }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block summary_contact %}
+    {{ parent() }}
+    <div class="cv__header__contact--modify">
+        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_CONTACT') }) }}" class="button">Modifer</a>
     </div>
 {% endblock %}
 
 {% block summary_right_part %}
-    <div>
+    <div class="cv__header__manage">
         {% if summary.public %}
-            <div>CV <br> public</div>
-            <a href="{{ path('app_summary_manager_unpublish') }}">dépublier mon CV</a>
+            <div>Mon CV est public</div>
+            <a href="{{ path('app_summary_manager_unpublish') }}">Dépublier mon CV</a>
             <a href="{{ path('app_summary_index', { slug: summary.slug }) }}">Voir mon CV en ligne</a>
         {% else %}
-            <div>CV <br> non public</div>
+            <div>Mon CV est privé</div>
             {% if summary.completed %}
-                <a href="{{ path('app_summary_manager_publish') }}">publier mon CV</a>
+                <a href="{{ path('app_summary_manager_publish') }}">Publier mon CV</a>
             {% endif %}
         {% endif %}
     </div>
