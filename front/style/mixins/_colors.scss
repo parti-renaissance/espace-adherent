@@ -108,6 +108,7 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 @mixin link--white {
     color: white;
+    border-color: white;
 
     path,
     polygon {
