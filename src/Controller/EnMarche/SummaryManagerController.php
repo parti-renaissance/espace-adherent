@@ -223,7 +223,7 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/competences/autocompletion",
      *     name="app_summary_manager_skills_autocomplete",
-     *     condition="request.isXlmHttpRequest()"
+     *     condition="request.isXmlHttpRequest()"
      * )
      * @Method("GET")
      */
@@ -231,8 +231,8 @@ class SummaryManagerController extends Controller
     {
         $this->disableInProduction();
 
-        $skills = $this->getDoctrine()->getRepository(Skill::class)
-            ->findAvailableSkillsForAdherent(trim(strip_tags($request->get('term'))), $this->getUser());
+        $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsForAdherent(
+            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser());
 
         return new JsonResponse($skills);
     }

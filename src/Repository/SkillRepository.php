@@ -8,26 +8,26 @@ use Doctrine\ORM\EntityRepository;
 class SkillRepository extends EntityRepository
 {
     /**
-     * Finds all availeble skills for autocomplete that connected user has not yet chosen.
+     * Finds all available skills for autocomplete that connected user has not yet chosen.
      */
     public function findAvailableSkillsForAdherent(string $term, Adherent $user): array
     {
         $qbUserSkills = $this
             ->createQueryBuilder('us')
-            ->select('us.name')
+            ->select('us.slug')
             ->leftJoin('us.summary', 'cv')
             ->andWhere('cv.member = :user')
         ;
 
         $qb = $this->createQueryBuilder('s');
         $qb
-            ->distinct('s.name')
+            ->distinct('s.slug')
             ->leftJoin('s.summary', 'summary')
-            ->where('s.name LIKE :name')
+            ->where('s.slug LIKE :slug')
             ->andWhere('summary.member != :member')
-            ->andWhere($qb->expr()->notIn('s.name', $qbUserSkills->getDQL()))
+            ->andWhere($qb->expr()->notIn('s.slug', $qbUserSkills->getDQL()))
             ->setParameters([
-                'name' => $term.'%',
+                'slug' => $term.'%',
                 'member' => $user,
                 'user' => $user,
             ])

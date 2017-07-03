@@ -595,6 +595,42 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Anglais - Maîtrise parfaite', $crawler->filter('.summary-language p')->eq(0)->text());
     }
 
+    public function testSearchSkillUserHasNot()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        // Search the skill that user has not, should find one skill
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=outi');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content);
+
+        $this->assertNotEmpty(\GuzzleHttp\json_decode($content, true));
+        $skills = \GuzzleHttp\json_decode($content, true);
+        $this->assertSame(1, count($skills));
+        foreach ($skills as $skill) {
+            $this->assertSame('Outils médias', $skill);
+        }
+    }
+
+    public function testSearchSkillUserHas()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        // Search the skill that user already has, nothing should be found
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=sof');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content);
+
+        $this->assertEmpty(\GuzzleHttp\json_decode($content, true));
+        $this->client->followRedirects(true);
+    }
+
     /**
      * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
      */
@@ -608,6 +644,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
         $this->assertCount(0, $crawler->filter('.summary-skill'));
+        $this->assertSummaryCompletion(8, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
 
@@ -634,6 +671,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
         $this->assertSame($skill1, $skills->eq(0)->filter('p')->text());
         $this->assertSame($skill2, $skills->eq(1)->filter('p')->text());
+        $this->assertSummaryCompletion(16, $crawler);
     }
 
     /**
@@ -647,6 +685,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
         $this->assertCount(4, $crawler->filter('.summary-skill'));
+        $this->assertSummaryCompletion(100, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
 
@@ -669,6 +708,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(4, $skills = $crawler->filter('.summary-skill'));
         $this->assertSame($skill1, $skills->eq(1)->filter('p')->text());
         $this->assertSame($skill2, $skills->eq(2)->filter('p')->text());
+        $this->assertSummaryCompletion(100, $crawler);
     }
 
     /**

@@ -70,7 +70,6 @@ twig:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
         - 'SonataCoreBundle:Form:colorpicker.html.twig'
-        - 'fields.html.twig'
 
 doctrine:
     dbal:

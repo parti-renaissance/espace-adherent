@@ -36,7 +36,7 @@ class Skill
      * @var string|null
      *
      * @ORM\Column
-     * @Gedmo\Slug(fields={"name"})
+     * @Gedmo\Slug(fields={"name"}, unique=false)
      */
     private $slug;
 
