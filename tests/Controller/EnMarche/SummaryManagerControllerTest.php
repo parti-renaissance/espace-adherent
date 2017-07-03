@@ -668,9 +668,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertCount(2, $skills = $crawler->filter('.summary-skill'));
-        $this->assertSame($skill1, $skills->eq(0)->filter('p')->text());
-        $this->assertSame($skill2, $skills->eq(1)->filter('p')->text());
+        $this->assertCount(2, $skills = $crawler->filter('.cv__skills li'));
+        $this->assertSame($skill1, $skills->eq(0)->filter('li')->text());
+        $this->assertSame($skill2, $skills->eq(1)->filter('li')->text());
         $this->assertSummaryCompletion(16, $crawler);
     }
 
@@ -684,7 +684,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
 
-        $this->assertCount(4, $crawler->filter('.summary-skill'));
+        $this->assertCount(4, $crawler->filter('.cv__skills li'));
         $this->assertSummaryCompletion(100, $crawler);
 
         $crawler = $this->client->click($crawler->filter('#summary-skills .summary-modify')->link());
@@ -705,7 +705,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertCount(4, $skills = $crawler->filter('.summary-skill'));
+        $this->assertCount(4, $skills = $crawler->filter('.summary-skill p'));
         $this->assertSame($skill1, $skills->eq(1)->filter('p')->text());
         $this->assertSame($skill2, $skills->eq(2)->filter('p')->text());
         $this->assertSummaryCompletion(100, $crawler);
@@ -750,13 +750,13 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(39, $crawler);
 
+        $header = $this->getSummarySection($crawler, self::SECTION_HEADER);
         $synthesis = $this->getSummarySection($crawler, self::SECTION_SYNTHESIS);
 
-        $this->assertSame($profession, $synthesis->filter('h2')->text());
-        $this->assertSame('En recherche d\'emploi', $synthesis->filter('h3')->text());
-        $this->assertCount(1, $synthesis->filter('p:contains("Missions de bénévolat")'));
-        $this->assertCount(1, $synthesis->filter('p:contains("Temps partiel")'));
-        $this->assertCount(1, $synthesis->filter('p:contains("Sur site ou à distance")'));
+        $this->assertSame('En recherche d\'emploi', $header->filter('.cv__header__position')->text());
+        $this->assertCount(1, $synthesis->filter('.summary-contributionwish:contains("Missions de bénévolat")'));
+        $this->assertCount(1, $synthesis->filter('.summary-availability:contains("Temps partiel")'));
+        $this->assertCount(1, $synthesis->filter('.summary-location:contains("Sur site ou à distance")'));
         $this->assertCount(1, $synthesis->filter(sprintf('p:contains("%s")', $synopsis)));
     }
 
@@ -797,11 +797,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $synthesis = $this->getSummarySection($crawler, self::SECTION_SYNTHESIS);
 
-        $this->assertSame($profession, $synthesis->filter('h2')->text());
-        $this->assertSame('En recherche d\'emploi', $synthesis->filter('h3')->text());
-        $this->assertCount(1, $synthesis->filter('p:contains("Missions de bénévolat")'));
-        $this->assertCount(1, $synthesis->filter('p:contains("Temps partiel")'));
-        $this->assertCount(1, $synthesis->filter('p:contains("À distance")'));
+        $this->assertCount(1, $synthesis->filter('.summary-contributionwish:contains("Missions de bénévolat")'));
+        $this->assertCount(1, $synthesis->filter('.summary-availability:contains("Temps partiel")'));
+        $this->assertCount(1, $synthesis->filter('.summary-location:contains("À distance")'));
         $this->assertCount(1, $synthesis->filter(sprintf('p:contains("%s")', $synopsis)));
     }
 
@@ -840,9 +838,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
         $this->assertCount(3, $missions->filter('.summary-wish'));
-        $this->assertSame('MISSIONS DE BÉNÉVOLAT', trim($missions->filter('.summary-wish')->eq(0)->text()));
-        $this->assertSame('ACTION PUBLIQUE', trim($missions->filter('.summary-wish')->eq(1)->text()));
-        $this->assertSame('ECONOMIE', trim($missions->filter('.summary-wish')->eq(2)->text()));
+        $this->assertSame('Missions de bénévolat', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('Action publique', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('Economie', trim($missions->filter('.summary-wish')->eq(2)->text()));
     }
 
     /**
@@ -877,10 +875,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
         $this->assertCount(4, $missions->filter('.summary-wish'));
-        $this->assertSame('MISSIONS DE BÉNÉVOLAT', trim($missions->filter('.summary-wish')->eq(0)->text()));
-        $this->assertSame('MISSION LOCALE', trim($missions->filter('.summary-wish')->eq(1)->text()));
-        $this->assertSame('ENGAGEMENT', trim($missions->filter('.summary-wish')->eq(2)->text()));
-        $this->assertSame('EMPLOI', trim($missions->filter('.summary-wish')->eq(3)->text()));
+        $this->assertSame('Missions de bénévolat', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('Mission locale', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('Engagement', trim($missions->filter('.summary-wish')->eq(2)->text()));
+        $this->assertSame('Emploi', trim($missions->filter('.summary-wish')->eq(3)->text()));
     }
 
     /**
@@ -917,8 +915,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $missions = $this->getSummarySection($crawler, self::SECTION_MOTIVATION);
 
-        $this->assertCount(1, $missions->filter('p'));
-        $this->assertSame($motivation, trim($missions->filter('p')->text()));
+        $this->assertCount(1, $missions->filter('div'));
+        $this->assertSame($motivation, trim($missions->filter('div')->text()));
     }
 
     /**
@@ -1103,7 +1101,6 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $missions->filter('.summary-contact-facebook'));
         $this->assertCount(1, $missions->filter('.summary-contact-linked_in'));
         $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
-        $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
     }
 
     public function testPublishActionWithoutSummary()
@@ -1142,7 +1139,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Votre CV a bien été dépublié.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $this->client->click($crawler->selectLink('publier mon CV')->link());
+        $this->client->click($crawler->selectLink('Publier mon CV')->link());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/membre/lucie-olivera', $this->client);
@@ -1177,6 +1174,6 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
     private function assertSummaryCompletion(int $completion, Crawler $crawler)
     {
-        $this->assertSame($completion.'%  profile complété', trim($crawler->filter('.summary-completion')->text()));
+        $this->assertSame($completion.'%', trim($crawler->filter('.summary-completion')->text()));
     }
 }

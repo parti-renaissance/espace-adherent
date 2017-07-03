@@ -17,11 +17,12 @@
             </li>
             <li>
                 <div class="text--normal">Participation</div>
-                23 évènements
+                {{ recent_activities.eventParticipationsCount }}
+                évènement{{ recent_activities.eventParticipationsCount > 1 ? 's' }}
             </li>
             <li>
                 <div class="text--normal">Profil complété</div>
-                65%
+                <span class="summary-completion">{{ summary.completion }}%</span>
             </li>
         </ul>
     </div>
