@@ -3,6 +3,10 @@
         margin-bottom: -41px;
 
         &__photo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include text--body;
             margin: 0 auto;
             top: -110px;
             position: relative;
@@ -10,7 +14,8 @@
             width: 210px;
             border-radius: 50%;
             border: 6px solid white;
-            background-position: 9% 60%; // Change once we have the right image
+            background-position: left center; // Change once we have the right image
+            background: white;
         }
 
         &__about {
@@ -19,8 +24,15 @@
         }
 
         &__contact {
-            top: -41px;
+            top: -61px;
             position: relative;
+
+            &--modify {
+                top: -58px;
+                position: relative;
+                display: flex;
+                justify-content: center;
+            }
 
             div {
                 margin-right: 20px;
@@ -35,19 +47,26 @@
                 }
             }
         }
+
+        &__manage {
+            @include text--body;
+            background: $darker;
+            color: white;
+            padding: 20px 0;
+            margin-top: -26px;
+            text-align: center;
+        }
     }
 
-    &__experience,
-    &__training {
-        > div {
-            padding-bottom: 25px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid $gray--light;
+    &__training,
+    &__experience {
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid $gray--light;
 
-            &:last-child {
-                border: 0;
-                margin-bottom: 0;
-            }
+        &:last-child {
+            border: 0;
+            margin-bottom: 0;
         }
     }
 

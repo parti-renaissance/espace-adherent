@@ -3,7 +3,7 @@
         <div id="summary-interests">
             <h2 class="b__nudge--bottom">Centres d'intérêt</h2>
             {% for interest in summary.memberInterests %}
-                <p>{{ member_interest_label(interest) }}</p>
+                <p class="text--body">{{ member_interest_label(interest) }}</p>
             {% endfor %}
         </div>
     {% endblock %}
