@@ -4,22 +4,24 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\MissionTypeEntityType;
 use AppBundle\Entity\Summary;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SummaryType extends AbstractType
 {
-    const STEP_SYNTHESIS = 'synthèse';
+    const STEP_SYNTHESIS = 'synthesis';
     const STEP_MISSION_WISHES = 'missions';
     const STEP_MOTIVATION = 'motivation';
-    const STEP_SKILLS = 'compétences';
-    const STEP_INTERESTS = 'centre d\'intérêts';
+    const STEP_SKILLS = 'competences';
+    const STEP_INTERESTS = 'interests';
     const STEP_CONTACT = 'contact';
 
     const STEPS = [
@@ -97,6 +99,8 @@ class SummaryType extends AbstractType
                 ;
                 break;
         }
+
+        $builder->add('submit', SubmitType::class, ['label' => 'Enregistrer']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -104,13 +108,21 @@ class SummaryType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Summary::class,
+                'validation_groups' => function (Options $options) {
+                    return $options['step'];
+                },
                 'error_mapping' => [
                     'validAvailabilities' => 'availabilities',
                     'validJobLocations' => 'job_locations',
                 ],
             ])
             ->setRequired('step')
-            ->setAllowedTypes('step', self::STEPS)
+            ->setAllowedValues('step', self::STEPS)
         ;
+    }
+
+    public static function stepExists(string $step): bool
+    {
+        return in_array($step, self::STEPS, true);
     }
 }

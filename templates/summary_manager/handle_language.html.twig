@@ -1,4 +1,4 @@
-{% extends 'summary_manager/layout.twig' %}
+{% extends 'summary_manager/layout.html.twig' %}
 
 {% block summary_content %}
     <section class="l__wrapper--medium">
@@ -11,7 +11,7 @@
             {{ form_errors(language_form) }}
 
             {{ form_row(language_form.code, { label: 'Langue' }) }}
-            {{ form_row(language_form.level, { label: 'Poste' }) }}
+            {{ form_row(language_form.level, { label: 'Niveau' }) }}
 
         {{ form_end(language_form) }}
 

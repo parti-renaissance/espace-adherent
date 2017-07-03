@@ -36,6 +36,15 @@ class SummaryManager
         return $this->factory->createFromAdherent($adherent);
     }
 
+    public function updateSummary(Summary $summary): void
+    {
+        if (!$summary->getId()) {
+            $this->manager->persist($summary);
+        }
+
+        $this->manager->flush();
+    }
+
     public function updateExperiences(Summary $summary, JobExperience $experience): void
     {
         $summary->addExperience($experience);
@@ -94,14 +103,5 @@ class SummaryManager
         $this->updateSummary($summary);
 
         return true;
-    }
-
-    private function updateSummary(Summary $summary): void
-    {
-        if (!$summary->getId()) {
-            $this->manager->persist($summary);
-        }
-
-        $this->manager->flush();
     }
 }

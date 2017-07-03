@@ -7,6 +7,10 @@
             <tag name="twig.extension" />
         </instanceof>
 
+        <service id="AppBundle\Twig\AdherentExtension">
+            <argument>%adherent_interests%</argument>
+        </service>
+
         <service id="AppBundle\Twig\AssetExtension" />
 
         <service id="AppBundle\Twig\AssetRuntime">
