@@ -723,7 +723,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
 
-        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -770,7 +770,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
 
-        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -1019,11 +1019,11 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+        $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
-        $this->assertCount(2, $missions->filter('p'));
-        $this->assertSame('Jeunesse', trim($missions->filter('p')->eq(0)->text()));
-        $this->assertSame('Egalité F / H', trim($missions->filter('p')->eq(1)->text()));
+        $this->assertCount(2, $interests->filter('p'));
+        $this->assertSame('Jeunesse', trim($interests->filter('p')->eq(0)->text()));
+        $this->assertSame('Egalité F / H', trim($interests->filter('p')->eq(1)->text()));
     }
 
     /**
@@ -1056,12 +1056,12 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(16, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_HEADER);
+        $contact = $this->getSummarySection($crawler, self::SECTION_CONTACT);
 
-        $this->assertCount(1, $missions->filter('.summary-contact-email'));
-        $this->assertCount(0, $missions->filter('.summary-contact-facebook'));
-        $this->assertCount(0, $missions->filter('.summary-contact-linked_in'));
-        $this->assertCount(0, $missions->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $contact->filter('.summary-contact-email'));
+        $this->assertCount(0, $contact->filter('.summary-contact-facebook'));
+        $this->assertCount(0, $contact->filter('.summary-contact-linked_in'));
+        $this->assertCount(0, $contact->filter('.summary-contact-twitter'));
     }
 
     /**
@@ -1096,12 +1096,12 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_HEADER);
+        $contact = $this->getSummarySection($crawler, self::SECTION_HEADER);
 
-        $this->assertCount(1, $missions->filter('.summary-contact-email'));
-        $this->assertCount(1, $missions->filter('.summary-contact-facebook'));
-        $this->assertCount(1, $missions->filter('.summary-contact-linked_in'));
-        $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $contact->filter('.summary-contact-email'));
+        $this->assertCount(1, $contact->filter('.summary-contact-facebook'));
+        $this->assertCount(1, $contact->filter('.summary-contact-linked_in'));
+        $this->assertCount(1, $contact->filter('.summary-contact-twitter'));
     }
 
     public function testPublishActionWithoutSummary()
@@ -1207,6 +1207,30 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
+    }
+
+    public function testShowHideRecentActivities()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
+
+        // Afficher au public
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $this->client->click($crawler->selectLink('Afficher au public')->link());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(1, $crawler->filter('#summary-recent-activities p'));
+
+        // Masquer au public
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $this->client->click($crawler->selectLink('Masquer au public')->link());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     protected function setUp()

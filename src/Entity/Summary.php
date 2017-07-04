@@ -377,6 +377,11 @@ class Summary
         $this->showingRecentActivities = $showingRecentActivities;
     }
 
+    public function toggleShowingRecentActivities(): void
+    {
+        $this->showingRecentActivities = !$this->showingRecentActivities;
+    }
+
     /**
      * @return JobExperience[]|Collection
      */

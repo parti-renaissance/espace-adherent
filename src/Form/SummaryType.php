@@ -77,7 +77,7 @@ class SummaryType extends AbstractType
                         /** @var Summary $summary */
                         $summary = $event->getData();
                         // Save profile picture to cloud storage
-                        if ($summary->getProfilePicture() && $summary->getProfilePicture() instanceof UploadedFile) {
+                        if ($summary->getProfilePicture() instanceof UploadedFile) {
                             $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
                             $this->storage->put($pathImage, file_get_contents($summary->getProfilePicture()->getPathname()));
                             $this->glide->deleteCache($pathImage);
