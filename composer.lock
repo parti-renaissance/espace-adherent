@@ -1744,16 +1744,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.29",
+            "version": "v2.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c"
+                "reference": "5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
-                "reference": "f65c02eae3bff1aa57709ea4c8ca26947df95b9c",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488",
+                "reference": "5e2cc07beb0cd24345cbe02eb7afc3b23f9cd488",
                 "shasum": ""
             },
             "require": {
@@ -1818,7 +1818,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-05-29T17:33:48+00:00"
+            "time": "2017-07-02T09:46:37+00:00"
         },
         {
             "name": "geoip2/geoip2",
@@ -2125,16 +2125,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.3",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8d6c6cc55186db87b7dc5009827429ba4e9dc006",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
@@ -2144,8 +2144,11 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0",
                 "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -2183,7 +2186,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+01:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2456,16 +2459,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "2.3.13",
+            "version": "2.3.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "15a517f052ee15d373ffa145c9642d5fec7ddf5c"
+                "reference": "dec642219be9a088fbbceb91cb5da23a0ee788f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/15a517f052ee15d373ffa145c9642d5fec7ddf5c",
-                "reference": "15a517f052ee15d373ffa145c9642d5fec7ddf5c",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/dec642219be9a088fbbceb91cb5da23a0ee788f0",
+                "reference": "dec642219be9a088fbbceb91cb5da23a0ee788f0",
                 "shasum": ""
             },
             "require": {
@@ -2475,7 +2478,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "~0.9.2",
-                "phpunit/phpunit": "3.*"
+                "phpunit/phpunit": "^4.8 || ^5.7"
             },
             "suggest": {
                 "ext-gd": "to use GD library based image processing.",
@@ -2486,6 +2489,14 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.3-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Intervention\\Image\\ImageServiceProvider"
+                    ],
+                    "aliases": {
+                        "Image": "Intervention\\Image\\Facades\\Image"
+                    }
                 }
             },
             "autoload": {
@@ -2500,8 +2511,8 @@
             "authors": [
                 {
                     "name": "Oliver Vogel",
-                    "email": "oliver@olivervogel.net",
-                    "homepage": "http://olivervogel.net/"
+                    "email": "oliver@olivervogel.com",
+                    "homepage": "http://olivervogel.com/"
                 }
             ],
             "description": "Image handling and manipulation library with support for Laravel integration",
@@ -2514,7 +2525,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2017-04-23T18:45:36+02:00"
+            "time": "2017-07-03T10:53:01+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -5693,16 +5704,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.19.0",
+            "version": "3.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "300b9151c01395e838fac6f9119bd431ccb02204"
+                "reference": "10c27f6ee911c452ee67059bfdc1a1fca8953904"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/300b9151c01395e838fac6f9119bd431ccb02204",
-                "reference": "300b9151c01395e838fac6f9119bd431ccb02204",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/10c27f6ee911c452ee67059bfdc1a1fca8953904",
+                "reference": "10c27f6ee911c452ee67059bfdc1a1fca8953904",
                 "shasum": ""
             },
             "require": {
@@ -5788,7 +5799,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2017-06-12T13:26:10+00:00"
+            "time": "2017-06-27T15:41:31+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -6891,16 +6902,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "82bd7c039214b34bb5d12c04f996f05f6581c49f"
+                "reference": "098bb166d51cdf0b0541550d037bb3ad1f8fa846"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/82bd7c039214b34bb5d12c04f996f05f6581c49f",
-                "reference": "82bd7c039214b34bb5d12c04f996f05f6581c49f",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/098bb166d51cdf0b0541550d037bb3ad1f8fa846",
+                "reference": "098bb166d51cdf0b0541550d037bb3ad1f8fa846",
                 "shasum": ""
             },
             "require": {
@@ -7009,7 +7020,6 @@
                     "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
                     "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
                     "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
-                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
                     "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
                     "Symfony\\Bundle\\": "src/Symfony/Bundle/",
                     "Symfony\\Component\\": "src/Symfony/Component/"
@@ -7040,7 +7050,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-06-06T04:00:14+00:00"
+            "time": "2017-07-04T06:03:16+00:00"
         },
         {
             "name": "tackk/cartographer",
@@ -8219,16 +8229,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.2.2",
+            "version": "6.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "f2786490399836d2a544a34785c4a8d3ab32cf0e"
+                "reference": "fa5711d0559fc4b64deba0702be52d41434cbcb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f2786490399836d2a544a34785c4a8d3ab32cf0e",
-                "reference": "f2786490399836d2a544a34785c4a8d3ab32cf0e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fa5711d0559fc4b64deba0702be52d41434cbcb7",
+                "reference": "fa5711d0559fc4b64deba0702be52d41434cbcb7",
                 "shasum": ""
             },
             "require": {
@@ -8299,20 +8309,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-13T14:07:07+00:00"
+            "time": "2017-07-03T15:54:24+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf"
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/eabce450df194817a7d7e27e19013569a903a2bf",
-                "reference": "eabce450df194817a7d7e27e19013569a903a2bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
+                "reference": "d8833b396dce9162bb2eb5d59aee5a3ab3cfa5b4",
                 "shasum": ""
             },
             "require": {
@@ -8358,7 +8368,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-03-03T06:30:20+00:00"
+            "time": "2017-06-30T08:15:21+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -8471,16 +8481,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "3.0.4",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "74776f8dbc081cab9287c2a601c0c1d842568744"
+                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/74776f8dbc081cab9287c2a601c0c1d842568744",
-                "reference": "74776f8dbc081cab9287c2a601c0c1d842568744",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
+                "reference": "cd0871b3975fb7fc44d11314fd1ee20925fce4f5",
                 "shasum": ""
             },
             "require": {
@@ -8492,7 +8502,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
@@ -8517,7 +8527,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-06-20T16:25:05+00:00"
+            "time": "2017-07-01T08:51:00+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -8923,16 +8933,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "acae7416018ebe5a7a2d79b4221203b2b8aca5d3"
+                "reference": "c2c124b7f9de79f4a64dc011f041a3a2c768b913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/acae7416018ebe5a7a2d79b4221203b2b8aca5d3",
-                "reference": "acae7416018ebe5a7a2d79b4221203b2b8aca5d3",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/c2c124b7f9de79f4a64dc011f041a3a2c768b913",
+                "reference": "c2c124b7f9de79f4a64dc011f041a3a2c768b913",
                 "shasum": ""
             },
             "require": {
@@ -8981,7 +8991,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-06-01T14:45:22+00:00"
+            "time": "2017-06-12T13:35:45+00:00"
         },
         {
             "name": "theseer/tokenizer",
