@@ -94,8 +94,8 @@ member_summary.contribution.volunteer: En tant que bénévole
 member_summary.contribution.contractor: En tant que prestataire
 member_summary.contribution.employee: En tant que salarié
 
-member_summary.job_duration.part_time: Temps plein
-member_summary.job_duration.full_time: Temps partiel
+member_summary.job_duration.part_time: Temps partiel
+member_summary.job_duration.full_time: Temps plein
 member_summary.job_duration.punctually: Intervention ponctuelle
 
 member_summary.job_location.on_site: Sur site
