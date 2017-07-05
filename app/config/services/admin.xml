@@ -300,6 +300,28 @@
 
         <!--
         ######################################################
+        # Summary
+        ######################################################
+         -->
+
+        <service id="app.admin.summary" class="AppBundle\Admin\SummaryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Profils En Marche" />
+
+            <argument />
+            <argument>AppBundle\Entity\Summary</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.summary_mission_type" class="AppBundle\Admin\MissionTypeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Type de missions" group="Profils En Marche" />
+
+            <argument />
+            <argument>AppBundle\Entity\MemberSummary\MissionType</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # System
         ######################################################
          -->
@@ -325,20 +347,6 @@
 
             <argument />
             <argument>AppBundle\Entity\MailjetEmail</argument>
-            <argument />
-        </service>
-
-        <!--
-        ######################################################
-        # CV
-        ######################################################
-         -->
-
-        <service id="app.admin.summary_mission_type" class="AppBundle\Admin\MissionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Type de missions" group="CV" />
-
-            <argument />
-            <argument>AppBundle\Entity\MemberSummary\MissionType</argument>
             <argument />
         </service>
 
