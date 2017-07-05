@@ -15,10 +15,10 @@
 
                 {% set currentPosition = ('adherent.activity_position.' ~ summary.currentPosition)|trans  %}
                 {% if summary.currentProfession %}
-                    <div class="text--all-caps">{{ summary.currentProfession }}</div>
-                    <div class="text--body text--italic">{{ currentPosition }}</div>
+                    <div class="text--all-caps cv__header__profession">{{ summary.currentProfession }}</div>
+                    <div class="text--body text--italic cv__header__position">{{ currentPosition }}</div>
                 {% else %}
-                    <div class="text--all-caps">{{ currentPosition }}</div>
+                    <div class="text--all-caps cv__header__position">{{ currentPosition }}</div>
                 {% endif %}
                 <p class="text--body">{{ summary.professionalSynopsis }}</p>
             </div>
