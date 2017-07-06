@@ -1112,14 +1112,12 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/publier');
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/membre/gisele-berthoux', $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount($summariesCount, $this->getSummaryRepository()->findAll());
-        $this->assertSame('Merci de compléter votre CV avant de le publier.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(8, $crawler);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
     }
 
     public function testPublishingProcessWithSummary()

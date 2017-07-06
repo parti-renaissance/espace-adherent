@@ -546,13 +546,9 @@ class Summary
         return $this->public;
     }
 
-    public function publish(): bool
+    public function publish(): void
     {
-        if ($this->isCompleted()) {
-            return $this->public = true;
-        }
-
-        return false;
+        $this->public = true;
     }
 
     public function unpublish(): bool
@@ -615,7 +611,7 @@ class Summary
         return true;
     }
 
-    public function isCompleted(): int
+    public function isCompleted(): bool
     {
         return 100 === $this->getCompletion();
     }

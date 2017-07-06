@@ -23,82 +23,66 @@ class SummaryTest extends TestCase
     {
         $summary = $this->createSummary();
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(0, $summary->getCompletion());
 
         $summary->setCurrentProfession('Professeur');
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(0, $summary->getCompletion());
 
         $summary->setCurrentProfession('Professeur');
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(0, $summary->getCompletion());
 
         $summary->setCurrentPosition(ActivityPositions::UNEMPLOYED);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(8, $summary->getCompletion());
 
         $summary->setContributionWish(Contribution::VOLUNTEER);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(16, $summary->getCompletion());
 
         $summary->setAvailabilities([JobDuration::PUNCTUALLY]);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(24, $summary->getCompletion());
 
         $summary->setJobLocations([JobLocation::ON_SITE]);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(31, $summary->getCompletion());
 
         $summary->setProfessionalSynopsis('This is a fake summary.');
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(39, $summary->getCompletion());
 
         $summary->setMissionTypeWishes($this->createSummaryItemCollectionMock());
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(47, $summary->getCompletion());
 
         $summary->setMotivation('I\m motivated as far as a fake can be.');
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(54, $summary->getCompletion());
 
         $summary->setShowingRecentActivities(true);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(54, $summary->getCompletion());
 
         $summary->addExperience(new JobExperience());
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(62, $summary->getCompletion());
 
         $summary->addSkill(new Skill());
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(70, $summary->getCompletion());
 
         $summary->addLanguage(new Language());
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(77, $summary->getCompletion());
 
         $summary->setMemberInterests(['complete test']);
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(85, $summary->getCompletion());
 
         $summary->addTraining(new Training());
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(93, $summary->getCompletion());
 
         $summary->setLinkedInUrl('linkedin.com/in/fake');
@@ -107,12 +91,10 @@ class SummaryTest extends TestCase
         $summary->setTwitterNickname('@fake');
         $summary->setViadeoUrl('viadeo.com/fake');
 
-        $this->assertFalse($summary->publish());
         $this->assertSame(93, $summary->getCompletion());
 
         $summary->setContactEmail('fake@contact.com');
 
-        $this->assertTrue($summary->publish());
         $this->assertSame(100, $summary->getCompletion());
     }
 
