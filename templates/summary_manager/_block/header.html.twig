@@ -44,9 +44,7 @@
             <a href="{{ path('app_summary_index', { slug: summary.slug }) }}">Voir mon CV en ligne</a>
         {% else %}
             <div>Mon CV est privé</div>
-            {% if summary.completed %}
-                <a href="{{ path('app_summary_manager_publish') }}">Publier mon CV</a>
-            {% endif %}
+            <a href="{{ path('app_summary_manager_publish') }}">Publier mon CV</a>
         {% endif %}
     </div>
 {% endblock %}
