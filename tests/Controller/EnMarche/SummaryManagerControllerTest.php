@@ -1056,12 +1056,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(16, $crawler);
 
-        $contact = $this->getSummarySection($crawler, self::SECTION_CONTACT);
-
-        $this->assertCount(1, $contact->filter('.summary-contact-email'));
-        $this->assertCount(0, $contact->filter('.summary-contact-facebook'));
-        $this->assertCount(0, $contact->filter('.summary-contact-linked_in'));
-        $this->assertCount(0, $contact->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $crawler->filter('.summary-contact-email'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-facebook'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-linked_in'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-twitter'));
     }
 
     /**
