@@ -18,10 +18,13 @@ class MemberActivityCollection
      */
     public function __construct(Adherent $adherent, array $eventRegistrations)
     {
-        $this->activities[self::formatDate($adherent->getActivatedAt())][] = [
-            'type' => self::TYPE_JOINED_EN_MARCHE,
-            'log' => sprintf('A rejoint le mouvement En Marche (%s)', self::formatDate($adherent->getActivatedAt())),
-        ];
+        $this->activities = [];
+        if ($adherent->getRegisteredAt()) {
+            $this->activities[self::formatDate($adherent->getRegisteredAt())][] = [
+                'type' => self::TYPE_JOINED_EN_MARCHE,
+                'log' => sprintf('A rejoint le mouvement En Marche (%s)', self::formatDate($adherent->getRegisteredAt())),
+            ];
+        }
 
         foreach ($eventRegistrations as $registration) {
             $this->activities[self::formatDate($registration->getAttendedAt())][] = [
