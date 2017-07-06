@@ -8,10 +8,12 @@
     {% block modify %}
         {{ parent() }}
         {% if experience|default(false) and not experience.new %}
-            <a href="{{ path('app_summary_manager_handle_experience', { id: experience_id }) }}" class="btn">
-                Modifier
-            </a>
-            {{ delete_form(path('app_summary_manager_remove_experience', { id: experience_id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_EXPERIENCE_TOKEN')) }}
+            <div class="cv__experience--options">
+                <a href="{{ path('app_summary_manager_handle_experience', { id: experience_id }) }}">
+                    Modifier
+                </a>
+                {{ delete_form(path('app_summary_manager_remove_experience', { id: experience_id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_EXPERIENCE_TOKEN')) }}
+            </div>
         {% endif %}
     {% endblock %}
 {% endblock %}
