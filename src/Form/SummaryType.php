@@ -125,7 +125,7 @@ class SummaryType extends AbstractType
                         'mapped' => false,
                         'required' => false,
                         'attr' => [
-                            'placeholder' => 'Sasissez une compétence',
+                            'placeholder' => 'Saisissez une compétence et tapez "entrer"',
                         ],
                     ])
                     ->add('skills', CollectionType::class, [
