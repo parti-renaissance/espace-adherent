@@ -11,10 +11,12 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
+use League\Glide\Signatures\SignatureFactory;
 use AppBundle\Summary\JobLocation;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -1017,11 +1019,11 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+        $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
-        $this->assertCount(2, $missions->filter('p'));
-        $this->assertSame('Jeunesse', trim($missions->filter('p')->eq(0)->text()));
-        $this->assertSame('Egalité F / H', trim($missions->filter('p')->eq(1)->text()));
+        $this->assertCount(2, $interests->filter('p'));
+        $this->assertSame('Jeunesse', trim($interests->filter('p')->eq(0)->text()));
+        $this->assertSame('Egalité F / H', trim($interests->filter('p')->eq(1)->text()));
     }
 
     /**
@@ -1054,12 +1056,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(16, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_HEADER);
-
-        $this->assertCount(1, $missions->filter('.summary-contact-email'));
-        $this->assertCount(0, $missions->filter('.summary-contact-facebook'));
-        $this->assertCount(0, $missions->filter('.summary-contact-linked_in'));
-        $this->assertCount(0, $missions->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $crawler->filter('.summary-contact-email'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-facebook'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-linked_in'));
+        $this->assertCount(0, $crawler->filter('.summary-contact-twitter'));
     }
 
     /**
@@ -1094,12 +1094,12 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $missions = $this->getSummarySection($crawler, self::SECTION_HEADER);
+        $contact = $this->getSummarySection($crawler, self::SECTION_HEADER);
 
-        $this->assertCount(1, $missions->filter('.summary-contact-email'));
-        $this->assertCount(1, $missions->filter('.summary-contact-facebook'));
-        $this->assertCount(1, $missions->filter('.summary-contact-linked_in'));
-        $this->assertCount(1, $missions->filter('.summary-contact-twitter'));
+        $this->assertCount(1, $contact->filter('.summary-contact-email'));
+        $this->assertCount(1, $contact->filter('.summary-contact-facebook'));
+        $this->assertCount(1, $contact->filter('.summary-contact-linked_in'));
+        $this->assertCount(1, $contact->filter('.summary-contact-twitter'));
     }
 
     public function testPublishActionWithoutSummary()
@@ -1148,6 +1148,89 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
+    public function testAddProfilePictureAndCreateSummary()
+    {
+        // This adherent has no summary
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
+
+        $files = array(
+            'summary' => array(
+                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'name' => array('profile_picture' => 'image.jpg'),
+                'size' => array('profile_picture' => 631),
+                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
+                'type' => array('profile_picture' => 'image/jpeg'),
+            ),
+        );
+
+        $form = $crawler->filter('form[name=summary]')->form();
+
+        $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
+    }
+
+    public function testAddProfilePictureToSummary()
+    {
+        // This adherent has a summary
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
+
+        $files = array(
+            'summary' => array(
+                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'name' => array('profile_picture' => 'image.jpg'),
+                'size' => array('profile_picture' => 631),
+                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
+                'type' => array('profile_picture' => 'image/jpeg'),
+            ),
+        );
+
+        $form = $crawler->filter('form[name=summary]')->form();
+        $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
+    }
+
+    public function testShowHideRecentActivities()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
+
+        // Afficher au public
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $this->client->click($crawler->selectLink('Afficher au public')->link());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(1, $crawler->filter('#summary-recent-activities p'));
+
+        // Masquer au public
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $this->client->click($crawler->selectLink('Masquer au public')->link());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
+        $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -1174,5 +1257,22 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     private function assertSummaryCompletion(int $completion, Crawler $crawler)
     {
         $this->assertSame($completion.'%', trim($crawler->filter('.summary-completion')->text()));
+    }
+
+    private function assertFileInStorage(string $path, bool $isPresent = true)
+    {
+        $signature = SignatureFactory::create($this->client->getContainer()->getParameter('kernel.secret'))->generateSignature($path, []);
+
+        $path = $this->client->getContainer()->get('router')->generate('asset_url', [
+            'path' => $path,
+            's' => $signature,
+        ], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $this->client->request(Request::METHOD_GET, $path);
+
+        if ($isPresent) {
+            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        } else {
+            $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        }
     }
 }

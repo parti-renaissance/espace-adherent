@@ -163,5 +163,11 @@
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\TextType" />
         </service>
 
+        <service id="AppBundle\Form\SummaryType">
+            <argument type="service" id="app.storage" />
+            <argument type="service" id="app.glide" />
+            <tag name="form.type" />
+        </service>
+
     </services>
 </container>

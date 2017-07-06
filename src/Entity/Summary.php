@@ -13,6 +13,7 @@ use AppBundle\Summary\JobLocation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -231,6 +232,16 @@ class Summary
      */
     private $public = false;
 
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     maxSize = "1M",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     * )
+     */
+    private $profilePicture;
+
     public function __construct(Adherent $adherent, string $slug)
     {
         $this->member = $adherent;
@@ -364,6 +375,11 @@ class Summary
     public function setShowingRecentActivities(bool $showingRecentActivities): void
     {
         $this->showingRecentActivities = $showingRecentActivities;
+    }
+
+    public function toggleShowingRecentActivities(): void
+    {
+        $this->showingRecentActivities = !$this->showingRecentActivities;
     }
 
     /**
@@ -548,6 +564,27 @@ class Summary
         }
 
         return false;
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     */
+    public function setProfilePicture(UploadedFile $profilePicture = null): void
+    {
+        $this->profilePicture = $profilePicture;
+    }
+
+    public function getMemberUuid(): string
+    {
+        return $this->member->getUuid();
     }
 
     /**

@@ -8,12 +8,14 @@ use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
+use AppBundle\Entity\Summary;
 use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
+use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,11 +39,36 @@ class SummaryManagerController extends Controller
         $this->disableInProduction();
 
         $member = $this->getUser();
+        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+        $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
+        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, []);
 
         return $this->render('summary_manager/index.html.twig', [
-            'summary' => $this->get(SummaryManager::class)->getForAdherent($member),
+            'summary' => $summary,
             'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
+            'url_photo' => $this->generateUrl('asset_url', [
+                'path' => $pathImage,
+                's' => $signature,
+            ]),
         ]);
+    }
+
+    /**
+     * @Route("/activites_recentes/cacher_afficher", name="app_summary_manager_toggle_showing_recent_activities")
+     * @Method("GET")
+     */
+    public function toggleShowingRecentActivitiesAction()
+    {
+        $this->disableInProduction();
+
+        $manager = $this->get(SummaryManager::class);
+        $summary = $manager->getForAdherent($this->getUser());
+
+        $summary->toggleShowingRecentActivities();
+        $this->get(SummaryManager::class)->updateSummary($summary);
+        $this->addFlash('info', 'summary.step.success');
+
+        return $this->redirectToRoute('app_summary_manager_index', ['slug' => $summary->getSlug()]);
     }
 
     /**
