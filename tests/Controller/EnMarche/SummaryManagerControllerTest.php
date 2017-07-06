@@ -44,9 +44,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         self::SECTION_MISSIONS,
         self::SECTION_MOTIVATION,
         self::SECTION_RECENT_ACTIVITIES,
-        self::SECTION_EXPERIENCES,
         self::SECTION_SKILLS,
         self::SECTION_LANGUAGES,
+        self::SECTION_EXPERIENCES,
         self::SECTION_TRAININGS,
         self::SECTION_INTERESTS,
     ];
