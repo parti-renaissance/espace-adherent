@@ -21,6 +21,9 @@
                     <div class="text--all-caps cv__header__position">{{ currentPosition }}</div>
                 {% endif %}
                 <p class="text--body">{{ summary.professionalSynopsis }}</p>
+                <div class="cv__header--modify">
+                    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SYNTHESIS') }) }}" class="button">Modifer</a>
+                </div>
             </div>
         </div>
     </div>

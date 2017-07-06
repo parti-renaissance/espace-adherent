@@ -18,6 +18,12 @@
             background: white;
         }
 
+        &--modify {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
         &__about {
             top: -110px;
             position: relative;
