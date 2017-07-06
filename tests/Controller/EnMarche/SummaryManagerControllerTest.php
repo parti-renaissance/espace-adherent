@@ -816,7 +816,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
 
-        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
@@ -839,9 +839,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
         $this->assertCount(3, $missions->filter('.summary-wish'));
-        $this->assertSame('Missions de bénévolat', trim($missions->filter('.summary-wish')->eq(0)->text()));
-        $this->assertSame('Action publique', trim($missions->filter('.summary-wish')->eq(1)->text()));
-        $this->assertSame('Economie', trim($missions->filter('.summary-wish')->eq(2)->text()));
+        $this->assertSame('Me former à l\'action politique et citoyenne', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('Faire remonter les opinions du terrain', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('Expérimenter des projets concrets', trim($missions->filter('.summary-wish')->eq(2)->text()));
     }
 
     /**
@@ -854,7 +854,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
 
-        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
@@ -876,10 +876,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
         $this->assertCount(4, $missions->filter('.summary-wish'));
-        $this->assertSame('Missions de bénévolat', trim($missions->filter('.summary-wish')->eq(0)->text()));
-        $this->assertSame('Mission locale', trim($missions->filter('.summary-wish')->eq(1)->text()));
-        $this->assertSame('Engagement', trim($missions->filter('.summary-wish')->eq(2)->text()));
-        $this->assertSame('Emploi', trim($missions->filter('.summary-wish')->eq(3)->text()));
+        $this->assertSame('Faire émerger des idées nouvelles', trim($missions->filter('.summary-wish')->eq(0)->text()));
+        $this->assertSame('Faire remonter les opinions du terrain', trim($missions->filter('.summary-wish')->eq(1)->text()));
+        $this->assertSame('M\'engager dans des projets citoyens concrètes', trim($missions->filter('.summary-wish')->eq(2)->text()));
+        $this->assertSame('Participer aux conventions démocratiques européennes', trim($missions->filter('.summary-wish')->eq(3)->text()));
     }
 
     /**
