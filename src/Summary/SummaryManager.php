@@ -45,15 +45,10 @@ class SummaryManager
         $this->manager->flush();
     }
 
-    public function publishSummary(Summary $summary): bool
+    public function publishSummary(Summary $summary): void
     {
-        if ($summary->publish()) {
-            $this->updateSummary($summary);
-
-            return true;
-        }
-
-        return false;
+        $summary->publish();
+        $this->updateSummary($summary);
     }
 
     public function unpublishSummaryForAdherent(Adherent $adherent): bool

@@ -546,9 +546,9 @@ class Summary
         return $this->public;
     }
 
-    public function publish(): bool
+    public function publish(): void
     {
-        return $this->public = true;
+        $this->public = true;
     }
 
     public function unpublish(): bool
