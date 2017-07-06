@@ -221,11 +221,7 @@ class SummaryManagerController extends Controller
         $manager = $this->get(SummaryManager::class);
         $summary = $manager->getForAdherent($this->getUser());
 
-        if (!$manager->publishSummary($summary)) {
-            $this->addFlash('info', 'summary.not_complete');
-
-            return $this->redirectToRoute('app_summary_manager_index');
-        }
+        $manager->publishSummary($summary);
 
         return $this->redirectToRoute('app_summary_index', ['slug' => $summary->getSlug()]);
     }
