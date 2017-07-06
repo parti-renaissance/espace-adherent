@@ -1,6 +1,7 @@
 parameters:
     adherent_interests:
         agriculture: Agriculture
+        social: Affaires sociales
         culture: Culture
         economie: Économie
         education: Éducation
@@ -9,12 +10,11 @@ parameters:
         environement: Environnement
         europe: Europe
         international: International
-        institution: Vie publique & institutions
         jeunesse: Jeunesse
         justice: Justice
         numerique: Numérique
         sante: Santé
         securite: Sécurité
-        territoire: Territoire
-        social: Affaires sociales
         sport: Sport
+        territoire: Territoire
+        institution: Vie publique & institutions

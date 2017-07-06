@@ -205,4 +205,15 @@
         cursor: pointer;
         @include hover(black);
     }
+
+    #summary_member_interests  {
+        input {
+            margin-left: 0;
+        }
+        
+        label:after {
+            content: '';
+            display: block;
+        }
+    }
 }
