@@ -133,9 +133,69 @@
 
     &__training--options {
         margin-top: 10px;
-        
+
         > a {
             margin-left: 0;
         }
+    }
+}
+
+.cv__form {
+    form > div {
+        margin-bottom: 20px;
+    }
+
+    form > div > label {
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    select {
+        display: block;
+        width: 100%;
+    }
+
+    #job_experience_started_at select,
+    #job_experience_ended_at select,
+    #training_started_at select,
+    #training_ended_at select {
+        display: inline;
+        width: 48%;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        height: 120px;
+        padding: 10px 15px;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-left: 20px;
+        margin-right: 7px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    button {
+        margin: 20px 0;
+    }
+
+    .summary-skill {
+        padding: 5px 0;
+    }
+
+    #summary_skills {
+        margin: 15px 0 10px;
+    }
+
+    .summary-skill-remove:hover {
+        cursor: pointer;
+        @include hover(black);
     }
 }
