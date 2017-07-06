@@ -9,12 +9,15 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadMissionTypeData implements FixtureInterface
 {
     const MISSION_TYPES = [
-        'MT_001' => 'Missions de bénévolat',
-        'MT_002' => 'Mission locale',
-        'MT_003' => 'Action publique',
-        'MT_004' => 'Engagement',
-        'MT_005' => 'Economie',
-        'MT_006' => 'Emploi',
+        'MT_001' => 'Me former à l\'action politique et citoyenne',
+        'MT_002' => 'Faire émerger des idées nouvelles',
+        'MT_003' => 'Faire remonter les opinions du terrain',
+        'MT_004' => 'M\'engager dans des projets citoyens concrètes',
+        'MT_005' => 'Expérimenter des projets concrets',
+        'MT_006' => 'Participer aux conventions démocratiques européennes',
+        'MT_007' => 'Recruter des nouveaux adhérents et attirer de nouveaux talents',
+        'MT_008' => 'Participer à des actions militantes',
+        'MT_009' => 'Être un relai de l\'action gouvernementale',
     ];
 
     public function load(ObjectManager $manager)

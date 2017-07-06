@@ -37,7 +37,7 @@ class LoadSummaryData implements FixtureInterface
             'viadeoUrl' => 'https://fr.viadeo.com/lucie-olivera-fake',
             'facebookUr' => 'https://www.facebook.com/lucie-olivera-fake',
             'twitterNickname' => 'https://twitter.com/lucie-olivera-fake',
-            'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Missions de bénévolat']),
+            'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Faire remonter les opinions du terrain']),
         ]);
         $manager->persist($summary1);
 
@@ -146,7 +146,7 @@ class LoadSummaryData implements FixtureInterface
             'viadeoUrl' => 'https://fr.viadeo.com/carl-mirabeau-fake',
             'facebookUr' => 'https://www.facebook.com/carl-mirabeau-fake',
             'twitterNickname' => 'https://twitter.com/carl-mirabeau-fake',
-            'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Action publique']),
+            'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Faire émerger des idées nouvelles']),
         ]);
         $manager->persist($summary2);
 
