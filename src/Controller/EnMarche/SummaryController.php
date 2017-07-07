@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Summary;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
@@ -17,8 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SummaryController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="app_summary_index")
      * @Method("GET")
@@ -26,7 +23,6 @@ class SummaryController extends Controller
      */
     public function indexAction(Summary $summary): Response
     {
-        $this->disableInProduction();
         $this->get(SummaryManager::class)->setUrlProfilePicture($summary);
 
         return $this->render('summary/index.html.twig', [

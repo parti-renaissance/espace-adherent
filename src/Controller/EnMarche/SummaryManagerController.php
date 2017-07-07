@@ -2,13 +2,11 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Entity\Summary;
 use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
@@ -27,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SummaryManagerController extends Controller
 {
-    use CanaryControllerTrait;
     use EntityControllerTrait;
 
     /**
@@ -36,8 +33,6 @@ class SummaryManagerController extends Controller
      */
     public function indexAction()
     {
-        $this->disableInProduction();
-
         $member = $this->getUser();
         $manager = $this->get(SummaryManager::class);
         $summary = $manager->getForAdherent($this->getUser());
@@ -55,8 +50,6 @@ class SummaryManagerController extends Controller
      */
     public function toggleShowingRecentActivitiesAction()
     {
-        $this->disableInProduction();
-
         $manager = $this->get(SummaryManager::class);
         $summary = $manager->getForAdherent($this->getUser());
 
@@ -73,8 +66,6 @@ class SummaryManagerController extends Controller
      */
     public function handleExperienceAction(Request $request, ?JobExperience $experience)
     {
-        $this->disableInProduction();
-
         $summaryManager = $this->get(SummaryManager::class);
         $summary = $summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(JobExperienceType::class, $experience, [
@@ -100,8 +91,6 @@ class SummaryManagerController extends Controller
      */
     public function removeExperienceAction(Request $request, JobExperience $experience)
     {
-        $this->disableInProduction();
-
         $form = $this->createDeleteForm('', SummaryManager::DELETE_EXPERIENCE_TOKEN, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -121,8 +110,6 @@ class SummaryManagerController extends Controller
      */
     public function handleTrainingAction(Request $request, ?Training $training)
     {
-        $this->disableInProduction();
-
         $summaryManager = $this->get(SummaryManager::class);
         $summary = $summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(TrainingType::class, $training, [
@@ -148,8 +135,6 @@ class SummaryManagerController extends Controller
      */
     public function removeTrainingAction(Request $request, Training $training)
     {
-        $this->disableInProduction();
-
         $form = $this->createDeleteForm('', SummaryManager::DELETE_TRAINING_TOKEN, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -169,8 +154,6 @@ class SummaryManagerController extends Controller
      */
     public function handleLanguageAction(Request $request, ?Language $language)
     {
-        $this->disableInProduction();
-
         $form = $this->createForm(LanguageType::class, $language);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -191,8 +174,6 @@ class SummaryManagerController extends Controller
      */
     public function removeLanguageAction(Request $request, Language $language)
     {
-        $this->disableInProduction();
-
         $form = $this->createDeleteForm('', SummaryManager::DELETE_LANGUAGE_TOKEN, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -212,8 +193,6 @@ class SummaryManagerController extends Controller
      */
     public function publishAction()
     {
-        $this->disableInProduction();
-
         $manager = $this->get(SummaryManager::class);
         $summary = $manager->getForAdherent($this->getUser());
 
@@ -228,8 +207,6 @@ class SummaryManagerController extends Controller
      */
     public function unpublishAction()
     {
-        $this->disableInProduction();
-
         if ($this->get(SummaryManager::class)->unpublishSummaryForAdherent($this->getUser())) {
             $this->addFlash('info', 'summary.unpublished.success');
         } else {
@@ -248,8 +225,6 @@ class SummaryManagerController extends Controller
      */
     public function skillsAutocompleteAction(Request $request)
     {
-        $this->disableInProduction();
-
         $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsForAdherent(
             $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser());
 
@@ -262,8 +237,6 @@ class SummaryManagerController extends Controller
      */
     public function stepAction(Request $request, string $step)
     {
-        $this->disableInProduction();
-
         if (!SummaryType::stepExists($step)) {
             throw $this->createNotFoundException(sprintf('Invalid step "%s", known steps are "%s".', $step, implode('", "', SummaryType::STEPS)));
         }
@@ -292,8 +265,6 @@ class SummaryManagerController extends Controller
      */
     public function removePhotoAction(): Response
     {
-        $this->disableInProduction();
-
         $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
 
         if ($this->get(SummaryManager::class)->removePhoto($summary)) {
