@@ -4,7 +4,7 @@
             <div>
                 <h2>Activité récente chez En Marche</h2>
                 <p class="text--body">
-                    {% for activity in recent_activities.logs %}
+                    {% for activity in recent_activities.logs|slice(1, 5) %}
                         <div>{{ activity }}</div>
                     {% endfor %}
                 </p>
