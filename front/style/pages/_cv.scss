@@ -55,12 +55,23 @@
         }
 
         &__manage {
-            @include text--body;
             background: $darker;
             color: white;
             padding: 20px 0;
             margin-top: -26px;
             text-align: center;
+
+            div {
+                @include text--body;                
+            }
+
+            a {
+                margin-right: 20px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
         }
     }
 
@@ -210,7 +221,7 @@
         input {
             margin-left: 0;
         }
-        
+
         label:after {
             content: '';
             display: block;
