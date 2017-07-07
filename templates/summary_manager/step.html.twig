@@ -1,23 +1,14 @@
-{% extends 'summary_manager/layout.html.twig' %}
+{% extends 'summary_manager/_form_layout.html.twig' %}
 
-{% block summary_content %}
-    <section class="l__wrapper-500">
+{% block summary_form %}
+    {{ form_start(summary_form) }}
 
-    <div class="cv__form">
-        {{ form_start(summary_form) }}
+    {{ form_errors(summary_form) }}
 
-            {{ form_errors(summary_form) }}
+    {{ include('summary_manager/_form/' ~ step ~ '.html.twig') }}
 
-            {{ include('summary_manager/_form/' ~ step ~ '.html.twig') }}
+    <button type="submit" class="btn btn--blue">Enregistrer</button>
+    <a href="{{ path('app_summary_manager_index') }}" class="btn btn--no-border">Annuler</a>
 
-        {{ form_end(summary_form) }}
-
-        <div class="b__nudge--bottom">
-            <a href="{{ path('app_summary_manager_index') }}">
-                Retourner à mon profil En Marche
-            </a>
-        </div>
-    </div>
-
-</section>
+    {{ form_end(summary_form) }}
 {% endblock %}

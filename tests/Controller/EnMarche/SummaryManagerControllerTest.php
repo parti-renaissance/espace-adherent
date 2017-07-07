@@ -1216,14 +1216,14 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         // Afficher au public
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
-        $this->client->click($crawler->selectLink('Afficher au public')->link());
+        $this->client->click($crawler->selectLink('Afficher ces informations au public')->link());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
         $this->assertCount(1, $crawler->filter('#summary-recent-activities p'));
 
         // Masquer au public
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
-        $this->client->click($crawler->selectLink('Masquer au public')->link());
+        $this->client->click($crawler->selectLink('Masquer ces informations au public')->link());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
         $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
