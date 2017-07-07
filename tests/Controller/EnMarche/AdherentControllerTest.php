@@ -105,7 +105,6 @@ class AdherentControllerTest extends SqliteWebTestCase
     public function provideProfilePage()
     {
         yield ['/espace-adherent/mon-compte', 'Informations personnelles'];
-        yield ['/espace-adherent/mon-profil', 'Profil En Marche'];
         yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
         yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Préférences des e-mails'];
     }
