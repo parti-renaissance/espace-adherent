@@ -53,13 +53,13 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
     public function provideActions()
     {
-        yield 'Index' => ['/espace-adherent/mon-cv'];
-        yield 'Handle experience' => ['/espace-adherent/mon-cv/experience'];
-        yield 'Handle training' => ['/espace-adherent/mon-cv/formation'];
-        yield 'Handle language' => ['/espace-adherent/mon-cv/langue'];
+        yield 'Index' => ['/espace-adherent/mon-profil'];
+        yield 'Handle experience' => ['/espace-adherent/mon-profil/experience'];
+        yield 'Handle training' => ['/espace-adherent/mon-profil/formation'];
+        yield 'Handle language' => ['/espace-adherent/mon-profil/langue'];
 
         foreach (SummaryType::STEPS as $step) {
-            yield 'Handle step '.$step => ['/espace-adherent/mon-cv/'.$step];
+            yield 'Handle step '.$step => ['/espace-adherent/mon-profil/'.$step];
         }
     }
 
@@ -106,7 +106,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(0, $crawler->filter('.cv__experience'));
         $this->assertSummaryCompletion(8, $crawler);
@@ -131,7 +131,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -152,7 +152,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and experiences already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $crawler->filter('.cv__experience'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -177,7 +177,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -213,7 +213,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and experiences already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $experiences = $crawler->filter('.cv__experience'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -233,7 +233,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -250,7 +250,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and experiences already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $experiences = $crawler->filter('.cv__experience'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -262,7 +262,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->submit($crawler->filter('.cv__experience')->eq(0)->selectButton('Supprimer')->form());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -290,7 +290,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(0, $crawler->filter('.cv__training'));
         $this->assertSummaryCompletion(8, $crawler);
@@ -312,7 +312,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -333,7 +333,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $crawler->filter('.cv__training'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -354,7 +354,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -390,7 +390,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $trainings = $crawler->filter('.cv__training'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -410,7 +410,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -427,7 +427,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(2, $trainings = $crawler->filter('.cv__training'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -439,7 +439,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->submit($crawler->filter('.cv__training')->eq(0)->selectButton('Supprimer')->form());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -467,7 +467,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(0, $crawler->filter('.cv__languages'));
         $this->assertSummaryCompletion(8, $crawler);
@@ -483,7 +483,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -503,7 +503,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(3, $crawler->filter('.cv__languages'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -519,7 +519,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -537,7 +537,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertSummaryCompletion(100, $crawler);
 
@@ -556,7 +556,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -573,7 +573,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(3, $languages = $crawler->filter('.cv__languages'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -585,7 +585,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->submit($firstLanguage->selectButton('Supprimer')->form());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -600,7 +600,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         // Search the skill that user has not, should find one skill
-        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=outi');
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=outi');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -620,7 +620,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         // Search the skill that user already has, nothing should be found
-        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-cv/competences/autocompletion?term=sof');
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=sof');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -641,7 +641,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(0, $crawler->filter('.summary-skill'));
         $this->assertSummaryCompletion(8, $crawler);
@@ -661,7 +661,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -682,7 +682,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and skills already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertCount(4, $crawler->filter('.cv__skills li'));
         $this->assertSummaryCompletion(100, $crawler);
@@ -698,7 +698,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -721,7 +721,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
         $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
@@ -741,7 +741,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -768,7 +768,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/synthesis');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
         $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
@@ -787,7 +787,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -814,7 +814,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/missions');
 
         $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -827,7 +827,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -852,7 +852,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/missions');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/missions');
 
         $this->assertCount(10, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -865,7 +865,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -892,7 +892,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/motivation');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/motivation');
 
         $this->assertCount(1, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -905,7 +905,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -928,7 +928,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/motivation');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/motivation');
 
         $this->assertCount(1, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -941,7 +941,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -965,7 +965,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/interests');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
         $this->assertCount(19, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -976,7 +976,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -999,7 +999,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/interests');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
         $this->assertCount(19, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -1011,7 +1011,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -1036,7 +1036,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/contact');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
         $this->assertCount(7, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -1047,7 +1047,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -1070,7 +1070,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/contact');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
         $this->assertCount(7, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
@@ -1086,7 +1086,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -1109,7 +1109,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/publier');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/publier');
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/membre/gisele-berthoux', $this->client);
@@ -1125,10 +1125,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/depublier');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/depublier');
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -1152,7 +1152,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
         $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
         $files = array(
             'summary' => array(
@@ -1169,7 +1169,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -1182,7 +1182,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
         $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv/photo');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
         $files = array(
             'summary' => array(
@@ -1198,7 +1198,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-cv', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -1213,14 +1213,14 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
 
         // Afficher au public
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
         $this->client->click($crawler->selectLink('Afficher au public')->link());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
         $this->assertCount(1, $crawler->filter('#summary-recent-activities p'));
 
         // Masquer au public
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-cv');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
         $this->client->click($crawler->selectLink('Masquer au public')->link());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');

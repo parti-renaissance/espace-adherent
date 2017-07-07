@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class AdherentController extends Controller
 {
     /**
-     * @Route("/mon-profil", name="app_adherent_profile")
+     * @Route("/mon-compte", name="app_adherent_profile")
      * @Method("GET|POST")
      */
     public function profileAction(Request $request): Response
@@ -58,7 +58,7 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to pin his/her interests.
      *
-     * @Route("/mon-profil/centres-d-interet", name="app_adherent_pin_interests")
+     * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests")
      * @Method("GET|POST")
      */
     public function pinInterestsAction(Request $request): Response
@@ -82,7 +82,7 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to change his/her current password.
      *
-     * @Route("/mon-profil/changer-mot-de-passe", name="app_adherent_change_password")
+     * @Route("/mon-compte/changer-mot-de-passe", name="app_adherent_change_password")
      * @Method("GET|POST")
      */
     public function changePasswordAction(Request $request): Response
@@ -104,7 +104,7 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to choose his/her email notifications.
      *
-     * @Route("/mon-profil/preferences-des-emails", name="app_adherent_set_email_notifications")
+     * @Route("/mon-compte/preferences-des-emails", name="app_adherent_set_email_notifications")
      * @Method("GET|POST")
      */
     public function setEmailNotificationsAction(Request $request): Response

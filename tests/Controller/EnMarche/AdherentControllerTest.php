@@ -104,10 +104,10 @@ class AdherentControllerTest extends SqliteWebTestCase
 
     public function provideProfilePage()
     {
-        yield ['/espace-adherent/mon-profil', 'Informations personnelles'];
-        yield ['/espace-adherent/mon-profil/centres-d-interet', 'Centres d\'intérêt'];
-        yield ['/espace-adherent/mon-profil/changer-mot-de-passe', 'Mot de passe'];
-        yield ['/espace-adherent/mon-profil/preferences-des-emails', 'Préférences des e-mails'];
+        yield ['/espace-adherent/mon-compte', 'Informations personnelles'];
+        yield ['/espace-adherent/mon-compte/centres-d-interet', 'Centres d\'intérêt'];
+        yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
+        yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Préférences des e-mails'];
     }
 
     public function testEditAdherentProfile()
@@ -118,7 +118,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $inputPattern = 'input[name="update_membership_request[%s]"]';
         $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
@@ -192,7 +192,7 @@ class AdherentControllerTest extends SqliteWebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -219,7 +219,7 @@ class AdherentControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/centres-d-interet');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/centres-d-interet');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -251,7 +251,7 @@ class AdherentControllerTest extends SqliteWebTestCase
             ],
         ]);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/centres-d-interet', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
 
         /* @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
@@ -275,7 +275,7 @@ class AdherentControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/changer-mot-de-passe');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/changer-mot-de-passe');
 
         $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[old_password]"]'));
         $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][first]"]'));
@@ -310,7 +310,7 @@ class AdherentControllerTest extends SqliteWebTestCase
             ],
         ]);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/changer-mot-de-passe', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/changer-mot-de-passe', $this->client);
     }
 
     public function testAdherentSetEmailNotifications()
@@ -323,7 +323,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/preferences-des-emails');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
 
         $this->assertCount(3, $subscriptions);
@@ -331,7 +331,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
         // accept any invalid choice, thus cannot submit invalid form
-        $crawler = $this->client->request(Request::METHOD_POST, '/espace-adherent/mon-profil/preferences-des-emails', [
+        $crawler = $this->client->request(Request::METHOD_POST, '/espace-adherent/mon-compte/preferences-des-emails', [
             'adherent_email_subscription' => [
                 'emails_subscriptions' => ['heah'],
                 '_token' => $crawler->filter('input[name="adherent_email_subscription[_token]"]')->attr('value'),
@@ -354,7 +354,7 @@ class AdherentControllerTest extends SqliteWebTestCase
             ],
         ]);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil/preferences-des-emails', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/preferences-des-emails', $this->client);
 
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
 

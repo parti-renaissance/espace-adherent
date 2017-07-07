@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/espace-adherent/mon-cv")
+ * @Route("/espace-adherent/mon-profil")
  */
 class SummaryManagerController extends Controller
 {
