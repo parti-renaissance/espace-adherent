@@ -26,7 +26,7 @@
             {% if experience_form.display_order.vars.choices is defined %}
                 {{ form_row(experience_form.display_order, { label: 'Position dans la liste de vos expériences' }) }}
             {% else %}
-                {{ form_row(experience_form.display_order, { label: 'Position dans la liste de vos expériences' }) }}
+                {{ form_widget(experience_form.display_order) }}
             {% endif %}
 
         {{ form_end(experience_form) }}

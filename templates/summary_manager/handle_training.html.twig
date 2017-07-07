@@ -22,7 +22,7 @@
             {% if training_form.display_order.vars.choices is defined %}
                 {{ form_row(training_form.display_order, { label: 'Position dans la liste de vos formations' }) }}
             {% else %}
-                {{ form_row(training_form.display_order, { label: 'Position dans la liste de vos formations' }) }}
+                {{ form_widget(training_form.display_order) }}
             {% endif %}
 
         {{ form_end(training_form) }}
