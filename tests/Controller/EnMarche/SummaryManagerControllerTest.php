@@ -1133,10 +1133,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame('Votre CV a bien été dépublié.', $crawler->filter('.flash__inner')->text());
+        $this->assertSame('Votre profil a bien été dépublié.', $crawler->filter('.flash__inner')->text());
         $this->assertSummaryCompletion(100, $crawler);
 
-        $this->client->click($crawler->selectLink('Publier mon CV')->link());
+        $this->client->click($crawler->selectLink('Publier mon profil')->link());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/membre/lucie-olivera', $this->client);
