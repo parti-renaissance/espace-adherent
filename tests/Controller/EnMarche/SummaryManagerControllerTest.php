@@ -137,7 +137,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
         $this->assertSame('L\'expérience a bien été sauvegardée.', $crawler->filter('.flash__inner')->text());
         $this->assertCount(1, $experience = $crawler->filter('.cv__experience > div'));
         $this->assertContains(strtoupper($position), $experience->filter('h3')->text());
@@ -318,7 +318,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
         $this->assertSame('La formation a bien été sauvegardée.', $crawler->filter('.flash__inner')->text());
         $this->assertCount(1, $experience = $crawler->filter('.cv__training'));
         $this->assertSame($diploma.' - '.$studyField, $experience->filter('h3')->text());
@@ -491,7 +491,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('La langue a bien été sauvegardée.', $crawler->filter('.flash__inner')->text());
         $this->assertCount(1, $language = $crawler->filter('.cv__languages'));
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
         $this->assertSame('Français - '.ucfirst($level), $language->filter('.cv__languages > div')->text());
     }
 
@@ -671,7 +671,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(2, $skills = $crawler->filter('.cv__skills li'));
         $this->assertSame($skill1, $skills->eq(0)->filter('li')->text());
         $this->assertSame($skill2, $skills->eq(1)->filter('li')->text());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
     }
 
     /**
@@ -748,7 +748,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(39, $crawler);
+        $this->assertSummaryCompletion(36, $crawler);
 
         $header = $this->getSummarySection($crawler, self::SECTION_HEADER);
         $synthesis = $this->getSummarySection($crawler, self::SECTION_SYNTHESIS);
@@ -834,7 +834,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
 
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
@@ -912,7 +912,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
 
         $section = $this->getSummarySection($crawler, self::SECTION_MOTIVATION);
 
@@ -983,7 +983,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
 
         $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
@@ -1054,7 +1054,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
-        $this->assertSummaryCompletion(16, $crawler);
+        $this->assertSummaryCompletion(15, $crawler);
 
         $this->assertCount(1, $crawler->filter('.summary-contact-email'));
         $this->assertCount(0, $crawler->filter('.summary-contact-facebook'));

@@ -15,12 +15,12 @@ use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
-use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/espace-adherent/mon-cv")
@@ -39,17 +39,13 @@ class SummaryManagerController extends Controller
         $this->disableInProduction();
 
         $member = $this->getUser();
-        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
-        $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
-        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, []);
+        $manager = $this->get(SummaryManager::class);
+        $summary = $manager->getForAdherent($this->getUser());
+        $manager->setUrlProfilePicture($summary);
 
         return $this->render('summary_manager/index.html.twig', [
             'summary' => $summary,
             'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
-            'url_photo' => $this->generateUrl('asset_url', [
-                'path' => $pathImage,
-                's' => $signature,
-            ]),
         ]);
     }
 
@@ -288,5 +284,24 @@ class SummaryManagerController extends Controller
             'summary_form' => $form->createView(),
             'step' => $step,
         ]);
+    }
+
+    /**
+     * @Route("/photo/supprimer", name="app_summary_manager_remove_photo")
+     * @Method("GET")
+     */
+    public function removePhotoAction(): Response
+    {
+        $this->disableInProduction();
+
+        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+
+        if ($this->get(SummaryManager::class)->removePhoto($summary)) {
+            $this->addFlash('info', 'summary.remove_photo.success');
+        } else {
+            $this->addFlash('error', 'summary.remove_photo.error');
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
     }
 }

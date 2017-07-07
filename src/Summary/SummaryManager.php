@@ -9,6 +9,11 @@ use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Entity\Summary;
 use AppBundle\Repository\SummaryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use League\Glide\Signatures\SignatureFactory;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SummaryManager
 {
@@ -19,12 +24,27 @@ class SummaryManager
     private $factory;
     private $repository;
     private $manager;
+    private $router;
+    private $storage;
+    private $glide;
+    private $signKey;
 
-    public function __construct(SummaryFactory $factory, SummaryRepository $repository, ObjectManager $manager)
-    {
+    public function __construct(
+        SummaryFactory $factory,
+        SummaryRepository $repository,
+        ObjectManager $manager,
+        UrlGeneratorInterface $router,
+        Filesystem $storage,
+        Server $glide,
+        string $signKey
+    ) {
         $this->factory = $factory;
         $this->repository = $repository;
         $this->manager = $manager;
+        $this->router = $router;
+        $this->storage = $storage;
+        $this->glide = $glide;
+        $this->signKey = $signKey;
     }
 
     public function getForAdherent(Adherent $adherent): Summary
@@ -120,6 +140,36 @@ class SummaryManager
 
         $summary->removeLanguage($language);
         $this->updateSummary($summary);
+
+        return true;
+    }
+
+    public function setUrlProfilePicture(Summary $summary): void
+    {
+        if ($summary->hasPictureUploaded()) {
+            $cache = Uuid::uuid4()->toString();
+            $signature = SignatureFactory::create($this->signKey)->generateSignature($summary->getPicturePath(), ['cache' => $cache]);
+
+            $summary->setUrlProfilePicture($this->router->generate('asset_url', [
+                'path' => $summary->getPicturePath(),
+                's' => $signature,
+                'cache' => $cache,
+            ], UrlGeneratorInterface::ABSOLUTE_PATH));
+        }
+    }
+
+    public function removePhoto(Summary $summary): bool
+    {
+        try {
+            // Delete profile picture from cloud storage
+            $this->storage->delete($summary->getPicturePath());
+            $this->glide->deleteCache($summary->getPicturePath());
+
+            $summary->setPictureUploaded(false);
+            $this->updateSummary($summary);
+        } catch (\Exception $e) {
+            return false;
+        }
 
         return true;
     }
