@@ -149,7 +149,9 @@
         }
     }
 
-    &__training--options {
+    &__training--options,
+    &__experience--options
+     {
         margin-top: 10px;
 
         > a {
