@@ -106,6 +106,9 @@ member_summary.language.level.medium: Bonne maîtrise
 member_summary.language.level.high: Maîtrise parfaite
 member_summary.language.level.fluent: Langue maternelle
 
+summary.remove_photo.success: La photo de profil a bien été supprimée.
+summary.remove_photo.error: La photo de profil n'a pas été supprimée.
+
 #
 # Search
 #

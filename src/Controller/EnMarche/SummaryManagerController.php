@@ -41,7 +41,8 @@ class SummaryManagerController extends Controller
         $member = $this->getUser();
         $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
         $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
-        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, []);
+        $cache = substr(md5((new \DateTime())->format('U')), 0, 20);
+        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, ['cache' => $cache]);
 
         return $this->render('summary_manager/index.html.twig', [
             'summary' => $summary,
@@ -49,6 +50,7 @@ class SummaryManagerController extends Controller
             'url_photo' => $this->generateUrl('asset_url', [
                 'path' => $pathImage,
                 's' => $signature,
+                'cache' => $cache,
             ]),
         ]);
     }
@@ -288,5 +290,24 @@ class SummaryManagerController extends Controller
             'summary_form' => $form->createView(),
             'step' => $step,
         ]);
+    }
+
+    /**
+     * @Route("/photo/supprimer", name="app_summary_manager_remove_photo")
+     * @Method("GET")
+     */
+    public function removePhotoAction(Request $request)
+    {
+        $this->disableInProduction();
+
+        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+
+        if ($this->get(SummaryManager::class)->removePhoto($summary)) {
+            $this->addFlash('info', 'summary.remove_photo.success');
+        } else {
+            $this->addFlash('error', 'summary.remove_photo.error');
+        }
+
+        return $this->redirectToRoute('app_summary_manager_index');
     }
 }

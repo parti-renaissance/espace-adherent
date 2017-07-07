@@ -9,6 +9,9 @@ use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Entity\Summary;
 use AppBundle\Repository\SummaryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SummaryManager
 {
@@ -19,12 +22,22 @@ class SummaryManager
     private $factory;
     private $repository;
     private $manager;
+    private $storage;
+    private $glide;
 
-    public function __construct(SummaryFactory $factory, SummaryRepository $repository, ObjectManager $manager)
+    public function __construct(
+        SummaryFactory $factory,
+        SummaryRepository $repository,
+        ObjectManager $manager,
+        Filesystem $storage,
+        Server $glide
+    )
     {
         $this->factory = $factory;
         $this->repository = $repository;
         $this->manager = $manager;
+        $this->storage = $storage;
+        $this->glide = $glide;
     }
 
     public function getForAdherent(Adherent $adherent): Summary
@@ -120,6 +133,21 @@ class SummaryManager
 
         $summary->removeLanguage($language);
         $this->updateSummary($summary);
+
+        return true;
+    }
+
+    public function removePhoto(Summary $summary): bool
+    {
+        // Delete profile picture from cloud storage
+        $pathImage = 'images/' . $summary->getMemberUuid() . '.jpg';
+
+        try {
+            $this->storage->delete($pathImage);
+            $this->glide->deleteCache($pathImage);
+        } catch (\Exception $e) {
+            return false;
+        }
 
         return true;
     }

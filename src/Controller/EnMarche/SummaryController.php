@@ -28,7 +28,8 @@ class SummaryController extends Controller
         $this->disableInProduction();
 
         $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
-        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, []);
+        $cache = substr(md5((new \DateTime())->format('U')), 0, 20);
+        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, ['cache' => $cache]);
 
         return $this->render('summary/index.html.twig', [
             'summary' => $summary,
@@ -36,6 +37,7 @@ class SummaryController extends Controller
             'url_photo' => $this->generateUrl('asset_url', [
                 'path' => $pathImage,
                 's' => $signature,
+                'cache' => $cache,
             ]),
         ]);
     }
