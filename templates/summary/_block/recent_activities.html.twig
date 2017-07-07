@@ -3,9 +3,9 @@
         {% if summary.showingRecentActivities %}
             <div>
                 <h2>Activité récente chez En Marche</h2>
-                <p class="text--body">
+                <p>
                     {% for activity in recent_activities.logs|slice(1, 5) %}
-                        <div>{{ activity }}</div>
+                        <div class="text--body">{{ activity }}</div>
                     {% endfor %}
                 </p>
             </div>
