@@ -219,7 +219,9 @@ class SummaryManagerController extends Controller
 
         $manager->publishSummary($summary);
 
-        return $this->redirectToRoute('app_summary_index', ['slug' => $summary->getSlug()]);
+        $this->addFlash('info', 'summary.published.success');
+
+        return $this->redirectToRoute('app_summary_manager_index');
     }
 
     /**

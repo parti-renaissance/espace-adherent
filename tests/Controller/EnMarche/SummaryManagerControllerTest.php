@@ -1112,9 +1112,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/publier');
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/membre/gisele-berthoux', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
-        $this->client->followRedirect();
+        $this->client->request(Request::METHOD_GET, '/membre/gisele-berthoux');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
@@ -1139,9 +1139,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->click($crawler->selectLink('Publier mon profil')->link());
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/membre/lucie-olivera', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
 
-        $this->client->followRedirect();
+        $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
