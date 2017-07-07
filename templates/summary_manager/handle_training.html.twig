@@ -20,9 +20,9 @@
             {{ form_row(training_form.extra_curricular, { label: 'Participation à des activités extra-scolaires' }) }}
 
             {% if training_form.display_order.vars.choices is defined %}
-                {{ form_row(training_form.display_order, { label: 'Position dans la liste des formations' }) }}
+                {{ form_row(training_form.display_order, { label: 'Position dans la liste de vos formations' }) }}
             {% else %}
-                {{ form_widget(training_form.display_order) }}
+                {{ form_widget(training_form.display_order, { label: 'Position dans la liste de vos formations' }) }}
             {% endif %}
 
         {{ form_end(training_form) }}
