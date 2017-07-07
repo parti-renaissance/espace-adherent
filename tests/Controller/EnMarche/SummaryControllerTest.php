@@ -64,7 +64,7 @@ class SummaryControllerTest extends SqliteWebTestCase
         $this->assertSame('https://www.facebook.com/lucie-olivera-fake', $crawler->filter('.summary-contact-facebook a')->attr('href'));
         $this->assertSame('https://twitter.com/lucie-olivera-fake', $crawler->filter('.summary-contact-twitter a')->attr('href'));
 
-        $this->assertSame(0, $crawler->filter('.cv__skills--modify:contains("Modifer")')->count());
+        $this->assertSame(0, $crawler->filter('.cv__skills--modify:contains("Modifier")')->count());
     }
 
     protected function setUp()
