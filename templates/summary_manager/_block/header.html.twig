@@ -7,8 +7,10 @@
     </div>
     <div class="background--yellow cv__header">
         <div class="l__wrapper--medium text--center">
-            <div class="cv__header__photo progressive-background">
-                <img src="{{ url_photo }}" alt="Ajouter une photo" />
+            <div class="cv__header__photo progressive-background"
+                 {% if url_photo %}
+                    style="background-image: url('{{ url_photo }}')"
+                 {% endif %}>
             </div>
             {{ include('summary_manager/_block/photo.html.twig') }}
             <div class="cv__header__about">
