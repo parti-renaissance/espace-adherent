@@ -217,7 +217,8 @@
         @include hover(black);
     }
 
-    #summary_member_interests  {
+    #summary_member_interests,
+    #summary_mission_type_wishes  {
         input {
             margin-left: 0;
         }
