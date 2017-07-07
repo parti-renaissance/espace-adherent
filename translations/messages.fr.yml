@@ -79,6 +79,7 @@ summary.remove_training.success: La formation a bien été supprimée.
 summary.handle_language.success: La langue a bien été sauvegardée.
 summary.remove_language.success: La langue a bien été supprimée.
 summary.step.success: Vos modifications ont bien été enregistrées.
+summary.published.success: Votre profil a bien été publié.
 summary.unpublished.success: Votre profil a bien été dépublié.
 summary.unpublished.error: Votre profil n'est pas public.
 
