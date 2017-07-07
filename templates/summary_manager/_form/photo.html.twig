@@ -1,5 +1,12 @@
-<h2 class="b__nudge--bottom">Changer ma photo</h2>
+<h2 class="b__nudge--bottom">Modifier ma photo</h2>
 
-{{ form_row(summary_form.profile_picture) }}
+<div class="form__row">
+    {{ form_label(summary_form.profile_picture, 'Choisissez une photo sur votre ordinateur (maximum 1 Mo, JPG ou PNG)') }}<br />
+    {{ form_errors(summary_form.profile_picture) }}
+    {{ form_widget(summary_form.profile_picture) }}
+</div>
 
-<a id="summary-photo-delete" href="{{ path('app_summary_manager_remove_photo') }}">Supprimer ma photo de profil</a>
+<div class="form__row">
+    <a id="summary-photo-delete" href="{{ path('app_summary_manager_remove_photo') }}">
+        Supprimer ma photo de profil</a>
+</div>
