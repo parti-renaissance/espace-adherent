@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block page_title 'CV ' ~ summary.member.fullname %}
+{% block meta_description 'Remplissez votre profil En Marche et mettez vos compétences au service de projets citoyens.' %}
+{% block canonical_url url('app_summary_index', {'slug': summary.slug}) %}
 
 {% block content %}
 
