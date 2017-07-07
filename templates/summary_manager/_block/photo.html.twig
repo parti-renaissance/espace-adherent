@@ -1,6 +1,7 @@
 {% extends 'summary/_block/photo.html.twig' %}
 
 {% block summary_photo %}
-    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifer</a>
+    <div class="cv__header__photo--modify">
+        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifer la photo</a>
+    </div>
 {% endblock %}
-
