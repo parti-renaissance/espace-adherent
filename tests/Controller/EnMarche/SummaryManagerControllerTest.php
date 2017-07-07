@@ -1150,7 +1150,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     {
         // This adherent has no summary
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
-        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
+        $this->assertFileInStorage('images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
@@ -1173,14 +1173,15 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertFileInStorage('images/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
+        $this->assertFileInStorage('images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
+        unlink(__DIR__.'/../../../app/data/images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg');
     }
 
     public function testAddProfilePictureToSummary()
     {
         // This adherent has a summary
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
-        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
+        $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
@@ -1202,7 +1203,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertFileInStorage('images/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
+        $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
+        unlink(__DIR__.'/../../../app/data/images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
     }
 
     public function testShowHideRecentActivities()

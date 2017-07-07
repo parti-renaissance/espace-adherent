@@ -583,7 +583,7 @@ class Summary
 
     public function getPicturePath(): string
     {
-        return sprintf('images/%s.jpg', $this->getMemberUuid());
+        return sprintf('images/summaries/%s.jpg', $this->getMemberUuid());
     }
 
     public function setUrlProfilePicture(string $url): void
@@ -604,9 +604,6 @@ class Summary
         return $this->profilePicture;
     }
 
-    /**
-     * @param UploadedFile|null $file
-     */
     public function setProfilePicture(UploadedFile $profilePicture = null): void
     {
         $this->profilePicture = $profilePicture;
