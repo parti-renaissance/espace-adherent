@@ -14,8 +14,10 @@
             width: 210px;
             border-radius: 50%;
             border: 6px solid white;
-            background-position: left center; // Change once we have the right image
-            background: white;
+            background-image: url('/images/user.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: $gray--lighter;
         }
 
         &--modify {
