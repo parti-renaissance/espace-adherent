@@ -39,51 +39,51 @@ class SummaryTest extends TestCase
 
         $summary->setContributionWish(Contribution::VOLUNTEER);
 
-        $this->assertSame(16, $summary->getCompletion());
+        $this->assertSame(15, $summary->getCompletion());
 
         $summary->setAvailabilities([JobDuration::PUNCTUALLY]);
 
-        $this->assertSame(24, $summary->getCompletion());
+        $this->assertSame(22, $summary->getCompletion());
 
         $summary->setJobLocations([JobLocation::ON_SITE]);
 
-        $this->assertSame(31, $summary->getCompletion());
+        $this->assertSame(29, $summary->getCompletion());
 
         $summary->setProfessionalSynopsis('This is a fake summary.');
 
-        $this->assertSame(39, $summary->getCompletion());
+        $this->assertSame(36, $summary->getCompletion());
 
         $summary->setMissionTypeWishes($this->createSummaryItemCollectionMock());
 
-        $this->assertSame(47, $summary->getCompletion());
+        $this->assertSame(43, $summary->getCompletion());
 
         $summary->setMotivation('I\m motivated as far as a fake can be.');
 
-        $this->assertSame(54, $summary->getCompletion());
+        $this->assertSame(50, $summary->getCompletion());
 
         $summary->setShowingRecentActivities(true);
 
-        $this->assertSame(54, $summary->getCompletion());
+        $this->assertSame(50, $summary->getCompletion());
 
         $summary->addExperience(new JobExperience());
 
-        $this->assertSame(62, $summary->getCompletion());
+        $this->assertSame(58, $summary->getCompletion());
 
         $summary->addSkill(new Skill());
 
-        $this->assertSame(70, $summary->getCompletion());
+        $this->assertSame(65, $summary->getCompletion());
 
         $summary->addLanguage(new Language());
 
-        $this->assertSame(77, $summary->getCompletion());
+        $this->assertSame(72, $summary->getCompletion());
 
         $summary->setMemberInterests(['complete test']);
 
-        $this->assertSame(85, $summary->getCompletion());
+        $this->assertSame(79, $summary->getCompletion());
 
         $summary->addTraining(new Training());
 
-        $this->assertSame(93, $summary->getCompletion());
+        $this->assertSame(86, $summary->getCompletion());
 
         $summary->setLinkedInUrl('linkedin.com/in/fake');
         $summary->setWebsiteUrl('www.fake.com');
@@ -91,9 +91,13 @@ class SummaryTest extends TestCase
         $summary->setTwitterNickname('@fake');
         $summary->setViadeoUrl('viadeo.com/fake');
 
-        $this->assertSame(93, $summary->getCompletion());
+        $this->assertSame(86, $summary->getCompletion());
 
         $summary->setContactEmail('fake@contact.com');
+
+        $this->assertSame(93, $summary->getCompletion());
+
+        $summary->setPictureUploaded(true);
 
         $this->assertSame(100, $summary->getCompletion());
     }

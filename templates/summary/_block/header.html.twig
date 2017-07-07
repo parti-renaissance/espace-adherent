@@ -6,13 +6,7 @@
     </div>
     <div class="background--yellow cv__header">
         <div class="l__wrapper--medium text--center">
-            // ROL TODO
             {{ include('summary/_block/photo.html.twig') }}
-            <div class="cv__header__photo progressive-background"
-                {% if url_photo %}
-                   style="background-image: url('{{ url_photo }}')"
-                 {% endif %}>
-            </div>
             <div class="cv__header__about">
                 <h2 class="text--large b__nudge--top">{{ summary.member.fullname }}</h2>
 

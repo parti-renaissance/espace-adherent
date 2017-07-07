@@ -233,6 +233,15 @@ class Summary
     private $public = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $pictureUploaded = false;
+
+    private $urlProfilePicture = '#';
+
+    /**
      * @var UploadedFile|null
      *
      * @Assert\Image(
@@ -546,6 +555,16 @@ class Summary
         return $this->public;
     }
 
+    public function hasPictureUploaded(): bool
+    {
+        return $this->pictureUploaded;
+    }
+
+    public function setPictureUploaded(bool $pictureUploaded): void
+    {
+        $this->pictureUploaded = $pictureUploaded;
+    }
+
     public function publish(): void
     {
         $this->public = true;
@@ -560,6 +579,21 @@ class Summary
         }
 
         return false;
+    }
+
+    public function getPicturePath(): string
+    {
+        return sprintf('images/%s.jpg', $this->getMemberUuid());
+    }
+
+    public function setUrlProfilePicture(string $url): void
+    {
+        $this->urlProfilePicture = $url;
+    }
+
+    public function getUrlProfilePicture(): string
+    {
+        return $this->urlProfilePicture;
     }
 
     /**
@@ -659,8 +693,11 @@ class Summary
         if ($this->contactEmail) {
             ++$complete;
         }
+        if ($this->hasPictureUploaded()) {
+            ++$complete;
+        }
 
-        return round(ceil($complete / 13 * 100));
+        return round(ceil($complete / 14 * 100));
     }
 
     public static function createFromMember(Adherent $adherent, string $slug): self

@@ -1,3 +1,7 @@
 {% block summary_photo %}
-        <div><img src="{{ url_photo }}" /></div>
+        <div class="cv__header__photo progressive-background"
+                {% if summary.urlProfilePicture %}
+                style="background-image: url('{{ summary.urlProfilePicture }}')"
+                {% endif %}>
+        </div>
 {% endblock %}

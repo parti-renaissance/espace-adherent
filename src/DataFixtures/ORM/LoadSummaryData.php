@@ -38,6 +38,7 @@ class LoadSummaryData implements FixtureInterface
             'facebookUr' => 'https://www.facebook.com/lucie-olivera-fake',
             'twitterNickname' => 'https://twitter.com/lucie-olivera-fake',
             'missionWishes' => $manager->getRepository(MissionType::class)->findBy(['name' => 'Faire remonter les opinions du terrain']),
+            'pictureUploaded' => true,
         ]);
         $manager->persist($summary1);
 

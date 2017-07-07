@@ -1,11 +1,7 @@
 {% extends 'summary/_block/photo.html.twig' %}
 
 {% block summary_photo %}
-    // ROL TODO
     {{ parent() }}
-    <a id="summary-photo-add" href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifier ma photo</a>
-
-
     <div class="cv__header__photo--modify">
         <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifier la photo</a>
     </div>

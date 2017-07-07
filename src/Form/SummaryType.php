@@ -89,6 +89,7 @@ class SummaryType extends AbstractType
                             ]);
                             $this->storage->put($pathImage, $this->glide->getCache()->readStream($path));
                             $this->glide->deleteCache($pathImage);
+                            $summary->setPictureUploaded(true);
                         }
                     }, -10);
                 break;

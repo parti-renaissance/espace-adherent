@@ -41,6 +41,7 @@ class SummaryFactory
         $admin->setFacebookUrl($data['facebookUr'] ?? '');
         $admin->setTwitterNickname($data['twitterNickname'] ?? '');
         $admin->setMissionTypeWishes($data['missionWishes'] ?? []);
+        $admin->setPictureUploaded($data['pictureUploaded'] ?? false);
 
         return $admin;
     }

@@ -15,12 +15,12 @@ use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Summary\SummaryManager;
-use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/espace-adherent/mon-cv")
@@ -39,19 +39,13 @@ class SummaryManagerController extends Controller
         $this->disableInProduction();
 
         $member = $this->getUser();
-        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
-        $pathImage = 'images/'.$summary->getMemberUuid().'.jpg';
-        $cache = substr(md5((new \DateTime())->format('U')), 0, 20);
-        $signature = SignatureFactory::create($this->getParameter('kernel.secret'))->generateSignature($pathImage, ['cache' => $cache]);
+        $manager = $this->get(SummaryManager::class);
+        $summary = $manager->getForAdherent($this->getUser());
+        $manager->setUrlProfilePicture($summary);
 
         return $this->render('summary_manager/index.html.twig', [
             'summary' => $summary,
             'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
-            'url_photo' => $this->generateUrl('asset_url', [
-                'path' => $pathImage,
-                's' => $signature,
-                'cache' => $cache,
-            ]),
         ]);
     }
 
@@ -296,7 +290,7 @@ class SummaryManagerController extends Controller
      * @Route("/photo/supprimer", name="app_summary_manager_remove_photo")
      * @Method("GET")
      */
-    public function removePhotoAction(Request $request)
+    public function removePhotoAction(): Response
     {
         $this->disableInProduction();
 
