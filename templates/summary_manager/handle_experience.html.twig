@@ -23,7 +23,7 @@
             {{ form_row(experience_form.duration, { label: 'Statut' }) }}
             {{ form_row(experience_form.description, { label: 'Description du poste' }) }}
 
-            {% if experience_form.display_order.vars.choices is defined %}
+            {% if experience_form.display_order.entry.vars.choices is defined %}
                 {{ form_row(experience_form.display_order, { label: 'Position dans la liste de vos expériences' }) }}
             {% else %}
                 {{ form_widget(experience_form.display_order) }}
