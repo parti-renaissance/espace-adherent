@@ -44,7 +44,8 @@
         {% if summary.public %}
             <div>Mon CV est public</div>
             <a href="{{ path('app_summary_manager_unpublish') }}" class="link--white">Dépublier mon CV</a>
-            <a href="{{ path('app_summary_index', { slug: summary.slug }) }}" class="link--white">Voir mon CV en ligne</a>
+            <a href="{{ path('app_summary_index', { slug: summary.slug }) }}" target="_blank"
+               class="link--white">Voir mon CV en ligne</a>
         {% else %}
             <div>Mon CV est privé</div>
             <a href="{{ path('app_summary_manager_publish') }}" class="link--white">Publier mon CV</a>
