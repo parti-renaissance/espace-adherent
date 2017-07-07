@@ -201,7 +201,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte', $client);
 
         $client->followRedirect();
 

@@ -184,8 +184,8 @@ security:
 
 
     access_control:
+        - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mon-cv', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
