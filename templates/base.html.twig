@@ -154,11 +154,9 @@
                                         <li><a href="{{ path('map_events') }}">La carte des événements</a></li>
                                         <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
                                         <li class="nav__user__menu__separator"></li>
-                                        {% if enable_canary %}
-                                            <li class="text--small">
-                                                <a class="text--pink" href="{{ path('app_summary_manager_index') }}">Mon profil En Marche</a>
-                                            </li>
-                                        {% endif %}
+                                        <li class="text--small">
+                                            <a class="text--pink" href="{{ path('app_summary_manager_index') }}">Mon profil En Marche</a>
+                                        </li>
                                         {% if is_granted('CREATE_COMMITTEE') %}
                                             <li class="text--small">
                                                 <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
