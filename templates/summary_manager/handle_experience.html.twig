@@ -65,12 +65,12 @@
         {{ form_widget(experience_form.display_order) }}
     {% endif %}
 
+    <button type="submit" class="btn btn--blue">Enregistrer</button>
+    <a href="{{ path('app_summary_manager_index') }}" class="btn btn--no-border">Annuler</a>
+
     {{ form_end(experience_form) }}
 
     {% if experience_form.vars.data and not experience_form.vars.data.new %}
         {{ delete_form(path('app_summary_manager_remove_experience', { id: experience_form.vars.data.id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_EXPERIENCE_TOKEN')) }}
     {% endif %}
-
-    <button type="submit" class="btn btn--blue">Enregistrer</button>
-    <a href="{{ path('app_summary_manager_index') }}" class="btn btn--no-border">Annuler</a>
 {% endblock %}
