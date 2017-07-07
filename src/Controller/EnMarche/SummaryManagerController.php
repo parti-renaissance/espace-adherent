@@ -80,6 +80,7 @@ class SummaryManagerController extends Controller
         $form = $this->createForm(JobExperienceType::class, $experience, [
             'summary' => $summary,
             'collection' => $summary->getExperiences(),
+            'add_submit_button' => false,
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -128,6 +129,7 @@ class SummaryManagerController extends Controller
         $form = $this->createForm(TrainingType::class, $training, [
             'summary' => $summary,
             'collection' => $summary->getTrainings(),
+            'add_submit_button' => false,
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {

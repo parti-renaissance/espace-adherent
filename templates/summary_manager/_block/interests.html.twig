@@ -2,5 +2,6 @@
 
 {% block summary_interests %}
     {{ parent() }}
-    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_INTERESTS') }) }}" class="button">Modifier</a>
+    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_INTERESTS') }) }}" class="button">
+        Modifier mes centres d'intérêts</a>
 {% endblock %}

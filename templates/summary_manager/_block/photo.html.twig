@@ -3,6 +3,7 @@
 {% block summary_photo %}
     {{ parent() }}
     <div class="cv__header__photo--modify">
-        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">Modifier la photo</a>
+        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">
+            Modifier ma photo</a>
     </div>
 {% endblock %}
