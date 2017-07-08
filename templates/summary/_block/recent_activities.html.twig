@@ -2,7 +2,7 @@
     {% block summary_recent_activities %}
         {% if summary.showingRecentActivities %}
             <div>
-                <h2>Activité récente chez En Marche</h2>
+                <h2>Mon activité récente</h2>
                 <p>
                     {% for activity in recent_activities.logs|slice(1, 5) %}
                         <div class="text--body">{{ activity }}</div>
