@@ -2,12 +2,8 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SummaryAdmin extends AbstractAdmin
 {
@@ -17,27 +13,6 @@ class SummaryAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'member',
     ];
-
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('member', null, [
-                'label' => 'Membre',
-                'show_filter' => true,
-            ])
-            ->add('currentProfession', null, [
-                'label' => 'Métier principal',
-            ])
-            ->add('contributionWish', null, [
-                'label' => 'Souhait de contribution',
-                'show_filter' => true,
-            ], ChoiceType::class, ['choices' => Contribution::CHOICES])
-            ->add('availabilities', null, [
-                'label' => 'Disponibilités',
-                'show_filter' => true,
-            ], ChoiceType::class, ['choices' => JobDuration::CHOICES])
-        ;
-    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
