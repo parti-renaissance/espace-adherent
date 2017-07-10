@@ -3,6 +3,7 @@
 namespace AppBundle\Contact;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ContactMessage
@@ -21,11 +22,27 @@ class ContactMessage
     private $from;
     private $to;
 
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
+     * @AssertRecaptcha
+     */
+    public $recaptcha = '';
+
     public function __construct(Adherent $from, Adherent $to, string $content = null)
     {
         $this->from = $from;
         $this->to = $to;
         $this->content = $content;
+    }
+
+    public static function createWithCaptcha(string $recaptcha, Adherent $from, Adherent $to, string $content = null): self
+    {
+        $message = new self($from, $to, $content);
+        $message->recaptcha = $recaptcha;
+
+        return $message;
     }
 
     public function getFrom(): Adherent

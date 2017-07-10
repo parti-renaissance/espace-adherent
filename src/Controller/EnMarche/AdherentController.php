@@ -17,6 +17,7 @@ use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
+use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -192,30 +193,34 @@ class AdherentController extends Controller
             throw new BadUuidRequestException($e);
         }
 
-        $message = new ContactMessage($this->getUser(), $adherent);
+        $message = ContactMessage::createWithCaptcha((string) $request->request->get('g-recaptcha-response'), $this->getUser(), $adherent);
 
         $form = $this->createForm(ContactMessageType::class, $message);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.adherent.contact_message_handler')->handle($message);
-            $this->addFlash('info', $this->get('translator')->trans('adherent.contact.success'));
+        try {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->get('app.adherent.contact_message_handler')->handle($message);
+                $this->addFlash('info', $this->get('translator')->trans('adherent.contact.success'));
 
-            if ($from instanceof Committee) {
-                return $this->redirectToRoute('app_committee_show', [
-                    'uuid' => $from->getUuid()->toString(),
-                    'slug' => $from->getSlug(),
-                ]);
+                if ($from instanceof Committee) {
+                    return $this->redirectToRoute('app_committee_show', [
+                        'uuid' => $from->getUuid()->toString(),
+                        'slug' => $from->getSlug(),
+                    ]);
+                }
+
+                if ($from instanceof Event) {
+                    return $this->redirectToRoute('app_event_show', [
+                        'uuid' => $from->getUuid()->toString(),
+                        'slug' => $from->getSlug(),
+                    ]);
+                }
+
+                return $this->redirectToRoute('homepage');
             }
-
-            if ($from instanceof Event) {
-                return $this->redirectToRoute('app_event_show', [
-                    'uuid' => $from->getUuid()->toString(),
-                    'slug' => $from->getSlug(),
-                ]);
-            }
-
-            return $this->redirectToRoute('homepage');
+        } catch (ConnectException $e) {
+            $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
         }
 
         return $this->render('adherent/contact.html.twig', [
