@@ -11,6 +11,8 @@
                         {{ experience.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
                         {% if experience.endedAt %}
                             - {{ experience.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                        {% elseif experience.onGoing %}
+                            - aujourd'hui
                         {% endif %}
                         ({{ experience.length }})
                     </div>
