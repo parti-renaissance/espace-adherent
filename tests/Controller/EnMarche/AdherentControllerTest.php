@@ -508,6 +508,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertContains('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
 
         $this->client->submit($crawler->selectButton('Envoyer')->form([
+            'g-recaptcha-response' => 'dummy',
             'contact_message' => [
                 'content' => 'A message I would like to send to Miss Dufour',
             ],

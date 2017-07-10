@@ -2,6 +2,10 @@
 
 {% block page_title 'Contacter '~adherent.fullName %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
 {% block content %}
     <main class="search">
         <section class="l__wrapper--slim b__nudge--bottom-60">
@@ -29,6 +33,15 @@
                     class: 'form--full form__field--textarea-300',
                     placeholder: "Entrez le message que vous souhaitez envoyer à "~adherent.fullName
                 } }) }}
+
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                {% for flashMessage in app.flashes("error_recaptcha") %}
+                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                {% endfor %}
+                {{ form_errors(form) }}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+            {% endif %}
 
             <button type="submit" class="btn btn--blue">
                 Envoyer
