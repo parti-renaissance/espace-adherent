@@ -85,9 +85,9 @@ class MembershipRequest
     public $recaptcha;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration"})
-     * @Assert\Email(message="common.email.invalid", groups={"Registration"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration"})
+     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
 
@@ -132,6 +132,7 @@ class MembershipRequest
         $dto->phone = $adherent->getPhone();
         $dto->comMobile = $adherent->getComMobile();
         $dto->comEmail = $adherent->getComEmail();
+        $dto->emailAddress = $adherent->getEmailAddress();
 
         return $dto;
     }

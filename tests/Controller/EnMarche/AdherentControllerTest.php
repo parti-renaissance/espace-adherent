@@ -134,6 +134,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
         $this->assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
         $this->assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
+        $this->assertSame('carl999@example.fr', $crawler->filter(sprintf($inputPattern, 'emailAddress'))->attr('value'));
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -152,18 +153,20 @@ class AdherentControllerTest extends SqliteWebTestCase
                     'number' => '',
                 ],
                 'position' => 'student',
+                'emailAddress' => '',
             ],
         ]));
 
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(5, $errors->count());
+        $this->assertSame(6, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(3)->text());
         $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(5)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
@@ -188,6 +191,7 @@ class AdherentControllerTest extends SqliteWebTestCase
                     'month' => '10',
                     'day' => '27',
                 ],
+                'emailAddress' => 'new.email@address.com',
             ],
         ]));
 
@@ -199,7 +203,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         // We need to reload the manager reference to get the updated data
         /** @var Adherent $adherent */
-        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findByEmail('carl999@example.fr');
+        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findByEmail('new.email@address.com');
 
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('Jean Dupont', $adherent->getFullName());
@@ -208,6 +212,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('Nice', $adherent->getCityName());
         $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
         $this->assertSame('student', $adherent->getPosition());
+        $this->assertSame('new.email@address.com', $adherent->getEmailAddress());
         $this->assertNotNull($newLatitude = $adherent->getLatitude());
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
         $this->assertNotSame($oldLatitude, $newLatitude);
