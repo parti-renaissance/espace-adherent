@@ -470,6 +470,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->phone = $membership->getPhone();
         $this->comEmail = $membership->comEmail;
         $this->comMobile = $membership->comMobile;
+        $this->emailAddress = $membership->getEmailAddress();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
