@@ -194,3 +194,4 @@ security:
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
+        - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }
