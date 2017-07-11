@@ -61,6 +61,7 @@ class HomeBlockAdmin extends AbstractAdmin
                 'choices' => [
                     'Article' => 'article',
                     'Vidéo' => 'video',
+                    'Banner' => 'banner',
                 ],
             ])
             ->add('title', TextType::class, [
@@ -85,6 +86,24 @@ class HomeBlockAdmin extends AbstractAdmin
             $formMapper
                 ->add('displayTitles', null, [
                     'label' => 'Afficher le titre et sous-titre',
+                    'required' => false,
+                ])
+            ;
+        }
+
+        if (HomeBlock::TYPE_BANNER === $this->getSubject()->getType()) {
+            $formMapper
+                ->add('titleCta', null, [
+                    'label' => 'Texte du CTA',
+                    'required' => false,
+                ])
+                ->add('colorCta', ChoiceType::class, [
+                    'label' => 'Couleur du CTA',
+                    'required' => false,
+                    'choices' => Color::CHOICES,
+                ])
+                ->add('displayBlock', null, [
+                    'label' => 'Afficher le block',
                     'required' => false,
                 ])
             ;

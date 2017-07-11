@@ -20,6 +20,7 @@ class HomeBlock
 {
     const TYPE_ARTICLE = 'article';
     const TYPE_VIDEO = 'video';
+    const TYPE_BANNER = 'banner';
 
     /**
      * @var int
@@ -31,22 +32,19 @@ class HomeBlock
     private $id;
 
     /**
-     * @var string|null
+     * @var int
      *
-     * @ORM\Column(length=20, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=20)
+     * @ORM\Column(type="smallint", unique=true)
      */
     private $position;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=20, unique=true)
+     * @ORM\Column(length=30, unique=true)
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=20)
+     * @Assert\Length(max=30)
      */
     private $positionName;
 
@@ -75,7 +73,7 @@ class HomeBlock
      * @ORM\Column(length=10)
      *
      * @Assert\NotBlank
-     * @Assert\Choice({"video", "article"})
+     * @Assert\Choice({"video", "article", "banner"})
      */
     private $type = self::TYPE_ARTICLE;
 
@@ -112,6 +110,31 @@ class HomeBlock
     private $displayTitles = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $displayBlock = true;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=70, nullable=true)
+     *
+     * @Assert\Length(max=70)
+     */
+    private $titleCta;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     *
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Admin\Color", "all"})
+     */
+    private $colorCta;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -131,7 +154,7 @@ class HomeBlock
     }
 
     /**
-     * @return null|string
+     * @return int
      */
     public function getPosition()
     {
@@ -139,7 +162,7 @@ class HomeBlock
     }
 
     /**
-     * @param null|string $position
+     * @param int $position
      *
      * @return HomeBlock
      */
@@ -280,6 +303,36 @@ class HomeBlock
     public function setDisplayTitles(bool $displayTitles)
     {
         $this->displayTitles = $displayTitles;
+    }
+
+    public function isDisplayBlock(): bool
+    {
+        return $this->displayBlock;
+    }
+
+    public function setDisplayBlock(bool $displayBlock)
+    {
+        $this->displayBlock = $displayBlock;
+    }
+
+    public function getTitleCta()
+    {
+        return $this->titleCta;
+    }
+
+    public function setTitleCta($titleCta)
+    {
+        $this->titleCta = $titleCta;
+    }
+
+    public function getColorCta()
+    {
+        return $this->colorCta;
+    }
+
+    public function setColorCta($colorCta)
+    {
+        $this->colorCta = $colorCta;
     }
 
     public function getUpdatedAt(): \DateTime

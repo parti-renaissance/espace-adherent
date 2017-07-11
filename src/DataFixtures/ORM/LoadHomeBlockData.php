@@ -57,6 +57,10 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
         $repository = $this->em->getRepository('AppBundle:Media');
 
         foreach (self::$data as $homeBlockData) {
+            if (!array_key_exists('path', $homeBlockData)) {
+                continue;
+            }
+
             if (isset($this->mediasRegistry[$homeBlockData['path']])) {
                 continue;
             }
@@ -97,9 +101,11 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 'positionName' => $homeBlockData['positionName'],
                 'type' => $homeBlockData['type'],
                 'title' => $homeBlockData['title'],
-                'subtitle' => $homeBlockData['subtitle'],
+                'subtitle' => $homeBlockData['subtitle'] ?? '',
                 'link' => $homeBlockData['link'],
-                'media' => $this->mediasRegistry[$homeBlockData['path']],
+                'media' => array_key_exists('path', $homeBlockData) ? $this->mediasRegistry[$homeBlockData['path']] : null,
+                'titleCta' => $homeBlockData['titleCta'] ?? '',
+                'colorCta' => $homeBlockData['colorCta'] ?? '',
             ]));
         }
 
@@ -187,6 +193,22 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'path' => 'proteger-la-france.jpg',
             'pathTitle' => '3 boucliers pour protéger la France',
             'link' => 'https://en-marche.fr/rendez-10-decembre-a-paris/',
+        ],
+        [
+            'positionName' => 'Bannière gauche sous la cover',
+            'type' => 'banner',
+            'title' => "J'agis sur le terrain",
+            'link' => '/evenements',
+            'titleCta' => 'Voir les actions',
+            'colorCta' => 'pink',
+        ],
+        [
+            'positionName' => 'Bannière droite sous la cover',
+            'type' => 'banner',
+            'title' => 'Une idée pour changer la politique ?',
+            'link' => 'https://appel.en-marche.fr',
+            'titleCta' => 'Laissez un message',
+            'colorCta' => 'black',
         ],
     ];
 }

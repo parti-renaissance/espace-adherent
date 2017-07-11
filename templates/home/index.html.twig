@@ -39,15 +39,15 @@
                 <div class="content b__nudge--top">
                     <article class="l__row l__row--v-stretch l__tablet--col">
                         <div class="action action__home yellow">
-                            <p class="pink">J'agis sur le terrain</p>
-                            <a href="{{ path('app_search_events') }}" class="pink-yellow">
-                                Voir les actions
+                            <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
+                            <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
+                                {{ blocks[9].titleCta }}
                             </a>
                         </div>
                         <div class="action action__home blue">
-                            <p>Une idée pour changer la politique ?</p>
-                            <a href="https://appel.en-marche.fr" class="white-blue" target="_blank" rel="noreferrer noopener">
-                                Laissez un message
+                            <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
+                            <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
+                                {{ blocks[10].titleCta }}
                             </a>
                         </div>
                     </article>
