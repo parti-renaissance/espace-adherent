@@ -8,12 +8,13 @@ use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
+class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
 {
     const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -27,6 +28,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
     const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
     const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
+    const ADHERENT_13_UUID = '8c000582-51a2-11e7-b114-b2f933d5fe66';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -37,6 +39,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
     const COMMITTEE_7_UUID = '40b6e2e5-2499-438b-93ab-ef08860a1845';
     const COMMITTEE_8_UUID = '93b72179-7d27-40c4-948c-5188aaf264b6';
     const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
+    const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
 
     use ContainerAwareTrait;
 
@@ -55,6 +58,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
+        $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
@@ -227,6 +231,18 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $adherent12->enableCommitteesNotifications();
         $adherent12->setLegislativeCandidate(true);
 
+        $adherent13 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_13_UUID,
+            'password' => 'secret!12345',
+            'email' => 'michel.vasseur@example.ch',
+            'gender' => 'male',
+            'first_name' => 'Michel',
+            'last_name' => 'VASSEUR',
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
+            'birthdate' => '1987-05-13',
+        ]);
+        $this->addReference('adherent-13', $adherent13);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -240,6 +256,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $key10 = AdherentActivationToken::generate($adherent10);
         $key11 = AdherentActivationToken::generate($adherent11);
         $key12 = AdherentActivationToken::generate($adherent12);
+        $key13 = AdherentActivationToken::generate($adherent13);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -253,6 +270,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $adherent10->activate($key10, '2017-02-23 14:02:18');
         $adherent11->activate($key11, '2017-04-10 14:12:56');
         $adherent12->activate($key12, '2017-04-09 06:26:14');
+        $adherent13->activate($key13, '2017-05-03 09:16:54');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -350,6 +368,16 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         ]);
         $committee9->approved('2017-04-09 13:27:42');
 
+        $committee10 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_10_UUID,
+            'created_by' => (string) $referent->getUuid(),
+            'created_at' => '2017-05-09 12:18:22',
+            'name' => 'En Marche - Suisse',
+            'description' => 'En Marche pour la France et nos partenaires en Suisse.',
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
+        ]);
+        $committee10->approved('2017-05-09 13:17:42');
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -366,6 +394,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent10);
         $manager->persist($adherent11);
         $manager->persist($adherent12);
+        $manager->persist($adherent13);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -391,6 +420,7 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($committee7);
         $manager->persist($committee8);
         $manager->persist($committee9);
+        $manager->persist($committee10);
 
         // Make adherents join committees
         $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
@@ -414,6 +444,8 @@ class LoadAdherentData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($adherent12->superviseCommittee($committee9));
         $manager->persist($adherent3->followCommittee($committee9));
         $manager->persist($adherent11->followCommittee($committee9));
+        $manager->persist($referent->superviseCommittee($committee10));
+        $manager->persist($adherent13->followCommittee($committee10));
 
         $manager->flush();
     }
