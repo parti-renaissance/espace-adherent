@@ -70,6 +70,17 @@
 
                 <div class="b__nudge--bottom">
                     <label class="form form__label">
+                        Nom de la ville (laisser vide pour ne pas filtrer)<br />
+                        <input type="text"
+                               name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
+                               value="{{ filter.queryCity }}"
+                               placeholder="Saisissez une ou plusieurs villes, séparées par des virgules (exemple : &quot;Lyon, Paris 8e&quot;)"
+                               class="form form__field form--full" />
+                    </label>
+                </div>
+
+                <div class="b__nudge--bottom">
+                    <label class="form form__label">
                         Identifiant de marcheur (laisser vide pour ne pas filtrer)<br />
                         <input type="text"
                                name="{{ constant('PARAMETER_QUERY_ID', filter) }}"

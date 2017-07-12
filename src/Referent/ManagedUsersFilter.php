@@ -16,6 +16,7 @@ class ManagedUsersFilter
     const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
     const PARAMETER_INCLUDE_HOSTS = 'h';
     const PARAMETER_QUERY_POSTAL_CODE = 'pc';
+    const PARAMETER_QUERY_CITY = 'city';
     const PARAMETER_QUERY_ID = 'id';
     const PARAMETER_OFFSET = 'o';
     const PARAMETER_TOKEN = 't';
@@ -25,6 +26,7 @@ class ManagedUsersFilter
     private $includeAdherentsInCommittee = true;
     private $includeHosts = true;
     private $queryPostalCode = '';
+    private $queryCity = '';
     private $queryId = '';
     private $offset = 0;
     private $token = '';
@@ -37,6 +39,7 @@ class ManagedUsersFilter
         $filter->includeAdherentsInCommittee = $data[self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE] ?? true;
         $filter->includeHosts = $data[self::PARAMETER_INCLUDE_HOSTS] ?? true;
         $filter->queryPostalCode = $data[self::PARAMETER_QUERY_POSTAL_CODE] ?? '';
+        $filter->queryCity = $data[self::PARAMETER_QUERY_CITY] ?? '';
         $filter->queryId = $data[self::PARAMETER_QUERY_ID] ?? '';
         $filter->offset = $data[self::PARAMETER_OFFSET] ?? true;
 
@@ -51,6 +54,7 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee,
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts,
             self::PARAMETER_QUERY_POSTAL_CODE => $this->queryPostalCode,
+            self::PARAMETER_QUERY_CITY => $this->queryCity,
             self::PARAMETER_QUERY_ID => $this->queryId,
             self::PARAMETER_OFFSET => $this->offset,
         ];
@@ -64,7 +68,6 @@ class ManagedUsersFilter
     public function handleRequest(Request $request): self
     {
         $query = $request->query;
-
         if (0 === $query->count()) {
             return $this;
         }
@@ -74,6 +77,7 @@ class ManagedUsersFilter
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
         $this->queryPostalCode = trim($query->get(self::PARAMETER_QUERY_POSTAL_CODE, ''));
+        $this->queryCity = trim($query->get(self::PARAMETER_QUERY_CITY, ''));
         $this->queryId = trim($query->get(self::PARAMETER_QUERY_ID, ''));
         $this->offset = $query->getInt(self::PARAMETER_OFFSET);
         $this->token = $query->get(self::PARAMETER_TOKEN, '');
@@ -94,6 +98,7 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
             self::PARAMETER_QUERY_POSTAL_CODE => $this->queryPostalCode ?: '',
+            self::PARAMETER_QUERY_CITY => $this->queryCity ?: '',
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
             self::PARAMETER_OFFSET => $offset,
             self::PARAMETER_TOKEN => $this->token,
@@ -115,6 +120,11 @@ class ManagedUsersFilter
     public function getQueryPostalCode(): string
     {
         return $this->queryPostalCode;
+    }
+
+    public function getQueryCity(): string
+    {
+        return $this->queryCity;
     }
 
     public function getQueryId(): string
