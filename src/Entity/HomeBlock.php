@@ -153,80 +153,48 @@ class HomeBlock
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
-    public function getPosition()
+    public function getPosition(): ?int
     {
         return $this->position;
     }
 
-    /**
-     * @param int $position
-     *
-     * @return HomeBlock
-     */
-    public function setPosition($position): HomeBlock
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPositionName()
+    public function getPositionName(): ?string
     {
         return $this->positionName;
     }
 
-    /**
-     * @param null|string $positionName
-     *
-     * @return HomeBlock
-     */
-    public function setPositionName($positionName): HomeBlock
+    public function setPositionName(?string $positionName): self
     {
         $this->positionName = $positionName;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return HomeBlock
-     */
-    public function setTitle($title): HomeBlock
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSubtitle()
+    public function getSubtitle(): ?string
     {
         return $this->subtitle;
     }
 
-    /**
-     * @param null|string $subtitle
-     *
-     * @return HomeBlock
-     */
-    public function setSubtitle($subtitle): HomeBlock
+    public function setSubtitle(?string $subtitle): self
     {
         $this->subtitle = $subtitle;
 
@@ -238,47 +206,31 @@ class HomeBlock
         return $this->type;
     }
 
-    public function setType(string $type): HomeBlock
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @return Media|null
-     */
-    public function getMedia()
+    public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    /**
-     * @param Media|null $media
-     *
-     * @return HomeBlock
-     */
-    public function setMedia(Media $media = null): HomeBlock
+    public function setMedia(?Media $media): self
     {
         $this->media = $media;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getLink()
+    public function getLink(): ?string
     {
         return $this->link;
     }
 
-    /**
-     * @param null|string $link
-     *
-     * @return HomeBlock
-     */
-    public function setLink($link): HomeBlock
+    public function setLink(?string $link): self
     {
         $this->link = $link;
 
@@ -290,7 +242,7 @@ class HomeBlock
         return $this->displayFilter;
     }
 
-    public function setDisplayFilter(bool $displayFilter)
+    public function setDisplayFilter(bool $displayFilter): void
     {
         $this->displayFilter = $displayFilter;
     }
@@ -300,7 +252,7 @@ class HomeBlock
         return $this->displayTitles;
     }
 
-    public function setDisplayTitles(bool $displayTitles)
+    public function setDisplayTitles(bool $displayTitles): void
     {
         $this->displayTitles = $displayTitles;
     }
@@ -310,27 +262,27 @@ class HomeBlock
         return $this->displayBlock;
     }
 
-    public function setDisplayBlock(bool $displayBlock)
+    public function setDisplayBlock(bool $displayBlock): void
     {
         $this->displayBlock = $displayBlock;
     }
 
-    public function getTitleCta()
+    public function getTitleCta(): ?string
     {
         return $this->titleCta;
     }
 
-    public function setTitleCta($titleCta)
+    public function setTitleCta(?string $titleCta): void
     {
         $this->titleCta = $titleCta;
     }
 
-    public function getColorCta()
+    public function getColorCta(): ?string
     {
         return $this->colorCta;
     }
 
-    public function setColorCta($colorCta)
+    public function setColorCta(?string $colorCta): void
     {
         $this->colorCta = $colorCta;
     }
@@ -340,7 +292,7 @@ class HomeBlock
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): HomeBlock
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

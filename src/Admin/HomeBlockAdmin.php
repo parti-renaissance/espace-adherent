@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -47,7 +48,7 @@ class HomeBlockAdmin extends AbstractAdmin
                 ->add('position', null, [
                     'label' => 'Position du bloc',
                 ])
-                ->add('positionName', null, [
+                ->add('position_name', TextType::class, [
                     'label' => 'Nom du bloc',
                 ]);
         }
@@ -76,7 +77,7 @@ class HomeBlockAdmin extends AbstractAdmin
             ->add('link', null, [
                 'label' => 'Cible du lien',
             ])
-            ->add('displayFilter', null, [
+            ->add('display_filter', CheckboxType::class, [
                 'label' => 'Afficher le filtre',
                 'required' => false,
             ])
@@ -84,7 +85,7 @@ class HomeBlockAdmin extends AbstractAdmin
 
         if ('Bannière - Gauche' === $this->getSubject()->getPositionName()) {
             $formMapper
-                ->add('displayTitles', null, [
+                ->add('display_titles', null, [
                     'label' => 'Afficher le titre et sous-titre',
                     'required' => false,
                 ])
@@ -93,16 +94,16 @@ class HomeBlockAdmin extends AbstractAdmin
 
         if (HomeBlock::TYPE_BANNER === $this->getSubject()->getType()) {
             $formMapper
-                ->add('titleCta', null, [
+                ->add('title_cta', TextType::class, [
                     'label' => 'Texte du CTA',
                     'required' => false,
                 ])
-                ->add('colorCta', ChoiceType::class, [
+                ->add('color_cta', ChoiceType::class, [
                     'label' => 'Couleur du CTA',
                     'required' => false,
                     'choices' => Color::CHOICES,
                 ])
-                ->add('displayBlock', null, [
+                ->add('display_block', CheckboxType::class, [
                     'label' => 'Afficher le block',
                     'required' => false,
                 ])
@@ -117,7 +118,7 @@ class HomeBlockAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('positionName', null, [
+            ->addIdentifier('position_name', null, [
                 'label' => 'Bloc',
             ])
             ->add('title', null, [
