@@ -158,11 +158,9 @@ class HomeBlock
         return $this->position;
     }
 
-    public function setPosition(int $position): self
+    public function setPosition(int $position): void
     {
         $this->position = $position;
-
-        return $this;
     }
 
     public function getPositionName(): ?string
@@ -170,11 +168,9 @@ class HomeBlock
         return $this->positionName;
     }
 
-    public function setPositionName(?string $positionName): self
+    public function setPositionName(?string $positionName): void
     {
         $this->positionName = $positionName;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -182,11 +178,9 @@ class HomeBlock
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
     public function getSubtitle(): ?string
@@ -194,11 +188,9 @@ class HomeBlock
         return $this->subtitle;
     }
 
-    public function setSubtitle(?string $subtitle): self
+    public function setSubtitle(?string $subtitle): void
     {
         $this->subtitle = $subtitle;
-
-        return $this;
     }
 
     public function getType(): string
@@ -206,11 +198,9 @@ class HomeBlock
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     public function getMedia(): ?Media
@@ -218,11 +208,9 @@ class HomeBlock
         return $this->media;
     }
 
-    public function setMedia(?Media $media): self
+    public function setMedia(?Media $media): void
     {
         $this->media = $media;
-
-        return $this;
     }
 
     public function getLink(): ?string
@@ -230,11 +218,9 @@ class HomeBlock
         return $this->link;
     }
 
-    public function setLink(?string $link): self
+    public function setLink(?string $link): void
     {
         $this->link = $link;
-
-        return $this;
     }
 
     public function hasDisplayFilter(): bool
@@ -292,10 +278,8 @@ class HomeBlock
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): self
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 }

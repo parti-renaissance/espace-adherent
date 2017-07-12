@@ -210,5 +210,13 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'titleCta' => 'Laissez un message',
             'colorCta' => 'black',
         ],
+        [
+            'positionName' => 'Bannière en haut',
+            'type' => 'banner',
+            'title' => 'Une idée pour changer la politique ?',
+            'link' => 'https://appel.en-marche.fr',
+            'titleCta' => 'Laissez un message',
+            'colorCta' => 'black',
+        ],
     ];
 }
