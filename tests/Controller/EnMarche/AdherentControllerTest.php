@@ -159,7 +159,7 @@ class AdherentControllerTest extends SqliteWebTestCase
 
         $errors = $crawler->filter('.form__errors > li');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(6, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
@@ -167,6 +167,41 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(3)->text());
         $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(5)->text());
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+
+        // Submit the profile form with duplicate email
+        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
+            'update_membership_request' => [
+                'gender' => 'female',
+                'firstName' => 'Jean',
+                'lastName' => 'Dupont',
+                'address' => [
+                    'address' => '9 rue du Lycée',
+                    'country' => 'FR',
+                    'postalCode' => '06000',
+                    'city' => '06000-6088',
+                    'cityName' => '',
+                ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '04 01 02 03 04',
+                ],
+                'position' => 'student',
+                'birthdate' => [
+                    'year' => '1985',
+                    'month' => '10',
+                    'day' => '27',
+                ],
+                'emailAddress' => 'michelle.dufour@example.ch',
+            ],
+        ]));
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(0)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
