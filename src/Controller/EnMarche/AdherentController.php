@@ -22,16 +22,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @Route("/espace-adherent")
  */
 class AdherentController extends Controller
 {
+    const WORD_DESADHESION = 'DESADHESION';
+    const LEFT_MEMBERSHIP_TOKEN = 'delete_summary_experience';
+
     /**
      * @Route("/mon-compte", name="app_adherent_profile")
      * @Method("GET|POST")
@@ -53,6 +60,8 @@ class AdherentController extends Controller
 
         return $this->render('adherent/profile.html.twig', [
             'form' => $form->createView(),
+            'isReferent' => $adherent->isReferent(),
+            'isHost' => $adherent->isHost(),
         ]);
     }
 
@@ -237,6 +246,45 @@ class AdherentController extends Controller
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route("/mon-compte/desadherer", name="app_adherent_left_membership")
+     * @Method("GET|POST")
+     */
+    public function leftMembershipAction(Request $request): Response
+    {
+        $adherent = $this->getUser();
+
+        if ($adherent->isHost() || $adherent->isReferent()) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->get('form.factory')->create(FormType::class, null, [
+            'csrf_token_id' => self::LEFT_MEMBERSHIP_TOKEN,
+        ]);
+
+        $form->add('word', TextType::class, [
+            'label' => 'Pour finaliser la suppression de votre adhésion, saisissez le mot DESADHESION',
+            'attr' => ['placeholder' => 'Saisissez ici le mot DESADHESION'],
+            'constraints' => [new EqualTo(self::WORD_DESADHESION)],
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.membership_request_handler')->leftMembership($adherent);
+
+            return $this->render('adherent/left_membership.html.twig', [
+                'is_adherent' => false,
+                'form' => $form->createView(),
+            ]);
+        }
+
+        return $this->render('adherent/left_membership.html.twig', [
+            'is_adherent' => true,
+            'form' => $form->createView(),
         ]);
     }
 }

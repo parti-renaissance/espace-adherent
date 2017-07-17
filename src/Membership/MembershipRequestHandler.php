@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailjet\Message\AdherentLeftMembershipMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -68,5 +69,17 @@ class MembershipRequestHandler
         ];
 
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    public function leftMembership(Adherent $adherent)
+    {
+        $message = AdherentLeftMembershipMessage::createFromAdherent($adherent);
+        $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
+
+        $this->manager->remove($token);
+        $this->manager->remove($adherent);
+        $this->manager->flush();
+
+        $this->mailjet->sendMessage($message);
     }
 }
