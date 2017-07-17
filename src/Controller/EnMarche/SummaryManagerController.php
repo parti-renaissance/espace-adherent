@@ -265,10 +265,16 @@ class SummaryManagerController extends Controller
 
     /**
      * @Route("/photo/supprimer", name="app_summary_manager_remove_photo")
-     * @Method("GET")
+     * @Method("DELETE")
      */
-    public function removePhotoAction(): Response
+    public function removePhotoAction(Request $request): Response
     {
+        $form = $this->createDeleteForm('', SummaryManager::DELETE_PHOTO_TOKEN, $request);
+
+        if (!$form->isValid()) {
+            throw $this->createNotFoundException('Invalid token.');
+        }
+
         $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
 
         if ($this->get(SummaryManager::class)->removePhoto($summary)) {

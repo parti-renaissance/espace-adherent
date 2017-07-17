@@ -20,6 +20,7 @@ class SummaryManager
     const DELETE_EXPERIENCE_TOKEN = 'delete_summary_experience';
     const DELETE_TRAINING_TOKEN = 'delete_summary_training';
     const DELETE_LANGUAGE_TOKEN = 'delete_summary_language';
+    const DELETE_PHOTO_TOKEN = 'delete_summary_photo';
 
     private $factory;
     private $repository;
