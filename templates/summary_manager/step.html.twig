@@ -82,4 +82,8 @@
     <a href="{{ path('app_summary_manager_index') }}" class="btn btn--no-border">Annuler</a>
 
     {{ form_end(summary_form) }}
+
+    {% if step is same as('photo') %}
+        {{ delete_form(path('app_summary_manager_remove_photo'), constant('AppBundle\\Summary\\SummaryManager::DELETE_PHOTO_TOKEN')) }}
+    {% endif %}
 {% endblock %}

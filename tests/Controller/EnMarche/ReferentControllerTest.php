@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
@@ -131,6 +132,19 @@ class ReferentControllerTest extends SqliteWebTestCase
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            'city' => 'Zürich, Kilchberg',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()
@@ -221,9 +235,10 @@ class ReferentControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
-            LoadNewsletterSubscriptionData::class,
-            LoadEventCategoryData::class,
             LoadAdherentData::class,
+            LoadEventCategoryData::class,
+            LoadHomeBlockData::class,
+            LoadNewsletterSubscriptionData::class,
             LoadReferentManagedUserData::class,
         ]);
     }

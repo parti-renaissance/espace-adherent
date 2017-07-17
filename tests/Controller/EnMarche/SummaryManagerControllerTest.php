@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadMissionTypeData;
 use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use AppBundle\Entity\MemberSummary\Language;
@@ -1237,6 +1238,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadHomeBlockData::class,
             LoadMissionTypeData::class,
             LoadSummaryData::class,
         ]);

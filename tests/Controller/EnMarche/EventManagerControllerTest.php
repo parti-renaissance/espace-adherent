@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
@@ -328,6 +329,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadHomeBlockData::class,
         ]);
     }
 

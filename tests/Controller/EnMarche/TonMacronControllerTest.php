@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
 use AppBundle\Entity\MailjetEmail;
 use AppBundle\Entity\TonMacronChoice;
@@ -187,6 +188,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadHomeBlockData::class,
             LoadTonMacronData::class,
         ]);
 

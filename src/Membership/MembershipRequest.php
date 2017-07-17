@@ -12,7 +12,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership(groups={"Registration"})
+ * @AssertUniqueMembership
  */
 class MembershipRequest
 {

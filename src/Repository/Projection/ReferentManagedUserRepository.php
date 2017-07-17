@@ -115,6 +115,18 @@ class ReferentManagedUserRepository extends EntityRepository
             $qb->andWhere($postalCodeExpression);
         }
 
+        if ($queryCity = $filter->getQueryCity()) {
+            $queryCity = array_map('trim', explode(',', $queryCity));
+
+            $cityExpression = $qb->expr()->orX();
+            foreach ($queryCity as $key => $city) {
+                $cityExpression->add('u.city LIKE :city_'.$key);
+                $qb->setParameter('city_'.$key, $city.'%');
+            }
+
+            $qb->andWhere($cityExpression);
+        }
+
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeNewsletter()) {
