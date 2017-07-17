@@ -330,10 +330,10 @@ class EventControllerTest extends MysqlWebTestCase
         parent::setUp();
 
         $this->init([
-            LoadHomeBlockData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadHomeBlockData::class,
         ]);
 
         $this->repository = $this->getEventRegistrationRepository();

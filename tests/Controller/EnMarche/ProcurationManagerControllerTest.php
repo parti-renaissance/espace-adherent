@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
@@ -228,6 +229,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadHomeBlockData::class,
             LoadProcurationData::class,
         ]);
     }

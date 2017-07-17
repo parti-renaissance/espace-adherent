@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
@@ -547,6 +548,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadHomeBlockData::class,
         ]);
 
         $this->committeeEventRepository = $this->getEventRepository();

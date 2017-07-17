@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
@@ -399,6 +400,7 @@ class CommitteeControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadHomeBlockData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,

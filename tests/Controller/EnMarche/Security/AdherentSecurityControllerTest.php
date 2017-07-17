@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentResetPasswordMessage;
 use AppBundle\Mailjet\Message\AdherentResetPasswordConfirmationMessage;
@@ -222,6 +223,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadHomeBlockData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();
