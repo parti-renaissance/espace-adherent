@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Invite;
 use AppBundle\Mailjet\Message\InvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,7 +77,9 @@ class InvitationControllerTest extends SqliteWebTestCase
     {
         parent::setUp();
 
-        $this->init([]);
+        $this->init([
+            LoadHomeBlockData::class,
+        ]);
 
         $this->invitationRepository = $this->getInvitationRepository();
     }

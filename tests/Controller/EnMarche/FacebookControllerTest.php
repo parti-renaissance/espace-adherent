@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,10 @@ class FacebookControllerTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $this->init([
+            LoadHomeBlockData::class,
+        ]);
 
         $this->client = $this->makeClient();
     }

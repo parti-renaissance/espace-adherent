@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
@@ -494,6 +495,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadHomeBlockData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();

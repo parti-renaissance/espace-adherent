@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdminData;
+use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +90,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdminData::class,
+            LoadHomeBlockData::class,
         ]);
     }
 
