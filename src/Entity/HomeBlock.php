@@ -20,6 +20,7 @@ class HomeBlock
 {
     const TYPE_ARTICLE = 'article';
     const TYPE_VIDEO = 'video';
+    const TYPE_BANNER = 'banner';
 
     /**
      * @var int
@@ -31,22 +32,19 @@ class HomeBlock
     private $id;
 
     /**
-     * @var string|null
+     * @var int
      *
-     * @ORM\Column(length=20, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=20)
+     * @ORM\Column(type="smallint", unique=true)
      */
     private $position;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=20, unique=true)
+     * @ORM\Column(length=30, unique=true)
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=20)
+     * @Assert\Length(max=30)
      */
     private $positionName;
 
@@ -75,7 +73,7 @@ class HomeBlock
      * @ORM\Column(length=10)
      *
      * @Assert\NotBlank
-     * @Assert\Choice({"video", "article"})
+     * @Assert\Choice({"video", "article", "banner"})
      */
     private $type = self::TYPE_ARTICLE;
 
@@ -112,6 +110,31 @@ class HomeBlock
     private $displayTitles = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $displayBlock = true;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=70, nullable=true)
+     *
+     * @Assert\Length(max=70)
+     */
+    private $titleCta;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     *
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Admin\Color", "all"})
+     */
+    private $colorCta;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -130,80 +153,48 @@ class HomeBlock
         return $this->id;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPosition()
+    public function getPosition(): ?int
     {
         return $this->position;
     }
 
-    /**
-     * @param null|string $position
-     *
-     * @return HomeBlock
-     */
-    public function setPosition($position): HomeBlock
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPositionName()
+    public function getPositionName(): ?string
     {
         return $this->positionName;
     }
 
-    /**
-     * @param null|string $positionName
-     *
-     * @return HomeBlock
-     */
-    public function setPositionName($positionName): HomeBlock
+    public function setPositionName(?string $positionName): self
     {
         $this->positionName = $positionName;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return HomeBlock
-     */
-    public function setTitle($title): HomeBlock
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSubtitle()
+    public function getSubtitle(): ?string
     {
         return $this->subtitle;
     }
 
-    /**
-     * @param null|string $subtitle
-     *
-     * @return HomeBlock
-     */
-    public function setSubtitle($subtitle): HomeBlock
+    public function setSubtitle(?string $subtitle): self
     {
         $this->subtitle = $subtitle;
 
@@ -215,47 +206,31 @@ class HomeBlock
         return $this->type;
     }
 
-    public function setType(string $type): HomeBlock
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @return Media|null
-     */
-    public function getMedia()
+    public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    /**
-     * @param Media|null $media
-     *
-     * @return HomeBlock
-     */
-    public function setMedia(Media $media = null): HomeBlock
+    public function setMedia(?Media $media): self
     {
         $this->media = $media;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getLink()
+    public function getLink(): ?string
     {
         return $this->link;
     }
 
-    /**
-     * @param null|string $link
-     *
-     * @return HomeBlock
-     */
-    public function setLink($link): HomeBlock
+    public function setLink(?string $link): self
     {
         $this->link = $link;
 
@@ -267,7 +242,7 @@ class HomeBlock
         return $this->displayFilter;
     }
 
-    public function setDisplayFilter(bool $displayFilter)
+    public function setDisplayFilter(bool $displayFilter): void
     {
         $this->displayFilter = $displayFilter;
     }
@@ -277,9 +252,39 @@ class HomeBlock
         return $this->displayTitles;
     }
 
-    public function setDisplayTitles(bool $displayTitles)
+    public function setDisplayTitles(bool $displayTitles): void
     {
         $this->displayTitles = $displayTitles;
+    }
+
+    public function isDisplayBlock(): bool
+    {
+        return $this->displayBlock;
+    }
+
+    public function setDisplayBlock(bool $displayBlock): void
+    {
+        $this->displayBlock = $displayBlock;
+    }
+
+    public function getTitleCta(): ?string
+    {
+        return $this->titleCta;
+    }
+
+    public function setTitleCta(?string $titleCta): void
+    {
+        $this->titleCta = $titleCta;
+    }
+
+    public function getColorCta(): ?string
+    {
+        return $this->colorCta;
+    }
+
+    public function setColorCta(?string $colorCta): void
+    {
+        $this->colorCta = $colorCta;
     }
 
     public function getUpdatedAt(): \DateTime
@@ -287,7 +292,7 @@ class HomeBlock
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): HomeBlock
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
