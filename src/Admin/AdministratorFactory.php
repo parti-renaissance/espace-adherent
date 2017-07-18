@@ -19,6 +19,7 @@ class AdministratorFactory
         $admin = new Administrator();
         $admin->setEmailAddress($data['email']);
         $admin->setPassword($this->encodePassword($data['password']));
+        $admin->setGoogleAuthenticatorSecret($data['secret'] ?? null);
 
         foreach ($data['roles'] as $role) {
             $admin->addRole($role);

@@ -51,5 +51,9 @@
             <tag name="twig.runtime" />
         </service>
 
+        <service id="AppBundle\Twig\HomeBlockExtension">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
     </services>
 </container>
