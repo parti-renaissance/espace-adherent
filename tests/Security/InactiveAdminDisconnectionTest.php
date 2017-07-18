@@ -24,8 +24,8 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 
         // connect as admin
         $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_admin_email' => 'titouan.galopin@en-marche.fr',
-            '_admin_password' => 'secret!12345',
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
         ]));
 
         $this->client->request(Request::METHOD_GET, '/admin/app/media/list');

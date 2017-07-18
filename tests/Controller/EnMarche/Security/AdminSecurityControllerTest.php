@@ -29,8 +29,8 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.login__error'));
 
         $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_admin_email' => 'titouan.galopin@en-marche.fr',
-            '_admin_password' => 'secret!12345',
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -38,6 +38,27 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testAuthenticationIfSecretCode()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
+        $this->assertCount(0, $crawler->filter('.login__error'));
+
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+            '_admin_email' => 'titouan.galopin@en-marche.fr',
+            '_admin_password' => 'secret!12345',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/admin/dashboard', $this->client, true);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('#_auth_code'));
     }
 
     /**

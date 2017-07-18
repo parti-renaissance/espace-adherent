@@ -51,6 +51,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'email' => 'titouan.galopin@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $adminRoles,
+            'secret' => 'D3GU3BR4LUDK5NWR',
         ]);
 
         $admin = $factory->createFromArray([
