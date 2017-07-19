@@ -135,6 +135,15 @@ class HomeBlock
     private $colorCta;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     *
+     * @Assert\Choice(strict=true, callback={"\AppBundle\Admin\Color", "all"})
+     */
+    private $bgColor;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -271,6 +280,16 @@ class HomeBlock
     public function setColorCta(?string $colorCta): void
     {
         $this->colorCta = $colorCta;
+    }
+
+    public function getBgColor(): ?string
+    {
+        return $this->bgColor;
+    }
+
+    public function setBgColor(?string $bgColor): void
+    {
+        $this->bgColor = $bgColor;
     }
 
     public function getUpdatedAt(): \DateTime

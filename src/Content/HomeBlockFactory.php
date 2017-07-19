@@ -18,6 +18,7 @@ class HomeBlockFactory
         $block->setMedia($data['media'] ?? null);
         $block->setTitleCta($data['titleCta'] ?? null);
         $block->setColorCta($data['colorCta'] ?? null);
+        $block->setBgColor($data['bgColor'] ?? null);
 
         return $block;
     }

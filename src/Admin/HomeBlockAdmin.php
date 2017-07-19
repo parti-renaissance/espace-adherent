@@ -103,8 +103,13 @@ class HomeBlockAdmin extends AbstractAdmin
                     'required' => false,
                     'choices' => Color::CHOICES,
                 ])
+                ->add('bg_color', ChoiceType::class, [
+                    'label' => 'Couleur de la bannière',
+                    'required' => false,
+                    'choices' => Color::CHOICES,
+                ])
                 ->add('display_block', CheckboxType::class, [
-                    'label' => 'Afficher le block',
+                    'label' => 'Afficher la bannière',
                     'required' => false,
                 ])
             ;
