@@ -85,7 +85,7 @@ class HomeBlockAdmin extends AbstractAdmin
 
         if ('Bannière - Gauche' === $this->getSubject()->getPositionName()) {
             $formMapper
-                ->add('display_titles', null, [
+                ->add('display_titles', CheckboxType::class, [
                     'label' => 'Afficher le titre et sous-titre',
                     'required' => false,
                 ])
