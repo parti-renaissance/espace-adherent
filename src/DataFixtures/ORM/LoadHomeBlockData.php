@@ -106,6 +106,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 'media' => array_key_exists('path', $homeBlockData) ? $this->mediasRegistry[$homeBlockData['path']] : null,
                 'titleCta' => $homeBlockData['titleCta'] ?? '',
                 'colorCta' => $homeBlockData['colorCta'] ?? '',
+                'bgColor' => $homeBlockData['bgColor'] ?? '',
             ]));
         }
 
@@ -201,6 +202,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => '/evenements',
             'titleCta' => 'Voir les actions',
             'colorCta' => 'pink',
+            'bgColor' => 'yellow',
         ],
         [
             'positionName' => 'Bannière droite sous la cover',
@@ -209,6 +211,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'https://appel.en-marche.fr',
             'titleCta' => 'Laissez un message',
             'colorCta' => 'black',
+            'bgColor' => 'blue',
         ],
         [
             'positionName' => 'Bannière en haut',
@@ -217,6 +220,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'link' => 'https://appel.en-marche.fr',
             'titleCta' => 'Laissez un message',
             'colorCta' => 'black',
+            'bgColor' => 'green',
         ],
     ];
 }
