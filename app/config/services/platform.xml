@@ -72,6 +72,7 @@
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.committee.manager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -126,6 +127,10 @@
 
         <service id="AppBundle\Membership\MemberActivityTracker">
             <argument type="service" id="app.repository.event_registration" />
+        </service>
+
+        <service id="app.membership_voter" class="AppBundle\Membership\Voter\MembershipVoter" public="false">
+            <tag name="security.voter"/>
         </service>
 
         <!-- Procurations -->

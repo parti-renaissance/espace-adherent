@@ -55,7 +55,7 @@ class CommitteeMembership
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      */
     private $adherent;
 

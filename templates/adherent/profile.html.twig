@@ -18,12 +18,12 @@
 
     {{ block('adherent_membership_form') }}
 
-    {% if not isReferent and not isHost %}
+    {% if is_granted('UNREGISTER') %}
         <div id="left-membership">
-            <a href="{{ path('app_adherent_left_membership') }}" class="btn btn--primary">
-                Désadhérer du movement
+            <a href="{{ path('app_adherent_terminate_membership') }}" class="btn btn--primary">
+                Désadhérer du mouvement
             </a>
-            <p>Texte juridique sur la désadhération et les conséquences en termes de données</p>
+            <p>Texte juridique sur la désadhésion et les conséquences en termes de données</p>
         </div>
     {% endif %}
 {% endblock %}

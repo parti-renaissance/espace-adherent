@@ -3,11 +3,14 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\Committee;
+use AppBundle\Entity\Summary;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailjet\Message\AdherentLeftMembershipMessage;
+use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,6 +23,7 @@ class MembershipRequestHandler
     private $urlGenerator;
     private $mailjet;
     private $manager;
+    private $committeeManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -27,7 +31,8 @@ class MembershipRequestHandler
         PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
         MailjetService $mailjet,
-        ObjectManager $manager
+        ObjectManager $manager,
+        CommitteeManager $committeeManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -35,6 +40,7 @@ class MembershipRequestHandler
         $this->urlGenerator = $urlGenerator;
         $this->mailjet = $mailjet;
         $this->manager = $manager;
+        $this->committeeManager = $committeeManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -71,12 +77,22 @@ class MembershipRequestHandler
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function leftMembership(Adherent $adherent)
+    public function terminateMembership(Adherent $adherent)
     {
-        $message = AdherentLeftMembershipMessage::createFromAdherent($adherent);
+        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
+        $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
+        foreach ($adherent->getMemberships() as $membership) {
+            $committee = $this->manager->getRepository(Committee::class)->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
+            $this->committeeManager->unfollowCommittee($adherent, $committee, false);
+        }
 
-        $this->manager->remove($token);
+        if ($token) {
+            $this->manager->remove($token);
+        }
+        if ($summary) {
+            $this->manager->remove($summary);
+        }
         $this->manager->remove($adherent);
         $this->manager->flush();
 

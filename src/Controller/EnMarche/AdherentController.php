@@ -15,6 +15,7 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Form\UnregisterType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
 use GuzzleHttp\Exception\ConnectException;
@@ -24,20 +25,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @Route("/espace-adherent")
  */
 class AdherentController extends Controller
 {
-    const WORD_DESADHESION = 'DESADHESION';
-    const LEFT_MEMBERSHIP_TOKEN = 'delete_summary_experience';
+    const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
      * @Route("/mon-compte", name="app_adherent_profile")
@@ -60,8 +57,6 @@ class AdherentController extends Controller
 
         return $this->render('adherent/profile.html.twig', [
             'form' => $form->createView(),
-            'isReferent' => $adherent->isReferent(),
-            'isHost' => $adherent->isHost(),
         ]);
     }
 
@@ -250,40 +245,35 @@ class AdherentController extends Controller
     }
 
     /**
-     * @Route("/mon-compte/desadherer", name="app_adherent_left_membership")
+     * @Route("/mon-compte/desadherer", name="app_adherent_terminate_membership")
      * @Method("GET|POST")
+     * @Security("is_granted('UNREGISTER')")
      */
-    public function leftMembershipAction(Request $request): Response
+    public function terminateMembershipAction(Request $request): Response
     {
         $adherent = $this->getUser();
 
-        if ($adherent->isHost() || $adherent->isReferent()) {
-            throw $this->createNotFoundException();
-        }
-
-        $form = $this->get('form.factory')->create(FormType::class, null, [
-            'csrf_token_id' => self::LEFT_MEMBERSHIP_TOKEN,
+        $form = $this->createForm(FormType::class, null, [
+            'csrf_token_id' => self::UNREGISTER_TOKEN,
         ]);
 
-        $form->add('word', TextType::class, [
-            'label' => 'Pour finaliser la suppression de votre adhésion, saisissez le mot DESADHESION',
-            'attr' => ['placeholder' => 'Saisissez ici le mot DESADHESION'],
-            'constraints' => [new EqualTo(self::WORD_DESADHESION)],
-        ]);
+        $form->add('word', UnregisterType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->leftMembership($adherent);
+            $this->get('app.membership_request_handler')->terminateMembership($adherent);
+            $this->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
 
-            return $this->render('adherent/left_membership.html.twig', [
-                'is_adherent' => false,
+            return $this->render('adherent/terminate_membership.html.twig', [
+                'unregistered' => true,
                 'form' => $form->createView(),
             ]);
         }
 
-        return $this->render('adherent/left_membership.html.twig', [
-            'is_adherent' => true,
+        return $this->render('adherent/terminate_membership.html.twig', [
+            'unregistered' => false,
             'form' => $form->createView(),
         ]);
     }

@@ -5,13 +5,13 @@ namespace AppBundle\Mailjet\Message;
 use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class AdherentLeftMembershipMessage extends MailjetMessage
+final class AdherentTerminateMembershipMessage extends MailjetMessage
 {
     public static function createFromAdherent(Adherent $adherent): self
     {
         return new self(
             Uuid::uuid4(),
-            '54665',   // ROL TODO
+            '187353',
             $adherent->getEmailAddress(),
             self::fixMailjetParsing($adherent->getFullName()),
             'Votre départ d\'En Marche !',
