@@ -25,6 +25,6 @@ class HomeBlockExtension extends AbstractExtension
 
     public function getHomeBlock(int $position): HomeBlock
     {
-        return $this->manager->getRepository(HomeBlock::class)->findOneBy(['position' => $position]);
+        return $this->manager->getRepository(HomeBlock::class)->findOneBy(['position' => $position]) ?? new HomeBlock();
     }
 }

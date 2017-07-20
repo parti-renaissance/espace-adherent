@@ -22,6 +22,8 @@ class HomeBlock
     const TYPE_VIDEO = 'video';
     const TYPE_BANNER = 'banner';
 
+    const HEADER_BANNER = 11;
+
     /**
      * @var int
      *

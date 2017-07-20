@@ -95,7 +95,7 @@
             </div>
         {% endfor %}
 
-        {% block banner include('banner/call.html.twig', { banner: get_home_block(11) }) %}
+        {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('AppBundle\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
 
         {% block header %}
         <header>
