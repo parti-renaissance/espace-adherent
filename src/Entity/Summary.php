@@ -88,7 +88,7 @@ class Summary
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(groups={"synthesis"})
-     * @Assert\Length(min=10, max=300, groups={"synthesis"})
+     * @Assert\Length(min=10, max=1000, groups={"synthesis"})
      */
     private $professionalSynopsis = '';
 
@@ -116,7 +116,7 @@ class Summary
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(groups={"motivation"})
-     * @Assert\Length(min=10, max=300, groups={"motivation"})
+     * @Assert\Length(min=10, max=1000, groups={"motivation"})
      */
     private $motivation = '';
 
