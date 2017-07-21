@@ -15,9 +15,9 @@ class TrainingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('organization', TextType::class)
-            ->add('diploma', TextType::class)
-            ->add('study_field', TextType::class)
+            ->add('organization', TextType::class, ['filter_emojis' => true])
+            ->add('diploma', TextType::class, ['filter_emojis' => true])
+            ->add('study_field', TextType::class, ['filter_emojis' => true])
             ->add('started_at', MonthChoiceType::class, [
                 'pre_set_now' => true,
             ])
@@ -29,9 +29,11 @@ class TrainingType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('extra_curricular', TextareaType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
         ;
     }
