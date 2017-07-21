@@ -98,12 +98,13 @@ class SummaryType extends AbstractType
                     ->add('current_profession', TextType::class, [
                         'required' => false,
                         'empty_data' => null,
+                        'filter_emojis' => true,
                     ])
                     ->add('current_position', ActivityPositionType::class)
                     ->add('contribution_wish', ContributionChoiceType::class)
                     ->add('availabilities', JobDurationChoiceType::class)
                     ->add('job_locations', JobLocationChoiceType::class)
-                    ->add('professional_synopsis', TextareaType::class)
+                    ->add('professional_synopsis', TextareaType::class, ['filter_emojis' => true])
                 ;
                 break;
 
@@ -115,7 +116,7 @@ class SummaryType extends AbstractType
 
             case self::STEP_MOTIVATION:
                 $builder
-                    ->add('motivation', TextareaType::class)
+                    ->add('motivation', TextareaType::class, ['filter_emojis' => true])
                 ;
                 break;
 
@@ -124,6 +125,7 @@ class SummaryType extends AbstractType
                     ->add('skill_search', TextType::class, [
                         'mapped' => false,
                         'required' => false,
+                        'filter_emojis' => true,
                         'attr' => [
                             'placeholder' => 'Saisissez une compétence et tapez "entrer"',
                         ],
