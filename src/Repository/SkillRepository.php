@@ -21,7 +21,8 @@ class SkillRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('s');
         $qb
-            ->distinct('s.slug')
+            ->select('s.slug, s.name')
+            ->distinct()
             ->leftJoin('s.summary', 'summary')
             ->where('s.slug LIKE :slug')
             ->andWhere('summary.member != :member')
