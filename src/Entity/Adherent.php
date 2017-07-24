@@ -154,9 +154,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @var CommitteeMembership[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent")
+     * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent", cascade={"remove"})
      */
     private $memberships;
+
+    /**
+     * @var CommitteeFeedItem[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
+     */
+    private $committeeFeedItems;
 
     public function __construct(
         UuidInterface $uuid,
@@ -654,6 +661,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         return null;
+    }
+
+    public function isBasicAdherent(): bool
+    {
+        return !$this->isHost() && !$this->isReferent();
     }
 
     public function isHost(): bool

@@ -408,6 +408,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key10);
         $manager->persist($key11);
         $manager->persist($key12);
+        $manager->persist($key13);
 
         $manager->persist($resetPasswordToken);
 

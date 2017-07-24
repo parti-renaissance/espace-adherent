@@ -15,6 +15,7 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Form\UnregisterType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
 use GuzzleHttp\Exception\ConnectException;
@@ -22,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +34,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdherentController extends Controller
 {
+    const UNREGISTER_TOKEN = 'unregister_token';
+
     /**
      * @Route("/mon-compte", name="app_adherent_profile")
      * @Method("GET|POST")
@@ -237,6 +241,40 @@ class AdherentController extends Controller
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route("/mon-compte/desadherer", name="app_adherent_terminate_membership")
+     * @Method("GET|POST")
+     * @Security("is_granted('UNREGISTER')")
+     */
+    public function terminateMembershipAction(Request $request): Response
+    {
+        $adherent = $this->getUser();
+
+        $form = $this->createForm(FormType::class, null, [
+            'csrf_token_id' => self::UNREGISTER_TOKEN,
+        ]);
+
+        $form->add('word', UnregisterType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.membership_request_handler')->terminateMembership($adherent);
+            $this->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+
+            return $this->render('adherent/terminate_membership.html.twig', [
+                'unregistered' => true,
+                'form' => $form->createView(),
+            ]);
+        }
+
+        return $this->render('adherent/terminate_membership.html.twig', [
+            'unregistered' => false,
+            'form' => $form->createView(),
         ]);
     }
 }

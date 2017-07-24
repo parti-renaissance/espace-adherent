@@ -9,7 +9,9 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Form\UnregisterType;
 use AppBundle\Mailjet\Message\AdherentContactMessage;
+use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
@@ -584,6 +586,86 @@ class AdherentControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+    }
+
+    public function testReferentCannotTerminateMembership()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(0, $crawler->filter('#left-membership'));
+
+        $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+    }
+
+    public function testAdherentHostCannotTerminateMembership()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(0, $crawler->filter('#left-membership'));
+
+        $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+    }
+
+    public function testAdherentTerminatesMembership()
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(1, $crawler->filter('#left-membership'));
+
+        $crawler = $this->client->click($crawler->selectLink('Désadhérer du mouvement')->link());
+
+        $this->assertEquals('http://localhost/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $crawler = $this->client->submit($crawler->selectButton('Terminer')->form([
+            'form' => [
+                'word' => 'invalid word',
+            ],
+        ]));
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Cette valeur doit être égale à "DESADHESION".', $errors->eq(0)->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
+
+        $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
+        $crawler = $this->client->submit($crawler->selectButton('Terminer')->form([
+            'form' => [
+                'word' => UnregisterType::UNREGISTER_WORD,
+            ],
+        ]));
+
+        $this->assertEquals('http://localhost/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(0, $errors->count());
+        $this->assertSame('Votre demande de désadhésion a bien été prise en compte.', trim($crawler->filter('#is_not_adherent p')->eq(0)->text()));
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
+
+        $this->assertSame('1 adhérent', $crawler->filter('.committee-members')->text());
     }
 
     protected function setUp()
