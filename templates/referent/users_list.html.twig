@@ -185,7 +185,7 @@
                             {{ user.committees|e|join('<br />')|raw }}
                         </td>
                         <td class="datagrid__table__col--hide-mobile">
-                            12/05/2017 10:13
+                            {{ user.createdAt|date('d/m/Y H:i') }}
                         </td>
                     </tr>
                 {% endfor %}
