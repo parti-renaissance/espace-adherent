@@ -247,6 +247,7 @@ class Summary
      * @Assert\Image(
      *     maxSize = "1M",
      *     mimeTypes = {"image/jpeg", "image/png"},
+     *     groups={"photo"}
      * )
      */
     private $profilePicture;
