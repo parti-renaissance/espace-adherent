@@ -6,8 +6,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\MissionType;
-use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
+use AppBundle\Entity\Skill;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
@@ -15,9 +15,10 @@ use AppBundle\Summary\JobLocation;
 use AppBundle\Summary\SummaryFactory;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSummaryData implements FixtureInterface
+class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -115,20 +116,13 @@ class LoadSummaryData implements FixtureInterface
         $summary1->addLanguage($language13);
 
         // Skills
-        $skill11 = new Skill();
-        $skill11->setName('Software');
+        $skill11 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S001']]);
+        $skill12 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S002']]);
+        $skill13 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S003']]);
+        $skill14 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S004']]);
         $summary1->addSkill($skill11);
-
-        $skill12 = new Skill();
-        $skill12->setName('Analyze');
         $summary1->addSkill($skill12);
-
-        $skill13 = new Skill();
-        $skill13->setName('Mathématiques');
         $summary1->addSkill($skill13);
-
-        $skill14 = new Skill();
-        $skill14->setName('Statistique');
         $summary1->addSkill($skill14);
 
         $summary1->publish();
@@ -184,25 +178,14 @@ class LoadSummaryData implements FixtureInterface
         $manager->persist($language23);
 
         // Skills
-        $skill21 = new Skill();
-        $skill21->setName('Ecriture médiatique');
-        $skill21->setSummary($summary2);
-        $manager->persist($skill21);
-
-        $skill22 = new Skill();
-        $skill22->setName('Gestion des relations');
-        $skill22->setSummary($summary2);
-        $manager->persist($skill22);
-
-        $skill23 = new Skill();
-        $skill23->setName('Culture de l’image');
-        $skill23->setSummary($summary2);
-        $manager->persist($skill23);
-
-        $skill24 = new Skill();
-        $skill24->setName('Outils médias');
-        $skill24->setSummary($summary2);
-        $manager->persist($skill24);
+        $skill21 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S005']]);
+        $skill22 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S006']]);
+        $skill23 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S007']]);
+        $skill24 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S008']]);
+        $summary2->addSkill($skill21);
+        $summary2->addSkill($skill22);
+        $summary2->addSkill($skill23);
+        $summary2->addSkill($skill24);
 
         $summary3 = $summaryFactory->createFromArray([
             'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID),
@@ -222,5 +205,10 @@ class LoadSummaryData implements FixtureInterface
     private function getSummaryFactory(): SummaryFactory
     {
         return new SummaryFactory(new Slugify());
+    }
+
+    public function getOrder()
+    {
+        return 3;
     }
 }

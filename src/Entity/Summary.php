@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\MissionType;
-use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
@@ -138,7 +137,16 @@ class Summary
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Skill", mappedBy="summary", cascade={"all"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Skill", inversedBy="summaries", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="summary_skills",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="summary_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="skill_id", referencedColumnName="id")
+     *     }
+     * )
      *
      * @Assert\Valid
      * @Assert\Count(min=1, groups={"competences"})
@@ -413,25 +421,24 @@ class Summary
         $this->experiences->removeElement($experience);
     }
 
+    public function addSkill(Skill $skill)
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+        }
+    }
+
+    public function removeSkill(Skill $skill)
+    {
+        $this->skills->removeElement($skill);
+    }
+
     /**
      * @return Skill[]|Collection
      */
     public function getSkills(): iterable
     {
         return $this->skills;
-    }
-
-    public function addSkill(Skill $skill): void
-    {
-        if (!$this->skills->contains($skill)) {
-            $skill->setSummary($this);
-            $this->skills->add($skill);
-        }
-    }
-
-    public function removeSkill(Skill $skill): void
-    {
-        $this->skills->removeElement($skill);
     }
 
     /**

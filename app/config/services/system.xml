@@ -166,6 +166,7 @@
         <service id="AppBundle\Form\SummaryType">
             <argument type="service" id="app.storage" />
             <argument type="service" id="app.glide" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <tag name="form.type" />
         </service>
 

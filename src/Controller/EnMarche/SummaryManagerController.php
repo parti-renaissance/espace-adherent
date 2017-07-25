@@ -5,8 +5,8 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
+use AppBundle\Entity\Skill;
 use AppBundle\Form\JobExperienceType;
 use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
@@ -230,7 +230,7 @@ class SummaryManagerController extends Controller
     public function skillsAutocompleteAction(Request $request)
     {
         $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsForAdherent(
-            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser());
+            $request->query->get('term'), $this->getUser());
 
         return new JsonResponse($skills);
     }
