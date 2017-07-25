@@ -36,7 +36,16 @@ class AssetRuntime
     {
         $parameters['cache'] = substr(md5($media->getUpdatedAt()->format('U')), 0, 20);
 
-        return $this->generateAssetUrl('images/'.$media->getPath(), $parameters, $referenceType);
+        if ($media->isVideo()) {
+            $parameters = [];
+            $parameters['path'] = $media->getPathWithDirectory();
+            $parameters['mime_type'] = $media->getMimeType();
+            $parameters['is_video'] = true;
+
+            return $this->router->generate('asset_url', $parameters, $referenceType);
+        } else {
+            return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType);
+        }
     }
 
     public function webpackAsset(string $path, $packageName = null): string

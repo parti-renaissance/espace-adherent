@@ -40,8 +40,8 @@ class MediaAdmin extends AbstractAdmin
         parent::preRemove($media);
 
         try {
-            $this->storage->delete('images/'.$media->getPath());
-            $this->glide->deleteCache('images/'.$media->getPath());
+            $this->storage->delete($media->getPathWithDirectory());
+            $this->glide->deleteCache($media->getPathWithDirectory());
         } catch (\Exception $e) {
         }
     }
@@ -53,8 +53,8 @@ class MediaAdmin extends AbstractAdmin
     {
         parent::prePersist($media);
 
-        $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
-        $this->glide->deleteCache('images/'.$media->getPath());
+        $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
+        $this->glide->deleteCache($media->getPathWithDirectory());
     }
 
     /**
@@ -65,8 +65,8 @@ class MediaAdmin extends AbstractAdmin
         parent::preUpdate($media);
 
         if ($media->getFile()) {
-            $this->storage->put('images/'.$media->getPath(), file_get_contents($media->getFile()->getPathname()));
-            $this->glide->deleteCache('images/'.$media->getPath());
+            $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
+            $this->glide->deleteCache($media->getPathWithDirectory());
         }
     }
 
@@ -103,7 +103,7 @@ class MediaAdmin extends AbstractAdmin
                 'disabled' => !$isCreation,
             ])
             ->add('file', FileType::class, [
-                'label' => $isCreation ? 'Image' : 'Image (laisser vide pour ne pas modifier)',
+                'label' => $isCreation ? 'Image / Vidéo' : 'Image / Vidéo (laisser vide pour ne pas modifier)',
                 'required' => $isCreation,
             ])
         ;

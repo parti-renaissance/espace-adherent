@@ -2,6 +2,10 @@
 
 {% block field %}
     <div style="text-align: center;">
-        <img src="{{ media_asset(object, {'w': 150}) }}" style="max-height: 50px; max-width: 100px;" />
+        {% if object.video %}
+            <a href="{{ media_asset(object) }}" target="_blank">Vidéo</a>
+        {% else %}
+            <img src="{{ media_asset(object, {'w': 150}) }}" style="max-height: 50px; max-width: 100px;" />
+        {% endif %}
     </div>
 {% endblock %}

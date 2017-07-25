@@ -98,7 +98,9 @@ class Media
     /**
      * @var UploadedFile|null
      *
-     * @Assert\Image
+     * @Assert\File(
+     *     mimeTypes={"image/*", "video/mpeg", "video/mp4", "video/quicktime", "video/webm"}
+     * )
      */
     private $file;
 
@@ -281,12 +283,29 @@ class Media
             return $this;
         }
 
+        if (false !== strpos($file->getMimeType(), 'video')) {
+            $this->width = 0;
+            $this->height = 0;
+            $this->mimeType = $file->getMimeType();
+        } else {
+            $this->width = $infos[0];
+            $this->height = $infos[1];
+            $this->mimeType = $infos['mime'];
+        }
+
         $this->file = $file;
         $this->size = $file->getSize();
-        $this->width = $infos[0];
-        $this->height = $infos[1];
-        $this->mimeType = $infos['mime'];
 
         return $this;
+    }
+
+    public function isVideo(): bool
+    {
+        return false !== strpos($this->mimeType, 'video');
+    }
+
+    public function getPathWithDirectory(): string
+    {
+        return sprintf('%s/%s', $this->isVideo() ? 'videos' : 'images', $this->getPath());
     }
 }
