@@ -104,9 +104,9 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 'subtitle' => $homeBlockData['subtitle'] ?? '',
                 'link' => $homeBlockData['link'],
                 'media' => array_key_exists('path', $homeBlockData) ? $this->mediasRegistry[$homeBlockData['path']] : null,
-                'titleCta' => $homeBlockData['titleCta'] ?? '',
-                'colorCta' => $homeBlockData['colorCta'] ?? '',
-                'bgColor' => $homeBlockData['bgColor'] ?? '',
+                'titleCta' => $homeBlockData['titleCta'] ?? null,
+                'colorCta' => $homeBlockData['colorCta'] ?? null,
+                'bgColor' => $homeBlockData['bgColor'] ?? null,
             ]));
         }
 

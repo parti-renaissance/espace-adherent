@@ -15,7 +15,7 @@
          -->
 
         <service id="app.admin.media" class="AppBundle\Admin\MediaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Images" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Images / Vidéos" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\Media</argument>

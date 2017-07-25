@@ -32,6 +32,12 @@ class AssetsController extends Controller
     {
         $parameters = $request->query->all();
 
+        if (!empty($parameters['mime_type'])) {
+            return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
+                'Content-Type' => $parameters['mime_type'],
+            ]);
+        }
+
         try {
             SignatureFactory::create($this->getParameter('kernel.secret'))->validateRequest($path, $parameters);
         } catch (SignatureException $e) {
