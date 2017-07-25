@@ -988,8 +988,8 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
-        $this->assertCount(1, $interests->filter('p'));
-        $this->assertSame('Agriculture', trim($interests->filter('p')->text()));
+        $this->assertCount(1, $interests->filter('li'));
+        $this->assertSame('Agriculture', trim($interests->filter('li')->text()));
     }
 
     /**
@@ -1022,9 +1022,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
         $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
-        $this->assertCount(2, $interests->filter('p'));
-        $this->assertSame('Jeunesse', trim($interests->filter('p')->eq(0)->text()));
-        $this->assertSame('Egalité F / H', trim($interests->filter('p')->eq(1)->text()));
+        $this->assertCount(2, $interests->filter('li'));
+        $this->assertSame('Jeunesse', trim($interests->filter('li')->eq(0)->text()));
+        $this->assertSame('Egalité F / H', trim($interests->filter('li')->eq(1)->text()));
     }
 
     /**
