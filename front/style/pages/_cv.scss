@@ -107,7 +107,8 @@
         }
     }
 
-    &__skills {
+    &__skills,
+    &__interests {
         ul {
             display: flex;
             flex-wrap: wrap;
