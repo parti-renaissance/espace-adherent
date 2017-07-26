@@ -1,19 +1,26 @@
 {% if banner.isDisplayBlock %}
-    <div class="newsletter__banner l__hide--on-tablet background--{{ banner.bgColor|default('green') }}" id="header-banner" style="display: none;">
-        <div class="l__wrapper l__row l__row--h-stretch space--30-0">
-            <div class="text--large text--bold text--limited text--{{ banner.colorCta|default('black') }}">
-                {{ banner.title }}
-            </div>
+    {% if banner.media and banner.media.video %}
+        <video controls />
+            <source src="{{ media_asset(banner.media) }}" type="{{ banner.media.mimeType }}">
+            Votre navigateur ne prend pas en charge la balise "video".
+        </video>
+    {% else %}
+        <div class="newsletter__banner l__hide--on-tablet background--{{ banner.bgColor|default('green') }}" id="header-banner" style="display: none;">
+            <div class="l__wrapper l__row l__row--h-stretch space--30-0">
+                <div class="text--large text--bold text--limited text--{{ banner.colorCta|default('black') }}">
+                    {{ banner.title }}
+                </div>
 
-            <div class="l__row l__row--wrap">
-                <a href="{{ banner.link }}" target="_blank" rel="noreferrer noopener" class="btn btn--large btn--{{ banner.colorCta }}">
-                    {{ banner.titleCta }}
-                </a>
+                <div class="l__row l__row--wrap">
+                    <a href="{{ banner.link }}" target="_blank" rel="noreferrer noopener" class="btn btn--large btn--{{ banner.colorCta }}">
+                        {{ banner.titleCta }}
+                    </a>
 
-                <a href="javascript:void(0)" class="btn__icon btn__icon--dark newsletter__banner__btn" id="header-banner-close-btn">
-                    {{ include('components/close.html.twig') }}
-                </a>
+                    <a href="javascript:void(0)" class="btn__icon btn__icon--dark newsletter__banner__btn" id="header-banner-close-btn">
+                        {{ include('components/close.html.twig') }}
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 {% endif %}
