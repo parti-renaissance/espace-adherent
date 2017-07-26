@@ -595,7 +595,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('#left-membership'));
+        $this->assertCount(0, $crawler->filter('.adherent_profile_unsubscribe'));
 
         $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
 
@@ -609,7 +609,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('#left-membership'));
+        $this->assertCount(0, $crawler->filter('.adherent_profile_unsubscribe'));
 
         $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
 
@@ -623,7 +623,7 @@ class AdherentControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(1, $crawler->filter('#left-membership'));
+        $this->assertCount(1, $crawler->filter('.adherent_profile_unsubscribe'));
 
         $crawler = $this->client->click($crawler->selectLink('Désadhérer du mouvement')->link());
 

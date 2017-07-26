@@ -19,11 +19,13 @@
     {{ block('adherent_membership_form') }}
 
     {% if is_granted('UNREGISTER') %}
-        <div id="left-membership">
-            <a href="{{ path('app_adherent_terminate_membership') }}" class="btn btn--primary">
+        <div class="adherent_profile_unsubscribe text--center space--60-0">
+            <a href="{{ path('app_adherent_terminate_membership') }}" class="btn btn--small">
                 Désadhérer du mouvement
             </a>
-            <p>Texte juridique sur la désadhésion et les conséquences en termes de données</p>
+            <div class="text--body b__nudge--top-10 text--small">
+                Toutes vos données seront définitivement supprimées.
+            </div>
         </div>
     {% endif %}
 {% endblock %}
