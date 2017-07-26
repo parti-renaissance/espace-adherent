@@ -32,7 +32,7 @@ class CommitteeFeedItem
     /**
      * @var Adherent Any host of the committee
      *
-     * @ORM\ManyToOne(targetEntity="Adherent")
+     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="committeeFeedItems")
      */
     private $author;
 

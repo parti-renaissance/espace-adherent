@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *   name="skills",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="skill_name_unique", columns="name")
+ *     @ORM\UniqueConstraint(name="skill_slug_unique", columns="slug")
  *   }
  * )
  *
@@ -32,12 +33,20 @@ class Skill
     /**
      * @var string
      *
-     * @ORM\Column(unique=true)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Length(min=2, max=200)
      */
     private $name = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Summary", mappedBy="skills")
@@ -48,10 +57,7 @@ class Skill
 
     public function __construct(?string $name = null)
     {
-        if ($name) {
-            $this->name = $name;
-        }
-
+        $this->name = (string) $name;
         $this->summaries = new ArrayCollection();
     }
 
@@ -75,5 +81,10 @@ class Skill
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 }

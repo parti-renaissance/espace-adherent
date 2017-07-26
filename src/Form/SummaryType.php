@@ -52,9 +52,6 @@ class SummaryType extends AbstractType
      */
     private $glide;
 
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
     public function __construct(Filesystem $storage, Server $glide, EntityManagerInterface $entityManager)

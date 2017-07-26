@@ -116,14 +116,14 @@ class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
         $summary1->addLanguage($language13);
 
         // Skills
-        $skill11 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S001']]);
-        $skill12 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S002']]);
-        $skill13 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S003']]);
-        $skill14 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S004']]);
-        $summary1->addSkill($skill11);
-        $summary1->addSkill($skill12);
-        $summary1->addSkill($skill13);
-        $summary1->addSkill($skill14);
+        foreach ($manager->getRepository(Skill::class)->findBy(['name' => [
+            LoadSkillData::SKILLS['S001'],
+            LoadSkillData::SKILLS['S002'],
+            LoadSkillData::SKILLS['S003'],
+            LoadSkillData::SKILLS['S004'], ],
+        ]) as $skill) {
+            $summary1->addSkill($skill);
+        }
 
         $summary1->publish();
 
@@ -178,14 +178,14 @@ class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
         $manager->persist($language23);
 
         // Skills
-        $skill21 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S005']]);
-        $skill22 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S006']]);
-        $skill23 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S007']]);
-        $skill24 = $manager->getRepository(Skill::class)->findOneBy(['name' => LoadSkillData::SKILLS['S008']]);
-        $summary2->addSkill($skill21);
-        $summary2->addSkill($skill22);
-        $summary2->addSkill($skill23);
-        $summary2->addSkill($skill24);
+        foreach ($manager->getRepository(Skill::class)->findBy(['name' => [
+            LoadSkillData::SKILLS['S005'],
+            LoadSkillData::SKILLS['S006'],
+            LoadSkillData::SKILLS['S007'],
+            LoadSkillData::SKILLS['S008'], ],
+        ]) as $skill) {
+            $summary2->addSkill($skill);
+        }
 
         $summary3 = $summaryFactory->createFromArray([
             'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID),
