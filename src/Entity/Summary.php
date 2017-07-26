@@ -141,10 +141,10 @@ class Summary
      * @ORM\JoinTable(
      *     name="summary_skills",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="summary_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="summary_id", referencedColumnName="id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="skill_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="skill_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
      *
@@ -425,16 +425,25 @@ class Summary
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
+            $skill->addSummary($this);
         }
+    }
+
+    public function replaceSkill(Skill $actual, Skill $new): void
+    {
+        $this->removeSkill($actual);
+        $this->addSkill($new);
     }
 
     public function removeSkill(Skill $skill)
     {
-        $this->skills->removeElement($skill);
+        if ($this->skills->contains($skill)) {
+            $this->skills->removeElement($skill);
+        }
     }
 
     /**
-     * @return Skill[]|Collection
+     * @return Skill[]|Collection|iterable
      */
     public function getSkills(): iterable
     {
@@ -442,7 +451,7 @@ class Summary
     }
 
     /**
-     * @return Language[]|Collection
+     * @return Language[]|Collection|iterable
      */
     public function getLanguages(): iterable
     {

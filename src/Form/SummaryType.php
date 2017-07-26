@@ -153,16 +153,13 @@ class SummaryType extends AbstractType
                         $skills = $event->getData()->getSkills();
 
                         foreach ($skills as $skill) {
-                            $skillEntity = $this->entityManager->getRepository(Skill::class)->findOneBy([
-                                'name' => $skill->getName(),
-                            ]);
-
-                            if (!$skillEntity) {
-                                $skillEntity = new Skill($skill->getName());
+                            if ($skill->getId()) {
+                                continue;
                             }
 
-                            $summary->removeSkill($skill);
-                            $summary->addSkill($skillEntity);
+                            if ($existingSkill = $this->entityManager->getRepository(Skill::class)->findOneBy(['name' => $skill->getName()])) {
+                                $summary->replaceSkill($skill, $existingSkill);
+                            }
                         }
                     });
                 break;

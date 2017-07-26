@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,6 +50,15 @@ class Skill
     {
         if ($name) {
             $this->name = $name;
+        }
+
+        $this->summaries = new ArrayCollection();
+    }
+
+    public function addSummary(Summary $summary): void
+    {
+        if (!$this->summaries->contains($summary)) {
+            $this->summaries->add($summary);
         }
     }
 
