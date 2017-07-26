@@ -9,46 +9,67 @@
     <main>
         <section class="l__wrapper">
             <div class="l__row l__tablet--col l__row--v-stretch">
-                <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
-                   style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
-                    <div class="background" style="justify-content: flex-end;">
-                        <div class="content">
-                            {% if blocks[0].hasDisplayTitles %}
-                                <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
-                                <div class="text--body">{{ blocks[0].subtitle }}</div>
-                            {% endif %}
-                            <div class="btn btn--no-border">Je découvre</div>
+                {% if blocks[0].media and blocks[0].media.video %}
+                    <video controls width="1200" />
+                    <source src="{{ media_asset(blocks[0].media) }}" type="{{ blocks[0].media.mimeType }}">
+                    Votre navigateur ne prend pas en charge la balise "video".
+                    </video>
+                {% else %}
+                    <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
+                       style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
+                        <div class="background" style="justify-content: flex-end;">
+                            <div class="content">
+                                {% if blocks[0].hasDisplayTitles %}
+                                    <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
+                                    <div class="text--body">{{ blocks[0].subtitle }}</div>
+                                {% endif %}
+                                <div class="btn btn--no-border">Je découvre</div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
-                    <a href="{{ blocks[0].link }}" class="background-container">
-                        <div class="background card__background"
-                             style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
                     </a>
-                    {% if blocks[0].hasDisplayTitles %}
-                        <a class="content" href="{{ blocks[0].link }}">
-                            <h2>{{ blocks[0].title }}</h2>
-                            <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                    <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
+                        <a href="{{ blocks[0].link }}" class="background-container">
+                            <div class="background card__background"
+                                 style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
                         </a>
-                    {% endif %}
-                </div>
+                        {% if blocks[0].hasDisplayTitles %}
+                            <a class="content" href="{{ blocks[0].link }}">
+                                <h2>{{ blocks[0].title }}</h2>
+                                <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
 
             {% if not campaign_expired %}
                 <div class="content b__nudge--top">
                     <article class="l__row l__row--v-stretch l__tablet--col">
-                        <div class="action action__home {{ blocks[9].bgColor }}">
-                            <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
-                            <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
-                                {{ blocks[9].titleCta }}
-                            </a>
+                        <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
+                            {% if blocks[9].media and blocks[9].media.video %}
+                                <video controls width="550" />
+                                    <source src="{{ media_asset(blocks[9].media) }}" type="{{ blocks[9].media.mimeType }}">
+                                    Votre navigateur ne prend pas en charge la balise "video".
+                                </video>
+                            {% else %}
+                                <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
+                                <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
+                                    {{ blocks[9].titleCta }}
+                                </a>
+                            {% endif %}
                         </div>
-                        <div class="action action__home {{ blocks[10].bgColor }}">
-                            <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
-                            <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
-                                {{ blocks[10].titleCta }}
-                            </a>
+                        <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
+                            {% if  blocks[10].media and blocks[10].media.video %}
+                                <video controls width="550" />
+                                    <source src="{{ media_asset(blocks[10].media) }}" type="{{ blocks[10].media.mimeType }}">
+                                    Votre navigateur ne prend pas en charge la balise "video".
+                                </video>
+                            {% else %}
+                                <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
+                                <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
+                                    {{ blocks[10].titleCta }}
+                                </a>
+                            {% endif %}
                         </div>
                     </article>
                 </div>
@@ -161,6 +182,12 @@
 
         {% if blocks|length >= 9 %}
         <section class="l__wrapper b__nudge--bottom-large">
+            {% if blocks[8].media and blocks[8].media.video %}
+                <video controls width="1150" />
+                    <source src="{{ media_asset(blocks[8].media) }}" type="{{ blocks[8].media.mimeType }}">
+                    Votre navigateur ne prend pas en charge la balise "video".
+                </video>
+            {% else %}
             <div class="proteger l__col l__col--center progressive-background"
                  data-sd="{{ media_asset(blocks[8].media, {'w': 300, 'q': 20}) }}"
                  data-hd="{{ media_asset(blocks[8].media, {'w': 1800, 'q': 70}) }}"
@@ -169,6 +196,7 @@
                 <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">{{ blocks[8].title }}</h2>
                 <a href="{{ blocks[8].link }}" class="btn btn--no-border">En savoir plus</a>
             </div>
+            {% endif %}
         </section>
         {% endif %}
 
