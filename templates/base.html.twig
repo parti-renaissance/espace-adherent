@@ -402,7 +402,6 @@
                             <li><a href="{{ path('articles_list', {'category': 'videos'}) }}">Vidéos</a></li>
                             <li><a href="{{ path('articles_list', {'category': 'discours'}) }}">Discours</a></li>
                             <li><a href="{{ path('articles_list', {'category': 'medias'}) }}">Médias</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'meetings'}) }}">Meetings</a></li>
                             <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
                             <li><a href="{{ path('articles_list', {'category': 'tribunes'}) }}">Tribunes</a></li>
                         </ul>
@@ -420,14 +419,6 @@
                                 <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
                                 <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
                                 <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
-                                <li><a href="{{ path('app_je_marche') }}">J'agis</a></li>
-                                <li><a href="{{ path('app_je_marche_action') }}">Je Marche</a></li>
-                                <li><a href="{{ path('app_social_share_list') }}">Je Partage</a></li>
-                                <li>
-                                    <a href="{{ path('app_ton_macron_invite') }}">
-                                        Je convaincs un ami
-                                    </a>
-                                </li>
                                 <li>
                                     <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}">
                                         Espace perso
@@ -443,7 +434,6 @@
                             <li><a href="https://boutique.en-marche.fr" target="_blank" rel="noopener noreferrer">La Boutique</a></li>
                             <li><a href="http://www.lesjeunesavecmacron.fr" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
                             <li><a href="http://enmarcheletour.fr" target="_blank" rel="noopener noreferrer">En Marche Le Tour</a></li>
-                            <li><a href="{{ path('app_procuration_landing') }}" target="_blank" rel="noopener noreferrer">Procuration En Marche !</a></li>
                         </ul>
                     </div>
                     <div class="l__row l__row--h-stretch l__tablet--col">
