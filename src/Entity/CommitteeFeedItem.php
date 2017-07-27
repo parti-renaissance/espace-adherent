@@ -16,6 +16,7 @@ class CommitteeFeedItem
 {
     const MESSAGE = 'message';
     const EVENT = 'event';
+    const CITIZEN_INITIATIVE = 'citizen_initiative';
 
     use EntityIdentityTrait;
 
