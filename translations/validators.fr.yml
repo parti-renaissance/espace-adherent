@@ -1,11 +1,11 @@
 #
 # Symfony
 #
-'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractère.|Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractères.'
+'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Vous devez saisir au maximum {{ limit }} caractère.|Vous devez saisir au maximum {{ limit }} caractères.'
 
-'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'Cette chaîne est trop courte. Elle doit avoir au minimum {{ limit }} caractère.|Cette chaîne est trop courte. Elle doit avoir au minimum {{ limit }} caractères.'
+'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'Vous devez saisir au moins {{ limit }} caractère.|Vous devez saisir au moins {{ limit }} caractères.'
 
-'This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.': 'Cette chaîne doit avoir exactement {{ limit }} caractère.|Cette chaîne doit avoir exactement {{ limit }} caractères.'
+'This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.': 'Vous devez saisir exactement {{ limit }} caractère.|Vous devez saisir exactement {{ limit }} caractères.'
 
 #
 # Common
