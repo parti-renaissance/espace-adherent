@@ -10,7 +10,7 @@
         <section class="l__wrapper">
             <div class="l__row l__tablet--col l__row--v-stretch">
                 {% if blocks[0].media and blocks[0].media.video %}
-                    <video controls width="1200" />
+                    <video {% if blocks[0].videoControls %}controls{% endif %}{% if blocks[0].videoAutoplayLoop %} autoplay loop{% endif %} width="1200" />
                     <source src="{{ media_asset(blocks[0].media) }}" type="{{ blocks[0].media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                     </video>
@@ -47,7 +47,7 @@
                     <article class="l__row l__row--v-stretch l__tablet--col">
                         <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
                             {% if blocks[9].media and blocks[9].media.video %}
-                                <video controls width="550" />
+                                <video {% if blocks[9].videoControls %}controls{% endif %}{% if blocks[9].videoAutoplayLoop %} autoplay loop{% endif %} width="550" />
                                     <source src="{{ media_asset(blocks[9].media) }}" type="{{ blocks[9].media.mimeType }}">
                                     Votre navigateur ne prend pas en charge la balise "video".
                                 </video>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
                             {% if  blocks[10].media and blocks[10].media.video %}
-                                <video controls width="550" />
+                                <video {% if blocks[10].videoControls %}controls{% endif %}{% if blocks[10].videoAutoplayLoop %} autoplay loop{% endif %} width="550" />
                                     <source src="{{ media_asset(blocks[10].media) }}" type="{{ blocks[10].media.mimeType }}">
                                     Votre navigateur ne prend pas en charge la balise "video".
                                 </video>
@@ -183,7 +183,7 @@
         {% if blocks|length >= 9 %}
         <section class="l__wrapper b__nudge--bottom-large">
             {% if blocks[8].media and blocks[8].media.video %}
-                <video controls width="1150" />
+                <video {% if blocks[8].videoControls %}controls{% endif %}{% if blocks[8].videoAutoplayLoop %} autoplay loop{% endif %} width="1150" />
                     <source src="{{ media_asset(blocks[8].media) }}" type="{{ blocks[8].media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                 </video>

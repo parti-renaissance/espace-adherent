@@ -2,7 +2,7 @@
     {% if block.type == 'video' %}
         <div class="csv card--small card--small__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video controls width="300" height="200" />
+                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="300" height="200" />
                     <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                 </video>
@@ -31,7 +31,7 @@
         </div>
         <div class="cmv card--medium card--medium__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video controls width="585" height="350" />
+                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="585" height="350" />
                     <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                 </video>
@@ -65,7 +65,7 @@
     {% else %}
         <div class="cs card--small {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video controls width="300" height="200" />
+                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="300" height="200" />
                     <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                 </video>
@@ -93,7 +93,7 @@
         </div>
         <div class="cm card--medium {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video controls width="585" height="350" />
+                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="585" height="350" />
                     <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
                     Votre navigateur ne prend pas en charge la balise "video".
                 </video>

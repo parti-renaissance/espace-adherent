@@ -114,6 +114,19 @@ class HomeBlockAdmin extends AbstractAdmin
                 ])
             ;
         }
+
+        if ($this->getSubject()->getMedia() && $this->getSubject()->getMedia()->isVideo()) {
+            $formMapper
+                ->add('video_controls', CheckboxType::class, [
+                    'label' => 'Controles de la vidéo',
+                    'required' => false,
+                ])
+                ->add('video_autoplay_loop', CheckboxType::class, [
+                    'label' => 'Lancement de la vidéo automatique en boucle',
+                    'required' => false,
+                ])
+            ;
+        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
