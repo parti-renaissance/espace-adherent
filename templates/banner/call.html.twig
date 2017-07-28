@@ -1,6 +1,6 @@
 {% if banner.isDisplayBlock %}
     {% if banner.media and banner.media.video %}
-        <video controls />
+        <video {% if banner.videoControls %}controls{% endif %}{% if banner.videoAutoplayLoop %} autoplay loop{% endif %} />
             <source src="{{ media_asset(banner.media) }}" type="{{ banner.media.mimeType }}">
             Votre navigateur ne prend pas en charge la balise "video".
         </video>

@@ -119,6 +119,20 @@ class HomeBlock
     private $displayBlock = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $videoControls = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $videoAutoplayLoop = true;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=70, nullable=true)
@@ -262,6 +276,26 @@ class HomeBlock
     public function setDisplayBlock(bool $displayBlock): void
     {
         $this->displayBlock = $displayBlock;
+    }
+
+    public function hasVideoControls(): bool
+    {
+        return $this->videoControls;
+    }
+
+    public function setVideoControls(bool $videoControls): void
+    {
+        $this->videoControls = $videoControls;
+    }
+
+    public function hasVideoAutoplayLoop(): bool
+    {
+        return $this->videoAutoplayLoop;
+    }
+
+    public function setVideoAutoplayLoop(bool $videoAutoplayLoop): void
+    {
+        $this->videoAutoplayLoop = $videoAutoplayLoop;
     }
 
     public function getTitleCta(): ?string
