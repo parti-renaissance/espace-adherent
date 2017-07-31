@@ -86,7 +86,8 @@ class CitizenInitiative extends EventBase
         $this->participantsCount = $participantsCount;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
-        $this->createdAt = $this->updatedAt = $createdAt ?: new \DateTimeImmutable('now');
+        $this->createdAt = $createdAt ?: new \DateTimeImmutable('now');
+        $this->createdAt = $createdAt ?: new \DateTime('now');
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
         $this->expertAssistanceDescription = $expertAssistanceDescription;
         $this->coachingRequested = $coachingRequested;
