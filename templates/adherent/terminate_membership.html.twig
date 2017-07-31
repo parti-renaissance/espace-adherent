@@ -6,31 +6,34 @@
 
 <div>
     {% if not unregistered %}
-        <div id="is_adherent">
+        <div id="is_adherent" class="adherent_profile__unsub">
             <a href="{{ path('app_adherent_profile') }}" class="l__wrapper icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à mes informations</a>
-            <p>Je confirme ma volonté de ne plus être adhérent du mouvement En Marche</p>
 
-            {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+            <section class="l__wrapper-560 text--center space--60-0">
+                <p class="text--body text--medium">Je confirme ma volonté de ne plus être adhérent du mouvement En Marche</p>
 
-                {{ form_errors(form) }}
+                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
 
-                {{ form_row(form.word) }}
+                    {{ form_errors(form) }}
 
-                <div>
-                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
-                        Terminer
-                    </button>
-                </div>
+                    {{ form_row(form.word) }}
 
-            {{ form_end(form) }}
+                    <div>
+                        <button type="submit" class="btn btn--blue">
+                            Terminer
+                        </button>
+                    </div>
+
+                {{ form_end(form) }}
+            </section>
         </div>
     {% else %}
-        <div id="is_not_adherent">
-            <p>Votre demande de désadhésion a bien été prise en compte.</p>
-            <p>Nous sommes preneurs de retours. N'hésitez pas à nous faire parvenir les raisons de votre désadhésion en écrivant à contact@en-marche.fr</p>
-            <a href="/" class="l__wrapper icon--with-text text--summary">Retour à l'accueil</a>
+        <div id="is_not_adherent" class="l__wrapper-560 text--center text--body space--60-0">
+            <p class="text--medium">Votre demande de désadhésion a bien été prise en compte.</p>
+            <p>Nous sommes preneurs de retours. N'hésitez pas à nous faire parvenir les raisons de votre désadhésion en écrivant à contact@en-marche.fr.</p>
+            <a href="{{ path('homepage') }}">Retour à l'accueil</a>
         </div>
     {% endif %}
 </div>
