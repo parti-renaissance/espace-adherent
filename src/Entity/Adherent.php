@@ -10,6 +10,7 @@ use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentEmailSubscription;
+use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,7 +32,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface
+class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
