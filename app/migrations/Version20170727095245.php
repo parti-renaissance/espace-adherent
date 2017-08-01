@@ -16,7 +16,6 @@ class Version20170727095245 extends AbstractMigration
 
         $sqlTransferSkills = <<<'SQL'
             DROP PROCEDURE IF EXISTS TRANSFER_SKILLS;
-            DELIMITER ;;
             
             CREATE PROCEDURE TRANSFER_SKILLS()
             BEGIN
@@ -45,16 +44,12 @@ class Version20170727095245 extends AbstractMigration
               SET i = i + 1;
             END WHILE;
             END;
-            ;;
-
-            DELIMITER ;
             
             CALL TRANSFER_SKILLS();
             DROP PROCEDURE TRANSFER_SKILLS;
 SQL;
 
         $this->addSql($sqlTransferSkills);
-        $this->addSql('DROP TABLE member_summary_skills');
     }
 
     public function down(Schema $schema)
@@ -62,7 +57,5 @@ SQL;
         $this->addSql('ALTER TABLE summary_skills DROP FOREIGN KEY FK_2FD2B63C5585C142');
         $this->addSql('DROP TABLE skills');
         $this->addSql('DROP TABLE summary_skills');
-        $this->addSql('CREATE TABLE member_summary_skills (id INT AUTO_INCREMENT NOT NULL, summary_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, slug VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, INDEX IDX_CB3F6F8F2AC2D45C (summary_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE member_summary_skills ADD CONSTRAINT FK_CB3F6F8F2AC2D45C FOREIGN KEY (summary_id) REFERENCES summaries (id)');
     }
 }
