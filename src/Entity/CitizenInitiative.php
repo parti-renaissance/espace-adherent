@@ -212,6 +212,11 @@ class CitizenInitiative extends EventBase
         }
     }
 
+    public function setSkills(?ArrayCollection $skills)
+    {
+        $this->skills = $skills;
+    }
+
     /**
      * @return Skill[]|Collection|iterable
      */

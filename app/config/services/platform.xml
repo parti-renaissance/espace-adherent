@@ -212,6 +212,10 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="app.voter.citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\CitizenInitiativeVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
         <!-- Events -->
         <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
 
@@ -221,6 +225,12 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.event.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="app.citizen_initiative.handler" class="AppBundle\CitizenInitiative\CitizenInitiativeCommandHandler">
+            <argument type="service" id="app.event.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
         </service>
 
         <service id="app.event.invitation_handler" class="AppBundle\Event\EventInvitationHandler">

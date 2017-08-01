@@ -23,3 +23,70 @@ CKEDITOR.replace('{{ element }}', {
     ]
 });
 {% endmacro %}
+
+{% macro skills(idSkillsField, idSkillSearch, urlSearch) %}
+$(document).ready(function() {
+    var skillList = $('{{ idSkillsField|raw }}');
+    var removeSkill = function () {
+        var btn = $('.skill-remove');
+
+        btn.unbind('click');
+        btn.click(function () {
+            $(this).parent().parent().parent().remove();
+        });
+    };
+    var addSkill = function (elem) {
+        var skillCount = 0;
+        $('.summary-skill > input[type=hidden]').each(function () {
+            skillCount = Math.max(this.id.replace(/[^0-9]/g, ''), skillCount);
+        });
+        skillCount++;
+
+        var newSkillWidget = skillList.attr('data-prototype');
+        newSkillWidget = newSkillWidget.replace(/__name__/g, skillCount);
+        $(newSkillWidget).appendTo(skillList);
+        var idNewSkill = "#" + $(newSkillWidget).children('div').attr('id');
+        $(idNewSkill).find('input').val($(elem).val());
+        $(idNewSkill).find('.skill-value').text(' ' + $(elem).val());
+
+        $(elem).val('');
+        removeSkill();
+    };
+
+    // Prevent submitting form by pressing enter
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    var input = $('{{ idSkillSearch|raw }}');
+
+    // Add skill autocomplete
+    input.autocomplete({
+        source: "{{ urlSearch|raw }}",
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {
+            },
+        }
+    });
+
+    // Add skill by pressing Enter
+    input.keyup(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            addSkill($(this));
+        }
+    });
+
+    // Add skill by pressing button "Ajouter"
+    $('#add_skill').click(function () {
+        addSkill($('{{ idSkillSearch|raw }}'));
+    });
+
+    removeSkill();
+});
+{% endmacro %}

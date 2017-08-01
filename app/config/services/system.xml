@@ -170,5 +170,10 @@
             <tag name="form.type" />
         </service>
 
+        <service id="AppBundle\Form\CitizenInitiativeType">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="form.type" />
+        </service>
+
     </services>
 </container>
