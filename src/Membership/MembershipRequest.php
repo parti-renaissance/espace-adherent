@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertUniqueMembership
  */
-class MembershipRequest
+class MembershipRequest implements MembershipInterface
 {
     /**
      * @Assert\Choice(
@@ -164,7 +164,7 @@ class MembershipRequest
         $this->emailAddress = mb_strtolower($emailAddress);
     }
 
-    public function getEmailAddress(): ?string
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }

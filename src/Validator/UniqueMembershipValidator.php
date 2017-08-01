@@ -3,7 +3,7 @@
 namespace AppBundle\Validator;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Membership\MembershipRequest;
+use AppBundle\Membership\MembershipInterface;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,38 +22,54 @@ class UniqueMembershipValidator extends ConstraintValidator
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($member, Constraint $constraint)
     {
         if (!$constraint instanceof UniqueMembership) {
             throw new UnexpectedTypeException($constraint, UniqueMembership::class);
         }
 
-        if (!$value instanceof MembershipRequest && !$value instanceof Adherent) {
-            throw new UnexpectedTypeException($value, MembershipRequest::class);
+        if (!$member instanceof MembershipInterface) {
+            throw new UnexpectedTypeException($member, MembershipInterface::class);
         }
 
-        $adherent = $this->repository->findByEmail($value->getEmailAddress());
-        if (!$adherent) {
-            $adherent = $this->repository->findByUuid(Adherent::createUuid($value->getEmailAddress()));
+        // Chosen email address is not already taken by someone else
+        if (!$adherent = $this->findAdherent($member->getEmailAddress())) {
+            return;
         }
 
-        $connectedUser = true;
-        if (null === $token = $this->tokenStorage->getToken()) {
-            $connectedUser = false;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            $connectedUser = false;
-        }
-
-        if ($adherent instanceof Adherent && (!$connectedUser || ($connectedUser && $adherent->getId() !== $user->getId()))) {
+        // 1. User is not authenticated yet and wants to register with someone else email address.
+        // 2. User is authenticated and wants to change his\her email address for someone else email address.
+        $user = $this->getAuthenticatedUser();
+        if (!$user || !$user->equals($adherent)) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ email }}', $value->getEmailAddress())
+                ->setParameter('{{ email }}', $member->getEmailAddress())
                 ->atPath('emailAddress')
-                ->addViolation()
-            ;
+                ->addViolation();
         }
+    }
+
+    private function getAuthenticatedUser(): ?Adherent
+    {
+        if (!$token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        $user = $token->getUser();
+        if (!$user instanceof Adherent) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    private function findAdherent(string $emailAddress): ?Adherent
+    {
+        if ($adherent = $this->repository->findByEmail($emailAddress)) {
+            return $adherent;
+        }
+
+        return $this->repository->findByUuid(Adherent::createUuid($emailAddress));
     }
 }
