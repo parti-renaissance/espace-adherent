@@ -5,6 +5,7 @@ namespace AppBundle\Validator;
 use AppBundle\Entity\Adherent;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Repository\AdherentRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,9 +14,12 @@ class UniqueMembershipValidator extends ConstraintValidator
 {
     private $repository;
 
-    public function __construct(AdherentRepository $repository)
+    private $tokenStorage;
+
+    public function __construct(AdherentRepository $repository, TokenStorageInterface $tokenStorage)
     {
         $this->repository = $repository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function validate($value, Constraint $constraint)
@@ -33,7 +37,16 @@ class UniqueMembershipValidator extends ConstraintValidator
             $adherent = $this->repository->findByUuid(Adherent::createUuid($value->getEmailAddress()));
         }
 
-        if ($adherent instanceof Adherent) {
+        $connectedUser = true;
+        if (null === $token = $this->tokenStorage->getToken()) {
+            $connectedUser = false;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            $connectedUser = false;
+        }
+
+        if ($adherent instanceof Adherent && (!$connectedUser || ($connectedUser && $adherent->getId() !== $user->getId()))) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
