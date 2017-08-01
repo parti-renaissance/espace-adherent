@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
@@ -34,6 +35,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdherentController extends Controller
 {
+    use CanaryControllerTrait;
+
     const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
@@ -251,6 +254,8 @@ class AdherentController extends Controller
      */
     public function terminateMembershipAction(Request $request): Response
     {
+        $this->disableInProduction();
+
         $adherent = $this->getUser();
 
         $form = $this->createForm(FormType::class, null, [
