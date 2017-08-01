@@ -1,15 +1,23 @@
 <?php
 
-namespace AppBundle\Entity\MemberSummary;
+namespace AppBundle\Entity;
 
-use AppBundle\Entity\Summary;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SkillRepository")
- * @ORM\Table(name="member_summary_skills")
+ * @ORM\Table(
+ *   name="skills",
+ *   uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="skill_slug_unique", columns="slug")
+ *   }
+ * )
+ *
+ * @UniqueEntity("name")
  */
 class Skill
 {
@@ -36,16 +44,29 @@ class Skill
      * @var string|null
      *
      * @ORM\Column
-     * @Gedmo\Slug(fields={"name"}, unique=false)
+     * @Gedmo\Slug(fields={"name"}, unique=true)
      */
     private $slug;
 
     /**
-     * @var Summary|null
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Summary", mappedBy="skills")
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Summary", inversedBy="skills")
+     * @var Summary[]
      */
-    private $summary;
+    private $summaries;
+
+    public function __construct(?string $name = null)
+    {
+        $this->name = (string) $name;
+        $this->summaries = new ArrayCollection();
+    }
+
+    public function addSummary(Summary $summary): void
+    {
+        if (!$this->summaries->contains($summary)) {
+            $this->summaries->add($summary);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -65,15 +86,5 @@ class Skill
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function getSummary(): ?Summary
-    {
-        return $this->summary;
-    }
-
-    public function setSummary(?Summary $summary)
-    {
-        $this->summary = $summary;
     }
 }

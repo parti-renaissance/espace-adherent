@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadMissionTypeData;
+use AppBundle\DataFixtures\ORM\LoadSkillData;
 use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,6 +87,7 @@ class SummaryControllerTest extends SqliteWebTestCase
             LoadAdherentData::class,
             LoadHomeBlockData::class,
             LoadMissionTypeData::class,
+            LoadSkillData::class,
             LoadSummaryData::class,
         ]);
     }

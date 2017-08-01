@@ -3,7 +3,9 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\MissionTypeEntityType;
+use AppBundle\Entity\Skill;
 use AppBundle\Entity\Summary;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Symfony\Component\Form\AbstractType;
@@ -50,10 +52,13 @@ class SummaryType extends AbstractType
      */
     private $glide;
 
-    public function __construct(Filesystem $storage, Server $glide)
+    private $entityManager;
+
+    public function __construct(Filesystem $storage, Server $glide, EntityManagerInterface $entityManager)
     {
         $this->storage = $storage;
         $this->glide = $glide;
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -138,6 +143,22 @@ class SummaryType extends AbstractType
                         'by_reference' => false,
                     ])
                 ;
+
+                $builder
+                    ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                        $summary = $event->getForm()->getData();
+                        $skills = $event->getData()->getSkills();
+
+                        foreach ($skills as $skill) {
+                            if ($skill->getId()) {
+                                continue;
+                            }
+
+                            if ($existingSkill = $this->entityManager->getRepository(Skill::class)->findOneBy(['name' => $skill->getName()])) {
+                                $summary->replaceSkill($skill, $existingSkill);
+                            }
+                        }
+                    });
                 break;
 
             case self::STEP_INTERESTS:

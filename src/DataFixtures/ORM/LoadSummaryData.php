@@ -6,8 +6,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\MissionType;
-use AppBundle\Entity\MemberSummary\Skill;
 use AppBundle\Entity\MemberSummary\Training;
+use AppBundle\Entity\Skill;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
@@ -15,9 +15,10 @@ use AppBundle\Summary\JobLocation;
 use AppBundle\Summary\SummaryFactory;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSummaryData implements FixtureInterface
+class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -115,21 +116,14 @@ class LoadSummaryData implements FixtureInterface
         $summary1->addLanguage($language13);
 
         // Skills
-        $skill11 = new Skill();
-        $skill11->setName('Software');
-        $summary1->addSkill($skill11);
-
-        $skill12 = new Skill();
-        $skill12->setName('Analyze');
-        $summary1->addSkill($skill12);
-
-        $skill13 = new Skill();
-        $skill13->setName('Mathématiques');
-        $summary1->addSkill($skill13);
-
-        $skill14 = new Skill();
-        $skill14->setName('Statistique');
-        $summary1->addSkill($skill14);
+        foreach ($manager->getRepository(Skill::class)->findBy(['name' => [
+            LoadSkillData::SKILLS['S001'],
+            LoadSkillData::SKILLS['S002'],
+            LoadSkillData::SKILLS['S003'],
+            LoadSkillData::SKILLS['S004'], ],
+        ]) as $skill) {
+            $summary1->addSkill($skill);
+        }
 
         $summary1->publish();
 
@@ -184,25 +178,14 @@ class LoadSummaryData implements FixtureInterface
         $manager->persist($language23);
 
         // Skills
-        $skill21 = new Skill();
-        $skill21->setName('Ecriture médiatique');
-        $skill21->setSummary($summary2);
-        $manager->persist($skill21);
-
-        $skill22 = new Skill();
-        $skill22->setName('Gestion des relations');
-        $skill22->setSummary($summary2);
-        $manager->persist($skill22);
-
-        $skill23 = new Skill();
-        $skill23->setName('Culture de l’image');
-        $skill23->setSummary($summary2);
-        $manager->persist($skill23);
-
-        $skill24 = new Skill();
-        $skill24->setName('Outils médias');
-        $skill24->setSummary($summary2);
-        $manager->persist($skill24);
+        foreach ($manager->getRepository(Skill::class)->findBy(['name' => [
+            LoadSkillData::SKILLS['S005'],
+            LoadSkillData::SKILLS['S006'],
+            LoadSkillData::SKILLS['S007'],
+            LoadSkillData::SKILLS['S008'], ],
+        ]) as $skill) {
+            $summary2->addSkill($skill);
+        }
 
         $summary3 = $summaryFactory->createFromArray([
             'adherent' => $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID),
@@ -222,5 +205,10 @@ class LoadSummaryData implements FixtureInterface
     private function getSummaryFactory(): SummaryFactory
     {
         return new SummaryFactory(new Slugify());
+    }
+
+    public function getOrder()
+    {
+        return 3;
     }
 }
