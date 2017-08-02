@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Summary
 {
+    use SkillTrait;
+
     /**
      * @var int|null
      *
@@ -419,35 +421,6 @@ class Summary
     public function removeExperience(JobExperience $experience): void
     {
         $this->experiences->removeElement($experience);
-    }
-
-    public function addSkill(Skill $skill)
-    {
-        if (!$this->skills->contains($skill)) {
-            $this->skills->add($skill);
-            $skill->addSummary($this);
-        }
-    }
-
-    public function replaceSkill(Skill $actual, Skill $new): void
-    {
-        $this->removeSkill($actual);
-        $this->addSkill($new);
-    }
-
-    public function removeSkill(Skill $skill)
-    {
-        if ($this->skills->contains($skill)) {
-            $this->skills->removeElement($skill);
-        }
-    }
-
-    /**
-     * @return Skill[]|Collection|iterable
-     */
-    public function getSkills(): iterable
-    {
-        return $this->skills;
     }
 
     /**

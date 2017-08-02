@@ -7,7 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\CoachingRequest;
 use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\Skill;
+use AppBundle\Entity\SkillTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CitizenInitiativeCommand
 {
+    use SkillTrait;
+
     private $uuid;
 
     /**
@@ -261,38 +263,5 @@ class CitizenInitiativeCommand
     public function setExpertAssistanceDescription(?string $expertAssistanceDescription): void
     {
         $this->expertAssistanceDescription = $expertAssistanceDescription;
-    }
-
-    public function setSkills(?ArrayCollection $skills)
-    {
-        $this->skills = $skills;
-    }
-
-    public function addSkill(Skill $skill)
-    {
-        if (!$this->skills->contains($skill)) {
-            $this->skills->add($skill);
-        }
-    }
-
-    public function replaceSkill(Skill $actual, Skill $new): void
-    {
-        $this->removeSkill($actual);
-        $this->addSkill($new);
-    }
-
-    public function removeSkill(Skill $skill)
-    {
-        if ($this->skills->contains($skill)) {
-            $this->skills->removeElement($skill);
-        }
-    }
-
-    /**
-     * @return Skill[]|ArrayCollection
-     */
-    public function getSkills(): ?ArrayCollection
-    {
-        return $this->skills;
     }
 }

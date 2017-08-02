@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  * @Algolia\Index
  */
-class Event extends EventBase
+class Event extends BaseEvent
 {
     /**
      * @ORM\Column(type="integer", nullable=true)

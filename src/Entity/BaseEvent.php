@@ -22,7 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @Algolia\Index
  */
-abstract class EventBase implements GeoPointInterface
+abstract class BaseEvent implements GeoPointInterface
 {
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';

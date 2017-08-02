@@ -4,7 +4,7 @@ namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\EventBase;
+use AppBundle\Entity\BaseEvent;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventRegistrationCommand
 {
     /**
-     * @var EventBase
+     * @var BaseEvent
      */
     private $event;
 
@@ -42,7 +42,7 @@ class EventRegistrationCommand
     private $newsletterSubscriber;
     private $registrationUuid;
 
-    public function __construct(EventBase $event, Adherent $adherent = null)
+    public function __construct(BaseEvent $event, Adherent $adherent = null)
     {
         $this->event = $event;
         $this->newsletterSubscriber = false;
@@ -62,7 +62,7 @@ class EventRegistrationCommand
         $this->newsletterSubscriber = $adherent->hasSubscribedMainEmails();
     }
 
-    public function getEvent(): EventBase
+    public function getEvent(): BaseEvent
     {
         return $this->event;
     }

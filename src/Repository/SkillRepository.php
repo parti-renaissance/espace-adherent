@@ -19,10 +19,13 @@ class SkillRepository extends EntityRepository
             case self::FIND_FOR_SUMMARY:
                 $joinedTable = 'summaries';
                 $fieldUser = 'member';
+                break;
             case self::FIND_FOR_CITIZEN_INITIATIVE:
                 $joinedTable = 'citizenInitiatives';
                 $fieldUser = 'organizer';
+                break;
         }
+
         $qbUserSkills = $this
                 ->createQueryBuilder('us')
                 ->select('us.slug')
