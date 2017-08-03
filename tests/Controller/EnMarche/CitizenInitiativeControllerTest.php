@@ -64,14 +64,22 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon événement')->form(), $data);
 
         $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#citizen-initiative-name-field > .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#citizen-initiative-description-field > .form__errors > li')->text());
-        $this->assertSame('L\'adresse est obligatoire.',
-            $this->client->getCrawler()->filter('#citizen-initiative-address-address-field > .form__errors > li')->text());
-        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
-            $this->client->getCrawler()->filter('#citizen-initiative-address > .form__errors > li')->text());
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#citizen-initiative-name-field > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#citizen-initiative-description-field > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'L\'adresse est obligatoire.',
+            $this->client->getCrawler()->filter('#citizen-initiative-address-address-field > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
+            $this->client->getCrawler()->filter('#citizen-initiative-address > .form__errors > li')->text()
+        );
     }
 
     public function testCreateCitizenInitiativeSuccessful()
@@ -102,7 +110,7 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $data['citizen_initiative']['coaching_requested'] = 1;
         $data['citizen_initiative']['coaching_request']['problem_description'] = 'Mon problème est ...';
         $data['citizen_initiative']['coaching_request']['proposed_solution'] = 'Voici ma proposition';
-        $data['citizen_initiative']['coaching_request']['required_means'] = "Voilà ce que j'en ai besoin";
+        $data['citizen_initiative']['coaching_request']['required_means'] = "Voilà ce dont j'ai besoin";
         $data['citizen_initiative']['interests'][] = 'agriculture';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon événement')->form(), $data);

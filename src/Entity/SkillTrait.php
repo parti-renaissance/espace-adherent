@@ -35,7 +35,7 @@ trait SkillTrait
         return $this->skills;
     }
 
-    public function setSkills(?ArrayCollection $skills): void
+    public function setSkills(ArrayCollection $skills): void
     {
         $this->skills = $skills;
     }

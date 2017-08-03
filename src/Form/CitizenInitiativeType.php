@@ -3,8 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
-use AppBundle\Entity\Skill;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Repository\SkillRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,11 +18,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenInitiativeType extends AbstractType
 {
-    private $entityManager;
+    private $skillRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(SkillRepository $skillRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->skillRepository = $skillRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -98,7 +97,7 @@ class CitizenInitiativeType extends AbstractType
                         continue;
                     }
 
-                    if ($existingSkill = $this->entityManager->getRepository(Skill::class)->findOneBy(['name' => $skill->getName()])) {
+                    if ($existingSkill = $this->skillRepository->findOneBy(['name' => $skill->getName()])) {
                         $initiative->replaceSkill($skill, $existingSkill);
                     }
                 }
@@ -119,10 +118,5 @@ class CitizenInitiativeType extends AbstractType
                 '45' => '45',
             ],
         ]);
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'citizen_initiative';
     }
 }

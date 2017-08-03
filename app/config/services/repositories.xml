@@ -69,5 +69,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.skill" class="AppBundle\Repository\SkillRepository" public="false">
+            <argument>AppBundle\Entity\Skill</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

@@ -30,12 +30,11 @@ class CitizenInitiativeController extends Controller
     public function createEventAction(Request $request, ?CitizenInitiativeCommand $command): Response
     {
         $command = new CitizenInitiativeCommand($this->getUser());
-        $form = $this->createForm(CitizenInitiativeType::class, $command);
-        $form->handleRequest($request);
+        $form = $this->createForm(CitizenInitiativeType::class, $command)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.citizen_initiative.handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.creation.success'));
+            $this->addFlash('info', 'citizen_initiative.creation.success');
 
             return $this->redirectToRoute('app_search_events');
         }
@@ -57,7 +56,8 @@ class CitizenInitiativeController extends Controller
     public function skillsAutocompleteAction(Request $request)
     {
         $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsFor(
-            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser(), SkillRepository::FIND_FOR_CITIZEN_INITIATIVE);
+            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')),
+            $this->getUser(), SkillRepository::FIND_FOR_CITIZEN_INITIATIVE);
 
         return new JsonResponse($skills);
     }

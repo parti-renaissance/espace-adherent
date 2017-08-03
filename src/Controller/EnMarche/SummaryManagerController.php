@@ -231,7 +231,8 @@ class SummaryManagerController extends Controller
     public function skillsAutocompleteAction(Request $request)
     {
         $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsFor(
-            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser(), SkillRepository::FIND_FOR_SUMMARY);
+            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')),
+            $this->getUser(), SkillRepository::FIND_FOR_SUMMARY);
 
         return new JsonResponse($skills);
     }

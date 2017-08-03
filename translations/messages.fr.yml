@@ -113,7 +113,7 @@ summary.remove_photo.error: La photo de profil n'a pas été supprimée.
 #
 # Citizen Initiative
 #
-citizen_initiative.creation.success: Votre initiative a bien été créée. Elle est en attente de validation par le QG. Un email vous sera envoyé lorsqu’elle sera en ligne
+citizen_initiative.creation.success: Votre initiative a bien été créée. Elle est en attente de validation par le QG. Un email vous sera envoyé lorsqu’elle sera en ligne.
 citizen_initiative.update.success: L'initiative citoyenne a bien été modifiée.
 
 #
