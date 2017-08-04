@@ -228,6 +228,7 @@
         </service>
 
         <service id="app.citizen_initiative.handler" class="AppBundle\CitizenInitiative\CitizenInitiativeCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.event.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>

@@ -273,8 +273,36 @@ class EventRepository extends EntityRepository
     public function searchAllEvents(SearchParametersFilter $search): array
     {
         $sql = <<<'SQL'
-SELECT *, (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance 
+SELECT events.uuid AS event_uuid, events.organizer_id AS event_organizer_id, events.committee_id AS event_committee_id, 
+events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description, 
+events.begin_at AS event_begin_at, events.finish_at AS event_finish_at, 
+events.capacity AS event_capacity, events.is_for_legislatives AS event_is_for_legislatives, 
+events.created_at AS event_created_at, events.participants_count AS event_participants_count, events.slug AS event_slug,
+events.type AS event_type, events.address_address AS event_address_address, 
+events.address_country AS event_address_country, events.address_city_name AS event_address_city_name, 
+events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code, 
+events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, 
+committees.uuid AS committee_uuid, committees.name AS committee_name, 
+committees.description AS committee_description, committees.created_by AS committee_created_by, 
+committees.address_address AS committee_address_address, committees.address_country AS committee_address_country, 
+committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee, 
+committees.address_postal_code AS committee_address_postal_code, committees.address_latitude AS committee_address_latitude, 
+committees.address_longitude AS committee_address_longitude, adherents.uuid AS adherent_uuid, 
+adherents.email_address AS adherent_email_address, adherents.password AS adherent_password, 
+adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name, 
+adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate, 
+adherents.managed_area_codes AS adherent_managed_area_codes, 
+adherents.managed_area_marker_latitude AS adherent_managed_area_marker_latitude, 
+adherents.managed_area_marker_longitude AS adherent_managed_area_marker_longitude, 
+adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country, 
+adherents.address_city_name AS adherent_address_city_name, adherents.address_city_insee AS adherent_address_city_insee, 
+adherents.address_postal_code AS adherent_address_postal_code, adherents.address_latitude AS adherent_address_latitude, 
+adherents.address_longitude AS adherent_address_longitude, adherents.position AS adherent_position,
+(6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance 
 FROM events 
+LEFT JOIN adherents ON adherents.id = events.organizer_id
+LEFT JOIN committees ON committees.id = events.committee_id
+LEFT JOIN events_categories ON events_categories.id = events.category_id
 WHERE (events.address_latitude IS NOT NULL 
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 

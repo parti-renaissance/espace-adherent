@@ -97,8 +97,8 @@ class EventTest extends TestCase
             2,
             false,
             null,
-            null,
-            0
+            0,
+            null
         );
         $this->assertFalse($event->isFull());
 
@@ -121,8 +121,8 @@ class EventTest extends TestCase
             null,
             false,
             null,
-            null,
-            10000000
+            10000000,
+            null
         );
         $this->assertFalse($event->isFull());
     }

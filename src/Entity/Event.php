@@ -43,9 +43,9 @@ class Event extends BaseEvent
         string $finishAt,
         int $capacity = null,
         bool $isForLegislatives = false,
-        string $slug = null,
         string $createdAt = null,
         int $participantsCount = 0,
+        string $slug = null,
         string $type = null
     ) {
         $this->uuid = $uuid;

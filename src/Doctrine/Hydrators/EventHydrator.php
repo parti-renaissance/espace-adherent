@@ -1,10 +1,12 @@
 <?php
+
 namespace AppBundle\Doctrine\Hydrators;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
+use AppBundle\Entity\ManagedArea;
 use AppBundle\Entity\PostAddress;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
@@ -23,36 +25,62 @@ class EventHydrator extends AbstractHydrator
 
     protected function hydrateRowData(array $row, array &$result)
     {
-        if (count($row) == 0) {
+        if (!count($row)) {
             return false;
         }
 
-        $uuid = Uuid::fromString($row['uuid']);
-        $organizer = $this->_em->getRepository(Adherent::class)->findOneBy(['id' => $row['organizer_id']]);
-        $committee = $this->_em->getRepository(Committee::class)->findOneBy(['id' => $row['committee_id']]);
-        if ('FR' === $row['address_country']) {
-            $address = PostAddress::createFrenchAddress($row['address_address'], $row['address_city_insee'], $row['address_latitude'], $row['address_longitude']);
+        if ('FR' === $row['event_address_country']) {
+            $addressEvent = PostAddress::createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_latitude'], $row['event_address_longitude']);
         } else {
+            $addressEvent = PostAddress::createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
+        }
 
-            $address = PostAddress::createForeignAddress($row['address_country'], $row['address_postal_code'], $row['address_city_name'], $row['address_address'], $row['address_latitude'], $row['address_longitude']);
+        if ('FR' === $row['committee_address_country']) {
+            $addressCommittee = PostAddress::createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_latitude'], $row['committee_address_longitude']);
+        } elseif ($row['committee_address_country']) {
+            $addressCommittee = PostAddress::createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
+        }
+
+        if ('FR' === $row['adherent_address_country']) {
+            $addressAdherent = PostAddress::createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+        } else {
+            $addressAdherent = PostAddress::createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+        }
+
+        $uuidEvent = Uuid::fromString($row['event_uuid']);
+        $uuidOrganizer = Uuid::fromString($row['adherent_uuid']);
+        $committee = null;
+        if ($row['committee_uuid']) {
+            $uuidCommittee = Uuid::fromString($row['committee_uuid']);
+            $uuidCommitteeOrganizer = Uuid::fromString($row['committee_created_by']);
+            $committee = new Committee($uuidCommittee, $uuidCommitteeOrganizer, $row['committee_name'], $row['committee_description'], $addressCommittee);
+        }
+
+        $organizer = new Adherent($uuidOrganizer, $row['adherent_email_address'], $row['adherent_password'], $row['adherent_gender'], $row['adherent_first_name'], $row['adherent_last_name'], new \DateTime($row['adherent_birthdate']), $row['adherent_position'], $addressAdherent);
+        if ($row['adherent_managed_area_codes']) {
+            $managedArea = new ManagedArea();
+            $managedArea->setCodes(explode(',', $row['adherent_managed_area_codes']));
+            $managedArea->setMarkerLatitude($row['adherent_managed_area_marker_latitude']);
+            $managedArea->setMarkerLongitude($row['adherent_managed_area_marker_longitude']);
+            $organizer->setManagedArea($managedArea);
         }
 
         $event = new Event(
-            $uuid,
+            $uuidEvent,
             $organizer,
             $committee,
-            $row['name'],
+            $row['event_name'],
             new EventCategory(),
-            $row['description'],
-            $address,
-            $row['begin_at'],
-            $row['finish_at'],
-            $row['capacity'],
-            $row['is_for_legislatives'],
-            $row['slug'],
-            $row['created_at'],
-            $row['participants_count'],
-            $row['type']
+            $row['event_description'],
+            $addressEvent,
+            $row['event_begin_at'],
+            $row['event_finish_at'],
+            $row['event_capacity'],
+            $row['event_is_for_legislatives'],
+            $row['event_created_at'],
+            $row['event_participants_count'],
+            $row['event_slug'],
+            $row['event_type']
         );
 
         $result[] = $event;

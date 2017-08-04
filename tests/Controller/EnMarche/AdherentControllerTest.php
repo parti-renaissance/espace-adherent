@@ -19,12 +19,12 @@ use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  */
-class AdherentControllerTest extends SqliteWebTestCase
+class AdherentControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -72,8 +72,8 @@ class AdherentControllerTest extends SqliteWebTestCase
         $this->assertSame('Meeting de Singapour', trim($titles->first()->text()));
         $this->assertSame('Grand débat parisien', trim($titles->eq(1)->text()));
         $this->assertSame('Marche Parisienne', trim($titles->eq(2)->text()));
-        $this->assertSame('Grand Meeting de Marseille', trim($titles->eq(3)->text()));
-        $this->assertSame('Grand Meeting de Paris', trim($titles->last()->text()));
+        $this->assertSame('Grand Meeting de Paris', trim($titles->eq(3)->text()));
+        $this->assertSame('Grand Meeting de Marseille', trim($titles->last()->text()));
     }
 
     /**
