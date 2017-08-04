@@ -30,6 +30,7 @@ class SearchController extends Controller
         try {
             $results = $this->get('app.search.search_results_provider')->find($search);
         } catch (GeocodingException $exception) {
+            dump($exception->getMessage());die;
             $errors[] = $this->get('translator')->trans('search.geocoding.exception');
         }
 

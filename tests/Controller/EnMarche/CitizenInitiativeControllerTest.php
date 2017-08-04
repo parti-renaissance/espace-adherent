@@ -85,6 +85,11 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
     public function testCreateCitizenInitiativeSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 
         $data = [];
@@ -104,7 +109,7 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $data['citizen_initiative']['address']['cityName'] = 'Kilchberg';
         $data['citizen_initiative']['address']['postalCode'] = '8802';
         $data['citizen_initiative']['address']['country'] = 'CH';
-        $data['citizen_initiative']['description'] = 'Ma initiative en Suisse';
+        $data['citizen_initiative']['description'] = 'Mon initiative en Suisse';
         $data['citizen_initiative']['expert_assistance_needed'][] = 'Oui';
         $data['citizen_initiative']['expert_assistance_description'] = 'J\'ai besoin d\'aide';
         $data['citizen_initiative']['coaching_requested'] = 1;
@@ -120,6 +125,11 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+        $this->assertSame(1, $crawler->filter('.search__results__meta div.text--body:contains("Citizen initiative organisée par l\'adhérent")')->count());
     }
 
     protected function setUp()

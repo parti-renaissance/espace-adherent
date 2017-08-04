@@ -24,6 +24,8 @@ class Event extends BaseEvent
      */
     private $committee;
 
+    private $type;
+
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
@@ -43,7 +45,8 @@ class Event extends BaseEvent
         bool $isForLegislatives = false,
         string $slug = null,
         string $createdAt = null,
-        int $participantsCount = 0
+        int $participantsCount = 0,
+        string $type = null
     ) {
         $this->uuid = $uuid;
         $this->organizer = $organizer;
@@ -61,6 +64,7 @@ class Event extends BaseEvent
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
         $this->status = self::STATUS_SCHEDULED;
         $this->isForLegislatives = $isForLegislatives;
+        $this->type = $type;
     }
 
     public function __toString(): string
@@ -89,6 +93,11 @@ class Event extends BaseEvent
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
         }
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 
     public function getCapacity(): ?int

@@ -23,6 +23,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
     const CITIZEN_INITIATIVE_2_UUID = '49d77390-ca68-49b7-ad56-bb0f31dc30b9';
     const CITIZEN_INITIATIVE_3_UUID = '46ba94dc-b1ff-4807-b8a3-db7366ec805f';
     const CITIZEN_INITIATIVE_4_UUID = 'c55a4d71-f0df-4ab8-a03a-fe8d9d3345ff';
+    const CITIZEN_INITIATIVE_5_UUID = '81aaee46-5308-477c-9960-9731fb6898c3';
 
     use ContainerAwareTrait;
 
@@ -35,6 +36,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
         $author1 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $author2 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
         $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
 
         $committeeEventFactory = $this->getEventFactory();
         $registrationFactory = $this->getEventRegistrationFactory();
@@ -106,6 +108,22 @@ transporter tous les déchets lourds trouvés.',
         $initiative4->incrementParticipantsCount();
         $initiative4->setInterests(['environement', 'territoire']);
 
+        $initiative5 = $committeeEventFactory->createCitizenInitiativeFromArray([
+            'uuid' => self::CITIZEN_INITIATIVE_5_UUID,
+            'organizer' => $this->getReference('adherent-13'),
+            'name' => 'Nettoyage de la Kilchberg',
+            'category' => $eventCategory1,
+            'description' => 'Nous allons rendre Kilchberg propre',
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
+            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 09:00:00'),
+            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 12:00:00'),
+            'expert_assistance_needed' => false,
+            'expert_assistance_description' => '',
+            'coaching_requested' => false,
+        ]);
+        $initiative5->incrementParticipantsCount();
+        $initiative5->setInterests(['environement']);
+
         foreach ($manager->getRepository(Skill::class)->findBy(['name' => LoadSkillData::SKILLS['S009']]) as $skill) {
             $initiative1->addSkill($skill);
         }
@@ -134,11 +152,13 @@ transporter tous les déchets lourds trouvés.',
         $manager->persist($initiative2);
         $manager->persist($initiative3);
         $manager->persist($initiative4);
+        $manager->persist($initiative5);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative1, $author1)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative2, $author2)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative3, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative4, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative5, $author13)));
 
         $manager->flush();
     }
