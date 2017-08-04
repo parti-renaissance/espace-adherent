@@ -126,7 +126,7 @@ abstract class EventBase implements GeoPointInterface
 
     public function getName(): string
     {
-        return $this->name ?: '';
+        return $this->name;
     }
 
     public function getSlug(): ?string

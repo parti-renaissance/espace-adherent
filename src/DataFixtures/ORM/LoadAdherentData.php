@@ -74,6 +74,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2016-11-16 20:45:33',
         ]);
         $adherent2->disableCommitteesNotifications();
+        $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
@@ -89,6 +90,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->enableCommitteesNotifications();
+        $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,

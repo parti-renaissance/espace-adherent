@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
@@ -37,6 +38,32 @@ class EventFactory
             $data['finish_at'],
             $data['capacity'],
             $data['is_for_legislatives'] ?? false
+        );
+    }
+
+    public function createCitizenInitiativeFromArray(array $data): CitizenInitiative
+    {
+        foreach (['uuid', 'organizer', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
+                     'expert_assistance_needed', 'expert_assistance_description', 'coaching_requested', ] as $key) {
+            if (!array_key_exists($key, $data)) {
+                throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
+            }
+        }
+
+        $uuid = Uuid::fromString($data['uuid']);
+
+        return new CitizenInitiative(
+            $uuid,
+            $data['organizer'],
+            $data['name'],
+            $data['category'],
+            $data['description'],
+            $data['address'],
+            $data['begin_at'],
+            $data['finish_at'],
+            $data['expert_assistance_needed'],
+            $data['expert_assistance_description'],
+            $data['coaching_requested']
         );
     }
 
