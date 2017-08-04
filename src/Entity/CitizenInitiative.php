@@ -192,4 +192,9 @@ class CitizenInitiative extends BaseEvent
     {
         return $this->coachingRequest->getRequiredMeans();
     }
+
+    public function getType(): string
+    {
+        return self::CITIZEN_INITIATIVE_TYPE;
+    }
 }

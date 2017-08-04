@@ -230,9 +230,9 @@ class CitizenInitiativeCommand
         return $this->expertAssistanceNeeded;
     }
 
-    public function setExpertAssistanceNeeded(array $expertAssistanceNeeded): void
+    public function setExpertAssistanceNeeded(bool $expertAssistanceNeeded): void
     {
-        $this->expertAssistanceNeeded = $expertAssistanceNeeded ? $expertAssistanceNeeded[0] : false;
+        $this->expertAssistanceNeeded = $expertAssistanceNeeded;
     }
 
     public function isCoachingRequested(): ?bool

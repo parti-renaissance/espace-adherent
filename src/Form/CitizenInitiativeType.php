@@ -49,14 +49,12 @@ class CitizenInitiativeType extends AbstractType
             ->add('expert_assistance_needed', ChoiceType::class, [
                 'required' => false,
                 'expanded' => true,
-                'multiple' => true,
-                'choice_label' => function ($choice) {
-                    return $choice;
-                },
-                'choices' => [
-                    'Oui',
-                    'Non',
-                ],
+                'multiple' => false,
+                'placeholder' => false,
+                'choices' => array(
+                    'Oui' => true,
+                    'Non' => false,
+                ),
             ])
             ->add('expert_assistance_description', TextareaType::class, [
                 'required' => false,

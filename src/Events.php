@@ -9,6 +9,7 @@ final class Events
     const EVENT_CREATED = 'event_created';
     const EVENT_UPDATED = 'event_updated';
     const EVENT_CANCELLED = 'event_cancelled';
+    const CITIZEN_INITIATIVE_CREATED = 'citizen_initiative_created';
 
     private function __construct()
     {

@@ -23,12 +23,12 @@
                 <div class="text--body">
                     {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}<br />
                 </div>
-                {% if event.committee %}
+                {% if event.type and event.isCitizenInitiative %}
+                    <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                {% elseif event.committee %}
                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                 {% elseif event.organizer and event.organizer.isReferent %}
                     <div class="text--body">Organisé par un <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})</div>
-                {% elseif event.type and event.type is same as('initiative') %}
-                    <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
                 {% elseif event.organizer %}
                     <div class="text--body">Organisé par <span class="text--bold">{{ event.organizer.fullName }}</span></div>
                 {% endif %}
