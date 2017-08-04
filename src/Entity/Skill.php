@@ -55,16 +55,31 @@ class Skill
      */
     private $summaries;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenInitiative", mappedBy="skills")
+     *
+     * @var CitizenInitiative[]
+     */
+    private $citizenInitiatives;
+
     public function __construct(?string $name = null)
     {
         $this->name = (string) $name;
         $this->summaries = new ArrayCollection();
+        $this->citizenInitiatives = new ArrayCollection();
     }
 
     public function addSummary(Summary $summary): void
     {
         if (!$this->summaries->contains($summary)) {
             $this->summaries->add($summary);
+        }
+    }
+
+    public function addCitizenInitiative(CitizenInitiative $initiative): void
+    {
+        if (!$this->citizenInitiatives->contains($initiative)) {
+            $this->citizenInitiatives->add($initiative);
         }
     }
 

@@ -14,7 +14,7 @@ trait EntityPostAddressTrait
      *
      * @var PostAddress
      */
-    private $postAddress;
+    protected $postAddress;
 
     public function getPostAddressModel(): PostAddress
     {
