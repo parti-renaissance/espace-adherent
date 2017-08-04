@@ -7,6 +7,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 
 class EventRepository extends EntityRepository
@@ -267,5 +268,45 @@ class EventRepository extends EntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function searchAllEvents(SearchParametersFilter $search): array
+    {
+        $sql = <<<'SQL'
+SELECT *, (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance 
+FROM events 
+WHERE (events.address_latitude IS NOT NULL 
+    AND events.address_longitude IS NOT NULL 
+    AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
+    AND events.begin_at > :today 
+    AND events.published = :published) 
+ORDER BY events.begin_at ASC, distance ASC 
+LIMIT :max_results 
+OFFSET :first_result
+SQL;
+
+        $rsm = new ResultSetMapping();
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+
+        if ($coordinates = $search->getCityCoordinates()) {
+            $query->setParameter('distance_max', $search->getRadius());
+            $query->setParameter('today', date_format(new \DateTime('today'), 'Y-m-d H:i:s'));
+        }
+
+        if (!empty($searchQuery = $search->getQuery())) {
+            $query->setParameter('query', '%'.$searchQuery.'%');
+        }
+
+        if ($category = $search->getEventCategory()) {
+            $query->setParameter('category', $category);
+        }
+
+        $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
+        $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
+        $query->setParameter('published', 1, \PDO::PARAM_INT);
+        $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
+        $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
+
+        return $query->getResult('EventHydrator');
     }
 }

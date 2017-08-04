@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenInitiativeRepository")
  */
 class CitizenInitiative extends BaseEvent
 {
