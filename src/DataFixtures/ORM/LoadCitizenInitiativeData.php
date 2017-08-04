@@ -49,7 +49,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
             'expert_assistance_needed' => true,
-            'expert_assistance_description' => 'Besoin quelqu\'un de la Croix ROuge',
+            'expert_assistance_description' => 'Besoin quelqu\'un de la Croix Rouge',
             'coaching_requested' => false,
         ]);
         $initiative1->setInterests(['sante']);

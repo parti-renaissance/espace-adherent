@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  */
-class CitizenInitiative extends EventBase
+class CitizenInitiative extends BaseEvent
 {
+    use SkillTrait;
+
     /**
      * @ORM\Column(type="json_array")
      */
@@ -87,7 +89,7 @@ class CitizenInitiative extends EventBase
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->createdAt = $createdAt ?: new \DateTimeImmutable('now');
-        $this->createdAt = $createdAt ?: new \DateTime('now');
+        $this->updatedAt = $createdAt ?: new \DateTime('now');
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
         $this->expertAssistanceDescription = $expertAssistanceDescription;
         $this->coachingRequested = $coachingRequested;
@@ -189,34 +191,5 @@ class CitizenInitiative extends EventBase
     public function getRequiredMeans(): ?string
     {
         return $this->coachingRequest->getRequiredMeans();
-    }
-
-    public function addSkill(Skill $skill)
-    {
-        if (!$this->skills->contains($skill)) {
-            $this->skills->add($skill);
-            $skill->addCitizenInitiative($this);
-        }
-    }
-
-    public function replaceSkill(Skill $actual, Skill $new): void
-    {
-        $this->removeSkill($actual);
-        $this->addSkill($new);
-    }
-
-    public function removeSkill(Skill $skill)
-    {
-        if ($this->skills->contains($skill)) {
-            $this->skills->removeElement($skill);
-        }
-    }
-
-    /**
-     * @return Skill[]|Collection|iterable
-     */
-    public function getSkills(): iterable
-    {
-        return $this->skills;
     }
 }

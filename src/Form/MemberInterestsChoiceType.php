@@ -23,15 +23,17 @@ class MemberInterestsChoiceType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
-            foreach ($data as $i => $interest) {
-                if (!isset($this->interestsChoices[$interest])) {
-                    // We need to remove existing value in database
-                    // in case the config has changed
-                    unset($data[$i]);
+            if ($data) {
+                foreach ($data as $i => $interest) {
+                    if (!isset($this->interestsChoices[$interest])) {
+                        // We need to remove existing value in database
+                        // in case the config has changed
+                        unset($data[$i]);
+                    }
                 }
-            }
 
-            $event->setData($data);
+                $event->setData($data);
+            }
         });
     }
 

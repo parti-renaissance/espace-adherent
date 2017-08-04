@@ -7,16 +7,30 @@ use Doctrine\ORM\EntityRepository;
 
 class SkillRepository extends EntityRepository
 {
+    const FIND_FOR_SUMMARY = 'summaries';
+    const FIND_FOR_CITIZEN_INITIATIVE = 'citizenInitiatives';
+
     /**
      * Finds all available skills for autocomplete.
      */
-    public function findAvailableSkillsForAdherent(string $term, Adherent $user): array
+    public function findAvailableSkillsFor(string $term, Adherent $user, string $module): array
     {
+        switch ($module) {
+            case self::FIND_FOR_SUMMARY:
+                $joinedTable = 'summaries';
+                $fieldUser = 'member';
+                break;
+            case self::FIND_FOR_CITIZEN_INITIATIVE:
+                $joinedTable = 'citizenInitiatives';
+                $fieldUser = 'organizer';
+                break;
+        }
+
         $qbUserSkills = $this
                 ->createQueryBuilder('us')
                 ->select('us.slug')
-                ->innerJoin('us.summaries', 'cv')
-                ->andWhere('cv.member = :user')
+                ->innerJoin(sprintf('us.%s', $joinedTable), 'cv')
+                ->andWhere(sprintf('cv.%s = :user', $fieldUser))
             ;
 
         $qb = $this->createQueryBuilder('s');

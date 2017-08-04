@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
@@ -65,6 +66,29 @@ class EventFactory
             $data['expert_assistance_description'],
             $data['coaching_requested']
         );
+    }
+
+    public function createFromCitizenInitiativeCommand(CitizenInitiativeCommand $command): CitizenInitiative
+    {
+        $initiative = new CitizenInitiative(
+            $command->getUuid(),
+            $command->getAuthor(),
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->isExpertAssistanceNeeded(),
+            $command->getExpertAssistanceDescription(),
+            $command->isCoachingRequested(),
+            $command->getCoachingRequest(),
+            $command->getInterests()
+        );
+
+        $initiative->setSkills($command->getSkills());
+
+        return $initiative;
     }
 
     public function createFromEventCommand(EventCommand $command): Event

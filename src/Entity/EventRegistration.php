@@ -18,7 +18,7 @@ class EventRegistration
     use EntityCrudTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventBase")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $event;
@@ -55,7 +55,7 @@ class EventRegistration
 
     public function __construct(
         UuidInterface $uuid,
-        EventBase $event,
+        BaseEvent $event,
         string $firstName,
         string $emailAddress,
         ?string $postalCode = null,
@@ -73,7 +73,7 @@ class EventRegistration
         $this->createdAt = new \DateTime($createdAt);
     }
 
-    public function getEvent(): EventBase
+    public function getEvent(): BaseEvent
     {
         return $this->event;
     }
@@ -113,7 +113,7 @@ class EventRegistration
         return \DateTimeImmutable::createFromMutable($this->event->getBeginAt());
     }
 
-    public function matches(EventBase $event, Adherent $adherent = null): bool
+    public function matches(BaseEvent $event, Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {
             return false;

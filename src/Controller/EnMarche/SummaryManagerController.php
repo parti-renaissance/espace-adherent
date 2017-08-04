@@ -12,6 +12,7 @@ use AppBundle\Form\LanguageType;
 use AppBundle\Form\SummaryType;
 use AppBundle\Form\TrainingType;
 use AppBundle\Membership\MemberActivityTracker;
+use AppBundle\Repository\SkillRepository;
 use AppBundle\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -229,8 +230,9 @@ class SummaryManagerController extends Controller
      */
     public function skillsAutocompleteAction(Request $request)
     {
-        $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsForAdherent(
-            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')), $this->getUser());
+        $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsFor(
+            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')),
+            $this->getUser(), SkillRepository::FIND_FOR_SUMMARY);
 
         return new JsonResponse($skills);
     }

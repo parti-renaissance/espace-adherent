@@ -7,6 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
@@ -122,6 +123,11 @@ trait TestHelperTrait
     public function getEventRepository(): EventRepository
     {
         return $this->getRepository(Event::class);
+    }
+
+    public function getCitizenInitiativeRepository(): EventRepository
+    {
+        return $this->getRepository(CitizenInitiative::class);
     }
 
     public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
