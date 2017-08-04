@@ -174,3 +174,4 @@ legislative_campaign_contact_message.recipient.invalid: Le service auquel vous s
 # Summary
 #
 summary.spanable_item.length.invalid: L'événement doit être en cours ou avoir une date de fin.
+summary.mission_type_wishes: Vous devez cocher au minimum 1 élément.
