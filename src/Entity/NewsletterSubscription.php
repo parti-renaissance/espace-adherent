@@ -57,11 +57,6 @@ class NewsletterSubscription
      */
     private $postalCode;
 
-    /**
-     * @Assert\IsTrue(message="newsletter.conditions.required")
-     */
-    public $conditions;
-
     public function __toString()
     {
         return $this->email ?: '';
