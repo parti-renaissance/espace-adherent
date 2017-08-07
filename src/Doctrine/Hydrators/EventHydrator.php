@@ -52,11 +52,12 @@ class EventHydrator extends AbstractHydrator
         $committee = null;
         if ($row['committee_uuid']) {
             $uuidCommittee = Uuid::fromString($row['committee_uuid']);
-            $uuidCommitteeOrganizer = Uuid::fromString($row['committee_created_by']);
+            $uuidCommitteeOrganizer = $row['committee_created_by'] ? Uuid::fromString($row['committee_created_by']) : $uuidEvent; // to fix the problem on staging where committee can be without creator; this value is used only for 'new Committee()'
             $committee = new Committee($uuidCommittee, $uuidCommitteeOrganizer, $row['committee_name'], $row['committee_description'], $addressCommittee);
         }
 
-        $organizer = new Adherent($uuidOrganizer, $row['adherent_email_address'], $row['adherent_password'], $row['adherent_gender'], $row['adherent_first_name'], $row['adherent_last_name'], new \DateTime($row['adherent_birthdate']), $row['adherent_position'], $addressAdherent);
+        $password = $row['adherent_password'] ?? $row['adherent_old_password'];
+        $organizer = new Adherent($uuidOrganizer, $row['adherent_email_address'], $password, $row['adherent_gender'], $row['adherent_first_name'], $row['adherent_last_name'], new \DateTime($row['adherent_birthdate']), $row['adherent_position'], $addressAdherent);
         if ($row['adherent_managed_area_codes']) {
             $managedArea = new ManagedArea();
             $managedArea->setCodes(explode(',', $row['adherent_managed_area_codes']));
