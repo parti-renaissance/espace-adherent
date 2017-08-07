@@ -156,9 +156,20 @@
                 {{ form_label(form.coaching_request.required_means, 'Je décris ce dont j\'ai besoin (pb rencontré)') }}
                 {{ form_widget(form.coaching_request.required_means, { attr: { class: 'citizen_initiative__required_means' } }) }}
             </div>
-            <div class="form__row text--center b__nudge--top">
-                <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Je crée mon événement</button>
-            </div>
+
+            {% if initiative.slug is defined %}
+                <div class="form__row b__nudge--top">
+                    <button type="submit" class="btn btn--blue">Enregistrer</button>
+                    <a href="{{ path('app_citizen_initiative_show', {'uuid': initiative.uuid.toString, 'slug': initiative.slug}) }}"
+                       class="btn">
+                        Annuler
+                    </a>
+                </div>
+            {% else %}
+                <div class="form__row text--center b__nudge--top">
+                    <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Je crée mon événement</button>
+                </div>
+            {% endif %}
 
             {{ form_end(form) }}
         </div>

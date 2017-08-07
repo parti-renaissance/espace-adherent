@@ -5,7 +5,7 @@ namespace AppBundle\Membership;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\Event;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -36,7 +36,7 @@ class AdherentManager
         return $this->repository->countActiveAdherents();
     }
 
-    public function findByEvent(Event $event): AdherentCollection
+    public function findByEvent(BaseEvent $event): AdherentCollection
     {
         return $this->repository->findByEvent($event);
     }

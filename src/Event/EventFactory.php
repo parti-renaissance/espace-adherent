@@ -127,4 +127,25 @@ class EventFactory
 
         return $event;
     }
+
+    public function updateFromCitizenInitiativeCommand(CitizenInitiative $initiative, CitizenInitiativeCommand $command): CitizenInitiative
+    {
+        $initiative->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->isExpertAssistanceNeeded(),
+            $command->getExpertAssistanceDescription(),
+            $command->isCoachingRequested(),
+            $command->getCoachingRequest(),
+            $command->getInterests(),
+            $command->getCapacity(),
+            $command->getSkills()
+        );
+
+        return $initiative;
+    }
 }

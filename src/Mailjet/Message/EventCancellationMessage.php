@@ -3,7 +3,7 @@
 namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
+use AppBundle\Entity\BaseEvent;
 use Ramsey\Uuid\Uuid;
 
 final class EventCancellationMessage extends MailjetMessage
@@ -13,7 +13,7 @@ final class EventCancellationMessage extends MailjetMessage
      *
      * @param Adherent[] $recipients
      * @param Adherent   $host
-     * @param Event      $event
+     * @param BaseEvent  $event
      * @param string     $eventsLink
      * @param \Closure   $recipientVarsGenerator
      *
@@ -22,7 +22,7 @@ final class EventCancellationMessage extends MailjetMessage
     public static function create(
         array $recipients,
         Adherent $host,
-        Event $event,
+        BaseEvent $event,
         string $eventsLink,
         \Closure $recipientVarsGenerator
     ): self {

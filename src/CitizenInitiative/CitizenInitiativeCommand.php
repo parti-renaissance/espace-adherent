@@ -103,6 +103,7 @@ class CitizenInitiativeCommand
             $citizenInitiative->getOrganizer(),
             $citizenInitiative->getUuid(),
             Address::createFromAddress($citizenInitiative->getPostAddressModel()),
+            $citizenInitiative->getCapacity(),
             $citizenInitiative->getBeginAt(),
             $citizenInitiative->getFinishAt()
         );
@@ -110,6 +111,12 @@ class CitizenInitiativeCommand
         $command->name = $citizenInitiative->getName();
         $command->category = $citizenInitiative->getCategory();
         $command->description = $citizenInitiative->getDescription();
+        $command->expertAssistanceNeeded = $citizenInitiative->isExpertAssistanceNeeded();
+        $command->expertAssistanceDescription = $citizenInitiative->getExpertAssistanceDescription();
+        $command->coachingRequested = $citizenInitiative->isCoachingRequested();
+        $command->coachingRequest = $citizenInitiative->getCoachingRequest();
+        $command->interests = $citizenInitiative->getInterests();
+        $command->skills = $citizenInitiative->getSkills();
 
         return $command;
     }

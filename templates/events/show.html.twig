@@ -140,7 +140,7 @@
                         Contact
                     </a>
                 </li>
-                {% if is_granted('HOST_EVENT', event) %}
+                {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
                     {% if event.active %}
                         <li>
                             <a href="{{ path('app_' ~ event.type ~ '_edit', {'uuid': event.uuid.toString, 'slug': event.slug}) }}">

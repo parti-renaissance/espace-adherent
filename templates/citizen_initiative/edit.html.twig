@@ -1,0 +1,8 @@
+{% extends 'citizen_initiative/add.html.twig' %}
+
+{% block page_title initiative.name %}
+
+{% block content %}
+    {% set event = initiative %}
+    {{ parent() }}
+{% endblock %}
