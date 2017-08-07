@@ -2,8 +2,8 @@
 
 namespace AppBundle\Search;
 
-use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Repository\EventRepository;
 
 class SearchResultsProvider
 {
@@ -25,7 +25,7 @@ class SearchResultsProvider
         }
 
         if (SearchParametersFilter::TYPE_EVENTS === $search->getType()) {
-            return $this->eventRepository->searchEvents($search);
+            return $this->eventRepository->searchAllEvents($search);
         }
 
         throw new \RuntimeException(sprintf(

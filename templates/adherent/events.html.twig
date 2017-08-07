@@ -41,7 +41,7 @@
                     <div class="event-registration search__results__row l__row l__row--h-stretch l__row--v-center {{ event.organizer and event.organizer.isReferent ? 'search__results__row--referent-event' : '' }}">
                         <div class="search__results__info l__col l__col--v-stretch l__col--left">
                             <div class="search__results__meta">
-                                {% if event.isForLegislatives %}
+                                {% if not event.isCitizenInitiative and event.isForLegislatives %}
                                     <div class="tag--orange">Législatives</div>
                                 {% endif %}
                                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
@@ -53,7 +53,9 @@
                                 <div class="text--body">
                                     {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
-                                {% if event.committee %}
+                                {% if event.type and event.isCitizenInitiative %}
+                                    <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                                {% elseif event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                                 {% elseif event.organizer and event.organizer.isReferent %}
                                     <div class="text--body">Organisé par un <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})</div>
@@ -71,7 +73,7 @@
                                     <div class="text--body search__results__cta__text">
                                         Cet événement est annulé
                                     </div>
-                                {% elseif event.full %}
+                                {% elseif not event.isCitizenInitiative and event.full %}
                                     <div class="text--body search__results__cta__text">
                                         Cet événement est complet
                                     </div>

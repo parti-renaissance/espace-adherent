@@ -10,12 +10,12 @@ use AppBundle\Entity\CitizenInitiative;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  */
-class CitizenInitiativeControllerTest extends SqliteWebTestCase
+class CitizenInitiativeControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -85,11 +85,15 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
     public function testCreateCitizenInitiativeSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 
         $data = [];
         $data['citizen_initiative']['name'] = 'Mon initiative';
-        $data['citizen_initiative']['category'] = 4;
         $data['citizen_initiative']['beginAt']['date']['day'] = 14;
         $data['citizen_initiative']['beginAt']['date']['month'] = 12;
         $data['citizen_initiative']['beginAt']['date']['year'] = 2017;
@@ -104,8 +108,8 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $data['citizen_initiative']['address']['cityName'] = 'Kilchberg';
         $data['citizen_initiative']['address']['postalCode'] = '8802';
         $data['citizen_initiative']['address']['country'] = 'CH';
-        $data['citizen_initiative']['description'] = 'Ma initiative en Suisse';
-        $data['citizen_initiative']['expert_assistance_needed'][] = 'Oui';
+        $data['citizen_initiative']['description'] = 'Mon initiative en Suisse';
+        $data['citizen_initiative']['expert_assistance_needed'] = 1;
         $data['citizen_initiative']['expert_assistance_description'] = 'J\'ai besoin d\'aide';
         $data['citizen_initiative']['coaching_requested'] = 1;
         $data['citizen_initiative']['coaching_request']['problem_description'] = 'Mon problème est ...';
@@ -120,6 +124,10 @@ class CitizenInitiativeControllerTest extends SqliteWebTestCase
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
     }
 
     protected function setUp()

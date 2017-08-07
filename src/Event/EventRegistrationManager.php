@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Exception\EventRegistrationException;
@@ -35,7 +36,7 @@ class EventRegistrationManager
     }
 
     public function searchRegistration(
-        Event $event,
+        BaseEvent $event,
         string $emailAddress,
         Adherent $adherent = null
     ): ?EventRegistration {

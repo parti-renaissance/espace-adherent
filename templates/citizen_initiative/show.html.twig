@@ -1,0 +1,4 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title initiative.name %}
+{% block canonical_url url('app_citizen_initiative_show', {'uuid': initiative.uuid.toString, 'slug': initiative.slug}) %}

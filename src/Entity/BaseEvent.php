@@ -24,6 +24,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class BaseEvent implements GeoPointInterface
 {
+    const CITIZEN_INITIATIVE_TYPE = 'initiative';
+
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';
 
@@ -285,5 +287,12 @@ abstract class BaseEvent implements GeoPointInterface
     public function getReadableUpdatedAt(): string
     {
         return $this->finishAt->format('d/m/Y H:i');
+    }
+
+    abstract public function getType();
+
+    public function isCitizenInitiative(): bool
+    {
+        return $this->getType() === self::CITIZEN_INITIATIVE_TYPE;
     }
 }

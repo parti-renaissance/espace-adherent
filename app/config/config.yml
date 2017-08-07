@@ -112,6 +112,9 @@ doctrine:
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
 
+        hydrators:
+            EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
+
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/migrations"
     namespace: Migrations
