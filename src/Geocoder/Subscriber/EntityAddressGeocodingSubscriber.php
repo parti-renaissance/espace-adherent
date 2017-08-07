@@ -3,7 +3,7 @@
 namespace AppBundle\Geocoder\Subscriber;
 
 use AppBundle\Committee\CommitteeWasUpdatedEvent;
-use AppBundle\Event\EventCreatedCitizenInitiative;
+use AppBundle\CitizenInitiative\CitizenInitiativeCreatedEvent;
 use AppBundle\Event\EventUpdatedEvent;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
@@ -70,7 +70,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onCitizenInitiativeCreated(EventCreatedCitizenInitiative $initiative)
+    public function onCitizenInitiativeCreated(CitizenInitiativeCreatedEvent $initiative)
     {
         $this->updateGeocodableEntity($initiative->getCitizenInitiative());
     }

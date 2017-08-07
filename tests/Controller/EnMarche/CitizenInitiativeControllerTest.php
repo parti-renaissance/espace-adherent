@@ -7,6 +7,8 @@ use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\EventInvite;
+use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -109,6 +111,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $data['citizen_initiative']['address']['postalCode'] = '8802';
         $data['citizen_initiative']['address']['country'] = 'CH';
         $data['citizen_initiative']['description'] = 'Mon initiative en Suisse';
+        $data['citizen_initiative']['capacity'] = 15;
         $data['citizen_initiative']['expert_assistance_needed'] = 1;
         $data['citizen_initiative']['expert_assistance_description'] = 'J\'ai besoin d\'aide';
         $data['citizen_initiative']['coaching_requested'] = 1;
@@ -128,6 +131,105 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+    }
+
+    public function testAdherentCanInviteToEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID);
+        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
+
+        $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, $initiativeUrl.'/invitation');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=event_invitation]')->form([
+            'event_invitation[message]' => 'Venez mes amis !',
+            'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
+            'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo($initiativeUrl.'/invitation/merci', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+
+        // Invitation should have been saved
+        $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
+
+        /** @var EventInvite $invite */
+        $invite = $invitations[0];
+
+        $this->assertSame('jacques.picard@en-marche.fr', $invite->getEmail());
+        $this->assertSame('Jacques Picard', $invite->getFullName());
+        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
+        $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
+
+        // Email should have been sent
+        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
+        $this->assertContains(str_replace('/', '\/', $initiativeUrl), $messages[0]->getRequestPayloadJson());
+    }
+
+    public function testAnonymousCanInviteToEvent()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID);
+        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
+
+        $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, $initiativeUrl.'/invitation');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=event_invitation]')->form([
+            'event_invitation[email]' => 'damien@test-en-marche.fr',
+            'event_invitation[firstName]' => 'Damien',
+            'event_invitation[lastName]' => 'BRETON',
+            'event_invitation[message]' => 'Venez mes amis !',
+            'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
+            'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo($initiativeUrl.'/invitation/merci', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+
+        // Invitation should have been saved
+        $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
+
+        /** @var EventInvite $invite */
+        $invite = $invitations[0];
+
+        $this->assertSame('damien@test-en-marche.fr', $invite->getEmail());
+        $this->assertSame('Damien BRETON', $invite->getFullName());
+        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
+        $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
+
+        // Email should have been sent
+        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
+        $this->assertContains(str_replace('/', '\/', $initiativeUrl), $messages[0]->getRequestPayloadJson());
+    }
+
+    public function testInvitationSentWithoutRedirection()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s/invitation/merci', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, $initiative->getSlug()));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
     protected function setUp()

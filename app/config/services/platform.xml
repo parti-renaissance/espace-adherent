@@ -240,6 +240,12 @@
             <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
 
+        <service id="app.citizen_initiative.invitation_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeInvitationHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
+        </service>
+
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>

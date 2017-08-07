@@ -5,7 +5,7 @@
         </h1>
         <div class="committee-event-organizer text--body text--white">
             Organisé par <span class="text--bold">{{ event.organizer }}</span>
-            {% if committee %}
+            {% if committee is defined and committee %}
                 du comité
                 <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
                     {{- committee.name -}}
@@ -25,7 +25,7 @@
             <div class="text--white text--center">
                 L'événement à été annulé
             </div>
-        {% elseif not event.full %}
+        {% elseif event.isCitizenInitiative or not event.full%}
             <a class="btn btn--no-border btn--full" href="{{ path('app_event_attend', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
         {% else %}
             <button class="btn btn--no-border btn--full btn--text-blue btn--disabled" disabled="disabled">
@@ -54,7 +54,7 @@
                 <i class="fa fa-envelope-o"></i>
             </li>
             <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                <a href="{{ path('app_event_export_ical', {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
+                <a href="{{ path('app_' ~ event.type ~ '_export_ical', {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                 </a>

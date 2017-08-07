@@ -18,13 +18,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"event" = "AppBundle\Entity\Event", "initiative" = "AppBundle\Entity\CitizenInitiative"})
+ * @ORM\DiscriminatorMap({"event" = "AppBundle\Entity\Event", "citizen_initiative" = "AppBundle\Entity\CitizenInitiative"})
  *
  * @Algolia\Index
  */
 abstract class BaseEvent implements GeoPointInterface
 {
-    const CITIZEN_INITIATIVE_TYPE = 'initiative';
+    const CITIZEN_INITIATIVE_TYPE = 'citizen_initiative';
+    const EVENT_TYPE = 'event';
 
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';
@@ -115,6 +116,11 @@ abstract class BaseEvent implements GeoPointInterface
      * @ORM\Column(type="boolean", options={"default": true})
      */
     private $published = true;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $capacity;
 
     public function __toString(): string
     {
@@ -287,6 +293,20 @@ abstract class BaseEvent implements GeoPointInterface
     public function getReadableUpdatedAt(): string
     {
         return $this->finishAt->format('d/m/Y H:i');
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function isFull(): bool
+    {
+        if (!$this->capacity) {
+            return false;
+        }
+
+        return $this->participantsCount >= $this->capacity;
     }
 
     abstract public function getType();

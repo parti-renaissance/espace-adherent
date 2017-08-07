@@ -76,6 +76,7 @@ class CitizenInitiative extends BaseEvent
         bool $coachingRequested = false,
         CoachingRequest $coachingRequest = null,
         array $interests = [],
+        int $capacity = null,
         \DateTime $createdAt = null,
         int $participantsCount = 0
     ) {
@@ -97,6 +98,7 @@ class CitizenInitiative extends BaseEvent
         $this->interests = $interests;
         $this->status = self::STATUS_SCHEDULED;
         $this->skills = new ArrayCollection();
+        $this->capacity = $capacity;
     }
 
     public function __toString(): string

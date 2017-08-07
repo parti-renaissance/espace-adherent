@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Event;
+namespace AppBundle\CitizenInitiative;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
 use Symfony\Component\EventDispatcher\Event;
 
-class EventCreatedCitizenInitiative extends Event
+class CitizenInitiativeCreatedEvent extends Event
 {
     private $author;
     private $initiative;

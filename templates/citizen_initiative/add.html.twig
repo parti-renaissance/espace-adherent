@@ -100,6 +100,12 @@
                 {{ form_widget(form.description, { attr: { class: 'citizen_initiative__description', 'placeholder': 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '20', 'cols': '70' } }) }}
             </div>
 
+            <div class="form__row" id="committee-event-capacity-field">
+                {{ form_errors(form.capacity) }}
+                {{ form_label(form.capacity, 'Capacité') }}
+                {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
+            </div>
+
             <div class="form__row" id="citizen-initiative-interests-field">
                 {{ form_errors(form.interests) }}
                 {{ form_label(form.interests, 'Quelles sont les thématiques liées à votre événement ?') }}
