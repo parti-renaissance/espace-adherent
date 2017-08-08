@@ -16,7 +16,7 @@ class Version20170727095245 extends AbstractMigration
 
         $sqlTransferSkills = <<<'SQL'
             DROP PROCEDURE IF EXISTS TRANSFER_SKILLS;
-            
+            DELIMITER ;;
             CREATE PROCEDURE TRANSFER_SKILLS()
             BEGIN
             
@@ -32,7 +32,7 @@ class Version20170727095245 extends AbstractMigration
             WHILE i<n DO 
               SET transfer_skill_id = 0;
               SELECT summary_id, name, slug INTO transfer_summary_id, transfer_skill_slug, transfer_skill_name FROM member_summary_skills LIMIT i,1;
-              SELECT id INTO transfer_skill_id FROM skills WHERE slug = transfer_skill_slug;
+              SELECT id INTO transfer_skill_id FROM skills WHERE slug = transfer_skill_slug COLLATE utf8_unicode_ci;
               
               IF transfer_skill_id = 0 THEN
                 INSERT INTO skills (`name`, `slug`) VALUES (transfer_skill_name, transfer_skill_slug);
@@ -44,7 +44,9 @@ class Version20170727095245 extends AbstractMigration
               SET i = i + 1;
             END WHILE;
             END;
-            
+            ;;
+
+            DELIMITER ;
             CALL TRANSFER_SKILLS();
             DROP PROCEDURE TRANSFER_SKILLS;
 SQL;
