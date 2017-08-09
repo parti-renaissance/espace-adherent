@@ -238,6 +238,13 @@
             <argument type="service" id="app.mailjet.transactional_mailer"/>
         </service>
 
+        <service id="AppBundle\CitizenInitiative\CitizenInitiativeMessageNotifier">
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="app.event.invitation_handler" class="AppBundle\Event\EventInvitationHandler">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>

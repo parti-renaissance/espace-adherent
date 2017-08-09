@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\PostAddress;
@@ -27,6 +28,18 @@ abstract class AbstractEventMessageTest extends TestCase
         }
 
         return $event;
+    }
+
+    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode): CitizenInitiative
+    {
+        $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
+
+        $citizenInitiative = $this->createMock(CitizenInitiative::class);
+        $citizenInitiative->expects(static::any())->method('getName')->willReturn($name);
+        $citizenInitiative->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
+        $citizenInitiative->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
+
+        return $citizenInitiative;
     }
 
     protected function createAdherentMock(string $emailAddress, string $firstName, string $lastName): Adherent

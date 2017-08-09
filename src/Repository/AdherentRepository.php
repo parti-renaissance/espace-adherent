@@ -5,8 +5,9 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\Event;
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
@@ -18,6 +19,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class AdherentRepository extends EntityRepository implements UserLoaderInterface, UserProviderInterface
 {
+    use NearbyTrait;
+
+    const CITIZEN_INITIATIVE_RADIUS = 2;
+
     public function count(): int
     {
         return (int) $this
@@ -239,5 +244,25 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         ;
 
         return new AdherentCollection($query->getResult());
+    }
+
+    public function findNearByCitizenInitiativeInterests(CitizenInitiative $citizenInitiative): AdherentCollection
+    {
+        $qb = $this
+            ->createNearbyQueryBuilder(new Coordinates($citizenInitiative->getLatitude(), $citizenInitiative->getLongitude()))
+            ->andWhere($this->getNearbyExpression().' <= :distance_max')
+            ->setParameter('distance_max', self::CITIZEN_INITIATIVE_RADIUS);
+
+        if (false === empty($interests = $citizenInitiative->getInterests())) {
+            foreach ($interests as $index => $interest) {
+                $conditions[] = $qb->expr()->eq(sprintf('json_contains(n.interests, :interest_%s)', $index), 1);
+                $qb->setParameter(sprintf(':interest_%s', $index), sprintf('"%s"', $interest));
+            }
+            $orX = $qb->expr()->orX();
+            $orX->addMultiple($conditions ?? []);
+            $qb->andWhere($orX);
+        }
+
+        return new AdherentCollection($qb->getQuery()->getResult());
     }
 }
