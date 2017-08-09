@@ -21,15 +21,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/citizen_initiative/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/initiative_citoyenne/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
  * @Security("is_granted('EDIT_CITIZEN_INITIATIVE', initiative)")
+ * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
  */
 class CitizenInitiativeManagerContoller extends Controller
 {
     /**
      * @Route("/modifier", name="app_citizen_initiative_edit")
      * @Method("GET|POST")
-     * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
      */
     public function editAction(Request $request, CitizenInitiative $initiative): Response
     {
@@ -55,7 +55,6 @@ class CitizenInitiativeManagerContoller extends Controller
     /**
      * @Route("/annuler", name="app_citizen_initiative_cancel")
      * @Method("GET|POST")
-     * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
      */
     public function cancelAction(Request $request, CitizenInitiative $initiative): Response
     {
@@ -127,7 +126,7 @@ class CitizenInitiativeManagerContoller extends Controller
             ]);
         }
 
-        $exported = $this->get('app.citizen_initiative.registration_exporter')->export($registrations);
+        $exported = $this->get('app.event.registration_exporter')->export($registrations);
 
         return new Response($exported, 200, [
             'Content-Type' => 'text/csv',

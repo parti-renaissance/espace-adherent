@@ -116,6 +116,8 @@ summary.remove_photo.error: La photo de profil n'a pas été supprimée.
 citizen_initiative.creation.success: Votre initiative a bien été créée. Elle est en attente de validation par le QG. Un email vous sera envoyé lorsqu’elle sera en ligne.
 citizen_initiative.update.success: L'initiative citoyenne a bien été modifiée.
 citizen_initiative.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
+citizen_initiative.cancel.success: L'initiative citoyenne a bien été annulée.
+citizen_initiative.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
 
 #
 # Search

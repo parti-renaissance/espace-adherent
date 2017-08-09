@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
@@ -12,28 +12,28 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  */
-class EventManagerControllerTest extends SqliteWebTestCase
+class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
     /**
-     * @dataProvider provideHostProtectedPages
+     * @dataProvider provideOrganizerProtectedPages
      */
-    public function testAnonymousUserCannotEditEvent($path)
+    public function testAnonymousUserCannotEditCitizenInitiative($path)
     {
-        $this->client->request('GET', $path);
+        $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
     /**
      * @dataProvider provideCancelledInaccessiblePages
      */
-    public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
+    public function testRegisteredAdherentUserCannotFoundPagesOfCancelledCitizenInitiative($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
         $this->client->request(Request::METHOD_GET, $path);
@@ -41,63 +41,62 @@ class EventManagerControllerTest extends SqliteWebTestCase
     }
 
     /**
-     * @dataProvider provideHostProtectedPages
+     * @dataProvider provideOrganizerProtectedPages
      */
-    public function testRegisteredAdherentUserCannotEditEvent($path)
+    public function testRegisteredAdherentUserCannotEditCitizenInitiative($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $this->client->request('GET', $path);
+        $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function provideHostProtectedPages()
+    public function provideOrganizerProtectedPages()
     {
-        $uuid = LoadEventData::EVENT_1_UUID;
-        $slug = date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
+        $uuid = LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID;
+        $slug = date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg';
 
         return [
-            ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
-            ['/evenements/'.$uuid.'/'.$slug.'/inscrits'],
+            ['/initiative_citoyenne/'.$uuid.'/'.$slug.'/modifier'],
+            ['/initiative_citoyenne/'.$uuid.'/'.$slug.'/annuler'],
+            ['/initiative_citoyenne/'.$uuid.'/'.$slug.'/inscrits'],
         ];
     }
 
     public function provideCancelledInaccessiblePages()
     {
-        $uuid = LoadEventData::EVENT_6_UUID;
-        $slug = date('Y-m-d', strtotime('+60 days')).'-reunion-de-reflexion-parisienne-annule';
+        $uuid = LoadCitizenInitiativeData::CITIZEN_INITIATIVE_6_UUID;
+        $slug = date('Y-m-d', strtotime('+20 days')).'-initiative-citoyenne-annulee';
 
         return [
-            ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
-            ['/evenements/'.$uuid.'/'.$slug.'/inscription'],
-            ['/evenements/'.$uuid.'/'.$slug.'/annuler'],
+            ['/initiative_citoyenne/'.$uuid.'/'.$slug.'/inscription'],
         ];
     }
 
-    public function testOrganizerCanEditEvent()
+    public function testOrganizerCanEditCitizenInitiative()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
+        $crawler = $this->client->request('GET', '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'committee_event' => [
-                'name' => "Débat sur l'écologie",
-                'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
-                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
+            'citizen_initiative' => [
+                'name' => 'Nouveau titre',
+                'description' => 'Nouvelle description.',
+                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE008']),
                 'address' => [
-                    'address' => '6 rue Neyret',
-                    'country' => 'FR',
-                    'postalCode' => '69001',
-                    'city' => '69001-69381',
-                    'cityName' => '',
+                    'address' => 'Pilgerweg 58',
+                    'country' => 'CH',
+                    'postalCode' => '8802',
+                    'city' => '',
+                    'cityName' => 'Kilchberg',
                 ],
                 'beginAt' => [
                     'date' => [
-                        'year' => '2022',
+                        'year' => '2020',
                         'month' => '3',
-                        'day' => '2',
+                        'day' => '3',
                     ],
                     'time' => [
                         'hour' => '9',
@@ -106,16 +105,16 @@ class EventManagerControllerTest extends SqliteWebTestCase
                 ],
                 'finishAt' => [
                     'date' => [
-                        'year' => '2022',
+                        'year' => '2020',
                         'month' => '3',
-                        'day' => '2',
+                        'day' => '3',
                     ],
                     'time' => [
                         'hour' => '19',
                         'minute' => '0',
                     ],
                 ],
-                'capacity' => '1500',
+                'capacity' => '100',
             ],
         ]));
 
@@ -124,20 +123,20 @@ class EventManagerControllerTest extends SqliteWebTestCase
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Débat sur l\'écologie | En Marche !', $crawler->filter('title')->text());
-        $this->assertSame('Débat sur l\'écologie', $crawler->filter('.committee-event-name')->text());
-        $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
-        $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
-        $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
-        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
+        $this->assertContains('L\'initiative citoyenne a bien été modifiée', $crawler->filter('#notice-flashes')->text());
+        $this->assertSame('Nouveau titre | En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Nouveau titre', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Organisé par Michel VASSEUR', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
+        $this->assertSame('Mardi 3 mars 2020, 9h30', $crawler->filter('.committee-event-date')->text());
+        $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $crawler->filter('.committee-event-address')->text());
+        $this->assertSame('Nouvelle description.', $crawler->filter('.committee-event-description')->text());
     }
 
-    public function testOrganizerCanCancelEvent()
+    public function testOrganizerCanCancelCitizenInitiative()
     {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_2_UUID.'/'.date('Y-m-d', strtotime('+10 days')).'-reunion-de-reflexion-dammarienne/annuler');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg/annuler');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -145,32 +144,22 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
-        // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        static::assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
+        static::assertContains('L\'initiative citoyenne a bien été annulée.', $crawler->filter('#notice-flashes')->text());
 
         $messages = $this->getMailjetEmailRepository()->findMessages(EventCancellationMessage::class);
         /** @var EventCancellationMessage $message */
         $message = array_shift($messages);
 
-        // Two mails have been sent
-        static::assertCount(2, $message->getRecipients());
-    }
-
-    public function testCommitteeHostCanEditEvent()
-    {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
-
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        // One mail have been sent
+        static::assertCount(1, $message->getRecipients());
     }
 
     public function testOrganizerCanSeeRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $crawler = $this->client->request('GET', '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 2));
@@ -178,9 +167,9 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $exportUrl = $this->client->getRequest()->getPathInfo().'/exporter';
@@ -195,8 +184,8 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanExportRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
@@ -233,8 +222,8 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanContactRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
@@ -296,13 +285,6 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo($membersUrl, $this->client);
     }
 
-    public function testExportIcalEvent()
-    {
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
     {
         $flash = $crawler->filter('#notice-flashes');
@@ -327,7 +309,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
-            LoadEventData::class,
+            LoadCitizenInitiativeData::class,
         ]);
     }
 
