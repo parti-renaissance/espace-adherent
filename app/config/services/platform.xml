@@ -216,6 +216,10 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
         <!-- Events -->
         <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
 
@@ -274,6 +278,14 @@
         <service id="app.voter.host_event_voter" class="AppBundle\Event\Voter\HostEventVoter" public="false">
             <argument type="service" id="app.repository.committee_membership"/>
             <tag name="security.voter"/>
+        </service>
+
+        <!-- CitizenInitiative -->
+        <service id="app.citizen_initiative.message_notifier" class="AppBundle\CitizenInitiative\CitizenInitiativeMessageNotifier">
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- Referents -->

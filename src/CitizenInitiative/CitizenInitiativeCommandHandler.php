@@ -2,6 +2,7 @@
 
 namespace AppBundle\CitizenInitiative;
 
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Event\EventFactory;
 use AppBundle\Events;
 use AppBundle\Mailjet\MailjetService;
@@ -38,5 +39,33 @@ class CitizenInitiativeCommandHandler
             $command->getAuthor(),
             $initiative
         ));
+    }
+
+    public function handleUpdate(CitizenInitiative $initiative, CitizenInitiativeCommand $command)
+    {
+        $this->factory->updateFromCitizenInitiativeCommand($initiative, $command);
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_UPDATED, new CitizenInitiativeUpdatedEvent(
+            $command->getAuthor(),
+            $initiative
+        ));
+
+        return $initiative;
+    }
+
+    public function handleCancel(CitizenInitiative $initiative, CitizenInitiativeCommand $command)
+    {
+        $initiative->cancel();
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CANCELLED, new CitizenInitiativeCancelledEvent(
+            $command->getAuthor(),
+            $initiative
+        ));
+
+        return $initiative;
     }
 }

@@ -111,14 +111,28 @@ class CitizenInitiative extends BaseEvent
         EventCategory $category,
         string $description,
         PostAddress $address,
-        string $beginAt,
-        string $finishAt
+        \DateTime $beginAt,
+        \DateTime $finishAt,
+        bool $expertAssistanceNeeded = false,
+        string $expertAssistanceDescription = '',
+        bool $coachingRequested = false,
+        CoachingRequest $coachingRequest = null,
+        array $interests = [],
+        int $capacity = null,
+        $skills = null
     ) {
         $this->setName($name);
         $this->category = $category;
-        $this->beginAt = new \DateTime($beginAt);
-        $this->finishAt = new \DateTime($finishAt);
         $this->description = $description;
+        $this->beginAt = $beginAt;
+        $this->finishAt = $finishAt;
+        $this->expertAssistanceNeeded = $expertAssistanceNeeded;
+        $this->expertAssistanceDescription = $expertAssistanceDescription;
+        $this->coachingRequested = $coachingRequested;
+        $this->coachingRequest = $coachingRequest;
+        $this->setInterests($interests);
+        $this->capacity = $capacity;
+        $this->skills = $skills;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;

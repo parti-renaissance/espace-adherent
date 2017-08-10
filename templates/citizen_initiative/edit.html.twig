@@ -1,0 +1,18 @@
+{% extends 'citizen_initiative/add.html.twig' %}
+
+{% block page_title initiative.name %}
+
+{% block content %}
+    {% set event = initiative %}
+    {% set event_url = url('app_citizen_initiative_show', {uuid: event.uuid.toString, slug: event.slug}) %}
+    <section class="commitee__event l__wrapper">
+
+        {{ include('events/_header.html.twig') }}
+
+        <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la page de l'initiative citoyenne
+        </a>
+    </section>
+    {{ parent() }}
+{% endblock %}

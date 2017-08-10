@@ -3,7 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Collection\EventRegistrationCollection;
-use AppBundle\Entity\Event;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -33,12 +33,12 @@ class EventRegistrationRepository extends EntityRepository
     }
 
     /**
-     * @param Event $event
-     * @param array $uuids
+     * @param BaseEvent $event
+     * @param array     $uuids
      *
      * @return EventRegistration[]
      */
-    public function findByUuidAndEvent(Event $event, array $uuids): array
+    public function findByUuidAndEvent(BaseEvent $event, array $uuids): array
     {
         self::validUuids($uuids);
 

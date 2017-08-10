@@ -34,8 +34,12 @@
 <main class="citizen_initiative__create l__wrapper l__row l__row--top l__row--h-stretch">
     <section class="l__wrapper--main l__wrapper--main-left">
         <div id="citizen-initiative-form">
-            <p>Vous pouvez désormais créer votre propre initiative citoyenne. Celle-ci sera diffusée aux adhérents autour de vous qui partagent les mêmes centres d’intérêt.</p>
-            <h2 class="text--large b__nudge--bottom-small">Je crée mon initiative citoyenne</h2>
+            {% if initiative.slug is defined %}
+                <h2 class="text--large b__nudge--bottom-small">Modifier mon initiative citoyenne</h2>
+            {% else %}
+                <p>Vous pouvez désormais créer votre propre initiative citoyenne. Celle-ci sera diffusée aux adhérents autour de vous qui partagent les mêmes centres d’intérêt.</p>
+                <h2 class="text--large b__nudge--bottom-small">Je crée mon initiative citoyenne</h2>
+            {% endif %}
 
             {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
             {{ form_errors(form) }}
@@ -156,9 +160,20 @@
                 {{ form_label(form.coaching_request.required_means, 'Je décris ce dont j\'ai besoin (pb rencontré)') }}
                 {{ form_widget(form.coaching_request.required_means, { attr: { class: 'citizen_initiative__required_means' } }) }}
             </div>
-            <div class="form__row text--center b__nudge--top">
-                <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Je crée mon événement</button>
-            </div>
+
+            {% if initiative.slug is defined %}
+                <div class="form__row b__nudge--top">
+                    <button type="submit" class="btn btn--blue">Enregistrer</button>
+                    <a href="{{ path('app_citizen_initiative_show', {'uuid': initiative.uuid.toString, 'slug': initiative.slug}) }}"
+                       class="btn">
+                        Annuler
+                    </a>
+                </div>
+            {% else %}
+                <div class="form__row text--center b__nudge--top">
+                    <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Je crée mon événement</button>
+                </div>
+            {% endif %}
 
             {{ form_end(form) }}
         </div>

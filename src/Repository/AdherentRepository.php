@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
@@ -221,11 +222,11 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     /**
      * Finds a collection of adherents registered for a given event.
      *
-     * @param Event $event
+     * @param BaseEvent $event
      *
      * @return AdherentCollection
      */
-    public function findByEvent(Event $event): AdherentCollection
+    public function findByEvent(BaseEvent $event): AdherentCollection
     {
         $qb = $this->createQueryBuilder('a');
 

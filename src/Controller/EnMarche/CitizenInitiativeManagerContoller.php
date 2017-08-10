@@ -21,15 +21,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/citizen_initiative/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
- * @Security("is_granted('HOST_CITIZEN_INITIATIVE', initiative)")
+ * @Route("/initiative_citoyenne/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Security("is_granted('EDIT_CITIZEN_INITIATIVE', initiative)")
+ * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
  */
 class CitizenInitiativeManagerContoller extends Controller
 {
     /**
      * @Route("/modifier", name="app_citizen_initiative_edit")
      * @Method("GET|POST")
-     * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
      */
     public function editAction(Request $request, CitizenInitiative $initiative): Response
     {
@@ -55,7 +55,6 @@ class CitizenInitiativeManagerContoller extends Controller
     /**
      * @Route("/annuler", name="app_citizen_initiative_cancel")
      * @Method("GET|POST")
-     * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
      */
     public function cancelAction(Request $request, CitizenInitiative $initiative): Response
     {
@@ -86,7 +85,7 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function membersAction(CitizenInitiative $initiative): Response
     {
-        $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByCitizenInitiative($initiative);
+        $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEvent($initiative);
 
         return $this->render('citizen_initiative/members.html.twig', [
             'initiative' => $initiative,
@@ -100,7 +99,7 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function exportMembersAction(Request $request, CitizenInitiative $initiative): Response
     {
-        if (!$this->isCsrfTokenValid('citizen_initiative.export_members', $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('event.export_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
 
@@ -115,7 +114,7 @@ class CitizenInitiativeManagerContoller extends Controller
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
         try {
-            $registrations = $repository->findByUuidAndCitizenInitiative($initiative, $uuids);
+            $registrations = $repository->findByUuidAndEvent($initiative, $uuids);
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);
         }
@@ -127,7 +126,7 @@ class CitizenInitiativeManagerContoller extends Controller
             ]);
         }
 
-        $exported = $this->get('app.citizen_initiative.registration_exporter')->export($registrations);
+        $exported = $this->get('app.event.registration_exporter')->export($registrations);
 
         return new Response($exported, 200, [
             'Content-Type' => 'text/csv',
@@ -158,7 +157,7 @@ class CitizenInitiativeManagerContoller extends Controller
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
         try {
-            $registrations = $repository->findByUuidAndCitizenInitiative($initiative, $uuids);
+            $registrations = $repository->findByUuidAndEvent($initiative, $uuids);
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);
         }
@@ -184,7 +183,7 @@ class CitizenInitiativeManagerContoller extends Controller
         }, $registrations);
 
         return $this->render('citizen_initiative/contact_members.html.twig', [
-            'event' => $initiative,
+            'initiative' => $initiative,
             'contacts' => $uuids,
             'form' => $form->createView(),
         ]);
