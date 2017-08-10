@@ -5,8 +5,8 @@ namespace AppBundle\CitizenInitiative;
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Entity\CoachingRequest;
-use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\SkillTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
@@ -131,12 +131,12 @@ class CitizenInitiativeCommand
         $this->name = $name;
     }
 
-    public function getCategory(): ?EventCategory
+    public function getCategory(): ?CitizenInitiativeCategory
     {
         return $this->category;
     }
 
-    public function setCategory(?EventCategory $category = null): void
+    public function setCategory(?CitizenInitiativeCategory $category = null): void
     {
         $this->category = $category;
     }

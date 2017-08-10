@@ -99,13 +99,6 @@ abstract class BaseEvent implements GeoPointInterface
     private $participantsCount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EventCategory")
-     *
-     * @Algolia\Attribute
-     */
-    private $category;
-
-    /**
      * @ORM\Column(length=20)
      */
     private $status;
@@ -140,11 +133,6 @@ abstract class BaseEvent implements GeoPointInterface
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function getCategory(): EventCategory
-    {
-        return $this->category;
     }
 
     public function getCategoryName(): string

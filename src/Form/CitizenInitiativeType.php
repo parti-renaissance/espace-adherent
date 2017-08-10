@@ -32,7 +32,7 @@ class CitizenInitiativeType extends AbstractType
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
             ])
-            ->add('category', EventCategoryType::class)
+            ->add('category', CitizenInitiativeCategoryType::class)
             ->add('description', TextareaType::class, [
                 'filter_emojis' => true,
                 'purify_html' => true,

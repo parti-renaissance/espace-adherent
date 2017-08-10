@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CitizenInitiative extends BaseEvent
 {
     use SkillTrait;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenInitiativeCategory")
+     *
+     * @Algolia\Attribute
+     */
+    private $citizenInitiativeCategory;
 
     /**
      * @ORM\Column(type="json_array")
@@ -66,7 +74,7 @@ class CitizenInitiative extends BaseEvent
         UuidInterface $uuid,
         Adherent $organizer,
         string $name,
-        EventCategory $category,
+        CitizenInitiativeCategory $citizenInitiativeCategory,
         string $description,
         PostAddress $address,
         \DateTime $beginAt,
@@ -83,7 +91,7 @@ class CitizenInitiative extends BaseEvent
         $this->uuid = $uuid;
         $this->organizer = $organizer;
         $this->setName($name);
-        $this->category = $category;
+        $this->citizenInitiativeCategory = $citizenInitiativeCategory;
         $this->description = $description;
         $this->postAddress = $address;
         $this->participantsCount = $participantsCount;
@@ -108,7 +116,7 @@ class CitizenInitiative extends BaseEvent
 
     public function update(
         string $name,
-        EventCategory $category,
+        CitizenInitiativeCategory $citizenInitiativeCategory,
         string $description,
         PostAddress $address,
         \DateTime $beginAt,
@@ -122,7 +130,7 @@ class CitizenInitiative extends BaseEvent
         $skills = null
     ) {
         $this->setName($name);
-        $this->category = $category;
+        $this->citizenInitiativeCategory = $citizenInitiativeCategory;
         $this->description = $description;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
@@ -137,6 +145,11 @@ class CitizenInitiative extends BaseEvent
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
         }
+    }
+
+    public function getCategory(): CitizenInitiativeCategory
+    {
+        return $this->citizenInitiativeCategory;
     }
 
     public function getInterests(): array

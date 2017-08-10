@@ -19,6 +19,13 @@ class Event extends BaseEvent
      */
     private $committee;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
+     *
+     * @Algolia\Attribute
+     */
+    private $category;
+
     private $type;
 
     /**
@@ -88,6 +95,11 @@ class Event extends BaseEvent
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
         }
+    }
+
+    public function getCategory(): EventCategory
+    {
+        return $this->category;
     }
 
     public function getType(): ?string

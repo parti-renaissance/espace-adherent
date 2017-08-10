@@ -350,5 +350,19 @@
             <argument />
         </service>
 
+        <!--
+        ######################################################
+        # CitizenInitiative
+        ######################################################
+         -->
+
+        <service id="app.admin.citizen_initiative_category" class="AppBundle\Admin\CitizenInitiativeCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'initiatives citoyennes" group="Initiatives citoyennes" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenInitiativeCategory</argument>
+            <argument />
+        </service>
+
     </services>
 </container>
