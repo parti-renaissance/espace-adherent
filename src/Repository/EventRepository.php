@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
@@ -69,7 +70,7 @@ class EventRepository extends EntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneByUuid(string $uuid): ?Event
+    public function findOneByUuid(string $uuid): ?BaseEvent
     {
         return $this->findOneByValidUuid($uuid);
     }

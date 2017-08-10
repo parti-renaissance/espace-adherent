@@ -2,7 +2,6 @@
 
 namespace AppBundle\CitizenInitiative;
 
-use AppBundle\Event\EventCreatedCitizenInitiative;
 use AppBundle\Event\EventFactory;
 use AppBundle\Events;
 use AppBundle\Mailjet\MailjetService;
@@ -35,7 +34,7 @@ class CitizenInitiativeCommandHandler
         $this->manager->persist($initiative);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CREATED, new EventCreatedCitizenInitiative(
+        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CREATED, new CitizenInitiativeCreatedEvent(
             $command->getAuthor(),
             $initiative
         ));

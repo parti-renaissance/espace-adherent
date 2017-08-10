@@ -1,0 +1,13 @@
+{% extends 'citizen_initiative/show.html.twig' %}
+
+{% block main_section %}
+    {% set event = initiative %}
+    <p>Description des besoins</p>
+    <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
+        {{- event.expertAssistanceDescription|raw -}}
+    </div>
+    <p>Type de mission</p>
+    <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
+        La mission est bénévole
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'events/invitation_sent.html.twig' %}
+
+{% block content %}
+    {% set committee_event = initiative %}
+    {{ parent() }}
+{% endblock %}

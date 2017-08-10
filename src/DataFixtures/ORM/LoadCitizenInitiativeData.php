@@ -53,6 +53,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => true,
             'expert_assistance_description' => 'Besoin quelqu\'un de la Croix Rouge',
             'coaching_requested' => false,
+            'capacity' => 20,
         ]);
         $initiative1->setInterests(['sante']);
         $initiative1->incrementParticipantsCount();
@@ -70,6 +71,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'expert_assistance_description' => '',
             'coaching_requested' => false,
+            'capacity' => 30,
         ]);
         $initiative2->incrementParticipantsCount();
         $initiative2->setInterests(['sante']);
@@ -87,6 +89,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_description' => 'J’ai besoin d’aide pour cet événement. Besoin de quelqu’un ayant le permis poids lourd pour pouvoir
 transporter tous les déchets lourds trouvés.',
             'coaching_requested' => true,
+            'capacity' => 20,
         ]);
         $initiative3->incrementParticipantsCount();
         $initiative3->setInterests(['sante', 'securite']);
@@ -104,6 +107,7 @@ transporter tous les déchets lourds trouvés.',
             'expert_assistance_needed' => false,
             'expert_assistance_description' => '',
             'coaching_requested' => false,
+            'capacity' => 20,
         ]);
         $initiative4->incrementParticipantsCount();
         $initiative4->setInterests(['environement', 'territoire']);
@@ -120,6 +124,7 @@ transporter tous les déchets lourds trouvés.',
             'expert_assistance_needed' => false,
             'expert_assistance_description' => '',
             'coaching_requested' => false,
+            'capacity' => 10,
         ]);
         $initiative5->incrementParticipantsCount();
         $initiative5->setInterests(['environement']);

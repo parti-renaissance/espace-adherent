@@ -13,11 +13,6 @@ use Ramsey\Uuid\UuidInterface;
 class Event extends BaseEvent
 {
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $capacity;
-
-    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      *
      * @Algolia\Attribute
@@ -97,12 +92,7 @@ class Event extends BaseEvent
 
     public function getType(): ?string
     {
-        return $this->type;
-    }
-
-    public function getCapacity(): ?int
-    {
-        return $this->capacity;
+        return $this->type ?? 'event';
     }
 
     public function getCommittee(): ?Committee
@@ -113,15 +103,6 @@ class Event extends BaseEvent
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
-    }
-
-    public function isFull(): bool
-    {
-        if (!$this->capacity) {
-            return false;
-        }
-
-        return $this->participantsCount >= $this->capacity;
     }
 
     public function isForLegislatives()

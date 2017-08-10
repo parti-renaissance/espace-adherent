@@ -73,6 +73,8 @@ class CitizenInitiativeCommand
 
     private $coachingRequested;
 
+    private $capacity;
+
     /**
      * @var CoachingRequest
      */
@@ -82,12 +84,14 @@ class CitizenInitiativeCommand
         Adherent $author = null,
         UuidInterface $uuid = null,
         Address $address = null,
+        int $capacity = null,
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
         $this->address = $address ?: new Address();
+        $this->capacity = $capacity;
         $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
         $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
         $this->skills = new ArrayCollection();
@@ -189,7 +193,7 @@ class CitizenInitiativeCommand
 
         if ($finishAt <= $beginAt) {
             $context
-                ->buildViolation('committee.citizenInitiative.invalid_date_range')
+                ->buildViolation('citizen_initiative.invalid_date_range')
                 ->atPath('finishAt')
                 ->addViolation();
         }
@@ -263,5 +267,19 @@ class CitizenInitiativeCommand
     public function setExpertAssistanceDescription(?string $expertAssistanceDescription): void
     {
         $this->expertAssistanceDescription = $expertAssistanceDescription;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return null !== $this->capacity ? (int) $this->capacity : null;
+    }
+
+    public function setCapacity($capacity): void
+    {
+        if (null !== $capacity) {
+            $capacity = (string) $capacity;
+        }
+
+        $this->capacity = $capacity;
     }
 }
