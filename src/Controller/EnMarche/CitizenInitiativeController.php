@@ -9,8 +9,11 @@ use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Skill;
 use AppBundle\Event\EventInvitation;
 use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Exception\BadUuidRequestException;
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\CitizenInitiativeType;
 use AppBundle\Form\EventInvitationType;
+use AppBundle\Form\EventRegistrationType;
 use AppBundle\Repository\SkillRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -157,20 +160,46 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/inscription", name="app_citizen_initiative_attend")
+     * @Route("/{uuid}/{slug}/inscription", name="app_citizen_initiative_attend")
      * @Method("GET|POST")
      */
     public function attendAction(Request $request, CitizenInitiative $initiative): Response
     {
         $this->disableInProduction();
 
-        return new Response();
+        if ($initiative->isFinished()) {
+            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $initiative->getUuid()));
+        }
+
+        if ($initiative->isCancelled()) {
+            throw $this->createNotFoundException(sprintf('Event "%s" is cancelled and does not accept registrations anymore', $initiative->getUuid()));
+        }
+
+        $command = new EventRegistrationCommand($initiative, $this->getUser());
+        $form = $this->createForm(EventRegistrationType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.citizen_initiative.registration_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.registration.success'));
+
+            return $this->redirectToRoute('app_citizen_initiative_attend_confirmation', [
+                'uuid' => (string) $initiative->getUuid(),
+                'slug' => $initiative->getSlug(),
+                'registration' => (string) $command->getRegistrationUuid(),
+            ]);
+        }
+
+        return $this->render('citizen_initiative/attend.html.twig', [
+            'initiative' => $initiative,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
      * @Route(
-     *   path="/confirmation",
-     *   name="app_event_attend_confirmation",
+     *   path="/{uuid}/{slug}/confirmation",
+     *   name="app_citizen_initiative_attend_confirmation",
      *   condition="request.query.has('registration')"
      * )
      * @Method("GET")
@@ -179,7 +208,24 @@ class CitizenInitiativeController extends Controller
     {
         $this->disableInProduction();
 
-        return new Response();
+        $manager = $this->get('app.event.registration_manager');
+
+        try {
+            if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
+                throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
+            }
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
+        }
+
+        if (!$registration->matches($initiative, $this->getUser())) {
+            throw $this->createAccessDeniedException('Invalid event registration');
+        }
+
+        return $this->render('citizen_initiative/attend_confirmation.html.twig', [
+            'initiative' => $initiative,
+            'registration' => $registration,
+        ]);
     }
 
     /**

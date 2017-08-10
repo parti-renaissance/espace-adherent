@@ -9,7 +9,10 @@ use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventInvite;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeRegistrationConfirmationMessage;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -21,6 +24,8 @@ use Tests\AppBundle\MysqlWebTestCase;
 class CitizenInitiativeControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
+
+    private $repository;
 
     public function testAnonymousUserCannotCreateCitizenInitiative()
     {
@@ -233,6 +238,131 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
+    public function testAnonymousUserCanRegisterToEvent()
+    {
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+
+        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertEmpty($crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertEmpty($crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertEmpty($crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+
+        $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(3, $crawler->filter('.form__errors')->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-postal-code .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
+
+        $this->client->submit($crawler->selectButton("Je m'inscris")->form([
+            'event_registration' => [
+                'firstName' => 'Pauline',
+                'emailAddress' => 'paupau75@example.org',
+                'postalCode' => '75001',
+                'newsletterSubscriber' => true,
+            ],
+        ]));
+
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+
+        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+    }
+
+    public function testRegisteredAdherentUserCanRegisterToEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+
+        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+
+        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+
+        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+
+        $this->client->click($crawler->selectLink('Mes événements')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Nettoyage de la ville', $this->client->getResponse()->getContent());
+    }
+
+    public function testCantRegisterToAFullEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_7_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $headerText = $crawler->filter('.committee__event__header__cta')->text();
+        $this->assertContains('10 / 10 inscrit', $headerText);
+        $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
+
+        $crawler = $this->client->request('GET', $eventUrl.'/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+
+        $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains("L'événement est complet.", $crawler->filter('.form__errors')->text());
+    }
+
+    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
+    {
+        $flash = $crawler->filter('#notice-flashes');
+
+        if ($message) {
+            $this->assertSame($message, trim($flash->text()));
+        }
+
+        return 1 === count($flash);
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -240,15 +370,19 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
-            LoadCitizenInitiativeCategoryData::class,
             LoadEventData::class,
+            LoadCitizenInitiativeCategoryData::class,
             LoadCitizenInitiativeData::class,
         ]);
+
+        $this->repository = $this->getEventRegistrationRepository();
     }
 
     protected function tearDown()
     {
         $this->kill();
+
+        $this->repository = null;
 
         parent::tearDown();
     }

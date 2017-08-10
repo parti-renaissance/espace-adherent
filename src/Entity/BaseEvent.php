@@ -303,4 +303,9 @@ abstract class BaseEvent implements GeoPointInterface
     {
         return $this->getType() === self::CITIZEN_INITIATIVE_TYPE;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
 }

@@ -112,11 +112,6 @@ class Event extends BaseEvent
         return $this->committee;
     }
 
-    public function equals(self $other): bool
-    {
-        return $this->uuid->equals($other->getUuid());
-    }
-
     public function isForLegislatives()
     {
         return $this->isForLegislatives;
