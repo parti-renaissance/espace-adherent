@@ -29,6 +29,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
     const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
     const ADHERENT_13_UUID = '8c000582-51a2-11e7-b114-b2f933d5fe66';
+    const ADHERENT_14_UUID = 'ddb35a17-b0d1-4ce0-bdae-83b9f7e3ac4f';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -245,6 +246,18 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $this->addReference('adherent-13', $adherent13);
 
+        $adherent14 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_14_UUID,
+            'password' => 'newpassword',
+            'email' => 'damien.schmidt@example.ch',
+            'gender' => 'male',
+            'first_name' => 'Damien',
+            'last_name' => 'SCHMIDT',
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', 47.3180696, 8.552615),
+            'birthdate' => '1988-04-13',
+        ]);
+        $this->addReference('adherent-14', $adherent14);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -259,6 +272,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key11 = AdherentActivationToken::generate($adherent11);
         $key12 = AdherentActivationToken::generate($adherent12);
         $key13 = AdherentActivationToken::generate($adherent13);
+        $key14 = AdherentActivationToken::generate($adherent14);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -273,6 +287,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent11->activate($key11, '2017-04-10 14:12:56');
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
+        $adherent14->activate($key14, '2017-05-04 09:34:21');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -397,6 +412,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent11);
         $manager->persist($adherent12);
         $manager->persist($adherent13);
+        $manager->persist($adherent14);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -411,6 +427,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key11);
         $manager->persist($key12);
         $manager->persist($key13);
+        $manager->persist($key14);
 
         $manager->persist($resetPasswordToken);
 
@@ -449,6 +466,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent11->followCommittee($committee9));
         $manager->persist($referent->superviseCommittee($committee10));
         $manager->persist($adherent13->followCommittee($committee10));
+        $manager->persist($adherent14->followCommittee($committee10));
 
         $manager->flush();
     }

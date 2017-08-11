@@ -117,6 +117,7 @@ class EventManagerController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
         try {
             $registrations = $repository->findByUuidAndEvent($event, $uuids);
         } catch (InvalidUuidException $e) {
@@ -160,6 +161,7 @@ class EventManagerController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
         try {
             $registrations = $repository->findByUuidAndEvent($event, $uuids);
         } catch (InvalidUuidException $e) {

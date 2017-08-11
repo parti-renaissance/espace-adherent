@@ -119,6 +119,7 @@ class AdherentSecurityController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('password')->getData();
+
             try {
                 $this->get('app.adherent_reset_password_handler')->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.success'));

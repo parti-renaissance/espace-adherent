@@ -124,6 +124,7 @@ class CitizenInitiativeManagerContoller extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
         try {
             $registrations = $repository->findByUuidAndEvent($initiative, $uuids);
         } catch (InvalidUuidException $e) {
@@ -169,6 +170,7 @@ class CitizenInitiativeManagerContoller extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
         try {
             $registrations = $repository->findByUuidAndEvent($initiative, $uuids);
         } catch (InvalidUuidException $e) {

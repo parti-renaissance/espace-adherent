@@ -266,6 +266,7 @@
         <service id="app.citizen_initiative.registration_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.activity_subscription.manager"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>
         </service>
 
@@ -299,6 +300,15 @@
             <argument type="service" id="app.adherent_manager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AppBundle\CitizenInitiative\CitizenInitiativeManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="app.activity_subscription.manager" class="AppBundle\CitizenInitiative\ActivitySubscriptionManager">
+            <argument type="service" id="app.repository.activity_subscription" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
         <!-- Referents -->

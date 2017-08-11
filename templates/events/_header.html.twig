@@ -12,6 +12,9 @@
                 </a>
             {% endif %}
         </div>
+        {% if event.isCitizenInitiative %}
+            {{ include('citizen_initiative/_activity_subscription.html.twig', { initiative: event }) }}
+        {% endif %}
     </div>
     <div class="committee__event__header__cta">
         {% if event.finished %}

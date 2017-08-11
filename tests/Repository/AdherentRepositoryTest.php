@@ -47,7 +47,7 @@ class AdherentRepositoryTest extends MysqlWebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(12, $this->repository->countActiveAdherents());
+        $this->assertSame(13, $this->repository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()
@@ -58,12 +58,13 @@ class AdherentRepositoryTest extends MysqlWebTestCase
 
         $managedByReferent = $this->repository->findAllManagedBy($referent);
 
-        $this->assertCount(5, $managedByReferent, 'Referent should manage 4 adherents + himself in his area.');
-        $this->assertSame('Michel VASSEUR', $managedByReferent[0]->getFullName());
-        $this->assertSame('Michelle Dufour', $managedByReferent[1]->getFullName());
-        $this->assertSame('Francis Brioul', $managedByReferent[2]->getFullName());
-        $this->assertSame('Referent Referent', $managedByReferent[3]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[4]->getFullName());
+        $this->assertCount(6, $managedByReferent, 'Referent should manage 4 adherents + himself in his area.');
+        $this->assertSame('Damien SCHMIDT', $managedByReferent[0]->getFullName());
+        $this->assertSame('Michel VASSEUR', $managedByReferent[1]->getFullName());
+        $this->assertSame('Michelle Dufour', $managedByReferent[2]->getFullName());
+        $this->assertSame('Francis Brioul', $managedByReferent[3]->getFullName());
+        $this->assertSame('Referent Referent', $managedByReferent[4]->getFullName());
+        $this->assertSame('Gisele Berthoux', $managedByReferent[5]->getFullName());
     }
 
     public function testFindByEvent()

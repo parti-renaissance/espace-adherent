@@ -644,7 +644,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
 
-        $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
+        $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
         $crawler = $this->client->submit($crawler->selectButton('Terminer')->form([
@@ -665,7 +665,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
 
-        $this->assertSame('1 adhérent', $crawler->filter('.committee-members')->text());
+        $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
     }
 
     protected function setUp()

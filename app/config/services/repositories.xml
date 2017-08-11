@@ -79,5 +79,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.activity_subscription" class="AppBundle\Repository\ActivitySubscriptionRepository" public="false">
+            <argument>AppBundle\Entity\ActivitySubscription</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
