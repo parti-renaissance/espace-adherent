@@ -2,6 +2,7 @@
 
 namespace Migrations;
 
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -13,6 +14,13 @@ class Version20170810154040 extends AbstractMigration
         $this->addSql('ALTER TABLE events ADD citizen_initiative_category_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574AE03E2EB9 FOREIGN KEY (citizen_initiative_category_id) REFERENCES citizen_initiative_categories (id)');
         $this->addSql('CREATE INDEX IDX_5387574AE03E2EB9 ON events (citizen_initiative_category_id)');
+    }
+
+    public function postUp(Schema $schema)
+    {
+        foreach (LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES as $category) {
+            $this->connection->insert('citizen_initiative_categories', ['name' => $category]);
+        }
     }
 
     public function down(Schema $schema)
