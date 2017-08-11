@@ -177,6 +177,19 @@ class EventRepository extends EntityRepository
         ;
     }
 
+    public function findEventsByOrganizer(Adherent $organizer): array
+    {
+        $query = $this
+            ->createQueryBuilder('e')
+            ->andWhere('e.organizer = :organizer')
+            ->setParameter('organizer', $organizer)
+            ->orderBy('e.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
+
     private function createUpcomingEventsQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('e');
