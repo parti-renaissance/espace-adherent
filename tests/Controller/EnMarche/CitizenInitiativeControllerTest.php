@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
@@ -239,6 +240,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
+            LoadCitizenInitiativeCategoryData::class,
             LoadEventData::class,
             LoadCitizenInitiativeData::class,
         ]);

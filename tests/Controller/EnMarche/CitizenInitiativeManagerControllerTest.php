@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
@@ -84,7 +84,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
             'citizen_initiative' => [
                 'name' => 'Nouveau titre',
                 'description' => 'Nouvelle description.',
-                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE008']),
+                'category' => $this->getCitizenInitiativeCategoryIdForName(LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC008']),
                 'address' => [
                     'address' => 'Pilgerweg 58',
                     'country' => 'CH',
@@ -308,7 +308,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
         $this->init([
             LoadAdherentData::class,
-            LoadEventCategoryData::class,
+            LoadCitizenInitiativeCategoryData::class,
             LoadCitizenInitiativeData::class,
         ]);
     }

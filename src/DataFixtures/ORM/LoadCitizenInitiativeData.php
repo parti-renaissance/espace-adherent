@@ -3,7 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\CoachingRequest;
-use AppBundle\Entity\EventCategory;
+use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Entity\Skill;
 use AppBundle\Event\EventFactory;
 use AppBundle\Entity\Adherent;
@@ -30,9 +30,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
 
     public function load(ObjectManager $manager)
     {
-        $eventCategory1 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE007']]);
-        $eventCategory2 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE008']]);
-        $eventCategory3 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE009']]);
+        $category1 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC007']]);
+        $category2 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC008']]);
+        $category3 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC009']]);
 
         $author1 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $author2 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
@@ -46,7 +46,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'uuid' => self::CITIZEN_INITIATIVE_1_UUID,
             'organizer' => $this->getReference('adherent-1'),
             'name' => 'Apprenez à sauver des vies',
-            'category' => $eventCategory1,
+            'category' => $category1,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '30 Zeppelinstrasse', 47.3950062, 8.53838),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
@@ -62,9 +62,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
         $initiative2 = $eventFactory->createCitizenInitiativeFromArray([
             'uuid' => self::CITIZEN_INITIATIVE_2_UUID,
             'organizer' => $this->getReference('adherent-2'),
-            'committee' => $eventCategory2,
+            'committee' => $category2,
             'name' => 'Apprenez à sauver des vies',
-            'category' => $eventCategory1,
+            'category' => $category1,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', 45.7218703, 5.929463),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+9 days')).' 09:00:00'),
@@ -81,7 +81,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'uuid' => self::CITIZEN_INITIATIVE_3_UUID,
             'organizer' => $this->getReference('adherent-3'),
             'name' => 'Apprenez à sauver des vies',
-            'category' => $eventCategory3,
+            'category' => $category3,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createFrenchAddress('16 rue de la Paix', '75008-75108', 48.869331, 2.331595),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 09:30:00'),
@@ -100,7 +100,7 @@ transporter tous les déchets lourds trouvés.',
             'uuid' => self::CITIZEN_INITIATIVE_4_UUID,
             'organizer' => $this->getReference('adherent-3'),
             'name' => 'Nettoyage de la ville',
-            'category' => $eventCategory1,
+            'category' => $category1,
             'description' => 'Nous allons rendre notre ville propre',
             'address' => PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', 48.869878, 2.332197),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 10:00:00'),
@@ -117,7 +117,7 @@ transporter tous les déchets lourds trouvés.',
             'uuid' => self::CITIZEN_INITIATIVE_5_UUID,
             'organizer' => $this->getReference('adherent-13'),
             'name' => 'Nettoyage de la Kilchberg',
-            'category' => $eventCategory1,
+            'category' => $category1,
             'description' => 'Nous allons rendre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 09:00:00'),
@@ -134,7 +134,7 @@ transporter tous les déchets lourds trouvés.',
             'uuid' => self::CITIZEN_INITIATIVE_6_UUID,
             'organizer' => $this->getReference('adherent-13'),
             'name' => 'Initiative citoyenne annulée',
-            'category' => $eventCategory1,
+            'category' => $category1,
             'description' => 'On a annulé cette initiative citoyenne.',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 09:00:00'),
