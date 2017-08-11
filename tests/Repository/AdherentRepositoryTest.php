@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
@@ -99,6 +100,7 @@ class AdherentRepositoryTest extends MysqlWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadCitizenInitiativeCategoryData::class,
             LoadCitizenInitiativeData::class,
         ]);
 

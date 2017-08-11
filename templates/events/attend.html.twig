@@ -25,7 +25,7 @@
                 </p>
             {% endif %}
 
-            <form action="{{ path('app_event_attend', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
+            <form action="{{ path("app_#{committee_event.type}_attend", {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
 
                 <div class="form__row" id="field-first-name">

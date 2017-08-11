@@ -263,6 +263,12 @@
             <argument type="service" id="app.mailjet.transactional_mailer"/>
         </service>
 
+        <service id="app.citizen_initiative.registration_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeRegistrationCommandHandler">
+            <argument type="service" id="app.event.registration_factory"/>
+            <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+        </service>
+
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="app.committee.manager"/>

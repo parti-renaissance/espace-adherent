@@ -25,6 +25,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
     const CITIZEN_INITIATIVE_4_UUID = 'c55a4d71-f0df-4ab8-a03a-fe8d9d3345ff';
     const CITIZEN_INITIATIVE_5_UUID = '81aaee46-5308-477c-9960-9731fb6898c3';
     const CITIZEN_INITIATIVE_6_UUID = '8988a5ce-9e43-4d34-b070-4d404688ff96';
+    const CITIZEN_INITIATIVE_7_UUID = '4f989ee6-ebd3-4544-b73f-a5262340aa38';
 
     use ContainerAwareTrait;
 
@@ -147,6 +148,23 @@ transporter tous les déchets lourds trouvés.',
         $initiative6->cancel();
         $initiative6->incrementParticipantsCount();
 
+        $initiative7 = $eventFactory->createCitizenInitiativeFromArray([
+            'uuid' => self::CITIZEN_INITIATIVE_7_UUID,
+            'organizer' => $this->getReference('adherent-13'),
+            'name' => 'Nettoyage de la Kilchberg',
+            'category' => $category1,
+            'description' => 'Nous allons rendre Kilchberg propre',
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
+            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
+            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
+            'expert_assistance_needed' => false,
+            'expert_assistance_description' => '',
+            'coaching_requested' => false,
+            'capacity' => 10,
+        ]);
+        $initiative7->incrementParticipantsCount(10);
+        $initiative7->setInterests(['environement']);
+
         foreach ($manager->getRepository(Skill::class)->findBy(['name' => LoadSkillData::SKILLS['S009']]) as $skill) {
             $initiative1->addSkill($skill);
         }
@@ -177,6 +195,7 @@ transporter tous les déchets lourds trouvés.',
         $manager->persist($initiative4);
         $manager->persist($initiative5);
         $manager->persist($initiative6);
+        $manager->persist($initiative7);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative1, $author1)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative2, $author2)));
@@ -184,6 +203,7 @@ transporter tous les déchets lourds trouvés.',
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative4, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative5, $author13)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative6, $author13)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($initiative7, $author13)));
 
         $manager->flush();
     }
