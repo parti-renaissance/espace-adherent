@@ -111,6 +111,8 @@ doctrine:
                 cos: DoctrineExtensions\Query\Mysql\Cos
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
+            string_functions:
+                json_contains: AppBundle\Query\Mysql\JsonContains
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator

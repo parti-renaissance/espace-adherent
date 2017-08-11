@@ -3,18 +3,20 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
 use AppBundle\Repository\AdherentRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  */
-class AdherentRepositoryTest extends SqliteWebTestCase
+class AdherentRepositoryTest extends MysqlWebTestCase
 {
     /**
      * @var AdherentRepository
@@ -65,14 +67,28 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
     public function testFindByEvent()
     {
-        $event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
-        $event->expects(static::any())->method('getId')->willReturn(2);
+        $event = $this->getEventRepository()->findOneBy(['uuid' => LoadEventData::EVENT_2_UUID]);
+
+        $this->assertInstanceOf(Event::class, $event, 'Event must be returned.');
 
         $adherents = $this->repository->findByEvent($event);
 
         $this->assertCount(2, $adherents);
         $this->assertSame('Jacques Picard', $adherents[0]->getFullName());
         $this->assertSame('Francis Brioul', $adherents[1]->getFullName());
+    }
+
+    public function testFindNearByCitizenInitiativeInterests()
+    {
+        $citizenInitiative = $this->getMockBuilder(CitizenInitiative::class)->disableOriginalConstructor()->getMock();
+        $citizenInitiative->expects(static::any())->method('getLatitude')->willReturn(48.8713224);
+        $citizenInitiative->expects(static::any())->method('getLongitude')->willReturn(2.3353755);
+        $citizenInitiative->expects(static::any())->method('getInterests')->willReturn(['jeunesse']);
+
+        $adherents = $this->repository->findNearByCitizenInitiativeInterests($citizenInitiative);
+
+        $this->assertCount(1, $adherents);
+        $this->assertSame('Lucie Olivera', $adherents[0]->getFullName());
     }
 
     protected function setUp()
@@ -83,6 +99,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadCitizenInitiativeData::class,
         ]);
 
         $this->container = $this->getContainer();

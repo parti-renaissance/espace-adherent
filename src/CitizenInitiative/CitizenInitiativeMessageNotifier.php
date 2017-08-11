@@ -7,6 +7,8 @@ use AppBundle\Events;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeAdherentsNearMessage;
+use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Membership\AdherentManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -61,6 +63,39 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
         );
     }
 
+    public function onCitizenInitiativeValidated(CitizenInitiativeValidatedEvent $event): void
+    {
+        $this->sendMessageToNearByAdherentsWithSameInterests($event);
+    }
+
+    private function sendMessageToNearByAdherentsWithSameInterests(CitizenInitiativeValidatedEvent $event): void
+    {
+        $chunks = array_chunk(
+            $this->adherentManager->findNearByCitizenInitiativeInterests($event->getCitizenInitiative())->toArray(),
+            MailjetService::PAYLOAD_MAXSIZE
+        );
+
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage($this->createMessageToNearByAdherentsWithSameInterests($chunk, $event->getCitizenInitiative(), $event->getAuthor()));
+        }
+    }
+
+    private function createMessageToNearByAdherentsWithSameInterests(array $adherents, CitizenInitiative $citizenInitiative, Adherent $organizer): CitizenInitiativeAdherentsNearMessage
+    {
+        return CitizenInitiativeAdherentsNearMessage::create(
+            $adherents,
+            $organizer,
+            $citizenInitiative,
+            $this->generateUrl('app_citizen_initiative_show', [
+                'uuid' => (string) $citizenInitiative->getUuid(),
+                'slug' => $citizenInitiative->getSlug(),
+            ]),
+            function (Adherent $adherent) {
+                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+            }
+        );
+    }
+
     private function generateUrl(string $route, array $params = []): string
     {
         return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
@@ -70,6 +105,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
     {
         return [
             Events::CITIZEN_INITIATIVE_CANCELLED => ['onCitizenInitiativeCancelled', -128],
+            Events::CITIZEN_INITIATIVE_VALIDATED => ['onCitizenInitiativeValidated', -128],
         ];
     }
 }
