@@ -265,4 +265,18 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }
+
+    public function findSubscribersToAdherentActivity(Adherent $followed): AdherentCollection
+    {
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->leftJoin('a.activitiySubscriptions', 's')
+            ->where('s.followedAdherent = :followed')
+            ->andWhere('(s.unsubscribedAt IS NULL OR s.subscribedAt > s.unsubscribedAt)')
+            ->setParameters([
+                'followed' => $followed,
+        ]);
+
+        return new AdherentCollection($qb->getQuery()->getResult());
+    }
 }
