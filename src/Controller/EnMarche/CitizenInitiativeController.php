@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
+use AppBundle\Committee\Feed\CommitteeCitizenInitiativeMessage;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\CitizenInitiative;
@@ -12,6 +13,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\CitizenInitiativeType;
+use AppBundle\Form\CommitteeFeedCitizenInitiativeMessageType;
 use AppBundle\Form\EventInvitationType;
 use AppBundle\Form\EventRegistrationType;
 use AppBundle\Repository\SkillRepository;
@@ -27,7 +29,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/initiative_citoyenne")
- * @Entity("citizen_initiative", expr="repository.findOnePublishedByUuid(uuid)")
+ * @Entity("initiative", expr="repository.findOnePublishedByUuid(uuid)")
  */
 class CitizenInitiativeController extends Controller
 {
@@ -194,6 +196,41 @@ class CitizenInitiativeController extends Controller
         }
 
         return $this->render('citizen_initiative/attend.html.twig', [
+            'initiative' => $initiative,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{uuid}/{slug}/partage-au-comite", requirements={"uuid": "%pattern_uuid%"}, name="app_citizen_initiative_committee_share")
+     * @Method("GET|POST")
+     * @Security("is_granted('ROLE_SUPERVISOR')")
+     */
+    public function shareToCommitteeAction(Request $request, CitizenInitiative $initiative)
+    {
+        $this->disableInProduction();
+
+        if (empty($committees = $this->get('app.committee.manager')->getAdherentCommitteesSupervisor($this->getUser()))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $committee = array_shift($committees);
+        $message = new CommitteeCitizenInitiativeMessage($this->getUser(), $committee, $initiative);
+        $form = $this->createForm(CommitteeFeedCitizenInitiativeMessageType::class, $message)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.committee.feed_manager')->createCitizenInitiative($message);
+            if ($message->isPublished()) {
+                $this->addFlash('info', $this->get('translator')->trans('committee.message_published'));
+            } else {
+                $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
+            }
+
+            return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $committee));
+        }
+
+        return $this->render('citizen_initiative/share_committee.html.twig', [
             'initiative' => $initiative,
             'form' => $form->createView(),
         ]);

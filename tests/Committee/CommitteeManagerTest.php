@@ -150,6 +150,15 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertSame('En Marche - Comité de Singapour', (string) $committees[7], 'Followed committee - least popular one last');
     }
 
+    public function testGetAdherentCommitteesSupervisor()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+
+        // Without any fixed limit.
+        $this->assertCount(1, $committees = $this->committeeManager->getAdherentCommitteesSupervisor($adherent));
+        $this->assertSame('En Marche Paris 8', (string) $committees[0]);
+    }
+
     public function testChangePrivilegeNotDefinedPrivilege()
     {
         $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);

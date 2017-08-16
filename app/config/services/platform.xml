@@ -182,6 +182,7 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.mailjet.campaign_mailer"/>
+            <argument type="service" id="router"/>
         </service>
 
         <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">

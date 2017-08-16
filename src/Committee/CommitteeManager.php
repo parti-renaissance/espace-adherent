@@ -84,9 +84,23 @@ class CommitteeManager
 
     public function getAdherentCommittees(Adherent $adherent): array
     {
+        return $this->doGetAdherentCommittees($adherent);
+    }
+
+    public function getAdherentCommitteesSupervisor(Adherent $adherent): array
+    {
+        return $this->doGetAdherentCommittees($adherent, true);
+    }
+
+    private function doGetAdherentCommittees(Adherent $adherent, $onlySupervisor = false): array
+    {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
         if (!count($memberships = $adherent->getMemberships())) {
             return [];
+        }
+
+        if (true === $onlySupervisor) {
+            $memberships = $memberships->getCommitteeSupervisorMemberships();
         }
 
         $committees = $this
@@ -103,8 +117,7 @@ class CommitteeManager
                 if ($committee->isCreatedBy($adherent->getUuid())) {
                     return $committee;
                 }
-            })
-        ;
+            });
 
         return $committees->toArray();
     }

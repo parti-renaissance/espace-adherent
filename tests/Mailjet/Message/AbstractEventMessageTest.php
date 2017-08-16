@@ -3,8 +3,10 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +32,7 @@ abstract class AbstractEventMessageTest extends TestCase
         return $event;
     }
 
-    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode, string $slug = ''): CitizenInitiative
+    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode, string $slug = '', ?Adherent $organizer = null): CitizenInitiative
     {
         $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
@@ -39,6 +41,10 @@ abstract class AbstractEventMessageTest extends TestCase
         $citizenInitiative->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
         $citizenInitiative->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
         $citizenInitiative->expects(static::any())->method('getSlug')->willReturn($slug);
+
+        if ($organizer) {
+            $citizenInitiative->expects(static::any())->method('getOrganizer')->willReturn($organizer);
+        }
 
         return $citizenInitiative;
     }
@@ -52,5 +58,26 @@ abstract class AbstractEventMessageTest extends TestCase
         $adherent->expects(static::any())->method('getFullName')->willReturn($firstName.' '.$lastName);
 
         return $adherent;
+    }
+
+    protected function createCommitteeFeedItemMock(Adherent $author, string $content, ?BaseEvent $event = null, ?string $committeeName = null): CommitteeFeedItem
+    {
+        $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
+        $mock->expects($this->any())->method('getAuthor')->willReturn($author);
+        $mock->expects($this->any())->method('getAuthorFirstName')->willReturn($author->getFirstName());
+        $mock->expects($this->any())->method('getContent')->willReturn($content);
+
+        if ($event) {
+            $mock->expects($this->any())->method('getEvent')->willReturn($event);
+        }
+
+        if ($committeeName) {
+            $committee = $this->createMock(Committee::class);
+            $committee->expects(static::any())->method('getName')->willReturn($committeeName);
+
+            $mock->expects(static::any())->method('getCommittee')->willReturn($committee);
+        }
+
+        return $mock;
     }
 }

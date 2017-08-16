@@ -12,6 +12,8 @@ use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeRegistrationConfirmationMessage;
+use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
+use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -139,6 +141,32 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
     }
 
+    public function testShowUnpublishedInitiative()
+    {
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg-non-publiee';
+        $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testShowPublishedInitiative()
+    {
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+    }
+
+    public function testInviteToUnpublishedEvent()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
+        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $this->client->request(Request::METHOD_GET, $initiativeUrl.'/invitation');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
     public function testAdherentCanInviteToEvent()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
@@ -236,6 +264,15 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s/invitation/merci', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, $initiative->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+    }
+
+    public function testRegisterToUnpublishedEvent()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
+        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $this->client->request(Request::METHOD_GET, $initiativeUrl.'/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     public function testAnonymousUserCanRegisterToEvent()
@@ -350,6 +387,115 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains("L'événement est complet.", $crawler->filter('.form__errors')->text());
+    }
+
+    public function testShareToCommitteeToUnpublishedEvent()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
+        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $this->client->request(Request::METHOD_GET, $initiativeUrl.'/partage-au-comite');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testAnonymousUserShareToCommittee()
+    {
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertNotContains('Partager dans mon comité', $crawler->filter('.committee__event__header__cta')->text());
+    }
+
+    public function testNoSupervisorAdherentShareToCommittee()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertNotContains('Partager dans mon comité', $crawler->filter('.committee__event__header__cta')->text());
+    }
+
+    public function testSupervisorAdherentShareToCommitteeWithPublishedFalse()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Partager dans mon comité', $crawler->filter('.committee__event__header__cta')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Partager dans mon comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertEmpty($crawler->filter('#committee_feed_citizen_initiative_message_content')->attr('value'));
+
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer')->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('.form__errors')->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#committee_feed_citizen_initiative_message .form__errors > li')->text());
+
+        $this->client->submit($crawler->selectButton('Envoyer')->form([
+            'committee_feed_citizen_initiative_message' => [
+                'content' => 'Cette initiative est vraiment une excellente idée',
+                'published' => false,
+            ],
+        ]));
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été envoyé.'));
+        $this->assertContains('En Marche Paris 8', $crawler->filter('#committee-name')->text());
+        $this->assertNotContains('Cette initiative est vraiment une excellente idée', $crawler->filter('#committee-timeline')->text());
+    }
+
+    public function testSupervisorAdherentShareToCommitteeWithPublishedTrue()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('Partager dans mon comité', $crawler->filter('.committee__event__header__cta')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Partager dans mon comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertEmpty($crawler->filter('#committee_feed_citizen_initiative_message_content')->attr('value'));
+
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer')->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('.form__errors')->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#committee_feed_citizen_initiative_message .form__errors > li')->text());
+
+        $this->client->submit($crawler->selectButton('Envoyer')->form([
+            'committee_feed_citizen_initiative_message' => [
+                'content' => 'Vraiment pas mal cette initiative',
+                'published' => true,
+            ],
+        ]));
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
+        $this->assertContains('En Marche Paris 8', $crawler->filter('#committee-name')->text());
+        $itemText = $crawler->filter('#committee-timeline .committee__timeline__item')->first()->text();
+        $this->assertContains('Vraiment pas mal cette initiative', $itemText);
+        $this->assertContains('Nettoyage de la ville', $itemText);
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
