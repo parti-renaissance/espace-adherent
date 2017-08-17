@@ -136,6 +136,10 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Nettoyage de la Kilchberg")')->count());
+
         $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg/annuler');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -154,6 +158,14 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
         // One mail have been sent
         static::assertCount(1, $message->getRecipients());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Nettoyage de la Kilchberg")')->count());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
+
+        $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Nettoyage de la Kilchberg")')->count());
     }
 
     public function testOrganizerCanSeeRegistrations()

@@ -5,11 +5,14 @@
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
+    <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
+            {{ js.ckeditor('citizen_initiative_description') }}
             {{ js.skills('#citizen_initiative_skills', '#citizen_initiative_skill_search', path('app_citizen_initiative_skills_autocomplete')) }}
         });
 

@@ -148,7 +148,7 @@
                     </ul>
                 </div>
             </div>
-            <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path("app_#{event.type}_show", {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à l'événement
             </a>
