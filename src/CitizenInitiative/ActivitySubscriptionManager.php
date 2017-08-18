@@ -26,10 +26,8 @@ class ActivitySubscriptionManager
 
         if (!$activitySubscription) {
             $activitySubscription = new ActivitySubscription($following, $followed);
-        } elseif ($activitySubscription->isSubscribed()) {
-            $activitySubscription->setUnsubscribedAt(new \DateTime());
         } else {
-            $activitySubscription->setSubscribedAt(new \DateTime());
+            $activitySubscription->toggleSubscription();
         }
 
         if (!$activitySubscription->getId()) {

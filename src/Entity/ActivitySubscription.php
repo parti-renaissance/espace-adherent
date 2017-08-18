@@ -121,4 +121,23 @@ class ActivitySubscription
     {
         return $following->equals($this->getFollowingAdherent()) && $followed->equals($this->getFollowedAdherent());
     }
+
+    public function toggleSubscription(): void
+    {
+        if ($this->isSubscribed()) {
+            $this->unsubscribe();
+        } else {
+            $this->subscribe();
+        }
+    }
+
+    public function subscribe(): void
+    {
+        $this->setSubscribedAt(new \DateTime());
+    }
+
+    public function unsubscribe(): void
+    {
+        $this->setUnsubscribedAt(new \DateTime());
+    }
 }

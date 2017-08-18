@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
 use Ramsey\Uuid\Uuid;
 
-final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
+final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
 {
     /**
      * Creates a new message instance for a list of recipients.
@@ -16,7 +16,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
      * @param CitizenInitiative $citizenInitiative
      * @param \Closure          $recipientVarsGenerator
      *
-     * @return CitizenInitiativeActivitySubscriptionMessage
+     * @return CitizenInitiativeNearSupervisorsMessage
      */
     public static function create(
         array $recipients,
@@ -50,7 +50,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
 
         $message = new static(
             Uuid::uuid4(),
-            '196524',
+            '196517',
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             sprintf(

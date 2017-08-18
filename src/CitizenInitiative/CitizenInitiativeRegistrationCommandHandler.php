@@ -45,8 +45,8 @@ class CitizenInitiativeRegistrationCommandHandler
         $this->mailjet->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration));
 
         // Subscribe to citizen initiative organizator activity
-        if ($command->getAdherent()) {
-            $this->activitySubscriptionManager->subscribeToAdherentActivity($command->getAdherent(), $command->getEvent()->getOrganizer());
+        if ($adherent = $command->getAdherent()) {
+            $this->activitySubscriptionManager->subscribeToAdherentActivity($adherent, $command->getEvent()->getOrganizer());
         }
     }
 }

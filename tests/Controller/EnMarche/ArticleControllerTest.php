@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\EnMarche\ArticleController;
 use AppBundle\DataFixtures\ORM\LoadArticleData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,7 +88,6 @@ class ArticleControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadArticleData::class,
-            LoadHomeBlockData::class,
             LoadLiveLinkData::class,
         ]);
     }
