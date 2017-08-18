@@ -30,7 +30,7 @@ abstract class AbstractEventMessageTest extends TestCase
         return $event;
     }
 
-    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode): CitizenInitiative
+    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode, string $slug = ''): CitizenInitiative
     {
         $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
@@ -38,6 +38,7 @@ abstract class AbstractEventMessageTest extends TestCase
         $citizenInitiative->expects(static::any())->method('getName')->willReturn($name);
         $citizenInitiative->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
         $citizenInitiative->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
+        $citizenInitiative->expects(static::any())->method('getSlug')->willReturn($slug);
 
         return $citizenInitiative;
     }
