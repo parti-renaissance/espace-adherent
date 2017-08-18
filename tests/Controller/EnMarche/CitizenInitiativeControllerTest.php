@@ -132,9 +132,9 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/evenements', $this->client);
+        $this->assertClientIsRedirectedTo(sprintf('/initiative_citoyenne/%s/%s', $initiative->getUuid()->toString(), $initiative->getSlug()), $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
         $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
     }
@@ -330,7 +330,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_7_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg';
+        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_7_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-ville-kilchberg';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

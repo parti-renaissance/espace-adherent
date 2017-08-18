@@ -48,7 +48,6 @@ class CitizenInitiativeType extends AbstractType
             ])
             ->add('interests', MemberInterestsChoiceType::class)
             ->add('expert_assistance_needed', ChoiceType::class, [
-                'required' => false,
                 'expanded' => true,
                 'multiple' => false,
                 'placeholder' => false,

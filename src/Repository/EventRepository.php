@@ -308,7 +308,8 @@ WHERE (events.address_latitude IS NOT NULL
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
-    AND events.published = :published) 
+    AND events.published = :published
+    AND events.status = :scheduled) 
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
 OFFSET :first_result
@@ -333,6 +334,7 @@ SQL;
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
+        $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
 
