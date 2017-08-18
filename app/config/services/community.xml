@@ -160,9 +160,5 @@
             <argument>%kernel.secret%</argument>
         </service>
 
-        <service id="AppBundle\CitizenInitiative\CitizenInitiativeManager">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-        </service>
-
     </services>
 </container>

@@ -246,4 +246,20 @@ class CitizenInitiativeController extends Controller
 
         return new JsonResponse($skills);
     }
+
+    /**
+     * @Route("/{uuid}/{slug}/abonner", name="app_citizen_initiative_activity_subscription", condition="request.isXmlHttpRequest()")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_ADHERENT')")
+     */
+    public function activitySubscriptionAction(CitizenInitiative $initiative)
+    {
+        $this->disableInProduction();
+
+        $this->get('app.activity_subscription.manager')->subscribeToAdherentActivity($this->getUser(), $initiative->getOrganizer());
+
+        return $this->render('citizen_initiative/_activity_subscription.html.twig', [
+            'initiative' => $initiative,
+        ]);
+    }
 }

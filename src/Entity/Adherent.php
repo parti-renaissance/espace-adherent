@@ -160,11 +160,18 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $memberships;
 
     /**
-     * @var CommitteeFeedItem[]|Collection
+     * @var CommitteeFeedItem[]|Collection|iterable
      *
      * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
      */
     private $committeeFeedItems;
+
+    /**
+     * @var ActivitySubscription[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="ActivitySubscription", mappedBy="followingAdherent", cascade={"remove"})
+     */
+    private $activitiySubscriptions;
 
     public function __construct(
         UuidInterface $uuid,
@@ -683,6 +690,22 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $membership->canHostCommittee();
     }
 
+    public function isSubscribedTo(Adherent $adherent): bool
+    {
+        return $this->getActivitySubscriptionTo($adherent) === null ? false : true;
+    }
+
+    public function getActivitySubscriptionTo(Adherent $followed): ?ActivitySubscription
+    {
+        foreach ($this->activitiySubscriptions as $subscription) {
+            if ($subscription->matches($this, $followed) && $subscription->isSubscribed()) {
+                return $subscription;
+            }
+        }
+
+        return null;
+    }
+
     public function isSupervisorOf(Committee $committee): bool
     {
         if (!$membership = $this->getMembershipFor($committee)) {
@@ -720,5 +743,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setComEmail(?bool $comEmail): void
     {
         $this->comEmail = $comEmail;
+    }
+
+    public function getCommitteeFeedItems(): iterable
+    {
+        return $this->committeeFeedItems;
     }
 }

@@ -204,3 +204,4 @@ security:
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/initiative_citoyenne/*/*/abonner', roles: [ROLE_ADHERENT] }

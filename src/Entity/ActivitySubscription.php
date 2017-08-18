@@ -55,7 +55,7 @@ class ActivitySubscription
      */
     private $unsubscribedAt;
 
-    private function __construct(
+    public function __construct(
         Adherent $followingAdherent,
         Adherent $followedAdherent,
         string $subscriptionDate = 'now'
@@ -80,6 +80,25 @@ class ActivitySubscription
         return $this->followedAdherent;
     }
 
+    public function setSubscribedAt(\DateTime $subscribedAt)
+    {
+        $this->subscribedAt = $subscribedAt;
+
+        return $this;
+    }
+
+    public function setUnsubscribedAt(\DateTime $unsubscribedAt)
+    {
+        $this->unsubscribedAt = $unsubscribedAt;
+
+        return $this;
+    }
+
+    public function isSubscribed(): bool
+    {
+        return $this->subscribedAt && (!$this->unsubscribedAt || $this->subscribedAt > $this->unsubscribedAt);
+    }
+
     public function getSubscriptionDate(): \DateTimeImmutable
     {
         if ($this->subscribedAt instanceof \DateTime) {
@@ -96,5 +115,10 @@ class ActivitySubscription
         }
 
         return $this->unsubscribedAt;
+    }
+
+    public function matches(Adherent $following, Adherent $followed): bool
+    {
+        return $following->equals($this->getFollowingAdherent()) && $followed->equals($this->getFollowedAdherent());
     }
 }

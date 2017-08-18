@@ -363,6 +363,41 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         return 1 === count($flash);
     }
 
+    public function testNotConnectedUserCannotSubscribeToAdherentActivity()
+    {
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+
+        $this->assertSame(0, $crawler->filter('#activity_subscription')->count());
+
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+    }
+
+    public function testSubscribeToAdherentActivity()
+    {
+        $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch', 'newpassword');
+
+        $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+
+        $this->assertSame(' (Suivre)', $crawler->filter('#activity_subscription a')->text());
+
+        $crawler = $this->client->click($crawler->selectLink(' (Suivre)')->link());
+
+        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
+        $this->assertSame(' (Ne plus suivre)', $crawler->filter('#activity_subscription a')->text());
+
+        $crawler = $this->client->click($crawler->selectLink(' (Ne plus suivre)')->link());
+
+        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
+        $this->assertSame(' (Suivre)', $crawler->filter('#activity_subscription a:contains(" (Suivre)")')->text());
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -370,8 +405,8 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
-            LoadEventData::class,
             LoadCitizenInitiativeCategoryData::class,
+            LoadEventData::class,
             LoadCitizenInitiativeData::class,
         ]);
 
