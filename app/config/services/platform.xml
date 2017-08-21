@@ -128,6 +128,7 @@
 
         <service id="AppBundle\Membership\MemberActivityTracker">
             <argument type="service" id="app.repository.event_registration" />
+            <argument type="service" id="app.repository.event" />
         </service>
 
         <service id="app.membership_voter" class="AppBundle\Membership\Voter\MembershipVoter" public="false">
