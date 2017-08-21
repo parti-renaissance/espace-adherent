@@ -7,6 +7,7 @@ use AppBundle\Events;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CitizenInitiativeActivitySubscriptionMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeNearSupervisorsMessage;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeAdherentsNearMessage;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
@@ -67,6 +68,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
     public function onCitizenInitiativeValidated(CitizenInitiativeValidatedEvent $event): void
     {
         $this->sendMessageToNearByAdherentsWithSameInterests($event);
+        $this->sendMessageToSupervisorsNearCitizenInitiative($event);
         $this->sendMessageToAdherentActivitySubscribers($event);
     }
 
@@ -82,6 +84,18 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
         }
     }
 
+    private function sendMessageToSupervisorsNearCitizenInitiative(CitizenInitiativeValidatedEvent $event): void
+    {
+        $chunks = array_chunk(
+            $this->adherentManager->findSupervisorsNearCitizenInitiative($event->getCitizenInitiative())->toArray(),
+            MailjetService::PAYLOAD_MAXSIZE
+        );
+
+        foreach ($chunks as $chunk) {
+            $this->mailjet->sendMessage($this->createMessageToSupervisorsNearCitizenInitiative($chunk, $event->getCitizenInitiative(), $event->getAuthor()));
+        }
+    }
+
     private function createMessageToNearByAdherentsWithSameInterests(array $adherents, CitizenInitiative $citizenInitiative, Adherent $organizer): CitizenInitiativeAdherentsNearMessage
     {
         return CitizenInitiativeAdherentsNearMessage::create(
@@ -92,6 +106,18 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
                 'uuid' => (string) $citizenInitiative->getUuid(),
                 'slug' => $citizenInitiative->getSlug(),
             ]),
+            function (Adherent $adherent) {
+                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+            }
+        );
+    }
+
+    private function createMessageToSupervisorsNearCitizenInitiative(array $adherents, CitizenInitiative $citizenInitiative, Adherent $organizer): CitizenInitiativeNearSupervisorsMessage
+    {
+        return CitizenInitiativeNearSupervisorsMessage::create(
+            $adherents,
+            $organizer,
+            $citizenInitiative,
             function (Adherent $adherent) {
                 return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
@@ -116,10 +142,6 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $adherents,
             $organizer,
             $citizenInitiative,
-            $this->generateUrl('app_citizen_initiative_show', [
-                'uuid' => (string) $citizenInitiative->getUuid(),
-                'slug' => $citizenInitiative->getSlug(),
-            ]),
             function (Adherent $adherent) {
                 return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }

@@ -3,40 +3,40 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailjet\Message\CitizenInitiativeActivitySubscriptionMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeNearSupervisorsMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
-class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMessageTest
+class CitizenInitiativeNearSupervisorsMessageTest extends AbstractEventMessageTest
 {
-    const CITIZEN_INITIATIVE_SLUG = '2017-11-15-initiative-citoyenne-a-lyon';
+    const CITIZEN_INITIATIVE_SLUG = '2017-12-27-initiative-citoyenne-a-lyon';
 
-    public function testCreateCitizenInitiativeActivitySubscriptionMessage()
+    public function testCreateCitizenInitiativeNearSupervisorsMessage()
     {
         $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
         $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');
         $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
         $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
 
-        $message = CitizenInitiativeActivitySubscriptionMessage::create(
+        $message = CitizenInitiativeNearSupervisorsMessage::create(
             $recipients,
             $recipients[0],
-            $this->createCitizenInitiativeMock('Initiative citoyenne à Lyon', '2017-11-15 10:30:00', '15 allées Paul Bocuse', '69006-69386', self::CITIZEN_INITIATIVE_SLUG),
+            $this->createCitizenInitiativeMock('Initiative citoyenne à Lyon', '2017-12-27 10:30:00', '15 allées Paul Bocuse', '69006-69386', self::CITIZEN_INITIATIVE_SLUG),
             function (Adherent $adherent) {
-                return CitizenInitiativeActivitySubscriptionMessage::getRecipientVars($adherent->getFirstName());
+                return CitizenInitiativeNearSupervisorsMessage::getRecipientVars($adherent->getFirstName());
             }
         );
 
-        $this->assertInstanceOf(CitizenInitiativeActivitySubscriptionMessage::class, $message);
-        $this->assertSame('196524', $message->getTemplate());
+        $this->assertInstanceOf(CitizenInitiativeNearSupervisorsMessage::class, $message);
+        $this->assertSame('196517', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('15 novembre - 10h30 : Nouvelle initiative citoyenne : Initiative citoyenne à Lyon', $message->getSubject());
+        $this->assertSame('27 décembre - 10h30 : Nouvelle initiative citoyenne : Initiative citoyenne à Lyon', $message->getSubject());
         $this->assertCount(8, $message->getVars());
         $this->assertSame(
             [
                 'IC_organizer_firstname' => 'Émmanuel',
                 'IC_organizer_lastname' => 'Macron',
                 'IC_name' => 'Initiative citoyenne à Lyon',
-                'IC_date' => 'mercredi 15 novembre 2017',
+                'IC_date' => 'mercredi 27 décembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::CITIZEN_INITIATIVE_SLUG,
@@ -54,7 +54,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_organizer_firstname' => 'Émmanuel',
                 'IC_organizer_lastname' => 'Macron',
                 'IC_name' => 'Initiative citoyenne à Lyon',
-                'IC_date' => 'mercredi 15 novembre 2017',
+                'IC_date' => 'mercredi 27 décembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::CITIZEN_INITIATIVE_SLUG,
@@ -72,7 +72,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_organizer_firstname' => 'Émmanuel',
                 'IC_organizer_lastname' => 'Macron',
                 'IC_name' => 'Initiative citoyenne à Lyon',
-                'IC_date' => 'mercredi 15 novembre 2017',
+                'IC_date' => 'mercredi 27 décembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::CITIZEN_INITIATIVE_SLUG,

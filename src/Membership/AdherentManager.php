@@ -47,6 +47,11 @@ class AdherentManager
         return $this->repository->findNearByCitizenInitiativeInterests($citizenInitiative);
     }
 
+    public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
+    {
+        return $this->repository->findSupervisorsNearCitizenInitiative($citizenInitiative);
+    }
+
     public function findSubscribersToAdherentActivity(Adherent $followedAdherent): AdherentCollection
     {
         return $this->repository->findSubscribersToAdherentActivity($followedAdherent);

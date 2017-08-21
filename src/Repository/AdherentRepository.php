@@ -6,6 +6,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\EntityRepository;
@@ -22,6 +23,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     use NearbyTrait;
 
     const CITIZEN_INITIATIVE_RADIUS = 2;
+    const CITIZEN_INITIATIVE_SUPERVISOR_RADIUS = 5;
 
     public function count(): int
     {
@@ -262,6 +264,19 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             $orX->addMultiple($conditions ?? []);
             $qb->andWhere($orX);
         }
+
+        return new AdherentCollection($qb->getQuery()->getResult());
+    }
+
+    public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
+    {
+        $qb = $this
+            ->createNearbyQueryBuilder(new Coordinates($citizenInitiative->getLatitude(), $citizenInitiative->getLongitude()))
+            ->leftJoin('n.memberships', 'cm')
+            ->andWhere($this->getNearbyExpression().' <= :distance_max')
+            ->andWhere('cm.privilege = :supervisor')
+            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
+            ->setParameter('distance_max', self::CITIZEN_INITIATIVE_SUPERVISOR_RADIUS);
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }
