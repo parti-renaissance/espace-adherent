@@ -372,5 +372,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.citizen_initiative_asking_help" class="AppBundle\Admin\CitizenInitiativeAskingHelpAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Demandes d'aide" group="Initiatives citoyennes" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenInitiative</argument>
+            <argument />
+            <argument type="service" id="app.repository.skill" />
+        </service>
+
     </services>
 </container>

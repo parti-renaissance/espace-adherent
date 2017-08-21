@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\MissionTypeEntityType;
 use AppBundle\Entity\Skill;
 use AppBundle\Entity\Summary;
+use AppBundle\Form\EventListener\SkillListener;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
@@ -96,6 +97,7 @@ class SummaryType extends AbstractType
                             $summary->setPictureUploaded(true);
                         }
                     }, -10);
+
                 break;
 
             case self::STEP_SYNTHESIS:
@@ -111,18 +113,21 @@ class SummaryType extends AbstractType
                     ->add('job_locations', JobLocationChoiceType::class)
                     ->add('professional_synopsis', TextareaType::class, ['filter_emojis' => true])
                 ;
+
                 break;
 
             case self::STEP_MISSION_WISHES:
                 $builder
                     ->add('mission_type_wishes', MissionTypeEntityType::class)
                 ;
+
                 break;
 
             case self::STEP_MOTIVATION:
                 $builder
                     ->add('motivation', TextareaType::class, ['filter_emojis' => true])
                 ;
+
                 break;
 
             case self::STEP_SKILLS:
@@ -144,27 +149,15 @@ class SummaryType extends AbstractType
                     ])
                 ;
 
-                $builder
-                    ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-                        $summary = $event->getForm()->getData();
-                        $skills = $event->getData()->getSkills();
+                $builder->addEventSubscriber(new SkillListener($this->entityManager->getRepository(Skill::class)));
 
-                        foreach ($skills as $skill) {
-                            if ($skill->getId()) {
-                                continue;
-                            }
-
-                            if ($existingSkill = $this->entityManager->getRepository(Skill::class)->findOneBy(['name' => $skill->getName()])) {
-                                $summary->replaceSkill($skill, $existingSkill);
-                            }
-                        }
-                    });
                 break;
 
             case self::STEP_INTERESTS:
                 $builder
                     ->add('member_interests', MemberInterestsChoiceType::class)
                 ;
+
                 break;
 
             case self::STEP_CONTACT:
@@ -186,6 +179,7 @@ class SummaryType extends AbstractType
                         'required' => false,
                     ])
                 ;
+
                 break;
         }
     }

@@ -1,0 +1,17 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.expertAssistanceNeeded %}
+        {% if object.isExpertFound %}
+            <div style="margin-bottom: 10px;">
+                <a href="{{ path("app_admin_citizen_initiative_change_expert_assistance", {'uuid': object.uuid, 'slug': object.slug}) }}" class="label label-success">
+                    Trouvé
+                </a>
+            </div>
+        {% else %}
+            <a href="{{ path("app_admin_citizen_initiative_change_expert_assistance", {'uuid': object.uuid, 'slug': object.slug}) }}" class="label label-default">
+                A chercher
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

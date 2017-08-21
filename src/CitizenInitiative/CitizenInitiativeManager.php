@@ -22,4 +22,11 @@ class CitizenInitiativeManager
 
         $this->manager->flush();
     }
+
+    public function changeExpertStatusCitizenInitiative(CitizenInitiative $initiative): void
+    {
+        $initiative->setExpertFound(!$initiative->isExpertFound());
+
+        $this->manager->flush();
+    }
 }
