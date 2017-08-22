@@ -58,6 +58,8 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'coaching_requested' => false,
             'capacity' => 20,
         ]);
+        $initiative1->setPublished(true);
+        $initiative1->setWasPublished(true);
         $initiative1->setInterests(['sante']);
         $initiative1->incrementParticipantsCount();
 
@@ -76,6 +78,8 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'coaching_requested' => false,
             'capacity' => 30,
         ]);
+        $initiative2->setPublished(true);
+        $initiative2->setWasPublished(true);
         $initiative2->incrementParticipantsCount();
         $initiative2->setInterests(['sante']);
 
@@ -94,6 +98,8 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => true,
             'capacity' => 20,
         ]);
+        $initiative3->setPublished(true);
+        $initiative3->setWasPublished(true);
         $initiative3->incrementParticipantsCount();
         $initiative3->setInterests(['sante', 'securite']);
         $initiative3->setCoachingRequest(new CoachingRequest('Description du besoin', 'Ma solution proposée', 'Les moyens nécessaires'));
@@ -112,6 +118,8 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => false,
             'capacity' => 20,
         ]);
+        $initiative4->setPublished(true);
+        $initiative4->setWasPublished(true);
         $initiative4->incrementParticipantsCount();
         $initiative4->setInterests(['environement', 'territoire']);
 
@@ -129,6 +137,8 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
+        $initiative5->setPublished(true);
+        $initiative5->setWasPublished(true);
         $initiative5->incrementParticipantsCount();
         $initiative5->setInterests(['environement']);
 
@@ -146,6 +156,8 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => false,
             'capacity' => 5,
         ]);
+        $initiative6->setPublished(true);
+        $initiative6->setWasPublished(true);
         $initiative6->cancel();
         $initiative6->incrementParticipantsCount();
 
@@ -163,6 +175,8 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
+        $initiative7->setPublished(true);
+        $initiative7->setWasPublished(true);
         $initiative7->incrementParticipantsCount(10);
         $initiative7->setInterests(['environement']);
 
@@ -180,7 +194,6 @@ transporter tous les déchets lourds trouvés.',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
-        $initiative8->setPublished(false);
         $initiative8->setInterests(['environement']);
 
         foreach ($manager->getRepository(Skill::class)->findBy(['name' => LoadSkillData::SKILLS['S009']]) as $skill) {

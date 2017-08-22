@@ -77,6 +77,13 @@ class CitizenInitiative extends BaseEvent
      */
     private $coachingRequest;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $wasPublished = false;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
@@ -114,6 +121,7 @@ class CitizenInitiative extends BaseEvent
         $this->status = self::STATUS_SCHEDULED;
         $this->skills = new ArrayCollection();
         $this->capacity = $capacity;
+        $this->setPublished(false);
     }
 
     public function __toString(): string
@@ -249,5 +257,17 @@ class CitizenInitiative extends BaseEvent
     public function getType(): string
     {
         return self::CITIZEN_INITIATIVE_TYPE;
+    }
+
+    public function wasPublished(): bool
+    {
+        return true === $this->wasPublished;
+    }
+
+    public function setWasPublished(bool $wasPublished): CitizenInitiative
+    {
+        $this->wasPublished = $wasPublished;
+
+        return $this;
     }
 }

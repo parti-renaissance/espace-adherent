@@ -8,6 +8,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CitizenInitiativeActivitySubscriptionMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeNearSupervisorsMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeOrganizerValidationMessage;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeAdherentsNearMessage;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
@@ -67,32 +68,64 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 
     public function onCitizenInitiativeValidated(CitizenInitiativeValidatedEvent $event): void
     {
+        if (!$event->getCitizenInitiative()->isPublished()) {
+            return;
+        }
+
+        $this->sendMessageToOrganizer($event);
         $this->sendMessageToNearByAdherentsWithSameInterests($event);
         $this->sendMessageToSupervisorsNearCitizenInitiative($event);
         $this->sendMessageToAdherentActivitySubscribers($event);
     }
 
+    private function sendMessageToOrganizer(CitizenInitiativeValidatedEvent $event): void
+    {
+        $initiative = $event->getCitizenInitiative();
+
+        $this->mailjet->sendMessage($this->createMessageToOrganizer(
+            $initiative->getOrganizer(),
+            $initiative,
+            $this->generateUrl('app_citizen_initiative_show', [
+                'uuid' => (string) $initiative->getUuid(),
+                'slug' => $initiative->getSlug(),
+            ])
+        ));
+    }
+
+    private function createMessageToOrganizer(Adherent $organizer, CitizenInitiative $initiative, string $link)
+    {
+        return CitizenInitiativeOrganizerValidationMessage::create(
+            $organizer,
+            $initiative,
+            $link
+        );
+    }
+
     private function sendMessageToNearByAdherentsWithSameInterests(CitizenInitiativeValidatedEvent $event): void
     {
+        $initiative = $event->getCitizenInitiative();
+
         $chunks = array_chunk(
-            $this->adherentManager->findNearByCitizenInitiativeInterests($event->getCitizenInitiative())->toArray(),
+            $this->adherentManager->findNearByCitizenInitiativeInterests($initiative)->toArray(),
             MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailjet->sendMessage($this->createMessageToNearByAdherentsWithSameInterests($chunk, $event->getCitizenInitiative(), $event->getAuthor()));
+            $this->mailjet->sendMessage($this->createMessageToNearByAdherentsWithSameInterests($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 
     private function sendMessageToSupervisorsNearCitizenInitiative(CitizenInitiativeValidatedEvent $event): void
     {
+        $initiative = $event->getCitizenInitiative();
+
         $chunks = array_chunk(
-            $this->adherentManager->findSupervisorsNearCitizenInitiative($event->getCitizenInitiative())->toArray(),
+            $this->adherentManager->findSupervisorsNearCitizenInitiative($initiative)->toArray(),
             MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailjet->sendMessage($this->createMessageToSupervisorsNearCitizenInitiative($chunk, $event->getCitizenInitiative(), $event->getAuthor()));
+            $this->mailjet->sendMessage($this->createMessageToSupervisorsNearCitizenInitiative($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 
@@ -126,13 +159,15 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 
     private function sendMessageToAdherentActivitySubscribers(CitizenInitiativeValidatedEvent $event): void
     {
+        $initiative = $event->getCitizenInitiative();
+
         $chunks = array_chunk(
-            $this->adherentManager->findSubscribersToAdherentActivity($event->getCitizenInitiative()->getOrganizer())->toArray(),
+            $this->adherentManager->findSubscribersToAdherentActivity($initiative->getOrganizer())->toArray(),
             MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailjet->sendMessage($this->createMessageToAdherentActivitySubscribers($chunk, $event->getCitizenInitiative(), $event->getAuthor()));
+            $this->mailjet->sendMessage($this->createMessageToAdherentActivitySubscribers($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 

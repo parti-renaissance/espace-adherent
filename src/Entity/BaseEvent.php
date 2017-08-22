@@ -242,6 +242,11 @@ abstract class BaseEvent implements GeoPointInterface
         $this->status = $status;
     }
 
+    public function publish(): void
+    {
+        $this->published = true;
+    }
+
     public function cancel(): void
     {
         $this->status = self::STATUS_CANCELLED;

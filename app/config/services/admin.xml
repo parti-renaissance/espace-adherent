@@ -362,6 +362,10 @@
             <argument />
             <argument>AppBundle\Entity\CitizenInitiative</argument>
             <argument />
+
+            <call method="setCitizenInitiativeManager">
+                <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager" />
+            </call>
         </service>
 
         <service id="app.admin.citizen_initiative_category" class="AppBundle\Admin\CitizenInitiativeCategoryAdmin">

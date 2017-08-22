@@ -2,7 +2,7 @@
 
 {% block field %}
     {% if not object.isPublished %}
-        <span class="label label-warning">Dépubliée</span>
+        <a class="label label-warning" href="{{ path('app_admin_citizen_initiative_publish', {uuid: object.uuid.toString}) }}">Dépubliée</a>
     {% elseif object.isCancelled %}
         <span class="label label-danger">Annulée</span>
     {% else %}

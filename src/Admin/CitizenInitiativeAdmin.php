@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\CitizenInitiative\CitizenInitiativeManager;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Form\CitizenInitiativeCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
@@ -14,12 +15,24 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CitizenInitiativeAdmin extends AbstractAdmin
 {
+    /**
+     * @var CitizenInitiativeManager
+     */
+    private $manager;
+
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
+
+    public function setCitizenInitiativeManager(CitizenInitiativeManager $manager): CitizenInitiativeAdmin
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
 
     public function getTemplate($name)
     {
@@ -32,6 +45,11 @@ class CitizenInitiativeAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    public function postUpdate($object)
+    {
+        $this->manager->checkPublicationCitizenInitiative($object);
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
@@ -136,6 +154,9 @@ class CitizenInitiativeAdmin extends AbstractAdmin
                 'label' => 'Statut',
                 'choices' => array_combine(CitizenInitiative::STATUSES, CitizenInitiative::STATUSES),
                 'choice_translation_domain' => 'forms',
+            ])
+            ->add('published', null, [
+                'label' => 'Publié',
             ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
