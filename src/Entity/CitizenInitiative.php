@@ -152,6 +152,13 @@ class CitizenInitiative extends BaseEvent
         return $this->citizenInitiativeCategory;
     }
 
+    public function setCategory(CitizenInitiativeCategory $category): CitizenInitiative
+    {
+        $this->citizenInitiativeCategory = $category;
+
+        return $this;
+    }
+
     public function getInterests(): array
     {
         return $this->interests;
