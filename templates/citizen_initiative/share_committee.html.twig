@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form.published 'committee/_form_theme.html.twig' %}
+
+{% block page_title 'Partage de l\'initiative citoyenne' %}
+
+{% block content %}
+    <section class="l__wrapper">
+        <a href="{{ path("app_#{initiative.type}_show", {'uuid': initiative.uuid.toString, 'slug': initiative.slug}) }}"
+           class="previous-link icon--with-text text--summary">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la page de l'événement
+        </a>
+    </section>
+    <section class="space--30-0 b__nudge--bottom-huge">
+        <div class="text--body l__wrapper-500 space--30-0 ">
+            Je partage cette initiative auprès des membres de mon comité :
+            <div class="text--bold">{{ initiative.name }} - organisée par {{ initiative.organizer }}</div>
+        </div>
+
+
+        <div id="committee-message-form" class="committee__message l__wrapper">
+            <div class="text--body b__nudge--bottom-small">
+                Vous serez systématiquement mis en copie des messages que vous envoyez.
+            </div>
+            {{ form(form) }}
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            {{ js.ckeditor('committee_feed_citizen_initiative_message_content') }}
+        });
+    </script>
+{% endblock %}

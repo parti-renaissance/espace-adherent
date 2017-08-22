@@ -21,7 +21,7 @@ class MailjetEmail
     /**
      * The Mailjet message class namespace.
      *
-     * @ORM\Column(length=50, nullable=true)
+     * @ORM\Column(length=55, nullable=true)
      */
     private $messageClass;
 

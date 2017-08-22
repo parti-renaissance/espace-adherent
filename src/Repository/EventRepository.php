@@ -75,7 +75,7 @@ class EventRepository extends EntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    public function findOnePublishedByUuid(string $uuid): ?Event
+    public function findOnePublishedByUuid(string $uuid): ?BaseEvent
     {
         return $this
             ->createUuidQueryBuilder($uuid)
@@ -84,7 +84,7 @@ class EventRepository extends EntityRepository
         ;
     }
 
-    public function findOneActiveByUuid(string $uuid): ?Event
+    public function findOneActiveByUuid(string $uuid): ?BaseEvent
     {
         return $this
             ->createUuidQueryBuilder($uuid)
@@ -95,7 +95,7 @@ class EventRepository extends EntityRepository
         ;
     }
 
-    private function createUuidQueryBuilder(string $uuid): QueryBuilder
+    protected function createUuidQueryBuilder(string $uuid): QueryBuilder
     {
         self::validUuid($uuid);
 

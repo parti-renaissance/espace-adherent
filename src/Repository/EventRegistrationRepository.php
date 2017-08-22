@@ -77,6 +77,7 @@ class EventRegistrationRepository extends EntityRepository
     {
         $registrations = $this
             ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
+            ->andWhere('e.published = true')
             ->andWhere('e.beginAt >= :begin')
             // The extra 24 hours enable to include events in foreign
             // countries that are on different timezones.
@@ -102,6 +103,7 @@ class EventRegistrationRepository extends EntityRepository
     {
         $registrations = $this
             ->createAdherentEventRegistrationQueryBuilder($adherentUuid)
+            ->andWhere('e.published = true')
             ->andWhere('e.finishAt < :finish')
             // The extra 24 hours enable to include events in foreign
             // countries that are on different timezones.

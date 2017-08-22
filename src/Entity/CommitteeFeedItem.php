@@ -21,7 +21,7 @@ class CommitteeFeedItem
     use EntityIdentityTrait;
 
     /**
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=18)
      */
     private $itemType;
 
@@ -40,7 +40,7 @@ class CommitteeFeedItem
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
     private $event;
@@ -110,6 +110,21 @@ class CommitteeFeedItem
         return $item;
     }
 
+    public static function createCitizenInitiative(
+        Committee $committee,
+        Adherent $author,
+        string $content,
+        CitizenInitiative $initiative,
+        bool $published = true,
+        string $createdAt = 'now'
+    ): self {
+        $item = new static(Uuid::uuid4(), self::CITIZEN_INITIATIVE, $committee, $author, $published, $createdAt);
+        $item->content = $content;
+        $item->event = $initiative;
+
+        return $item;
+    }
+
     public function getContent(): ?string
     {
         if ($this->event instanceof Event) {
@@ -119,7 +134,12 @@ class CommitteeFeedItem
         return $this->content;
     }
 
-    public function getEvent(): ?Event
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function getEvent(): ?BaseEvent
     {
         return $this->event;
     }

@@ -220,6 +220,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_REFERENT';
         }
 
+        if ($this->isSupervisor()) {
+            $roles[] = 'ROLE_SUPERVISOR';
+        }
+
         if ($this->isProcurationManager()) {
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
@@ -704,6 +708,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         return null;
+    }
+
+    public function isSupervisor(): bool
+    {
+        return $this->getMemberships()->countCommitteeSupervisorMemberships() >= 1;
     }
 
     public function isSupervisorOf(Committee $committee): bool
