@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/initiative_citoyenne")
@@ -42,5 +43,17 @@ class AdminCitizenInitiativeController extends Controller
             $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')));
 
         return new JsonResponse($skills);
+    }
+
+    /**
+     * @Route("/{uuid}/publish", name="app_admin_citizen_initiative_publish")
+     * @Method("GET")
+     */
+    public function publishAction(Request $request, CitizenInitiative $initiative): Response
+    {
+        $this->get(CitizenInitiativeManager::class)->publishCitizenInitiative($initiative);
+        $this->get('sonata.core.flashmessage.manager')->getSession()->getFlashBag()->set('success', sprintf('L\'élément "%s" a été mis à jour avec succès.', $initiative->getName()));
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

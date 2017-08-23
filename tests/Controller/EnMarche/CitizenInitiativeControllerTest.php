@@ -134,11 +134,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(sprintf('/initiative_citoyenne/%s/%s', $initiative->getUuid()->toString(), $initiative->getSlug()), $this->client);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-
-        $this->assertSame(1, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+        $this->assertClientIsRedirectedTo('/initiative_citoyenne/creer', $this->client);
     }
 
     public function testShowUnpublishedInitiative()

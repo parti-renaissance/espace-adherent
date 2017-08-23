@@ -56,10 +56,7 @@ class CitizenInitiativeController extends Controller
 
             $this->addFlash('info', 'citizen_initiative.creation.success');
 
-            return $this->redirectToRoute('app_citizen_initiative_show', [
-                'uuid' => (string) $command->getCitizenInitiative()->getUuid(),
-                'slug' => (string) $command->getCitizenInitiative()->getSlug(),
-            ]);
+            return $this->redirectToRoute('app_create_citizen_initiative');
         }
 
         return $this->render('citizen_initiative/add.html.twig', [
