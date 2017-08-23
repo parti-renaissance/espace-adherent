@@ -58,7 +58,6 @@ class CitizenInitiativeType extends AbstractType
             ->add('expert_assistance_description', TextareaType::class, [
                 'required' => false,
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('skill_search', TextType::class, [
                 'mapped' => false,
