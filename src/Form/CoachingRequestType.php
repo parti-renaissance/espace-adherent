@@ -15,15 +15,12 @@ class CoachingRequestType extends AbstractType
         $builder
             ->add('problem_description', TextareaType::class, [
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('proposed_solution', TextareaType::class, [
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('required_means', TextareaType::class, [
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
         ;
     }

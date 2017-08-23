@@ -17,10 +17,13 @@
         });
 
         $(document).ready(function() {
-            var idCoachingRequested = '#citizen-initiative-coaching_requested-field';
+            var idCoachingRequested = '#citizen_initiative_coaching_requested';
             var toggleCoachingRequest = function() {
-                isCoachingRequested = $(idCoachingRequested).is(':checked');
-                $('#citizen-initiative-problem_description-field, #citizen-initiative-proposed_solution-field, #citizen-initiative-required_means-field').toggle('hidden', isCoachingRequested);
+                if ($(idCoachingRequested).is(':checked')) {
+                    $('#citizen-initiative-problem_description-field, #citizen-initiative-proposed_solution-field, #citizen-initiative-required_means-field').show();
+                } else {
+                    $('#citizen-initiative-problem_description-field, #citizen-initiative-proposed_solution-field, #citizen-initiative-required_means-field').hide();
+                }
             };
 
             // Show/hide coaching request fields
@@ -154,13 +157,13 @@
 
             <div class="form__row" id="citizen-initiative-proposed_solution-field">
                 {{ form_errors(form.coaching_request.proposed_solution) }}
-                {{ form_label(form.coaching_request.proposed_solution, 'Je décris comment je compte l\'adresser (pb rencontré)') }}
+                {{ form_label(form.coaching_request.proposed_solution, 'Je décris comment je compte l\'adresser (problème rencontré)') }}
                 {{ form_widget(form.coaching_request.proposed_solution, { attr: { class: 'citizen_initiative__proposed_solution' } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-required_means-field">
                 {{ form_errors(form.coaching_request.required_means) }}
-                {{ form_label(form.coaching_request.required_means, 'Je décris ce dont j\'ai besoin (pb rencontré)') }}
+                {{ form_label(form.coaching_request.required_means, 'Je décris ce dont j\'ai besoin (problème rencontré)') }}
                 {{ form_widget(form.coaching_request.required_means, { attr: { class: 'citizen_initiative__required_means' } }) }}
             </div>
 
