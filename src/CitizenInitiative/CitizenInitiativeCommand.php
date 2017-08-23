@@ -73,6 +73,9 @@ class CitizenInitiativeCommand
 
     private $coachingRequested;
 
+    /**
+     * @Assert\Regex("/^\d+$/", message="citizen_initiative.invalid_capacity")
+     */
     private $capacity;
 
     /**
