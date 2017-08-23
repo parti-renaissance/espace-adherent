@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
+use AppBundle\Form\EventListener\SkillListener;
 use AppBundle\Repository\SkillRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -13,8 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenInitiativeType extends AbstractType
@@ -88,21 +87,7 @@ class CitizenInitiativeType extends AbstractType
             ])
         ;
 
-        $builder
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-                $initiative = $event->getForm()->getData();
-                $skills = $event->getData()->getSkills();
-
-                foreach ($skills as $skill) {
-                    if ($skill->getId()) {
-                        continue;
-                    }
-
-                    if ($existingSkill = $this->skillRepository->findOneBy(['name' => $skill->getName()])) {
-                        $initiative->replaceSkill($skill, $existingSkill);
-                    }
-                }
-            });
+        $builder->addEventSubscriber(new SkillListener($this->skillRepository));
     }
 
     public function configureOptions(OptionsResolver $resolver)

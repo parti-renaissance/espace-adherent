@@ -19,10 +19,12 @@ class SkillRepository extends EntityRepository
             case self::FIND_FOR_SUMMARY:
                 $joinedTable = 'summaries';
                 $fieldUser = 'member';
+
                 break;
             case self::FIND_FOR_CITIZEN_INITIATIVE:
                 $joinedTable = 'citizenInitiatives';
                 $fieldUser = 'organizer';
+
                 break;
         }
 
@@ -40,6 +42,28 @@ class SkillRepository extends EntityRepository
             ->setParameters([
                 'slug' => $term.'%',
                 'user' => $user,
+            ])
+        ;
+
+        $skills = $qb->getQuery()->getArrayResult();
+
+        foreach ($skills as $skill) {
+            $names[] = $skill['name'];
+        }
+
+        return $names ?? [];
+    }
+
+    /**
+     * Finds all skills for autocomplete.
+     */
+    public function findAvailableSkillsForAdmin(string $term): array
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb
+            ->where('s.slug LIKE :slug')
+            ->setParameters([
+                'slug' => $term.'%',
             ])
         ;
 

@@ -43,6 +43,13 @@ class CitizenInitiative extends BaseEvent
     private $expertAssistanceDescription;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $expertFound = false;
+
+    /**
      * @var Skill[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Skill", inversedBy="citizenInitiatives", cascade={"persist"})
@@ -182,6 +189,16 @@ class CitizenInitiative extends BaseEvent
     public function setExpertAssistanceNeeded(bool $expertAssistanceNeeded): void
     {
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
+    }
+
+    public function isExpertFound(): bool
+    {
+        return $this->expertFound;
+    }
+
+    public function setExpertFound(bool $expertFound): void
+    {
+        $this->expertFound = $expertFound;
     }
 
     public function isCoachingRequested(): bool

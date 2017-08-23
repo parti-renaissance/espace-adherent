@@ -1,0 +1,20 @@
+{% extends 'SonataAdminBundle:Form:form_admin_fields.html.twig' %}
+
+{% block sonata_type_native_collection_widget_row %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Add skill autocomplete
+            $("#{{ child.name.vars.id }}").autocomplete({
+                source: "{{ path('app_admin_citizen_initiative_skills_autocomplete') }}",
+                minLength: 1,
+                messages: {
+                    noResults: '',
+                    results: function () {
+                    },
+                }
+            });
+        });
+    </script>
+{% endblock %}
