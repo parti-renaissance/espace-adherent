@@ -2,11 +2,13 @@
 
 {% block main_section %}
     {% set event = initiative %}
-    <p>Description des besoins</p>
+    {% if event.expertAssistanceDescription %}
+    <div class="text--bold">Description des besoins</div>
     <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
         {{- event.expertAssistanceDescription|raw -}}
     </div>
-    <p>Type de mission</p>
+    {% endif %}
+    <div class="text--bold">Type de mission</div>
     <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
         La mission est bénévole
     </div>
