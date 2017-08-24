@@ -52,7 +52,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
+            '196519',
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             'Des nouvelles de votre comité',

@@ -12,7 +12,7 @@ final class CitizenInitiativeOrganizerValidationMessage extends MailjetMessage
     {
         return new self(
             Uuid::uuid4(),
-            '196483',
+            '196469',
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             'Validation de votre initiative citoyenne',

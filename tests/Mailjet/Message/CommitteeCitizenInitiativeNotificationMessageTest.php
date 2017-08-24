@@ -36,7 +36,7 @@ class CommitteeCitizenInitiativeNotificationMessageTest extends AbstractEventMes
         );
 
         $this->assertInstanceOf(CommitteeCitizenInitiativeNotificationMessage::class, $message);
-        $this->assertSame('63337', $message->getTemplate());
+        $this->assertSame('196519', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('Des nouvelles de votre comité', $message->getSubject());
         $this->assertCount(12, $message->getVars());
