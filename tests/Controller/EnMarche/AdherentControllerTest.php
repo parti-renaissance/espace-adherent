@@ -9,6 +9,7 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\Unregistration;
 use AppBundle\Form\UnregisterType;
 use AppBundle\Mailjet\Message\AdherentContactMessage;
 use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
@@ -618,6 +619,9 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentTerminatesMembership()
     {
+        /** @var Adherent $adherent */
+        $adherentBeforeUnregistration = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
@@ -630,8 +634,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertEquals('http://localhost/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $crawler = $this->client->submit($crawler->selectButton('Terminer')->form([
-            'form' => [
+        $crawler = $this->client->submit($crawler->selectButton('Je supprime définitivement mon compte En Marche')->form([
+            'unregistration' => [
                 'word' => 'invalid word',
             ],
         ]));
@@ -639,16 +643,25 @@ class AdherentControllerTest extends MysqlWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Cette valeur doit être égale à "DESADHESION".', $errors->eq(0)->text());
+        $this->assertSame(2, $errors->count());
+        $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
+        $this->assertSame('Cette valeur doit être égale à "SUPPRESSION".', $errors->eq(1)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
 
         $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
-        $crawler = $this->client->submit($crawler->selectButton('Terminer')->form([
-            'form' => [
+        $reasons = $this->client->getContainer()->getParameter('adherent_unregistration_reasons');
+        $reasonsValues = array_keys($reasons);
+        $chosenReasons = [
+            1 => $reasonsValues[1],
+            3 => $reasonsValues[3],
+        ];
+        $crawler = $this->client->submit($crawler->selectButton('Je supprime définitivement mon compte En Marche')->form([
+            'unregistration' => [
+                'reasons' => $chosenReasons,
+                'comment' => 'Je me désinscris',
                 'word' => UnregisterType::UNREGISTER_WORD,
             ],
         ]));
@@ -666,6 +679,22 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
 
         $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+
+        $this->assertNull($adherent);
+
+        /** @var Unregistration $unregistration */
+        $unregistration = $this->getRepository(Unregistration::class)->findOneByEmailAddress('michel.vasseur@example.ch');
+
+        $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
+        $this->assertSame('Je me désinscris', $unregistration->getComment());
+        $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));
+        $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
+        $this->assertSame($adherentBeforeUnregistration->getFirstName(), $unregistration->getFirstName());
+        $this->assertSame($adherentBeforeUnregistration->getLastName(), $unregistration->getLastName());
+        $this->assertSame($adherentBeforeUnregistration->getEmailAddress(), $unregistration->getEmailAddress());
     }
 
     protected function setUp()
