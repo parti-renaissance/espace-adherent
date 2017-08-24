@@ -23,6 +23,7 @@ final class AuthenticationUtils
         foreach ($this->tokenStorage->getToken()->getRoles() as $role) {
             if ($role instanceof SwitchUserRole) {
                 $impersonatingUser = $role->getSource()->getUser();
+
                 break;
             }
         }

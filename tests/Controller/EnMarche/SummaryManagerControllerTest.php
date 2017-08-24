@@ -196,12 +196,15 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
             switch ($experience->getDisplayOrder()) {
                 case 1:
                     $this->assertSame('Example', $experience->getCompany());
+
                     break;
                 case 2:
                     $this->assertSame('Institut KNURE', $experience->getCompany());
+
                     break;
                 case 3:
                     $this->assertSame('Univérsité Lyon 1', $experience->getCompany());
+
                     break;
             }
         }
@@ -373,12 +376,15 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
             switch ($training->getDisplayOrder()) {
                 case 1:
                     $this->assertSame($diploma, $training->getDiploma());
+
                     break;
                 case 2:
                     $this->assertSame('Diplôme d\'ingénieur', $training->getDiploma());
+
                     break;
                 case 3:
                     $this->assertSame('DUT Génie biologique', $training->getDiploma());
+
                     break;
             }
         }

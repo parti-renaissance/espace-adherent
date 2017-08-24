@@ -67,6 +67,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
 
             if ($media = $repository->findOneBy(['path' => $homeBlockData['path']])) {
                 $this->mediasRegistry[$media->getPath()] = $media;
+
                 continue;
             }
 

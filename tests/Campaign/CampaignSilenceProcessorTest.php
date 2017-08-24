@@ -95,13 +95,13 @@ class CampaignSilenceProcessorTest extends TestCase
         $processor = $this->createProcessor('country.in_america');
 
         // TODO check why it failes from 31/07/2017
-//        $this->assertAccessible($processor, self::IP_AU_SYDNEY);
+        // $this->assertAccessible($processor, self::IP_AU_SYDNEY);
         $this->assertExpired($processor, self::IP_CA_TORONTO);
-//        $this->assertAccessible($processor, self::IP_CN_HANGZHOU);
+        // $this->assertAccessible($processor, self::IP_CN_HANGZHOU);
         $this->assertAccessible($processor, self::IP_DE_FRANKFURT);
         $this->assertAccessible($processor, self::IP_IN_BENGALURU);
         $this->assertAccessible($processor, self::IP_NL_AMSTERDAM);
-//        $this->assertAccessible($processor, self::IP_SG_SINGAPORE);
+        // $this->assertAccessible($processor, self::IP_SG_SINGAPORE);
         $this->assertAccessible($processor, self::IP_GB_LONDON);
         $this->assertExpired($processor, self::IP_US_SAN_FRANCISCO);
         $this->assertExpired($processor, self::IP_US_NEW_YORK);
@@ -115,13 +115,13 @@ class CampaignSilenceProcessorTest extends TestCase
         $processor = $this->createProcessor('country.code in ["DE", "NL"] or country.in_america');
 
         // TODO check why it failes from 31/07/2017
-//        $this->assertAccessible($processor, self::IP_AU_SYDNEY);
+        // $this->assertAccessible($processor, self::IP_AU_SYDNEY);
         $this->assertExpired($processor, self::IP_CA_TORONTO);
-//        $this->assertAccessible($processor, self::IP_CN_HANGZHOU);
+        // $this->assertAccessible($processor, self::IP_CN_HANGZHOU);
         $this->assertExpired($processor, self::IP_DE_FRANKFURT);
-//        $this->assertAccessible($processor, self::IP_IN_BENGALURU);
+        // $this->assertAccessible($processor, self::IP_IN_BENGALURU);
         $this->assertExpired($processor, self::IP_NL_AMSTERDAM);
-//        $this->assertAccessible($processor, self::IP_SG_SINGAPORE);
+        // $this->assertAccessible($processor, self::IP_SG_SINGAPORE);
         $this->assertAccessible($processor, self::IP_GB_LONDON);
         $this->assertExpired($processor, self::IP_US_SAN_FRANCISCO);
         $this->assertExpired($processor, self::IP_US_NEW_YORK);
