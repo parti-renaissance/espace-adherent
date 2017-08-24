@@ -3,13 +3,17 @@
 {% block main_section %}
     {% set event = initiative %}
     {% if event.expertAssistanceDescription %}
-    <div class="text--bold">Description des besoins</div>
-    <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
+    <div class="committee-event-description b__nudge--top b__nudge--bottom-huge">
         {{- event.expertAssistanceDescription|raw -}}
     </div>
+    {% else %}
+    <p>L'organisateur recherche ce type de compétences :</p>    
     {% endif %}
-    <div class="text--bold">Type de mission</div>
-    <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
-        La mission est bénévole
-    </div>
+    <ul>
+    {% for skill in event.skills %}
+        <li>{{ skill }}</li>
+    {% endfor %}
+    </ul>
+
+    <p>Contactez l'organisateur si vous pensez pouvoir aider !</p>
 {% endblock %}
