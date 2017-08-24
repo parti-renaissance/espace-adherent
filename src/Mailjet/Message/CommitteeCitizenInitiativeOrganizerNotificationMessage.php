@@ -12,7 +12,7 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
     {
         $message = new self(
             Uuid::uuid4(),
-            '63337',
+            '196522',
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             'Votre initiative citoyenne a été partagée',

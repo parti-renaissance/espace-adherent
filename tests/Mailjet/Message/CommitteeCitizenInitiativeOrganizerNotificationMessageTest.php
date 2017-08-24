@@ -29,7 +29,7 @@ class CommitteeCitizenInitiativeOrganizerNotificationMessageTest extends Abstrac
         );
 
         $this->assertInstanceOf(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, $message);
-        $this->assertSame('63337', $message->getTemplate());
+        $this->assertSame('196522', $message->getTemplate());
         $this->assertSame('Votre initiative citoyenne a été partagée', $message->getSubject());
         $this->assertCount(5, $message->getVars());
         $this->assertSame(
