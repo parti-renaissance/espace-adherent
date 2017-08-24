@@ -527,17 +527,17 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
 
-        $this->assertSame(' (Suivre)', $crawler->filter('#activity_subscription a')->text());
+        $this->assertSame('Suivre', $crawler->filter('#activity_subscription a')->text());
 
-        $crawler = $this->client->click($crawler->selectLink(' (Suivre)')->link());
-
-        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
-        $this->assertSame(' (Ne plus suivre)', $crawler->filter('#activity_subscription a')->text());
-
-        $crawler = $this->client->click($crawler->selectLink(' (Ne plus suivre)')->link());
+        $crawler = $this->client->click($crawler->selectLink('Suivre')->link());
 
         $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
-        $this->assertSame(' (Suivre)', $crawler->filter('#activity_subscription a:contains(" (Suivre)")')->text());
+        $this->assertSame('Ne plus suivre', $crawler->filter('#activity_subscription a')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Ne plus suivre')->link());
+
+        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
+        $this->assertSame('Suivre', $crawler->filter('#activity_subscription a:contains("Suivre")')->text());
     }
 
     protected function setUp()
