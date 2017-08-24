@@ -88,6 +88,24 @@
 
             {{ include('events/_header.html.twig') }}
 
+            <div class="b__nudge--top-10 text--body text--small">
+                {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
+                    {% if event.active %}
+                        <a class="b__nudge--right-small"
+                           href="{{ path("app_#{event.type}_edit", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                            Modifier l'événement
+                        </a>
+                        <a class="b__nudge--right-small"
+                           href="{{ path("app_#{event.type}_cancel", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                            Annuler l'événement
+                        </a>
+                    {% endif %}
+                    <a href="{{ path("app_#{event.type}_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                        Gérer les participants
+                    </a>
+                {% endif %}
+            </div>
+
             <div class="committee__event__schedule text--summary">
                 <ul>
                     <li class="b__nudge--bottom-tiny">
@@ -139,25 +157,6 @@
                         Contact
                     </a>
                 </li>
-                {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
-                    {% if event.active %}
-                        <li>
-                            <a href="{{ path("app_#{event.type}_edit", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
-                                Modifier l'événement
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path("app_#{event.type}_cancel", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
-                                Annuler l'événement
-                            </a>
-                        </li>
-                    {% endif %}
-                    <li>
-                        <a href="{{ path("app_#{event.type}_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
-                            Gérer les participants
-                        </a>
-                    </li>
-                {% endif %}
             </ul>
             <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
                 {%- block main_section -%}
