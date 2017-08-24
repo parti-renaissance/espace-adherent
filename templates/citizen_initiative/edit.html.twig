@@ -9,7 +9,7 @@
 
         {{ include('events/_header.html.twig') }}
 
-        <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+        <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15 text--summary">
             {{ include('components/caret--left.html.twig') }}
             Retour à la page de l'initiative citoyenne
         </a>
