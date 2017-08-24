@@ -75,6 +75,13 @@
         }
     }
 
+    &__skills {
+        width: 500px;
+        @media (max-width: $tablet) {
+            width: 100%;
+        }
+    }
+
     &__zipcode {
         width: 110px;
         @media (max-width: $tablet) {
