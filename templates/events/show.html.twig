@@ -123,7 +123,7 @@
                 </ul>
             </div>
         </section>
-        <section class="l__wrapper--medium space--30-0 text--body">
+        <section class="l__wrapper--slim space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
                 {% if app.request.get('_route') != 'app_citizen_initiative_expert_assistance' %}
                     <li class="text--bold">À propos</li>
@@ -158,7 +158,7 @@
                     </a>
                 </li>
             </ul>
-            <div class="committee-event-description text--with-bullet b__nudge--bottom-huge">
+            <div class="committee-event-description text--with-bullet b__nudge--bottom-huge l__wrapper--slim">
                 {%- block main_section -%}
                     {{- event.description|raw -}}
                 {%- endblock -%}
