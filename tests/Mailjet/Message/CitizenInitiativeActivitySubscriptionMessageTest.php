@@ -29,7 +29,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
         $this->assertInstanceOf(CitizenInitiativeActivitySubscriptionMessage::class, $message);
         $this->assertSame('196524', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('15 novembre - 10h30 : Nouvelle initiative citoyenne : Initiative citoyenne à Lyon', $message->getSubject());
+        $this->assertSame('Nouvelle initiative citoyenne : Initiative citoyenne à Lyon', $message->getSubject());
         $this->assertCount(8, $message->getVars());
         $this->assertSame(
             [

@@ -54,9 +54,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             sprintf(
-                '%s - %s : Nouvelle initiative citoyenne : %s',
-                self::formatDate($citizenInitiative->getBeginAt(), 'd MMMM'),
-                $vars['IC_hour'],
+                'Nouvelle initiative citoyenne : %s',
                 $vars['IC_name']
             ),
             $vars,
