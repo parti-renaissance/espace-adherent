@@ -27,6 +27,7 @@ class SummaryItemDisplayOrderer
                     if ($itemPosition >= $newItemPosition) {
                         $item->setDisplayOrder(++$itemPosition);
                     }
+
                     continue;
                 }
 

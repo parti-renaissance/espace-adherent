@@ -146,15 +146,19 @@ final class InvitationProcessor
             switch ($step) {
                 case TonMacronChoice::STEP_FRIEND_PROFESSIONAL_POSITION:
                     $choices = [$this->friendPosition];
+
                     break;
                 case TonMacronChoice::STEP_FRIEND_PROJECT:
                     $choices = [$this->friendProject];
+
                     break;
                 case TonMacronChoice::STEP_FRIEND_INTERESTS:
                     $choices = $this->friendInterests;
+
                     break;
                 case TonMacronChoice::STEP_SELF_REASONS:
                     $choices = $this->selfReasons;
+
                     break;
                 default:
                     // Not handled

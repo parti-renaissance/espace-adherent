@@ -45,6 +45,7 @@ class TonMacronInvitationType extends AbstractType
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_INFO);
+
                 break;
             case InvitationProcessor::TRANSITION_FILL_PROJECT:
                 $builder
@@ -54,6 +55,7 @@ class TonMacronInvitationType extends AbstractType
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_PROJECT);
+
                 break;
             case InvitationProcessor::TRANSITION_FILL_INTERESTS:
                 $builder
@@ -65,6 +67,7 @@ class TonMacronInvitationType extends AbstractType
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_INTERESTS);
+
                 break;
             case InvitationProcessor::TRANSITION_FILL_REASONS:
                 $builder
@@ -76,6 +79,7 @@ class TonMacronInvitationType extends AbstractType
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_FILL_REASONS);
+
                 break;
             case InvitationProcessor::TRANSITION_SEND:
                 $builder
@@ -104,6 +108,7 @@ class TonMacronInvitationType extends AbstractType
                     ])
                 ;
                 $this->addSubmitButton($builder, InvitationProcessor::TRANSITION_SEND);
+
                 break;
         }
     }

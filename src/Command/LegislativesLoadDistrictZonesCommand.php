@@ -65,6 +65,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
             if (!$firstLine) {
                 $firstLine = true;
+
                 continue;
             }
 

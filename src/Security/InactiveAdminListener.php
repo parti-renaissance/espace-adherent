@@ -38,6 +38,7 @@ class InactiveAdminListener implements ServiceSubscriberInterface
             foreach ($token->getRoles() as $role) {
                 if ($role instanceof Role && 'ROLE_PREVIOUS_ADMIN' == $role->getRole()) {
                     $isPreviousAdmin = true;
+
                     break;
                 }
             }

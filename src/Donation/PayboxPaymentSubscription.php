@@ -26,11 +26,13 @@ final class PayboxPaymentSubscription
         switch ($duration) {
             case self::UNLIMITED:
                 $payments = '00';
+
                 break;
 
             case self::TWO_MONTHS:
             case self::SIX_MONTHS:
                 $payments = str_pad(intval($duration) - 1, 2, '0', STR_PAD_LEFT);
+
                 break;
 
             default:
