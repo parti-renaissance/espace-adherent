@@ -3,11 +3,15 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
+use AppBundle\CitizenInitiative\CitizenInitiativeManager;
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Summary;
+use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
@@ -24,6 +28,10 @@ class MembershipRequestHandler
     private $mailjet;
     private $manager;
     private $committeeManager;
+    private $registrationManager;
+    private $citizenInitiativeManager;
+    private $committeeFeedManager;
+    private $activitySubscriptionManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -32,7 +40,11 @@ class MembershipRequestHandler
         UrlGeneratorInterface $urlGenerator,
         MailjetService $mailjet,
         ObjectManager $manager,
-        CommitteeManager $committeeManager
+        CommitteeManager $committeeManager,
+        EventRegistrationManager $registrationManager,
+        CitizenInitiativeManager $citizenInitiativeManager,
+        CommitteeFeedManager $committeeFeedManager,
+        ActivitySubscriptionManager $activitySubscriptionManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -41,6 +53,10 @@ class MembershipRequestHandler
         $this->mailjet = $mailjet;
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
+        $this->registrationManager = $registrationManager;
+        $this->citizenInitiativeManager = $citizenInitiativeManager;
+        $this->committeeFeedManager = $committeeFeedManager;
+        $this->activitySubscriptionManager = $activitySubscriptionManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -87,10 +103,12 @@ class MembershipRequestHandler
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
         $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
-        foreach ($adherent->getMemberships() as $membership) {
-            $committee = $this->manager->getRepository(Committee::class)->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
-            $this->committeeManager->unfollowCommittee($adherent, $committee, false);
-        }
+
+        $this->removeAdherentMemberShips($adherent);
+        $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
+        $this->registrationManager->anonymizeAdherentRegistrations($adherent);
+        $this->committeeFeedManager->removeAuthorItems($adherent);
+        $this->activitySubscriptionManager->removeAdherentActivities($adherent);
 
         if ($token) {
             $this->manager->remove($token);
@@ -102,5 +120,13 @@ class MembershipRequestHandler
         $this->manager->flush();
 
         $this->mailjet->sendMessage($message);
+    }
+
+    private function removeAdherentMemberShips(Adherent $adherent): void
+    {
+        foreach ($adherent->getMemberships() as $membership) {
+            $committee = $this->manager->getRepository(Committee::class)->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
+            $this->committeeManager->unfollowCommittee($adherent, $committee, false);
+        }
     }
 }

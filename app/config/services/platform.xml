@@ -73,6 +73,10 @@
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager"/>
+            <argument type="service" id="app.committee.feed_manager"/>
+            <argument type="service" id="app.activity_subscription.manager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -190,6 +194,7 @@
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.mailjet.campaign_mailer"/>
             <argument type="service" id="router"/>
+            <argument type="service" id="app.repository.committee_feed_item"/>
         </service>
 
         <service id="app.validator.unique_committee" class="AppBundle\Validator\UniqueCommitteeValidator">
@@ -307,6 +312,7 @@
         <service id="AppBundle\CitizenInitiative\CitizenInitiativeManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.repository.citizen_initiative"/>
         </service>
 
         <service id="app.activity_subscription.manager" class="AppBundle\CitizenInitiative\ActivitySubscriptionManager">

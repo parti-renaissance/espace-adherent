@@ -21,6 +21,7 @@
         "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
         "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
         "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
+        {% if event.organizer %}
         "organizer": {
             {% if committee is defined and committee %}
             "@type": "Organization",
@@ -32,6 +33,7 @@
             "familyName": "{{ event.organizer.lastName }}"
             {% endif %}
         },
+        {% endif %}
         "funder": {
             "@type": "Person",
             "givenName": "Emmanuel",
@@ -152,11 +154,13 @@
                         </a>
                     </li>
                 {% endif %}
+                {% if event.organizer %}
                 <li>
                     <a href="{{ path('app_adherent_contact', {'uuid': event.organizer.uuid, 'from': 'event', 'id': event.uuid.toString}) }}">
                         Contact
                     </a>
                 </li>
+                {% endif %}
             </ul>
             <div class="committee-event-description text--with-bullet b__nudge--bottom-huge l__wrapper--slim">
                 {%- block main_section -%}

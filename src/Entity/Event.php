@@ -35,7 +35,7 @@ class Event extends BaseEvent
 
     public function __construct(
         UuidInterface $uuid,
-        Adherent $organizer,
+        ?Adherent $organizer,
         ?Committee $committee,
         string $name,
         EventCategory $category,

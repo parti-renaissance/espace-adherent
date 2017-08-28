@@ -4,17 +4,23 @@
             {{- event.name -}}
         </h1>
         <div class="l__row">
-            <div class="committee-event-organizer text--body text--white">
-                Organisé par <span class="text--bold">{{ event.organizer }}</span>
-                {% if committee is defined and committee %}
-                    du comité
-                    <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
-                        {{- committee.name -}}
-                    </a>
+            {% if event.organizer %}
+                <div class="committee-event-organizer text--body text--white">
+                    Organisé par <span class="text--bold">{{ event.organizer }}</span>
+                    {% if committee is defined and committee %}
+                        du comité
+                        <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
+                            {{- committee.name -}}
+                        </a>
+                    {% endif %}
+                </div>
+                {% if event.isCitizenInitiative %}
+                    {{ include('citizen_initiative/_activity_subscription.html.twig', { initiative: event }) }}
                 {% endif %}
-            </div>
-            {% if event.isCitizenInitiative %}
-                {{ include('citizen_initiative/_activity_subscription.html.twig', { initiative: event }) }}
+            {% else %}
+                <div class="committee-event-organizer text--body text--white">
+                    Organisé par un ancien adhérent
+                </div>
             {% endif %}
         </div>
     </div>
