@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:list.html.twig' %}
+
+{% block list_filters_actions %}
+    <ul class="nav navbar-nav navbar-left">
+        <li class="sonata-actions">
+            <a href="{{ path('app_admin_unregistration_export') }}">
+                Exporter les désinscriptions
+            </a>
+        </li>
+    </ul>
+
+    {{ parent() }}
+{% endblock %}
