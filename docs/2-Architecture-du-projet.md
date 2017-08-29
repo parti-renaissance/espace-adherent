@@ -147,9 +147,9 @@ Les trois fichiers à la racine de ce dossier sont les suivants :
   l'application ;
 - `kernel.js` permet de charger l'application et les vendors. Il est très léger pour rapidement charger en asynchrone
   l'application JavaScript ;
-  
+
 Lorsque vous lancez Webpack (au travers des commandes `npm run build-dev` et `npm run watch`), les fichiers `app.js`,
 `kernel.js`, `vendor.js` et `style/app.scss` seront compilés en CSS et JavaScript et stockés dans le dossier `web/built`.
 
 [Précédent : 1. Installer le projet en local pour développer](1-Installer-le-projet-en-local.md) -
-[Suivant : 3. Processus de développement](3-Processus-de-développement.md)
+[Suivant : 3. Processus de développement](3-Processus-de-developpement.md)
