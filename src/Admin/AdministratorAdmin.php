@@ -68,6 +68,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_CONTENT',
                     'ROLE_ADMIN_HOME',
                     'ROLE_ADMIN_PROPOSALS',
+                    'ROLE_ADMIN_ORDERS',
                     'ROLE_ADMIN_FACEBOOK_PROFILES',
                     'ROLE_ADMIN_FACEBOOK_VIDEOS',
                     'ROLE_ADMIN_REDIRECTIONS',

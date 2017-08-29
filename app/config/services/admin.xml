@@ -142,6 +142,14 @@
             </call>
         </service>
 
+        <service id="app.admin.order_section" class="AppBundle\Admin\OrderSectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\OrderSection</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Communication" />
 
