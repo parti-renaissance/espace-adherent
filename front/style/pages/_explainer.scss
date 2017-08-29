@@ -1,21 +1,39 @@
 .content .explainer {
+    h2 {
+        @include text--large;
+        text-align: center;
+    }
+
     &__description {
         @include wrapper--slim;
         @include text--medium-small;
         padding: 40px 0 10px;
     }
 
-    &__video-row {
-        @include wrapper;
-        text-align: center;
-        padding: 20px 0;
-
-        h2 {
-            @include text--large;
+    &__articles {
+        @include wrapper--slim;
+        
+        > ul > li {
+            padding: 60px 0 20px;
         }
 
+        ul > li > ul > li {
+            @include text--medium;
+            padding: 20px 0 0;
+
+            a {
+                @include link--no-decor;
+            }
+        }
+    }
+
+    &__video-row {
+        @include wrapper;
+        padding: 20px 0;
+        text-align: center;
+
         a {
-            margin: 5px 0 0;
+            margin: 5px 0;
             display: inline-block;
             @include link--no-decor;
         }
