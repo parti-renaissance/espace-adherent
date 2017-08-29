@@ -119,6 +119,15 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'keywords' => 'loi travail ordonnances explications',
+            'title' => 'Les ordonnances expliquées',
+            'slug' => 'explainer',
+            'description' => 'blablabla',
+            'content' => file_get_contents(__DIR__.'/../explainer.html'),
+            'media' => $media,
+        ]));
+
         $manager->flush();
     }
 
