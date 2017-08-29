@@ -21,7 +21,8 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
                 $feedItem->getAuthor()->getLastName(),
                 $contactLink,
                 $feedItem->getCommittee()->getName(),
-                $recipient->getFirstName()
+                $recipient->getFirstName(),
+                $feedItem->getEvent()->getName()
             )
         );
 
@@ -33,7 +34,8 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
         string $referentLastName,
         string $contactLink,
         string $committeeName,
-        string $targetFirstName
+        string $targetFirstName,
+        string $initiativeName
     ): array {
         return [
             'referent_firstname' => self::escape($referentFirstName),
@@ -41,6 +43,7 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
             'referent_contact_link' => $contactLink,
             'committee_name' => self::escape($committeeName),
             'target_firstname' => self::escape($targetFirstName),
+            'IC_name' => $initiativeName,
         ];
     }
 }
