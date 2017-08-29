@@ -22,6 +22,10 @@ svg polygon {
     transition: all 0.45s;
 }
 
+@mixin link--no-decor {
+    border: none;
+}
+
 a {
     text-decoration: none;
     border-bottom: 1px solid black;
@@ -46,7 +50,7 @@ a {
     }
 
     &.link--no-decor {
-        border: none;
+        @include link--no-decor;
     }
 
     &.link--block {

@@ -1,0 +1,86 @@
+.content .explainer {
+    &__description {
+        @include wrapper--slim;
+        @include text--medium-small;
+        padding: 40px 0 10px;
+    }
+
+    &__video-row {
+        @include wrapper;
+        text-align: center;
+        padding: 20px 0;
+
+        h2 {
+            @include text--large;
+        }
+
+        a {
+            margin: 5px 0 0;
+            display: inline-block;
+            @include link--no-decor;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0;
+
+            li {
+                list-style-type: none;
+                width: 23.35%;
+                background-color: $gray--lighter;
+
+                @media (max-width: $tablet) {
+                    width: 48%;
+                    margin-bottom: 20px;
+                }
+
+                @media (max-width: $mobile) {
+                    width: 100%;
+                }
+
+                > div {
+                    position: relative;
+                    height: 0;
+                    overflow: hidden;
+                    // Removes extra space below responsive videos
+                    // padding-bottom : ratio = width/height of video
+                    padding-bottom: 56.25%;
+
+                    iframe {
+                        position: absolute;
+                        top:0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+
+        &--triptique {
+            max-width: 900px;
+
+            ul {
+                @media (max-width: $tablet) {
+                    justify-content: space-around;
+                }
+
+                li {
+                    width: 31.15%;
+
+                    @media (max-width: $tablet) {
+                        width: 48%;
+                        margin-bottom: 20px;
+                    }
+
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                    }
+
+                }
+            }
+        }
+    }
+}
