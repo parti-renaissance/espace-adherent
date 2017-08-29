@@ -25,7 +25,7 @@ class SearchResultsProvider
         }
 
         if (SearchParametersFilter::TYPE_EVENTS === $search->getType()) {
-            return $this->eventRepository->searchAllEvents($search);
+            return $this->eventRepository->searchEvents($search);
         }
 
         throw new \RuntimeException(sprintf(
