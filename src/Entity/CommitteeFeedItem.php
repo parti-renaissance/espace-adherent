@@ -41,7 +41,7 @@ class CommitteeFeedItem
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
     private $event;
 
