@@ -1,0 +1,55 @@
+{% extends 'amp/_layout.html.twig' %}
+
+{% block page_title article.title %}
+{% block canonical_url url('app_explainer_article_show', {'slug': article.slug}) %}
+
+{% block image %}{% spaceless %}
+    {% if article.media %}
+        {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
+    {% else %}
+        {{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}
+    {% endif %}
+{% endspaceless %}{% endblock %}
+
+{% block json_ld %}
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "name": "{{ block('page_title') }}",
+    "description": "{{ article.description }}",
+    "url": "{{ block('canonical_url') }}",
+    "image": "{{ block('image') }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <main class="content b__nudge--bottom">
+        <section class="programme b__nudge--bottom">
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ article.title }}
+                </h1>
+                <h2 class="text--gray b__nudge--bottom bigger">{{ article.description }}</h2>
+            </header>
+
+            {% if article.media and article.displayMedia %}
+                <amp-img src="{{ media_asset(article.media, {'q': 70}) }}"
+                         width="{{ article.media.width }}"
+                         height="{{ article.media.height }}"
+                         layout="responsive">
+                    <noscript>
+                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
+                             width="{{ article.media.width }}"
+                             height="{{ article.media.height }}" />
+                    </noscript>
+                </amp-img>
+            {% endif %}
+
+            <article class="l__wrapper--slim">
+                {{ article.ampContent|raw }}
+            </article>
+        </section>
+    </main>
+{% endblock %}

@@ -150,6 +150,18 @@
             <argument />
         </service>
 
+        <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\OrderArticle</argument>
+            <argument />
+
+            <call method="setMarkdown">
+                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
+            </call>
+        </service>
+
         <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Communication" />
 
