@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -81,5 +82,17 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->setParameter('e_published', true);
 
         return $qb;
+    }
+
+    public function removeEventItems(BaseEvent $event)
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->delete()
+            ->where($qb->expr()->eq('i.itemType', ':type'))
+            ->andWhere($qb->expr()->eq('i.event', ':event'))
+            ->setParameter(':type', CommitteeFeedItem::EVENT)
+            ->setParameter(':event', $event);
+
+        return $qb->getQuery()->execute();
     }
 }
