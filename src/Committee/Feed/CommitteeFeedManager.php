@@ -3,12 +3,14 @@
 namespace AppBundle\Committee\Feed;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
 use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Repository\CommitteeFeedItemRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -18,13 +20,15 @@ class CommitteeFeedManager
     private $committeeManager;
     private $mailjet;
     private $urlGenerator;
+    private $repository;
 
-    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailjetService $mailjet, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailjetService $mailjet, UrlGeneratorInterface $urlGenerator, CommitteeFeedItemRepository $repository)
     {
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
         $this->mailjet = $mailjet;
         $this->urlGenerator = $urlGenerator;
+        $this->repository = $repository;
     }
 
     public function createEvent(CommitteeEvent $event): CommitteeFeedItem
@@ -133,5 +137,10 @@ class CommitteeFeedManager
     private function generateUrl(string $route, array $params = []): string
     {
         return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    public function removeEventItems(BaseEvent $event): void
+    {
+        $this->repository->removeEventItems($event);
     }
 }

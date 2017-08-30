@@ -243,6 +243,10 @@
             <argument />
             <argument>AppBundle\Entity\Event</argument>
             <argument />
+
+            <call method="setCommitteeFeedManager">
+                <argument type="service" id="app.committee.feed_manager" />
+            </call>
         </service>
 
         <service id="app.admin.event_category" class="AppBundle\Admin\EventCategoryAdmin">

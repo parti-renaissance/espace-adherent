@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Entity\Event;
 use AppBundle\Form\EventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
@@ -20,12 +21,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventAdmin extends AbstractAdmin
 {
+    private $committeeFeedManager;
+
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
+
+    public function setCommitteeFeedManager(CommitteeFeedManager $committeeFeedManager): EventAdmin
+    {
+        $this->committeeFeedManager = $committeeFeedManager;
+
+        return $this;
+    }
 
     public function getTemplate($name)
     {
@@ -38,6 +48,11 @@ class EventAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    public function preRemove($object)
+    {
+        $this->committeeFeedManager->removeEventItems($object);
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
