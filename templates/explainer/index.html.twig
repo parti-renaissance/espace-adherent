@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Les ordonnances expliquées' %}
+{% block canonical_url url('app_explainer_index') %}
+
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main class="content">
+        <section class="explainer">
+            <header class="space--100-0 background--blue">
+                <div class="l__wrapper--slim text--center">
+                    <h1 class="text--extra-large text--italic text--white">
+                       Les ordonnances expliquées
+                    </h1>
+                </div>
+            </header>
+
+            <article>
+                Descrition de la page "Les ordonnances expliquées"
+            </article>
+
+            <section>
+                <ul>
+                    <li>
+                        {% for section in sections %}
+                            <h2>{{ section.name }}</h2>
+
+                            <ul>
+                                {% for article in section.getPublishedArticlesOrderedByPosition %}
+                                    <li>
+                                        <a href="{{ path('app_explainer_article_show', {'slug': article.slug}) }}">
+                                            <h3>
+                                                {{ article.title }}
+                                            </h3>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </li>
+                </ul>
+
+            </section>
+
+        </section>
+
+    </main>
+{% endblock %}
