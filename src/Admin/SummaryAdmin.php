@@ -11,7 +11,7 @@ class SummaryAdmin extends AbstractAdmin
         '_page' => 1,
         '_par_page' => 32,
         '_sort_order' => 'ASC',
-        '_sort_by' => 'member',
+        '_sort_by' => 'id',
     ];
 
     protected function configureListFields(ListMapper $listMapper)
