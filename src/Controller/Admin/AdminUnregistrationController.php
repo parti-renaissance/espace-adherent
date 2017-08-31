@@ -28,9 +28,7 @@ class AdminUnregistrationController extends Controller
         return $this->render('admin/adherent/unregistration_export.html.twig', [
             'total_count' => $this->getDoctrine()->getRepository(Unregistration::class)->countForExport(),
             'csv_header' => implode(',', [
-                'lastName',
-                'firstName',
-                'emailAddress',
+                'uuid',
                 'postalCode',
                 'reasons',
                 'comment',

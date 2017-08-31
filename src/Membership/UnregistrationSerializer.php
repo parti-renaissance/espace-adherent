@@ -20,10 +20,8 @@ class UnregistrationSerializer
         $handle = fopen('php://memory', 'rb+');
         foreach ($unregistrations as $unregistration) {
             fputcsv($handle, [
-                'lastName' => $unregistration->getLastName(),
-                'firstName' => $unregistration->getFirstName(),
-                'emailAddress' => $unregistration->getEmailAddress(),
-                'postalCode' => $unregistration->getEmailAddress(),
+                'uuid' => $unregistration->getUuid(),
+                'postalCode' => $unregistration->getPostalCode(),
                 'reasons' => implode(',', $unregistration->getReasons()),
                 'comment' => $unregistration->getComment(),
                 'registeredAt' => $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'),
