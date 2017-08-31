@@ -2,19 +2,16 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="unregistrations")
  * @ORM\Entity
  */
-class Unregistration implements GeoPointInterface
+class Unregistration
 {
-    use EntityPostAddressTrait;
-    use EntityPersonNameTrait;
-
     /**
      * @var int|null
      *
@@ -25,9 +22,18 @@ class Unregistration implements GeoPointInterface
     private $id;
 
     /**
-     * @ORM\Column
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
      */
-    private $emailAddress;
+    private $uuid;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=15, nullable=true)
+     */
+    private $postalCode;
 
     /**
      * @ORM\Column(type="json_array")
@@ -55,18 +61,14 @@ class Unregistration implements GeoPointInterface
     private $unregisteredAt;
 
     public function __construct(
-        string $firstName,
-        string $lastName,
-        string $emailAddress,
-        PostAddress $postAddress,
+        UuidInterface $uuid,
+        string $postalCode,
         array $reasons,
         string $comment,
         \DateTime $registeredAt
     ) {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->emailAddress = $emailAddress;
-        $this->postAddress = $postAddress;
+        $this->uuid = $uuid;
+        $this->postalCode = $postalCode;
         $this->reasons = $reasons;
         $this->comment = $comment;
         $this->registeredAt = $registeredAt;
@@ -78,9 +80,14 @@ class Unregistration implements GeoPointInterface
         return $this->id;
     }
 
-    public function getEmailAddress(): string
+    public function getUuid(): UuidInterface
     {
-        return $this->emailAddress;
+        return $this->uuid;
+    }
+
+    public function getPostalCode()
+    {
+        return $this->postalCode;
     }
 
     public function getReasons(): array
@@ -106,11 +113,6 @@ class Unregistration implements GeoPointInterface
     public function setComment(string $comment): void
     {
         $this->comment = $comment;
-    }
-
-    public function getPostAddress(): PostAddress
-    {
-        return $this->postAddress;
     }
 
     public function getRegisteredAt(): ?\DateTime

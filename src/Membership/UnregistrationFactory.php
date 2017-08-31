@@ -10,10 +10,8 @@ class UnregistrationFactory
     public function createFromUnregistrationCommandAndAdherent(UnregistrationCommand $command, Adherent $adherent): Unregistration
     {
         $unregistration = new Unregistration(
-            $adherent->getFirstName(),
-            $adherent->getLastName(),
-            $adherent->getEmailAddress(),
-            $adherent->getPostAddress(),
+            $adherent->getUuid(),
+            $adherent->getPostAddress()->getPostalCode(),
             $command->getReasons(),
             $command->getComment(),
             $adherent->getRegisteredAt()

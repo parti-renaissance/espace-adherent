@@ -686,15 +686,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertNull($adherent);
 
         /** @var Unregistration $unregistration */
-        $unregistration = $this->getRepository(Unregistration::class)->findOneByEmailAddress('michel.vasseur@example.ch');
+        $unregistration = $this->getRepository(Unregistration::class)->findOneByUuid(LoadAdherentData::ADHERENT_13_UUID);
 
         $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
         $this->assertSame('Je me désinscris', $unregistration->getComment());
         $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
-        $this->assertSame($adherentBeforeUnregistration->getFirstName(), $unregistration->getFirstName());
-        $this->assertSame($adherentBeforeUnregistration->getLastName(), $unregistration->getLastName());
-        $this->assertSame($adherentBeforeUnregistration->getEmailAddress(), $unregistration->getEmailAddress());
+        $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
+        $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
     }
 
     protected function setUp()

@@ -2,16 +2,10 @@
 
 namespace AppBundle\Membership;
 
-use AppBundle\Entity\EntityPostAddressTrait;
-use AppBundle\Geocoder\GeoPointInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UnregistrationCommand implements GeoPointInterface
+class UnregistrationCommand
 {
-    use EntityPostAddressTrait;
-
-    private $emailAddress;
-
     /**
      * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
@@ -21,11 +15,6 @@ class UnregistrationCommand implements GeoPointInterface
      * @Assert\Length(min=10, max=1000)
      */
     private $comment;
-
-    public function getEmailAddress(): string
-    {
-        return $this->emailAddress;
-    }
 
     public function getReasons(): array
     {
