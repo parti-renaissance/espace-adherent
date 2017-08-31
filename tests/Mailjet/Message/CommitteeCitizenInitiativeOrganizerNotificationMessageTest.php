@@ -16,7 +16,7 @@ class CommitteeCitizenInitiativeOrganizerNotificationMessageTest extends Abstrac
                 $this->createAdherentMock('kl@exemple.com', 'Kévin', 'Lafont'),
                 'Cette initiative est superbe !',
                 $this->createCitizenInitiativeMock(
-                    'Apprenez à sauver des vies ',
+                    'Apprenez à sauver des vies',
                     '2017-02-01 15:30:00',
                     '15 allées Paul Bocuse',
                     '69006-69386',
@@ -31,7 +31,7 @@ class CommitteeCitizenInitiativeOrganizerNotificationMessageTest extends Abstrac
         $this->assertInstanceOf(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, $message);
         $this->assertSame('196522', $message->getTemplate());
         $this->assertSame('Votre initiative citoyenne a été partagée', $message->getSubject());
-        $this->assertCount(5, $message->getVars());
+        $this->assertCount(6, $message->getVars());
         $this->assertSame(
             [
                 'referent_firstname' => 'Kévin',
@@ -39,6 +39,7 @@ class CommitteeCitizenInitiativeOrganizerNotificationMessageTest extends Abstrac
                 'referent_contact_link' => self::CONTACT_ADHERENT_URL,
                 'committee_name' => 'Comité En Marche',
                 'target_firstname' => 'Émmanuel',
+                'IC_name' => 'Apprenez à sauver des vies',
             ],
             $message->getVars()
         );
