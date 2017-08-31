@@ -12,7 +12,8 @@
 
     &__articles {
         @include wrapper--slim;
-        
+        margin-bottom: 100px;
+
         > ul > li {
             padding: 60px 0 20px;
         }
