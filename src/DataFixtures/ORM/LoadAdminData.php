@@ -22,6 +22,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_CONTENT',
             'ROLE_ADMIN_HOME',
             'ROLE_ADMIN_PROPOSALS',
+            'ROLE_ADMIN_ORDERS',
             'ROLE_ADMIN_FACEBOOK_PROFILES',
             'ROLE_ADMIN_REDIRECTIONS',
             'ROLE_ADMIN_NEWSLETTER',
@@ -44,6 +45,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_CONTENT',
             'ROLE_ADMIN_HOME',
             'ROLE_ADMIN_PROPOSALS',
+            'ROLE_ADMIN_ORDERS',
             'ROLE_ADMIN_FACEBOOK_PROFILES',
             'ROLE_ADMIN_REDIRECTIONS',
         ];
