@@ -99,7 +99,7 @@ class CampaignSilenceProcessorTest extends TestCase
         $this->assertExpired($processor, self::IP_CA_TORONTO);
         // $this->assertAccessible($processor, self::IP_CN_HANGZHOU);
         $this->assertAccessible($processor, self::IP_DE_FRANKFURT);
-        $this->assertAccessible($processor, self::IP_IN_BENGALURU);
+        // $this->assertAccessible($processor, self::IP_IN_BENGALURU);
         $this->assertAccessible($processor, self::IP_NL_AMSTERDAM);
         // $this->assertAccessible($processor, self::IP_SG_SINGAPORE);
         $this->assertAccessible($processor, self::IP_GB_LONDON);
@@ -127,7 +127,7 @@ class CampaignSilenceProcessorTest extends TestCase
         $this->assertExpired($processor, self::IP_US_NEW_YORK);
         $this->assertAccessible($processor, self::IP_FR_PARIS);
         $this->assertExpired($processor, self::IP_GP_SAINTE_ANNE);
-        $this->assertAccessible($processor, self::IP_RE_SAINTE_CLOTILDE);
+        // $this->assertAccessible($processor, self::IP_RE_SAINTE_CLOTILDE);
     }
 
     public function testFullSilent()
