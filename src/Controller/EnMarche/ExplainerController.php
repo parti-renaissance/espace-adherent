@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ExplainerController extends AbstractController
 {
     /**
-     * @Route("/ordonnances", name="app_explainer_index")
+     * @Route("/transformer-la-france", name="app_explainer_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -25,7 +25,7 @@ class ExplainerController extends AbstractController
     }
 
     /**
-     * @Route("/ordonnances/{slug}", name="app_explainer_article_show")
+     * @Route("/transformer-la-france/{slug}", name="app_explainer_article_show")
      * @Method("GET")
      * @Entity("article", expr="repository.findPublishedArticle(slug)")
      */
