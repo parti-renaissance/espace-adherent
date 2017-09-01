@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\OrderSection;
+use AppBundle\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,6 +20,7 @@ class ExplainerController extends AbstractController
     {
         return $this->render('explainer/index.html.twig', [
             'sections' => $this->getDoctrine()->getRepository(OrderSection::class)->findAllOrderedByPosition(),
+            'page' => $this->getDoctrine()->getRepository(Page::class)->findOneBySlug('les-ordonnances-expliquees'),
         ]);
     }
 
