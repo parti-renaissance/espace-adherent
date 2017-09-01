@@ -233,6 +233,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.unregistration" class="AppBundle\Admin\UnregistrationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Désinscriptions" group="Campagne" />
+
+            <argument />
+            <argument>AppBundle\Entity\Unregistration</argument>
+            <argument />
+            <argument>%adherent_unregistration_reasons%</argument>
+        </service>
+
         <!--
         ######################################################
         # Territory

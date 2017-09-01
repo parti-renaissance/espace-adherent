@@ -74,6 +74,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_REDIRECTIONS',
                     'ROLE_ADMIN_NEWSLETTER',
                     'ROLE_ADMIN_JE_MARCHE',
+                    'ROLE_ADMIN_UNREGISTRATIONS',
                     'ROLE_ADMIN_TON_MACRON',
                     'ROLE_ADMIN_LEGISLATIVES',
                     'ROLE_ADMIN_ADHERENTS',

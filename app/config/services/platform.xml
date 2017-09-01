@@ -140,6 +140,8 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="app.unregistration.serializer" class="AppBundle\Membership\UnregistrationSerializer" />
+
         <!-- Procurations -->
         <service id="app.procuration.manager" class="AppBundle\Procuration\ProcurationManager">
             <argument type="service" id="app.repository.procuration_request"/>
