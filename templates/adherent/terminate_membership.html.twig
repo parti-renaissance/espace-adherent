@@ -7,27 +7,54 @@
 <div>
     {% if not unregistered %}
         <div id="is_adherent" class="adherent_profile__unsub">
-            <a href="{{ path('app_adherent_profile') }}" class="l__wrapper icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à mes informations</a>
-
             <section class="l__wrapper-560 text--center space--60-0">
-                <p class="text--body text--medium">Je confirme ma volonté de ne plus être adhérent du mouvement En Marche</p>
+                <p class="text--body text--medium">Ceci es tirréversible !</p>
+                <ul>
+                    <li>Toutes vos données seront définitivement supprimées.</li>
+                    <li>Nous arrêterons de vous envoyer des e-mails, mais il est possible que vous en receviez encore un ou deux cette semaine.</li>
+                </ul>
 
                 {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
 
-                    {{ form_errors(form) }}
+                {{ form_errors(form) }}
 
+                <div class="form__row">
+                    {{ form_label(form.reasons, 'Pourquoi je quitte En Marche') }}
+                </div>
+
+                {{ form_errors(form.reasons) }}
+
+                <div class="form l__row l__row--wrap">
+                    {% for reason in form.reasons %}
+                        <div class="form__checkbox form__checkbox--col">
+                            {{ form_widget(reason) }}
+                            {{ form_label(reason) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form__row">
+                    Mes commentaires à partager avec l’équipe En Marche'<span>(facultatif)</span>
+                </div>
+                <div class="form__row">
+                    {{ form_widget(form.comment) }}
+                </div>
+                <div class="form__row">
                     {{ form_row(form.word) }}
+                </div>
 
-                    <div>
-                        <button type="submit" class="btn btn--blue">
-                            Terminer
-                        </button>
-                    </div>
+                <div>
+                    <button type="submit" class="btn btn--blue">
+                        Je supprime définitivement mon compte En Marche
+                    </button>
+                </div>
 
                 {{ form_end(form) }}
             </section>
+
+            <a href="{{ path('app_adherent_profile') }}" class="l__wrapper icon--with-text text--summary">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à mes informations</a>
         </div>
     {% else %}
         <div id="is_not_adherent" class="l__wrapper-560 text--center text--body space--60-0">

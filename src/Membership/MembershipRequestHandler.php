@@ -77,8 +77,13 @@ class MembershipRequestHandler
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(Adherent $adherent)
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)
     {
+        $unregistrationFactory = new UnregistrationFactory();
+        $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
+
+        $this->manager->persist($unregistration);
+
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
         $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);

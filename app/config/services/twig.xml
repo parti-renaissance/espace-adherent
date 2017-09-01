@@ -9,6 +9,7 @@
 
         <service id="AppBundle\Twig\AdherentExtension">
             <argument>%adherent_interests%</argument>
+            <argument>%adherent_unregistration_reasons%</argument>
         </service>
 
         <service id="AppBundle\Twig\AssetExtension" />

@@ -116,6 +116,11 @@
             <tag name="form.type" />
         </service>
 
+        <service id="AppBundle\Form\UnregistrationReasonsChoiceType">
+            <argument type="string">%adherent_unregistration_reasons%</argument>
+            <tag name="form.type" />
+        </service>
+
         <service id="app.membership.membership_choose_nearby_committee_type" class="AppBundle\Form\MembershipChooseNearbyCommitteeType">
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.geocoder.coordinates_factory"/>

@@ -16,15 +16,15 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
-use AppBundle\Form\UnregisterType;
+use AppBundle\Form\UnregistrationType;
 use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Membership\UnregistrationCommand;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -257,17 +257,16 @@ class AdherentController extends Controller
         $this->disableInProduction();
 
         $adherent = $this->getUser();
+        $unregistrationCommand = new UnregistrationCommand();
 
-        $form = $this->createForm(FormType::class, null, [
+        $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
         ]);
-
-        $form->add('word', UnregisterType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->terminateMembership($adherent);
+            $this->get('app.membership_request_handler')->terminateMembership($unregistrationCommand, $adherent);
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
 

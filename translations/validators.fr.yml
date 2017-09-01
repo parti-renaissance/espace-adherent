@@ -60,6 +60,8 @@ adherent.wrong_password: Le mot de passe est invalide.
 adherent.contact.min_length: Le message doit contenir au moins {{ limit }} caractères.
 adherent.contact.max_length: Le message doit contenir moins de {{ limit }} caractères.
 
+adherent.unregistration.reasons: Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.
+
 #
 # Committee
 #
