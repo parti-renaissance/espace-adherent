@@ -17,11 +17,36 @@
 {% block content %}
     <main class="content b__nudge--bottom">
         <section class="programme b__nudge--bottom">
+            <nav class="text--body">
+                <a class="l__wrapper space--20-0 icon--with-text"
+                   href="{{ path('app_explainer_index') }}">
+                        {{ include('components/caret--left.html.twig') }}
+                        Retour
+                </a>
+            </nav>
             <header class="space--60-0 l__wrapper--slim">
                 <h1 class="text--large b__nudge--bottom-small">
                     {{ article.title }}
                 </h1>
                 <h2 class="text--gray b__nudge--bottom bigger">{{ article.description }}</h2>
+                <h2 class="text--gray b__nudge--bottom bigger">{{ proposal.description }}</h2>
+                <ul class="article__social">
+                    <li role="button" aria-label="Partagez sur Facebook"
+                        class="btn btn--social btn--facebook"
+                        onclick="App.share('facebook', window.location.href, '{{ block('page_title') }}')">
+                        <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                    </li>
+                    <li role="button" aria-label="Partagez via Twitter"
+                        class="btn btn--social btn--twitter"
+                        onclick="App.share('twitter', window.location.href, '{{ block('page_title') }}')">
+                        <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                    </li>
+                    <li role="button" aria-label="Partagez via email"
+                        class="btn btn--social btn--email"
+                        onclick="App.share('email', window.location.href, '{{ block('page_title') }}')">
+                        <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                    </li>
+                </ul>
             </header>
 
             {% if article.media and article.displayMedia %}
@@ -40,6 +65,40 @@
             <article class="l__wrapper--slim">
                 {{ article.ampContent|raw }}
             </article>
+
+            <ul class="article__social space--60-0 l__wrapper--slim">
+                <li role="button" aria-label="Partagez sur Facebook"
+                    class="btn btn--social btn--facebook"
+                    onclick="App.share('facebook', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                </li>
+                <li role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </li>
+                <li role="button" aria-label="Partagez via email"
+                    class="btn btn--social btn--email"
+                    onclick="App.share('email', window.location.href, '{{ block('page_title') }}')">
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                </li>
+            </ul>
+
+            <a href="{{ path('app_explainer_index') }}" class="icon--with-text b__nudge--bottom-60 l__wrapper--slim text--body">
+                {{ include('components/caret--left.html.twig') }}
+                Retour
+            </a>
+        </section>
+
+        <section class="donate l__wrapper--narrow background--green b__nudge--bottom-huge">
+            <div class="space--30 l__row l__row--h-stretch l__mobile--col">
+                <div class="donate__text">
+                    <h2 class="text--large">Donnez et <span class="text--on-white">faites gagner le progrès !</span></h2>
+                    <p class="text--body text--small b__nudge--top-large">Votre don vous donne droit à une réduction annuelle d’impôt sur le revenu à hauteur de 66% de son montant.</p>
+                </div>
+
+                {{ include('donation/_quick_form.html.twig') }}
+            </div>
         </section>
     </main>
 {% endblock %}
