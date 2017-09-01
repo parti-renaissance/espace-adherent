@@ -64,7 +64,7 @@ $text--size-extra-large: 48px;
     line-height: 38px;
 
     @media (max-width: $mobile) {
-        font-size: $text--size-medium;
+        font-size: $text--size-medium--large;
         line-height: 1.2em;
     }
 }
