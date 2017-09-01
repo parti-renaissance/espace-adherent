@@ -2,10 +2,6 @@
     header {
         margin-bottom: 30px;
 
-        @media (max-width: $mobile) {
-            padding-bottom: 30px;
-        }
-
         h2 {
             @include text--summary;
 
