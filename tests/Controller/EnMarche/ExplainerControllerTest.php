@@ -29,7 +29,7 @@ class ExplainerControllerTest extends SqliteWebTestCase
 
     public function provideActions()
     {
-        yield ['/ordonnances'];
+        yield ['/transformer-la-france'];
     }
 
     protected function setUp()
