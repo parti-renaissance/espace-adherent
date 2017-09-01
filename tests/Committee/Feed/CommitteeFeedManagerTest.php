@@ -5,6 +5,8 @@ namespace Tests\AppBundle\Committee\Feed;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
+use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -48,6 +50,22 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
         $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
         $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
+    }
+
+    public function testAnonymizeOrganizerCitizenInitiatives()
+    {
+        $this->loadFixtures([
+            LoadAdherentData::class,
+            LoadEventCategoryData::class,
+            LoadEventData::class,
+        ]);
+
+        $author = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $this->assertCount(44, $this->getCommitteeFeedItemRepository()->findAll());
+        $this->assertCount(39, $this->getCommitteeFeedItemRepository()->findBy(['author' => $author]));
+        $this->manager->removeAuthorItems($author);
+        $this->assertCount(5, $this->getCommitteeFeedItemRepository()->findAll());
+        $this->assertCount(0, $this->getCommitteeFeedItemRepository()->findBy(['author' => $author]));
     }
 
     public function setUp()

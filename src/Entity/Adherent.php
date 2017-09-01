@@ -694,9 +694,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $membership->canHostCommittee();
     }
 
-    public function isSubscribedTo(Adherent $adherent): bool
+    public function isSubscribedTo(Adherent $adherent = null): bool
     {
-        return $this->getActivitySubscriptionTo($adherent) === null ? false : true;
+        return null === $adherent || $this->getActivitySubscriptionTo($adherent) === null ? false : true;
     }
 
     public function getActivitySubscriptionTo(Adherent $followed): ?ActivitySubscription

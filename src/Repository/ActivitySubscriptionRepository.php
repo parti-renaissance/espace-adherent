@@ -21,4 +21,19 @@ class ActivitySubscriptionRepository extends EntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    public function removeAdherentActivities(Adherent $adherent)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->delete()
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->eq('s.followingAdherent', ':adherent'),
+                    $qb->expr()->eq('s.followedAdherent', ':adherent')
+                )
+            )
+            ->setParameter(':adherent', $adherent);
+
+        return $qb->getQuery()->execute();
+    }
 }

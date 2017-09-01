@@ -2,8 +2,10 @@
 
 namespace AppBundle\CitizenInitiative;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Events;
+use AppBundle\Repository\CitizenInitiativeRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -11,11 +13,13 @@ class CitizenInitiativeManager
 {
     private $manager;
     private $dispatcher;
+    private $repository;
 
-    public function __construct(ObjectManager $manager, EventDispatcherInterface $dispatcher)
+    public function __construct(ObjectManager $manager, EventDispatcherInterface $dispatcher, CitizenInitiativeRepository $repository)
     {
         $this->manager = $manager;
         $this->dispatcher = $dispatcher;
+        $this->repository = $repository;
     }
 
     public function updateCitizenInitiative(CitizenInitiative $initiative): void
@@ -56,5 +60,11 @@ class CitizenInitiativeManager
                 $initiative
             ));
         }
+    }
+
+    public function removeOrganizerCitizenInitiatives(Adherent $adherent): void
+    {
+        $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_PAST, true);
+        $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_UPCOMING);
     }
 }

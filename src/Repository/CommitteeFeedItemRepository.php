@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -81,5 +82,16 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->setParameter('e_published', true);
 
         return $qb;
+    }
+
+    public function removeAuthorItems(Adherent $author)
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb
+            ->delete()
+            ->where('i.author = :author')
+            ->setParameter(':author', $author);
+
+        return $qb->getQuery()->execute();
     }
 }

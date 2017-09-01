@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Collection\EventRegistrationCollection;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\EventRegistration;
 use Doctrine\ORM\EntityRepository;
@@ -150,5 +151,18 @@ class EventRegistrationRepository extends EntityRepository
         ;
 
         return $qb;
+    }
+
+    public function anonymizeAdherentRegistrations(Adherent $adherent)
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->update()
+            ->set('r.adherentUuid', $qb->expr()->literal(null))
+            ->set('r.firstName', $qb->expr()->literal('Anonyme'))
+            ->set('r.emailAddress', $qb->expr()->literal(null))
+            ->where('r.adherentUuid = :uuid')
+            ->setParameter(':uuid', $adherent->getUuid()->toString());
+
+        return $qb->getQuery()->execute();
     }
 }

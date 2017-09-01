@@ -36,6 +36,7 @@ class Summary
      * @var Adherent
      *
      * @ORM\OneToOne(targetEntity="Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $member;
 

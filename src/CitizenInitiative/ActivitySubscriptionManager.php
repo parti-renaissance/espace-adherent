@@ -36,4 +36,9 @@ class ActivitySubscriptionManager
 
         $this->manager->flush();
     }
+
+    public function removeAdherentActivities(Adherent $adherent): void
+    {
+        $this->repository->removeAdherentActivities($adherent);
+    }
 }
