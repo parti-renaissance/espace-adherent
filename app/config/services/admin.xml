@@ -10,12 +10,12 @@
 
         <!--
         ######################################################
-        # Communication
+        # Contenu
         ######################################################
          -->
 
         <service id="app.admin.media" class="AppBundle\Admin\MediaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Images / Vidéos" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Images / Vidéos" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\Media</argument>
@@ -31,7 +31,7 @@
         </service>
 
         <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\ArticleCategory</argument>
@@ -39,7 +39,7 @@
         </service>
 
         <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Actualités" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Actualités" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\Article</argument>
@@ -51,7 +51,7 @@
         </service>
 
         <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Pages statiques" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Pages statiques" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\Page</argument>
@@ -63,7 +63,7 @@
         </service>
 
         <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Vidéos Facebook" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Vidéos Facebook" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\FacebookVideo</argument>
@@ -71,7 +71,7 @@
         </service>
 
         <service id="app.admin.custom_search_result" class="AppBundle\Admin\CustomSearchResultAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\CustomSearchResult</argument>
@@ -79,7 +79,7 @@
         </service>
 
         <service id="app.admin.home_block" class="AppBundle\Admin\HomeBlockAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Accueil » Blocs d'articles" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Accueil » Blocs d'articles" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\HomeBlock</argument>
@@ -87,7 +87,7 @@
         </service>
 
         <service id="app.admin.live_link" class="AppBundle\Admin\LiveLinkAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Accueil » Liens En direct" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Accueil » Liens En direct" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\LiveLink</argument>
@@ -95,7 +95,7 @@
         </service>
 
         <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Catégories" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Catégories" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\SocialShareCategory</argument>
@@ -103,7 +103,7 @@
         </service>
 
         <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Contenus" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Contenus" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\SocialShare</argument>
@@ -123,7 +123,7 @@
         </service>
 
         <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Programme » Thèmes" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Programme » Thèmes" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\ProposalTheme</argument>
@@ -131,7 +131,7 @@
         </service>
 
         <service id="app.admin.proposal" class="AppBundle\Admin\ProposalAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Programme » Propositions" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Programme » Propositions" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\Proposal</argument>
@@ -143,7 +143,7 @@
         </service>
 
         <service id="app.admin.order_section" class="AppBundle\Admin\OrderSectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\OrderSection</argument>
@@ -151,7 +151,7 @@
         </service>
 
         <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\OrderArticle</argument>
@@ -163,7 +163,7 @@
         </service>
 
         <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\FacebookProfile</argument>
@@ -171,7 +171,7 @@
         </service>
 
         <service id="app.admin.redirection" class="AppBundle\Admin\RedirectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Communication" />
+            <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Contenu" />
 
             <argument />
             <argument>AppBundle\Entity\Redirection</argument>
