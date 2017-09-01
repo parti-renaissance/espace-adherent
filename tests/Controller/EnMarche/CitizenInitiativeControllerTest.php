@@ -98,7 +98,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-//        $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
+        $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
 
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 

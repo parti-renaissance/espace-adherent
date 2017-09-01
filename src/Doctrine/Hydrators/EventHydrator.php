@@ -30,21 +30,21 @@ class EventHydrator extends AbstractHydrator
         }
 
         if ('FR' === $row['event_address_country']) {
-            $addressEvent = PostAddress::createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_latitude'], $row['event_address_longitude']);
+            $addressEvent = $this->createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_latitude'], $row['event_address_longitude']);
         } else {
-            $addressEvent = PostAddress::createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
+            $addressEvent = $this->createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
         }
 
         if ('FR' === $row['committee_address_country']) {
-            $addressCommittee = PostAddress::createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_latitude'], $row['committee_address_longitude']);
+            $addressCommittee = $this->createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         } elseif ($row['committee_address_country']) {
-            $addressCommittee = PostAddress::createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
+            $addressCommittee = $this->createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         }
 
         if ('FR' === $row['adherent_address_country']) {
-            $addressAdherent = PostAddress::createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+            $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
         } else {
-            $addressAdherent = PostAddress::createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+            $addressAdherent = $this->createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
         }
 
         $uuidEvent = Uuid::fromString($row['event_uuid']);
@@ -85,5 +85,15 @@ class EventHydrator extends AbstractHydrator
         );
 
         $result[] = $event;
+    }
+
+    private function createFrenchAddress(?string $street, ?string $cityCode, ?float $latitude, ?float $longitude): PostAddress
+    {
+        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $latitude, $longitude);
+    }
+
+    private function createForeignAddress(?string $country, ?string $zipCode, ?string $cityName, ?string $street, ?float $latitude, ?float $longitude): PostAddress
+    {
+        return PostAddress::createForeignAddress($country ?? '', $zipCode ?? '', $cityName, $street ?? '', $latitude, $longitude);
     }
 }
