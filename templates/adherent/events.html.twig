@@ -54,7 +54,7 @@
                                     {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
                                 {% if event.type and event.isCitizenInitiative %}
-                                    <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                                    <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName|default('Anonyme') }}</span></div>
                                 {% elseif event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                                 {% elseif event.organizer and event.organizer.isReferent %}

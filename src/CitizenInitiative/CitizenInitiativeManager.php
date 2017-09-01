@@ -64,7 +64,7 @@ class CitizenInitiativeManager
 
     public function removeOrganizerCitizenInitiatives(Adherent $adherent): void
     {
-        $this->repository->anonymizeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_PAST);
+        $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_PAST, true);
         $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_UPCOMING);
     }
 }
