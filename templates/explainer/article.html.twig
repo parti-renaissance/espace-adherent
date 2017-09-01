@@ -1,28 +1,18 @@
-{% extends 'amp/_layout.html.twig' %}
+{% extends 'base.html.twig' %}
 
+{% block banner '' %}
 {% block page_title article.title %}
+{% block meta_description article.description %}
+{% block meta_twitter_description article.twitterDescription ?: article.description %}
+
 {% block canonical_url url('app_explainer_article_show', {'slug': article.slug}) %}
 
-{% block image %}{% spaceless %}
-    {% if article.media %}
-        {{ url('homepage')|trim('/') }}{{ media_asset(article.media)|raw }}
-    {% else %}
-        {{ url('homepage')|trim('/') ~ asset('images/default_sharer.jpg') }}
-    {% endif %}
-{% endspaceless %}{% endblock %}
+{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
+{% block open_graph_image_height (article.media ? article.media.height : default_sharer_height) %}
 
-{% block json_ld %}
-    <script type="application/ld+json">
-{
-    "@context": "http://schema.org",
-    "@type": "Article",
-    "name": "{{ block('page_title') }}",
-    "description": "{{ article.description }}",
-    "url": "{{ block('canonical_url') }}",
-    "image": "{{ block('image') }}"
-}
-</script>
-{% endblock %}
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
 
 {% block content %}
     <main class="content b__nudge--bottom">
