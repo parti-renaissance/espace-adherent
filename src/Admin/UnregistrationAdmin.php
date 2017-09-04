@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Adherent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,6 +10,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UnregistrationAdmin extends AbstractAdmin
 {
@@ -85,6 +87,22 @@ class UnregistrationAdmin extends AbstractAdmin
 
                     $qb->andWhere($qb->expr()->eq(sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
                     $qb->setParameter(':reason', sprintf('"%s"', $value['value']));
+
+                    return true;
+                },
+            ])
+            ->add('uuid', CallbackFilter::class, [
+                'label' => 'E-mail',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $uuid = Adherent::createUuid($value['value']);
+                    $qb->andWhere(sprintf('%s.uuid = :uuid', $alias));
+                    $qb->setParameter('uuid', $uuid->toString());
 
                     return true;
                 },
