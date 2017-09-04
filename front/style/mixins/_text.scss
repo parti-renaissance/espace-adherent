@@ -24,7 +24,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--small {
     font-size: $text--size-small;
-    line-height: 23px;
+    line-height: 20px;
 }
 
 @mixin text--default {
@@ -34,7 +34,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--medium-small {
     font-size: $text--size-medium--small;
-    line-height: 28px;
+    line-height: 22px;
 }
 
 @mixin text--medium-small--bold {

@@ -110,6 +110,12 @@
     }
 }
 
+@mixin btn--warning {
+    color: white;
+    background: $error;
+    border-color: $error;
+}
+
 .btn {
     @include btn;
 
@@ -199,6 +205,10 @@
         &:hover {
             background: black;
         }
+    }
+
+    &--warning {
+        @include btn--warning;
     }
 
     &--social {

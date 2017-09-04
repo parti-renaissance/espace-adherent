@@ -93,16 +93,48 @@
             }
         }
     }
+
     &__unsub {
-        label {
-            display: block;
-            margin-bottom: 10px;
-            @include text--body;
+        margin-bottom: 100px;
+
+        header {
+            background-size: cover;
+            height: 270px;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 60px;
+
+            @media (max-width: $mobile) {
+                background-position: 70%;
+            }
+
+            &.filtered-image:after {
+                @include classic-gradient($gradient);
+            }
+
+            div {
+                z-index: 1;
+            }
         }
 
-        input {
-            width: 250px;
-            margin-bottom: 20px;
+        &__intro {
+            @include text--body;
+
+            > div {
+                color: $error;
+            }
+
+            ul {
+                padding-left: 40px;
+                margin-top: 1em;
+                margin-bottom: 1em;
+            }
+
+            li {
+                list-style: disc;
+            }
         }
     }
 }
