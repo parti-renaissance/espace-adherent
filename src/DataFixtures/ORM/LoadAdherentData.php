@@ -28,8 +28,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
     const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
     const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
-    const ADHERENT_13_UUID = '8c000582-51a2-11e7-b114-b2f933d5fe66';
-    const ADHERENT_14_UUID = 'ddb35a17-b0d1-4ce0-bdae-83b9f7e3ac4f';
+    const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
+    const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
