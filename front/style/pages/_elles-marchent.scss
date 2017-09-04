@@ -1,4 +1,6 @@
 .content .elles-marchent {
+    margin-bottom: 100px;
+    
     a {
         color: white !important;
     }
@@ -62,10 +64,15 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                @include text--extra-large;
+                font-family: $font-gillsans;
+                font-style: italic;
+                font-weight: bold;
+                line-height: 32px;
 
-                a {
-                    color: white;
-                    border-color: white;
+                span {
+                    display: block;
+                    padding-left: 33px;
                 }
 
                 &:before,
