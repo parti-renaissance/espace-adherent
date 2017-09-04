@@ -32,6 +32,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_LEGISLATIVES',
             'ROLE_ADMIN_ADHERENTS',
             'ROLE_ADMIN_SUMMARY',
+            'ROLE_ADMIN_SKILLS',
             'ROLE_ADMIN_COMMITTEES',
             'ROLE_ADMIN_EVENTS',
             'ROLE_ADMIN_CITIZEN_INITIATIVES',
