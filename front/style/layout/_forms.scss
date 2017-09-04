@@ -52,10 +52,9 @@
     }
 
     &__errors {
-        padding-left: 13px !important;
-        padding-right: 13px;
-        @include text--smallest;
+        @include text--small;
         font-family: $font-roboto;
+        margin-bottom: 10px;
 
         li {
             list-style-type: none !important;
@@ -94,8 +93,19 @@
         width: 100%;
 
         label {
-            font-family: $font-roboto;
             @include text--small;
+            font-family: $font-roboto;
+
+            &.form__label--header {
+                @include text--medium-small;
+                font-family: $font-gillsans;
+                font-weight: bold;
+
+                span {
+                    font-weight: normal;
+                    color: $gray--muted;
+                }
+            }
         }
 
         &--stretch {
@@ -120,6 +130,32 @@
 
     &__error {
         color: $error;
+    }
+
+    &__textbox {
+        @include text--default;
+        width: 100%;
+        height: 100px;
+        padding: 10px 15px;
+    }
+
+    &__word {
+        color: $error;
+
+        label {
+            @include text--medium-small;
+            font-weight: bold;
+            font-family: $font-gillsans;
+        }
+
+        input {
+            width: 100%;
+            display: block;
+            @include text--default;
+            margin-top: 15px;
+            padding: 10px 15px;
+            margin-bottom: 40px;
+        }
     }
 
     &--full {
@@ -213,6 +249,10 @@
                 align-items: center;
                 justify-content: center;
             }
+        }
+
+        &--medium .form__label {
+            @include text--default;
         }
 
         &--large label:before {

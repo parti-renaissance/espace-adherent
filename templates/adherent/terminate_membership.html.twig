@@ -7,57 +7,65 @@
 <div>
     {% if not unregistered %}
         <div id="is_adherent" class="adherent_profile__unsub">
-            <section class="l__wrapper-560 text--center space--60-0">
-                <p class="text--body text--medium">Ceci es tirréversible !</p>
+            <header class="filtered-image progressive-background"
+                    data-sd="{{ static_asset('delete-account-bg.jpg', {'w': 300, 'q': 20}) }}"
+                    data-hd="{{ static_asset('delete-account-bg.jpg', {'q': 70}) }}">
+                <div class="l__wrapper--slim">
+                    <h1 class="text--center text--larger">
+                        Supprimer mon adhésion et mon compte <em>En Marche</em>
+                    </h1>
+                </div>
+            </header>
+            <section class="l__wrapper--600 adherent_profile__unsub__intro">
+                <div class="">Ceci est irréversible !</div>
                 <ul>
                     <li>Toutes vos données seront définitivement supprimées.</li>
                     <li>Nous arrêterons de vous envoyer des e-mails, mais il est possible que vous en receviez encore un ou deux cette semaine.</li>
                 </ul>
+            </section>
+
+            <section class="l__wrapper--600">
 
                 {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
 
                 {{ form_errors(form) }}
 
                 <div class="form__row">
-                    {{ form_label(form.reasons, 'Pourquoi je quitte En Marche') }}
+                    {{ form_label(form.reasons, 'Pourquoi je quitte En Marche', { label_attr: {'class': 'form__label--header'} }) }}
                 </div>
 
                 {{ form_errors(form.reasons) }}
 
-                <div class="form l__row l__row--wrap">
+                <div class="form l__col">
                     {% for reason in form.reasons %}
-                        <div class="form__checkbox form__checkbox--col">
+                        <div class="form__checkbox form__checkbox--medium">
                             {{ form_widget(reason) }}
                             {{ form_label(reason) }}
                         </div>
                     {% endfor %}
                 </div>
 
-                <div class="form__row">
-                    Mes commentaires à partager avec l’équipe En Marche<span>(facultatif)</span>
+                <div class="form__row b__nudge--top-large">
+                    <label class="form__label--header">Mes commentaires à partager avec l’équipe En Marche <span>(facultatif)</span></label>
                 </div>
-                <div class="form__row">
-                    {{ form_widget(form.comment) }}
+                <div class="form__row form__row--full">
+                    {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
                 </div>
-                <div class="form__row">
+                <div class="form__row form__word b__nudge--top-large">
                     {{ form_row(form.word) }}
                 </div>
 
-                <div>
-                    <button type="submit" class="btn btn--blue">
+                <div class="text--center">
+                    <button type="submit" class="btn btn--warning">
                         Je supprime définitivement mon compte En Marche
                     </button>
                 </div>
 
                 {{ form_end(form) }}
             </section>
-
-            <a href="{{ path('app_adherent_profile') }}" class="l__wrapper icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à mes informations</a>
         </div>
     {% else %}
-        <div id="is_not_adherent" class="l__wrapper-560 text--center text--body space--60-0">
+        <div id="is_not_adherent" class="l__wrapper--600 text--center text--body space--60-0">
             <p class="text--medium">Votre demande de désadhésion a bien été prise en compte.</p>
             <p>Nous sommes preneurs de retours. N'hésitez pas à nous faire parvenir les raisons de votre désadhésion en écrivant à contact@en-marche.fr.</p>
             <a href="{{ path('homepage') }}">Retour à l'accueil</a>
