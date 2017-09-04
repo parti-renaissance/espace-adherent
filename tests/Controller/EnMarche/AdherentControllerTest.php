@@ -672,7 +672,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
-        $this->assertSame('Votre demande de désadhésion a bien été prise en compte.', trim($crawler->filter('#is_not_adherent p')->eq(0)->text()));
+        $this->assertSame('Votre demande de désadhésion a bien été prise en compte.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
 

@@ -65,10 +65,23 @@
             </section>
         </div>
     {% else %}
-        <div id="is_not_adherent" class="l__wrapper--600 text--center text--body space--60-0">
-            <p class="text--medium">Votre demande de désadhésion a bien été prise en compte.</p>
-            <p>Nous sommes preneurs de retours. N'hésitez pas à nous faire parvenir les raisons de votre désadhésion en écrivant à contact@en-marche.fr.</p>
-            <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+        <div id="is_not_adherent" class="content">
+            <header>
+                <h1 class="space--60-0 l__wrapper--slim text--center text--large">
+                    Votre demande de désadhésion a bien été prise en compte.
+                </h1>
+                <hr class="l__wrapper"/>
+            </header>
+            <section class="l__wrapper--600 text--body">
+                <p>Nous sommes tristes de vous voir partir. Vous serez toujours les bienvenus si vous changez d’avis.</p>
+
+                <p>Si vous avez des questions, n’hésitez pas à nous contacter au 01 86 95 02 86 ou par e-mail à l’adresse <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.</p>
+
+                <p>À bientôt !</p>
+            </section>
+            <section class="text--center space--60-0">
+                <img class="l__wrapper--medium" src="{{ asset('images/a-bientot.jpg') }}"/>
+            </section>
         </div>
     {% endif %}
 </div>
