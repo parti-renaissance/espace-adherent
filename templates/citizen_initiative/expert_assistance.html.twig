@@ -2,13 +2,7 @@
 
 {% block main_section %}
     {% set event = initiative %}
-    {% if event.expertAssistanceDescription %}
-    <div class="committee-event-description b__nudge--top b__nudge--bottom-huge">
-        {{- event.expertAssistanceDescription|raw -}}
-    </div>
-    {% else %}
-    <p>L'organisateur recherche ce type de compétences :</p>    
-    {% endif %}
+    <p>L'organisateur recherche ce type de compétences :</p>
     <ul>
     {% for skill in event.skills %}
         <li>{{ skill }}</li>

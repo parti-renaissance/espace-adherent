@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenInitiativeRepository")
@@ -32,15 +31,6 @@ class CitizenInitiative extends BaseEvent
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $expertAssistanceNeeded = false;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true, nullable=true)
-     *
-     * @Assert\Length(max=250)
-     */
-    private $expertAssistanceDescription;
 
     /**
      * @var bool
@@ -94,7 +84,6 @@ class CitizenInitiative extends BaseEvent
         \DateTime $beginAt,
         \DateTime $finishAt,
         bool $expertAssistanceNeeded = false,
-        string $expertAssistanceDescription = '',
         bool $coachingRequested = false,
         CoachingRequest $coachingRequest = null,
         array $interests = [],
@@ -114,7 +103,6 @@ class CitizenInitiative extends BaseEvent
         $this->createdAt = $createdAt ?: new \DateTimeImmutable('now');
         $this->updatedAt = $createdAt ?: new \DateTime('now');
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
-        $this->expertAssistanceDescription = $expertAssistanceDescription;
         $this->coachingRequested = $coachingRequested;
         $this->coachingRequest = $coachingRequest;
         $this->interests = $interests;
@@ -137,7 +125,6 @@ class CitizenInitiative extends BaseEvent
         \DateTime $beginAt,
         \DateTime $finishAt,
         bool $expertAssistanceNeeded = false,
-        string $expertAssistanceDescription = '',
         bool $coachingRequested = false,
         CoachingRequest $coachingRequest = null,
         array $interests = [],
@@ -150,7 +137,6 @@ class CitizenInitiative extends BaseEvent
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
-        $this->expertAssistanceDescription = $expertAssistanceDescription;
         $this->coachingRequested = $coachingRequested;
         $this->coachingRequest = $coachingRequest;
         $this->setInterests($interests);
@@ -222,16 +208,6 @@ class CitizenInitiative extends BaseEvent
     public function setCoachingRequest(CoachingRequest $coachingRequest): void
     {
         $this->coachingRequest = $coachingRequest;
-    }
-
-    public function getExpertAssistanceDescription(): ?string
-    {
-        return $this->expertAssistanceDescription;
-    }
-
-    public function setExpertAssistanceDescription(?string $expertAssistanceDescription): void
-    {
-        $this->expertAssistanceDescription = $expertAssistanceDescription;
     }
 
     public function getCoachingRequest(): CoachingRequest
