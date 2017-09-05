@@ -71,7 +71,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 
         $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon événement')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon initiative')->form(), $data);
 
         $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
@@ -127,7 +127,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $data['citizen_initiative']['coaching_request']['required_means'] = "Voilà ce dont j'ai besoin";
         $data['citizen_initiative']['interests'][] = 'agriculture';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon événement')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon initiative')->form(), $data);
 
         $initiative = $this->getCitizenInitiativeRepository()->findOneBy(['name' => 'Mon initiative']);
 
