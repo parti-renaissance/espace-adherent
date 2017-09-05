@@ -341,6 +341,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.skill" class="AppBundle\Admin\SkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Gestion des compétences" group="Profils En Marche" />
+
+            <argument />
+            <argument>AppBundle\Entity\Skill</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.summary_mission_type" class="AppBundle\Admin\MissionTypeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Type de missions" group="Profils En Marche" />
 
