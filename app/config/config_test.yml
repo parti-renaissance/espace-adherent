@@ -23,6 +23,11 @@ services:
     old_sound_rabbit_mq.referent_message_dispatcher_producer:
         class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
 
+    # used for ignore check of departement for the period of testing IC only in 4 departments
+    app.citizen_initiative.controller_subscriber:
+        class: 'AppBundle\CitizenInitiative\CitizenInitiativeControllerSubscriber'
+        public: false
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'

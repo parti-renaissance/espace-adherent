@@ -320,6 +320,12 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="app.citizen_initiative.controller_subscriber" class="AppBundle\CitizenInitiative\CitizenInitiativeControllerSubscriber">
+            <argument type="service" id="router" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <!-- Referents -->
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
             <argument type="service" id="router" />

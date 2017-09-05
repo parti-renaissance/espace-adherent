@@ -37,6 +37,17 @@ class CitizenInitiativeController extends Controller
     use CanaryControllerTrait;
 
     /**
+     * @Route("/fonctionnalite_disponible_des_novembre", name="app_citizen_initiative_not_available")
+     * @Method("GET")
+     */
+    public function showIfCINotAvailableAction(): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('citizen_initiative/not_available.html.twig');
+    }
+
+    /**
      * @Route("/creer", name="app_create_citizen_initiative")
      * @Method("GET|POST")
      */
