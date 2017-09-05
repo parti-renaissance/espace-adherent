@@ -84,7 +84,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
             'citizen_initiative' => [
                 'name' => 'Nouveau titre',
                 'description' => 'Nouvelle description.',
-                'category' => $this->getCitizenInitiativeCategoryIdForName(LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC008']),
+                'category' => $this->getCitizenInitiativeCategoryIdForName(LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC006']),
                 'address' => [
                     'address' => 'Pilgerweg 58',
                     'country' => 'CH',

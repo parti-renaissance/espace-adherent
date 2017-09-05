@@ -64,11 +64,6 @@ class CitizenInitiativeCommand
 
     private $expertAssistanceNeeded;
 
-    /**
-     * @Assert\Length(max=250)
-     */
-    private $expertAssistanceDescription;
-
     private $skills;
 
     private $coachingRequested;
@@ -115,7 +110,6 @@ class CitizenInitiativeCommand
         $command->category = $citizenInitiative->getCategory();
         $command->description = $citizenInitiative->getDescription();
         $command->expertAssistanceNeeded = $citizenInitiative->isExpertAssistanceNeeded();
-        $command->expertAssistanceDescription = $citizenInitiative->getExpertAssistanceDescription();
         $command->coachingRequested = $citizenInitiative->isCoachingRequested();
         $command->coachingRequest = $citizenInitiative->getCoachingRequest();
         $command->interests = $citizenInitiative->getInterests();
@@ -267,16 +261,6 @@ class CitizenInitiativeCommand
     public function getCoachingRequest(): ?CoachingRequest
     {
         return $this->coachingRequest;
-    }
-
-    public function getExpertAssistanceDescription(): ?string
-    {
-        return $this->expertAssistanceDescription;
-    }
-
-    public function setExpertAssistanceDescription(?string $expertAssistanceDescription): void
-    {
-        $this->expertAssistanceDescription = $expertAssistanceDescription;
     }
 
     public function getCapacity(): ?int

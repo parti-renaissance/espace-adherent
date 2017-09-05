@@ -15,13 +15,13 @@ class Version20170731164115 extends AbstractMigration
         $this->addSql('ALTER TABLE activity_subscriptions ADD CONSTRAINT FK_5A543C57D7402F7 FOREIGN KEY (followed_adherent_id) REFERENCES adherents (id)');
         $this->addSql('ALTER TABLE citizen_initiative_skills ADD CONSTRAINT FK_F936A5506FBEFC74 FOREIGN KEY (citizen_initiative_id) REFERENCES events (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE citizen_initiative_skills ADD CONSTRAINT FK_F936A5505585C142 FOREIGN KEY (skill_id) REFERENCES skills (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE events ADD type VARCHAR(255) NOT NULL, ADD interests LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json_array)\', ADD expert_assistance_needed TINYINT(1) DEFAULT \'0\', ADD coaching_requested TINYINT(1) DEFAULT \'0\', ADD coaching_request_problem_description VARCHAR(255) DEFAULT NULL, ADD coaching_request_proposed_solution VARCHAR(255) DEFAULT NULL, ADD coaching_request_required_means VARCHAR(255) DEFAULT NULL, CHANGE is_for_legislatives is_for_legislatives TINYINT(1) DEFAULT \'0\'');
+        $this->addSql('ALTER TABLE events ADD type VARCHAR(255) NOT NULL, ADD interests LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json_array)\', ADD expert_assistance_needed TINYINT(1) DEFAULT \'0\', ADD expert_assistance_description VARCHAR(255) DEFAULT NULL, ADD coaching_requested TINYINT(1) DEFAULT \'0\', ADD coaching_request_problem_description VARCHAR(255) DEFAULT NULL, ADD coaching_request_proposed_solution VARCHAR(255) DEFAULT NULL, ADD coaching_request_required_means VARCHAR(255) DEFAULT NULL, CHANGE is_for_legislatives is_for_legislatives TINYINT(1) DEFAULT \'0\'');
     }
 
     public function down(Schema $schema)
     {
         $this->addSql('DROP TABLE activity_subscriptions');
         $this->addSql('DROP TABLE citizen_initiative_skills');
-        $this->addSql('ALTER TABLE events DROP type, DROP interests, DROP expert_assistance_needed, DROP coaching_requested, DROP coaching_request_problem_description, DROP coaching_request_proposed_solution, DROP coaching_request_required_means, CHANGE is_for_legislatives is_for_legislatives TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('ALTER TABLE events DROP type, DROP interests, DROP expert_assistance_needed, DROP expert_assistance_description, DROP coaching_requested, DROP coaching_request_problem_description, DROP coaching_request_proposed_solution, DROP coaching_request_required_means, CHANGE is_for_legislatives is_for_legislatives TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 }

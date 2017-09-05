@@ -97,9 +97,6 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
             ->add('requiredMeans', null, [
                 'label' => 'Question',
             ])
-            ->add('expertAssistanceDescription', null, [
-                'label' => 'Description',
-            ])
             ->add('skills', null, [
                 'label' => 'Compétences',
             ])

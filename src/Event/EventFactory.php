@@ -64,6 +64,8 @@ class EventFactory
             $data['finish_at'],
             $data['expert_assistance_needed'],
             $data['coaching_requested'],
+            null,
+            [],
             $data['capacity']
         );
     }
