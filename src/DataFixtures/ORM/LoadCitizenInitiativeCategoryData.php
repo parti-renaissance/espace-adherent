@@ -9,17 +9,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadCitizenInitiativeCategoryData implements FixtureInterface
 {
     const CITIZEN_INITIATIVE_CATEGORIES = [
-        'CIC001' => 'Kiosque (IC)',
-        'CIC002' => 'Réunion d\'équipe (IC)',
-        'CIC003' => 'Conférence-débat (IC)',
-        'CIC004' => 'Porte-à-porte (IC)',
-        'CIC005' => 'Atelier du programme (IC)',
-        'CIC006' => 'Tractage (IC)',
-        'CIC007' => 'Convivialité (IC)',
-        'CIC008' => 'Action ciblée (IC)',
-        'CIC009' => 'Événement innovant (IC)',
-        'CIC010' => 'Marche (IC)',
-        'CIC011' => 'Support party (IC)',
+        'CIC001' => 'Nature et environnement',
+        'CIC002' => 'Education et citoyenneté',
+        'CIC003' => 'Culture et loisirs',
+        'CIC004' => 'Lien intergénérationnel',
+        'CIC005' => 'Aide aux personnes en difficulté',
+        'CIC006' => 'Bien-être et santé',
     ];
 
     public function load(ObjectManager $manager)

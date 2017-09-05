@@ -51,7 +51,9 @@
             <h1 class="text--large text--center">
                 Je crée mon initiative citoyenne
             </h1>
-            <div class="text--body text--center b__nudge--top-10">Vous pouvez désormais créer votre propre initiative citoyenne. Celle-ci sera diffusée aux adhérents autour de vous qui partagent les mêmes centres d’intérêt.</div>
+            <div class="text--body text--center b__nudge--top-10">
+                Une initiative citoyenne est une action locale concrète qui vise à améliorer la vie de chacun. Créer un jardin partagé, mutualiser la garde d’enfants dans un quartier ou encore donner des cours du soir à des élèves en difficulté en sont quelques exemples.
+            </div>
         </header>
         <hr/>
         {% endif %}
@@ -63,14 +65,14 @@
 
             <div class="form__row" id="citizen-initiative-name-field">
                 {{ form_errors(form.name) }}
-                {{ form_label(form.name, "Nom de l'événement") }}
-                {{ form_widget(form.name, { attr: { class: 'form--full citizen_initiative__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
+                {{ form_label(form.name, "Nom de l'initiative") }}
+                {{ form_widget(form.name, { attr: { class: 'form--full citizen_initiative__form__name', 'placeholder': "Entrez le nom de l'initiative (Max 100 caractères)" } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-description-field">
                 {{ form_errors(form.category) }}
-                {{ form_label(form.category, "Quel type d'événement organisez-vous ?") }}
-                {{ form_widget(form.category, { attr: { class: 'form--full citizen_initiative__form__category', 'placeholder': "Choisissez le type de l'événement" } }) }}
+                {{ form_label(form.category, "Quel thème correspond à votre initiative ?") }}
+                {{ form_widget(form.category, { attr: { class: 'form--full citizen_initiative__form__category', 'placeholder': "Choisissez le thème de l'initiative" } }) }}
             </div>
             <div class="form__row" id="citizen-initiative-beginat-field">
                 {{ form_errors(form.beginAt) }}
@@ -89,8 +91,8 @@
 
                 <div class="form__row citizen_initiative__form--trunc" id="citizen-initiative-address-address-field">
                     {{ form_errors(form.address.address) }}
-                    {{ form_label(form.address.address, "Adresse") }}
-                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
+                    {{ form_label(form.address.address, "Lieu") }}
+                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez le lieu de l'initiative" } }) }}
                 </div>
 
                 <div class="citizen_initiative__address l__row l__row--h-stretch l__mobile--col">
@@ -120,18 +122,18 @@
             <div class="form__row" id="citizen-initiative-description-field">
                 {{ form_errors(form.description) }}
                 {{ form_label(form.description, 'À propos') }}
-                {{ form_widget(form.description, { attr: { class: 'citizen_initiative__description', 'placeholder': 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '15', 'cols': '70' } }) }}
+                {{ form_widget(form.description, { attr: { class: 'citizen_initiative__description', 'placeholder': 'Entrez un paragraphe afin de décrire cette initiative.', 'rows': '15', 'cols': '70' } }) }}
             </div>
 
             <div class="form__row l__col" id="committee-event-capacity-field">
                 {{ form_errors(form.capacity) }}
-                {{ form_label(form.capacity, 'Capacité') }}
+                {{ form_label(form.capacity, 'De combien de volontaires avez-vous besoin ?') }}
                 {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity register__form--third' } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-interests-field">
                 {{ form_errors(form.interests) }}
-                {{ form_label(form.interests, 'Quelles sont les thématiques liées à votre événement ?') }}
+                {{ form_label(form.interests, 'Quelles sont les thématiques liées à votre initiative ?') }}
                 <div class="l__row l__row--wrap l__tablet-col">
                     {% for interest in form.interests %}
                         <div class="form__checkbox form__checkbox--col citizen_initiative__interests">
@@ -144,19 +146,10 @@
 
             <div class="form__row b__nudge--top" id="citizen-initiative-expert_assistance_needed-field">
                 <h3 class="text--medium-small">
-                    Souhaitez-vous l’aide d’un expert pour vous aider à réaliser votre initiative ?
+                    J’ai besoin de compétences spécifiques d’autres adhérents
                 </h3>
-                <div class="text--summary b__nudge--bottom-small">
-                    L'expert vous accompagnera durant la durée de l’initiative en mettant à disposition les compétences requises.
-                </div>
                 {{ form_errors(form.expert_assistance_needed) }}
                 {{ form_widget(form.expert_assistance_needed, { attr: { class: 'citizen_initiative__expert_assistance_needed form__radio-button' } }) }}
-            </div>
-
-            <div class="form__row" id="citizen-initiative-expert_assistance_description-field">
-                {{ form_errors(form.expert_assistance_description) }}
-                {{ form_label(form.expert_assistance_description, 'Si oui, décrivez-nous votre besoin (max 250 mots)') }}
-                {{ form_widget(form.expert_assistance_description, { attr: { class: 'form--full form__field--textarea-120 citizen_initiative__expert_assistance_description', 'rows': '20', 'cols': '70' } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-skills-field">
@@ -171,11 +164,8 @@
             <div class="form__row b__nudge--top" id="citizen-initiative-coaching_requested-field">
                 {{ form_errors(form.coaching_requested) }}
                 <h3 class="text--medium-small">
-                    Souhaitez-vous un accompagnement d'en Marche pour cette initiative ?
+                    Je sollicite un accompagnement personnalisé de la part d’En Marche
                 </h3>
-                <div class="text--summary b__nudge--bottom-small">
-                    Nous sommes là pour vous aider à faire ceci ou cela.
-                </div>
                 <div class="form__checkbox form__checkbox--col citizen_initiative__coaching_requested">
                     {{ form_widget(form.coaching_requested) }}
                     {{ form_label(form.coaching_requested, 'Oui, avec plaisir !') }}
@@ -184,20 +174,21 @@
 
             <div class="form__row" id="citizen-initiative-problem_description-field">
                 {{ form_errors(form.coaching_request.problem_description) }}
-                {{ form_label(form.coaching_request.problem_description, 'Je décris le besoin / problème que je souhaite adresser (ex : la pollution des plages, l\'isolement des personnes âgées)') }}
+                {{ form_label(form.coaching_request.problem_description, 'A quel besoin local mon initiative répond-elle ?') }}
+                <div class="text--gray">Ex. pollution des plages, isolement des personnes âgées</div>
                 {{ form_widget(form.coaching_request.problem_description, { attr: { class: 'citizen_initiative__problem_description form--full form__field--textarea-120' } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-proposed_solution-field">
                 {{ form_errors(form.coaching_request.proposed_solution) }}
-                {{ form_label(form.coaching_request.proposed_solution, 'Je décris comment je compte l\'adresser') }}
+                {{ form_label(form.coaching_request.proposed_solution, 'Comment je souhaite y répondre ?') }}
                 {{ form_widget(form.coaching_request.proposed_solution, { attr: { class: 'citizen_initiative__proposed_solution form--full form__field--textarea-120' } }) }}
             </div>
 
             <div class="form__row" id="citizen-initiative-required_means-field">
                 {{ form_errors(form.coaching_request.required_means) }}
-                {{ form_label(form.coaching_request.required_means, 'Je décris ce dont j\'ai besoin') }}
-                {{ form_widget(form.coaching_request.required_means, { attr: { class: 'citizen_initiative__required_means form--full form__field--textarea-120' } }) }}
+                {{ form_label(form.coaching_request.required_means, 'En quoi l\'équipe d’accompagnement peut-elle m\'aider ?') }}
+                {{ form_widget(form.coaching_request.required_means, { attr: { class: 'citizen_initiative__required_means form--full form__field--textarea-120', placeholder: 'Précisez les grandes lignes de votre action' } }) }}
             </div>
 
             {% if initiative.slug is defined %}

@@ -121,7 +121,6 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $data['citizen_initiative']['description'] = 'Mon initiative en Suisse';
         $data['citizen_initiative']['capacity'] = 15;
         $data['citizen_initiative']['expert_assistance_needed'] = 1;
-        $data['citizen_initiative']['expert_assistance_description'] = 'J\'ai besoin d\'aide';
         $data['citizen_initiative']['coaching_requested'] = 1;
         $data['citizen_initiative']['coaching_request']['problem_description'] = 'Mon problème est ...';
         $data['citizen_initiative']['coaching_request']['proposed_solution'] = 'Voici ma proposition';
