@@ -33,9 +33,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
 
     public function load(ObjectManager $manager)
     {
-        $category1 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC007']]);
-        $category2 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC008']]);
-        $category3 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC009']]);
+        $category1 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC004']]);
+        $category2 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC005']]);
+        $category3 = $manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => LoadCitizenInitiativeCategoryData::CITIZEN_INITIATIVE_CATEGORIES['CIC006']]);
 
         $author1 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $author2 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
@@ -55,7 +55,6 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
             'expert_assistance_needed' => true,
-            'expert_assistance_description' => 'Besoin quelqu\'un de la Croix Rouge',
             'coaching_requested' => false,
             'capacity' => 20,
         ]);
@@ -75,7 +74,6 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+9 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+ 9 days')).' 19:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 30,
         ]);
@@ -94,8 +92,6 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 09:30:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 16:00:00'),
             'expert_assistance_needed' => true,
-            'expert_assistance_description' => 'J’ai besoin d’aide pour cet événement. Besoin de quelqu’un ayant le permis poids lourd pour pouvoir
-transporter tous les déchets lourds trouvés.',
             'coaching_requested' => true,
             'capacity' => 20,
         ]);
@@ -115,7 +111,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 10:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 15:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 20,
         ]);
@@ -134,7 +129,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
@@ -153,7 +147,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 18:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 5,
         ]);
@@ -172,7 +165,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
@@ -191,7 +183,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
@@ -207,7 +198,6 @@ transporter tous les déchets lourds trouvés.',
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 09:00:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
-            'expert_assistance_description' => '',
             'coaching_requested' => false,
             'capacity' => 10,
         ]);
