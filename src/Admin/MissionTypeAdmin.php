@@ -12,7 +12,7 @@ class MissionTypeAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
-        '_par_page' => 32,
+        '_per_page' => 32,
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
