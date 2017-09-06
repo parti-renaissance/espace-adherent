@@ -39,11 +39,16 @@ class CitizenInitiativeController extends Controller
     /**
      * @Route("/creer", name="app_create_citizen_initiative")
      * @Method("GET|POST")
-     * @Security("is_granted('CREATE_CITIZEN_INITIATIVE')")
      */
     public function createCitizenInitiativeAction(Request $request, ?CitizenInitiativeCommand $command): Response
     {
         $this->disableInProduction();
+
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('page_campus');
+        } elseif (!$this->isGranted('CREATE_CITIZEN_INITIATIVE')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $command = new CitizenInitiativeCommand($this->getUser());
         $form = $this->createForm(CitizenInitiativeType::class, $command)->handleRequest($request);

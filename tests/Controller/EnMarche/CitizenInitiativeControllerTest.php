@@ -35,7 +35,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/campus', $this->client);
     }
 
     public function testHostCannotCreateCitizenInitiative()
