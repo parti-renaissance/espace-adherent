@@ -97,7 +97,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $data['committee_event']['address']['country'] = 'CH';
         $data['committee_event']['description'] = 'Premier événement en Suisse';
         $data['committee_event']['capacity'] = 100;
-        $data['committee_event']['isForLegislatives'] = 1;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
 
