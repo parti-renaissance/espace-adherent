@@ -180,37 +180,13 @@ class EventAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('hostFirstName', CallbackFilter::class, [
+            ->add('organizer.firstName', null, [
                 'label' => 'Prénom de l\'organisateur',
                 'show_filter' => true,
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
-                    $qb->andWhere('organizer.firstName LIKE :firstname');
-                    $qb->setParameter('firstname', $value['value']);
-
-                    return true;
-                },
             ])
-            ->add('hostLastName', CallbackFilter::class, [
+            ->add('organizer.lastName', null, [
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->leftJoin(sprintf('%s.organizer', $alias), 'organizer');
-                    $qb->andWhere('organizer.lastName LIKE :lastName');
-                    $qb->setParameter('lastName', $value['value']);
-
-                    return true;
-                },
             ])
             ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal (préfixe)',
