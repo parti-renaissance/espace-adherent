@@ -10,6 +10,7 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\Summary;
 use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
@@ -101,6 +102,7 @@ class MembershipRequestHandler
 
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
+        $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
 
         $this->removeAdherentMemberShips($adherent);
         $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
@@ -110,6 +112,9 @@ class MembershipRequestHandler
 
         if ($token) {
             $this->manager->remove($token);
+        }
+        if ($summary) {
+            $this->manager->remove($summary);
         }
         $this->manager->remove($adherent);
         $this->manager->flush();
