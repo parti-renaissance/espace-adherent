@@ -11,6 +11,7 @@ final class CitizenInitiativeRegistrationConfirmationMessage extends MailjetMess
     {
         $event = $registration->getEvent();
         $firstName = $registration->getFirstName();
+        $organizer = $event->getOrganizer();
 
         return new self(
             Uuid::uuid4(),
@@ -18,11 +19,31 @@ final class CitizenInitiativeRegistrationConfirmationMessage extends MailjetMess
             $registration->getEmailAddress(),
             self::fixMailjetParsing($firstName),
             'Confirmation de participation à une initiative citoyenne En Marche !',
-            [
-                'prenom' => self::escape($firstName),
-                'IC_name' => self::escape($event->getName()),
-                'IC_organiser_firstname' => self::escape($event->getOrganizerName()),
-            ]
+            static::getTemplateVars(
+                $event->getName(),
+                $organizer->getFirstName(),
+                $organizer->getLastName()
+            ),
+            static::getRecipientVars($firstName)
         );
+    }
+
+    private static function getTemplateVars(
+        string $initiativeName,
+        string $referentFirstName,
+        string $referentLastName
+    ): array {
+        return [
+            'IC_name' => self::escape($initiativeName),
+            'IC_organiser_firstname' => self::escape($referentFirstName),
+            'IC_organiser_lastname' => self::escape($referentLastName),
+        ];
+    }
+
+    public static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'prenom' => self::escape($firstName),
+        ];
     }
 }

@@ -31,7 +31,7 @@ class CitizenInitiativeAdherentsNearMessageTest extends AbstractEventMessageTest
         $this->assertSame('196480', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('1 février - 15h30 : Nouvelle initiative citoyenne : En Marche Lyon', $message->getSubject());
-        $this->assertCount(9, $message->getVars());
+        $this->assertCount(7, $message->getVars());
         $this->assertSame(
             [
                 'IC_organizer_firstname' => 'Émmanuel',
@@ -41,8 +41,6 @@ class CitizenInitiativeAdherentsNearMessageTest extends AbstractEventMessageTest
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'target_firstname' => '',
             ],
             $message->getVars()
         );
@@ -60,13 +58,13 @@ class CitizenInitiativeAdherentsNearMessageTest extends AbstractEventMessageTest
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'target_firstname' => 'Émmanuel',
+                'prenom' => 'Émmanuel',
             ],
             $recipient->getVars()
         );
 
         $recipient = $message->getRecipient(3);
+
         $this->assertInstanceOf(MailjetMessageRecipient::class, $recipient);
         $this->assertSame('ez@example.com', $recipient->getEmailAddress());
         $this->assertSame('Éric Zitrone', $recipient->getFullName());
@@ -79,8 +77,7 @@ class CitizenInitiativeAdherentsNearMessageTest extends AbstractEventMessageTest
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'target_firstname' => 'Éric',
+                'prenom' => 'Éric',
             ],
             $recipient->getVars()
         );

@@ -10,8 +10,10 @@ class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEvent
 {
     public function testCreateMessageFromEventRegistration()
     {
+        $organizer = $this->createAdherentMock('michelle.doe@example.com', 'Michelle', 'Doe');
+
         $event = $this->createEventMock('Grand Meeting de Paris', '2017-02-01 15:30:00', 'Palais des Congrés, Porte Maillot', '75001-75101', 'EM Paris');
-        $event->expects($this->any())->method('getOrganizerName')->willReturn('Michelle');
+        $event->expects($this->any())->method('getOrganizer')->willReturn($organizer);
 
         $registration = $this->createMock(EventRegistration::class);
         $registration->expects($this->any())->method('getEvent')->willReturn($event);
@@ -28,9 +30,9 @@ class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEvent
         $this->assertSame('Confirmation de participation à une initiative citoyenne En Marche !', $message->getSubject());
         $this->assertSame(
             [
-                'prenom' => 'John',
                 'IC_name' => 'Grand Meeting de Paris',
                 'IC_organiser_firstname' => 'Michelle',
+                'IC_organiser_lastname' => 'Doe',
             ],
             $message->getVars()
         );

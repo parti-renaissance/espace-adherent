@@ -16,20 +16,39 @@ final class CitizenInitiativeOrganizerValidationMessage extends MailjetMessage
             $recipient->getEmailAddress(),
             self::fixMailjetParsing($recipient->getFullName()),
             'Validation de votre initiative citoyenne',
-            [
-                'prenom' => self::escape($recipient->getFirstName()),
-                'IC_name' => self::escape($initiative->getName()),
-                'IC_date' => self::formatDate($initiative->getBeginAt(), 'EEEE d MMMM y'),
-                'IC_hour' => sprintf(
+            self::getTemplateVars(
+                $initiative->getName(),
+                self::formatDate($initiative->getBeginAt(), 'EEEE d MMMM y'),
+                sprintf(
                     '%sh%s',
                     self::formatDate($initiative->getBeginAt(), 'HH'),
                     self::formatDate($initiative->getBeginAt(), 'mm')
                 ),
-                'IC_address' => self::escape($initiative->getInlineFormattedAddress()),
-                'IC_slug' => self::escape($initiative->getSlug()),
-                'IC_link' => $citizenInitiativeLink,
-            ]
+                $initiative->getInlineFormattedAddress()
+            ),
+            self::getRecipientVars($recipient->getFirstName())
         );
+    }
+
+    private static function getTemplateVars(
+        string $citizenInitiativeName,
+        string $citizenInitiativeDate,
+        string $citizenInitiativeHour,
+        string $citizenInitiativeAddress
+    ): array {
+        return [
+            'IC_name' => self::escape($citizenInitiativeName),
+            'IC_date' => $citizenInitiativeDate,
+            'IC_hour' => $citizenInitiativeHour,
+            'IC_address' => self::escape($citizenInitiativeAddress),
+        ];
+    }
+
+    public static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'prenom' => self::escape($firstName),
+        ];
     }
 
     private static function formatDate(\DateTime $date, string $format): string

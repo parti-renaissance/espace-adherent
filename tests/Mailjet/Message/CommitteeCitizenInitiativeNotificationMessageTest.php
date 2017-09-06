@@ -39,21 +39,15 @@ class CommitteeCitizenInitiativeNotificationMessageTest extends AbstractEventMes
         $this->assertSame('196519', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('Des nouvelles de votre comité', $message->getSubject());
-        $this->assertCount(12, $message->getVars());
+        $this->assertCount(6, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Kévin',
-                'IC_organizer_firstname' => 'Jean',
-                'IC_organizer_lastname' => 'Baptiste',
                 'IC_name' => 'En Marche Lyon',
                 'IC_date' => 'mercredi 1 février 2017',
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_attend_link' => self::ATTEND_CITIZEN_INITIATIVE_URL,
-                'target_message' => 'Cette initiative est superbe !',
-                'target_firstname' => '',
             ],
             $message->getVars()
         );
@@ -65,17 +59,12 @@ class CommitteeCitizenInitiativeNotificationMessageTest extends AbstractEventMes
         $this->assertSame(
             [
                 'animator_firstname' => 'Kévin',
-                'IC_organizer_firstname' => 'Jean',
-                'IC_organizer_lastname' => 'Baptiste',
                 'IC_name' => 'En Marche Lyon',
                 'IC_date' => 'mercredi 1 février 2017',
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_attend_link' => self::ATTEND_CITIZEN_INITIATIVE_URL,
-                'target_message' => 'Cette initiative est superbe !',
-                'target_firstname' => 'Émmanuel',
+                'prenom' => 'Émmanuel',
             ],
             $recipient->getVars()
         );
@@ -87,17 +76,12 @@ class CommitteeCitizenInitiativeNotificationMessageTest extends AbstractEventMes
         $this->assertSame(
             [
                 'animator_firstname' => 'Kévin',
-                'IC_organizer_firstname' => 'Jean',
-                'IC_organizer_lastname' => 'Baptiste',
                 'IC_name' => 'En Marche Lyon',
                 'IC_date' => 'mercredi 1 février 2017',
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'IC_slug' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
-                'IC_attend_link' => self::ATTEND_CITIZEN_INITIATIVE_URL,
-                'target_message' => 'Cette initiative est superbe !',
-                'target_firstname' => 'Éric',
+                'prenom' => 'Éric',
             ],
             $recipient->getVars()
         );

@@ -35,9 +35,6 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
 
         $vars = static::getTemplateVars(
             $feedItem->getAuthorFirstName(),
-            $feedItem->getContent(),
-            $organizer->getFirstName(),
-            $organizer->getLastName(),
             $citizenInitiative->getName(),
             self::formatDate($citizenInitiative->getBeginAt(), 'EEEE d MMMM y'),
             sprintf(
@@ -46,8 +43,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
                 self::formatDate($citizenInitiative->getBeginAt(), 'mm')
             ),
             $citizenInitiative->getInlineFormattedAddress(),
-            $citizenInitiativeLink,
-            $attendLink
+            $citizenInitiativeLink
         );
 
         $message = new self(
@@ -80,36 +76,26 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
 
     private static function getTemplateVars(
         string $hostFirstName,
-        string $hostMessage,
-        string $organizerFirstName,
-        string $organizerLastName,
         string $citizenInitiativeName,
         string $citizenInitiativeDate,
         string $citizenInitiativeHour,
         string $citizenInitiativeAddress,
-        string $citizenInitiativeLink,
-        string $attendLink
+        string $citizenInitiativeLink
     ): array {
         return [
             'animator_firstname' => self::escape($hostFirstName),
-            'IC_organizer_firstname' => self::escape($organizerFirstName),
-            'IC_organizer_lastname' => self::escape($organizerLastName),
             'IC_name' => self::escape($citizenInitiativeName),
             'IC_date' => $citizenInitiativeDate,
             'IC_hour' => $citizenInitiativeHour,
             'IC_address' => self::escape($citizenInitiativeAddress),
             'IC_slug' => $citizenInitiativeLink,
-            'IC_link' => $citizenInitiativeLink,
-            'IC_attend_link' => $attendLink,
-            'target_message' => $hostMessage,
-            'target_firstname' => '',
         ];
     }
 
     public static function getRecipientVars(string $firstName): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'prenom' => self::escape($firstName),
         ];
     }
 
