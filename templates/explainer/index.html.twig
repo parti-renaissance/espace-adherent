@@ -25,12 +25,24 @@
             </header>
 
             <article>
-                {{ page.content|markdown }}
+                <div class="explainer__description">
+                    <p>
+                        Nous savons que le travail, quand il est exercé dans de
+                        bonnes conditions et correctement payé, est un facteur
+                        d’émancipation et de progression sociale.
+                    </p>
+                    <p>
+                        Face aux évolutions rapides du monde économique, à la
+                        transformation numérique, au chômage de masse qui ne
+                        faiblit pas et à la précarité, nous devons tout faire
+                        pour que chacun trouve sa place.
+                    </p>
+                </div>
             </article>
 
             <section class="explainer__articles">
                 <ul>
-                    {% for section in sections %}
+                    {% for section in sections|slice(0, 1) %}
                     <li>
                         <h2>{{ section.name }}</h2>
 
@@ -46,7 +58,30 @@
                     </li>
                     {% endfor %}
                 </ul>
+            </section>
 
+            <article>
+                {{ page.content|markdown }}
+            </article>
+
+            <section class="explainer__articles">
+                <ul>
+                    {% for section in sections[1:] %}
+                    <li>
+                        <h2>{{ section.name }}</h2>
+
+                        <ul>
+                            {% for article in section.getPublishedArticlesOrderedByPosition %}
+                                <li>
+                                    <a href="{{ path('app_explainer_article_show', {'slug': article.slug}) }}">
+                                        {{ article.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
             </section>
 
         </section>
