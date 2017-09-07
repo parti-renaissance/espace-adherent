@@ -21,9 +21,9 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
                 $feedItem->getAuthor()->getLastName(),
                 $contactLink,
                 $feedItem->getCommittee()->getName(),
-                $recipient->getFirstName(),
                 $feedItem->getEvent()->getName()
-            )
+            ),
+            static::getRecipientVars($recipient->getFirstName())
         );
 
         return $message;
@@ -34,16 +34,21 @@ final class CommitteeCitizenInitiativeOrganizerNotificationMessage extends Mailj
         string $referentLastName,
         string $contactLink,
         string $committeeName,
-        string $targetFirstName,
         string $initiativeName
     ): array {
         return [
-            'referent_firstname' => self::escape($referentFirstName),
-            'referent_lastname' => self::escape($referentLastName),
-            'referent_contact_link' => $contactLink,
+            'animator_firstname' => self::escape($referentFirstName),
+            'animator_lastname' => self::escape($referentLastName),
+            'animator_contact_link' => $contactLink,
             'committee_name' => self::escape($committeeName),
-            'target_firstname' => self::escape($targetFirstName),
             'IC_name' => $initiativeName,
+        ];
+    }
+
+    public static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'prenom' => self::escape($firstName),
         ];
     }
 }

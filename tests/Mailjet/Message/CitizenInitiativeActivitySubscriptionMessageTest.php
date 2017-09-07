@@ -30,7 +30,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
         $this->assertSame('196524', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('Nouvelle initiative citoyenne : Initiative citoyenne à Lyon', $message->getSubject());
-        $this->assertCount(8, $message->getVars());
+        $this->assertCount(7, $message->getVars());
         $this->assertSame(
             [
                 'IC_organizer_firstname' => 'Émmanuel',
@@ -39,8 +39,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'event_slug' => self::CITIZEN_INITIATIVE_SLUG,
-                'prenom' => 'Émmanuel',
+                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
             ],
             $message->getVars()
         );
@@ -57,7 +56,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'event_slug' => self::CITIZEN_INITIATIVE_SLUG,
+                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
                 'prenom' => 'Émmanuel',
             ],
             $recipient->getVars()
@@ -75,7 +74,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'event_slug' => self::CITIZEN_INITIATIVE_SLUG,
+                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
                 'prenom' => 'Éric',
             ],
             $recipient->getVars()

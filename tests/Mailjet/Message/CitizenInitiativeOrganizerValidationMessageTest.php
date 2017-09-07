@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Mailjet\Message\CitizenInitiativeOrganizerValidationMessage;
+use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
 class CitizenInitiativeOrganizerValidationMessageTest extends AbstractEventMessageTest
 {
@@ -11,9 +12,6 @@ class CitizenInitiativeOrganizerValidationMessageTest extends AbstractEventMessa
     public function testCreateCitizenInitiativeAdherentsNearMessage()
     {
         $adherent[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
-        $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');
-        $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
-        $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
 
         $message = CitizenInitiativeOrganizerValidationMessage::create(
             $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron'),
@@ -24,18 +22,31 @@ class CitizenInitiativeOrganizerValidationMessageTest extends AbstractEventMessa
         $this->assertInstanceOf(CitizenInitiativeOrganizerValidationMessage::class, $message);
         $this->assertSame('196469', $message->getTemplate());
         $this->assertSame('Validation de votre initiative citoyenne', $message->getSubject());
-        $this->assertCount(7, $message->getVars());
+        $this->assertCount(4, $message->getVars());
         $this->assertSame(
             [
-                'prenom' => 'Émmanuel',
                 'IC_name' => 'En Marche Lyon',
                 'IC_date' => 'mercredi 1 février 2017',
                 'IC_hour' => '15h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'IC_slug' => 'en-marche-lyon',
-                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
             ],
             $message->getVars()
+        );
+
+        $recipient = $message->getRecipient(0);
+
+        $this->assertInstanceOf(MailjetMessageRecipient::class, $recipient);
+        $this->assertSame('em@example.com', $recipient->getEmailAddress());
+        $this->assertSame('Émmanuel Macron', $recipient->getFullName());
+        $this->assertSame(
+            [
+                'IC_name' => 'En Marche Lyon',
+                'IC_date' => 'mercredi 1 février 2017',
+                'IC_hour' => '15h30',
+                'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
+                'prenom' => 'Émmanuel',
+            ],
+            $recipient->getVars()
         );
     }
 }

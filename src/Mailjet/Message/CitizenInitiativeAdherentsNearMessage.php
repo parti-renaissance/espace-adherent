@@ -95,16 +95,13 @@ final class CitizenInitiativeAdherentsNearMessage extends MailjetMessage
             'IC_hour' => $citizenInitiativeHour,
             'IC_address' => self::escape($citizenInitiativeAddress),
             'IC_slug' => $citizenInitiativeLink,
-            'IC_link' => $citizenInitiativeLink,
-            // Recipient specific template variables
-            'target_firstname' => '',
         ];
     }
 
     public static function getRecipientVars(string $firstName): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'prenom' => self::escape($firstName),
         ];
     }
 

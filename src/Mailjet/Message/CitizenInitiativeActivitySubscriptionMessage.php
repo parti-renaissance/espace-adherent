@@ -44,8 +44,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
                 self::formatDate($citizenInitiative->getBeginAt(), 'mm')
             ),
             $citizenInitiative->getInlineFormattedAddress(),
-            $citizenInitiative->getSlug(),
-            $recipient->getFirstName()
+            $citizenInitiative->getSlug()
         );
 
         $message = new static(
@@ -81,8 +80,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
         string $citizenInitiativeDate,
         string $citizenInitiativeHour,
         string $citizenInitiativeAddress,
-        string $citizenInitiativeSlug,
-        string $recipientFirstName
+        string $citizenInitiativeSlug
     ): array {
         return [
             // Global common variables
@@ -92,9 +90,7 @@ final class CitizenInitiativeActivitySubscriptionMessage extends MailjetMessage
             'IC_date' => $citizenInitiativeDate,
             'IC_hour' => $citizenInitiativeHour,
             'IC_address' => self::escape($citizenInitiativeAddress),
-            'event_slug' => $citizenInitiativeSlug,
-            // Recipient specific template variables
-            'prenom' => self::escape($recipientFirstName),
+            'IC_slug' => $citizenInitiativeSlug,
         ];
     }
 
