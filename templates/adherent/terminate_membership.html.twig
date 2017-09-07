@@ -8,20 +8,25 @@
     {% if not unregistered %}
         <div id="is_adherent" class="adherent_profile__unsub">
             <header class="filtered-image progressive-background"
-                    data-sd="{{ static_asset('delete-account-bg.jpg', {'w': 300, 'q': 20}) }}"
-                    data-hd="{{ static_asset('delete-account-bg.jpg', {'q': 70}) }}">
-                <div class="l__wrapper--slim">
+                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', {'w': 300, 'q': 20}) }}"
+                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', {'q': 70}) }}">
+                <div class="l__wrapper--narrow">
                     <h1 class="text--center text--larger">
-                        Supprimer mon adhésion et mon compte <em>En Marche</em>
+                        Je souhaite supprimer mon adhésion et mon compte <em>En Marche</em>
                     </h1>
                 </div>
             </header>
             <section class="l__wrapper--600 adherent_profile__unsub__intro">
-                <div class="">Ceci est irréversible !</div>
-                <ul>
-                    <li>Toutes vos données seront définitivement supprimées.</li>
-                    <li>Nous arrêterons de vous envoyer des e-mails, mais il est possible que vous en receviez encore un ou deux cette semaine.</li>
-                </ul>
+                <p>
+                    Vous êtes un marcheur, vous avez décidé de vous engager pour
+                    participer au renouvellement de la vie politique et à la
+                    transformation de notre pays.
+                    Grâce à vous, Emmanuel Macron est devenu Président de la
+                    République et les députés de notre mouvement ont obtenu la
+                    confiance des Français.<br>
+                    Notre projet de transformation de la France est en marche.
+                    Nous vous en remercions du fond du cœur.
+                </p>
             </section>
 
             <section class="l__wrapper--600">
@@ -31,7 +36,7 @@
                 {{ form_errors(form) }}
 
                 <div class="form__row">
-                    {{ form_label(form.reasons, 'Pourquoi je quitte En Marche', { label_attr: {'class': 'form__label--header'} }) }}
+                    {{ form_label(form.reasons, 'Merci de nous aider à comprendre pourquoi vous souhaitez quitter la communauté des marcheurs en choisissant une ou plusieurs des réponses ci-dessous :') }}
                 </div>
 
                 {{ form_errors(form.reasons) }}
@@ -50,29 +55,51 @@
                     {{ form_row(form.word) }}
                 </div>
 
+                <p class="text--body">
+                    Merci pour ces précisions.
+                </p>
+                <p class="text--body">
+                    Nous vous rappelons que vous pouvez très facilement vous
+                    <a href="{{ path('app_adherent_set_email_notifications') }}">
+                    désabonner de tout ou une partie des emails envoyés</a> par le
+                    mouvement.
+                </p>
+                <p class="text--body">
+                    Si vous ne souhaitez plus être un marcheur, vous pouvez
+                    finaliser la suppression de votre adhésion en cliquant ci-dessous.
+                </p>
+
                 <div class="text--center">
                     <button type="submit" class="btn btn--warning">
-                        Je supprime définitivement mon compte En Marche
+                        Je confirme la suppression de mon adhésion
                     </button>
                 </div>
 
                 {{ form_end(form) }}
             </section>
+
         </div>
     {% else %}
         <div id="is_not_adherent" class="content">
             <header>
                 <h1 class="space--60-0 l__wrapper--slim text--center text--large">
-                    Votre demande de désadhésion a bien été prise en compte.
+                    Votre adhésion et votre compte En Marche ont bien été
+                    supprimés et vos données personnelles effacées de notre base.
                 </h1>
                 <hr class="l__wrapper"/>
             </header>
             <section class="l__wrapper--600 text--body">
-                <p>Nous sommes tristes de vous voir partir. Vous serez toujours les bienvenus si vous changez d’avis.</p>
+                <p>
+                    Nous sommes tristes de vous voir partir. Vous serez
+                    toujours les bienvenus si vous souhaitez nous rejoindre.
+                </p>
 
-                <p>Si vous avez des questions, n’hésitez pas à nous contacter au 01 86 95 02 86 ou par e-mail à l’adresse <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.</p>
-
-                <p>À bientôt !</p>
+                <p>
+                    Nous sommes preneurs de vos suggestions pour nous
+                    améliorer. N’hésitez pas à nous contacter
+                    au <a href="tel:01 86 95 02 86">01 86 95 02 86 ou</a> par e-mail à l’adresse
+                    <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.
+                </p>
             </section>
             <section class="text--center space--60-0">
                 <img class="l__wrapper--medium" src="{{ asset('images/a-bientot.jpg') }}"/>

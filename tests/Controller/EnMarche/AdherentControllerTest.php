@@ -634,7 +634,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertEquals('http://localhost/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $crawler = $this->client->submit($crawler->selectButton('Je supprime définitivement mon compte En Marche')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
             'unregistration' => [
                 'word' => 'invalid word',
             ],
