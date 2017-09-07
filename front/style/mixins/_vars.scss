@@ -25,6 +25,12 @@ $zIndex__overlay-caret: 600;
     margin-right: auto;
 }
 
+@mixin wrapper--600 {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 @mixin steps {
     counter-reset: step;
     width: 340px;

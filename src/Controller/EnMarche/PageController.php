@@ -17,6 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
 class PageController extends Controller
 {
     /**
+     * @Route("/campus", defaults={"_enable_campaign_silence"=true}, name="page_campus")
+     * @Method("GET")
+     */
+    public function campusAction()
+    {
+        return $this->render('page/campus.html.twig');
+    }
+
+    /**
      * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-ce-que-je-suis')")
