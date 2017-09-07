@@ -197,7 +197,7 @@ export default class AlgoliaSearch extends React.Component {
                                             </a>
                                         </h2>
                                         <div>
-                                            {hit.description}<br/>
+                                            <span dangerouslySetInnerHTML={{ __html: hit.description }} /><br/>
                                             {this._createTypeName(hit)}
                                         </div>
                                         <div className="share">
