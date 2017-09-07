@@ -7,6 +7,11 @@
     border-width: 2px;
 }
 
+label {
+    @include text--small;
+    margin-bottom: 2px;
+}
+
 .form {
 
     &__label {

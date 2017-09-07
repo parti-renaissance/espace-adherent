@@ -13,21 +13,9 @@
 
 {% block adherent_profile_form %}
 
-    <h3>Informations personnelles</h3>
-    <div class="text--summary b__nudge--top-10">Modifiez vos informations personnelles.</div>
+    <h2>Mes informations personnelles</h2>
+    <p>Modifiez vos informations personnelles.</p>
 
     {{ block('adherent_membership_form') }}
 
-    {% if enable_canary %}
-        {% if is_granted('UNREGISTER') %}
-            <div class="adherent_profile_unsubscribe text--center space--60-0">
-                <div class="text--body b__nudge--top-10 b__nudge--bottom text--small">
-                    Trop d’e-mails ? Gérez vos <a href="{{ path('app_adherent_set_email_notifications') }}">préférences des e-mails</a>.
-                </div>
-                <a href="{{ path('app_adherent_terminate_membership') }}" class="btn btn--small">
-                    Désadhérer du mouvement
-                </a>
-            </div>
-        {% endif %}
-    {% endif %}
 {% endblock %}

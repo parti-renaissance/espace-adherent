@@ -1,13 +1,16 @@
-<div class="l__wrapper--aside adherent_profile-menu">
+<div class="l__wrapper--aside settings-menu">
     <ul>
         {% set route = app.request.attributes.get('_route') %}
         {% for target, link in {
-            'app_adherent_profile': 'Informations personnelles',
-            'app_summary_manager_index': 'Profil En Marche',
+            'app_adherent_profile': 'Mon compte',
+            'app_summary_manager_index': 'Modifier mon profil',
+            'app_adherent_edit': 'Mes informations personnelles',
+            'app_adherent_set_email_notifications': 'Notifications',
             'app_adherent_change_password': 'Mot de passe',
-            'app_adherent_set_email_notifications': 'Préférences des e-mails',
         } %}
-            <li><a href="{{ path(target) }}" class="{{ route == target ? 'active' }}">{{ link }}</a></li>
+            <li class="{{ route == target ? 'active' }}">
+                <a href="{{ path(target) }}">{{ link }}</a>
+            </li>
         {% endfor %}
     </ul>
 </div>

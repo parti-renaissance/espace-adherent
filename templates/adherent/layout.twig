@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<main class="adherent_profile">
-    <section class="adherent_profile__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center space--60-0"
+<main class="settings">
+    <section class="settings__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center space--60-0"
            data-sd="{{ static_asset('procuration.jpg', {'w': 300, 'q': 20}) }}"
            data-hd="{{ static_asset('procuration.jpg', {'w': 2000, 'q': 70}) }}">
-          <div class="adherent_profile__header--inner l__wrapper--slim">
+          <div class="settings__header--inner l__wrapper--slim">
               <h1 class="text--larger text--on-white text--pink">
                   En Marche recrute !
               </h1>
@@ -23,10 +23,9 @@
           </div>
     </section>
 
-    <section class="adherent_profile__membership l__wrapper--medium space--30-0">
-        <h2 class="text--large b__nudge--bottom-tiny">{{ app.user.fullname }}</h2>
-        <div class="text--body text--gray">{{ app.user.emailaddress }} | Membre depuis {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMM Y') }}</div>
-    </section>
+    <header class="l__wrapper--medium space--30-0">
+        <h1 class="text--large">Paramètres</h1>
+    </header>
 
     <hr class="l__wrapper b__nudge--bottom-larger"/>
 
@@ -34,7 +33,7 @@
         <div class="l__row l__row--h-stretch l__row--top l__tablet--col b__nudge--bottom-large">
             {% include 'adherent/_profile_menu.html.twig' %}
 
-            <div class="l__wrapper--main l__wrapper--main-right">
+            <div class="l__wrapper--main l__wrapper--main-right settings__main">
                 {% block adherent_profile_form %}{% endblock %}
             </div>
         </div>
