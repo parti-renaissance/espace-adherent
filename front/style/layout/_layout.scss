@@ -48,9 +48,7 @@
     }
 
     &__wrapper--600 {
-        width: 90%;
-        max-width: 600px;
-        margin: 0 auto;
+        @include wrapper--600;
     }
 
     &__wrapper-500 {

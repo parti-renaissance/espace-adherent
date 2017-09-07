@@ -1,0 +1,58 @@
+.campus {
+    h2 {
+        @include text--large;
+    }
+
+    p {
+        @include text--medium-small;
+        font-family: $font-roboto;
+        color: $gray--dark;
+    }
+
+    small {
+        @include text--small;
+    }
+
+    &__row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 120px 0;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+        }
+
+        &__inspiration {
+            background: $gray--lighter;
+        }
+
+        &__action {
+            border-top: 1px solid $gray--light;
+            border-bottom: 1px solid $gray--light;
+
+            h2 {
+                text-align: center;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+
+        > div {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &__text {
+        max-width: 400px;
+
+        &--center {
+            max-width: 550px;
+        }
+    }
+}

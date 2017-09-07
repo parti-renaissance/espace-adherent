@@ -85,6 +85,18 @@ $text--size-extra-large: 48px;
     font-size: $text--size-extra-large;
     letter-spacing: -1.5px;
     line-height: 52px;
+
+    @media (max-width: $tablet) {
+        font-size: $text--size-larger;
+        line-height: 0.93;
+        letter-spacing: -1.2px;
+    }
+
+    @media (max-width: $mobile) {
+        font-size: $text--size-large;
+        letter-spacing: -0.5px;
+        line-height: 38px;        
+    }
 }
 
 @mixin text--body {

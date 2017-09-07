@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Campus' %}
+{% block meta_description 'Nous mettons à votre disposition une plateforme de formation citoyenne en ligne, gratuite et ouverte à tous.' %}
+{% block canonical_url url('page_campus') %}
+
+{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('elles-marchent-sharer.jpg', {'q': 70}))|raw %}
+{% block open_graph_image_width 1667 %}
+{% block open_graph_image_height 873 %}
+
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main class="campus">
+        <header class="hero">
+            <h1>
+                La plateforme de formation pour les citoyens.
+            </h1>
+            <p>
+                Nous mettons à votre disposition une plateforme de formation
+                citoyenne en ligne, gratuite et ouverte à tous.
+            </p>
+            <img src="https://www.expii.com/client/apps/static/homepage/learn-styles.svg" />
+        </header>
+
+        <section class="campus__row campus__row__inspiration">
+            <div>graphic goes here</div>
+            <div>
+                <div class="campus__text">
+                    <h2>S'inspirer</h2>
+                    <p>
+                        Nous avons répertorié des initiatives citoyennes, des cours
+                        d’universités, des extraits de conférences en France et
+                        dans le monde entier pour s’ouvrir l’esprit et vous donner
+                        des idées !
+                    </p>
+                    <a href="#" class="btn btn--blue">Je m'inspire</a>
+                    <p>
+                        <small>
+                            Déjà une idée ? <a href="#" class="link--blue
+                            link--no-decor">Je lance mon initiative citoyenne »</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="campus__row">
+            <div>
+                <div class="campus__text">
+                    <h2>Se former</h2>
+                    <p>
+                        Nous avons crée une compilation de contenus pour vous
+                        permettre de mieux comprendre le fonctionnement de nos
+                        institutions et vous apporter des compétences
+                        pratiques.
+                    </p>
+                    <a href="#" class="btn btn--blue">Je me forme</a>
+                    <p>
+                        <small>
+                            Déjà une idée ? <a href="#" class="link--blue
+                            link--no-decor">Je lance mon initiative citoyenne »</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+            <div>graphic goes here</div>
+        </section>
+
+        <section class="campus__row campus__row__action">
+            <div>
+                <div class="campus__text--center">
+                    <h2>Agir</h2>
+                    <p>
+                        Nous sommes en train de développer des formations
+                        longues, d’une durée de trois mois, "les parcours
+                        citoyens", pour vous aider à lancer vos propres
+                        projets. Une fois lancées, ces formations seront
+                        animées par une équipe pédagogique dédiée qui vous
+                        accompagnera.
+                        <br/>
+                        <a href="#" class="link--blue link--no-decor">
+                            Je veux être prévenu lors du lancement de cette
+                            formation longue »
+                        </a>
+                    </p>
+                    <p>
+                        Vous avez des idées et ne voulez pas attendre ? Lancez
+                        une initiative citoyenne dès aujourd’hui !
+                    </p>
+                    <a href="#" class="btn btn--blue">
+                        Je lance mon initiative citoyenne
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}
