@@ -1,4 +1,4 @@
-.adherent_profile {
+.settings {
     &__header {
         &--outer {
             background-position: center 30%;
@@ -26,9 +26,15 @@
         margin-top: 20px;
     }
 
-    h3 {
-        @include text--medium;
-        font-weight: normal;
+    &__main {
+        p, div {
+            font-family: $font-roboto;
+        }
+
+        h2 {
+            @include text--medium-large;
+            font-family: $font-gillsans;
+        }
     }
 
     &-menu {
@@ -60,9 +66,8 @@
                 a {
                     display: block;
                     border: 0;
-                    padding: 15px 20px;
+                    padding: 5px 20px;
                     width: 100%;
-                    border-left: 1px solid white;
                     @include text--summary;
 
                     @media (max-width: $tablet) {
@@ -70,19 +75,19 @@
                         padding: 0;
                         margin-right: 20px;
                     }
+                }
 
-                    &.active {
+                &.active {
+                    border-left: 5px $blue solid;
+
+                    a {
                         font-weight: bold;
-                        border-color: $blue;
-                        border-width: 2px;
-                        padding-left: 19px;
-                        margin-left: -1px;
+                    }
 
-                        @media (max-width: $tablet) {
-                            border-bottom: 2px solid $blue;
-                            padding: 0 0 5px 0;
-                            margin: 0 20px 0 0;
-                        }
+                    @media (max-width: $tablet) {
+                        border-bottom: 2px solid $blue;
+                        padding: 0 0 5px 0;
+                        margin: 0 20px 0 0;
                     }
                 }
             }
@@ -118,6 +123,10 @@
             div {
                 z-index: 1;
             }
+        }
+
+        label {
+            @include text--default;
         }
 
         &__intro {

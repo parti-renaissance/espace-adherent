@@ -91,25 +91,25 @@ class AdherentControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideProfilePage
      */
-    public function testProfileActionIsAccessibleForAdherent($profilePage, $title)
+    public function testProfileActionIsAccessibleForAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $current = $crawler->filter('.adherent_profile .adherent_profile-menu ul li a.active'));
-        $this->assertSame($profilePage, $current->attr('href'));
-        $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent_profile > section > h2')->text());
-        $this->assertSame('carl999@example.fr | Membre depuis nov. 2016', $crawler->filter('.adherent_profile__membership > div')->text());
-        $this->assertSame($title, $crawler->filter('.adherent_profile h3')->text());
+        $this->assertCount(1, $current = $crawler->filter('.settings .settings-menu ul li.active a'));
+        $this->assertSame('Carl Mirabeau', $crawler->filter('.settings__username')->text());
+        $this->assertSame('Adhérent depuis novembre 2016.', $crawler->filter('.settings__membership')->text());
+        $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
     }
 
     public function provideProfilePage()
     {
-        yield ['/espace-adherent/mon-compte', 'Informations personnelles'];
+        yield ['/espace-adherent/mon-compte', 'Mon compte'];
+        yield ['/espace-adherent/mon-compte/modifier', 'Mes informations personnelles'];
         yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
-        yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Préférences des e-mails'];
+        yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Notifications'];
     }
 
     public function testEditAdherentProfile()
@@ -120,7 +120,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/modifier');
 
         $inputPattern = 'input[name="update_membership_request[%s]"]';
         $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
@@ -596,7 +596,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('.adherent_profile_unsubscribe'));
+        $this->assertCount(0, $crawler->filter('.settings_unsubscribe'));
 
         $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
 
@@ -610,7 +610,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('.adherent_profile_unsubscribe'));
+        $this->assertCount(0, $crawler->filter('.settings_unsubscribe'));
 
         $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
 
@@ -627,9 +627,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(1, $crawler->filter('.adherent_profile_unsubscribe'));
+        $this->assertCount(1, $crawler->filter('.settings__delete_account'));
 
-        $crawler = $this->client->click($crawler->selectLink('Désadhérer du mouvement')->link());
+        $crawler = $this->client->click($crawler->selectLink('Supprimer mon adhésion et mon compte')->link());
 
         $this->assertEquals('http://localhost/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -658,7 +658,7 @@ class AdherentControllerTest extends MysqlWebTestCase
             1 => $reasonsValues[1],
             3 => $reasonsValues[3],
         ];
-        $crawler = $this->client->submit($crawler->selectButton('Je supprime définitivement mon compte En Marche')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
             'unregistration' => [
                 'reasons' => $chosenReasons,
                 'comment' => 'Je me désinscris',
@@ -672,7 +672,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
-        $this->assertSame('Votre demande de désadhésion a bien été prise en compte.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
+        $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
 
