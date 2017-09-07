@@ -3,6 +3,12 @@
 {% block banner '' %}
 {% block page_title 'Transformons la France : réforme du code du travail et du dialogue social' %}
 {% block canonical_url url('app_explainer_index') %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
+
+{% block open_graph_image (page.media ? (homepage_url ~ media_asset(page.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (page.media ? page.media.width : default_sharer_width) %}
+{% block open_graph_image_height (page.media ? page.media.height : default_sharer_height) %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
