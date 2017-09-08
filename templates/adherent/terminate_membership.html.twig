@@ -43,14 +43,9 @@
                             {{ form_label(reason) }}
                         </div>
                     {% endfor %}
-                </div>
-
-                <div class="form__row b__nudge--top-large">
-                    <label class="form__label--header">Mes commentaires à partager avec l’équipe En Marche <span>(facultatif)</span></label>
-                </div>
-                <div class="form__row form__row--full">
                     {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
                 </div>
+
                 <div class="form__row form__word b__nudge--top-large">
                     {{ form_row(form.word) }}
                 </div>
