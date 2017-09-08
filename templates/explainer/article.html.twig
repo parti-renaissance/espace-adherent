@@ -1,15 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block banner '' %}
-{% block page_title article.title %}
-{% block meta_description article.description %}
-{% block meta_twitter_description article.twitterDescription ?: article.description %}
+{% block page_title explainer.title %}
+{% block meta_description explainer.description %}
+{% block meta_twitter_description explainer.twitterDescription ?: explainer.description %}
 
-{% block canonical_url url('app_explainer_article_show', {'slug': article.slug}) %}
+{% block canonical_url url('app_explainer_article_show', {'slug': explainer.slug}) %}
 
-{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
-{% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
-{% block open_graph_image_height (article.media ? article.media.height : default_sharer_height) %}
+{% block amp_link %}<link rel="amphtml" href="{{ url('amp_explainer_view', {'slug': explainer.slug}) }}" />{% endblock %}
+
+{% block open_graph_image (explainer.media ? (homepage_url ~ media_asset(explainer.media)) : default_sharer)|raw %}
+{% block open_graph_image_width (explainer.media ? explainer.media.width : default_sharer_width) %}
+{% block open_graph_image_height (explainer.media ? explainer.media.height : default_sharer_height) %}
+
+{% block json_ld %}
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "name": "{{ block('page_title') }}",
+        "headline": "{{ explainer.description|slice(0, 110) }}",
+        "description": "{{ explainer.description }}",
+        "url": "{{ block('canonical_url') }}",
+        "datePublished": "{{ explainer.published|date(constant('DATE_ISO8601')) }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "contentUrl": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "width": 357,
+                "height": 60
+            }
+        }
+    }
+    </script>
+{% endblock %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
@@ -26,10 +71,9 @@
             </nav>
             <header class="space--60-0 l__wrapper--slim">
                 <h1 class="text--large b__nudge--bottom-small">
-                    {{ article.title }}
+                    {{ explainer.title }}
                 </h1>
-                <h2 class="text--gray b__nudge--bottom bigger">{{ article.description }}</h2>
-                <h2 class="text--gray b__nudge--bottom bigger">{{ proposal.description }}</h2>
+                <h2 class="text--gray b__nudge--bottom bigger">{{ explainer.description }}</h2>
                 <ul class="article__social">
                     <li role="button" aria-label="Partagez sur Facebook"
                         class="btn btn--social btn--facebook"
@@ -49,21 +93,21 @@
                 </ul>
             </header>
 
-            {% if article.media and article.displayMedia %}
-                <amp-img src="{{ media_asset(article.media, {'q': 70}) }}"
-                         width="{{ article.media.width }}"
-                         height="{{ article.media.height }}"
+            {% if explainer.media and explainer.displayMedia %}
+                <amp-img src="{{ media_asset(explainer.media, {'q': 70}) }}"
+                         width="{{ explainer.media.width }}"
+                         height="{{ explainer.media.height }}"
                          layout="responsive">
                     <noscript>
-                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
-                             width="{{ article.media.width }}"
-                             height="{{ article.media.height }}" />
+                        <img src="{{ media_asset(explainer.media, {'q': 70}) }}"
+                             width="{{ explainer.media.width }}"
+                             height="{{ explainer.media.height }}" />
                     </noscript>
                 </amp-img>
             {% endif %}
 
             <article class="l__wrapper--slim">
-                {{ article.ampContent|raw }}
+                {{ explainer.ampContent|raw }}
             </article>
 
             <ul class="article__social space--60-0 l__wrapper--slim">

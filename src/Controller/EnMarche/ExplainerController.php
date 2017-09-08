@@ -27,10 +27,10 @@ class ExplainerController extends AbstractController
     /**
      * @Route("/transformer-la-france/{slug}", name="app_explainer_article_show")
      * @Method("GET")
-     * @Entity("article", expr="repository.findPublishedArticle(slug)")
+     * @Entity("explainer", expr="repository.findPublishedArticle(slug)")
      */
-    public function proposalAction(OrderArticle $article)
+    public function proposalAction(OrderArticle $explainer)
     {
-        return $this->render('explainer/article.html.twig', ['article' => $article]);
+        return $this->render('explainer/article.html.twig', ['explainer' => $explainer]);
     }
 }

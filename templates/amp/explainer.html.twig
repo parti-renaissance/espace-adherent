@@ -1,0 +1,87 @@
+{% extends 'amp/_layout.html.twig' %}
+
+{% block title explainer.title %}
+{% block canonical_url url('app_explainer_article_show', {'slug': explainer.slug}) %}
+
+{% block json_ld %}
+    {% set image = explainer.media ? (homepage_url ~ (media_asset(explainer.media)|raw)) : default_sharer %}
+    {% set image_width = explainer.media ? explainer.media.width : default_sharer_width %}
+    {% set image_height = explainer.media ? article.media.height : default_sharer_height %}
+
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "name": "{{ explainer.title }}",
+        "articleSection": "{{ explainer.category.name }}",
+        "headline": "{{ explainer.description|slice(0, 110) }}",
+        "description": "{{ explainer.description }}",
+        "url": "{{ block('canonical_url') }}",
+        "datePublished": "{{ explainer.publishedAt|date(constant('DATE_ISO8601')) }}",
+        "dateModified": "{{ max(explainer.publishedAt, explainer.updatedAt)|date(constant('DATE_ISO8601')) }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ image|raw }}",
+            "contentUrl": "{{ image|raw }}",
+            "width": {{ image_width }},
+            "height": {{ image_height }}
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "contentUrl": "{{ homepage_url ~ asset('images/publisher_logo.png') }}",
+                "width": 357,
+                "height": 60
+            }
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="amp-warning">
+        <a href="{{ block('canonical_url') }}">Retrouvez cet article sur en-marche.fr</a>
+    </div>
+
+    <main class="b__nudge--bottom">
+        <section class="content b__nudge--bottom-huge">
+            <header class="b__nudge--top l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ explainer.title }}
+                </h1>
+                <h2 class="text--gray bigger">{{ explainer.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ explainer.description }}</h2>
+            </header>
+
+            {% if explainer.media and explainer.displayMedia %}
+                <amp-img src="{{ media_asset(explainer.media, {'q': 70}) }}"
+                         width="{{ explainer.media.width }}"
+                         height="{{ explainer.media.height }}"
+                         layout="responsive">
+                    <noscript>
+                        <img src="{{ media_asset(explainer.media, {'q': 70}) }}"
+                             width="{{ explainer.media.width }}"
+                             height="{{ explainer.media.height }}" />
+                    </noscript>
+                </amp-img>
+            {% endif %}
+
+            <article class="l__wrapper--slim">
+                {{ explainer.ampContent|raw }}
+            </article>
+        </section>
+    </main>
+{% endblock %}
