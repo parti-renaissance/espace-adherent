@@ -39,7 +39,6 @@
             font-weight: bold;
             text-align: left;
             margin: 0;
-            background: white;
             padding: 10px 5px;
         }
 
@@ -54,11 +53,11 @@
             flex-wrap: wrap;
             justify-content: space-between;
             padding: 0;
+            margin-top: 25px;
 
             li {
                 list-style-type: none;
                 width: 23.35%;
-                background-color: $gray--lighter;
 
                 @media (max-width: $tablet) {
                     width: 48%;
