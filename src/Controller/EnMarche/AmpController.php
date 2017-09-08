@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Proposal;
+use AppBundle\Entity\OrderArticle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,6 +29,18 @@ class AmpController extends Controller
         $this->disableProfiler();
 
         return $this->render('amp/article.html.twig', ['article' => $article]);
+    }
+
+    /**
+     * @Route("/transformer-la-france/{slug}", defaults={"_enable_campaign_silence"=true}, name="amp_explainer_view")
+     * @Method("GET")
+     * @Entity("explainer", expr="repository.findOnePublishedBySlug(slug)")
+     */
+    public function explainerAction(OrderArticle $explainer): Response
+    {
+        $this->disableProfiler();
+
+        return $this->render('amp/explainer.html.twig', ['explainer' => $explainer]);
     }
 
     /**
