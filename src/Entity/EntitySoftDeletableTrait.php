@@ -34,4 +34,9 @@ trait EntitySoftDeletableTrait
     {
         return !$this->isDeleted();
     }
+
+    public function recover(): void
+    {
+        $this->deletedAt = null;
+    }
 }

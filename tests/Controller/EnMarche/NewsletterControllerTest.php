@@ -151,6 +151,50 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_PRECONDITION_FAILED, $this->client->getResponse());
     }
 
+    public function testUnsubscribeAndResubscribe()
+    {
+        $this->assertCount(5, $this->subscriptionsRepository->findAll());
+
+        $subscription = $this->subscriptionsRepository->findOneBy(['email' => 'abc@en-marche-dev.fr']);
+
+        $this->assertInstanceOf(NewsletterSubscription::class, $subscription);
+        $this->assertSame('92110', $subscription->getPostalCode());
+
+        // Initial unsubscribe form
+        $crawler = $this->client->request(Request::METHOD_GET, '/newsletter/desinscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_newsletter_unsubscribe]')->form([
+            'app_newsletter_unsubscribe[email]' => 'abc@en-marche-dev.fr',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/newsletter/desinscription/desinscrit', $this->client);
+
+        $this->assertCount(4, $this->subscriptionsRepository->findAll());
+        $this->assertNull($this->subscriptionsRepository->findOneBy(['email' => 'abc@en-marche-dev.fr']));
+
+        // Initial subscribe form
+        $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+            'app_newsletter_subscription[email]' => 'abc@en-marche-dev.fr',
+            'app_newsletter_subscription[postalCode]' => '59000',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->assertCount(5, $subscriptions = $this->subscriptionsRepository->findAll());
+
+        $subscription = $this->subscriptionsRepository->findOneBy(['email' => 'abc@en-marche-dev.fr']);
+
+        $this->assertInstanceOf(NewsletterSubscription::class, $subscription);
+        $this->assertSame('59000', $subscription->getPostalCode());
+    }
+
     protected function setUp()
     {
         parent::setUp();

@@ -23,6 +23,8 @@ class NewsletterSubscriptionHandler
 
     public function subscribe(NewsletterSubscription $subscription)
     {
+        $subscription = $this->recoverSoftDeletedSubscription($subscription);
+
         $this->manager->persist($subscription);
         $this->manager->flush();
 
@@ -34,11 +36,40 @@ class NewsletterSubscriptionHandler
 
     public function unsubscribe(?string $email)
     {
-        $subscription = $this->manager->getRepository(NewsletterSubscription::class)->findOneBy(['email' => $email]);
+        $subscription = $this->findSubscriptionByEmail($email);
 
         if ($subscription) {
             $this->manager->remove($subscription);
             $this->manager->flush();
         }
+    }
+
+    private function recoverSoftDeletedSubscription(NewsletterSubscription $subscription): NewsletterSubscription
+    {
+        $this->manager->getFilters()->disable('softdeleteable');
+
+        $softDeletedSubscription = $this->findSubscriptionByEmail($subscription->getEmail());
+
+        $this->manager->getFilters()->enable('softdeleteable');
+
+        if (!$softDeletedSubscription) {
+            return $subscription;
+        }
+
+        if ($postalCode = $subscription->getPostalCode()) {
+            $softDeletedSubscription->setPostalCode($postalCode);
+        }
+
+        $softDeletedSubscription->recover();
+
+        return $softDeletedSubscription;
+    }
+
+    private function findSubscriptionByEmail(?string $email): ?NewsletterSubscription
+    {
+        return $this
+            ->manager
+            ->getRepository(NewsletterSubscription::class)
+            ->findOneBy(['email' => $email]);
     }
 }
