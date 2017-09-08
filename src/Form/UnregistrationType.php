@@ -4,8 +4,9 @@ namespace AppBundle\Form;
 
 use AppBundle\Membership\UnregistrationCommand;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UnregistrationType extends AbstractType
@@ -13,14 +14,11 @@ class UnregistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('comment', TextType::class, [
+            ->add('comment', TextareaType::class, [
                 'required' => false,
                 'filter_emojis' => true,
             ])
             ->add('reasons', UnregistrationReasonsChoiceType::class)
-            ->add('word', UnregisterType::class, [
-                'mapped' => false,
-            ])
         ;
     }
 
@@ -28,6 +26,15 @@ class UnregistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UnregistrationCommand::class,
+            'validation_groups' => function (FormInterface $form) {
+                $data = $form->getData();
+
+                if (in_array('autre', $data->getReasons())) {
+                    return ['Default', 'Reason'];
+                }
+
+                return ['Default'];
+            },
         ]);
     }
 }

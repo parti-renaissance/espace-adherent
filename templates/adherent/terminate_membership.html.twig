@@ -2,6 +2,32 @@
 
 {% block page_title 'Désadhésion' %}
 
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var hasAnotherReason = '#unregistration_reasons_6';
+            var toggleComment = function() {
+                if ($(hasAnotherReason).is(':checked')) {
+                    $('#unregistration_another_reason_comment').show();
+                } else {
+                    $('#unregistration_another_reason_comment').hide();
+                }
+            };
+
+            // Show/hide comment field
+            $(hasAnotherReason).change(function() {
+                toggleComment();
+            });
+
+            toggleComment();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 
 <div>
@@ -48,11 +74,10 @@
                             {{ form_label(reason) }}
                         </div>
                     {% endfor %}
-                    {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
-                </div>
-
-                <div class="form__row form__word b__nudge--top-large">
-                    {{ form_row(form.word) }}
+                    <div id="unregistration_another_reason_comment">
+                        {{ form_errors(form.comment) }}
+                        {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
+                    </div>
                 </div>
 
                 <p class="text--body">

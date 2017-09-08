@@ -12,7 +12,8 @@ class UnregistrationCommand
     private $reasons = [];
 
     /**
-     * @Assert\Length(min=10, max=1000)
+     * @Assert\Length(min=10, max=1000, groups="Reason")
+     * @Assert\NotBlank(groups="Reason")
      */
     private $comment;
 

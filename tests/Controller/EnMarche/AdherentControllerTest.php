@@ -10,7 +10,6 @@ use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Unregistration;
-use AppBundle\Form\UnregisterType;
 use AppBundle\Mailjet\Message\AdherentContactMessage;
 use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
 use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
@@ -635,17 +634,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
-            'unregistration' => [
-                'word' => 'invalid word',
-            ],
+            'unregistration' => [],
         ]));
 
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(2, $errors->count());
+        $this->assertSame(1, $errors->count());
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
-        $this->assertSame('Cette valeur doit être égale à "SUPPRESSION".', $errors->eq(1)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
 
@@ -662,7 +658,6 @@ class AdherentControllerTest extends MysqlWebTestCase
             'unregistration' => [
                 'reasons' => $chosenReasons,
                 'comment' => 'Je me désinscris',
-                'word' => UnregisterType::UNREGISTER_WORD,
             ],
         ]));
 
