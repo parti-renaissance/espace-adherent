@@ -25,13 +25,8 @@ class ReferentsController extends Controller
             'coordinates' => [0.070888, 43.228758],
         ],
         [
-            'postalCode' => '42000',
-            'name' => 'Christian Soleil',
-            'coordinates' => [4.397309, 45.435549],
-        ],
-        [
             'postalCode' => '18000',
-            'name' => 'Loïc Kervran',
+            'name' => 'Pierre Abraham',
             'coordinates' => [2.37736, 47.083994],
         ],
         [
@@ -45,23 +40,13 @@ class ReferentsController extends Controller
             'coordinates' => [3.569805, 47.79466],
         ],
         [
-            'postalCode' => '84000',
-            'name' => 'Jean François Césarini',
-            'coordinates' => [4.838738, 43.933313],
-        ],
-        [
-            'postalCode' => '53000',
-            'name' => 'Aurélien Page',
-            'coordinates' => [-0.766356, 48.066823],
-        ],
-        [
             'postalCode' => '50000',
             'name' => 'Pierre Henry Debray',
             'coordinates' => [-1.093256, 49.112172],
         ],
         [
             'postalCode' => '38000',
-            'name' => 'Francis Palombi',
+            'name' => 'Didier Rambaud',
             'coordinates' => [3.497892, 44.523531],
         ],
         [
@@ -80,28 +65,23 @@ class ReferentsController extends Controller
             'coordinates' => [4.600135, 44.735372],
         ],
         [
-            'postalCode' => '03000',
-            'name' => 'Pierre Thépot',
-            'coordinates' => [3.335909, 46.568577],
-        ],
-        [
             'postalCode' => '81000',
             'name' => 'Clement Baller',
             'coordinates' => [2.148, 43.9298],
         ],
         [
-            'postalCode' => '75005,75006',
-            'name' => 'Gilles Le Gendre',
+            'postalCode' => '75005,75006,75007',
+            'name' => 'Hanane Abdelli',
             'coordinates' => [2.344212, 48.846246],
         ],
         [
             'postalCode' => '75012',
-            'name' => 'Pierre-Alain Raphan',
+            'name' => 'Christophe Caporossi',
             'coordinates' => [2.3876, 48.8412],
         ],
         [
             'postalCode' => '75016',
-            'name' => 'Agnés Pannier',
+            'name' => 'Gilles Widawski',
             'coordinates' => [2.2769, 48.8637],
         ],
         [
@@ -111,18 +91,13 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '28000',
-            'name' => 'Guillaume Kasbarian',
+            'name' => 'Olivier Dupuy',
             'coordinates' => [1.4892, 48.4469],
         ],
         [
             'postalCode' => '66000',
-            'name' => 'Sebastien Cazenove',
+            'name' => 'Frédérique Lis',
             'coordinates' => [2.8954, 42.6976],
-        ],
-        [
-            'postalCode' => '35000',
-            'name' => 'Florian Bachelier',
-            'coordinates' => [-1.6743, 48.112],
         ],
         [
             'postalCode' => '90000',
@@ -131,7 +106,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '54000',
-            'name' => 'Carole Grandjean',
+            'name' => 'Jessica Perrin',
             'coordinates' => [6.185, 48.6844],
         ],
         [
@@ -161,7 +136,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '75017',
-            'name' => 'Laurent Saint-Martin',
+            'name' => 'Margaux Pech',
             'coordinates' => [2.3219, 48.8835],
         ],
         [
@@ -176,7 +151,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '83000',
-            'name' => 'Valerie Lonchampt',
+            'name' => 'Reynald Cadoret',
             'coordinates' => [5.9333, 43.1167],
         ],
         [
@@ -186,12 +161,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '47000',
-            'name' => 'Olivier Damaisin',
+            'name' => 'Rose Hecquefeuille',
             'coordinates' => [0.616995, 44.202338],
         ],
         [
-            'postalCode' => '75009,75010',
-            'name' => 'Celine Calvez',
+            'postalCode' => '75008,75009',
+            'name' => 'Charles Feld',
             'coordinates' => [2.348584, 48.870625],
         ],
         [
@@ -206,27 +181,22 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '24000',
-            'name' => 'Michel Delpon',
+            'name' => 'Christèle Gardette',
             'coordinates' => [0.7167, 45.1833],
         ],
         [
             'postalCode' => '64000',
-            'name' => 'Nathalie Niel',
+            'name' => 'Lois Corrégé',
             'coordinates' => [-0.3667, 43.3],
         ],
         [
-            'postalCode' => '59000',
-            'name' => 'Christophe Itier',
-            'coordinates' => [3.0586, 50.633],
-        ],
-        [
             'postalCode' => '26000',
-            'name' => 'Michel Gregoire',
+            'name' => 'Christine Hollender',
             'coordinates' => [4.9, 44.9333],
         ],
         [
             'postalCode' => '60000',
-            'name' => 'Richard Perrin',
+            'name' => 'Dominique Lelong',
             'coordinates' => [7.263545, 43.702555],
         ],
         [
@@ -236,12 +206,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '27000',
-            'name' => 'Fabien Gouttefarde',
+            'name' => 'Guillaume Rouger',
             'coordinates' => [1.1508, 49.0241],
         ],
         [
             'postalCode' => '61000',
-            'name' => 'Arnaud Bellet',
+            'name' => 'Kathleen Bremont',
             'coordinates' => [0.1333, 48.45],
         ],
         [
@@ -253,11 +223,6 @@ class ReferentsController extends Controller
             'postalCode' => '88000',
             'name' => 'Serge Vincent',
             'coordinates' => [6.5153, 48.2001],
-        ],
-        [
-            'postalCode' => '75007,75008',
-            'name' => 'Veronique Tommasi',
-            'coordinates' => [2.321, 48.8565],
         ],
         [
             'postalCode' => '40000',
@@ -276,7 +241,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '45000',
-            'name' => 'Emmanuel Constantin',
+            'name' => 'François Sarrazin',
             'coordinates' => [1.9039, 47.9029],
         ],
         [
@@ -286,13 +251,8 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '94000',
-            'name' => 'Laetitia Avia',
+            'name' => 'Nabil Benbouha',
             'coordinates' => [2.4667, 48.7833],
-        ],
-        [
-            'postalCode' => '69001',
-            'name' => 'Bruno Bonnell',
-            'coordinates' => [4.8345, 45.7676],
         ],
         [
             'postalCode' => '68000',
@@ -301,12 +261,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '02000',
-            'name' => 'Cyril Thirion',
+            'name' => 'Sawsen Jebbari-Clement',
             'coordinates' => [3.621456, 49.563379],
         ],
         [
             'postalCode' => '16000',
-            'name' => 'Thomas Mesnier',
+            'name' => 'Przemyslaw Sokolski',
             'coordinates' => [0.15, 45.65],
         ],
         [
@@ -321,12 +281,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '21000',
-            'name' => 'Danielle Juban',
+            'name' => 'Sébastien Mirek',
             'coordinates' => [5.0167, 47.3167],
         ],
         [
             'postalCode' => '75020',
-            'name' => 'Anne-Lise Chagneau',
+            'name' => 'David Vaillant',
             'coordinates' => [2.3984, 48.8646],
         ],
         [
@@ -346,7 +306,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '37000',
-            'name' => 'Philippe Chalumeau',
+            'name' => 'Philippe Perruchon',
             'coordinates' => [0.6833, 47.3833],
         ],
         [
@@ -356,22 +316,22 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '75013',
-            'name' => 'Philippe Zaouati',
+            'name' => 'Katia Sogreeva',
             'coordinates' => [2.3561, 48.8322],
         ],
         [
             'postalCode' => '34000',
-            'name' => 'Coralie Dubost',
+            'name' => 'Yolaine Vignaud',
             'coordinates' => [3.8772, 43.6109],
         ],
         [
             'postalCode' => '87000',
-            'name' => 'Stephane Bobin',
+            'name' => 'Pascal Guiennet',
             'coordinates' => [1.2578, 45.8315],
         ],
         [
             'postalCode' => '91000',
-            'name' => 'Laetitia Romeiro',
+            'name' => 'Olivier Perrot',
             'coordinates' => [2.45, 48.6333],
         ],
         [
@@ -386,12 +346,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '77000',
-            'name' => 'Stephanie Do',
+            'name' => 'Laurent Moretti',
             'coordinates' => [2.6636, 48.5088],
         ],
         [
             'postalCode' => '75001,75002,73003,75004',
-            'name' => 'Isabelle de Courtivron',
+            'name' => 'Agnès Père',
             'coordinates' => [2.352391, 48.860521],
         ],
         [
@@ -401,7 +361,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '22000',
-            'name' => 'Eric Bothorel',
+            'name' => 'Dominique Lebailly',
             'coordinates' => [-2.7684, 48.5151],
         ],
         [
@@ -426,12 +386,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '44000',
-            'name' => 'Valerie Oppelt',
+            'name' => 'Stéphane Gachet',
             'coordinates' => [-1.5534, 47.2173],
         ],
         [
             'postalCode' => '72000',
-            'name' => 'Marlène Schiappa',
+            'name' => 'Wily Colin',
             'coordinates' => [0.2, 48],
         ],
         [
@@ -441,12 +401,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '92000',
-            'name' => 'Laurianne Rossi',
+            'name' => 'Pascal Gentil',
             'coordinates' => [2.2067, 48.892],
         ],
         [
             'postalCode' => '73000',
-            'name' => 'Jean-Christophe Masseron',
+            'name' => 'Muriel Bethoux',
             'coordinates' => [5.9435, 45.585],
         ],
         [
@@ -461,12 +421,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '85000',
-            'name' => 'Stephane Buchou',
+            'name' => 'John Bourel',
             'coordinates' => [-1.4546, 46.719],
         ],
         [
             'postalCode' => '51000',
-            'name' => 'Aïna Kunic',
+            'name' => 'Romain Miot',
             'coordinates' => [4.3672, 48.9539],
         ],
         [
@@ -481,7 +441,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '67000',
-            'name' => 'Bruno Studer',
+            'name' => 'Laurence Vaton',
             'coordinates' => [7.743, 48.5834],
         ],
         [
@@ -491,7 +451,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '01000',
-            'name' => 'Olga Givernet',
+            'name' => 'Sandrine Neuzeret',
             'coordinates' => [5.226123, 46.202233],
         ],
         [
@@ -516,7 +476,7 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '56000',
-            'name' => 'Jean-Michel Jacques',
+            'name' => 'Gaelle Le Roch',
             'coordinates' => [-2.758, 47.6575],
         ],
         [
@@ -531,12 +491,12 @@ class ReferentsController extends Controller
         ],
         [
             'postalCode' => '76000',
-            'name' => 'Damien Adam',
+            'name' => 'Maxime Boissière',
             'coordinates' => [1.0215152, 49.4412454],
         ],
         [
             'postalCode' => '31000-31500',
-            'name' => 'Mickael Nogal',
+            'name' => 'Pierre Casteras',
             'coordinates' => [1.444209, 43.604652],
         ],
         [
@@ -548,11 +508,6 @@ class ReferentsController extends Controller
             'postalCode' => '976',
             'name' => 'Sarah Mouhoussoune',
             'coordinates' => [45.166244, -12.8275],
-        ],
-        [
-            'postalCode' => '971',
-            'name' => 'Bernard Pancrel',
-            'coordinates' => [-61.6298815, 16.2193115],
         ],
         [
             'postalCode' => '973',
