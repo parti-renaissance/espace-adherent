@@ -29,7 +29,6 @@
                     {{ article.title }}
                 </h1>
                 <h2 class="text--gray b__nudge--bottom bigger">{{ article.description }}</h2>
-                <h2 class="text--gray b__nudge--bottom bigger">{{ proposal.description }}</h2>
                 <ul class="article__social">
                     <li role="button" aria-label="Partagez sur Facebook"
                         class="btn btn--social btn--facebook"
@@ -63,7 +62,7 @@
             {% endif %}
 
             <article class="l__wrapper--slim">
-                {{ article.ampContent|raw }}
+                {{ article.content|markdown }}
             </article>
 
             <ul class="article__social space--60-0 l__wrapper--slim">
