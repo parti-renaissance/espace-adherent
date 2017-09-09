@@ -3,8 +3,7 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +18,7 @@ class DonationAdmin extends AbstractAdmin
     ];
 
     protected function configureShowFields(ShowMapper $show)
+        : void
     {
         $show
             ->add('isFinished', 'boolean', [
@@ -77,6 +77,7 @@ class DonationAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('firstName', null, [
@@ -88,6 +89,7 @@ class DonationAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('lastName', null, [

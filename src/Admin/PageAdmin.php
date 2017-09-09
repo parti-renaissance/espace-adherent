@@ -2,12 +2,10 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper
+};
+use Symfony\Component\Form\Extension\Core\Type\{TextareaType, TextType};
 
 class PageAdmin extends AbstractAdmin
 {
@@ -21,6 +19,7 @@ class PageAdmin extends AbstractAdmin
     ];
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         if ($this->getSubject()->getId() === null) {
             $formMapper->add('title', TextType::class, [
@@ -60,6 +59,7 @@ class PageAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('title', null, [
@@ -69,6 +69,7 @@ class PageAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('title', null, [

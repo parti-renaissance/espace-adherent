@@ -3,20 +3,15 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Event;
-use AppBundle\Form\EventCategoryType;
-use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Form\{EventCategoryType, UnitedNationsCountryType};
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\DoctrineORMAdminBundle\Filter\{BooleanFilter, CallbackFilter, DateRangeFilter};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 
 class EventAdmin extends AbstractAdmin
 {
@@ -29,18 +24,15 @@ class EventAdmin extends AbstractAdmin
 
     public function getTemplate($name)
     {
-        if ('show' === $name) {
-            return 'admin/event/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/event/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return $name === 'show' ?
+            'admin/event/show.html.twig' :
+            $name === 'edit' ?
+                'admin/event/edit.html.twig':
+                parent::getTemplate($name);
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
+        : void
     {
         $showMapper
             ->with('Événement', array('class' => 'col-md-7'))
@@ -104,6 +96,7 @@ class EventAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->with('Événement', array('class' => 'col-md-7'))
@@ -161,6 +154,7 @@ class EventAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('name', null, [
@@ -224,6 +218,7 @@ class EventAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('name', null, [

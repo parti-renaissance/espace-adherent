@@ -17,3 +17,6 @@
 /supervisord.log
 /supervisord.pid
 /yarn-error.log
+.idea
+.DS_Store
+/*.DS_Store

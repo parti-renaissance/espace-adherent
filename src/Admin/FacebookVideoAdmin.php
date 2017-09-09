@@ -5,8 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\{TextareaType, UrlType};
 
 class FacebookVideoAdmin extends AbstractAdmin
 {
@@ -16,6 +15,7 @@ class FacebookVideoAdmin extends AbstractAdmin
     ];
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->add('facebookUrl', UrlType::class, [
@@ -41,6 +41,7 @@ class FacebookVideoAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('facebookUrl', null, [

@@ -6,14 +6,11 @@ use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Form\GenderType;
 use AppBundle\ValueObject\Genders;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Sonata\AdminBundle\Datagrid\{DatagridMapper, ListMapper};
+use Sonata\AdminBundle\{
+    Form\FormMapper, Show\ShowMapper
+};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, EmailType, TextareaType, UrlType};
 
 class LegislativeCandidateAdmin extends AbstractAdmin
 {
@@ -32,6 +29,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     ];
 
     protected function configureDatagridFilters(DatagridMapper $mapper)
+        : void
     {
         $mapper
             ->add('id', null, [
@@ -60,6 +58,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $mapper)
+        : void
     {
         $mapper
             ->addIdentifier('id', null, [
@@ -94,6 +93,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $mapper)
+        : void
     {
         $mapper
             ->with('Informations personnelles', ['class' => 'col-md-4'])
@@ -205,6 +205,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
     }
 
     protected function configureShowFields(ShowMapper $mapper)
+        : void
     {
         $mapper
             ->with('Informations générales', ['class' => 'col-md-5'])

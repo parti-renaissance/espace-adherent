@@ -5,25 +5,23 @@ namespace AppBundle\Admin;
 use AppBundle\Entity\Media;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper
+};
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{FileType, TextType};
 
 class MediaAdmin extends AbstractAdmin
 {
     /**
      * @var Filesystem
      */
-    private $storage;
+    private $_storage;
 
     /**
      * @var Server
      */
-    private $glide;
+    private $_glide;
 
     protected $datagridValues = [
         '_page' => 1,
@@ -36,12 +34,13 @@ class MediaAdmin extends AbstractAdmin
      * @param Media $media
      */
     public function preRemove($media)
+        : void
     {
         parent::preRemove($media);
 
         try {
-            $this->storage->delete($media->getPathWithDirectory());
-            $this->glide->deleteCache($media->getPathWithDirectory());
+            $this->_storage->delete($media->getPathWithDirectory());
+            $this->_glide->deleteCache($media->getPathWithDirectory());
         } catch (\Exception $e) {
         }
     }
@@ -50,11 +49,12 @@ class MediaAdmin extends AbstractAdmin
      * @param Media $media
      */
     public function prePersist($media)
+        : void
     {
         parent::prePersist($media);
 
-        $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
-        $this->glide->deleteCache($media->getPathWithDirectory());
+        $this->_storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
+        $this->_glide->deleteCache($media->getPathWithDirectory());
     }
 
     /**
@@ -65,8 +65,8 @@ class MediaAdmin extends AbstractAdmin
         parent::preUpdate($media);
 
         if ($media->getFile()) {
-            $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
-            $this->glide->deleteCache($media->getPathWithDirectory());
+            $this->_storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
+            $this->_glide->deleteCache($media->getPathWithDirectory());
         }
     }
 
@@ -76,6 +76,7 @@ class MediaAdmin extends AbstractAdmin
      * @return Metadata
      */
     public function getObjectMetadata($object)
+        : Metadata
     {
         return new Metadata($object->getName(), null, $object->getPath());
     }
@@ -90,6 +91,7 @@ class MediaAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
 
@@ -110,6 +112,7 @@ class MediaAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('name', null, [
@@ -126,6 +129,7 @@ class MediaAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('_thumbnail', null, [
@@ -162,12 +166,14 @@ class MediaAdmin extends AbstractAdmin
     }
 
     public function setStorage(Filesystem $storage)
+        : void
     {
-        $this->storage = $storage;
+        $this->_storage = $storage;
     }
 
     public function setGlide(Server $glide)
+        : void
     {
-        $this->glide = $glide;
+        $this->_glide = $glide;
     }
 }

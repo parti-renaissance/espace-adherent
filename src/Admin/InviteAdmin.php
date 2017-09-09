@@ -3,11 +3,9 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\{DatagridMapper, ListMapper};
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{TextareaType, TextType};
 
 class InviteAdmin extends AbstractAdmin
 {
@@ -19,6 +17,7 @@ class InviteAdmin extends AbstractAdmin
     ];
 
     protected function configureShowFields(ShowMapper $show)
+        : void
     {
         $show
             ->add('lastName', TextType::class, [
@@ -45,6 +44,7 @@ class InviteAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('lastName', null, [
@@ -59,6 +59,7 @@ class InviteAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('lastName', null, [

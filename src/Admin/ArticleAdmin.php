@@ -4,14 +4,12 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Article;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Form\Type\DatePickerType;
-use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\CoreBundle\{
+    Form\Type\DatePickerType, Model\Metadata
+};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, TextareaType, TextType};
 
 class ArticleAdmin extends AbstractAdmin
 {

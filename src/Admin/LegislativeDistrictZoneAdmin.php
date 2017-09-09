@@ -5,11 +5,11 @@ namespace AppBundle\Admin;
 use AppBundle\Entity\LegislativeDistrictZone;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Form\{
+    FormMapper, Type\CollectionType
+};
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 
 class LegislativeDistrictZoneAdmin extends AbstractAdmin
 {
@@ -27,6 +27,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
     ];
 
     protected function configureListFields(ListMapper $mapper)
+        : void
     {
         $mapper
             ->add('areaCode', null, [
@@ -49,6 +50,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
     }
 
     protected function configureShowFields(ShowMapper $mapper)
+        : void
     {
         $mapper
             ->add('id', null, [
@@ -67,6 +69,7 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $mapper)
+        : void
     {
         $mapper
             ->with('Informations générales', ['class' => 'col-md-6'])

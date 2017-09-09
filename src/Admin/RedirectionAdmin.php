@@ -2,9 +2,9 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper
+};
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RedirectionAdmin extends AbstractAdmin
@@ -17,6 +17,7 @@ class RedirectionAdmin extends AbstractAdmin
     ];
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->add('from', null, [
@@ -38,6 +39,7 @@ class RedirectionAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('from', null, [

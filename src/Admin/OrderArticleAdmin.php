@@ -3,14 +3,11 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\OrderArticle;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper
+};
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, TextareaType, TextType};
 
 class OrderArticleAdmin extends AbstractAdmin
 {
@@ -29,6 +26,7 @@ class OrderArticleAdmin extends AbstractAdmin
      * @return Metadata
      */
     public function getObjectMetadata($object)
+        : Metadata
     {
         return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
     }
@@ -43,6 +41,7 @@ class OrderArticleAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $slugEditable =
             $this->getSubject()->getTitle() === null   // Creation
@@ -105,6 +104,7 @@ class OrderArticleAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('title', null, [
@@ -114,6 +114,7 @@ class OrderArticleAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('title', null, [

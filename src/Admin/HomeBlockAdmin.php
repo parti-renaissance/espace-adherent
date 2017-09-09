@@ -4,13 +4,10 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\HomeBlock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType,ChoiceType,TextType};
 
 class HomeBlockAdmin extends AbstractAdmin
 {
@@ -27,8 +24,13 @@ class HomeBlockAdmin extends AbstractAdmin
      * @return Metadata
      */
     public function getObjectMetadata($object)
+        : Metadata
     {
-        return new Metadata($object->getTitle(), $object->getSubtitle(), $object->getMedia()->getPath());
+        return new Metadata(
+            $object->getTitle(),
+            $object->getSubtitle(),
+            $object->getMedia()->getPath()
+        );
     }
 
     public function getTemplate($name)
@@ -41,6 +43,7 @@ class HomeBlockAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         if (null === $this->getSubject()->getId()) {
             // Creation
@@ -134,6 +137,7 @@ class HomeBlockAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('position_name', null, [

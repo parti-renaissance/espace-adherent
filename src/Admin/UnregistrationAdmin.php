@@ -3,14 +3,13 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\DatagridMapper, Datagrid\ListMapper, Show\ShowMapper
+};
+use Sonata\DoctrineORMAdminBundle\{
+    Datagrid\ProxyQuery, Filter\CallbackFilter
+};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 
 class UnregistrationAdmin extends AbstractAdmin
 {
@@ -21,13 +20,13 @@ class UnregistrationAdmin extends AbstractAdmin
         '_sort_by' => 'unregisteredAt',
     ];
 
-    private $unregistrationReasons;
+    private $_unregistrationReasons;
 
     public function __construct($code, $class, $baseControllerName, array $unregistrationReasons)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->unregistrationReasons = $unregistrationReasons;
+        $this->_unregistrationReasons = $unregistrationReasons;
     }
 
     public function getTemplate($name)
@@ -40,6 +39,7 @@ class UnregistrationAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('uuid', null, [
@@ -71,6 +71,7 @@ class UnregistrationAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('reasons', CallbackFilter::class, [
@@ -78,7 +79,7 @@ class UnregistrationAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_flip($this->unregistrationReasons),
+                    'choices' => array_flip($this->_unregistrationReasons),
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
@@ -111,6 +112,7 @@ class UnregistrationAdmin extends AbstractAdmin
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
+        : void
     {
         $showMapper
             ->add('uuid', null, [

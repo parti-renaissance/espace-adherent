@@ -31,9 +31,10 @@ trait MediaSynchronisedAdminTrait
     /**
      * @param EntityMediaInterface $object
      */
-    public function prePersist($object): void
+    public function prePersist($object) : void
     {
         if (!$object->getMedia() || !$object->getMedia()->getFile()) {
+            //@TODO Incompatible return FATAL ERROR Uncaught TypeError: Return value of test() must be an instance of void
             return;
         }
 
@@ -48,9 +49,10 @@ trait MediaSynchronisedAdminTrait
     /**
      * @param EntityMediaInterface $object
      */
-    public function preUpdate($object): void
+    public function preUpdate($object) : void
     {
         if (!$object->getMedia() || !$object->getMedia()->getFile()) {
+            //@TODO Incompatible return FATAL ERROR Uncaught TypeError: Return value of test() must be an instance of void
             return;
         }
 

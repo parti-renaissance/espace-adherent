@@ -3,8 +3,7 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -18,6 +17,7 @@ class LiveLinkAdmin extends AbstractAdmin
     ];
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->add('position', null, [
@@ -37,6 +37,7 @@ class LiveLinkAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('title', null, [

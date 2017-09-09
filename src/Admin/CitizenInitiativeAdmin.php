@@ -4,21 +4,18 @@ namespace AppBundle\Admin;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeManager;
 use AppBundle\Entity\CitizenInitiative;
-use AppBundle\Form\CitizenInitiativeCategoryType;
-use AppBundle\Form\UnitedNationsCountryType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use AppBundle\Form\{CitizenInitiativeCategoryType, UnitedNationsCountryType};
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper, Show\ShowMapper
+};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 
 class CitizenInitiativeAdmin extends AbstractAdmin
 {
     /**
      * @var CitizenInitiativeManager
      */
-    private $manager;
+    private $_manager;
 
     protected $datagridValues = [
         '_page' => 1,
@@ -27,29 +24,29 @@ class CitizenInitiativeAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    public function setCitizenInitiativeManager(CitizenInitiativeManager $manager): CitizenInitiativeAdmin
+    public function setCitizenInitiativeManager(CitizenInitiativeManager $manager): self
     {
-        $this->manager = $manager;
+        $this->_manager = $manager;
 
         return $this;
     }
 
     public function getTemplate($name)
     {
-        if ('show' === $name) {
-            return 'admin/citizen_initiative/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/citizen_initiative/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return $name === 'show' ?
+            'admin/citizen_initiative/show.html.twig' :
+            $name === 'edit' ?
+                'admin/citizen_initiative/edit.html.twig':
+                parent::getTemplate($name);
     }
 
+    /**
+     * @param $object
+     */
     public function postUpdate($object)
+        : void
     {
-        $this->manager->checkPublicationCitizenInitiative($object);
+        $this->_manager->checkPublicationCitizenInitiative($object);
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void

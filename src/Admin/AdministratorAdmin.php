@@ -4,16 +4,14 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Administrator;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper
+};
+use Symfony\Component\{
+    Form\CallbackTransformer, Security\Core\Encoder\EncoderFactoryInterface,
+    Form\Extension\Core\Type\ChoiceType, Form\Extension\Core\Type\EmailType,
+    Form\Extension\Core\Type\PasswordType ,Form\Extension\Core\Type\RepeatedType
+};
 
 class AdministratorAdmin extends AbstractAdmin
 {
@@ -27,24 +25,26 @@ class AdministratorAdmin extends AbstractAdmin
     /**
      * @var EncoderFactoryInterface
      */
-    private $encoders;
+    private $_encoders;
 
     /**
      * @var GoogleAuthenticator
      */
-    private $googleAuthenticator;
+    private $_googleAuthenticator;
 
     /**
      * @param Administrator $admin
      */
     public function prePersist($admin)
+        : void
     {
         parent::prePersist($admin);
 
-        $admin->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+        $admin->setGoogleAuthenticatorSecret($this->_googleAuthenticator->generateSecret());
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         /** @var Administrator $admin */
         $admin = $this->getSubject();
@@ -103,7 +103,7 @@ class AdministratorAdmin extends AbstractAdmin
                         },
                         function ($plain) use ($admin) {
                             return is_string($plain) && '' !== $plain
-                                ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
+                                ? $this->_encoders->getEncoder($admin)->encodePassword($plain, null)
                                 : $admin->getPassword();
                         }
                     ))
@@ -117,6 +117,7 @@ class AdministratorAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('emailAddress', null, [
@@ -126,6 +127,7 @@ class AdministratorAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('emailAddress', null, [
@@ -144,12 +146,16 @@ class AdministratorAdmin extends AbstractAdmin
     }
 
     public function setEncoders(EncoderFactoryInterface $encoders)
+        : self
     {
-        $this->encoders = $encoders;
+        $this->_encoders = $encoders;
+        return $this;
     }
 
     public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator)
+        : self
     {
-        $this->googleAuthenticator = $googleAuthenticator;
+        $this->_googleAuthenticator = $googleAuthenticator;
+        return $this;
     }
 }
