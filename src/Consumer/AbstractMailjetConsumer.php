@@ -42,9 +42,11 @@ class AbstractMailjetConsumer extends AbstractConsumer
 
             return $delivered;
         } catch (ConnectException $error) {
-            $this->writeln($data['uuid'], 'API timeout, requeuing');
+            $this->writeln($data['uuid'], 'API timeout');
+            $logger->error('RabbitMQ API timeout while sending a mail with UUID '.$data['uuid'], ['exception' => $error]);
 
-            return false;
+            // to prevent requeuing in loop and user from receiving tens of mails
+            return true;
         } catch (\Exception $error) {
             $logger->error('Consumer failed', ['exception' => $error]);
 
