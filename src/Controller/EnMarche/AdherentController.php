@@ -265,8 +265,6 @@ class AdherentController extends Controller
      */
     public function terminateMembershipAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
 

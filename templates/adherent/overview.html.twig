@@ -10,15 +10,13 @@
     </div>
     <div class="settings__membership">Adhérent{{ app.user.gender == "female" ? "e" }} depuis {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
 
-    {% if enable_canary %}
-        {% if is_granted('UNREGISTER') %}
-            <p>
-                <a href="{{ path('app_adherent_terminate_membership') }}"
-                   class="settings__delete_account">
-                    Supprimer mon adhésion et mon compte
-                </a>
-            </p>
-        {% endif %}
+    {% if is_granted('UNREGISTER') %}
+        <p>
+            <a href="{{ path('app_adherent_terminate_membership') }}"
+               class="settings__delete_account">
+                Supprimer mon adhésion et mon compte
+            </a>
+        </p>
     {% endif %}
 
 {% endblock %}
