@@ -4,13 +4,11 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\SocialShare;
 use AppBundle\Twig\AssetRuntime;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper, Form\Type\AdminType
+};
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, TextType};
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SocialShareAdmin extends AbstractAdmin
@@ -35,6 +33,7 @@ class SocialShareAdmin extends AbstractAdmin
      * @return Metadata
      */
     public function getObjectMetadata($object)
+        : Metadata
     {
         return new Metadata($object->getName(), null, $object->getMedia()->getPath());
     }
@@ -43,6 +42,7 @@ class SocialShareAdmin extends AbstractAdmin
      * @param SocialShare $object
      */
     public function prePersist($object)
+        : void
     {
         // Upload
         $this->storage->put(
@@ -69,6 +69,7 @@ class SocialShareAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->with('Média', ['class' => 'col-md-6'])
@@ -119,6 +120,7 @@ class SocialShareAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -156,6 +158,7 @@ class SocialShareAdmin extends AbstractAdmin
     }
 
     public function setAssetRuntime(AssetRuntime $assetRuntime)
+        : void
     {
         $this->assetRuntime = $assetRuntime;
     }

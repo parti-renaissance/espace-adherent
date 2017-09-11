@@ -2,10 +2,9 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper, Show\ShowMapper
+};
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MissionTypeAdmin extends AbstractAdmin
@@ -35,7 +34,7 @@ class MissionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name', null, [

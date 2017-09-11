@@ -6,17 +6,24 @@ use AppBundle\Intl\FranceCitiesBundle;
 
 final class GeocodableAddress
 {
-    private $address;
-    private $postalCode;
-    private $cityName;
-    private $countryCode;
+    private $_address;
+    private $_postalCode;
+    private $_cityName;
+    private $_countryCode;
 
+    /**
+     * GeocodableAddress constructor.
+     * @param string $address
+     * @param string $postalCode
+     * @param string $cityName
+     * @param string $countryCode
+     */
     public function __construct(string $address, string $postalCode, string $cityName, string $countryCode)
     {
-        $this->address = $address;
-        $this->postalCode = $postalCode;
-        $this->cityName = $cityName;
-        $this->countryCode = $countryCode;
+        $this->_address      = $address;
+        $this->_postalCode   = $postalCode;
+        $this->_cityName     = $cityName;
+        $this->_countryCode  = $countryCode;
     }
 
     public static function createFromAddress(AddressInterface $address): self
@@ -32,17 +39,17 @@ final class GeocodableAddress
     public function __toString()
     {
         $address = [];
-        if ($this->address) {
-            $address[] = str_replace(',', '', $this->address);
+        if ($this->_address) {
+            $address[] = str_replace(',', '', $this->_address);
         }
 
-        if ($this->postalCode) {
-            $address[] = sprintf('%s %s', $this->postalCode, $this->cityName);
+        if ($this->_postalCode) {
+            $address[] = sprintf('%s %s', $this->_postalCode, $this->_cityName);
         }
 
-        $countryCode = $this->countryCode;
+        $countryCode = $this->_countryCode;
         if ('FR' === $countryCode) {
-            $countryCode = FranceCitiesBundle::getCountryISOCode($this->postalCode);
+            $countryCode = FranceCitiesBundle::getCountryISOCode($this->_postalCode);
         }
         $address[] = $countryCode;
 

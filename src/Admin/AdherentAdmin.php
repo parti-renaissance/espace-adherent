@@ -3,22 +3,17 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Form\ActivityPositionType;
-use AppBundle\Form\GenderType;
+use AppBundle\Form\{ActivityPositionType, GenderType};
 use AppBundle\Intl\UnitedNationsBundle;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper, Show\ShowMapper
+};
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\DoctrineORMAdminBundle\{
+    Datagrid\ProxyQuery, Filter\CallbackFilter, Filter\DateRangeFilter
+};
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, ChoiceType, TextType};
 
 class AdherentAdmin extends AbstractAdmin
 {
@@ -31,15 +26,11 @@ class AdherentAdmin extends AbstractAdmin
 
     public function getTemplate($name)
     {
-        if ('show' === $name) {
-            return 'admin/adherent/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/adherent/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return $name === 'show' ?
+            'admin/adherent/show.html.twig' :
+            $name === 'edit' ?
+                'admin/adherent/edit.html.twig':
+                parent::getTemplate($name);
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

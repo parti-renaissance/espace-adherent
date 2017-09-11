@@ -3,9 +3,7 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Datagrid\{DatagridInterface, PagerInterface, ProxyQueryInterface};
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -17,6 +15,7 @@ trait DatagridDecoratorTrait
     protected $decorated;
 
     public function setDecorated(DatagridInterface $decorated)
+        : void
     {
         $this->decorated = $decorated;
     }
@@ -25,6 +24,7 @@ trait DatagridDecoratorTrait
      * @return PagerInterface
      */
     public function getPager()
+        : PagerInterface
     {
         return $this->decorated->getPager();
     }
@@ -33,6 +33,7 @@ trait DatagridDecoratorTrait
      * @return ProxyQueryInterface
      */
     public function getQuery()
+        : ProxyQueryInterface
     {
         return $this->decorated->getQuery();
     }
@@ -41,6 +42,7 @@ trait DatagridDecoratorTrait
      * @return array
      */
     public function getResults()
+        : array
     {
         return $this->decorated->getResults();
     }
@@ -56,6 +58,7 @@ trait DatagridDecoratorTrait
      * @return FilterInterface
      */
     public function addFilter(FilterInterface $filter)
+        : FilterInterface
     {
         return $this->decorated->addFilter($filter);
     }
@@ -64,6 +67,7 @@ trait DatagridDecoratorTrait
      * @return array
      */
     public function getFilters()
+        : array
     {
         return $this->decorated->getFilters();
     }
@@ -82,6 +86,7 @@ trait DatagridDecoratorTrait
      * @return array
      */
     public function getValues()
+        : array
     {
         return $this->decorated->getValues();
     }
@@ -90,6 +95,7 @@ trait DatagridDecoratorTrait
      * @return FieldDescriptionCollection
      */
     public function getColumns()
+        : FieldDescriptionCollection
     {
         return $this->decorated->getColumns();
     }
@@ -99,7 +105,7 @@ trait DatagridDecoratorTrait
      * @param string $operator
      * @param mixed  $value
      */
-    public function setValue($name, $operator, $value)
+    public function setValue(string $name, string $operator, $value)
     {
         return $this->decorated->setValue($name, $operator, $value);
     }
@@ -108,6 +114,7 @@ trait DatagridDecoratorTrait
      * @return FormInterface
      */
     public function getForm()
+        : FormInterface
     {
         return $this->decorated->getForm();
     }
@@ -127,7 +134,8 @@ trait DatagridDecoratorTrait
      *
      * @return bool
      */
-    public function hasFilter($name)
+    public function hasFilter(string $name)
+        : bool
     {
         return $this->decorated->hasFilter($name);
     }
@@ -135,7 +143,7 @@ trait DatagridDecoratorTrait
     /**
      * @param string $name
      */
-    public function removeFilter($name)
+    public function removeFilter(string $name)
     {
         return $this->decorated->removeFilter($name);
     }
@@ -144,6 +152,7 @@ trait DatagridDecoratorTrait
      * @return bool
      */
     public function hasActiveFilters()
+        : bool
     {
         return $this->decorated->hasActiveFilters();
     }
@@ -152,6 +161,7 @@ trait DatagridDecoratorTrait
      * @return bool
      */
     public function hasDisplayableFilters()
+        : bool
     {
         return $this->decorated->hasDisplayableFilters();
     }

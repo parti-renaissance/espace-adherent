@@ -3,24 +3,17 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Entity\{Committee, CommitteeMembership};
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Sonata\DoctrineORMAdminBundle\Filter\{CallbackFilter, DateRangeFilter};
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, EmailType, TextareaType, TextType, UrlType};
 
 class CommitteeAdmin extends AbstractAdmin
 {
@@ -30,17 +23,25 @@ class CommitteeAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
-
-    private $manager;
-    private $committeeMembershipRepository;
-    private $cachedDatagrid;
+    /**
+     * @var CommitteeManager
+     */
+    private $_manager;
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $_committeeMembershipRepository;
+    /**
+     * @var
+     */
+    private $_cachedDatagrid;
 
     public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->manager = $manager;
-        $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
+        $this->_manager = $manager;
+        $this->_committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
     }
 
     /**
@@ -48,27 +49,24 @@ class CommitteeAdmin extends AbstractAdmin
      */
     public function getDatagrid()
     {
-        if (!$this->cachedDatagrid) {
-            $this->cachedDatagrid = new CommitteeDatagrid(parent::getDatagrid(), $this->manager);
+        if (!$this->_cachedDatagrid) {
+            $this->_cachedDatagrid = new CommitteeDatagrid(parent::getDatagrid(), $this->_manager);
         }
 
-        return $this->cachedDatagrid;
+        return $this->_cachedDatagrid;
     }
 
     public function getTemplate($name)
     {
-        if ('show' === $name) {
-            return 'admin/committee/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/committee/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return $name === 'show' ?
+            'admin/committee/show.html.twig' :
+            $name === 'edit' ?
+                'admin/committee/edit.html.twig':
+                parent::getTemplate($name);
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
+        : void
     {
         $showMapper
             ->with('Comité', array('class' => 'col-md-7'))
@@ -131,6 +129,7 @@ class CommitteeAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->with('Comité', array('class' => 'col-md-7'))
@@ -172,8 +171,9 @@ class CommitteeAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
-        $committeeMembershipRepository = $this->committeeMembershipRepository;
+        $committeeMembershipRepository = $this->_committeeMembershipRepository;
 
         $datagridMapper
             ->add('id', null, [
@@ -289,6 +289,7 @@ class CommitteeAdmin extends AbstractAdmin
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
+                        //@TODO type
                         return;
                     }
 
@@ -314,6 +315,7 @@ class CommitteeAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('id', null, [

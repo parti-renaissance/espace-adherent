@@ -3,8 +3,7 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\{ListMapper, DatagridMapper};
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class MailjetEmailAdmin extends AbstractAdmin
@@ -17,6 +16,7 @@ class MailjetEmailAdmin extends AbstractAdmin
     ];
 
     protected function configureShowFields(ShowMapper $show)
+        : void
     {
         $show
             ->add('uuid', null, [
@@ -51,6 +51,7 @@ class MailjetEmailAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('uuid', null, [
@@ -67,6 +68,7 @@ class MailjetEmailAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('uuid', null, [

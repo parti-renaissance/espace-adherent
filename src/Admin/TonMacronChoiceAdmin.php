@@ -3,9 +3,9 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\TonMacronChoice;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper
+};
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TonMacronChoiceAdmin extends AbstractAdmin
@@ -28,6 +28,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
     }
 
     public function getBatchActions()
+        : array
     {
         $actions = parent::getBatchActions();
         unset($actions['delete']);
@@ -36,6 +37,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->add('contentKey', null, [
@@ -57,6 +59,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('contentKey', null, [

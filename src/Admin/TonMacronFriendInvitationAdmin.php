@@ -2,9 +2,9 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Show\ShowMapper
+};
 
 class TonMacronFriendInvitationAdmin extends AbstractAdmin
 {
@@ -25,6 +25,7 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('id', null, [
@@ -49,6 +50,7 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
+        : void
     {
         $showMapper
             ->add('id', null, [

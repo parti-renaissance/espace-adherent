@@ -3,15 +3,11 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Clarification;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper, Form\Type\AdminType
+};
 use Sonata\CoreBundle\Model\Metadata;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{CheckboxType, TextareaType, TextType};
 
 class ClarificationAdmin extends AbstractAdmin
 {
@@ -30,12 +26,18 @@ class ClarificationAdmin extends AbstractAdmin
      *
      * @return Metadata
      */
-    public function getObjectMetadata($object)
+    public function getObjectMetadata(Clarification $object)
+        : Metadata
     {
-        return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
+        return new Metadata(
+            $object->getTitle(),
+            $object->getDescription(),
+            $object->getMedia()->getPath()
+        );
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $slugEditable =
             $this->getSubject()->getTitle() === null   // Creation
@@ -93,6 +95,7 @@ class ClarificationAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('title', null, [
@@ -103,6 +106,7 @@ class ClarificationAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->addIdentifier('title', null, [

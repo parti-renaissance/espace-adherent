@@ -14,6 +14,10 @@ class AdministratorFactory
         $this->encoders = $encoders;
     }
 
+    /**
+     * @param array $data
+     * @return Administrator
+     */
     public function createFromArray(array $data): Administrator
     {
         $admin = new Administrator();
@@ -28,6 +32,10 @@ class AdministratorFactory
         return $admin;
     }
 
+    /**
+     * @param string $password
+     * @return string
+     */
     private function encodePassword(string $password): string
     {
         return $this->encoders->getEncoder(Administrator::class)->encodePassword($password, null);

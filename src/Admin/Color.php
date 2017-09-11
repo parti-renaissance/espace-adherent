@@ -34,6 +34,7 @@ class Color
     }
 
     public static function all()
+        : array
     {
         return self::ALL;
     }

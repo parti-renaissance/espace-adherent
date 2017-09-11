@@ -8,15 +8,20 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 class CommitteeDatagrid implements DatagridInterface
 {
     use DatagridDecoratorTrait;
-
-    private $manager;
-    private $cachedResults;
+    /**
+     * @var CommitteeManager
+     */
+    private $_manager;
+    /**
+     * @var cachedResults
+     */
+    private $_cachedResults;
 
     public function __construct(DatagridInterface $decorated, CommitteeManager $manager)
     {
         $this->setDecorated($decorated);
 
-        $this->manager = $manager;
+        $this->_manager = $manager;
     }
 
     /**
@@ -24,16 +29,16 @@ class CommitteeDatagrid implements DatagridInterface
      */
     public function getResults()
     {
-        if (!$this->cachedResults) {
+        if (!$this->_cachedResults) {
             $results = $this->decorated->getResults();
 
             foreach ($results as $result) {
                 $result->hosts = $this->manager->getCommitteeHosts($result);
             }
 
-            $this->cachedResults = $results;
+            $this->_cachedResults = $results;
         }
 
-        return $this->cachedResults;
+        return $this->_cachedResults;
     }
 }

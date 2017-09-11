@@ -2,12 +2,13 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Form\EventListener\SkillListener;
-use AppBundle\Form\SkillType;
+use AppBundle\Form\{
+    EventListener\SkillListener, SkillType
+};
 use AppBundle\Repository\SkillRepository;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Form\FormMapper
+};
 use Sonata\CoreBundle\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -25,6 +26,13 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
 
     private $skillRepository;
 
+    /**
+     * CitizenInitiativeAskingHelpAdmin constructor.
+     * @param $code
+     * @param $class
+     * @param $baseControllerName
+     * @param SkillRepository $skillRepository
+     */
     public function __construct($code, $class, $baseControllerName, SkillRepository $skillRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
@@ -32,6 +40,10 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
         $this->skillRepository = $skillRepository;
     }
 
+    /**
+     * @param string $context
+     * @return mixed
+     */
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
@@ -50,11 +62,13 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
     }
 
     public function getFormTheme()
+        : array
     {
         return ['admin/citizen_initiative/admin.theme.html.twig'];
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->add('skills', CollectionType::class, [

@@ -2,18 +2,14 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Form\GenderType;
-use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Form\{GenderType, UnitedNationsCountryType};
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\{
+    Admin\AbstractAdmin, Datagrid\ListMapper, Datagrid\DatagridMapper, Form\FormMapper, Show\ShowMapper
+};
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\{NumberType, TextType};
 
 class ProcurationProxyAdmin extends AbstractAdmin
 {
@@ -34,6 +30,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper)
+        : void
     {
         $formMapper
             ->with('Coordonnées', ['class' => 'col-md-6'])
@@ -119,6 +116,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
+        : void
     {
         $showMapper
             ->with('Coordonnées', ['class' => 'col-md-4'])
@@ -184,6 +182,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        : void
     {
         $datagridMapper
             ->add('id', null, [
@@ -205,6 +204,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
     }
 
     protected function configureListFields(ListMapper $listMapper)
+        : void
     {
         $listMapper
             ->add('id', null, [
