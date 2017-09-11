@@ -70,3 +70,10 @@ app_desintox:
         slug: ~
         _controller: FrameworkBundle:Redirect:redirect
         route: ~
+
+#
+# Redirections
+#
+app_redirecting:
+    resource: "@AppBundle/Controller/RedirectingController.php"
+    type:     "annotation"
