@@ -16,9 +16,6 @@ class SkillAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'filter_emojis' => true,
-            ])
-            ->add('slug', null, [
-                'label' => 'Slug',
             ]);
     }
 
