@@ -24,8 +24,8 @@ class UnregistrationReasonsChoiceType extends AbstractType
             $data = $event->getData();
 
             if ($data) {
-                foreach ($data as $i => $interest) {
-                    if (!isset($this->reasonsChoices[$interest])) {
+                foreach ($data as $i => $reason) {
+                    if (!isset($this->reasonsChoices[$reason])) {
                         // We need to remove existing value in database
                         // in case the config has changed
                         unset($data[$i]);
