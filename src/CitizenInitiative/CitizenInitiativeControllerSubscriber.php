@@ -41,7 +41,7 @@ class CitizenInitiativeControllerSubscriber implements EventSubscriberInterface
         }
 
         if (($controller[0] instanceof CitizenInitiativeController || $controller[0] instanceof CitizenInitiativeManagerContoller)
-            && $controller[1] !== 'showIfCINotAvailableAction') {
+            && 'showIfNotAuthorizedDepartementAction' !== $controller[1]) {
             $event->getRequest()->attributes->set('is_ci_controller', true);
         }
     }
