@@ -38,6 +38,34 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/campus', $this->client);
     }
 
+    public function testAnonymousUserSeePartialName()
+    {
+        // Anonymous
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(2, $crawler->filter('.search__results__meta span:contains("Jacques P.")')->count());
+        $this->assertSame(0, $crawler->filter('.search__results__meta span:contains("Jacques Picard")')->count());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
+
+        $this->assertSame('Organisé par Jacques P.', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
+    }
+
+    public function testAdherentSeeFullName()
+    {
+        // Adherent
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(0, $crawler->filter('.search__results__meta span:contains("Jacques P.")')->count());
+        $this->assertSame(2, $crawler->filter('.search__results__meta span:contains("Jacques Picard")')->count());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
+
+        $this->assertSame('Organisé par Jacques Picard', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
+    }
+
     public function testHostCannotCreateCitizenInitiative()
     {
         // Login as supervisor

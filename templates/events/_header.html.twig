@@ -6,7 +6,7 @@
         <div class="l__row">
             {% if event.organizer %}
                 <div class="committee-event-organizer text--body text--white">
-                    Organisé par <span class="text--bold">{{ event.organizer }}</span>
+                    Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
                     {% if committee is defined and committee %}
                         du comité
                         <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
