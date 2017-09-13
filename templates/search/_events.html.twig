@@ -25,7 +25,7 @@
                 </div>
                 {% if event.type and event.isCitizenInitiative %}
                     {% if event.organizer %}
-                        <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                        <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
                     {% else %}
                         <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par un ancien adhérent</div>
                     {% endif %}
