@@ -226,10 +226,6 @@
             <tag name="security.voter"/>
         </service>
 
-        <service id="app.voter.citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\CitizenInitiativeVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
         <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
             <tag name="security.voter"/>
         </service>

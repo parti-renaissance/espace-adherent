@@ -66,17 +66,17 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame('Organisé par Jacques Picard', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
     }
 
-    public function testHostCannotCreateCitizenInitiative()
+    public function testHostCanCreateCitizenInitiative()
     {
         // Login as supervisor
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(0, $crawler->filter('a:contains("Je crée mon initiative")')->count());
+        $this->assertSame(2, $crawler->filter('a:contains("Je crée mon initiative")')->count());
 
         $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
 
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testAdherentCreateCitizenInitiative()
