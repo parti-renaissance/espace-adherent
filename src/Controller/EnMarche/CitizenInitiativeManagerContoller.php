@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/initiative_citoyenne/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/initiative-citoyenne/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
  * @Security("is_granted('EDIT_CITIZEN_INITIATIVE', initiative)")
  * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
  */

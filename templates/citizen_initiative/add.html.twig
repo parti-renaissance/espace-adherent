@@ -52,7 +52,7 @@
                 Je crée mon initiative citoyenne
             </h1>
             <div class="text--body text--center b__nudge--top-10">
-                Une initiative citoyenne est une action locale concrète qui vise à améliorer la vie de chacun. Créer un jardin partagé, mutualiser la garde d’enfants dans un quartier ou encore donner des cours du soir à des élèves en difficulté en sont quelques exemples.
+                Une initiative citoyenne, c'est une action locale qui vise à améliorer concrètement le quotidien des habitants. Par exemple : "Créer un jardin partagé", "Mutualiser la garde des enfants dans un quartier", "Donner des cours du soir à des élèves en difficulté".
             </div>
         </header>
         <hr/>
@@ -163,12 +163,9 @@
 
             <div class="form__row b__nudge--top" id="citizen-initiative-coaching_requested-field">
                 {{ form_errors(form.coaching_requested) }}
-                <h3 class="text--medium-small">
-                    Je sollicite un accompagnement personnalisé de la part d’En Marche
-                </h3>
-                <div class="form__checkbox form__checkbox--col citizen_initiative__coaching_requested">
+                <div class="form__checkbox citizen_initiative__coaching_requested">
                     {{ form_widget(form.coaching_requested) }}
-                    {{ form_label(form.coaching_requested, 'Oui, avec plaisir !') }}
+                    {{ form_label(form.coaching_requested, 'Je sollicite un accompagnement personnalisé de la part d\'En Marche') }}
                 </div>
             </div>
 
@@ -200,8 +197,8 @@
                     </a>
                 </div>
             {% else %}
-                <div class="form__row text--center b__nudge--top">
-                    <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Je crée mon initiative</button>
+                <div class="form__row text--center b__nudge--top-40 b__nudge--bottom-huge">
+                    <button type="submit" class="btn btn--blue btn--medium">Je crée mon initiative</button>
                 </div>
             {% endif %}
 

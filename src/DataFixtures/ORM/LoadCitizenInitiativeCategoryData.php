@@ -10,7 +10,7 @@ class LoadCitizenInitiativeCategoryData implements FixtureInterface
 {
     const CITIZEN_INITIATIVE_CATEGORIES = [
         'CIC001' => 'Nature et environnement',
-        'CIC002' => 'Education et citoyenneté',
+        'CIC002' => 'Éducation et citoyenneté',
         'CIC003' => 'Culture et loisirs',
         'CIC004' => 'Lien intergénérationnel',
         'CIC005' => 'Aide aux personnes en difficulté',
