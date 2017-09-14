@@ -68,8 +68,6 @@ class CitizenInitiativeController extends Controller
 
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('page_campus');
-        } elseif (!$this->isGranted('CREATE_CITIZEN_INITIATIVE')) {
-            throw $this->createAccessDeniedException();
         }
 
         $command = new CitizenInitiativeCommand($this->getUser());
@@ -298,7 +296,7 @@ class CitizenInitiativeController extends Controller
      *     condition="request.isXmlHttpRequest()"
      * )
      * @Method("GET")
-     * @Security("is_granted('CREATE_CITIZEN_INITIATIVE')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function skillsAutocompleteAction(Request $request)
     {
