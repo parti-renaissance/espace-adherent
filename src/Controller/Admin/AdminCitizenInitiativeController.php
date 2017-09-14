@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/initiative_citoyenne")
+ * @Route("/initiative-citoyenne")
  * @Security("has_role('ROLE_ADMIN_CITIZEN_INITIATIVES')")
  */
 class AdminCitizenInitiativeController extends Controller

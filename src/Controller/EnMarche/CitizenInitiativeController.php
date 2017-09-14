@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
- * @Route("/initiative_citoyenne")
+ * @Route("/initiative-citoyenne")
  * @Entity("initiative", expr="repository.findOnePublishedByUuid(uuid)")
  */
 class CitizenInitiativeController extends Controller

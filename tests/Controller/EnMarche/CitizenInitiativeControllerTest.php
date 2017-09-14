@@ -32,7 +32,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testAnonymousUserCannotCreateCitizenInitiative()
     {
         // Anonymous
-        $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
+        $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/campus', $this->client);
@@ -46,7 +46,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame(2, $crawler->filter('.search__results__meta span:contains("Jacques P.")')->count());
         $this->assertSame(0, $crawler->filter('.search__results__meta span:contains("Jacques Picard")')->count());
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
 
         $this->assertSame('Organisé par Jacques P.', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
     }
@@ -61,7 +61,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $crawler->filter('.search__results__meta span:contains("Jacques P.")')->count());
         $this->assertSame(2, $crawler->filter('.search__results__meta span:contains("Jacques Picard")')->count());
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies');
 
         $this->assertSame('Organisé par Jacques Picard', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
     }
@@ -74,7 +74,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(2, $crawler->filter('a:contains("Je crée mon initiative")')->count());
 
-        $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
+        $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -96,7 +96,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testCreateCitizenInitiativeFailed()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
-        $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
+        $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
         $data = [];
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon initiative')->form(), $data);
@@ -128,7 +128,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertSame(0, $crawler->filter('.search__results__meta h2 a:contains("Mon initiative")')->count());
 
-        $this->client->request(Request::METHOD_GET, '/initiative_citoyenne/creer');
+        $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
         $data = [];
         $data['citizen_initiative']['name'] = 'Mon initiative';
@@ -161,12 +161,12 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/initiative_citoyenne/creer', $this->client);
+        $this->assertClientIsRedirectedTo('/initiative-citoyenne/creer', $this->client);
     }
 
     public function testShowUnpublishedInitiative()
     {
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg-non-publiee';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg-non-publiee';
         $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -174,7 +174,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
     public function testShowPublishedInitiative()
     {
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -184,7 +184,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testInviteToUnpublishedEvent()
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
-        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $initiativeUrl = sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/invitation');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -194,7 +194,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID);
-        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
+        $initiativeUrl = sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
@@ -237,7 +237,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testAnonymousCanInviteToEvent()
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID);
-        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
+        $initiativeUrl = sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, $slug = $initiative->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
@@ -284,7 +284,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s/invitation/merci', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, $initiative->getSlug()));
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/invitation/merci', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, $initiative->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
@@ -292,7 +292,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testRegisterToUnpublishedEvent()
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
-        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $initiativeUrl = sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -300,7 +300,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
     public function testAnonymousUserCanRegisterToEvent()
     {
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID.'/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -351,7 +351,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -390,7 +390,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_7_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-ville-kilchberg';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_7_UUID.'/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-ville-kilchberg';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -415,7 +415,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testShareToCommitteeToUnpublishedEvent()
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID);
-        $initiativeUrl = sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
+        $initiativeUrl = sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_8_UUID, $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/partage-au-comite');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -423,7 +423,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
     public function testAnonymousUserShareToCommittee()
     {
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -434,7 +434,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -445,7 +445,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -484,7 +484,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
-        $eventUrl = '/initiative_citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
+        $eventUrl = '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -535,11 +535,11 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     public function testNotConnectedUserCannotSubscribeToAdherentActivity()
     {
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID);
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
 
         $this->assertSame(0, $crawler->filter('#activity_subscription')->count());
 
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $crawler = $this->client->followRedirect();
@@ -552,18 +552,18 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch', 'newpassword');
 
         $initiative = $this->getCitizenInitiativeRepository()->findOneByUuid(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID);
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative_citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
 
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Suivre')->link());
 
-        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
+        $this->assertSame(sprintf('http://localhost/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
         $this->assertSame('Ne plus suivre', $crawler->filter('#activity_subscription a')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Ne plus suivre')->link());
 
-        $this->assertSame(sprintf('http://localhost/initiative_citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
+        $this->assertSame(sprintf('http://localhost/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a:contains("Suivre")')->text());
     }
 
