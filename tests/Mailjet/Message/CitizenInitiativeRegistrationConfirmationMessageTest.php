@@ -8,6 +8,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 {
+    const CITIZEN_INITIATIVE_LINK = 'http://en-marche.fr/initiative_citoyenne/254/2017-12-27-initiative-citoyenne-a-lyon';
+
     public function testCreateMessageFromEventRegistration()
     {
         $organizer = $this->createAdherentMock('michelle.doe@example.com', 'Michelle', 'Doe');
@@ -20,7 +22,7 @@ class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEvent
         $registration->expects($this->any())->method('getFirstName')->willReturn('John');
         $registration->expects($this->any())->method('getEmailAddress')->willReturn('john@bar.com');
 
-        $message = CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration);
+        $message = CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, self::CITIZEN_INITIATIVE_LINK);
 
         $this->assertInstanceOf(CitizenInitiativeRegistrationConfirmationMessage::class, $message);
         $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
@@ -33,8 +35,22 @@ class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEvent
                 'IC_name' => 'Grand Meeting de Paris',
                 'IC_organiser_firstname' => 'Michelle',
                 'IC_organiser_lastname' => 'Doe',
+                'IC_link' => self::CITIZEN_INITIATIVE_LINK,
             ],
             $message->getVars()
+        );
+
+        $recipient = $message->getRecipient(0);
+
+        $this->assertSame(
+            [
+                'IC_name' => 'Grand Meeting de Paris',
+                'IC_organiser_firstname' => 'Michelle',
+                'IC_organiser_lastname' => 'Doe',
+                'IC_link' => self::CITIZEN_INITIATIVE_LINK,
+                'prenom' => 'John',
+            ],
+            $recipient->getVars()
         );
     }
 }
