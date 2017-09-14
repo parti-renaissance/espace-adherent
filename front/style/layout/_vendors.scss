@@ -71,3 +71,23 @@
         background-position: center;
     }
 }
+
+.ui-autocomplete {
+    background: white;
+    width: 590px !important;
+    margin-left: 5px;
+    border: 1px solid $gray;
+
+    li a {
+        cursor: pointer;
+        border: 0;
+        padding: 5px 10px;
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+
+        &:hover {
+            background: $gray--lighter;
+        }
+    }
+}
