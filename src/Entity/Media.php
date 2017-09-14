@@ -96,6 +96,11 @@ class Media
     private $updatedAt;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $compressedDisplay = true;
+
+    /**
      * @var UploadedFile|null
      *
      * @Assert\File(
@@ -256,6 +261,16 @@ class Media
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function isCompressedDisplay(): bool
+    {
+        return $this->compressedDisplay;
+    }
+
+    public function setCompressedDisplay(bool $compressedDisplay): void
+    {
+        $this->compressedDisplay = $compressedDisplay;
     }
 
     /**
