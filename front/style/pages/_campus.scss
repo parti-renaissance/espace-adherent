@@ -24,7 +24,12 @@
         }
 
         &__inspiration {
+            margin-top: -90px;
             background: $gray--lighter;
+
+            @media (max-width: $mobile) {
+                margin-top: -25px;
+            }
         }
 
         &__action {

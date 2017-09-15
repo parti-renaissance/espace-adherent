@@ -15,13 +15,13 @@
     <main class="campus">
         <header class="hero">
             <h1>
-                La plateforme de formation pour les citoyens.
+                La plateforme de formation pour les citoyens
             </h1>
             <p>
                 Nous mettons à votre disposition une plateforme de formation
                 citoyenne en ligne, gratuite et ouverte à tous.
             </p>
-            <img src="https://www.expii.com/client/apps/static/homepage/learn-styles.svg" />
+            <img src="{{ asset('images/campus-illustration.png') }}" />
         </header>
 
         <section class="campus__row campus__row__inspiration">
@@ -30,16 +30,15 @@
                 <div class="campus__text">
                     <h2>S'inspirer</h2>
                     <p>
-                        Nous avons répertorié des initiatives citoyennes, des cours
-                        d’universités, des extraits de conférences en France et
-                        dans le monde entier pour s’ouvrir l’esprit et vous donner
-                        des idées !
+                        Nous avons répertorié des initiatives citoyennes innovantes
+                        partout en France et à l’étranger pour prendre un grand bol
+                        d’air et vous donner des idées !
                     </p>
-                    <a href="#" class="btn btn--blue">Je m'inspire</a>
+                    <a href="https://inspiration.en-marche.fr" class="btn btn--blue">S'inspirer</a>
                     <p>
                         <small>
                             Déjà une idée ? <a href="#" class="link--blue
-                            link--no-decor">Je lance mon initiative citoyenne »</a>
+                            link--no-decor">Créer une initiative citoyenne »</a>
                         </small>
                     </p>
                 </div>
@@ -51,16 +50,16 @@
                 <div class="campus__text">
                     <h2>Se former</h2>
                     <p>
-                        Nous avons crée une compilation de contenus pour vous
+                        Nous avons compilé une série de contenus afin vous
                         permettre de mieux comprendre le fonctionnement de nos
-                        institutions et vous apporter des compétences
-                        pratiques.
+                        institutions et vous apporter des compétences pratiques
+                        pour monter vos projets.
                     </p>
-                    <a href="#" class="btn btn--blue">Je me forme</a>
+                    <a href="https://apprendre.en-marche.fr" class="btn btn--blue">Se former</a>
                     <p>
                         <small>
-                            Déjà une idée ? <a href="#" class="link--blue
-                            link--no-decor">Je lance mon initiative citoyenne »</a>
+                            Déjà une idée ? <a href="{{ path('app_create_citizen_initiative') }}" class="link--blue
+                            link--no-decor">Créer une initiative citoyenne »</a>
                         </small>
                     </p>
                 </div>
@@ -73,24 +72,22 @@
                 <div class="campus__text--center">
                     <h2>Agir</h2>
                     <p>
-                        Nous sommes en train de développer des formations
-                        longues, d’une durée de trois mois, "les parcours
-                        citoyens", pour vous aider à lancer vos propres
-                        projets. Une fois lancées, ces formations seront
-                        animées par une équipe pédagogique dédiée qui vous
-                        accompagnera.
+                        Nous sommes en train de développer des formations en
+                        ligne d’une durée de 5 semaines pour vous aider à passer
+                        à l’action et lancer vos propres initiatives, seul ou en
+                        groupe. Ce sont les parcours citoyens.
                         <br/>
                         <a href="#" class="link--blue link--no-decor">
-                            Je veux être prévenu lors du lancement de cette
-                            formation longue »
+                            Je veux être prévenu lors du lancement du prochain
+                            parcours citoyen »
                         </a>
                     </p>
                     <p>
                         Vous avez des idées et ne voulez pas attendre ? Lancez
                         une initiative citoyenne dès aujourd’hui !
                     </p>
-                    <a href="#" class="btn btn--blue">
-                        Je lance mon initiative citoyenne
+                    <a href="{{ path('app_create_citizen_initiative') }}" class="btn btn--blue">
+                        Créer une initiative citoyenne
                     </a>
                 </div>
             </div>
