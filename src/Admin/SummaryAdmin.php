@@ -3,12 +3,17 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\ActivityPositions;
+use AppBundle\Summary\Contribution;
+use AppBundle\Summary\JobDuration;
+use AppBundle\Summary\JobLocation;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -22,6 +27,13 @@ class SummaryAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'id',
     ];
+
+    private $interests = [];
+
+    public function setInterestChoices(array $interests)
+    {
+        $this->interests = $interests;
+    }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -106,6 +118,114 @@ class SummaryAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('currentProfession', null, [
+                'label' => 'Métier principal',
+            ])
+            ->add(
+                'missionTypeWishes',
+                null,
+                [
+                    'label' => 'Type de missions',
+                ],
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'availabilities',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Disponibilités',
+                ],
+                'choice',
+                [
+                    'choices' => JobDuration::CHOICES,
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'skills',
+                null,
+                [
+                    'label' => 'Compétences',
+                ],
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'contributionWish',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Souhait de contribution',
+                ],
+                'choice',
+                [
+                    'choices' => Contribution::CHOICES,
+                    'multiple' => true,
+                ]
+            )
+            ->add('public', null, [
+                'label' => 'Visible au public',
+            ])
+            ->add(
+                'member.position',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Situation',
+                ],
+                'choice',
+                [
+                    'choices' => ActivityPositions::CHOICES,
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'jobLocations',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Lieu de travail',
+                ],
+                'choice',
+                [
+                    'choices' => JobLocation::CHOICES,
+                    'multiple' => true,
+                ]
+            )
+            ->add('motivation', null, [
+                'label' => 'Motivation',
+            ])
+            ->add(
+                'languages',
+                null,
+                [
+                    'label' => 'Langues',
+                ],
+                null,
+                [
+                    'multiple' => true,
+                ]
+            )
+            ->add('experiences.company', null, [
+                    'label' => 'Entreprise',
+            ])
+            ->add('experiences.position', null, [
+                'label' => 'Poste',
+            ])
+            ->add(
+                'member.interests',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Centres d\'intérêt',
+                ],
+                'choice',
+                [
+                    'choices' => array_flip($this->interests),
+                    'multiple' => true,
+                ]
+            )
         ;
     }
 

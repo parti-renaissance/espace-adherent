@@ -339,6 +339,10 @@
             <argument />
             <argument>AppBundle\Entity\Summary</argument>
             <argument />
+
+            <call method="setInterestChoices">
+                <argument>%adherent_interests%</argument>
+            </call>
         </service>
 
         <service id="app.admin.skill" class="AppBundle\Admin\SkillAdmin">
