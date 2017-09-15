@@ -106,6 +106,9 @@ class MediaAdmin extends AbstractAdmin
                 'label' => $isCreation ? 'Image / Vidéo' : 'Image / Vidéo (laisser vide pour ne pas modifier)',
                 'required' => $isCreation,
             ])
+            ->add('compressedDisplay', null, [
+                'label' => 'L\'affichage compressé (compression appliquée seulement aux images)',
+            ])
         ;
     }
 
@@ -121,6 +124,9 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('mimeType', null, [
                 'label' => 'Type de fichier',
+            ])
+            ->add('compressedDisplay', null, [
+                'label' => 'L\'affichage compressé',
             ])
         ;
     }
@@ -147,6 +153,9 @@ class MediaAdmin extends AbstractAdmin
             ])
             ->add('height', null, [
                 'label' => 'Hauteur',
+            ])
+            ->add('compressedDisplay', null, [
+                'label' => 'L\'affichage compressé',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

@@ -44,6 +44,11 @@ class AssetRuntime
 
             return $this->router->generate('asset_url', $parameters, $referenceType);
         } else {
+            // No compression and no resizing if no compressed display
+            if (!$media->isCompressedDisplay()) {
+                unset($parameters['q'], $parameters['w']);
+            }
+
             return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType);
         }
     }
