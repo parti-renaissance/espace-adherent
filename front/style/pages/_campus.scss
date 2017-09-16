@@ -34,6 +34,7 @@
 
             &__graphic {
                 background-size: cover;
+                background-position: center;
                 height: 630px;
                 max-height: 57vw;
                 min-height: 300px;
@@ -45,9 +46,13 @@
         }
 
         &__learn {
+            @media (max-width: $mobile) {
+                padding: 0 0 120px;
+            }
+
             &__graphic {
-                background-color: #fee0d5;
                 display: flex;
+                background-position: center;
                 align-items: center;
                 justify-content: center;
                 background-size: contain;
@@ -55,12 +60,27 @@
                 height: 350px;
                 max-height: 57vw;
                 min-height: 300px;
+
+                @media (max-width: $mobile) {
+                    order: 2;
+                    width: 100%;
+                }
+            }
+
+            &__text {
+                @media (max-width: $mobile) {
+                    order: 1;
+                }
             }
         }
 
         &__action {
             border-top: 1px solid $gray--light;
             border-bottom: 1px solid $gray--light;
+
+            @media (max-width: $mobile) {
+                padding: 0;
+            }
 
             h2 {
                 text-align: center;
