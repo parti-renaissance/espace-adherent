@@ -24,4 +24,10 @@
     img {
         @include wrapper;
     }
+
+    &__graphic--atop {
+        z-index: 100;
+        display: flex;
+        align-items: center;
+    }
 }
