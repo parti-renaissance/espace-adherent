@@ -21,12 +21,13 @@
                 Nous mettons à votre disposition une plateforme de formation
                 citoyenne en ligne, gratuite et ouverte à tous.
             </p>
-            <img src="{{ asset('images/campus-illustration.png') }}" />
+            <div class="hero__graphic--atop">
+                <img src="{{ asset('images/campus-illustration.png') }}" />
+            </div>
         </header>
 
         <section class="campus__row campus__row__inspiration">
-            <div>graphic goes here</div>
-            <div>
+            <div class="campus__row__inspiration__text">
                 <div class="campus__text">
                     <h2>S'inspirer</h2>
                     <p>
@@ -37,15 +38,20 @@
                     <a href="https://inspiration.en-marche.fr" class="btn btn--blue">S'inspirer</a>
                     <p>
                         <small>
-                            Déjà une idée ? <a href="#" class="link--blue
+                            Déjà une idée ? <a href="{{ path('app_create_citizen_initiative') }}" class="link--blue
                             link--no-decor">Créer une initiative citoyenne »</a>
                         </small>
                     </p>
                 </div>
             </div>
+
+            <div class="campus__row__inspiration__graphic progressive-background"
+                 data-sd="{{ static_asset('campus/inspiration.png', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('campus/inspiration.png', {'w': 2000, 'q': 70}) }}">
+            </div>
         </section>
 
-        <section class="campus__row">
+        <section class="campus__row campus__row__learn">
             <div>
                 <div class="campus__text">
                     <h2>Se former</h2>
@@ -64,7 +70,10 @@
                     </p>
                 </div>
             </div>
-            <div>graphic goes here</div>
+            <div class="campus__row__learn__graphic progressive-background"
+                 data-sd="{{ static_asset('campus/learn.png', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('campus/learn.png', {'w': 2000, 'q': 70}) }}">
+            </div>
         </section>
 
         <section class="campus__row campus__row__action">
