@@ -60,9 +60,9 @@ trait EntityCrudTrait
         $class = get_class($this);
         $ucProperty = ucfirst($property);
 
-        // This prevent Algolia to try to modify for example "postAddress.latitude"
+        // This prevents Algolia to try modifying for example "postAddress.latitude" or ”organizer_id”
         // https://github.com/algolia/AlgoliaSearchBundle/blob/4415de8d3d279fb68c97edeb54a1184b84ebbc9c/Mapping/Helper/ChangeAwareMethod.php#L21-L42
-        if (false !== strpos($property, '.')) {
+        if (false !== strpos($property, '.') || '_id' === substr($property, -3)) {
             return;
         }
 
