@@ -74,7 +74,7 @@ class CitizenInitiativeControllerSubscriber implements EventSubscriberInterface
             return true;
         }
 
-        return in_array(substr($postalCode, 0, 2), ['16', '80', '81'], true);
+        return in_array(substr($postalCode, 0, 2), ['16', '34', '80', '81', '92'], true);
     }
 
     public static function getSubscribedEvents()
