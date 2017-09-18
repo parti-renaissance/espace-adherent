@@ -49,7 +49,7 @@ abstract class BaseEvent implements GeoPointInterface
      *
      * @Algolia\Attribute
      */
-    private $name;
+    protected $name;
 
     /**
      * The event canonical name.
@@ -58,7 +58,7 @@ abstract class BaseEvent implements GeoPointInterface
      *
      * @Algolia\Attribute
      */
-    private $canonicalName;
+    protected $canonicalName;
 
     /**
      * @ORM\Column(length=130)
@@ -66,24 +66,24 @@ abstract class BaseEvent implements GeoPointInterface
      *
      * @Algolia\Attribute
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @ORM\Column(type="text")
      *
      * @Algolia\Attribute
      */
-    private $description;
+    protected $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $beginAt;
+    protected $beginAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $finishAt;
+    protected $finishAt;
 
     /**
      * The adherent UUID who created this committee event/citizen's initiative.
@@ -91,36 +91,36 @@ abstract class BaseEvent implements GeoPointInterface
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="RESTRICT")
      */
-    private $organizer;
+    protected $organizer;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
-    private $participantsCount;
+    protected $participantsCount;
 
     /**
      * @ORM\Column(length=20)
      */
-    private $status;
+    protected $status;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
      */
-    private $published = true;
+    protected $published = true;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $capacity;
+    protected $capacity;
 
     public function __toString(): string
     {
         return $this->name ?: '';
     }
 
-    private static function canonicalize(string $name)
+    protected static function canonicalize(string $name)
     {
         return mb_strtolower($name);
     }
