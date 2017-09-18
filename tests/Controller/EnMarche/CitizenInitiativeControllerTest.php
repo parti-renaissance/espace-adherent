@@ -340,10 +340,10 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre inscription est confirmée.'));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
-        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
+        $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
@@ -374,10 +374,10 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre inscription est confirmée.'));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
-        $crawler = $this->client->click($crawler->selectLink("Retour à l'événement")->link());
+        $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
