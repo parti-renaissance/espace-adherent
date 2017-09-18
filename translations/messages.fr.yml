@@ -118,7 +118,7 @@ citizen_initiative.update.success: L'initiative citoyenne a bien été modifiée
 citizen_initiative.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
 citizen_initiative.cancel.success: L'initiative citoyenne a bien été annulée.
 citizen_initiative.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
-citizen_initiative.registration.success: Votre inscription à l'événement est confirmée.
+citizen_initiative.registration.success: Votre inscription est confirmée.
 
 #
 # Search
