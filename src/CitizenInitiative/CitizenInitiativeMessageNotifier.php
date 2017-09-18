@@ -11,7 +11,6 @@ use AppBundle\Mailjet\Message\CitizenInitiativeNearSupervisorsMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeOrganizerValidationMessage;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeAdherentsNearMessage;
-use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Membership\AdherentManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -140,7 +139,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
                 'slug' => $citizenInitiative->getSlug(),
             ]),
             function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return CitizenInitiativeAdherentsNearMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
@@ -152,7 +151,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $organizer,
             $citizenInitiative,
             function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return CitizenInitiativeNearSupervisorsMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
@@ -178,7 +177,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $organizer,
             $citizenInitiative,
             function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return CitizenInitiativeActivitySubscriptionMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
