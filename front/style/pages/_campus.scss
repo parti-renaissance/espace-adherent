@@ -4,7 +4,6 @@
     }
 
     p {
-        @include text--medium-small;
         font-family: $font-roboto;
         color: $gray--dark;
     }
@@ -77,6 +76,26 @@
         &__action {
             border-top: 1px solid $gray--light;
             border-bottom: 1px solid $gray--light;
+            position: relative;
+            background-color: $gray--lighter;
+
+            @media (min-width: $tablet) {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: -40px;
+                    height: 500px;
+                    background-image: url('/images/campus/campus-computer.png'),
+                                      url('/images/campus/campus-notebook.png'),
+                                      url('/images/campus/campus-plane.png'),
+                                      url('/images/campus/campus-flag.png');
+                    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+                    background-size: 160px, 80px, 215px, 80px;
+                    background-position: 85% 0%, 32% 1%, 5% 25%, 90% bottom;
+                }
+            }
 
             @media (max-width: $mobile) {
                 padding: 0;
@@ -108,7 +127,7 @@
         }
 
         &--center {
-            max-width: 550px;
+            max-width: 500px;
         }
     }
 }
