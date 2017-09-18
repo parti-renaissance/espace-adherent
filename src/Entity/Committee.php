@@ -137,6 +137,13 @@ class Committee implements GeoPointInterface
     private $membersCounts;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $adminComment;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -245,6 +252,16 @@ class Committee implements GeoPointInterface
     public function getGooglePlusPageUrl(): ?string
     {
         return $this->googlePlusPageUrl;
+    }
+
+    public function getAdminComment(): ?string
+    {
+        return $this->adminComment;
+    }
+
+    public function setAdminComment(string $adminComment): void
+    {
+        $this->adminComment = $adminComment;
     }
 
     public function isWaitingForApproval(): bool
