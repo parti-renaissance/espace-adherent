@@ -1,9 +1,6 @@
 {% if banner.isDisplayBlock %}
     {% if banner.media and banner.media.video %}
-        <video {% if banner.videoControls %}controls{% endif %}{% if banner.videoAutoplayLoop %} autoplay loop{% endif %} />
-            <source src="{{ media_asset(banner.media) }}" type="{{ banner.media.mimeType }}">
-            Votre navigateur ne prend pas en charge la balise "video".
-        </video>
+        {% include 'video.html.twig' with {'block': banner} %}
     {% else %}
         <div class="newsletter__banner l__hide--on-tablet background--{{ banner.bgColor|default('green') }}" id="header-banner" style="display: none;">
             <div class="l__wrapper l__row l__row--h-stretch space--30-0">

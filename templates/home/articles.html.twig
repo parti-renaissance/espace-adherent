@@ -2,10 +2,7 @@
     {% if block.type == 'video' %}
         <div class="csv card--small card--small__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="300" height="200" />
-                    <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
-                    Votre navigateur ne prend pas en charge la balise "video".
-                </video>
+                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
             {% else %}
                 <a href="{{ block.link }}" class="background-container">
                     <div class="background card__background progressive-background"
@@ -31,10 +28,7 @@
         </div>
         <div class="cmv card--medium card--medium__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="585" height="350" />
-                    <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
-                    Votre navigateur ne prend pas en charge la balise "video".
-                </video>
+                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
             {% else %}
                 <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
                    data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
@@ -65,10 +59,7 @@
     {% else %}
         <div class="cs card--small {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="300" height="200" />
-                    <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
-                    Votre navigateur ne prend pas en charge la balise "video".
-                </video>
+                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
             {% else %}
                 <a href="{{ block.link }}" class="background-container">
                     <div class="background card__background progressive-background"
@@ -93,10 +84,7 @@
         </div>
         <div class="cm card--medium {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                <video {% if block.videoControls %}controls{% endif %}{% if block.videoAutoplayLoop %} autoplay loop{% endif %} width="585" height="350" />
-                    <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
-                    Votre navigateur ne prend pas en charge la balise "video".
-                </video>
+                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
             {% else %}
                 <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
                    data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"

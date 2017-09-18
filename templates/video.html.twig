@@ -1,0 +1,8 @@
+<video {% if block.videoControls %}controls{% endif %}
+    {%- if block.videoAutoplayLoop %} autoplay loop{% endif -%}
+    {%- if width is defined %} width="{{ width }}"{% endif -%}
+    {%- if height is defined %} height="{{ height }}"{% endif -%}
+    {%- if block.link %} onclick="location.href='{{ block.link }}';"{% endif -%} />
+    <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
+    Votre navigateur ne prend pas en charge la balise "video".
+</video>
