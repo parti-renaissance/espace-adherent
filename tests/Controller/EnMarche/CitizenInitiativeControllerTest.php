@@ -10,6 +10,7 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Mailjet\Message\CitizenInitiativeCreationConfirmationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
 use AppBundle\Mailjet\Message\CitizenInitiativeRegistrationConfirmationMessage;
 use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
@@ -159,6 +160,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $initiative = $this->getCitizenInitiativeRepository()->findOneBy(['name' => 'Mon initiative']);
 
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/initiative-citoyenne/creer', $this->client);
