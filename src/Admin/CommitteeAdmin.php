@@ -168,6 +168,13 @@ class CommitteeAdmin extends AbstractAdmin
                     'help' => 'Pour modifier l\'adresse, impersonnifiez un animateur de ce comité.',
                 ])
             ->end()
+            ->with('Commentaire', array('class' => 'col-md-5'))
+                ->add('adminComment', TextareaType::class, [
+                    'label' => 'Commentaire sur l\'AL',
+                    'attr' => ['rows' => 8],
+                    'required' => false,
+                ])
+            ->end()
         ;
     }
 
