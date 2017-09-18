@@ -15,7 +15,7 @@ final class CitizenInitiativeRegistrationConfirmationMessage extends MailjetMess
 
         return new self(
             Uuid::uuid4(),
-            '196483',
+            '212744',
             $registration->getEmailAddress(),
             self::fixMailjetParsing($firstName),
             'Confirmation de participation à une initiative citoyenne En Marche !',

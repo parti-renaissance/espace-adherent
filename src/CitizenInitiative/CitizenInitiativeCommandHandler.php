@@ -6,6 +6,7 @@ use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Event\EventFactory;
 use AppBundle\Events;
 use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CitizenInitiativeCreationConfirmationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -35,10 +36,11 @@ class CitizenInitiativeCommandHandler
         $this->manager->persist($initiative);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CREATED, new CitizenInitiativeCreatedEvent(
-            $command->getAuthor(),
-            $initiative
-        ));
+        $initiativeEvent = new CitizenInitiativeCreatedEvent($command->getAuthor(), $initiative);
+
+        $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CREATED, $initiativeEvent);
+
+        $this->mailjet->sendMessage(CitizenInitiativeCreationConfirmationMessage::create($initiativeEvent));
     }
 
     public function handleUpdate(CitizenInitiative $initiative, CitizenInitiativeCommand $command)

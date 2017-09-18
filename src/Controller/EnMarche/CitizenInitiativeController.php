@@ -77,7 +77,7 @@ class CitizenInitiativeController extends Controller
             $this->get('app.citizen_initiative.handler')->handle($command);
 
             $registrationCommand = new EventRegistrationCommand($command->getCitizenInitiative(), $this->getUser());
-            $this->get('app.event.registration_handler')->handle($registrationCommand);
+            $this->get('app.citizen_initiative.registration_handler')->handle($registrationCommand);
 
             $this->addFlash('info', 'citizen_initiative.creation.success');
 
