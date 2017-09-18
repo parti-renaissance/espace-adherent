@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
+use AppBundle\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,12 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PageController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/campus", defaults={"_enable_campaign_silence"=true}, name="page_campus")
      * @Method("GET")
      */
     public function campusAction()
     {
+        $this->disableInProduction();
+
         return $this->render('page/campus.html.twig');
     }
 
