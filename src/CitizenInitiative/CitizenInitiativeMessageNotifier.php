@@ -150,6 +150,10 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $adherents,
             $organizer,
             $citizenInitiative,
+            $this->generateUrl('app_citizen_initiative_show', [
+                'uuid' => (string) $citizenInitiative->getUuid(),
+                'slug' => $citizenInitiative->getSlug(),
+            ]),
             function (Adherent $adherent) {
                 return CitizenInitiativeNearSupervisorsMessage::getRecipientVars($adherent->getFirstName());
             }
@@ -176,6 +180,10 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $adherents,
             $organizer,
             $citizenInitiative,
+            $this->generateUrl('app_citizen_initiative_show', [
+                'uuid' => (string) $citizenInitiative->getUuid(),
+                'slug' => $citizenInitiative->getSlug(),
+            ]),
             function (Adherent $adherent) {
                 return CitizenInitiativeActivitySubscriptionMessage::getRecipientVars($adherent->getFirstName());
             }

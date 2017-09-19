@@ -14,6 +14,7 @@ final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
      * @param Adherent[]        $recipients
      * @param Adherent          $organizer
      * @param CitizenInitiative $citizenInitiative
+     * @param string            $citizenInitiativeLink
      * @param \Closure          $recipientVarsGenerator
      *
      * @return CitizenInitiativeNearSupervisorsMessage
@@ -22,6 +23,7 @@ final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
         array $recipients,
         Adherent $organizer,
         CitizenInitiative $citizenInitiative,
+        string $citizenInitiativeLink,
         \Closure $recipientVarsGenerator
     ): self {
         if (!$recipients) {
@@ -44,7 +46,7 @@ final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
                 self::formatDate($citizenInitiative->getBeginAt(), 'mm')
             ),
             $citizenInitiative->getInlineFormattedAddress(),
-            $citizenInitiative->getSlug()
+            $citizenInitiativeLink
         );
 
         $message = new static(
@@ -82,7 +84,7 @@ final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
         string $citizenInitiativeDate,
         string $citizenInitiativeHour,
         string $citizenInitiativeAddress,
-        string $citizenInitiativeSlug
+        string $citizenInitiativeLink
     ): array {
         return [
             // Global common variables
@@ -92,7 +94,7 @@ final class CitizenInitiativeNearSupervisorsMessage extends MailjetMessage
             'IC_date' => $citizenInitiativeDate,
             'IC_hour' => $citizenInitiativeHour,
             'IC_address' => self::escape($citizenInitiativeAddress),
-            'IC_slug' => $citizenInitiativeSlug,
+            'IC_link' => $citizenInitiativeLink,
         ];
     }
 
