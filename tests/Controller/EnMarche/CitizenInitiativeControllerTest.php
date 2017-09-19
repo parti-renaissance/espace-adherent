@@ -73,7 +73,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(2, $crawler->filter('a:contains("Je crée mon initiative")')->count());
+        $this->assertSame(2, $crawler->filter('a:contains("Créer une initiative")')->count());
 
         $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
@@ -86,9 +86,9 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(2, $crawler->filter('a:contains("Je crée mon initiative")')->count());
+        $this->assertSame(2, $crawler->filter('a:contains("Créer une initiative")')->count());
 
-        $this->client->click($crawler->selectLink('Je crée mon initiative')->link());
+        $this->client->click($crawler->selectLink('Créer une initiative')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Je crée mon initiative citoyenne', $this->client->getResponse()->getContent());
