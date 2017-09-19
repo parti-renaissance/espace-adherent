@@ -8,7 +8,7 @@ use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 
 class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMessageTest
 {
-    const CITIZEN_INITIATIVE_SLUG = '2017-11-15-initiative-citoyenne-a-lyon';
+    const SHOW_CITIZEN_INITIATIVE_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
 
     public function testCreateCitizenInitiativeActivitySubscriptionMessage()
     {
@@ -20,7 +20,8 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
         $message = CitizenInitiativeActivitySubscriptionMessage::create(
             $recipients,
             $recipients[0],
-            $this->createCitizenInitiativeMock('Initiative citoyenne à Lyon', '2017-11-15 10:30:00', '15 allées Paul Bocuse', '69006-69386', self::CITIZEN_INITIATIVE_SLUG),
+            $this->createCitizenInitiativeMock('Initiative citoyenne à Lyon', '2017-11-15 10:30:00', '15 allées Paul Bocuse', '69006-69386', self::SHOW_CITIZEN_INITIATIVE_URL),
+            self::SHOW_CITIZEN_INITIATIVE_URL,
             function (Adherent $adherent) {
                 return CitizenInitiativeActivitySubscriptionMessage::getRecipientVars($adherent->getFirstName());
             }
@@ -39,7 +40,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
+                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
             ],
             $message->getVars()
         );
@@ -56,7 +57,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
+                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
                 'prenom' => 'Émmanuel',
             ],
             $recipient->getVars()
@@ -74,7 +75,7 @@ class CitizenInitiativeActivitySubscriptionMessageTest extends AbstractEventMess
                 'IC_date' => 'mercredi 15 novembre 2017',
                 'IC_hour' => '10h30',
                 'IC_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
-                'IC_slug' => self::CITIZEN_INITIATIVE_SLUG,
+                'IC_link' => self::SHOW_CITIZEN_INITIATIVE_URL,
                 'prenom' => 'Éric',
             ],
             $recipient->getVars()
