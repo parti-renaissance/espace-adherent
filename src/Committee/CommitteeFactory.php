@@ -4,6 +4,7 @@ namespace AppBundle\Committee;
 
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Committee;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeFactory
@@ -23,6 +24,11 @@ class CommitteeFactory
             }
         }
 
+        $phone = null;
+        if (isset($data['phone'])) {
+            $phone = $this->createPhone($data['phone']);
+        }
+
         $uuid = isset($data['uuid'])
             ? Uuid::fromString($data['uuid'])
             : Committee::createUuid($data['name']);
@@ -33,6 +39,7 @@ class CommitteeFactory
             $data['name'],
             $data['description'],
             $data['address'],
+            $phone,
             $data['created_at'] ?? 'now'
         );
 
@@ -62,7 +69,8 @@ class CommitteeFactory
             $command->getAdherent(),
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress())
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getPhone()
         );
 
         if ($command->facebookPageUrl) {
@@ -78,5 +86,25 @@ class CommitteeFactory
         }
 
         return $committee;
+    }
+
+    /**
+     * Returns a PhoneNumber object.
+     *
+     * The format must be something like "33 0102030405"
+     *
+     * @param string $phoneNumber
+     *
+     * @return PhoneNumber
+     */
+    private function createPhone($phoneNumber): PhoneNumber
+    {
+        list($country, $number) = explode(' ', $phoneNumber);
+
+        $phone = new PhoneNumber();
+        $phone->setCountryCode($country);
+        $phone->setNationalNumber($number);
+
+        return $phone;
     }
 }

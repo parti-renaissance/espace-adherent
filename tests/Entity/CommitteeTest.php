@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\Coordinates;
+use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -107,6 +108,7 @@ class CommitteeTest extends TestCase
             'En Marche ! - Lyon 1',
             'Le comité En Marche ! de Lyon village',
             PostAddress::createFrenchAddress('50 Rue de la Villette', '69003-69383'),
+            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon'
         );
     }

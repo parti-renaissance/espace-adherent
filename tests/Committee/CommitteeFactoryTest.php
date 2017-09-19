@@ -8,6 +8,7 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
+use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
 class CommitteeFactoryTest extends TestCase
@@ -37,6 +38,7 @@ class CommitteeFactoryTest extends TestCase
 
         $command = CommitteeCreationCommand::createFromAdherent($adherent);
         $command->setAddress($address);
+        $command->setPhone((new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'));
         $command->name = $name;
         $command->description = $description;
         $command->facebookPageUrl = $facebook;

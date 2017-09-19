@@ -12,6 +12,7 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
@@ -123,6 +124,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             'En Marche ! - Lyon',
             'Le comité En Marche ! de Lyon village',
             PostAddress::createFrenchAddress($address, '69001-69381'),
+            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-clichy'
         );
 

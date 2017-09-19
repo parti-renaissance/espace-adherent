@@ -62,6 +62,7 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('phone', null, [
                     'label' => 'Téléphone',
+                    'template' => 'admin/adherent/show_phone.html.twig',
                 ])
                 ->add('birthdate', null, [
                     'label' => 'Date de naissance',

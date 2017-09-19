@@ -8,6 +8,7 @@ use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -128,6 +129,11 @@ class Committee implements GeoPointInterface
     private $createdBy;
 
     /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    private $phone;
+
+    /**
      * The cached number of members (followers and hosts).
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
@@ -154,6 +160,7 @@ class Committee implements GeoPointInterface
         string $name,
         string $description,
         PostAddress $address,
+        PhoneNumber $phone = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -174,6 +181,7 @@ class Committee implements GeoPointInterface
         $this->slug = $slug;
         $this->description = $description;
         $this->postAddress = $address;
+        $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
@@ -186,28 +194,30 @@ class Committee implements GeoPointInterface
         return $this->name ?: '';
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self
+    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
     {
         $committee = new self(
             $uuid,
             Uuid::fromString($creatorUuid),
             $name,
             $description,
-            $address
+            $address,
+            $phone
         );
         $committee->createdAt = new \DateTime($createdAt);
 
         return $committee;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address, string $createdAt = 'now'): self
+    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
     {
         $committee = new self(
             self::createUuid($name),
             clone $adherent->getUuid(),
             $name,
             $description,
-            $address
+            $address,
+            $phone
         );
         $committee->createdAt = new \DateTime($createdAt);
 
@@ -371,6 +381,16 @@ class Committee implements GeoPointInterface
         return $this->createdBy && $this->createdBy->equals($uuid);
     }
 
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
     /**
      * Returns the approval date and time.
      *
@@ -420,13 +440,17 @@ class Committee implements GeoPointInterface
         return $this->uuid->equals($other->getUuid());
     }
 
-    public function update(string $name, string $description, PostAddress $address)
+    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone)
     {
         $this->setName($name);
         $this->description = $description;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
+        }
+
+        if (null === $this->phone || !$this->phone->equals($phone)) {
+            $this->phone = $phone;
         }
     }
 }
