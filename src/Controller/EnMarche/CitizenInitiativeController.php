@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
 use AppBundle\Committee\Feed\CommitteeCitizenInitiativeMessage;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Skill;
@@ -34,7 +33,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class CitizenInitiativeController extends Controller
 {
     use EntityControllerTrait;
-    use CanaryControllerTrait;
 
     /**
      * @Route("/", name="app_citizen_initiative_landing_page")
@@ -42,8 +40,6 @@ class CitizenInitiativeController extends Controller
      */
     public function showLandingPageAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->render('citizen_initiative/landing_page.html.twig');
     }
 
@@ -53,8 +49,6 @@ class CitizenInitiativeController extends Controller
      */
     public function showIfNotAuthorizedDepartementAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->render('citizen_initiative/not_available.html.twig');
     }
 
@@ -64,8 +58,6 @@ class CitizenInitiativeController extends Controller
      */
     public function createCitizenInitiativeAction(Request $request, ?CitizenInitiativeCommand $command): Response
     {
-        $this->disableInProduction();
-
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('page_campus');
         }
@@ -96,8 +88,6 @@ class CitizenInitiativeController extends Controller
      */
     public function showAction(CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         return $this->render('citizen_initiative/show.html.twig', [
             'initiative' => $initiative,
         ]);
@@ -109,8 +99,6 @@ class CitizenInitiativeController extends Controller
      */
     public function inviteAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $eventInvitation = EventInvitation::createFromAdherent($this->getUser());
 
         $form = $this->createForm(EventInvitationType::class, $eventInvitation)
@@ -141,8 +129,6 @@ class CitizenInitiativeController extends Controller
      */
     public function expertAssistanceNeededAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         return $this->render('citizen_initiative/expert_assistance.html.twig', [
             'initiative' => $initiative,
         ]);
@@ -154,8 +140,6 @@ class CitizenInitiativeController extends Controller
      */
     public function exportIcalAction(CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$initiative->getSlug().'.ics';
 
         $response = new Response($this->get('jms_serializer')->serialize($initiative, 'ical'));
@@ -171,8 +155,6 @@ class CitizenInitiativeController extends Controller
      */
     public function invitationSentAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         if (!$invitationsCount = $request->getSession()->remove('citizen_initiative_invitations_count')) {
             return $this->redirectToRoute('app_citizen_initiative_invite', [
                 'uuid' => $initiative->getUuid(),
@@ -192,8 +174,6 @@ class CitizenInitiativeController extends Controller
      */
     public function attendAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         if ($initiative->isFinished()) {
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $initiative->getUuid()));
         }
@@ -230,8 +210,6 @@ class CitizenInitiativeController extends Controller
      */
     public function shareToCommitteeAction(Request $request, CitizenInitiative $initiative)
     {
-        $this->disableInProduction();
-
         if (empty($committees = $this->get('app.committee.manager')->getAdherentCommitteesSupervisor($this->getUser()))) {
             throw $this->createAccessDeniedException();
         }
@@ -268,8 +246,6 @@ class CitizenInitiativeController extends Controller
      */
     public function attendConfirmationAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $manager = $this->get('app.event.registration_manager');
 
         try {
@@ -300,8 +276,6 @@ class CitizenInitiativeController extends Controller
      */
     public function skillsAutocompleteAction(Request $request)
     {
-        $this->disableInProduction();
-
         $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsFor(
             $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')),
             $this->getUser(), SkillRepository::FIND_FOR_CITIZEN_INITIATIVE);
@@ -316,8 +290,6 @@ class CitizenInitiativeController extends Controller
      */
     public function activitySubscriptionAction(CitizenInitiative $initiative)
     {
-        $this->disableInProduction();
-
         $this->get('app.activity_subscription.manager')->subscribeToAdherentActivity($this->getUser(), $initiative->getOrganizer());
 
         return $this->render('citizen_initiative/_activity_subscription.html.twig', [
