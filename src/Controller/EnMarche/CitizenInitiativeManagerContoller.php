@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventContactMembersCommand;
@@ -28,16 +27,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenInitiativeManagerContoller extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/modifier", name="app_citizen_initiative_edit")
      * @Method("GET|POST")
      */
     public function editAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $form = $this->createForm(CitizenInitiativeType::class, $command = CitizenInitiativeCommand::createFromCitizenInitiative($initiative));
         $form->handleRequest($request);
 
@@ -63,8 +58,6 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function cancelAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $command = CitizenInitiativeCommand::createFromCitizenInitiative($initiative);
 
         $form = $this->createForm(FormType::class);
@@ -92,8 +85,6 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function membersAction(CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEvent($initiative);
 
         return $this->render('citizen_initiative/members.html.twig', [
@@ -108,8 +99,6 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function exportMembersAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         if (!$this->isCsrfTokenValid('event.export_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
@@ -152,8 +141,6 @@ class CitizenInitiativeManagerContoller extends Controller
      */
     public function contactMembersAction(Request $request, CitizenInitiative $initiative): Response
     {
-        $this->disableInProduction();
-
         if (!$this->isCsrfTokenValid('event.contact_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
         }
