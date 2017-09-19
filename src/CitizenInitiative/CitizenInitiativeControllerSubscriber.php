@@ -3,7 +3,6 @@
 namespace AppBundle\CitizenInitiative;
 
 use AppBundle\Controller\EnMarche\CitizenInitiativeController;
-use AppBundle\Controller\EnMarche\CitizenInitiativeManagerContoller;
 use AppBundle\Entity\Adherent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -40,8 +39,7 @@ class CitizenInitiativeControllerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (($controller[0] instanceof CitizenInitiativeController || $controller[0] instanceof CitizenInitiativeManagerContoller)
-            && 'showIfNotAuthorizedDepartementAction' !== $controller[1]) {
+        if ($controller[0] instanceof CitizenInitiativeController && 'createCitizenInitiativeAction' === $controller[1]) {
             $event->getRequest()->attributes->set('is_ci_controller', true);
         }
     }
