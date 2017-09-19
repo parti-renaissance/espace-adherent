@@ -24,12 +24,7 @@
 
         &__inspiration {
             padding: 0;
-            margin-top: -90px;
             background: $gray--lighter;
-
-            @media (max-width: $tablet) {
-                margin-top: -45px;
-            }
 
             &__graphic {
                 background-size: cover;
