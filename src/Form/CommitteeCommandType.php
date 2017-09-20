@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Committee\CommitteeCommand;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,6 +24,9 @@ class CommitteeCommandType extends AbstractType
                 'purify_html' => true,
             ])
             ->add('address', AddressType::class)
+            ->add('phone', PhoneNumberType::class, [
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+            ])
             ->add('facebookPageUrl', UrlType::class, [
                 'required' => false,
                 'default_protocol' => null,

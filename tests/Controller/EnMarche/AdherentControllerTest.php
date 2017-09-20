@@ -438,12 +438,14 @@ class AdherentControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideRegularAdherentsCredentials
      */
-    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $password)
+    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $password, string $phone)
     {
         $crawler = $this->authenticateAsAdherent($this->client, $emaiLAddress, $password);
         $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertSame($phone, $crawler->filter('#create_committee_phone_number')->attr('value'));
 
         // Submit the committee form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Créer mon comité')->form([
@@ -455,6 +457,10 @@ class AdherentControllerTest extends MysqlWebTestCase
                     'postalCode' => '99999',
                     'city' => '10102-45029',
                 ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '',
+                ],
                 'facebookPageUrl' => 'yo',
                 'twitterNickname' => '@!!',
                 'googlePlusPageUrl' => 'yo',
@@ -462,10 +468,11 @@ class AdherentControllerTest extends MysqlWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame(11, $crawler->filter('#create-committee-form .form__errors > li')->count());
         $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.register__form__phone > .form__errors > li')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
@@ -485,6 +492,10 @@ class AdherentControllerTest extends MysqlWebTestCase
                     'postalCode' => '69001',
                     'city' => '69001-69381',
                     'cityName' => '',
+                ],
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0478457898',
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheLyon',
                 'twitterNickname' => '@enmarchelyon',
@@ -506,13 +517,18 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertContains('Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur', $crawler->filter('#notice-flashes')->text());
         $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('04 78 45 78 98', $crawler->filter('#committee_phone_number')->attr('value'));
     }
 
     public function provideRegularAdherentsCredentials()
     {
         return [
-            ['carl999@example.fr', 'secret!12345'],
-            ['luciole1989@spambox.fr', 'EnMarche2017'],
+            ['carl999@example.fr', 'secret!12345', '01 11 22 33 44'],
+            ['luciole1989@spambox.fr', 'EnMarche2017', '07 27 36 36 43'],
         ];
     }
 

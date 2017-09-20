@@ -5,6 +5,8 @@ namespace AppBundle\Committee;
 use AppBundle\Address\Address;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,6 +40,12 @@ class CommitteeCommand
     protected $address;
 
     /**
+     * @Assert\NotBlank(message="common.phone_number.required")
+     * @AssertPhoneNumber(defaultRegion="FR")
+     */
+    protected $phone;
+
+    /**
      * @Assert\Url
      * @Assert\Length(max=255)
      */
@@ -65,6 +73,7 @@ class CommitteeCommand
         $dto = new self(Address::createFromAddress($committee->getPostAddress()), $committee);
         $dto->name = $committee->getName();
         $dto->description = $committee->getDescription();
+        $dto->phone = $committee->getPhone();
         $dto->facebookPageUrl = $committee->getFacebookPageUrl();
         $dto->twitterNickname = $committee->getTwitterNickname();
         $dto->googlePlusPageUrl = $committee->getGooglePlusPageUrl();
@@ -85,6 +94,16 @@ class CommitteeCommand
     public function getCityName(): string
     {
         return $this->address->getCityName();
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function getCommittee(): ?Committee

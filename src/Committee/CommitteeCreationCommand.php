@@ -38,6 +38,7 @@ class CommitteeCreationCommand extends CommitteeCommand
     {
         $dto = new self();
         $dto->adherent = $adherent;
+        $dto->phone = $adherent->getPhone();
 
         return $dto;
     }

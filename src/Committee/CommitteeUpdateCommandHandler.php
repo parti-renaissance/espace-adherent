@@ -32,7 +32,8 @@ class CommitteeUpdateCommandHandler
         $committee->update(
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress())
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getPhone()
         );
 
         $committee->setSocialNetworks(

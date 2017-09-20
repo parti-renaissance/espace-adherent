@@ -87,6 +87,7 @@ abstract class AbstractCommitteeVoterTest extends TestCase
             'description' => 'The Committee A',
             'created_by' => $createdBy->toString(),
             'address' => PostAddress::createForeignAddress('BE', '1030', 'Bruxelles', '65 Rue des Coteaux'),
+            'phone' => '33 0506050203',
         ]);
     }
 }

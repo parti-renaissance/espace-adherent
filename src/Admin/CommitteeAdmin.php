@@ -85,6 +85,10 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
+                ->add('phone', null, [
+                    'label' => 'Téléphone',
+                    'template' => 'admin/adherent/show_phone.html.twig',
+                ])
                 ->add('facebookPageUrl', UrlType::class, [
                     'label' => 'Facebook',
                 ])
@@ -337,6 +341,10 @@ class CommitteeAdmin extends AbstractAdmin
             ])
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
+            ])
+            ->add('phone', null, [
+                'label' => 'Téléphone',
+                'template' => 'admin/adherent/list_phone.html.twig',
             ])
             ->add('membersCounts', null, [
                 'label' => 'Membres',
