@@ -85,17 +85,20 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Longitude du point sur la carte',
                 ])
             ->end()
+            ->with('Coordinateur', ['class' => 'col-md-3'])
+                ->add('isCoordinator', 'boolean', [
+                    'label' => 'Est coordinateur ?',
+                ])
+                ->add('coordinatorManagedAreaCodesAsString', null, [
+                    'label' => 'Codes des zones gérés',
+                ])
+            ->end()
             ->with('Responsable procuration', ['class' => 'col-md-3'])
                 ->add('isProcurationManager', 'boolean', [
                     'label' => 'Est responsable procuration ?',
                 ])
                 ->add('procurationManagedAreaCodesAsString', null, [
                     'label' => 'Codes des zones gérés',
-                ])
-            ->end()
-            ->with('Candidat législatives', ['class' => 'col-md-3'])
-                ->add('legislativeCandidate', 'boolean', [
-                    'label' => 'Est candidat aux législatives ?',
                 ])
             ->end()
             ->with('Compte', ['class' => 'col-md-6'])
@@ -116,6 +119,11 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('comMobile', 'boolean', [
                     'label' => 'Accepte de recevoir des SMS de la part d\'En Marche !',
+                ])
+            ->end()
+            ->with('Candidat législatives', ['class' => 'col-md-6'])
+                ->add('legislativeCandidate', 'boolean', [
+                    'label' => 'Est candidat aux législatives ?',
                 ])
             ->end()
         ;
@@ -171,6 +179,22 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Coordinateur', ['class' => 'col-md-3'])
+                ->add('coordinatorManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'Codes des zones gérés',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                ])
+            ->end()
+            ->with('Responsable procuration', ['class' => 'col-md-3'])
+                ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'Codes des zones gérés',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                ])
+            ->end()
             ->with('Référent', ['class' => 'col-md-3'])
                 ->add('managedArea.codesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
@@ -185,14 +209,6 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('managedArea.markerLongitude', TextType::class, [
                     'label' => 'Longitude du point sur la carte des référents',
                     'required' => false,
-                ])
-            ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-3'])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'Codes des zones gérés',
-                    'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
             ->with('Candidat aux législatives', ['class' => 'col-md-3'])

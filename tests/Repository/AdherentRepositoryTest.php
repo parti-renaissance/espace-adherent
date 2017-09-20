@@ -47,7 +47,7 @@ class AdherentRepositoryTest extends MysqlWebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(13, $this->repository->countActiveAdherents());
+        $this->assertSame(14, $this->repository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()

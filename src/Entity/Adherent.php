@@ -146,6 +146,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $managedArea;
 
     /**
+     * @var CoordinatorManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"persist"})
+     */
+    private $coordinatorManagedArea;
+
+    /**
      * @var ProcurationManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"persist"})
@@ -218,6 +225,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
+        }
+
+        if ($this->isCoordinator()) {
+            $roles[] = 'ROLE_COORDINATOR';
         }
 
         if ($this->isSupervisor()) {
@@ -595,6 +606,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->procurationManagedArea = $procurationManagedArea;
     }
 
+    public function getCoordinatorManagedArea(): ?CoordinatorManagedArea
+    {
+        return $this->coordinatorManagedArea;
+    }
+
+    public function setCoordinatorManagedArea(CoordinatorManagedArea $coordinatorManagedArea = null): void
+    {
+        $this->coordinatorManagedArea = $coordinatorManagedArea;
+    }
+
     public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void
     {
         $this->managedArea = new ManagedArea();
@@ -649,6 +670,34 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         $this->procurationManagedArea->setCodesAsString((string) $codes);
+    }
+
+    public function isCoordinator(): bool
+    {
+        return $this->coordinatorManagedArea instanceof CoordinatorManagedArea && !empty($this->coordinatorManagedArea->getCodes());
+    }
+
+    public function getCoordinatorManagedAreaCodesAsString(): ?string
+    {
+        if (!$this->coordinatorManagedArea) {
+            return '';
+        }
+
+        return $this->coordinatorManagedArea->getCodesAsString();
+    }
+
+    public function setCoordinatorManagedAreaCodesAsString(string $codes = null): void
+    {
+        if (!$codes) {
+            return;
+        }
+
+        if (!$this->coordinatorManagedArea) {
+            $this->coordinatorManagedArea = new CoordinatorManagedArea();
+            $this->coordinatorManagedArea->setAdherent($this);
+        }
+
+        $this->coordinatorManagedArea->setCodesAsString((string) $codes);
     }
 
     final public function getMemberships(): CommitteeMembershipCollection
