@@ -24,7 +24,7 @@ class MapControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
-        $this->assertContains('14 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertContains('15 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertContains('9 comités', $crawler->filter('#counter-committees')->text());
         $this->assertContains('12 événements', $crawler->filter('#counter-events')->text());
     }

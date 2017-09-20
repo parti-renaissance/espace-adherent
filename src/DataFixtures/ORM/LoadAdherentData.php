@@ -30,6 +30,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
     const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
     const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
+    const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -172,6 +173,21 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $referent->setReferent(['CH', '92', '77000'], -1.6743, 48.112);
         $referent->enableCommitteesNotifications();
 
+        $coordinateur = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_15_UUID,
+            'password' => 'coordinateur',
+            'email' => 'coordinateur@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Coordinateur',
+            'last_name' => 'Coordinateur',
+            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', 48.805347, 2.325805),
+            'birthdate' => '1969-04-10',
+            'position' => 'employed',
+            'phone' => '33 665859053',
+            'registered_at' => '2017-09-20 15:31:21',
+        ]);
+        $coordinateur->setReferent(['FR', '94'], 48.805347, 2.325805);
+
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
             'password' => 'password12345',
@@ -273,6 +289,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key12 = AdherentActivationToken::generate($adherent12);
         $key13 = AdherentActivationToken::generate($adherent13);
         $key14 = AdherentActivationToken::generate($adherent14);
+        $key15 = AdherentActivationToken::generate($coordinateur);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -288,6 +305,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
+        $coordinateur->activate($key15, '2017-09-20 17:44:32');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -423,6 +441,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent12);
         $manager->persist($adherent13);
         $manager->persist($adherent14);
+        $manager->persist($coordinateur);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -438,6 +457,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key12);
         $manager->persist($key13);
         $manager->persist($key14);
+        $manager->persist($key15);
 
         $manager->persist($resetPasswordToken);
 
