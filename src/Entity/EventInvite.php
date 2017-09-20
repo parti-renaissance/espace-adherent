@@ -22,6 +22,7 @@ class EventInvite
      * @var BaseEvent|null
      *
      * @ORM\ManyToOne(targetEntity="BaseEvent")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
     private $event;
 
