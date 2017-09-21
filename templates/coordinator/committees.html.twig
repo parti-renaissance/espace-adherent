@@ -1,0 +1,66 @@
+{% extends 'coordinator/_layout.html.twig' %}
+
+{% block coordinator_content %}
+    <div class="text--center">
+        {% block pager %}
+            {% set current_page = (filters.offset / constant('PER_PAGE', filters))|round(0, 'ceil') + 1 %}
+            {% set last_page = (filters.count / constant('PER_PAGE', filters))|round(0, 'ceil') %}
+
+            {% if filters.offset > 0 %}
+                <a href="{{ path('app_coordinator_committees') ~ filters.queryStringForOffset(0) }}" class="btn btn--small">
+                    Première
+                </a>
+                <a href="{{ path('app_coordinator_committees') ~ filters.previousPageQueryString }}" class="btn btn--small">
+                    Précédente
+                </a>
+            {% endif %}
+
+            <span class="btn btn--small btn--no-border">
+                    Page {{ current_page }} / {{ last_page }}
+                </span>
+
+            {% if filters.offset + constant('PER_PAGE', filters) < filters.count %}
+                <a href="{{ path('app_coordinator_committees') ~ filters.nextPageQueryString }}" class="btn btn--small">
+                    Suivante
+                </a>
+                <a href="{{ path('app_coordinator_committees') ~ filters.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filters)) }}" class="btn btn--small">
+                    Dernière
+                </a>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    {% if results|length %}
+        <div class="datagrid">
+            <div class="b__nudge--bottom-larger">
+                <table class="datagrid__table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fondateur</th>
+                        <th>Comité</th>
+                        <th>Ville</th>
+                        <th>Code postal</th>
+                        <th>Date de création</th>
+                        <th>Commentaire</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="committee-list">
+                        {{ include('coordinator/_committee_list.html.twig') }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="text--body text--center">
+            Vous n'avez pas de comités dans ce statut.
+        </div>
+    {% endif %}
+
+    <hr />
+
+    <div class="text--center">
+        {{ block('pager') }}
+    </div>
+{% endblock %}

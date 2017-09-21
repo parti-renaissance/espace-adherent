@@ -1,0 +1,59 @@
+{% for committee in results %}
+
+    {% if committee.isPending %}
+        {% set form = forms[committee.id] %}
+
+        {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+    {% endif %}
+
+    <tr class="coordinator__item">
+        <td>{{ committee.id }}</td>
+        <td>
+            {{ committee.creator.fullName }}
+            <br />
+            {{ committee.creator.emailAddress }}
+            {% if committee.creator.phone %}
+            <br />
+            {{ committee.creator.phone|phone_number_format }}
+            {% endif %}
+        </td>
+        <td>{{ committee.name }}</td>
+        <td>{{ committee.cityName }}</td>
+        <td>{{ committee.postalCode }}</td>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ committee.createdAt|date('d/m/Y H:i') }}
+        </td>
+        {% if committee.isPending %}
+            <td>
+                {% for messages in app.flashes(["error_#{committee.id}"]) %}
+                    {% for message in messages %}
+                        <div class="form__errors">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {{ form_widget(form.coordinatorComment) }}
+            </td>
+        {% else %}
+            <td>{{ committee.coordinatorComment }}</td>
+        {% endif %}
+        {% if committee.isPending %}
+            <td>
+                <span>
+                    {{ form_widget(form.accept) }}
+                </span>
+                <span>
+                    {{ form_widget(form.refuse) }}
+                </span>
+            </td>
+        {% else %}
+            <td>{% include 'committee/status.html.twig' with {'committee': committee} %}</td>
+        {% endif %}
+    </tr>
+
+    {% if committee.isPending %}
+        {{ form_end(form) }}
+    {% endif %}
+{% endfor %}

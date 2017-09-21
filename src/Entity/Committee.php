@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
+use AppBundle\Exception\CommitteeAlreadyTreatedException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,8 +34,10 @@ use Ramsey\Uuid\UuidInterface;
 class Committee implements GeoPointInterface
 {
     const APPROVED = 'APPROVED';
+    const PRE_APPROVED = 'PRE_APPROVED';
     const PENDING = 'PENDING';
     const REFUSED = 'REFUSED';
+    const PRE_REFUSED = 'PRE_REFUSED';
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -150,9 +153,18 @@ class Committee implements GeoPointInterface
     private $adminComment;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $coordinatorComment;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
+
+    public $creator;
 
     public function __construct(
         UuidInterface $uuid,
@@ -274,6 +286,16 @@ class Committee implements GeoPointInterface
         $this->adminComment = $adminComment;
     }
 
+    public function getCoordinatorComment(): ?string
+    {
+        return $this->coordinatorComment;
+    }
+
+    public function setCoordinatorComment(string $coordinatorComment = null): void
+    {
+        $this->coordinatorComment = $coordinatorComment;
+    }
+
     public function isWaitingForApproval(): bool
     {
         return self::PENDING === $this->status && !$this->approvedAt;
@@ -285,6 +307,21 @@ class Committee implements GeoPointInterface
     public function isApproved(): bool
     {
         return self::APPROVED === $this->status && $this->approvedAt;
+    }
+
+    public function isPending(): bool
+    {
+        return self::PENDING === $this->status;
+    }
+
+    public function isPreApproved(): bool
+    {
+        return self::PRE_APPROVED === $this->status;
+    }
+
+    public function isPreRefused(): bool
+    {
+        return self::PRE_REFUSED === $this->status;
     }
 
     public function isRefused(): bool
@@ -308,6 +345,18 @@ class Committee implements GeoPointInterface
     }
 
     /**
+     * Marks this committee as pre-approved.
+     */
+    public function preApproved()
+    {
+        if ($this->isApproved() || $this->isRefused()) {
+            throw new CommitteeAlreadyTreatedException($this->uuid);
+        }
+
+        $this->status = self::PRE_APPROVED;
+    }
+
+    /**
      * Marks this committee as approved.
      *
      * @param string $timestamp
@@ -321,6 +370,18 @@ class Committee implements GeoPointInterface
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
         $this->refusedAt = null;
+    }
+
+    /**
+     * Marks this committee as pre-refused.
+     */
+    public function preRefused()
+    {
+        if ($this->isApproved() || $this->isRefused()) {
+            throw new CommitteeAlreadyTreatedException($this->uuid);
+        }
+
+        $this->status = self::PRE_REFUSED;
     }
 
     /**
@@ -379,6 +440,16 @@ class Committee implements GeoPointInterface
     public function isCreatedBy(UuidInterface $uuid): bool
     {
         return $this->createdBy && $this->createdBy->equals($uuid);
+    }
+
+    public function setCreator(?Adherent $creator): void
+    {
+        $this->creator = $creator;
+    }
+
+    public function getCreator(): ?Adherent
+    {
+        return $this->creator;
     }
 
     public function setPhone(PhoneNumber $phone = null): void

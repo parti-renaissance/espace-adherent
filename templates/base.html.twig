@@ -179,6 +179,13 @@
                                                 <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                             </li>
                                         {% endif %}
+                                        {% if enable_canary %}
+                                            {% if is_granted('ROLE_COORDINATOR') %}
+                                                <li class="text--small">
+                                                    <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\Committee::PENDING') }) }}">Espace coordinateur local</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endif %}
                                         {% if is_granted('ROLE_PROCURATION_MANAGER') %}
                                             <li class="text--small">
                                                 <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
@@ -273,6 +280,13 @@
                                     <li class="text--small">
                                         <a href="{{ path('app_referent_users') }}">Espace référent</a>
                                     </li>
+                                {% endif %}
+                                {% if enable_canary %}
+                                    {% if is_granted('ROLE_COORDINATOR') %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\Committee::PENDING') }) }}">Espace coordinateur local</a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
                                 {% if is_granted('ROLE_PROCURATION_MANAGER') %}
                                     <li class="text--small">

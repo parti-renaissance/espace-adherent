@@ -6,10 +6,10 @@ use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Committee\Filter\CommitteeFilters;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 
 class CommitteeRepository extends EntityRepository
 {
@@ -173,6 +173,46 @@ class CommitteeRepository extends EntityRepository
         }
 
         $qb->andWhere($codesFilter);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilters &$filters): array
+    {
+        if (!$coordinator->isCoordinator()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC');
+
+        $codesFilter = $qb->expr()->orX();
+
+        foreach ($coordinator->getCoordinatorManagedArea()->getCodes() as $key => $code) {
+            if (is_numeric($code)) {
+                // Postal code prefix
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        'c.postAddress.country = \'FR\'',
+                        $qb->expr()->like('c.postAddress.postalCode', ':code'.$key)
+                    )
+                );
+
+                $qb->setParameter('code'.$key, $code.'%');
+            } else {
+                // Country
+                $codesFilter->add($qb->expr()->eq('c.postAddress.country', ':code'.$key));
+                $qb->setParameter('code'.$key, $code);
+            }
+        }
+
+        $qb->andWhere($codesFilter);
+
+        if ($filters) {
+            $filters->apply($qb, 'c');
+        }
 
         return $qb->getQuery()->getResult();
     }

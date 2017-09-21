@@ -264,7 +264,7 @@ class EventRepository extends EntityRepository
         }
 
         $qb->andWhere('n.published = :published')
-           ->setParameter('published', true);
+            ->setParameter('published', true);
 
         if (!empty($query = $search->getQuery())) {
             $qb->andWhere('n.name like :query');

@@ -10,6 +10,8 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Committee\Filter\CommitteeFilters;
+use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
@@ -256,6 +258,21 @@ class CommitteeManager
     }
 
     /**
+     * Pre-approves one committee.
+     *
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function preApproveCommittee(Committee $committee, bool $flush = true): void
+    {
+        $committee->preApproved();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+    }
+
+    /**
      * Refuses one committee.
      *
      * @param Committee $committee
@@ -264,6 +281,21 @@ class CommitteeManager
     public function refuseCommittee(Committee $committee, bool $flush = true): void
     {
         $committee->refused();
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+    }
+
+    /**
+     * Pre-refuses one committee.
+     *
+     * @param Committee $committee
+     * @param bool      $flush
+     */
+    public function preRefuseCommittee(Committee $committee, bool $flush = true): void
+    {
+        $committee->preRefused();
 
         if ($flush) {
             $this->getManager()->flush();
@@ -361,6 +393,11 @@ class CommitteeManager
         return $this->registry->getRepository(CommitteeMembership::class);
     }
 
+    private function getAdherentRepository(): AdherentRepository
+    {
+        return $this->registry->getRepository(Adherent::class);
+    }
+
     public function countApprovedCommittees(): int
     {
         return $this->getCommitteeRepository()->countApprovedCommittees();
@@ -382,5 +419,17 @@ class CommitteeManager
         $committeeMembership->setPrivilege($privilege);
 
         $this->getManager()->flush();
+    }
+
+    public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilters &$filters): array
+    {
+        $committees = $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filters);
+
+        foreach ($committees as $committee) {
+            $creator = $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+            $committee->setCreator($creator);
+        }
+
+        return $committees;
     }
 }

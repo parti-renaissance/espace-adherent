@@ -175,7 +175,13 @@ class CommitteeAdmin extends AbstractAdmin
             ->with('Commentaire', array('class' => 'col-md-5'))
                 ->add('adminComment', TextareaType::class, [
                     'label' => 'Commentaire sur l\'AL',
-                    'attr' => ['rows' => 8],
+                    'attr' => ['rows' => 5],
+                    'required' => false,
+                ])
+                ->add('coordinatorComment', TextareaType::class, [
+                    'label' => 'Commentaire sur l\'AL du coordinateur',
+                    'attr' => ['rows' => 5],
+                    'disabled' => true,
                     'required' => false,
                 ])
             ->end()
