@@ -186,7 +186,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '33 665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
-        $coordinateur->setReferent(['FR', '94'], 48.805347, 2.325805);
+        $coordinateur->setCoordinatorManagedAreaCodesAsString('FR');
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,

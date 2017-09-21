@@ -35,9 +35,19 @@ class CommitteeManagementAuthority
         ));
     }
 
+    public function preApprove(Committee $committee)
+    {
+        $this->manager->preApproveCommittee($committee);
+    }
+
     public function refuse(Committee $committee)
     {
         $this->manager->refuseCommittee($committee);
+    }
+
+    public function preRefuse(Committee $committee)
+    {
+        $this->manager->preRefuseCommittee($committee);
     }
 
     public function followCommittee(Adherent $adherent, Committee $committee)

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace coordinateur' %}
+{% block canonical_url url('app_coordinator_committees') %}
+
+{% block content %}
+    <main>
+        <section class="coordinator coordinator-committee-manager b__nudge--bottom-huge">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    {{ block('page_title') }}
+                </h1>
+                <h2 class="text--center">L’espace coordinateur vous permet de pré-valider ou pré-refuser les comités des zones que vous gérez. Seule l’équipe du QG sera en mesure de voir vos choix.</h2>
+                <p class="text--center">
+                    Zones gérées : {{ app.user.coordinatorManagedAreaCodesAsString }}
+                </p>
+            </header>
+
+            <div class="l__wrapper coordinator-committee-manager__content">
+                {% set pages = [
+                    {
+                        'route': 'app_coordinator_committees',
+                        'status': constant('AppBundle\\Entity\\Committee::PENDING'),
+                        'label': 'Comités en attente'
+                    },
+                    {
+                        'route': 'app_coordinator_committees',
+                        'status': constant('AppBundle\\Entity\\Committee::PRE_APPROVED'),
+                        'label': 'Comités pré-validés'
+                    },
+                    {
+                        'route': 'app_coordinator_committees',
+                        'status': constant('AppBundle\\Entity\\Committee::PRE_REFUSED'),
+                        'label': 'Comités pré-refusés'
+                    }
+                ] %}
+
+                <ul class="coordinator-committee-manager__tabs">
+                    {% for page in pages %}
+                        <li class="{{ app.request.query.has('s') and app.request.query.get('s') == page.status ? 'active' : '' }}">
+                            <a href="{{ path(page.route, { 's': page.status }) }}">
+                                {{ page.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <hr />
+
+                {% block coordinator_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

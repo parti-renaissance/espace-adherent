@@ -1,11 +1,5 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.isRefused %}
-        <span class="label label-danger">Refusé</span>
-    {% elseif object.isApproved %}
-        <span class="label label-success">Accepté</span>
-    {% else %}
-        <span class="label label-primary">En attente</span>
-    {% endif %}
+    {% include 'committee/status.html.twig' with {'committee': object} %}
 {% endblock %}
