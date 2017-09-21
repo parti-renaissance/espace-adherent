@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use AppBundle\Mailjet\Message\LegislativeCampaignContactMessage;
+use AppBundle\Mailer\Message\LegislativeCampaignContactMessage;
 use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

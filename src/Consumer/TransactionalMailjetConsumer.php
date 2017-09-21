@@ -4,5 +4,8 @@ namespace AppBundle\Consumer;
 
 class TransactionalMailjetConsumer extends AbstractMailjetConsumer
 {
-    const CLIENT_ID = 'app.mailjet.transactional_client';
+    protected function getClientId(): string
+    {
+        return 'app.mailjet.transactional_client';
+    }
 }

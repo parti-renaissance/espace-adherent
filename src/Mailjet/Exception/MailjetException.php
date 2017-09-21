@@ -2,6 +2,8 @@
 
 namespace AppBundle\Mailjet\Exception;
 
-class MailjetException extends \RuntimeException
+use AppBundle\Mailer\Exception\MailerException;
+
+class MailjetException extends MailerException
 {
 }

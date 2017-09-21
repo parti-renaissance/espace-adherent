@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailjet\Message\NewsletterInvitationMessage;
-use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
+use AppBundle\Mailer\Message\NewsletterInvitationMessage;
+use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
 use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;

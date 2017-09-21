@@ -6,7 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
+use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;

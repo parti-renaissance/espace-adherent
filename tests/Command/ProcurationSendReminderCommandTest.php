@@ -4,7 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
-use AppBundle\Mailjet\Message\ProcurationProxyReminderMessage;
+use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
