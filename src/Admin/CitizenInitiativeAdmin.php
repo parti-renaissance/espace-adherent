@@ -70,6 +70,7 @@ class CitizenInitiativeAdmin extends AbstractAdmin
                 'attr' => [
                     'rows' => '3',
                 ],
+                'safe' => true,
             ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',
