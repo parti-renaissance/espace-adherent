@@ -30,7 +30,7 @@ class ActivitySubscription
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="activitiySubscriptions")
      */
     private $followingAdherent;
 

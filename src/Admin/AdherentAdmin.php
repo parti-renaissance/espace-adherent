@@ -26,7 +26,7 @@ class AdherentAdmin extends AbstractAdmin
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
+        '_sort_by' => 'registeredAt',
     ];
 
     public function getTemplate($name)
