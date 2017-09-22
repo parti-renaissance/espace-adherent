@@ -1,0 +1,46 @@
+{% block subject %}
+    Email subject
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            {% verbatim %}
+              <tr>
+                <td style="word-break:break-word;font-size:0px;padding:0px 25px 0px 25px;padding-top:0px;padding-bottom:0px;" align="center">
+                  <div class="" style="cursor:auto;color:#55575d;font-family:Roboto, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;text-align:left;">
+                    <p style="line-height: 1.38;margin: 0px 0 20px 0;">
+                      <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                      <span style="color:#000000; font-size:11pt; text-decoration:none">
+                      Bonjour {{var:prenom:""}},
+                      <br>
+
+                    </span>
+                      </span>
+                    </p>
+                    <p style="line-height: 1.38; text-align: left; margin: 10px 0;">
+                      <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                        <span style="color:#000000; font-size:11pt; text-decoration:none">
+                            Votre initiative citoyenne <b>{{var:IC_name:""}}</b> qui aura lieu le {{var:IC_date:""}}  à {{var:IC_hour:""}}  à {{var:IC_address:""}} a été publiée.
+                            <br>
+                            <br>
+                            Les adhérents ayant renseigné dans leur profil le même centre d'intérêt en seront informés et pourront la rejoindre.
+                            <br>
+                            <br>
+                            Merci de votre engagement !
+                            <br>
+                            <br>
+                            <br>
+                            L'équipe d'En Marche&nbsp;!
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            {% endverbatim %}
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

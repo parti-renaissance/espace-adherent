@@ -1,0 +1,67 @@
+{% block subject %}
+    Email subject
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            {% verbatim %}
+                <tr>
+                  <td style="word-break:break-word;font-size:0px;padding:0px 25px 0px 25px;padding-top:0px;padding-bottom:0px;" align="left">
+                    <div class="" style="cursor:auto;color:#55575d;font-family:Roboto, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;text-align:left;">
+                      <p style="line-height: 1.38;margin: 0px 0 20px 0;">
+                        <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                        <span style="color:#000000; font-size:11pt; text-decoration:none">
+                          Bonjour {{var:prenom}},
+                        </span>
+                        </span>
+                      </p>
+                      <p style="line-height: 1.38;margin: 0px 0 20px 0;">
+                        <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                        <span style="color:#000000; font-size:11pt; text-decoration:none">
+                        Vous êtes bien inscrit(e) à l'initiative citoyenne <b>{{var:IC_name:""}}</b> organisée par {{var:IC_organizer_firstname:""}} {{var:IC_organizer_lastname:""}} .
+                        </span>
+                        </span>
+                      </p>
+                      <p style="line-height: 1.38; margin: 10px 0;">
+                        <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                        <span style="color:#000000; font-size:11pt; text-decoration:none">
+                          Merci pour votre engagement&nbsp;!
+                        </span>
+                        </span>
+                      </p>
+                      <p style="line-height: 1.38;margin: 0px 0 20px 0;">
+                        <span style="font-family:Roboto,Helvetica,Arial,sans-serif">
+                        <span style="color:#000000; font-size:11pt; text-decoration:none">
+                          À très bientôt,
+                          <br>
+                          <br>
+                          L'équipe d'En Marche !
+                        </span>
+                        </span>
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="word-break:break-word;font-size:0px;padding:25px 0 20px 0;" align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0">
+                      <tbody>
+                        <tr>
+                          <td style="width:450px;height:85px;background-color:#12a2ff;">
+                            <center>
+                              <a href="https://www.facebook.com/sharer/sharer.php?u={{var:IC_link:" https%3A//en-marche.fr/evenements "}}" target="_blank" style="font-family:Gill Sans, Helvetica, Arial, sans-serif;color:white;font-size:18px;text-decoration:none;font-style:italic;font-weight:bold;">Je le dis sur Facebook !</a>
+                            </center>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+            {% endverbatim %}
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

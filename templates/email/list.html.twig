@@ -1,0 +1,22 @@
+{% if templates|length %}
+    <table>
+        {% for template in templates %}
+            <tr>
+                <td>{{ template.name }}</td>
+                <td>
+                    <a href="{{ path('app_email_template_html', {name: template.name}) }}">
+                        html
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('app_email_template_text', {name: template.name}) }}">
+                        text
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    No template found in database.
+{% endif %}
+
