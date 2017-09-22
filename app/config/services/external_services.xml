@@ -42,6 +42,16 @@
             <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
+        <service id="app.mailer.template_client.transactional" class="AppBundle\Mailjet\EmailTemplateClient">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+
+            <call method="setTemplating">
+                <argument type="service" id="twig" />
+            </call>
+        </service>
+
         <!-- Mailer (campaign) -->
         <service id="app.mailer.campaign" class="AppBundle\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
