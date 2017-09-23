@@ -91,6 +91,9 @@ RUN chmod 0444 gcloud-service-key.json && \
     rm -rf /etc/nginx/nginx.conf && \
     mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
     mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \
+    mv docker/prod/supervisord-mailjet-campaign.conf /etc/supervisor/conf.d/ && \
+    mv docker/prod/supervisord-referent.conf /etc/supervisor/conf.d/ && \
+    mv docker/prod/supervisord-mailjet-transactional.conf /etc/supervisor/conf.d/ && \
 
     rm -rf docker && \
     rm -rf web/app_dev.php
