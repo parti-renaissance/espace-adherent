@@ -7,10 +7,10 @@
         <!-- RabbitMQ -->
         <service id="app.consumer.service_locator" public="false">
             <argument type="collection">
-                <argument key="app.mailjet.campaign_mailer" type="service" id="app.mailjet.campaign_mailer" />
-                <argument key="app.mailjet.transactional_mailer" type="service" id="app.mailjet.transactional_mailer" />
-                <argument key="app.mailjet.campaign_client" type="service" id="app.mailjet.campaign_client" />
-                <argument key="app.mailjet.transactional_client" type="service" id="app.mailjet.transactional_client" />
+                <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
+                <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
+                <argument key="app.mailer.campaign_client" type="service" id="app.mailer.campaign_client" />
+                <argument key="app.mailer.transactional_client" type="service" id="app.mailer.transactional_client" />
                 <argument key="doctrine" type="service" id="doctrine" />
                 <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
                 <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />

@@ -4,8 +4,8 @@ namespace AppBundle\Consumer;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\ReferentMessage as MailjetMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\ReferentMessage as Message;
 use AppBundle\Referent\ReferentMessage;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,7 +28,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         $manager = $this->getDoctrine()->getManager();
         $adherentRepository = $manager->getRepository(Adherent::class);
         $managedUserRepository = $manager->getRepository(ReferentManagedUser::class);
-        $mailer = $this->container->get('app.mailjet.campaign_mailer');
+        $mailer = $this->container->get('app.mailer.campaign_mailer');
 
         try {
             if (!$referent = $adherentRepository->findByUuid($data['referent_uuid'])) {
@@ -53,8 +53,8 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 ++$count;
                 $chunk[] = $result[0];
 
-                if ($i === MailjetService::PAYLOAD_MAXSIZE) {
-                    $mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
+                if ($i === MailerService::PAYLOAD_MAXSIZE) {
+                    $mailer->sendMessage(Message::createFromModel($message, $chunk));
                     $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
 
                     $i = 0;
@@ -65,7 +65,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
             }
 
             if (!empty($chunk)) {
-                $mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
+                $mailer->sendMessage(Message::createFromModel($message, $chunk));
                 $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
             }
 

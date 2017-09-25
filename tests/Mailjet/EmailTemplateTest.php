@@ -5,21 +5,21 @@ namespace Tests\AppBundle\Mailjet;
 use AppBundle\Mailjet\EmailTemplate;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
+use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
 {
     /**
-     * @expectedException \AppBundle\Mailjet\Exception\MailjetException
+     * @expectedException \AppBundle\Mailer\Exception\MailerException
      * @expectedExceptionMessage The Mailjet email requires at least one recipient.
      */
-    public function testCreateMailjetTemplateEmailWithoutRecipients()
+    public function testCreateEmailTemplateWithoutRecipients()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
         $email->getBody();
     }
 
-    public function testCreateMailjetTemplateEmail()
+    public function testCreateEmailTemplate()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -52,7 +52,7 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateMailjetTemplateEmailWithReplyTo()
+    public function testCreateEmailTemplateWithReplyTo()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -80,9 +80,9 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateMailjetTemplateEmailFromDummyMessage()
+    public function testCreateEmailTemplateFromDummyMessage()
     {
-        $email = EmailTemplate::createWithMailjetMessage(DummyMessage::create(), 'contact@en-marche.fr');
+        $email = EmailTemplate::createWithMessage(DummyMessage::create(), 'contact@en-marche.fr');
 
         $body = [
             'FromEmail' => 'contact@en-marche.fr',

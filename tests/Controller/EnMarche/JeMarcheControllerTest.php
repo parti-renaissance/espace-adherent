@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailjet\Message\JeMarcheReportMessage;
+use AppBundle\Mailer\Message\JeMarcheReportMessage;
 use AppBundle\Repository\JeMarcheReportRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
