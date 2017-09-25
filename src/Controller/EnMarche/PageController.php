@@ -146,4 +146,24 @@ class PageController extends Controller
     {
         return $this->render('page/elles-marchent.html.twig');
     }
+
+    /**
+     * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('action-talents-home')")
+     */
+    public function actionTalentsAction(Page $page)
+    {
+        return $this->render('page/action-talents/home.html.twig', ['page' => $page]);
+    }
+
+    /**
+     * @Route("/action-talents/candidater", defaults={"_enable_campaign_silence"=true}, name="page_action_talents_apply")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('action-talents-apply')")
+     */
+    public function actionTalentsApplicationAction(Page $page)
+    {
+        return $this->render('page/action-talents/apply.html.twig', ['page' => $page]);
+    }
 }

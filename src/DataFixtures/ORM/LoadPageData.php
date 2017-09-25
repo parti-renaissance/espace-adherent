@@ -127,6 +127,22 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'content' => file_get_contents(__DIR__.'/../explainer.html'),
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'title' => 'Action talents - Accueil',
+            'slug' => 'action-talents-home',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../action-talents/home.html'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Action talents - Candidater',
+            'slug' => 'action-talents-apply',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../action-talents/apply.html'),
+            'media' => $media,
+        ]));
+
         $manager->flush();
     }
 
