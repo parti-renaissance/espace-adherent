@@ -14,13 +14,13 @@
                 {% else %}
                     <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
                        style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
-                        <div class="background" style="justify-content: flex-end;">
+                        <div class="background">
                             <div class="content">
                                 {% if blocks[0].hasDisplayTitles %}
                                     <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
                                     <div class="text--body">{{ blocks[0].subtitle }}</div>
                                 {% endif %}
-                                <div class="btn btn--no-border">Je découvre</div>
+                                <div class="btn btn--no-border">Découvrir</div>
                             </div>
                         </div>
                     </a>
@@ -37,6 +37,17 @@
                         {% endif %}
                     </div>
                 {% endif %}
+
+                <a href="{{ blocks[1].link }}" class="topstory-side card card--large-secondary l__col l__col--bottom space--30 card__background"
+                     style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
+                    <div class="background">
+                        <div class="content">
+                            <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
+                            <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
+                            <div class="btn btn--no-border">Voir</div>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             {% if not campaign_expired %}
