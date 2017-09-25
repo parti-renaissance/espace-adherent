@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadArticleData;
+use AppBundle\DataFixtures\ORM\LoadOrderArticleData;
+use AppBundle\DataFixtures\ORM\LoadOrderSectionData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +48,28 @@ class AmpControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testOrderArticlePublished()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/amp/transformer-la-france/premiere-article');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
+        $this->assertContains('<amp-img src="/assets/images/order_article.jpg', $this->client->getResponse()->getContent());
+    }
+
+    public function testOrderArticleDraft()
+    {
+        $this->client->request(Request::METHOD_GET, '/amp/transformer-la-france/brouillon');
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->init([
+            LoadOrderSectionData::class,
+            LoadOrderArticleData::class,
             LoadArticleData::class,
             LoadProposalData::class,
         ]);

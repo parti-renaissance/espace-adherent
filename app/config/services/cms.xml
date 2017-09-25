@@ -20,6 +20,8 @@
 
         <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
 
+        <service id="app.content.order_article_factory" class="AppBundle\Content\OrderArticleFactory" />
+
         <service id="app.content.clarification_factory" class="AppBundle\Content\ClarificationFactory" />
 
         <service id="app.content.custom_search_factory" class="AppBundle\Content\CustomSearchResultFactory" />
