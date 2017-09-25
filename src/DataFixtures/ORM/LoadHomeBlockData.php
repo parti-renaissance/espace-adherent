@@ -122,7 +122,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             'subtitle' => 'Emmanuel Macron a scilloné la Guadeloupe, la Martinique et la Guyane pendant 5 jours.',
             'path' => 'guadeloupe.jpg',
             'pathTitle' => 'Guadeloupe',
-            'link' => '/article/outre-mer',
+            'link' => '/articles/outre-mer',
         ],
         [
             'positionName' => 'Bannière - Droite',

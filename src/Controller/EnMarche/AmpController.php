@@ -20,7 +20,7 @@ class AmpController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="amp_article_view")
+     * @Route("/articles/{slug}", defaults={"_enable_campaign_silence"=true}, name="amp_article_view")
      * @Method("GET")
      * @Entity("article", expr="repository.findOnePublishedBySlug(slug)")
      */

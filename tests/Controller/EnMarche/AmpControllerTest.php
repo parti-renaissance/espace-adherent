@@ -21,7 +21,7 @@ class AmpControllerTest extends SqliteWebTestCase
 
     public function testArticlePublished()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/amp/article/outre-mer');
+        $crawler = $this->client->request(Request::METHOD_GET, '/amp/articles/outre-mer');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
@@ -30,7 +30,7 @@ class AmpControllerTest extends SqliteWebTestCase
 
     public function testArticleDraft()
     {
-        $this->client->request(Request::METHOD_GET, '/amp/article/brouillon');
+        $this->client->request(Request::METHOD_GET, '/amp/articles/brouillon');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 

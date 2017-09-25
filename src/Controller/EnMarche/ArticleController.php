@@ -58,7 +58,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
+     * @Route("/articles/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
      * @Method("GET")
      * @Entity("article", expr="repository.findOnePublishedBySlug(slug)")
      */

@@ -91,7 +91,7 @@ class ProposalAdmin extends AbstractAdmin
                 ->add('slug', null, [
                     'label' => 'URL de publication',
                     'disabled' => !$slugEditable,
-                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/article/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
+                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
                 ])
             ->end()
             ->with('Contenu', array('class' => 'col-md-12'))
