@@ -152,6 +152,7 @@ security:
             - ROLE_ADMIN_PROCURATIONS
             - ROLE_ADMIN_DONATIONS
             - ROLE_ADMIN_MAILJET
+            - ROLE_APP_ADMIN_PAGE_CREATE
 
     access_decision_manager:
         strategy: unanimous
