@@ -23,10 +23,17 @@ class PageAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         if ($this->getSubject()->getId() === null) {
-            $formMapper->add('title', TextType::class, [
-                'label' => 'Titre',
-                'filter_emojis' => true,
-            ]);
+            $formMapper
+                ->with('Title', ['class' => 'col-md-12'])
+                    ->add('title', TextType::class, [
+                        'label' => 'Titre',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('slug', TextType::class, [
+                        'label' => 'URL de publication',
+                        'help' => 'Ne spécifier que la fin : http://en-marche.fr/[votre-valeur]<br />Doit être unique',
+                    ])
+                ->end();
         }
 
         $formMapper
@@ -42,11 +49,12 @@ class PageAdmin extends AbstractAdmin
                 ])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
+                    'required' => false,
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()
-            ->with('Méta-donnes', ['class' => 'col-md-4'])
+            ->with('Méta-données', ['class' => 'col-md-4'])
                 ->add('keywords', null, [
                     'label' => 'Mots clés de recherche',
                     'required' => false,
