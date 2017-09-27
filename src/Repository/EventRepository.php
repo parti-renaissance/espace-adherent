@@ -323,10 +323,30 @@ WHERE (events.address_latitude IS NOT NULL
     AND events.begin_at > :today 
     AND events.published = :published
     AND events.status = :scheduled) 
+    __filter_query__ 
+    __filter_category__ 
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
 OFFSET :first_result
 SQL;
+
+        if (!empty($searchQuery = $search->getQuery())) {
+            $filterQuery = 'AND events.name like :query';
+        } else {
+            $filterQuery = '';
+        }
+
+        if ($category = $search->getEventCategory()) {
+            $filterCategory = 'AND events.category_id = :category';
+        } else {
+            $filterCategory = '';
+        }
+
+        $sql = preg_replace(
+            ['/__filter_query__/', '/__filter_category__/'],
+            [$filterQuery, $filterCategory],
+            $sql
+        );
 
         $rsm = new ResultSetMapping();
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
@@ -336,11 +356,11 @@ SQL;
             $query->setParameter('today', date_format(new \DateTime('today'), 'Y-m-d H:i:s'));
         }
 
-        if (!empty($searchQuery = $search->getQuery())) {
+        if (!empty($searchQuery)) {
             $query->setParameter('query', '%'.$searchQuery.'%');
         }
 
-        if ($category = $search->getEventCategory()) {
+        if ($category) {
             $query->setParameter('category', $category);
         }
 
