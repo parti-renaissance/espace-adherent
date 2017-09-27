@@ -4,24 +4,24 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
-use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 
 class CommitteeManagementAuthority
 {
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
 
     public function __construct(
         CommitteeManager $manager,
         CommitteeUrlGenerator $urlGenerator,
-        MailjetService $mailjet
+        MailerService $mailer
     ) {
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -31,7 +31,7 @@ class CommitteeManagementAuthority
 
         $animator = $this->manager->getCommitteeCreator($committee);
 
-        $this->mailjet->sendMessage(CommitteeApprovalConfirmationMessage::create(
+        $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $animator,
             $committee->getCityName(),
             $this->urlGenerator->getUrl('app_committee_show', $committee)
@@ -41,7 +41,7 @@ class CommitteeManagementAuthority
             return;
         }
 
-        $this->mailjet->sendMessage(CommitteeApprovalReferentMessage::create(
+        $this->mailer->sendMessage(CommitteeApprovalReferentMessage::create(
             $referent,
             $animator,
             $committee,
@@ -76,7 +76,7 @@ class CommitteeManagementAuthority
             return;
         }
 
-        $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
+        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
             $hosts,
             $adherent,

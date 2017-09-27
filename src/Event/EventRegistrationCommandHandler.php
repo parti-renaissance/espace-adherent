@@ -2,26 +2,26 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventRegistrationCommandHandler
 {
     private $factory;
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
 
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
-        MailjetService $mailjet,
+        MailerService $mailer,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -45,7 +45,7 @@ class EventRegistrationCommandHandler
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailjet->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink));
+        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink));
     }
 
     private function generateUrl(string $route, array $params = []): string

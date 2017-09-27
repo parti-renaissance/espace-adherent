@@ -2,27 +2,27 @@
 
 namespace AppBundle\Committee;
 
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeContactMembersMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeContactMembersMessage;
 
 class CommitteeContactMembersCommandHandler
 {
-    private $mailjet;
+    private $mailer;
 
-    public function __construct(MailjetService $mailjet)
+    public function __construct(MailerService $mailer)
     {
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
     }
 
     public function handle(CommitteeContactMembersCommand $command): void
     {
         $chunks = array_chunk(
             array_merge([$command->getSender()], $command->getRecipients()),
-            MailjetService::PAYLOAD_MAXSIZE
+            MailerService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailjet->sendMessage(CommitteeContactMembersMessage::create(
+            $this->mailer->sendMessage(CommitteeContactMembersMessage::create(
                 $chunk,
                 $command->getSender(),
                 $command->getMessage()

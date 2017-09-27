@@ -6,10 +6,10 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
-use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
-use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeCitizenInitiativeNotificationMessage;
+use AppBundle\Mailer\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
+use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,15 +18,15 @@ class CommitteeFeedManager
 {
     private $manager;
     private $committeeManager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
     private $repository;
 
-    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailjetService $mailjet, UrlGeneratorInterface $urlGenerator, CommitteeFeedItemRepository $repository)
+    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailerService $mailer, UrlGeneratorInterface $urlGenerator, CommitteeFeedItemRepository $repository)
     {
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->repository = $repository;
     }
@@ -87,7 +87,7 @@ class CommitteeFeedManager
     private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee): void
     {
         foreach ($this->getOptinCommitteeFollowersChunks($committee) as $chunk) {
-            $this->mailjet->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message));
+            $this->mailer->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message));
         }
     }
 
@@ -98,7 +98,7 @@ class CommitteeFeedManager
             'from' => 'committee',
             'id' => (string) $message->getCommittee()->getUuid(),
         ]);
-        $this->mailjet->sendMessage(CommitteeCitizenInitiativeOrganizerNotificationMessage::create(
+        $this->mailer->sendMessage(CommitteeCitizenInitiativeOrganizerNotificationMessage::create(
             $message->getEvent()->getOrganizer(),
             $message,
             $contactLink
@@ -117,7 +117,7 @@ class CommitteeFeedManager
             'slug' => $initiative->getSlug(),
         ]);
         foreach ($this->getOptinCommitteeFollowersChunks($message->getCommittee()) as $chunk) {
-            $this->mailjet->sendMessage(CommitteeCitizenInitiativeNotificationMessage::create(
+            $this->mailer->sendMessage(CommitteeCitizenInitiativeNotificationMessage::create(
                 $chunk,
                 $message,
                 $citizenInitiativeLink,
@@ -130,7 +130,7 @@ class CommitteeFeedManager
     {
         return array_chunk(
             $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
-            MailjetService::PAYLOAD_MAXSIZE
+            MailerService::PAYLOAD_MAXSIZE
         );
     }
 

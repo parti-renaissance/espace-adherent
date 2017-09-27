@@ -3,8 +3,8 @@
 namespace AppBundle\TonMacron;
 
 use AppBundle\Entity\TonMacronFriendInvitation;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\TonMacronFriendMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\TonMacronFriendMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
@@ -15,18 +15,18 @@ final class InvitationProcessorHandler
 
     private $builder;
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $stateMachine;
 
     public function __construct(
         TonMacronMessageBodyBuilder $builder,
         ObjectManager $manager,
-        MailjetService $mailjet,
+        MailerService $mailer,
         StateMachine $stateMachine
     ) {
         $this->builder = $builder;
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->stateMachine = $stateMachine;
     }
 
@@ -63,7 +63,7 @@ final class InvitationProcessorHandler
             $this->manager->persist($invitation);
             $this->manager->flush();
 
-            $this->mailjet->sendMessage(TonMacronFriendMessage::createFromInvitation($invitation));
+            $this->mailer->sendMessage(TonMacronFriendMessage::createFromInvitation($invitation));
             $this->terminate($session);
             $this->stateMachine->apply($processor, InvitationProcessor::TRANSITION_SEND);
 

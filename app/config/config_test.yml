@@ -13,11 +13,11 @@ services:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
     old_sound_rabbit_mq.mailjet_campaign_producer:
-        class: 'Tests\AppBundle\Test\Producer\MailjetNullProducer'
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
         public: false
 
     old_sound_rabbit_mq.mailjet_transactional_producer:
-        class: 'Tests\AppBundle\Test\Producer\MailjetNullProducer'
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
         public: false
 
     old_sound_rabbit_mq.referent_message_dispatcher_producer:
