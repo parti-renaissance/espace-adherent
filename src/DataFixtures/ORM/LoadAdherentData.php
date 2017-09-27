@@ -172,7 +172,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referent->setReferent(['CH', '92', '77000'], -1.6743, 48.112);
+        $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
         $referent->enableCommitteesNotifications();
 
         $coordinateur = $adherentFactory->createFromArray([

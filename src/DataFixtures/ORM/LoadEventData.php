@@ -162,7 +162,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Ordere
             'description' => 'Unissons nos forces pour la Présidentielle !',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
             'begin_at' => '2017-02-20 09:30:00',
-            'finish_at' => '2017-02-20 19:00:00',
+            'finish_at' => '2017-02-20 19:30:00',
             'capacity' => 2000,
         ]);
         $event7->incrementParticipantsCount();

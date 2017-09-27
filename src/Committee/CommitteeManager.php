@@ -149,7 +149,12 @@ class CommitteeManager
 
     public function getCommitteeCreator(Committee $committee): Adherent
     {
-        return $this->getCommitteeHosts($committee)->first();
+        return $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+    }
+
+    public function getCommitteeReferent(Committee $committee): ?Adherent
+    {
+        return $this->getAdherentRepository()->findReferentByCommittee($committee);
     }
 
     public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
@@ -426,7 +431,7 @@ class CommitteeManager
         $committees = $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filters);
 
         foreach ($committees as $committee) {
-            $creator = $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+            $creator = $this->getCommitteeCreator($committee);
             $committee->setCreator($creator);
         }
 

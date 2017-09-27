@@ -6,9 +6,11 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Referent\ManagedAreaUtils;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
@@ -178,6 +180,17 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->andWhere('LENGTH(a.managedArea.codes) > 0')
             ->orderBy('LOWER(a.managedArea.codes)', 'ASC')
         ;
+    }
+
+    public function findReferentByCommittee(Committee $committee): ?Adherent
+    {
+        $qb = $this
+            ->createReferentQueryBuilder()
+            ->andWhere('FIND_IN_SET(:code, a.managedArea.codes) > 0')
+            ->setParameter('code', ManagedAreaUtils::getCodeFromCommittee($committee))
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
