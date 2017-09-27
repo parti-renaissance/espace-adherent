@@ -4,21 +4,21 @@ namespace AppBundle\Event;
 
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventInvite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventInvitationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\EventInvitationMessage;
 use AppBundle\Routing\RemoteUrlGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class EventInvitationHandler
 {
     private $manager;
-    private $mailer;
+    private $mailjet;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, RemoteUrlGenerator $urlGenerator)
+    public function __construct(ObjectManager $manager, MailjetService $mailjet, RemoteUrlGenerator $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -31,7 +31,7 @@ class EventInvitationHandler
             'uuid' => $event->getUuid()->toString(),
         ]);
 
-        $this->mailer->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
+        $this->mailjet->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
 
         $this->manager->persist($invite);
         $this->manager->flush();

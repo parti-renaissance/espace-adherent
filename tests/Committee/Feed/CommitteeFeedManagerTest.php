@@ -8,7 +8,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;

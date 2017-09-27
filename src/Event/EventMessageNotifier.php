@@ -6,27 +6,27 @@ use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventNotificationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\EventCancellationMessage;
+use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Membership\AdherentManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventMessageNotifier implements EventSubscriberInterface
 {
-    private $mailer;
+    private $mailjet;
     private $committeeManager;
     private $adherentManager;
     private $urlGenerator;
 
     public function __construct(
-        MailerService $mailer,
+        MailjetService $mailjet,
         CommitteeManager $committeeManager,
         AdherentManager $adherentManager,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->committeeManager = $committeeManager;
         $this->adherentManager = $adherentManager;
         $this->urlGenerator = $urlGenerator;
@@ -40,11 +40,11 @@ class EventMessageNotifier implements EventSubscriberInterface
 
         $chunks = array_chunk(
             $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
+            MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($chunk, $event->getEvent(), $event->getAuthor()));
+            $this->mailjet->sendMessage($this->createMessage($chunk, $event->getEvent(), $event->getAuthor()));
         }
     }
 
@@ -61,10 +61,10 @@ class EventMessageNotifier implements EventSubscriberInterface
         $subscriptions = $this->adherentManager->findByEvent($event->getEvent());
 
         if (count($subscriptions) > 0) {
-            $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
+            $chunks = array_chunk($subscriptions->toArray(), MailjetService::PAYLOAD_MAXSIZE);
 
             foreach ($chunks as $chunk) {
-                $this->mailer->sendMessage($this->createCancelMessage(
+                $this->mailjet->sendMessage($this->createCancelMessage(
                     $chunk,
                     $event->getEvent(),
                     $event->getAuthor()

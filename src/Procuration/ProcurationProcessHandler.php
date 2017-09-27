@@ -5,19 +5,19 @@ namespace AppBundle\Procuration;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Mailer\MailerService;
+use AppBundle\Mailjet\MailjetService;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class ProcurationProcessHandler
 {
     private $manager;
-    private $mailer;
+    private $mailjet;
     private $factory;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, ProcurationProxyMessageFactory $factory)
+    public function __construct(ObjectManager $manager, MailjetService $mailjet, ProcurationProxyMessageFactory $factory)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->factory = $factory;
     }
 
@@ -27,7 +27,7 @@ class ProcurationProcessHandler
 
         $this->manager->flush();
 
-        $this->mailer->sendMessage($this->factory->createProxyFoundMessage($procurationManager, $request, $proxy));
+        $this->mailjet->sendMessage($this->factory->createProxyFoundMessage($procurationManager, $request, $proxy));
     }
 
     public function unprocess(?Adherent $procurationManager, ProcurationRequest $request)
@@ -39,7 +39,7 @@ class ProcurationProcessHandler
         $this->manager->flush();
 
         if ($proxy) {
-            $this->mailer->sendMessage($this->factory->createProxyCancelledMessage($request, $proxy, $procurationManager));
+            $this->mailjet->sendMessage($this->factory->createProxyCancelledMessage($request, $proxy, $procurationManager));
         }
     }
 }

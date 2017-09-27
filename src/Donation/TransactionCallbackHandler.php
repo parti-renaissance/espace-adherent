@@ -3,8 +3,8 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\DonationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ class TransactionCallbackHandler
 {
     private $router;
     private $entityManager;
-    private $mailer;
+    private $mailjet;
     private $donationRequestUtils;
 
-    public function __construct(UrlGeneratorInterface $router, ObjectManager $entityManager, MailerService $mailer, DonationRequestUtils $donationRequestUtils)
+    public function __construct(UrlGeneratorInterface $router, ObjectManager $entityManager, MailjetService $mailjet, DonationRequestUtils $donationRequestUtils)
     {
         $this->router = $router;
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->donationRequestUtils = $donationRequestUtils;
     }
 
@@ -41,7 +41,7 @@ class TransactionCallbackHandler
 
             $campaignExpired = (bool) $request->attributes->get('_campaign_expired', false);
             if (!$campaignExpired && $donation->isSuccessful()) {
-                $this->mailer->sendMessage(DonationMessage::createFromDonation($donation));
+                $this->mailjet->sendMessage(DonationMessage::createFromDonation($donation));
             }
         }
 

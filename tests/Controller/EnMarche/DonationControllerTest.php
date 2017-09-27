@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mailjet\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
 use Goutte\Client as PayboxClient;
 use Symfony\Bundle\FrameworkBundle\Client;

@@ -4,23 +4,23 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
 
 class CommitteeManagementAuthority
 {
     private $manager;
-    private $mailer;
+    private $mailjet;
     private $urlGenerator;
 
     public function __construct(
         CommitteeManager $manager,
         CommitteeUrlGenerator $urlGenerator,
-        MailerService $mailer
+        MailjetService $mailjet
     ) {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -28,7 +28,7 @@ class CommitteeManagementAuthority
     {
         $this->manager->approveCommittee($committee);
 
-        $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
+        $this->mailjet->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $this->manager->getCommitteeCreator($committee),
             $committee->getCityName(),
             $this->urlGenerator->getUrl('app_committee_show', $committee)
@@ -48,7 +48,7 @@ class CommitteeManagementAuthority
             return;
         }
 
-        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
+        $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
             $hosts,
             $adherent,

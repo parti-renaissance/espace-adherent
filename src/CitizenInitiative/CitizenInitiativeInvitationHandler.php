@@ -5,21 +5,21 @@ namespace AppBundle\CitizenInitiative;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Event\EventInvitation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenInitiativeInvitationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
 use AppBundle\Routing\RemoteUrlGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class CitizenInitiativeInvitationHandler
 {
     private $manager;
-    private $mailer;
+    private $mailjet;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, RemoteUrlGenerator $urlGenerator)
+    public function __construct(ObjectManager $manager, MailjetService $mailjet, RemoteUrlGenerator $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -32,7 +32,7 @@ class CitizenInitiativeInvitationHandler
             'uuid' => $initiative->getUuid()->toString(),
         ]);
 
-        $this->mailer->sendMessage(CitizenInitiativeInvitationMessage::createFromInvite($invite, $initiative, $url));
+        $this->mailjet->sendMessage(CitizenInitiativeInvitationMessage::createFromInvite($invite, $initiative, $url));
 
         $this->manager->persist($invite);
         $this->manager->flush();

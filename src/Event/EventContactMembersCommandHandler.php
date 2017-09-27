@@ -2,24 +2,24 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventContactMembersMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\EventContactMembersMessage;
 
 class EventContactMembersCommandHandler
 {
-    private $mailer;
+    private $mailjet;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailjetService $mailjet)
     {
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(EventContactMembersCommand $command): void
     {
-        $chunks = array_chunk($command->getRecipients(), MailerService::PAYLOAD_MAXSIZE);
+        $chunks = array_chunk($command->getRecipients(), MailjetService::PAYLOAD_MAXSIZE);
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage(EventContactMembersMessage::create(
+            $this->mailjet->sendMessage(EventContactMembersMessage::create(
                 $chunk,
                 $command->getSender(),
                 $command->getMessage()

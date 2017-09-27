@@ -2,12 +2,23 @@
 
 namespace AppBundle\Mailjet;
 
-use AppBundle\Mailer\EmailTemplate as AbstractEmailTemplate;
 use AppBundle\Mailjet\Exception\MailjetException;
+use AppBundle\Mailjet\Message\MailjetMessage;
 use Ramsey\Uuid\UuidInterface;
 
-final class EmailTemplate extends AbstractEmailTemplate
+final class EmailTemplate implements \JsonSerializable
 {
+    private $uuid;
+    private $senderEmail;
+    private $senderName;
+    private $replyTo;
+    private $subject;
+    private $cc;
+    private $recipients;
+    private $template;
+    private $httpRequestPayload;
+    private $httpResponsePayload;
+
     public function __construct(
         UuidInterface $uuid,
         string $template,
@@ -17,17 +28,28 @@ final class EmailTemplate extends AbstractEmailTemplate
         string $replyTo = null,
         array $cc = []
     ) {
-        $senderName = $this->fixMailjetParsing($senderName);
+        $this->uuid = $uuid;
+        $this->template = $template;
+        $this->subject = $subject;
+        $this->senderEmail = $senderEmail;
+        $this->senderName = $senderName;
+        $this->replyTo = $replyTo;
+        $this->cc = $cc;
+        $this->recipients = [];
+    }
 
-        parent::__construct(
-            $uuid,
-            $template,
-            $subject,
-            $senderEmail,
-            $senderName,
-            $replyTo,
-            $cc
-        );
+    public static function createWithMailjetMessage(MailjetMessage $message, string $defaultSenderEmail, string $defaultSenderName = null): self
+    {
+        $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
+        $senderName = $message->getSenderName() ?: $defaultSenderName;
+
+        $email = new self($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
+
+        foreach ($message->getRecipients() as $recipient) {
+            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
+        }
+
+        return $email;
     }
 
     public function addRecipient(string $email, string $name = null, array $vars = []): void
@@ -35,7 +57,7 @@ final class EmailTemplate extends AbstractEmailTemplate
         $recipient['Email'] = $email;
 
         if ($name) {
-            $recipient['Name'] = $this->fixMailjetParsing($name);
+            $recipient['Name'] = $name;
         }
 
         if (count($vars)) {
@@ -43,6 +65,11 @@ final class EmailTemplate extends AbstractEmailTemplate
         }
 
         $this->recipients[] = $recipient;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getBody(): array
@@ -93,8 +120,31 @@ final class EmailTemplate extends AbstractEmailTemplate
         return $body;
     }
 
-    private function fixMailjetParsing(string $string = null): ?string
+    public function delivered(string $httpResponsePayload, string $httpRequestPayload = null): void
     {
-        return str_replace(',', '', $string);
+        if ($httpRequestPayload) {
+            $this->httpRequestPayload = $httpRequestPayload;
+        }
+
+        $this->httpResponsePayload = $httpResponsePayload;
+    }
+
+    public function getHttpRequestPayload(): string
+    {
+        if (!$this->httpRequestPayload) {
+            $this->httpRequestPayload = json_encode($this->getBody());
+        }
+
+        return $this->httpRequestPayload;
+    }
+
+    public function getHttpResponsePayload(): ?string
+    {
+        return $this->httpResponsePayload;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->getBody();
     }
 }

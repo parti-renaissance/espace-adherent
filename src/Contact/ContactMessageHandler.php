@@ -2,20 +2,20 @@
 
 namespace AppBundle\Contact;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentContactMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\AdherentContactMessage;
 
 class ContactMessageHandler
 {
-    private $mailer;
+    private $mailjet;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailjetService $mailjet)
     {
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(ContactMessage $contactMessage)
     {
-        $this->mailer->sendMessage(AdherentContactMessage::createFromMdel($contactMessage));
+        $this->mailjet->sendMessage(AdherentContactMessage::createFromMdel($contactMessage));
     }
 }
