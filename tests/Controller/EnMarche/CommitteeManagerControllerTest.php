@@ -11,8 +11,8 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Mailjet\Message\EventNotificationMessage;
-use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailer\Message\EventNotificationMessage;
+use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -292,7 +292,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
-        $mail = $this->getMailjetEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
+        $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
         $this->assertMailCountRecipients($this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID), $mail);
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([

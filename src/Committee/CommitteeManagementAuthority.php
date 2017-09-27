@@ -4,25 +4,25 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
-use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManagementAuthority
 {
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
 
     public function __construct(
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailjetService $mailjet
+        MailerService $mailer
     ) {
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -30,7 +30,7 @@ class CommitteeManagementAuthority
     {
         $this->manager->approveCommittee($committee);
 
-        $this->mailjet->sendMessage(CommitteeApprovalConfirmationMessage::create(
+        $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $this->manager->getCommitteeCreator($committee),
             $committee->getCityName(),
             $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
@@ -53,7 +53,7 @@ class CommitteeManagementAuthority
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         foreach ($referents as $referent) {
-            $this->mailjet->sendMessage(CommitteeApprovalReferentMessage::create(
+            $this->mailer->sendMessage(CommitteeApprovalReferentMessage::create(
                 $referent,
                 $animator,
                 $committee,
@@ -85,11 +85,13 @@ class CommitteeManagementAuthority
             return;
         }
 
-        $this->mailjet->sendMessage(CommitteeNewFollowerMessage::create(
+        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
             $hosts,
             $adherent,
-            $this->urlGenerator->generate('app_commitee_manager_list_members', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->urlGenerator->generate('app_commitee_manager_list_members', [
+                'slug' => $committee->getSlug(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 }

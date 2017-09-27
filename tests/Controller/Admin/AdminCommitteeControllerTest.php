@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadAdminData;
-use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -42,8 +42,8 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr'));
     }
 
     protected function setUp()
@@ -56,7 +56,7 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

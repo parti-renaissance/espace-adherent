@@ -8,8 +8,8 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
-use AppBundle\Mailjet\Message\EventInvitationMessage;
-use AppBundle\Mailjet\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\EventInvitationMessage;
+use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +72,7 @@ class EventControllerTest extends MysqlWebTestCase
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -114,7 +114,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'benjyd@aol.com'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
 
@@ -199,7 +199,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
@@ -245,7 +245,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 

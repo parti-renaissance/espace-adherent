@@ -3,8 +3,8 @@
 namespace AppBundle\Consumer;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\ReferentMessage as MailjetMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\ReferentMessage as Message;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ReferentMessageDispatcherConsumer extends AbstractConsumer
 {
     /**
-     * @var MailjetService
+     * @var MailerService
      */
     private $mailer;
     /**
@@ -62,8 +62,8 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 ++$count;
                 $chunk[] = $result[0];
 
-                if (MailjetService::PAYLOAD_MAXSIZE === $i) {
-                    $this->getMailer()->sendMessage($this->createMailjetReferentMessage($message, $chunk));
+                if (MailerService::PAYLOAD_MAXSIZE === $i) {
+                    $this->getMailer()->sendMessage($this->createMailerReferentMessage($message, $chunk));
                     $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
 
                     $i = 0;
@@ -74,7 +74,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
             }
 
             if (!empty($chunk)) {
-                $this->getMailer()->sendMessage($this->createMailjetReferentMessage($message, $chunk));
+                $this->getMailer()->sendMessage($this->createMailerReferentMessage($message, $chunk));
                 $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
             }
 
@@ -86,12 +86,12 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         }
     }
 
-    public function setMailer(MailjetService $mailjetService): void
+    public function setMailer(MailerService $mailer): void
     {
-        $this->mailer = $mailjetService;
+        $this->mailer = $mailer;
     }
 
-    public function getMailer(): MailjetService
+    public function getMailer(): MailerService
     {
         return $this->mailer;
     }
@@ -121,8 +121,8 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         return ReferentMessage::createFromArray($referent, $data);
     }
 
-    public function createMailjetReferentMessage(ReferentMessage $message, array $recipients): MailjetMessage
+    public function createMailerReferentMessage(ReferentMessage $message, array $recipients): Message
     {
-        return MailjetMessage::createFromModel($message, $recipients);
+        return Message::createFromModel($message, $recipients);
     }
 }

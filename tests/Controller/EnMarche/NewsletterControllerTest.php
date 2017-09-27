@@ -4,9 +4,9 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailjet\Message\NewsletterInvitationMessage;
-use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Mailer\Message\NewsletterInvitationMessage;
+use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -32,8 +32,8 @@ class NewsletterControllerTest extends SqliteWebTestCase
     /** @var NewsletterInviteRepository */
     private $newsletterInviteRepository;
 
-    /** @var MailjetEmailRepository */
-    private $mailjetEmailRepository;
+    /** @var EmailRepository */
+    private $emailRepository;
 
     public function testSubscriptionAndRetry()
     {
@@ -60,7 +60,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->mailjetEmailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
@@ -96,7 +96,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        $this->assertCount(1, $this->mailjetEmailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
     }
 
     public function testInvitationAndRetry()
@@ -136,11 +136,11 @@ class NewsletterControllerTest extends SqliteWebTestCase
         $this->assertSame('Titouan Galopin', $invite2->getSenderFullName());
 
         // Email should have been sent
-        $this->assertCount(2, $messages = $this->mailjetEmailRepository->findMessages(NewsletterInvitationMessage::class));
-        $this->assertCount(1, $messages = $this->mailjetEmailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
+        $this->assertCount(2, $messages = $this->emailRepository->findMessages(NewsletterInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
         $this->assertContains('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
 
-        $this->assertCount(1, $messages = $this->mailjetEmailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
+        $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
         $this->assertContains('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
     }
 
@@ -208,7 +208,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
 
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
         $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();
-        $this->mailjetEmailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()
@@ -217,7 +217,7 @@ class NewsletterControllerTest extends SqliteWebTestCase
 
         $this->subscriptionsRepository = null;
         $this->newsletterInviteRepository = null;
-        $this->mailjetEmailRepository = null;
+        $this->emailRepository = null;
 
         parent::tearDown();
     }

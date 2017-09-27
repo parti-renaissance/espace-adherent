@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use AppBundle\Mailjet\Message\LegislativeCampaignContactMessage;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Mailer\Message\LegislativeCampaignContactMessage;
+use AppBundle\Repository\EmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -20,7 +20,7 @@ class LegislativesControllerTest extends SqliteWebTestCase
     use ControllerTestTrait;
 
     /**
-     * @var MailjetEmailRepository
+     * @var EmailRepository
      */
     private $emailRepository;
 
@@ -131,7 +131,7 @@ class LegislativesControllerTest extends SqliteWebTestCase
             LoadHomeBlockData::class,
         ]);
 
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

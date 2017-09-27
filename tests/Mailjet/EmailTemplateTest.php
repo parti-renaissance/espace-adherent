@@ -5,21 +5,21 @@ namespace Tests\AppBundle\Mailjet;
 use AppBundle\Mailjet\EmailTemplate;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailjet\Message\DummyMessage;
+use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
 {
     /**
-     * @expectedException \AppBundle\Mailjet\Exception\MailjetException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The Mailjet email requires at least one recipient.
      */
-    public function testCreateMailjetTemplateEmailWithoutRecipients()
+    public function testCreateEmailTemplateWithoutRecipients()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
         $email->getBody();
     }
 
-    public function testCreateMailjetTemplateEmail()
+    public function testCreateEmailTemplate()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -52,7 +52,7 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateMailjetTemplateEmailWithReplyTo()
+    public function testCreateEmailTemplateWithReplyTo()
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -80,9 +80,9 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateMailjetTemplateEmailFromDummyMessage()
+    public function testCreateEmailTemplateFromDummyMessage()
     {
-        $email = EmailTemplate::createWithMailjetMessage(DummyMessage::create(), 'contact@en-marche.fr');
+        $email = EmailTemplate::createWithMessage(DummyMessage::create(), 'contact@en-marche.fr');
 
         $body = [
             'FromEmail' => 'contact@en-marche.fr',
@@ -98,6 +98,35 @@ class EmailTemplateTest extends TestCase
                     ],
                 ],
             ],
+        ];
+
+        $this->assertSame($body, $email->getBody());
+    }
+
+    public function testCreateEmailTemplateWithCc()
+    {
+        $email = new EmailTemplate(
+            Uuid::uuid4(),
+            '12345',
+            'Votre donation !',
+            'contact@en-marche.fr',
+            'En Marche !',
+            null,
+            ['"Vincent Durand" <vincent777h@example.tld>']
+        );
+        $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
+        $email->addRecipient('jane.smith@example.tld', 'Jane Smith', ['name' => 'Jane Smith']);
+
+        $body = [
+            'FromEmail' => 'contact@en-marche.fr',
+            'FromName' => 'En Marche !',
+            'Subject' => 'Votre donation !',
+            'MJ-TemplateID' => '12345',
+            'MJ-TemplateLanguage' => true,
+            'Vars' => [
+                'name' => 'John Smith',
+            ],
+            'To' => '"John Smith" <john.smith@example.tld>, "Jane Smith" <jane.smith@example.tld>, "Vincent Durand" <vincent777h@example.tld>',
         ];
 
         $this->assertSame($body, $email->getBody());

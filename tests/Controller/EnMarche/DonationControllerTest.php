@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
-use AppBundle\Mailjet\Message\DonationMessage;
+use AppBundle\Mailer\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
 use Goutte\Client as PayboxClient;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,7 +84,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -164,7 +164,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame('XXXXXX', $donation->getPayboxAuthorizationCode());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
     }
 
     /**
@@ -216,7 +216,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -278,7 +278,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertNull($donation->getPayboxAuthorizationCode());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getMailjetEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
 
         $retryUrl = $crawler->selectLink('Je souhaite réessayer')->attr('href');
         $retryUrlRegExp = '/don/coordonnees\?donation_retry_payload=(.*)&montant=30';

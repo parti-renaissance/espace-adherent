@@ -8,11 +8,11 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailjet\Message\AdherentAccountConfirmationMessage;
+use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Membership\MembershipUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     private $activationTokenRepository;
 
     /**
-     * @var MailjetEmailRepository
+     * @var EmailRepository
      */
     private $emailRepository;
 
@@ -503,7 +503,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->activationTokenRepository = $this->getActivationTokenRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

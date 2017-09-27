@@ -3,21 +3,21 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterInvite;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\NewsletterInvitationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\NewsletterInvitationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterInvitationHandler
 {
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailjetService $mailjet, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ObjectManager $manager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -27,7 +27,7 @@ class NewsletterInvitationHandler
             $invite = NewsletterInvite::create($invitation->firstName, $invitation->lastName, $guest, $ip);
 
             $this->manager->persist($invite);
-            $this->mailjet->sendMessage(NewsletterInvitationMessage::createFromInvite($invite, $this->urlGenerator->generate(
+            $this->mailer->sendMessage(NewsletterInvitationMessage::createFromInvite($invite, $this->urlGenerator->generate(
                 'newsletter_subscription',
                 ['mail' => $guest],
                 UrlGeneratorInterface::ABSOLUTE_URL

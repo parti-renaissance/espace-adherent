@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Controller\EnMarche\Security;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailjet\Message\AdherentResetPasswordMessage;
-use AppBundle\Mailjet\Message\AdherentResetPasswordConfirmationMessage;
+use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
+use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
 use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -24,7 +24,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /* @var AdherentRepository */
     private $adherentRepository;
 
-    /* @var MailjetEmailRepository */
+    /* @var EmailRepository */
     private $emailRepository;
 
     public function testAuthenticationIsSuccessful()
@@ -219,7 +219,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

@@ -4,10 +4,10 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
-use AppBundle\Entity\MailjetEmail;
+use AppBundle\Entity\Email;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\TonMacron\InvitationProcessor;
@@ -35,7 +35,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
     /* @var TonMacronFriendInvitationRepository */
     private $tonMacronInvitationRepository;
 
-    /* @var MailjetEmailRepository */
+    /* @var EmailRepository */
     private $emailRepository;
 
     public function testInviteAction()
@@ -137,7 +137,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
         $this->assertCount(1, $mails = $this->emailRepository->findAll());
 
-        /** @var MailjetEmail $mail */
+        /** @var Email $mail */
         $mail = $mails[0];
 
         $this->assertSame('TonMacronFriendMessage', $mail->getMessageClass());
@@ -194,7 +194,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
 
         $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
         $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

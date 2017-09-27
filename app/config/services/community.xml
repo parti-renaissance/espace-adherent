@@ -35,7 +35,7 @@
 
         <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="request_stack" />
 
             <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
@@ -44,7 +44,7 @@
         <service id="app.donation.transaction_callback_handler" class="AppBundle\Donation\TransactionCallbackHandler">
             <argument type="service" id="router" />
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 
@@ -53,20 +53,20 @@
 
         <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="request_stack" />
         </service>
 
         <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="router" />
         </service>
 
         <!-- Invitation -->
         <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.campaign_mailer" />
+            <argument type="service" id="app.mailer.campaign" />
         </service>
 
         <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
@@ -90,12 +90,12 @@
 
         <service id="app.procuration.process_handler" class="AppBundle\Procuration\ProcurationProcessHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
         <service id="app.procuration.reminder_handler" class="AppBundle\Procuration\ProcurationReminderHandler">
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
@@ -106,14 +106,14 @@
         <!-- Je Marche -->
          <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.transactional_mailer" />
+            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Ton Macron -->
          <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
              <argument type="service" id="app.ton_macron.message_body_builder"/>
              <argument type="service" id="doctrine.orm.entity_manager"/>
-             <argument type="service" id="app.mailjet.campaign_mailer"/>
+             <argument type="service" id="app.mailer.campaign"/>
              <argument type="service" id="state_machine.ton_macron_invitation"/>
          </service>
 

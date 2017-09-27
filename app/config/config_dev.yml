@@ -9,12 +9,12 @@ parameters:
     timeline_max_messages: 10
 
 services:
-    app.mailjet.transactional_client:
-        class: 'Tests\AppBundle\Test\Mailjet\NullClient'
+    app.mailer.transactional_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
         public: false
 
-    app.mailjet.campaign_client:
-        class: 'Tests\AppBundle\Test\Mailjet\NullClient'
+    app.mailer.campaign_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
         public: false
 
     app.recaptcha.api_client:

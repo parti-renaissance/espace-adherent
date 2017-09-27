@@ -2,62 +2,16 @@
 
 namespace AppBundle\Mailjet;
 
-use AppBundle\Mailjet\Exception\MailjetException;
-use AppBundle\Mailjet\Message\MailjetMessage;
-use Ramsey\Uuid\UuidInterface;
+use AppBundle\Mailer\EmailTemplate as AbstractEmailTemplate;
 
-final class EmailTemplate implements \JsonSerializable
+final class EmailTemplate extends AbstractEmailTemplate
 {
-    private $uuid;
-    private $senderEmail;
-    private $senderName;
-    private $replyTo;
-    private $subject;
-    private $cc;
-    private $recipients;
-    private $template;
-    private $httpRequestPayload;
-    private $httpResponsePayload;
-
-    public function __construct(
-        UuidInterface $uuid,
-        string $template,
-        string $subject,
-        string $senderEmail,
-        string $senderName = null,
-        string $replyTo = null,
-        array $cc = []
-    ) {
-        $this->uuid = $uuid;
-        $this->template = $template;
-        $this->subject = $subject;
-        $this->senderEmail = $senderEmail;
-        $this->senderName = $senderName;
-        $this->replyTo = $replyTo;
-        $this->cc = $cc;
-        $this->recipients = [];
-    }
-
-    public static function createWithMailjetMessage(MailjetMessage $message, string $defaultSenderEmail, string $defaultSenderName = null): self
-    {
-        $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
-        $senderName = $message->getSenderName() ?: $defaultSenderName;
-
-        $email = new self($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
-
-        foreach ($message->getRecipients() as $recipient) {
-            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
-        }
-
-        return $email;
-    }
-
     public function addRecipient(string $email, string $name = null, array $vars = []): void
     {
         $recipient['Email'] = $email;
 
         if ($name) {
-            $recipient['Name'] = $name;
+            $recipient['Name'] = $this->fixMailjetParsing($name);
         }
 
         if (count($vars)) {
@@ -67,20 +21,16 @@ final class EmailTemplate implements \JsonSerializable
         $this->recipients[] = $recipient;
     }
 
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
-    }
-
     public function getBody(): array
     {
         if (!count($this->recipients)) {
-            throw new MailjetException('The Mailjet email requires at least one recipient.');
+            throw new \InvalidArgumentException('The Mailjet email requires at least one recipient.');
         }
 
         $body['FromEmail'] = $this->senderEmail;
+
         if ($this->senderName) {
-            $body['FromName'] = $this->senderName;
+            $body['FromName'] = $this->fixMailjetParsing($this->senderName);
         }
 
         $body['Subject'] = $this->subject;
@@ -120,31 +70,8 @@ final class EmailTemplate implements \JsonSerializable
         return $body;
     }
 
-    public function delivered(string $httpResponsePayload, string $httpRequestPayload = null): void
+    private function fixMailjetParsing(?string $string): ?string
     {
-        if ($httpRequestPayload) {
-            $this->httpRequestPayload = $httpRequestPayload;
-        }
-
-        $this->httpResponsePayload = $httpResponsePayload;
-    }
-
-    public function getHttpRequestPayload(): string
-    {
-        if (!$this->httpRequestPayload) {
-            $this->httpRequestPayload = json_encode($this->getBody());
-        }
-
-        return $this->httpRequestPayload;
-    }
-
-    public function getHttpResponsePayload(): ?string
-    {
-        return $this->httpResponsePayload;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->getBody();
+        return str_replace(',', '', $string);
     }
 }

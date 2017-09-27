@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailjet\Message\JeMarcheReportMessage;
+use AppBundle\Mailer\Message\JeMarcheReportMessage;
 use AppBundle\Repository\JeMarcheReportRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +60,7 @@ class JeMarcheControllerTest extends SqliteWebTestCase
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
         $this->assertSame('Réaction des gens', $report->getReaction());
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(JeMarcheReportMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(JeMarcheReportMessage::class));
     }
 
     public function testReportJeMarchePartial()

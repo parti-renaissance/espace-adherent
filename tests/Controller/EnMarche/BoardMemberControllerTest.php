@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
-use AppBundle\Mailjet\Message\BoardMemberMessage;
+use AppBundle\Mailer\Message\BoardMemberMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -191,7 +191,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
         $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
@@ -215,7 +215,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'martine.lindt@gmail.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'lolodie.dutemps@hotnix.tld');
@@ -241,7 +241,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }

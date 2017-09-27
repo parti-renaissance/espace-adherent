@@ -19,53 +19,55 @@
             <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
         </service>
 
-        <!-- Mailjet (transactional) -->
-        <service id="app.mailjet.transactional_mailer" class="AppBundle\Mailjet\MailjetService" public="false">
+        <!-- Mailer (transactional) -->
+        <service id="app.mailer.transactional" class="AppBundle\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailjet.transport.rabbitmq_transactional"/>
-            <argument type="service" id="app.mailjet.message_factory.transactional"/>
+            <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
+            <argument type="service" id="app.mailer.message_factory.transactional"/>
         </service>
 
-        <service id="app.mailjet.transactional_client" class="AppBundle\Mailjet\ApiClient" public="false">
+        <service id="app.mailer.transactional_client" class="AppBundle\Mailjet\EmailClient" public="false">
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
         </service>
 
-        <service id="app.mailjet.transport.rabbitmq_transactional" class="AppBundle\Mailjet\Transport\RabbitMQTransport" public="false">
-            <argument type="service" id="old_sound_rabbit_mq.mailjet_transactional_producer" />
+        <service id="app.mailer.transport.rabbitmq_transactional" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailer_transactional_producer" />
         </service>
 
-        <service id="app.mailjet.message_factory.transactional" class="AppBundle\Mailjet\EmailTemplateFactory" public="false">
+        <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
+            <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
-        <!-- Mailjet (campaign) -->
-        <service id="app.mailjet.campaign_mailer" class="AppBundle\Mailjet\MailjetService" public="false">
+        <!-- Mailer (campaign) -->
+        <service id="app.mailer.campaign" class="AppBundle\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailjet.transport.rabbitmq_campaign"/>
-            <argument type="service" id="app.mailjet.message_factory.campaign"/>
+            <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
+            <argument type="service" id="app.mailer.message_factory.campaign"/>
         </service>
 
-        <service id="app.mailjet.campaign_client" class="AppBundle\Mailjet\ApiClient" public="false">
+        <service id="app.mailer.campaign_client" class="AppBundle\Mailjet\EmailClient" public="false">
             <argument type="service" id="csa_guzzle.client.mailjet_api"/>
             <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
         </service>
 
-        <service id="app.mailjet.transport.rabbitmq_campaign" class="AppBundle\Mailjet\Transport\RabbitMQTransport" public="false">
-            <argument type="service" id="old_sound_rabbit_mq.mailjet_campaign_producer" />
+        <service id="app.mailer.transport.rabbitmq_campaign" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailer_campaign_producer" />
         </service>
 
-        <service id="app.mailjet.message_factory.campaign" class="AppBundle\Mailjet\EmailTemplateFactory" public="false">
+        <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
+            <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
-        <service id="AppBundle\Mailjet\EventSubscriber\EmailPersisterEventSubscriber">
+        <service id="AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.repository.mailjet_email"/>
+            <argument type="service" id="app.repository.email"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 

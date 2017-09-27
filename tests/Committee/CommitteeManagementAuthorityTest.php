@@ -8,9 +8,9 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,7 +29,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         // ensure committee is approved
         $manager->expects($this->once())->method('approveCommittee')->with($committee);
 
-        $mailer = $this->createMock(MailjetService::class);
+        $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class));
@@ -53,7 +53,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         $referents = new AdherentCollection([$referent]);
         $manager = $this->createManager($committee, $animator, $referents);
 
-        $mailer = $this->createMock(MailjetService::class);
+        $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class));
@@ -83,7 +83,7 @@ class CommitteeManagementAuthorityTest extends TestCase
 
         $manager = $this->createManager($committee, $animator, $referents);
 
-        $mailer = $this->createMock(MailjetService::class);
+        $mailer = $this->createMock(MailerService::class);
         // ensure no mail is sent
         $mailer->expects($this->never())->method('sendMessage')->with($this->anything());
 

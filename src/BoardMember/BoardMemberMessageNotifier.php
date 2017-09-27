@@ -2,32 +2,32 @@
 
 namespace AppBundle\BoardMember;
 
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\BoardMemberMessage as MailjetMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\BoardMemberMessage as Message;
 
 class BoardMemberMessageNotifier
 {
-    private $mailjet;
+    private $mailer;
 
-    public function __construct(MailjetService $mailjet)
+    public function __construct(MailerService $mailer)
     {
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
     }
 
     public function sendMessage(BoardMemberMessage $message): void
     {
         $chunks = array_chunk(
             $message->getRecipients(),
-            MailjetService::PAYLOAD_MAXSIZE
+            MailerService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailjet->sendMessage($this->createMessage($message, $chunk));
+            $this->mailer->sendMessage($this->createMessage($message, $chunk));
         }
     }
 
-    private function createMessage(BoardMemberMessage $message, array $recipients): MailjetMessage
+    private function createMessage(BoardMemberMessage $message, array $recipients): Message
     {
-        return MailjetMessage::createFromModel($message, $recipients);
+        return Message::createFromModel($message, $recipients);
     }
 }

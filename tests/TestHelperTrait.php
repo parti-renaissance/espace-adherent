@@ -18,7 +18,7 @@ use AppBundle\Entity\Donation;
 use AppBundle\Entity\Group;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Entity\MailjetEmail;
+use AppBundle\Entity\Email;
 use AppBundle\Entity\NewsletterInvite;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
@@ -45,7 +45,7 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\GroupRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
@@ -77,7 +77,7 @@ trait TestHelperTrait
         return $this->container->get($id);
     }
 
-    public function assertMailCountRecipients(int $count, ?MailjetEmail $mail): void
+    public function assertMailCountRecipients(int $count, ?Email $mail): void
     {
         $this->assertNotNull($mail);
         $this->assertCount($count, $mail->getRecipients());
@@ -85,7 +85,7 @@ trait TestHelperTrait
 
     public function assertCountMails(int $count, string $type, ?string $recipient = null): void
     {
-        $repository = $this->getMailjetEmailRepository();
+        $repository = $this->getEmailRepository();
 
         if ($recipient) {
             $this->assertCount($count, $repository->findRecipientMessages($type, $recipient));
@@ -201,9 +201,9 @@ trait TestHelperTrait
         return $this->getRepository(ProcurationProxy::class);
     }
 
-    public function getMailjetEmailRepository(): MailjetEmailRepository
+    public function getEmailRepository(): EmailRepository
     {
-        return $this->getRepository(MailjetEmail::class);
+        return $this->getRepository(Email::class);
     }
 
     public function getSummaryRepository(): SummaryRepository
