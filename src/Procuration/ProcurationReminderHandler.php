@@ -2,22 +2,22 @@
 
 namespace AppBundle\Procuration;
 
-use AppBundle\Mailer\MailerService;
+use AppBundle\Mailjet\MailjetService;
 
 class ProcurationReminderHandler
 {
-    private $mailer;
+    private $mailjet;
     private $factory;
 
-    public function __construct(MailerService $mailer, ProcurationProxyMessageFactory $factory)
+    public function __construct(MailjetService $mailjet, ProcurationProxyMessageFactory $factory)
     {
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->factory = $factory;
     }
 
     public function remind(array $requests)
     {
-        $this->mailer->sendMessage($this->factory->createProxyReminderMessage($requests));
+        $this->mailjet->sendMessage($this->factory->createProxyReminderMessage($requests));
 
         foreach ($requests as $request) {
             $request->remind();

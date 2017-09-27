@@ -3,20 +3,20 @@
 namespace AppBundle\Invitation;
 
 use AppBundle\Entity\Invite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\InvitationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\InvitationMessage;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 
 class InvitationRequestHandler
 {
     private $entityManager;
-    private $mailer;
+    private $mailjet;
 
-    public function __construct(EntityManager $entityManager, MailerService $mailer)
+    public function __construct(EntityManager $entityManager, MailjetService $mailjet)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
     }
 
     public function handle(Invite $invite, Request $request)
@@ -26,6 +26,6 @@ class InvitationRequestHandler
         $this->entityManager->persist($invite);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(InvitationMessage::createFromInvite($invite));
+        $this->mailjet->sendMessage(InvitationMessage::createFromInvite($invite));
     }
 }

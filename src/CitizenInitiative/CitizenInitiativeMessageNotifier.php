@@ -5,28 +5,28 @@ namespace AppBundle\CitizenInitiative;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Events;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenInitiativeActivitySubscriptionMessage;
-use AppBundle\Mailer\Message\CitizenInitiativeNearSupervisorsMessage;
-use AppBundle\Mailer\Message\CitizenInitiativeOrganizerValidationMessage;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\CitizenInitiativeAdherentsNearMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CitizenInitiativeActivitySubscriptionMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeNearSupervisorsMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeOrganizerValidationMessage;
+use AppBundle\Mailjet\Message\EventCancellationMessage;
+use AppBundle\Mailjet\Message\CitizenInitiativeAdherentsNearMessage;
 use AppBundle\Membership\AdherentManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 {
-    private $mailer;
+    private $mailjet;
     private $adherentManager;
     private $urlGenerator;
 
     public function __construct(
-        MailerService $mailer,
+        MailjetService $mailjet,
         AdherentManager $adherentManager,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->adherentManager = $adherentManager;
         $this->urlGenerator = $urlGenerator;
     }
@@ -40,10 +40,10 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
         $subscriptions = $this->adherentManager->findByEvent($event->getCitizenInitiative());
 
         if (count($subscriptions) > 0) {
-            $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
+            $chunks = array_chunk($subscriptions->toArray(), MailjetService::PAYLOAD_MAXSIZE);
 
             foreach ($chunks as $chunk) {
-                $this->mailer->sendMessage($this->createCancelMessage(
+                $this->mailjet->sendMessage($this->createCancelMessage(
                     $chunk,
                     $event->getCitizenInitiative(),
                     $event->getAuthor()
@@ -81,7 +81,7 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
     {
         $initiative = $event->getCitizenInitiative();
 
-        $this->mailer->sendMessage($this->createMessageToOrganizer(
+        $this->mailjet->sendMessage($this->createMessageToOrganizer(
             $initiative->getOrganizer(),
             $initiative,
             $this->generateUrl('app_citizen_initiative_show', [
@@ -106,11 +106,11 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 
         $chunks = array_chunk(
             $this->adherentManager->findNearByCitizenInitiativeInterests($initiative)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
+            MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessageToNearByAdherentsWithSameInterests($chunk, $initiative, $initiative->getOrganizer()));
+            $this->mailjet->sendMessage($this->createMessageToNearByAdherentsWithSameInterests($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 
@@ -120,11 +120,11 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 
         $chunks = array_chunk(
             $this->adherentManager->findSupervisorsNearCitizenInitiative($initiative)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
+            MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessageToSupervisorsNearCitizenInitiative($chunk, $initiative, $initiative->getOrganizer()));
+            $this->mailjet->sendMessage($this->createMessageToSupervisorsNearCitizenInitiative($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 
@@ -166,11 +166,11 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
 
         $chunks = array_chunk(
             $this->adherentManager->findSubscribersToAdherentActivity($initiative->getOrganizer())->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
+            MailjetService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailermailer->sendMessage($this->createMessageToAdherentActivitySubscribers($chunk, $initiative, $initiative->getOrganizer()));
+            $this->mailjet->sendMessage($this->createMessageToAdherentActivitySubscribers($chunk, $initiative, $initiative->getOrganizer()));
         }
     }
 

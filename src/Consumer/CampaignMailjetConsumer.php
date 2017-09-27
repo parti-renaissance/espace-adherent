@@ -4,8 +4,5 @@ namespace AppBundle\Consumer;
 
 class CampaignMailjetConsumer extends AbstractMailjetConsumer
 {
-    protected function getClientId(): string
-    {
-        return 'app.mailjet.campaign_client';
-    }
+    const CLIENT_ID = 'app.mailjet.campaign_client';
 }

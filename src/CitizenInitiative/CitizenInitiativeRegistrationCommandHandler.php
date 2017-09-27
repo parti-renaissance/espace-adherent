@@ -5,8 +5,8 @@ namespace AppBundle\CitizenInitiative;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenInitiativeRegistrationConfirmationMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\CitizenInitiativeRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenInitiativeRegistrationCommandHandler
@@ -14,20 +14,20 @@ class CitizenInitiativeRegistrationCommandHandler
     private $factory;
     private $manager;
     private $activitySubscriptionManager;
-    private $mailer;
+    private $mailjet;
     private $urlGenerator;
 
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
         ActivitySubscriptionManager $activitySubscriptionManager,
-        MailerService $mailer,
+        MailjetService $mailjet,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
         $this->activitySubscriptionManager = $activitySubscriptionManager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -51,7 +51,7 @@ class CitizenInitiativeRegistrationCommandHandler
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeLink));
+        $this->mailjet->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeLink));
 
         // Subscribe to citizen initiative organizator activity
         if ($adherent = $command->getAdherent()) {

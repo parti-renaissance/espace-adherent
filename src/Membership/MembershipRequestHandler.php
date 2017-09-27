@@ -12,9 +12,9 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Summary;
 use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,7 +25,7 @@ class MembershipRequestHandler
     private $adherentFactory;
     private $addressFactory;
     private $urlGenerator;
-    private $mailer;
+    private $mailjet;
     private $manager;
     private $committeeManager;
     private $registrationManager;
@@ -38,7 +38,7 @@ class MembershipRequestHandler
         AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer,
+        MailjetService $mailjet,
         ObjectManager $manager,
         CommitteeManager $committeeManager,
         EventRegistrationManager $registrationManager,
@@ -50,7 +50,7 @@ class MembershipRequestHandler
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
         $this->registrationManager = $registrationManager;
@@ -69,7 +69,7 @@ class MembershipRequestHandler
         $this->manager->flush();
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
-        $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
+        $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
         $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
     }
@@ -119,7 +119,7 @@ class MembershipRequestHandler
         $this->manager->remove($adherent);
         $this->manager->flush();
 
-        $this->mailer->sendMessage($message);
+        $this->mailjet->sendMessage($message);
     }
 
     private function removeAdherentMemberShips(Adherent $adherent): void

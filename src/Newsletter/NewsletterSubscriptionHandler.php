@@ -3,21 +3,21 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
+use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailjet\Message\NewsletterSubscriptionMessage;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class NewsletterSubscriptionHandler
 {
     private $manager;
-    private $mailer;
+    private $mailjet;
     private $requestStack;
 
-    public function __construct(EntityManager $manager, MailerService $mailer, RequestStack $requestStack)
+    public function __construct(EntityManager $manager, MailjetService $mailjet, RequestStack $requestStack)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailjet = $mailjet;
         $this->requestStack = $requestStack;
     }
 
@@ -30,7 +30,7 @@ class NewsletterSubscriptionHandler
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
         if (!$campaignExpired) {
-            $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+            $this->mailjet->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
         }
     }
 
