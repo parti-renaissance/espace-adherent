@@ -5,9 +5,9 @@ namespace AppBundle\Procuration;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Mailjet\Message\ProcurationProxyCancelledMessage;
-use AppBundle\Mailjet\Message\ProcurationProxyFoundMessage;
-use AppBundle\Mailjet\Message\ProcurationProxyReminderMessage;
+use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
+use AppBundle\Mailer\Message\ProcurationProxyFoundMessage;
+use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
 use AppBundle\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

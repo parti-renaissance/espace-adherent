@@ -3,8 +3,8 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Events;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -13,18 +13,18 @@ class CommitteeCreationCommandHandler
     private $dispatcher;
     private $factory;
     private $manager;
-    private $mailjet;
+    private $mailer;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
         ObjectManager $manager,
-        MailjetService $mailjet
+        MailerService $mailer
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
     }
 
     public function handle(CommitteeCreationCommand $command): void
@@ -41,6 +41,6 @@ class CommitteeCreationCommandHandler
         $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
-        $this->mailjet->sendMessage($message);
+        $this->mailer->sendMessage($message);
     }
 }

@@ -3,8 +3,8 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\DonationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\DonationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class TransactionSuccessListener
 {
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $requestStack;
 
-    public function __construct(ObjectManager $manager, MailjetService $mailjet, RequestStack $requestStack)
+    public function __construct(ObjectManager $manager, MailerService $mailer, RequestStack $requestStack)
     {
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->requestStack = $requestStack;
     }
 
@@ -53,7 +53,7 @@ class TransactionSuccessListener
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
         if (!$campaignExpired && $donation->isSuccessful()) {
-            $this->mailjet->sendMessage(DonationMessage::createFromDonation($donation));
+            $this->mailer->sendMessage(DonationMessage::createFromDonation($donation));
         }
     }
 }

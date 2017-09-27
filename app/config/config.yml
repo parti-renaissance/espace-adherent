@@ -218,12 +218,12 @@ old_sound_rabbit_mq:
         mailjet_campaign:
             connection:       default
             exchange_options: { name: 'mailjet-delayed-campaign', type: direct }
-            class:            AppBundle\Producer\MailjetProducer
+            class:            AppBundle\Producer\MailerProducer
 
         mailjet_transactional:
             connection:       default
             exchange_options: { name: 'mailjet-delayed-transactional', type: direct }
-            class:            AppBundle\Producer\MailjetProducer
+            class:            AppBundle\Producer\MailerProducer
 
         referent_message_dispatcher:
             connection:       default

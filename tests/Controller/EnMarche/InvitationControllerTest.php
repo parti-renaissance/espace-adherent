@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Invite;
-use AppBundle\Mailjet\Message\InvitationMessage;
+use AppBundle\Mailer\Message\InvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;

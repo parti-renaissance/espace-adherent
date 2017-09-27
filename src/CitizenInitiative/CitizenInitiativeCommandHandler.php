@@ -5,8 +5,8 @@ namespace AppBundle\CitizenInitiative;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Event\EventFactory;
 use AppBundle\Events;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\CitizenInitiativeCreationConfirmationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\CitizenInitiativeCreationConfirmationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -15,18 +15,18 @@ class CitizenInitiativeCommandHandler
     private $dispatcher;
     private $factory;
     private $manager;
-    private $mailjet;
+    private $mailer;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         EventFactory $factory,
         ObjectManager $manager,
-        MailjetService $mailjet
+        MailerService $mailer
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->factory = $factory;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
     }
 
     public function handle(CitizenInitiativeCommand $command): void
@@ -40,7 +40,7 @@ class CitizenInitiativeCommandHandler
 
         $this->dispatcher->dispatch(Events::CITIZEN_INITIATIVE_CREATED, $initiativeEvent);
 
-        $this->mailjet->sendMessage(CitizenInitiativeCreationConfirmationMessage::create($initiativeEvent));
+        $this->mailer->sendMessage(CitizenInitiativeCreationConfirmationMessage::create($initiativeEvent));
     }
 
     public function handleUpdate(CitizenInitiative $initiative, CitizenInitiativeCommand $command)
