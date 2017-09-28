@@ -1,3 +1,3 @@
 FROM enmarche-common
 
-CMD ["php", "/app/bin/console", "rabbitmq:consumer", "-e", "prod", "-w", "mailjet_campaign"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord-mailjet-campaign.conf"]
