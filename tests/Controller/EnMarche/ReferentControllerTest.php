@@ -120,7 +120,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
             'n' => 1,
@@ -130,16 +130,17 @@ class ReferentControllerTest extends SqliteWebTestCase
             'pc' => 77,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
             'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
+            's' => 1,
             'city' => 'Zürich, Kilchberg',
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
@@ -156,6 +157,7 @@ class ReferentControllerTest extends SqliteWebTestCase
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
+            's' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
@@ -177,6 +179,7 @@ class ReferentControllerTest extends SqliteWebTestCase
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
+            's' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
@@ -200,12 +203,11 @@ class ReferentControllerTest extends SqliteWebTestCase
             'n' => 1,
             'anc' => 1,
             'aic' => 1,
-            'h' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
         $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
-        $this->assertContains('4 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('6 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
 
         $data = [];
         $data['referent_message']['subject'] = 'Event reminder';

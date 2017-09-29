@@ -144,10 +144,13 @@ class ReferentManagedUserRepository extends EntityRepository
             $qb->setParameter('type_aic', ReferentManagedUser::TYPE_ADHERENT);
         }
 
-        if ($filter->includeHosts()) {
-            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = 1');
-            $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
-        }
+        $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = :is_host');
+        $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
+        $qb->setParameter('is_host', $filter->includeHosts());
+
+        $typeExpression->add('u.type = :type_h AND u.isCommitteeSupervisor = :is_supervisor');
+        $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
+        $qb->setParameter('is_supervisor', $filter->includeSupervisors());
 
         $qb->andWhere($typeExpression);
 

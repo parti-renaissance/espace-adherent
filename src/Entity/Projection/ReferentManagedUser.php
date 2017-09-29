@@ -136,6 +136,13 @@ class ReferentManagedUser
      *
      * @ORM\Column(type="boolean")
      */
+    private $isCommitteeSupervisor;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $isMailSubscriber;
 
     /**
@@ -160,6 +167,7 @@ class ReferentManagedUser
         string $committees = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
+        int $isCommitteeSupervisor = 0,
         int $isMailSubscriber = 0,
         \DateTime $createdAt = null
     ) {
@@ -177,6 +185,7 @@ class ReferentManagedUser
         $this->committees = $committees;
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
+        $this->isCommitteeSupervisor = $isCommitteeSupervisor;
         $this->isMailSubscriber = $isMailSubscriber;
         $this->createdAt = $createdAt;
     }
@@ -202,7 +211,7 @@ class ReferentManagedUser
             return 'newsletter';
         }
 
-        if ($this->isCommitteeHost) {
+        if ($this->isCommitteeHost || $this->isCommitteeSupervisor) {
             return 'host';
         }
 
@@ -272,6 +281,11 @@ class ReferentManagedUser
     public function isCommitteeHost(): bool
     {
         return $this->isCommitteeHost;
+    }
+
+    public function isCommitteeSupervisor(): bool
+    {
+        return $this->isCommitteeSupervisor;
     }
 
     public function isMailSubscriber(): bool

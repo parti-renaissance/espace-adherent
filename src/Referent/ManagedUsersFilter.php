@@ -15,6 +15,7 @@ class ManagedUsersFilter
     const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
     const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
     const PARAMETER_INCLUDE_HOSTS = 'h';
+    const PARAMETER_INCLUDE_SUPERVISORS = 's';
     const PARAMETER_QUERY_POSTAL_CODE = 'pc';
     const PARAMETER_QUERY_CITY = 'city';
     const PARAMETER_QUERY_ID = 'id';
@@ -25,6 +26,7 @@ class ManagedUsersFilter
     private $includeAdherentsNoCommittee = true;
     private $includeAdherentsInCommittee = true;
     private $includeHosts = true;
+    private $includeSupevisors = true;
     private $queryPostalCode = '';
     private $queryCity = '';
     private $queryId = '';
@@ -38,6 +40,7 @@ class ManagedUsersFilter
         $filter->includeAdherentsNoCommittee = $data[self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE] ?? true;
         $filter->includeAdherentsInCommittee = $data[self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE] ?? true;
         $filter->includeHosts = $data[self::PARAMETER_INCLUDE_HOSTS] ?? true;
+        $filter->includeSupevisors = $data[self::PARAMETER_INCLUDE_SUPERVISORS] ?? true;
         $filter->queryPostalCode = $data[self::PARAMETER_QUERY_POSTAL_CODE] ?? '';
         $filter->queryCity = $data[self::PARAMETER_QUERY_CITY] ?? '';
         $filter->queryId = $data[self::PARAMETER_QUERY_ID] ?? '';
@@ -53,6 +56,7 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee,
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee,
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts,
+            self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupevisors,
             self::PARAMETER_QUERY_POSTAL_CODE => $this->queryPostalCode,
             self::PARAMETER_QUERY_CITY => $this->queryCity,
             self::PARAMETER_QUERY_ID => $this->queryId,
@@ -76,6 +80,7 @@ class ManagedUsersFilter
         $this->includeAdherentsNoCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE);
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
+        $this->includeSupevisors = $query->getBoolean(self::PARAMETER_INCLUDE_SUPERVISORS);
         $this->queryPostalCode = trim($query->get(self::PARAMETER_QUERY_POSTAL_CODE, ''));
         $this->queryCity = trim($query->get(self::PARAMETER_QUERY_CITY, ''));
         $this->queryId = trim($query->get(self::PARAMETER_QUERY_ID, ''));
@@ -97,6 +102,7 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
+            self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupevisors ? '1' : '0',
             self::PARAMETER_QUERY_POSTAL_CODE => $this->queryPostalCode ?: '',
             self::PARAMETER_QUERY_CITY => $this->queryCity ?: '',
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
@@ -150,6 +156,11 @@ class ManagedUsersFilter
     public function includeHosts(): bool
     {
         return $this->includeHosts;
+    }
+
+    public function includeSupervisors(): bool
+    {
+        return $this->includeSupevisors;
     }
 
     public function getOffset(): int
