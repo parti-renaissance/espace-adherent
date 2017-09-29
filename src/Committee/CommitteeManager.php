@@ -289,7 +289,7 @@ class CommitteeManager
 
         foreach ($this->getCommitteeRepository()->findByUuid($committees) as $committee) {
             if (!$this->isFollowingCommittee($adherent, $committee)) {
-                $this->followCommittee($adherent, $committee);
+                $this->followCommittee($adherent, $committee, false);
             }
         }
 
