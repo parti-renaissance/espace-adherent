@@ -34,11 +34,11 @@
 
                     <div class="l__col--grow-1 b__nudge--right">
                         <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
-                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
-                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_adherents_in_committee">
-                                Adhérents faisant partie d'au moins un comité (hors animateurs)
+                            <input type="checkbox" value="1" id="parameter_include_supervisors"
+                                   name="{{ constant('PARAMETER_INCLUDE_SUPERVISORS', filter) }}"
+                                    {{ filter.includeSupervisors ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_supervisors">
+                                Animateurs de comités locaux
                             </label>
                         </div>
 
@@ -47,7 +47,18 @@
                                    name="{{ constant('PARAMETER_INCLUDE_HOSTS', filter) }}"
                                     {{ filter.includeHosts ? 'checked="checked"' : '' }} />
                             <label for="parameter_include_hosts">
-                                Animateurs de comités locaux
+                                Co-animateurs de comités locaux
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="l__col--grow-1 b__nudge--right">
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
+                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
+                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_adherents_in_committee">
+                                Adhérents faisant partie d'au moins un comité (hors animateurs)
                             </label>
                         </div>
                     </div>
@@ -169,7 +180,7 @@
                             {% else %}
                                 <strong>
                                     {{ user.firstName|slice(0, 1)|upper ~ user.firstName|slice(1) }}
-                                    {{ user.isCommitteeHost ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
+                                    {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
                                 </strong>
                                 <small class="referent__item__metadata">
                                     {{ user.age }} ans, {{ user.city }}, {{ user.country }},
@@ -177,7 +188,7 @@
                                 </small>
                                 <br />
                                 <small>
-                                    {{ user.isCommitteeHost ? 'Animateur local' : '' }}
+                                    {{ user.isCommitteeSupervisor ? 'Animateur local' : user.isCommitteeHost ? 'Co-animateur local' : '' }}
                                 </small>
                             {% endif %}
                         </td>

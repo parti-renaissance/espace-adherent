@@ -32,6 +32,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'birthday' => $this->getReference('adherent-1')->getBirthdate(),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
+            'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 1,
             'created_at' => '2017-06-01 09:22:45',
         ]);
@@ -50,6 +51,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'committees' => 'En Marche - Suisse',
             'is_committee_member' => 1,
             'is_committee_host' => 0,
+            'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 1,
             'created_at' => '2017-06-02 15:34:12',
         ]);
@@ -62,6 +64,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'postal_code' => $this->getReference('news-sub-77')->getPostalCode(),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
+            'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 1,
             'created_at' => '2017-06-03 07:58:02',
         ]);
@@ -74,14 +77,55 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'postal_code' => $this->getReference('news-sub-92')->getPostalCode(),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
+            'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 1,
             'created_at' => '2017-06-03 11:01:56',
+        ]);
+
+        $managedUser5 = $referentManagedUserFactory->createFromArray([
+            'status' => ReferentManagedUser::STATUS_READY,
+            'type' => ReferentManagedUser::TYPE_ADHERENT,
+            'original_id' => $this->getReference('adherent-5')->getId(),
+            'email' => $this->getReference('adherent-5')->getEmailAddress(),
+            'postal_code' => $this->getReference('adherent-5')->getPostalCode(),
+            'city' => $this->getReference('adherent-5')->getCityName(),
+            'country' => $this->getReference('adherent-5')->getCountry(),
+            'first_name' => $this->getReference('adherent-5')->getFirstName(),
+            'last_name' => $this->getReference('adherent-5')->getLastName(),
+            'birthday' => $this->getReference('adherent-5')->getBirthdate(),
+            'committees' => 'En Marche Paris 8',
+            'is_committee_member' => 0,
+            'is_committee_host' => 1,
+            'is_committee_supervisor' => 0,
+            'is_mail_subscriber' => 1,
+            'created_at' => '2017-06-02 15:34:12',
+        ]);
+
+        $managedUser6 = $referentManagedUserFactory->createFromArray([
+            'status' => ReferentManagedUser::STATUS_READY,
+            'type' => ReferentManagedUser::TYPE_ADHERENT,
+            'original_id' => $this->getReference('adherent-7')->getId(),
+            'email' => $this->getReference('adherent-7')->getEmailAddress(),
+            'postal_code' => $this->getReference('adherent-7')->getPostalCode(),
+            'city' => $this->getReference('adherent-7')->getCityName(),
+            'country' => $this->getReference('adherent-7')->getCountry(),
+            'first_name' => $this->getReference('adherent-7')->getFirstName(),
+            'last_name' => $this->getReference('adherent-7')->getLastName(),
+            'birthday' => $this->getReference('adherent-7')->getBirthdate(),
+            'committees' => 'En Marche - Comité de Évry',
+            'is_committee_member' => 0,
+            'is_committee_host' => 0,
+            'is_committee_supervisor' => 1,
+            'is_mail_subscriber' => 1,
+            'created_at' => '2017-08-12 16:12:13',
         ]);
 
         $manager->persist($managedUser1);
         $manager->persist($managedUser2);
         $manager->persist($managedUser3);
         $manager->persist($managedUser4);
+        $manager->persist($managedUser5);
+        $manager->persist($managedUser6);
 
         $manager->flush();
     }
