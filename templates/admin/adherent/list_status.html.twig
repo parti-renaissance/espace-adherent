@@ -6,6 +6,10 @@
             <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
         {% endif %}
 
+        {% if object.isCoordinator %}
+            <span class="label label-primary" style="padding: 2px;">Coordinateur</span><br/>
+        {% endif %}
+
         {% if object.isLegislativeCandidate %}
             <span class="label label-primary" style="padding: 2px;">Candidat législatives</span><br/>
         {% endif %}
