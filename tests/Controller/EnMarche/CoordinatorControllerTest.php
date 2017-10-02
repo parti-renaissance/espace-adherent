@@ -103,13 +103,13 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Vous n\'avez pas de comités dans ce statut.', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_APPROVED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
-        $this->assertContains('Pré-accepté', $this->client->getCrawler()->filter('#committee-list')->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('.fa-check-circle'));
     }
 
     public function testPreRefuseCommitteeWithSuccess()
@@ -133,13 +133,13 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Vous n\'avez pas de comités dans ce statut.', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_REFUSED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
-        $this->assertContains('Pré-refusé', $this->client->getCrawler()->filter('#committee-list')->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('.fa-times'));
     }
 
     public function providePages()
