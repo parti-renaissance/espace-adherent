@@ -58,7 +58,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $data = [];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Accept')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
@@ -71,7 +71,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $data = [];
         $data['coordinator_committee']['coordinatorComment'] = 'test';
         $data['coordinator_committee']['accept'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Accept')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
@@ -94,7 +94,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $data = [];
         $data['coordinator_committee']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
         $data['coordinator_committee']['accept'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Accept')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
@@ -124,7 +124,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $data = [];
         $data['coordinator_committee']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
         $data['coordinator_committee']['refuse'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Refuse')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-refuser')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
