@@ -110,10 +110,16 @@
     }
 }
 
-@mixin btn--warning {
+@mixin btn--error {
     color: white;
     background: $error;
     border-color: $error;
+}
+
+@mixin btn--success {
+    color: white;
+    background: $success;
+    border-color: $success;
 }
 
 .btn {
@@ -206,8 +212,34 @@
         }
     }
 
-    &--warning {
-        @include btn--warning;
+    &--error {
+        @include btn--error;
+
+        &__icon {
+            font-size: 0;
+            letter-spacing: 0;
+
+            &:before {
+                font-family: FontAwesome;
+                content: "\f00d";
+                font-size: $text--size-medium--small;
+            }
+        }
+    }
+
+    &--success {
+        @include btn--success;
+
+        &__icon {
+            font-size: 0;
+            letter-spacing: 0;
+
+            &:before {
+                font-family: FontAwesome;
+                content: "\f00c";
+                font-size: $text--size-medium--small;
+            }
+        }
     }
 
     &--social {
