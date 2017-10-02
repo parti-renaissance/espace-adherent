@@ -23,7 +23,7 @@ class CoordinatorCommitteeType extends AbstractType
                 'filter_emojis' => true,
                 'purify_html' => true,
                 'attr' => [
-                    'placeholder' => 'En laissant un commentaire sur l\'animateur, restez toujours convenable ! Ex: problème avec tel animateur du 92',
+                    'placeholder' => 'En laissant un commentaire sur l\'animateur, restez toujours convenable !',
                 ],
                 'constraints' => [
                     new NotBlank(),

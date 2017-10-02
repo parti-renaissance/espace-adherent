@@ -1,11 +1,11 @@
 {% if committee.isRefused %}
     <span class="label label-danger">Refusé</span>
 {% elseif committee.isPreRefused %}
-    <span class="label label-danger">Pré-refusé</span>
+    <span class="label label-danger"><i class="fa fa-times"></i></span>
 {% elseif committee.isApproved %}
     <span class="label label-success">Accepté</span>
 {% elseif committee.isPreApproved %}
-    <span class="label label-success">Pré-accepté</span>
+    <span class="label label-success"><i class="fa fa-check-circle"></i></span>
 {% else %}
     <span class="label label-primary">En attente</span>
 {% endif %}

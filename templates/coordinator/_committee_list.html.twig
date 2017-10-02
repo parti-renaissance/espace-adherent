@@ -8,8 +8,7 @@
         {{ form_errors(form) }}
     {% endif %}
 
-    <tr class="coordinator__item">
-        <td>{{ committee.id }}</td>
+    <tr class="coordinator__item space--20-0">
         <td>
             {{ committee.creator.fullName }}
             <br />
@@ -34,7 +33,7 @@
                         </div>
                     {% endfor %}
                 {% endfor %}
-                {{ form_widget(form.coordinatorComment) }}
+                {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
             </td>
         {% else %}
             <td>{{ committee.coordinatorComment }}</td>
