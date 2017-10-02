@@ -62,10 +62,10 @@ class Unregistration
 
     public function __construct(
         UuidInterface $uuid,
-        string $postalCode,
         array $reasons,
         string $comment,
-        \DateTime $registeredAt
+        \DateTime $registeredAt,
+        string $postalCode = null
     ) {
         $this->uuid = $uuid;
         $this->postalCode = $postalCode;
@@ -85,7 +85,7 @@ class Unregistration
         return $this->uuid;
     }
 
-    public function getPostalCode()
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
