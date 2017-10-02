@@ -211,12 +211,6 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Candidat aux législatives', ['class' => 'col-md-3'])
-                ->add('legislativeCandidate', CheckboxType::class, [
-                    'label' => 'Candidat aux législatives',
-                    'required' => false,
-                ])
-            ->end()
         ;
     }
 
