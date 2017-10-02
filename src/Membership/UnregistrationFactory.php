@@ -11,10 +11,10 @@ class UnregistrationFactory
     {
         $unregistration = new Unregistration(
             $adherent->getUuid(),
-            $adherent->getPostAddress()->getPostalCode(),
             $command->getReasons(),
             $command->getComment(),
-            $adherent->getRegisteredAt()
+            $adherent->getRegisteredAt(),
+            $adherent->getPostAddress()->getPostalCode()
         );
 
         return $unregistration;
