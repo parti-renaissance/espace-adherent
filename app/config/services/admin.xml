@@ -178,7 +178,6 @@
             <argument />
         </service>
 
-
         <!--
         ######################################################
         # Campaign
@@ -405,6 +404,14 @@
 
             <argument />
             <argument>AppBundle\Entity\MailjetEmail</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.adherent_tag" class="AppBundle\Admin\AdherentTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags d'adhérent" group="Système" />
+
+            <argument />
+            <argument>AppBundle\Entity\AdherentTag</argument>
             <argument />
         </service>
 
