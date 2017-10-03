@@ -3,6 +3,7 @@
 namespace AppBundle\Mailjet\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
@@ -31,7 +32,9 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
         }
 
         $citizenInitiative = $feedItem->getEvent();
-        $organizer = $citizenInitiative->getOrganizer();
+        if (!$citizenInitiative instanceof BaseEvent) {
+            throw new \RuntimeException('Citizen initiative not found for feed item "'.$feedItem->getId().'".');
+        }
 
         $vars = static::getTemplateVars(
             $feedItem->getAuthorFirstName(),
