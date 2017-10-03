@@ -129,6 +129,14 @@ security:
             - ROLE_APP_ADMIN_MAILJET_EMAIL_LIST
             - ROLE_APP_ADMIN_MAILJET_EMAIL_VIEW
 
+        ROLE_ADMIN_REFERENTS:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_APP_ADMIN_REFERENT_EXPORT
+            - ROLE_APP_ADMIN_REFERENT_LIST
+            - ROLE_APP_ADMIN_REFERENT_VIEW
+            - ROLE_APP_ADMIN_REFERENT_EDIT
+            - ROLE_APP_ADMIN_REFERENT_CREATE
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -153,6 +161,7 @@ security:
             - ROLE_ADMIN_DONATIONS
             - ROLE_ADMIN_MAILJET
             - ROLE_APP_ADMIN_PAGE_CREATE
+            - ROLE_ADMIN_REFERENTS
 
     access_decision_manager:
         strategy: unanimous
