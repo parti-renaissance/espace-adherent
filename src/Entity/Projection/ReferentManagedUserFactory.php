@@ -27,7 +27,7 @@ class ReferentManagedUserFactory
         );
     }
 
-    private function getAge($date): int
+    private function getAge(\DateTimeInterface $date): int
     {
         $age = date('Y') - date('Y', $date->getTimestamp());
 
