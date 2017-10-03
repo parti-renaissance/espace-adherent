@@ -55,7 +55,7 @@ class HomeBlockAdmin extends AbstractAdmin
 
         $formMapper
             ->add('media', null, [
-                'label' => 'Image',
+                'label' => 'Image/Vidéo',
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'Type',
