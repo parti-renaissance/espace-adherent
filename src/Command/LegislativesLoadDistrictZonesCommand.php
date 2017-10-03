@@ -86,8 +86,8 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
             $areaNumber = $data[self::DISTRICT_NUMBER];
 
-            if (!$candidate = $this->manager->getRepository(LegislativeCandidate::class)->findDistrictZoneCandidate($areaCode, $areaNumber)) {
-                $this->manager->persist($candidate = $this->createCandidate($district, $areaNumber, $data));
+            if (!$this->manager->getRepository(LegislativeCandidate::class)->findDistrictZoneCandidate($areaCode, $areaNumber)) {
+                $this->manager->persist($this->createCandidate($district, $areaNumber, $data));
             }
 
             $progress->advance();

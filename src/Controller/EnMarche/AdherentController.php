@@ -45,8 +45,6 @@ class AdherentController extends Controller
      */
     public function profileOverviewAction()
     {
-        $adherent = $this->getUser();
-
         return $this->render('adherent/overview.html.twig');
     }
 

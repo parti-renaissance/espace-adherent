@@ -351,7 +351,7 @@ SQL;
         $rsm = new ResultSetMapping();
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 
-        if ($coordinates = $search->getCityCoordinates()) {
+        if ($search->getCityCoordinates()) {
             $query->setParameter('distance_max', $search->getRadius());
             $query->setParameter('today', date_format(new \DateTime('today'), 'Y-m-d H:i:s'));
         }
