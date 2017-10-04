@@ -7,7 +7,7 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+                {{var:message}}
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

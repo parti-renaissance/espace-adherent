@@ -7,7 +7,40 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour,
+                    </p>
+                    <p>
+                        Vous venez de vous inscrire à notre newsletter. Merci !
+                    </p>
+                    <p>
+                        Notre mouvement s'est fixé un objectif : rassembler l'ensemble des Françaises et des Français décidés à renouveler notre vie démocratique.
+                    </p>
+                    <p>
+                        Suite à l'élection présidentielle remportée par Emmanuel Macron, le mouvement va poursuivre son action en faveur du renouvellement démocratique et de l'engagement citoyen notamment à travers les nombreuses autres élections : législatives, sénatoriales, départementales, municipales...
+                    </p>
+                    <p>
+                        Nous vous invitons à suivre tout cela à nos côtés et à vous engager localement !
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="https://en-marche.fr/evenements" target="_blank" class="btn">Consulter les événements près de chez moi</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très vite,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche !
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

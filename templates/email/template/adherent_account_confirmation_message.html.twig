@@ -7,7 +7,40 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:target_firstname:""}},
+                        </p>
+                        <p>
+                            Vous venez de rejoindre les {{var:adherents_count:""}} adhérents d’En Marche, bienvenue !
+                        </p>
+                        <p>
+                            Notre mouvement s'est fixé un objectif : rassembler l'ensemble des Français décidés à renouveler notre vie démocratique.
+                        </p>
+                        <p>
+                            Nous sommes donc heureux de vous accueillir parmi nous.
+                        </p>
+                        <p>
+                            La prochaine étape ? Nous vous proposons de renseigner votre profil En Marche avec vos compétences pour que nous puissions travailler ensemble sur des projets, sur vos projets, sur notre projet. Pour <i><strong>participer</strong></i>.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="https://en-marche.fr/espace-adherent/mon-profil" class="btn" target="_blank">Remplir mon profil !</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            À vous de jouer,
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

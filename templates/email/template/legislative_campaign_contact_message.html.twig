@@ -7,7 +7,37 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Demande de contact de
+                        {{var:first_name:""}}
+                        {{var:last_name:""}}.
+                    </p>
+                    <p>
+                        <strong>E-mail :</strong>
+                        {{var:email:""}}<br/>
+                        <strong>Prénom :</strong>
+                        {{var:first_name:""}}<br/>
+                        <strong>Nom :</strong>
+                        {{var:last_name:""}}<br/>
+                        <strong>Circonscription :</strong>
+                        {{var:department_number:""}}
+                        -
+                        {{var:electoral_district_number:""}}<br/>
+                        <strong>Rôle dans la campagne :</strong>
+                        {{var:role:""}}
+                    </p>
+                    <p>
+                        <strong>Sujet :</strong>
+                        {{var:subject:""}}
+                    </p>
+                    <p>
+                        <strong>Message :</strong><br/>
+                        {{var:message:""}}
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

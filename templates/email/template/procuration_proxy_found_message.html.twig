@@ -7,7 +7,116 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+<tr>
+    <td align="left">
+        <p>
+            Bonjour
+            {{var:mandant_first_name}},
+            <br/>
+            Bonjour
+            {{var:voter_first_name}},
+        </p>
+        <p>
+            Vous avez été mis en relation pour établir une procuration.
+        </p>
+        <p>
+            {{var:voter_first_name}}
+            {{var:voter_last_name}}
+            portera la procuration de
+            {{var:mandant_first_name}}
+            {{var:mandant_last_name}}
+            lors des prochaines élections législatives.
+        </p>
+        <p>
+            <strong>Prenez vite contact pour vous assurer de la disponibilité de chacun(e) !</strong>
+            <br/>
+            Numéro de téléphone de
+            {{var:mandant_first_name}} :
+            {{var:mandant_phone}}
+            <br/>
+            Numéro de téléphone de
+            {{var:voter_first_name}} :
+            {{var:voter_phone}}.
+        </p>
+        <p>
+            <a href="{{var:info_link}}" class="text--link" target="_blank">
+                Retrouvez le détail de vos coordonnées respectives et des dates concernées en cliquant ici.</a>
+        </p>
+        <p>
+            Le/la responsable procurations de votre zone est en copie de cet e-mail, si besoin.
+
+        </p>
+        <p class="text--pink">
+            <strong>
+                <u>PROCHAINES ÉTAPES POUR
+                    {{var:mandant_first_name}}
+                    (MANDANT(E))</u>
+                :
+            </strong>
+        </p>
+        <ol>
+            <li>Téléchargez le formulaire CERFA
+                <a href="https://www.formulaires.modernisation.gouv.fr/gf/cerfa_14952.do" target="_blank" class="text--link">en cliquant ici</a>
+            </li>
+            <li>Remplissez le formulaire avec les informations (coordonnées mandataire, dates concernées, bureau de vote etc.) que vous trouverez
+                <a href="{{var:info_link}}" target="_blank" class="text--link">en cliquant ici</a>
+            </li>
+            <li>Rendez-vous au commissariat, à la gendarmerie, au tribunal ou au consulat le plus proche pour faire signer votre procuration.</li>
+            <li>Partagez le récépissé avec votre mandataire et le/la responsable procurations, en copie de cet e-mail (scan ou photo).</li>
+        </ol>
+        <p>
+            Retrouvez les détails de la procédure pour établir une procuration
+            <a href="https://www.service-public.fr/particuliers/vosdroits/F1604" target="_blank" class="text--link">en cliquant ici</a>.
+        </p>
+        <p>
+            <strong>
+                <u>ATTENTION</u>
+            </strong>
+        </p>
+        <p>
+            Si vous avez trouvé un mandataire par vos propres moyens, signalez-le rapidement à votre responsable procuration en copie de cet e-mail.
+        </p>
+        <p class="text--pink">
+            <strong>
+                <u>PROCHAINES ÉTAPES POUR
+                    {{var:voter_first_name}}
+                    (MANDATAIRE)</u>
+                :
+            </strong>
+        </p>
+        <ol>
+            <li>Entrez en relation avec votre mandant(e) pour vous assurer qu’il/elle a bien effectué les démarches et qu’il/elle vous confirme son bureau de vote.</li>
+            <li>Rendez-vous le jour J dans son bureau de vote, pour voter en son nom (et dans votre bureau pour voter en votre nom !)</li>
+        </ol>
+        <p>
+            <strong>
+                <u>ATTENTION</u>
+            </strong>
+        </p>
+        <p>
+            Si vous avez accepté de recevoir la procuration d’un proche entre-temps sur des dates concernées par cet e-mail, signalez-le à toutes les personnes en copie de ce message. En effet si vous résidez en France, vous pouvez recevoir une seule procuration
+            par tour ; si vous résidez à l'étranger, vous pouvez recevoir trois procurations (dont une maximum établie en France).
+
+        </p>
+        <p>
+            Merci de faire compter votre voix. Sensibilisez autour de vous pour faire compter toutes les voix !
+        </p>
+        <p>
+            À très vite,
+        </p>
+        <p>
+            L'équipe d'En Marche !
+        </p>
+        <p>
+            <i>
+                PS : si vous rencontrez un problème, n'hésitez pas à contacter le Responsable Procurations de votre zone, en copie de cet e-mail.</i>
+        </p>
+        <p>
+            <i>
+                En dernier recours, vous pouvez nous joindre à l’adresse <a href="mailto:procurations@en-marche.fr" class="text--link">procurations@en-marche.fr</a>.</i>
+        </p>
+    </td>
+</tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}
