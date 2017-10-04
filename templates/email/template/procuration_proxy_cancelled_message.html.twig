@@ -7,7 +7,22 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour {{var:target_firstname:""}},
+                    </p>
+                    <p>
+                        Nous vous informons que votre association avec {{var:voter_first_name}} {{var:voter_last_name}} dans le cadre d'une procuration, a été annulée, l'un(e) de vous deux n'étant plus disponible.
+                    </p>
+                    <p>
+                        À très vite,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche ! 
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

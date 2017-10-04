@@ -86,7 +86,7 @@
     }
 
     .email__header > td {
-        padding-top: 40px;
+        padding-top: 50px;
     }
 
     .email__content > td {
@@ -116,6 +116,30 @@
         color: #666666;
         text-decoration: none;
         border-bottom: 1px solid #999999;
+    }
+
+    .btn {
+        width: 80%;
+        padding: 30px;
+        border-radius: 3px;
+        box-sizing: border-box;
+        display: inline-block;
+        background-color: #005be2;
+        color: white;
+        font-family: Gill Sans, Helvetica, Arial, serif;
+        font-size: 18px;
+        text-decoration: none;
+        font-style: italic;
+        font-weight: bold;
+    }
+
+    .text--link {
+        color: #005be2;
+        text-decoration: none;
+    }
+
+    .text--pink {
+        color: #FF3680;
     }
 
 
@@ -165,7 +189,7 @@
                     <tr class="email__content">
                         <td align="center" valign="top">
                             <table border="0" cellpadding="20" cellspacing="0" width="100%">
-                                {% block content %}{% endblock %}
+                                {% block content "" %}
                             </table>
                         </td>
                     </tr>

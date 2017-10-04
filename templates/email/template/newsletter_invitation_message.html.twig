@@ -7,7 +7,35 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour,
+                    </p>
+                    <p>
+                        Nous vous écrivons de la part de
+                        {{var:sender_firstname:""}}. Ce(tte) dernier(e) a pensé que vous souhaiteriez peut-être vous abonner à la newsletter d'En Marche !
+                    </p>
+                    <p>
+                        Cela ne prendra que quelques secondes ! Vous recevrez alors les informations sur la vie du mouvement, des détails sur nos propositions, des invitations aux événements organisés près de chez vous et des moyens d'agir pour renouveler la politique.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="https://en-marche.fr/newsletter" target="_blank" class="btn">S'inscrire à la newsletter</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très vite,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche !
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}
