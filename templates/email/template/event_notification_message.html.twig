@@ -1,5 +1,7 @@
 {% block subject %}
-    Email subject
+    {% verbatim %}
+        Nouvel événement dans votre comité : {{var:event_name:""}}
+    {% endverbatim %}
 {% endblock %}
 
 {% block body_html %}

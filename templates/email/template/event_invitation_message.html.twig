@@ -1,5 +1,7 @@
 {% block subject %}
-    Email subject
+    {% verbatim %}
+        Vous êtes invité(e) : {{var:event_name:""}}
+    {% endverbatim %}
 {% endblock %}
 
 {% block body_html %}
