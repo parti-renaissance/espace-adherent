@@ -42,6 +42,24 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
+    public static function createNotPromotableSupervisorPrivilegeForSupervisorException(UuidInterface $membershipUuid, string $emailAddress, \Exception $previous = null): self
+    {
+        return new self(
+            $membershipUuid,
+            sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Adherent with email "%s" is supervisor of another committee.', $membershipUuid, $emailAddress),
+            $previous
+        );
+    }
+
+    public static function createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException(UuidInterface $membershipUuid, string $committeeName, \Exception $previous = null): self
+    {
+        return new self(
+            $membershipUuid,
+            sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Please approve the committee "%s" before add a supervisor.', $membershipUuid, $committeeName),
+            $previous
+        );
+    }
+
     public function getMembershipUuid(): UuidInterface
     {
         return $this->membershipUuid;

@@ -35,7 +35,7 @@ class CommitteeCreationCommandHandler
         $command->setCommittee($committee);
 
         $this->manager->persist($committee);
-        $this->manager->persist($adherent->superviseCommittee($committee));
+        $this->manager->persist($adherent->followCommittee($committee));
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
