@@ -1,5 +1,7 @@
 {% block subject %}
-    Email subject
+    {% verbatim %}
+        Un message de la part de {{var:member_firstname:""}}
+    {% endverbatim %}
 {% endblock %}
 
 {% block body_html %}

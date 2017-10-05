@@ -1,5 +1,7 @@
 {% block subject %}
-    Email subject
+    {% verbatim %}
+        Un nouveau membre dans votre comité: {{var:member_firstname:""}} {{var:member_lastname:""}}
+    {% endverbatim %}
 {% endblock %}
 
 {% block body_html %}

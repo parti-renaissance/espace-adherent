@@ -1,5 +1,5 @@
 {% block subject %}
-    Email subject
+    Un message de votre référent
 {% endblock %}
 
 {% block body_html %}
@@ -10,22 +10,7 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour
-                        {{var:target_firstname:""}},
-                    </p>
-                    <p>
-                        {{var:referant_firstname:""}}, responsable départemental(e) ou de votre zone géographique, vous envoie ce message :
-                    </p>
-                    <hr>
-                        <p>
-                            {{var:target_message:""}}
-                        </p>
-                    </hr>
-                    <p>
-                        À très bientôt,
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
+                        {{var:target_message:""}}
                     </p>
                 </td>
             </tr>
