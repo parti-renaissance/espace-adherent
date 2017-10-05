@@ -20,6 +20,13 @@ final class EventRegistrationConfirmationMessage extends Message
             'Confirmation de participation à un événement En Marche !',
             static::getTemplateVars(
                 $event->getName(),
+                static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
+                sprintf(
+                    '%sh%s',
+                    static::formatDate($event->getBeginAt(), 'HH'),
+                    static::formatDate($event->getBeginAt(), 'mm')
+                ),
+                $event->getInlineFormattedAddress(),
                 $event->getOrganizerName(),
                 $eventLink
             ),
@@ -29,11 +36,17 @@ final class EventRegistrationConfirmationMessage extends Message
 
     private static function getTemplateVars(
         string $eventName,
+        string $eventDate,
+        string $eventHour,
+        string $eventAddress,
         string $organizerName,
         string $eventLink
     ): array {
         return [
             'event_name' => self::escape($eventName),
+            'event_date' => $eventDate,
+            'event_hour' => $eventHour,
+            'event_address' => self::escape($eventAddress),
             'event_organiser' => self::escape($organizerName),
             'event_link' => $eventLink,
         ];

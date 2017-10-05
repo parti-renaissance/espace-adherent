@@ -36,6 +36,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends Message
         $vars = static::getTemplateVars(
             $feedItem->getAuthorFirstName(),
             $citizenInitiative->getName(),
+            $citizenInitiative->getDesription(),
             self::formatDate($citizenInitiative->getBeginAt(), 'EEEE d MMMM y'),
             sprintf(
                 '%sh%s',
@@ -77,6 +78,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends Message
     private static function getTemplateVars(
         string $hostFirstName,
         string $citizenInitiativeName,
+        string $citizenInitiativeDescription,
         string $citizenInitiativeDate,
         string $citizenInitiativeHour,
         string $citizenInitiativeAddress,
@@ -85,6 +87,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends Message
         return [
             'animator_firstname' => self::escape($hostFirstName),
             'IC_name' => self::escape($citizenInitiativeName),
+            'IC_description' => self::escape($citizenInitiativeDescription),
             'IC_date' => $citizenInitiativeDate,
             'IC_hour' => $citizenInitiativeHour,
             'IC_address' => self::escape($citizenInitiativeAddress),
