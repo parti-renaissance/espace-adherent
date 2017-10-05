@@ -7,7 +7,32 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour,
+                    </p>
+                    <p>
+                        {{var:member_firstname:""}}, adhérent(e) d'En Marche, vous envoie ce message :
+                    </p>
+                    <hr>
+                    <p>
+                        {{var:target_message:""}}
+                    </p>
+                    <hr>
+                    <p>
+                        Si nécessaire, vous pouvez échanger avec
+                        {{var:member_firstname:""}}
+                        en répondant à cet e-mail.
+                    </p>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche !
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

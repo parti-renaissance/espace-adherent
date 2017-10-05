@@ -7,7 +7,38 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour
+                        {{var:target_firstname:""}},
+                    </p>
+                    <p>
+                        Votre demande de création de comité à
+                        {{var:committee_city:""}}
+                        a bien été enregistrée, et nous vous remercions de votre engagement !
+                    </p>
+                    <p>
+                        Nous vous demandons un (tout) petit peu de patience : chaque comité doit être approuvé avant d’être mis en ligne. Cette procédure permet d’assurer la légalité des comités, tout en évitant que deux comités soient créés au même endroit.
+                    </p>
+                    <p>
+                        D’ici quelques jours, vous recevrez une confirmation de création de votre comité local, il apparaîtra alors sur la carte de notre site.
+                    </p>
+                    <p>
+                        Merci beaucoup pour votre engagement !
+                    </p>
+                    <p>
+                        Si vous avez une question, envoyez un e-mail à
+                        <a href="mailto:jemarche@en-marche.fr">jemarche@en-marche.fr</a>.
+                    </p>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche !
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}
