@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\CommitteeException;
 use AppBundle\Committee\Filter\CommitteeFilters;
@@ -21,16 +20,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class CoordinatorController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/comites", name="app_coordinator_committees")
      * @Method("GET")
      */
     public function committeesAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         try {
             $filters = CommitteeFilters::fromQueryString($request);
         } catch (\UnexpectedValueException $e) {
