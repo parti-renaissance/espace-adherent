@@ -40,6 +40,7 @@ class EventNotificationMessage extends Message
         $vars = static::getTemplateVars(
             $host->getFirstName(),
             $event->getName(),
+            $event->getDesription(),
             static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
             sprintf(
                 '%sh%s',
@@ -83,6 +84,7 @@ class EventNotificationMessage extends Message
     private static function getTemplateVars(
         string $hostFirstName,
         string $eventName,
+        string $eventDescription,
         string $eventDate,
         string $eventHour,
         string $eventAddress,
@@ -93,6 +95,7 @@ class EventNotificationMessage extends Message
             // Global common variables
             'animator_firstname' => self::escape($hostFirstName),
             'event_name' => self::escape($eventName),
+            'event_description' => self::escape($eventDescription),
             'event_date' => $eventDate,
             'event_hour' => $eventHour,
             'event_address' => self::escape($eventAddress),
