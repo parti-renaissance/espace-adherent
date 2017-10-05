@@ -7,7 +7,29 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-                Email content
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour
+                        {{var:target_firstname:""}},
+                    </p>
+                    <p>
+                        {{var:organizer_firstname:""}}, organisateur/trice de l'événement
+                        <strong>{{var:event_name:""}}</strong>, vous envoie ce message :
+                    </p>
+                    <hr>
+                    <p>
+                        {{var:target_message:""}}
+                    </p>
+                    <hr>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe d'En Marche !
+                    </p>
+                </td>
+            </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}
