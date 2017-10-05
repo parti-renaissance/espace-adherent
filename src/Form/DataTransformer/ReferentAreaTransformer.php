@@ -7,11 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ReferentAreaTransformer implements DataTransformerInterface
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -19,6 +17,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
 
     /**
      * ReferentAreaTransformer constructor.
+     *
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -27,7 +26,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function transform($arrayReferentArea)
     {
@@ -45,7 +44,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function reverseTransform($strAreasCodes)
     {
@@ -56,8 +55,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
         foreach ($array as $key => $value) {
             $item = $this->em
                 ->getRepository(ReferentArea::class)
-                ->findOneBy(array('areaCode' => $value))
-            ;
+                ->findOneBy(array('areaCode' => $value));
 
             if (!is_null($item)) {
                 $newArray[$key] = $item;

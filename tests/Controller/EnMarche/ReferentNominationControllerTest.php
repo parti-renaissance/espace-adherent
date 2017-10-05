@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use AppBundle\DataFixtures\ORM\LoadReferentData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +35,6 @@ class ReferentNominationControllerTest extends SqliteWebTestCase
         $description = $crawler->filter('#candidate-description');
         $links = $profile->filter('a');
 
-
         $this->assertSame(1, $profile->filter('#candidat-profile-picture')->count());
         $this->assertSame('Nicolas Bordes', $profile->filter('h1')->text());
         $this->assertSame("Côte d'Or", $profile->filter('#candidate-district-name')->text());
@@ -44,7 +42,7 @@ class ReferentNominationControllerTest extends SqliteWebTestCase
         $this->assertSame('https://www.facebook.com/nyko24', $links->eq(1)->attr('href'));
         $this->assertSame(4, $description->filter('p')->count());
 
-        $crawler = $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());
+        $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

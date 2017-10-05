@@ -36,7 +36,7 @@ class LoadReferentData implements FixtureInterface, ContainerAwareInterface
 
         $candidate002 = $this->createReferent(
             [$areas['75002'], $areas['75001']],
-            "Paris 2e et Paris 1er",
+            'Paris 2e et Paris 1er',
             Genders::MALE,
             'Alban',
             'Martin',

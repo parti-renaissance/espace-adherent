@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Entity\ReferentArea;
 use AppBundle\Entity\Referent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -32,7 +30,6 @@ class ReferentNominationController extends Controller
             'groupedZones' => $referentAreasRepository->findAllGrouped(),
         ]);
     }
-
 
     /**
      * @Route("/referent/{slug}", defaults={"_enable_campaign_silence"=true}, name="our_referents_referent")

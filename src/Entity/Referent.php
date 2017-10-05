@@ -283,5 +283,4 @@ class Referent implements EntityMediaInterface
     {
         $this->status = $status;
     }
-
 }

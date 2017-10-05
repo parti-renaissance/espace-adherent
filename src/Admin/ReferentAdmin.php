@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ReferentAdmin extends AbstractAdmin
 {
-
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'ASC',
@@ -154,7 +153,7 @@ class ReferentAdmin extends AbstractAdmin
             ->with('Zone', ['class' => 'col-md-4'])
             ->add('areas', TextType::class, [
                 'label' => 'Zone',
-                'required' => true
+                'required' => true,
             ])
             ->add('geojson', TextareaType::class, [
                 'label' => 'Données GeoJSON',
@@ -195,7 +194,6 @@ class ReferentAdmin extends AbstractAdmin
             ->end()
         ;
         $mapper->get('areas')->addModelTransformer($this->dataTransformer);
-
     }
 
     protected function configureShowFields(ShowMapper $mapper)
@@ -225,8 +223,8 @@ class ReferentAdmin extends AbstractAdmin
             ->add('geojson', null, [
                 'label' => 'Données GeoJSON',
             ])
-            ->add('areas',null, [
-                'label' => 'Zones'
+            ->add('areas', null, [
+                'label' => 'Zones',
             ])
             ->end()
             ->with('Photo de profil', ['class' => 'col-md-5'])

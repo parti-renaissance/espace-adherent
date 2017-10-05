@@ -232,5 +232,4 @@ class ReferentArea
     {
         $this->keywords = implode("\n", array_unique($keywords));
     }
-
 }
