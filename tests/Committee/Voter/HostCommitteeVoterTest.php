@@ -8,12 +8,14 @@ use AppBundle\Committee\Voter\HostCommitteeVoter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class HostCommitteeVoterTest extends TestCase
 {
-    const COMMITTEE_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
+    const ADHERENT_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
+    const CREATOR_UUID = '5e534122-2669-41eb-b92c-1cb9ad196328';
 
     private $token;
     private $adherent;
@@ -51,6 +53,22 @@ class HostCommitteeVoterTest extends TestCase
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
     }
 
+    public function testCommitteeCreatorCanHostUnapprovedCommittee()
+    {
+        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
+        $this->committee->expects($this->once())->method('getCreatedBy')->willReturn(self::ADHERENT_UUID);
+        $this->adherent->expects($this->once())->method('getUuid')->willReturn(Uuid::fromString(self::ADHERENT_UUID));
+
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('superviseCommittee')
+            ->with($this->adherent, $this->committee)
+            ->willReturn(false);
+
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+    }
+
     public function testCommitteeHostCanHostApprovedCommittee()
     {
         $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
@@ -68,6 +86,8 @@ class HostCommitteeVoterTest extends TestCase
     public function testCommitteeHostCannotHostUnapprovedCommittee()
     {
         $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
+        $this->committee->expects($this->once())->method('getCreatedBy')->willReturn(self::CREATOR_UUID);
+        $this->adherent->expects($this->once())->method('getUuid')->willReturn(Uuid::fromString(self::ADHERENT_UUID));
 
         $this
             ->committeeManager

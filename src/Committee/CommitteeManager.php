@@ -248,7 +248,7 @@ class CommitteeManager
     }
 
     /**
-     * Approves one committee.
+     * Approves one committee and transforms creator to supervisor.
      *
      * @param Committee $committee
      * @param bool      $flush
@@ -256,6 +256,9 @@ class CommitteeManager
     public function approveCommittee(Committee $committee, bool $flush = true): void
     {
         $committee->approved();
+
+        $creator = $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+        $this->changePrivilege($creator, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR, false);
 
         if ($flush) {
             $this->getManager()->flush();
@@ -278,7 +281,7 @@ class CommitteeManager
     }
 
     /**
-     * Refuses one committee.
+     * Refuses one committee and transforms supervisor and host to members.
      *
      * @param Committee $committee
      * @param bool      $flush
@@ -286,6 +289,14 @@ class CommitteeManager
     public function refuseCommittee(Committee $committee, bool $flush = true): void
     {
         $committee->refused();
+
+        $memberships = $this->getCommitteeMemberships($committee);
+        foreach ($memberships as $membership) {
+            if ($membership->isSupervisor() || $membership->isHostMember()) {
+                $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommitteeUuid()->toString());
+                $this->changePrivilege($membership->getAdherent(), $committee, CommitteeMembership::COMMITTEE_FOLLOWER, false);
+            }
+        }
 
         if ($flush) {
             $this->getManager()->flush();
@@ -408,7 +419,7 @@ class CommitteeManager
         return $this->getCommitteeRepository()->countApprovedCommittees();
     }
 
-    public function changePrivilege(Adherent $adherent, Committee $committee, string $privilege): void
+    public function changePrivilege(Adherent $adherent, Committee $committee, string $privilege, bool $flush = true): void
     {
         CommitteeMembership::checkPrivilege($privilege);
 
@@ -416,14 +427,28 @@ class CommitteeManager
             return;
         }
 
-        // We can't have more than 1 supervisors per committee
-        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege && $this->countCommitteeSupervisors($committee)) {
-            throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($committeeMembership->getUuid());
+        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege) {
+            // We can't have more than 1 supervisors per committee
+            if ($this->countCommitteeSupervisors($committee)) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($committeeMembership->getUuid());
+            }
+
+            // Adherent can't be supervisor of multiple committees
+            if ($committeeSupervisor = $this->getMembershipRepository()->superviseCommittee($adherent)) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($committeeMembership->getUuid(), $adherent->getEmailAddress());
+            }
+
+            // We can't add a supervisor if committee is not approuved
+            if ($committeeSupervisor = $this->getMembershipRepository()->superviseCommittee($adherent)) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($committeeMembership->getUuid(), $committee->getName());
+            }
         }
 
         $committeeMembership->setPrivilege($privilege);
 
-        $this->getManager()->flush();
+        if ($flush) {
+            $this->getManager()->flush();
+        }
     }
 
     public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilters &$filters): array
