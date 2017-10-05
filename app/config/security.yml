@@ -137,6 +137,9 @@ security:
             - ROLE_APP_ADMIN_REFERENT_EDIT
             - ROLE_APP_ADMIN_REFERENT_CREATE
 
+        ROLE_ADMIN_REFERENTS_AREAS:
+            - ROLE_APP_ADMIN_REFERENT_AREA_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -162,6 +165,7 @@ security:
             - ROLE_ADMIN_MAILJET
             - ROLE_APP_ADMIN_PAGE_CREATE
             - ROLE_ADMIN_REFERENTS
+            - ROLE_ADMIN_REFERENTS_AREAS
 
     access_decision_manager:
         strategy: unanimous

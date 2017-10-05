@@ -157,6 +157,12 @@ class App {
             module.default(this.get('map_factory'), this.get('api'));
         });
     }
+
+    runReferentsList() {
+        System.import('pages/referents_list').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();

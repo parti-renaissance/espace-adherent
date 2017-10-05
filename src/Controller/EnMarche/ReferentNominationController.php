@@ -4,7 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Entity\LegislativeDistrictZone;
+use AppBundle\Entity\ReferentArea;
+use AppBundle\Entity\Referent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,30 +18,30 @@ use Symfony\Component\HttpFoundation\Response;
 class ReferentNominationController extends Controller
 {
     /**
-     * @Route("/", defaults={"_enable_campaign_silence"=true}, name="nominations_referents_homepage")
+     * @Route("", defaults={"_enable_campaign_silence"=true}, name="our_referents_homepage")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response
     {
         $doctrine = $this->getDoctrine();
-        $adherentsRepository = $doctrine->getRepository(Adherent::class);
-        $districtZonesRepository = $doctrine->getRepository(LegislativeDistrictZone::class);
+        $referentsRepository = $doctrine->getRepository(Referent::class);
+        $referentAreasRepository = $doctrine->getRepository(ReferentArea::class);
 
-        return $this->render('legislatives/homepage.html.twig', [
-            'candidates' => $adherentsRepository->findReferents(),
-            'groupedZones' => $districtZonesRepository->findAllGrouped(),
+        return $this->render('referent/nomination/homepage.html.twig', [
+            'referents' => $referentsRepository->findByStatus(Referent::ENABLED),
+            'groupedZones' => $referentAreasRepository->findAllGrouped(),
         ]);
     }
 
 
     /**
-     * @Route("/referent/{slug}", defaults={"_enable_campaign_silence"=true}, name="nominations_referents_referent")
+     * @Route("/referent/{slug}", defaults={"_enable_campaign_silence"=true}, name="our_referents_referent")
      * @Method("GET")
      */
-    public function candidateAction(LegislativeCandidate $candidate): Response
+    public function candidateAction(Referent $referent): Response
     {
-        return $this->render('legislatives/candidate.html.twig', [
-            'candidate' => $candidate,
+        return $this->render('referent/nomination/referent.html.twig', [
+            'referent' => $referent,
         ]);
     }
 }
