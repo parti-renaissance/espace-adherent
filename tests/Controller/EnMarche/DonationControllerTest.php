@@ -129,7 +129,7 @@ class DonationControllerTest extends SqliteWebTestCase
         // Check payment was successful
         $expectedCount = $donation->hasSubscription() ? 2 : 1;
         $this->assertSame($expectedCount, $crawler->filter('td:contains("30.00 EUR")')->count());
-        $this->assertContains('PAIEMENT ACCEPT&Eacute;', $content);
+        $this->assertContains('Paiement r&eacute;alis&eacute; avec succ&egrave;s', $content);
 
         $callbackUrl = $crawler->filter('a')->attr('href');
         $callbackUrlRegExp = 'http://localhost/don/callback/(.+)'; // token
