@@ -304,6 +304,15 @@
             <argument />
             <argument>AppBundle\Entity\Referent</argument>
             <argument />
+            <argument type="service" id="app.form.data_transformer.referent_area_transformer" />
+        </service>
+
+        <service id="app.admin.referent_area" class="AppBundle\Admin\ReferentAreaAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Zone des référents" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentArea</argument>
+            <argument />
         </service>
 
         <!--
@@ -432,6 +441,16 @@
             <argument>AppBundle\Entity\CitizenInitiative</argument>
             <argument />
             <argument type="service" id="app.repository.skill" />
+        </service>
+
+        <!--
+        ######################################################
+        # Data Transformer
+        ######################################################
+         -->
+
+        <service id="app.form.data_transformer.referent_area_transformer" class="AppBundle\Form\DataTransformer\ReferentAreaTransformer">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
     </services>

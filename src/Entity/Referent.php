@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,10 +24,8 @@ class Referent implements EntityMediaInterface
     use EntityPersonNameTrait;
     use EntityMediaTrait;
 
-    const CAREERS = [
-        'legislative_candidate.careers.1',
-        'legislative_candidate.careers.2',
-    ];
+    const ENABLED = 'ENABLED';
+    const DISABLED = 'DISABLED';
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
@@ -82,20 +82,6 @@ class Referent implements EntityMediaInterface
     private $twitterPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $donationPageUrl;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @Assert\Url(groups="Admin")
-     */
-    private $websiteUrl;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $geojson;
@@ -106,12 +92,39 @@ class Referent implements EntityMediaInterface
     private $description;
 
     /**
-     * @ORM\Embedded(class="ManagedArea", columnPrefix="managed_area_")
-     *
-     * @var ManagedArea
+     * @ORM\Column(length=255)
+     * @Assert\NotBlank()
      */
-    private $managedArea;
+    private $areaLabel = '';
 
+    /**
+     * @var ReferentArea[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentArea", fetch="EAGER")
+     * @ORM\JoinTable(
+     *     name="referent_areas",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="referent_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="area_id", referencedColumnName="id")
+     *     }
+     * )
+     *
+     * @Assert\Count(min=1, groups={"Admin"})
+     */
+    private $areas;
+
+    /**
+     * @ORM\Column(length=10, options={"default"="DISABLED"})
+     */
+    private $status;
+
+    public function __construct()
+    {
+        $this->areas = new ArrayCollection();
+        $this->status = self::ENABLED;
+    }
 
     public function getId(): ?int
     {
@@ -163,26 +176,6 @@ class Referent implements EntityMediaInterface
         $this->twitterPageUrl = $twitterPageUrl;
     }
 
-    public function getDonationPageUrl(): ?string
-    {
-        return $this->donationPageUrl;
-    }
-
-    public function setDonationPageUrl(?string $donationPageUrl): void
-    {
-        $this->donationPageUrl = $donationPageUrl;
-    }
-
-    public function getWebsiteUrl(): ?string
-    {
-        return $this->websiteUrl;
-    }
-
-    public function setWebsiteUrl(?string $websiteUrl): void
-    {
-        $this->websiteUrl = $websiteUrl;
-    }
-
     public function getGeojson(): ?string
     {
         return $this->geojson;
@@ -225,22 +218,70 @@ class Referent implements EntityMediaInterface
 
     public function hasWebPages(): bool
     {
-        return $this->websiteUrl || $this->twitterPageUrl || $this->facebookPageUrl || $this->donationPageUrl;
+        return $this->twitterPageUrl || $this->facebookPageUrl;
     }
 
     /**
      * @return mixed
      */
-    public function getManagedArea()
+    public function getAreaLabel()
     {
-        return $this->managedArea;
+        return $this->areaLabel;
     }
 
     /**
-     * @param mixed $managedArea
+     * @param mixed $areaLabel
      */
-    public function setManagedArea($managedArea)
+    public function setAreaLabel($areaLabel)
     {
-        $this->managedArea = $managedArea;
+        $this->areaLabel = $areaLabel;
     }
+
+    public function addArea(ReferentArea $referentArea): void
+    {
+        if (!$this->areas->contains($referentArea)) {
+            $this->areas->add($referentArea);
+        }
+    }
+
+    public function removeArea(ReferentArea $referentArea)
+    {
+        $this->areas->removeElement($referentArea);
+    }
+
+    public function getAreas()
+    {
+        return $this->areas;
+    }
+
+    public function getAreasIdAsString()
+    {
+        if ($this->areas->isEmpty()) {
+            return '';
+        }
+
+        $areasIds = [];
+
+        foreach ($this->areas as $area) {
+            $areasIds[] = $area->getId();
+        }
+
+        return implode(',', $areasIds);
+    }
+
+    public function isEnabled(): bool
+    {
+        return self::ENABLED === $this->status;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
 }

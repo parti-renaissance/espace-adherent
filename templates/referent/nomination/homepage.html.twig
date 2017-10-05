@@ -2,11 +2,12 @@
 
 {% block page_title 'Le Trombinoscope' %}
 {% block canonical_url url('legislatives_homepage') %}
+{% block navMap %}{% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runLegislativesCandidatesList();
+            App.runReferentsList();
         });
     </script>
 {% endblock %}
@@ -14,7 +15,7 @@
 {% block content__inner %}
     <header class="l__wrapper--medium text--center space--60-0">
         <h1 class="text--large text--pink">
-            Je découvre les député(e)s de <em>La République En Marche !</em>
+            Je découvre les référent(e)s de <em>La République En Marche !</em>
         </h1>
     </header>
 
@@ -39,16 +40,6 @@
             <i class="fa fa-angle-down b__nudge--right"></i>
         </div>
 
-        <div class="l__row">
-            <select id="career" class="form">
-                <option value="" selected="selected">Tous les parcours professionnels</option>
-                {% for career in constant('AppBundle\\Entity\\LegislativeCandidate::CAREERS') %}
-                    <option value="{{ career }}">{{ career|trans }}</option>
-                {% endfor %}
-            </select>
-            <i class="fa fa-angle-down"></i>
-        </div>
-
     </div>
 
     <div class="l__wrapper--medium l__row l__row--h-stretch l__row--wrap">
@@ -58,11 +49,10 @@
 
         {% for referent in referents %}
             <div class="legislatives__trombi__item legislatives_candidate"
-                 data-zone="{{ referent.districtZone.id }}"
+                 data-zone="{{ referent.areasIdAsString }}"
                  data-name="{{ referent.fullName }}"
-                 data-career="{{ referent.career }}"
             >
-                <a href="{{ path('legislatives_candidate', {'slug': referent.slug}) }}"
+                <a href="{{ path('our_referents_referent', {'slug': referent.slug}) }}"
                    title="{{ referent.fullName }}"
                    class="legislatives__trombi__item__visual link--no-decor progressive-background"
                     {% if referent.profilePicture  %}
@@ -75,11 +65,11 @@
                 >
                     <div class="text--white">
                         <h1 class="text--medium-small">{{ referent.fullName }}</h1>
-                        <span class="text--body">{{ referent.districtName }}</span>
+                        <span class="text--body">{{ referent.areaLabel }}</span>
                     </div>
                 </a>
                 {% if referent.hasWebPages %}
-                    {{ include('legislatives/_candidate_links.html.twig', {
+                    {{ include('referent/nomination/_referent_links.html.twig', {
                         'links_container_class': 'legislatives__social l__row l__row--h-stretch space--10-15',
                         'website_url_class': 'link--no-decor',
                         'social_networks_container_class': 'list__links--svgs',
