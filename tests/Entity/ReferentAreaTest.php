@@ -15,7 +15,7 @@ class ReferentAreaTest extends TestCase
         $this->assertSame('Étranger', $zone->getAreaTypeLabel());
         $this->assertSame('USA', $zone->getAreaCode());
         $this->assertSame('Amériques et Caraïbes', $zone->getName());
-        $this->assertSame('USA - Amériques et Caraïbes', (string)$zone);
+        $this->assertSame('USA - Amériques et Caraïbes', (string) $zone);
     }
 
     /**
@@ -34,7 +34,7 @@ class ReferentAreaTest extends TestCase
         $this->assertSame($expectedAreaTypeLabel, $zone->getAreaTypeLabel());
         $this->assertSame($expectedAreaCode, $zone->getAreaCode());
         $this->assertSame($name, $zone->getName());
-        $this->assertSame($expectedToString, (string)$zone);
+        $this->assertSame($expectedToString, (string) $zone);
     }
 
     public static function provideCreateDepartmentReferentAreaData(): array
@@ -65,7 +65,7 @@ class ReferentAreaTest extends TestCase
         $this->assertSame($expectedAreaTypeLabel, $zone->getAreaTypeLabel());
         $this->assertSame($expectedAreaCode, $zone->getAreaCode());
         $this->assertSame($name, $zone->getName());
-        $this->assertSame($expectedToString, (string)$zone);
+        $this->assertSame($expectedToString, (string) $zone);
     }
 
     public static function provideCreateDistrictReferentAreaData(): array
