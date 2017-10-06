@@ -57,7 +57,11 @@ class ReferentManagedUserRepository extends EntityRepository
 
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+        if (empty($codes = $referent->getManagedArea()->getCodes())) {
+            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
+        }
+
+        foreach ($codes as $key => $code) {
             if (is_numeric($code)) {
                 // Postal code prefix
                 $codesFilter->add(
