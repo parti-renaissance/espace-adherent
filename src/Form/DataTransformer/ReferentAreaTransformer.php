@@ -37,7 +37,8 @@ class ReferentAreaTransformer implements DataTransformerInterface
         }
 
         foreach ($arrayReferentArea as $key => $value) {
-            $newArray[] = $value;
+            /* @var $value ReferentArea */
+            $newArray[] = $value->getAreaCode();
         }
 
         return implode(', ', $newArray);
