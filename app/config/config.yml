@@ -21,8 +21,8 @@ parameters:
     feed_ttl:                    60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email: 'campagne.legislatives@en-marche.fr'
-    algolia.application_id:      ~
-    algolia.api_key:             ~
+    algolia.application_id:      '%env(ALGOLIA_APP_ID)%'
+    algolia.api_key:             '%env(ALGOLIA_BACK_API_KEY)%'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }
