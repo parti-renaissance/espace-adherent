@@ -25,11 +25,16 @@ class CommitteeUrlGenerator
         return $this->generateUrl($routeName, $committee, $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
+    public function generate(string $routeName, array $params = [], int $type = UrlGenerator::ABSOLUTE_PATH): string
+    {
+        return $this->urlGenerator->generate($routeName, $params, $type);
+    }
+
     private function generateUrl(string $routeName, Committee $committee, array $params = [], int $type = UrlGenerator::ABSOLUTE_PATH): string
     {
         $params['uuid'] = (string) $committee->getUuid();
         $params['slug'] = $committee->getSlug();
 
-        return $this->urlGenerator->generate($routeName, $params, $type);
+        return $this->generate($routeName, $params, $type);
     }
 }

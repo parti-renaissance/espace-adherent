@@ -24,9 +24,10 @@ class NewsletterSubscriptionRepositoryTest extends SqliteWebTestCase
 
         $managedByReferent = $this->repository->findAllManagedBy($referent);
 
-        $this->assertCount(2, $managedByReferent, 'Referent should manage 2 newsletter subscribers in his area.');
+        $this->assertCount(3, $managedByReferent, 'Referent should manage 3 newsletter subscribers in his area.');
         $this->assertSame('abc@en-marche-dev.fr', $managedByReferent[0]->getEmail());
         $this->assertSame('def@en-marche-dev.fr', $managedByReferent[1]->getEmail());
+        $this->assertSame('ghi@en-marche-dev.fr', $managedByReferent[2]->getEmail());
     }
 
     protected function setUp()

@@ -115,6 +115,7 @@ doctrine:
                 sin: DoctrineExtensions\Query\Mysql\Sin
             string_functions:
                 json_contains: AppBundle\Query\Mysql\JsonContains
+                find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
