@@ -4,21 +4,24 @@ services:
     app:
         build:
             context: docker/dev
+        container_name: enmarche_app
         depends_on:
             - db
             - redis
         volumes:
             - .:/app
-            - /app/var/cache
-            - /app/var/sessions
 
     db:
         image: mysql:5.7
+        container_name: enmarche_db
         environment:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
+        container_name: auth_redis
         image: redis:3.2
 
-    rabbitmq:
-        image: rabbitmq:3-management
+networks:
+    default:
+        external:
+            name: enmarche
