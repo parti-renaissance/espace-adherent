@@ -14,7 +14,7 @@ class GenderType extends AbstractType
         $resolver->setDefaults([
             'choices' => Genders::CHOICES,
             'translation_domain' => 'messages',
-            'expanded' => true,
+            'placeholder' => 'common.i.am',
         ]);
     }
 

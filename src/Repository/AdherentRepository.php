@@ -490,11 +490,15 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->select('a.uuid')
             ->where('LOWER(a.emailAddress) LIKE :emailAddress')
             ->setParameter('emailAddress', '%'.strtolower($emailAddress).'%')
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    public function save()
+    {
+        $this->_em->flush();
     }
 }

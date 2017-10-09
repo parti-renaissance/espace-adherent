@@ -171,6 +171,11 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
+        <service id="AppBundle\Security\RefreshTokenRolesListener">
+            <argument type="service" id="security.token_storage"/>
+            <tag name="kernel.event_listener" event="kernel.response"/>
+        </service>
+
         <!-- Cache -->
         <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
             <argument/>
@@ -249,6 +254,24 @@
         <service id="AppBundle\Form\CitizenInitiativeType">
             <argument type="service" id="app.repository.skill" />
             <tag name="form.type" />
+        </service>
+
+        <service id="user_provider.entity" parent="hwi_oauth.user.provider.entity" class="AppBundle\Security\EntityUserProvider">
+            <argument>AppBundle\Entity\Adherent</argument>
+            <argument type="collection">
+                <argument key="auth">emailAddress</argument>
+            </argument>
+            <argument>default</argument>
+            <argument type="service" id="csa_guzzle.client.auth" />
+            <argument type="service" id="app.membership.adherent_factory" />
+        </service>
+
+        <service id="need_sync_user.event_subscriber" class="AppBundle\EventListener\NeedSyncUserListener">
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="csa_guzzle.client.auth"/>
+            <argument type="service" id="doctrine"/>
+
+            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>

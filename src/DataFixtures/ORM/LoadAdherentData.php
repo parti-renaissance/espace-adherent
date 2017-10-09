@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
@@ -20,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
-    const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
+    const ADHERENT_1_UUID = 'bc8d4840-84c5-4805-8c2a-914399e6a64d';
     const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
     const ADHERENT_3_UUID = 'a046adbe-9c7b-56a9-a676-6151a6785dda';
     const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
@@ -36,6 +35,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
     const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
+    const ADHERENT_17_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dd';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -57,19 +57,17 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         // Create adherent users list
         $adherent1 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
-            'password' => 'secret!12345',
             'email' => 'michelle.dufour@example.ch',
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
-        ]);
+        ], false, true);
         $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
-            'password' => 'secret!12345',
             'email' => 'carl999@example.fr',
             'gender' => 'male',
             'first_name' => 'Carl',
@@ -79,7 +77,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'retired',
             'phone' => '33 0111223344',
             'registered_at' => '2016-11-16 20:45:33',
-        ]);
+        ], false, true);
         $adherent2->disableCommitteesNotifications();
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
@@ -88,7 +86,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent3 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
-            'password' => 'changeme1337',
             'email' => 'jacques.picard@en-marche.fr',
             'gender' => 'male',
             'first_name' => 'Jacques',
@@ -98,13 +95,12 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'retired',
             'phone' => '33 187264236',
             'registered_at' => '2017-01-03 08:47:54',
-        ]);
+        ], false, true);
         $adherent3->enableCommitteesNotifications();
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,
-            'password' => 'EnMarche2017',
             'email' => 'luciole1989@spambox.fr',
             'gender' => 'female',
             'first_name' => 'Lucie',
@@ -114,7 +110,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'student',
             'phone' => '33 727363643',
             'registered_at' => '2017-01-18 13:15:28',
-        ]);
+        ], false, true);
         $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
@@ -123,7 +119,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
-            'password' => 'ILoveYouManu',
             'email' => 'gisele-berthoux@caramail.com',
             'gender' => 'female',
             'first_name' => 'Gisele',
@@ -133,13 +128,12 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'unemployed',
             'phone' => '33 138764334',
             'registered_at' => '2017-01-08 05:55:43',
-        ]);
+        ], false, true);
         $adherent5->enableCommitteesNotifications();
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_6_UUID,
-            'password' => 'HipHipHip',
             'email' => 'benjyd@aol.com',
             'gender' => 'male',
             'first_name' => 'Benjamin',
@@ -149,7 +143,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673643424',
             'registered_at' => '2017-01-16 18:33:22',
-        ]);
+        ], false, true);
         $adherent6->enableCommitteesNotifications();
         $this->addReference('adherent-6', $adherent6);
         $adherent6->addTag($this->getReference('adherent_tag_at001'));
@@ -158,7 +152,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
-            'password' => 'Champion20',
             'email' => 'francis.brioul@yahoo.com',
             'gender' => 'male',
             'first_name' => 'Francis',
@@ -168,13 +161,12 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
-        ]);
+        ], false, true);
         $adherent7->enableCommitteesNotifications();
         $this->addReference('adherent-7', $adherent7);
 
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_8_UUID,
-            'password' => 'referent',
             'email' => 'referent@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Referent',
@@ -184,7 +176,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
-        ]);
+        ], false, true);
         $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
@@ -193,7 +185,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $coordinateur = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
-            'password' => 'coordinateur',
             'email' => 'coordinateur@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Coordinateur',
@@ -203,12 +194,11 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 665859053',
             'registered_at' => '2017-09-20 15:31:21',
-        ]);
+        ], false, true);
         $coordinateur->setCoordinatorManagedAreaCodesAsString('FR');
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
-            'password' => 'password12345',
             'email' => 'laura@deloche.com',
             'gender' => 'female',
             'first_name' => 'Laura',
@@ -218,7 +208,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 234823644',
             'registered_at' => '2017-02-16 17:12:08',
-        ]);
+        ], false, true);
         $adherent9->setLegislativeCandidate(true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
@@ -228,7 +218,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent10 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_10_UUID,
-            'password' => 'politique2017',
             'email' => 'martine.lindt@gmail.com',
             'gender' => 'female',
             'first_name' => 'Martine',
@@ -238,7 +227,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'student',
             'phone' => '49 2211653540',
             'registered_at' => '2017-02-23 13:56:12',
-        ]);
+        ], false, true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
@@ -247,7 +236,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent11 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_11_UUID,
-            'password' => 'politique2017',
             'email' => 'lolodie.dutemps@hotnix.tld',
             'gender' => 'female',
             'first_name' => 'Élodie',
@@ -257,7 +245,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '65 66888868',
             'registered_at' => '2017-04-10 14:08:12',
-        ]);
+        ], false, true);
         $adherent11->enableCommitteesNotifications();
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
@@ -266,7 +254,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
-            'password' => 'politique2017',
             'email' => 'kiroule.p@blabla.tld',
             'gender' => 'male',
             'first_name' => 'Pierre',
@@ -276,7 +263,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '1 2123150100',
             'registered_at' => '2017-04-09 06:20:38',
-        ]);
+        ], false, true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent12->setBoardMember(BoardMember::AREA_ABROAD, $roles);
@@ -290,26 +277,24 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent13 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_13_UUID,
-            'password' => 'secret!12345',
             'email' => 'michel.vasseur@example.ch',
             'gender' => 'male',
             'first_name' => 'Michel',
             'last_name' => 'VASSEUR',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
-        ]);
+        ], false, true);
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_14_UUID,
-            'password' => 'newpassword',
             'email' => 'damien.schmidt@example.ch',
             'gender' => 'male',
             'first_name' => 'Damien',
             'last_name' => 'SCHMIDT',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
-        ]);
+        ], false, true);
         $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent
@@ -323,9 +308,19 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1982-05-12',
             'registered_at' => '2017-04-09 06:20:38',
-        ]);
+        ], false, true);
         $adherent15->setStatus(Adherent::ENABLED);
         $this->addReference('adherent-15', $adherent15);
+
+        $adherent16 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_17_UUID,
+            'email' => 'foo.bar@example.ch',
+            'first_name' => 'Foo',
+            'last_name' => 'Bar',
+            'address' => PostAddress::createForeignAddress(null, '8057', null, null),
+            'isAdherent' => false,
+        ], true, true);
+        $this->addReference('adherent-16', $adherent14);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
@@ -343,7 +338,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key13 = AdherentActivationToken::generate($adherent13);
         $key14 = AdherentActivationToken::generate($adherent14);
         $key15 = AdherentActivationToken::generate($adherent15);
-        $key16 = AdherentActivationToken::generate($coordinateur);
+        $key17 = AdherentActivationToken::generate($coordinateur);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -359,8 +354,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
-        // $key15 is not activated, but adherent is enabled
-        $coordinateur->activate($key16, '2017-09-20 17:44:32');
+        // $key15 and $key16 is not activated, but adherent is enabled
+        $coordinateur->activate($key17, '2017-09-20 17:44:32');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -478,9 +473,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $committee10->approved('2017-05-09 13:17:42');
 
-        // Make an adherent request a new password
-        $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
-
         // °\_O_/° Persist all the things (in memory) !!!
         $manager->persist($adherent1);
         $manager->persist($adherent2);
@@ -497,6 +489,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent13);
         $manager->persist($adherent14);
         $manager->persist($adherent15);
+        $manager->persist($adherent16);
         $manager->persist($coordinateur);
 
         $manager->persist($key1);
@@ -514,9 +507,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key13);
         $manager->persist($key14);
         $manager->persist($key15);
-        $manager->persist($key16);
-
-        $manager->persist($resetPasswordToken);
+        $manager->persist($key17);
 
         $manager->persist($committee1);
         $manager->persist($committee2);
