@@ -17,3 +17,4 @@
 /supervisord.log
 /supervisord.pid
 /yarn-error.log
+rabbitmq.mk

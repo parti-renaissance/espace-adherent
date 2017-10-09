@@ -1,3 +1,8 @@
+$(shell docker network create enmarche 1>/dev/null 2>&1 || true)
+$(shell test -f ./rabbitmq.mk || cp ./rabbitmq.mk.dist ./rabbitmq.mk)
+
+include rabbitmq.mk
+
 FIG=docker-compose
 RUN=$(FIG) run --rm app
 EXEC=$(FIG) exec app
@@ -49,7 +54,7 @@ cc:
 
 db:             ## Reset the database and load fixtures
 db: vendor
-	$(RUN) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MySQL
+	$(RUN) php -r "for(;;){if(@fsockopen('enmarche_db',3306)){break;}}" # Wait for MySQL
 	$(RUN) $(CONSOLE) doctrine:database:drop --force --if-exists
 	$(RUN) $(CONSOLE) doctrine:database:create --if-not-exists
 	$(RUN) $(CONSOLE) doctrine:migrations:migrate -n
