@@ -123,13 +123,19 @@
                     </li>
                 </ul>
                 <div class="l__row">
+                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right-nano">Je donne</a>
+
                     {% if not campaign_expired and not user_is_adherent %}
-                        <a href="{{ path('app_membership_register') }}"
+                        <a href="{{ hwi_oauth_login_url('auth') }}"
                            class="btn b__nudge--right-nano">
-                            J'adhère
+                            Connexion
+                        </a>
+
+                        <a href="{{ auth_register_url }}"
+                           class="btn b__nudge--right">
+                            Inscription
                         </a>
                     {% endif %}
-                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Je donne</a>
 
                     {% if not campaign_expired %}
                     <div class="nav__user">
@@ -138,7 +144,8 @@
                                 Administration
                             </a>
                         {% else %}
-                            <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}" class="icon--with-text text--medium-small nav__user__name">
+                            {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                            <a href="{{ url }}" class="icon--with-text text--medium-small nav__user__name">
                                 {{ include('components/user.html.twig') }}
                                 {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
                             </a>
@@ -216,7 +223,7 @@
                                                 </a>
                                             </li>
                                         {% endif %}
-                                        <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                        <li class="text--small"><a href="{{ path('auth_logout') }}">Déconnexion</a></li>
                                     </ul>
                                 </div>
                             {% endif %}
@@ -248,7 +255,8 @@
                     <label for="nav-menu">Menu de navigation</label>
                     <div class="nav__mobile--menu">
                         <div class="l__row l__row--h-stretch">
-                            <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}"
+                            {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                            <a href="{{ url }}"
                                class="icon--with-text text--medium-small">
                                 {{ include('components/user.html.twig') }}
                                 {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
@@ -324,7 +332,7 @@
                                         </a>
                                     </li>
                                 {% endif %}
-                                <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                <li class="text--small"><a href="{{ path('auth_logout') }}">Déconnexion</a></li>
                                 <hr>
                             {% endif %}
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
@@ -487,7 +495,8 @@
                                 <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
                                 <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                                 <li>
-                                    <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}">
+                                    {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                                    <a href="{{ url }}">
                                         Connexion
                                     </a>
                                 </li>

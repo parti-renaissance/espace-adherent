@@ -42,7 +42,7 @@ class SummaryControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testAccessAndDisplaySummaryPage()

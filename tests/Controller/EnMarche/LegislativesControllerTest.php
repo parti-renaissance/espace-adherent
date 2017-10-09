@@ -33,8 +33,7 @@ class LegislativesControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(0, $crawler->filter('#legislatives_campaign_contact_form')->count());
-        $this->assertSame(1, $crawler->filter('#_adherent_email')->count());
-        $this->assertSame(1, $crawler->filter('#_adherent_password')->count());
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testRegularAdherentIsForbiddenToSendContactMessage()
