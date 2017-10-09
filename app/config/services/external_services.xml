@@ -83,10 +83,5 @@
         <!-- Imagine -->
         <service id="app.imagine" class="Imagine\Gd\Imagine"/>
 
-        <!-- user sync -->
-        <service id="AppBundle\EventListener\RegistrationCompletedSubscriber">
-            <argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer" />
-            <tag name="kernel.event_subscriber" />
-        </service>
     </services>
 </container>

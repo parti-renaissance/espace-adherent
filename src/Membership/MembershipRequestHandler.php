@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MembershipRequestHandler
 {
     private $dispatcher;
-    private $adherentFactory;
     private $addressFactory;
     private $urlGenerator;
     private $mailer;
@@ -23,14 +22,12 @@ class MembershipRequestHandler
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
         MailerService $mailer,
         ObjectManager $manager,
         AdherentRegistry $adherentRegistry
     ) {
-        $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->urlGenerator = $urlGenerator;
@@ -39,19 +36,20 @@ class MembershipRequestHandler
         $this->adherentRegistry = $adherentRegistry;
     }
 
-    public function handle(MembershipRequest $membershipRequest)
+    public function handle(Adherent $adherent, MembershipRequest $membershipRequest)
     {
-        $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+        $adherent->adhere();
+
         $token = AdherentActivationToken::generate($adherent);
 
-        $this->manager->persist($adherent);
         $this->manager->persist($token);
         $this->manager->flush();
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)
@@ -73,12 +71,13 @@ class MembershipRequestHandler
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, $removeAccount = false)
     {
+        $adherent->leave();
+
         $unregistrationFactory = new UnregistrationFactory();
         $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
-
-        $this->adherentRegistry->unregister($adherent, $unregistration);
+        $this->adherentRegistry->unregister($adherent, $unregistration, $removeAccount);
 
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $this->mailer->sendMessage($message);

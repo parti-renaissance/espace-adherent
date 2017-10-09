@@ -22,7 +22,6 @@ class DonationRequestTest extends TestCase
         $adherent = new Adherent(
             $uuid,
             $email,
-            'password',
             'male',
             'Damien',
             'DUPONT',

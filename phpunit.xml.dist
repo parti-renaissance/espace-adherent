@@ -33,4 +33,10 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <groups>
+        <exclude>
+            <group>skip</group>
+        </exclude>
+    </groups>
 </phpunit>

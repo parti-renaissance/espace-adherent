@@ -25,11 +25,14 @@ class AddressType extends AbstractType
             ->add('cityName', TextType::class, [
                 'required' => false,
             ])
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('country', UnitedNationsCountryType::class, [
+                'placeholder' => 'common.country',
+            ])
         ;
 
         $field = $builder->create('postalCode', TextType::class, [
             'error_bubbling' => true,
+            'disabled' => !empty($options['postalCode']['disabled']),
         ]);
 
         $field->addModelTransformer(new CallbackTransformer(
@@ -48,7 +51,11 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Address::class,
+            'translation_domain' => 'messages',
             'error_bubbling' => false,
+            'postalCode' => [
+                'disabled' => false,
+            ],
         ]);
     }
 }

@@ -7,10 +7,6 @@ use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,13 +16,6 @@ class MembershipRequestType extends AbstractType
     {
         $builder
             ->add('gender', GenderType::class)
-            ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('lastName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('emailAddress', EmailType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],
@@ -36,22 +25,16 @@ class MembershipRequestType extends AbstractType
                     'day' => 'JJ',
                 ],
             ])
-            ->add('position', ActivityPositionType::class)
-            ->add('address', AddressType::class)
+            ->add('address', AddressType::class, [
+                'postalCode' => [
+                    'disabled' => true,
+                ],
+            ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-            ])
-            ->add('conditions', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('comMobile', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('comEmail', CheckboxType::class, [
                 'required' => false,
             ])
         ;
@@ -64,7 +47,6 @@ class MembershipRequestType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
             'translation_domain' => false,
-            'validation_groups' => ['Default', 'Registration'],
             'years' => array_combine($years, $years),
         ]);
     }

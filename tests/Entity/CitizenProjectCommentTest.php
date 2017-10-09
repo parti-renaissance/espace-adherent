@@ -101,7 +101,6 @@ class CitizenProjectCommentTest extends TestCase
         $adherent = new Adherent(
             Uuid::uuid4(),
             'toto@mail.com',
-            'password',
             'male',
             'Jean',
             'DUPONT',

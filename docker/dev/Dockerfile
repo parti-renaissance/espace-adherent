@@ -78,6 +78,12 @@ RUN wget -O - https://packagecloud.io/gpg.key | apt-key add - \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/cli/conf.d/blackfire.ini \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/fpm/conf.d/blackfire.ini
 
+# Dockerize
+ENV DOCKERIZE_VERSION v0.5.0
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 COPY php.ini /etc/php/7.1/cli/conf.d/50-setting.ini
 COPY php.ini /etc/php/7.1/fpm/conf.d/50-setting.ini
 COPY pool.conf /etc/php/7.1/fpm/pool.d/www.conf
