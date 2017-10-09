@@ -1,24 +1,47 @@
 version: "2"
 
 services:
-    app:
+    ## en-marche.fr
+    ###############
+    enmarche.dev:
         build:
             context: docker/dev
         depends_on:
-            - db
-            - redis
+            - enmarche_db
+            - enmarche_redis
+            - auth.enmarche.dev
+            - api.enmarche.dev
+            - rabbitmq
         volumes:
             - .:/app
-            - /app/var/cache
-            - /app/var/sessions
 
-    db:
+    enmarche_db:
         image: mysql:5.7
         environment:
             MYSQL_ROOT_PASSWORD: root
 
-    redis:
+    enmarche_redis:
         image: redis:3.2
 
+    ## auth.en-marche.fr
+    ####################
+    auth.enmarche.dev:
+        image: larem/auth.en-marche.fr
+        volumes:
+          - ./.env.auth:/app/.env
+        depends_on:
+            - rabbitmq
+
+    ## api.en-marche.fr
+    ####################
+    api.enmarche.dev:
+        image: larem/api.en-marche.fr
+        volumes:
+          - ./.env.api:/app/.env
+        depends_on:
+            - rabbitmq
+
+    ## common
+    ####################
     rabbitmq:
         image: rabbitmq:3-management

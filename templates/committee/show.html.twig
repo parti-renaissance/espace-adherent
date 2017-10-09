@@ -115,11 +115,11 @@
                 </button>
 
                 <div class="committee-follow--anonymous__link text--white">
-                    <a href="{{ path('app_adherent_login') }}" id="committee-login-link" class="link--white">
+                    <a href="{{ path('hwi_oauth_service_redirect', {service: 'auth'}) }}" id="committee-login-link" class="link--white">
                         Connectez-vous
                     </a>
                     ou
-                    <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="link--white">
+                    <a href="{{ path('app_register_fully') }}" id="committee-register-link" class="link--white">
                         adhérez
                     </a>
                     pour suivre ce comité

@@ -2,6 +2,6 @@ imports:
     - { resource: config_test.yml }
 
 parameters:
-    env(DATABASE_HOST): "db"
+    env(DATABASE_HOST): "enmarche_db"
     env(DATABASE_USER): "root"
     env(DATABASE_PASSWORD): "root"

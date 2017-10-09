@@ -33,7 +33,6 @@ class CitizenProjectFactoryTest extends TestCase
         $adherent = new Adherent(
             $uuid,
             $email,
-            'password',
             'male',
             'Jean',
             'DUPONT',

@@ -1,4 +1,45 @@
 #
+# Oauth client
+#
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+
+auth_login_check:
+    path: /login/check-auth
+    methods: [GET]
+
+auth_logout:
+    path: /logout
+    methods: [GET]
+
+auth_user_profile:
+    path: /auth-user-profile
+    defaults:
+        _controller: AppBundle:Redirecting:urlRedirect
+        path: '%auth_user_profile%'
+
+auth_forgot_password:
+    path: /auth-forgot-password
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: '%auth_forgot_password%'
+
+auth_unsubscribe:
+    path: /auth-unsubscribe
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: '%auth_unsubscribe%'
+
+#
 # Health
 #
 app_health:

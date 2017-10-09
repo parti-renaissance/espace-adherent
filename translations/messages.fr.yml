@@ -1,8 +1,8 @@
 #
 # Common
 #
-common.gender.mister: Monsieur
-common.gender.miss: Madame
+common.gender.mister: Homme
+common.gender.miss: Femme
 common.email_address: Adresse email
 common.zip_code: Code postal
 common.show_more: Voir plus
@@ -10,6 +10,8 @@ common.show_less: Voir moins
 common.sector: Secteur
 pending: En attente
 approved: Approuvé
+common.country: Pays
+common.i.am: Je suis
 
 #
 # Adherent

@@ -26,7 +26,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MembershipRequestHandler
 {
     private $dispatcher;
-    private $adherentFactory;
     private $addressFactory;
     private $urlGenerator;
     private $mailer;
@@ -43,7 +42,6 @@ class MembershipRequestHandler
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
         MailerService $mailer,
@@ -58,7 +56,6 @@ class MembershipRequestHandler
         CitizenProjectManager $citizenProjectManager,
         ReportManager $reportManager
     ) {
-        $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->urlGenerator = $urlGenerator;
@@ -75,19 +72,20 @@ class MembershipRequestHandler
         $this->reportManager = $reportManager;
     }
 
-    public function handle(MembershipRequest $membershipRequest)
+    public function handle(Adherent $adherent, MembershipRequest $membershipRequest)
     {
-        $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+        $adherent->adhere();
+
         $token = AdherentActivationToken::generate($adherent);
 
-        $this->manager->persist($adherent);
         $this->manager->persist($token);
         $this->manager->flush();
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)
@@ -109,37 +107,42 @@ class MembershipRequestHandler
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, $removeAccount = false)
     {
         $unregistrationFactory = new UnregistrationFactory();
         $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
 
         $this->manager->persist($unregistration);
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
-        $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
-        $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
+        $adherent->leave();
 
-        $this->removeAdherentMemberShips($adherent);
-        $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
-        $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
-        $this->eventManager->removeOrganizerEvents($adherent);
-        $this->registrationManager->anonymizeAdherentRegistrations($adherent);
-        $this->committeeFeedManager->removeAuthorItems($adherent);
-        $this->activitySubscriptionManager->removeAdherentActivities($adherent);
-        $this->citizenProjectManager->removeAuthorItems($adherent);
-        $this->reportManager->anonymAuthorReports($adherent);
+        if ($removeAccount) {
+            $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
+            $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
 
-        if ($token) {
-            $this->manager->remove($token);
+            $this->removeAdherentMemberShips($adherent);
+            $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
+            $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
+            $this->eventManager->removeOrganizerEvents($adherent);
+            $this->registrationManager->anonymizeAdherentRegistrations($adherent);
+            $this->committeeFeedManager->removeAuthorItems($adherent);
+            $this->activitySubscriptionManager->removeAdherentActivities($adherent);
+            $this->citizenProjectManager->removeAuthorItems($adherent);
+            $this->reportManager->anonymAuthorReports($adherent);
+
+            if ($token) {
+                $this->manager->remove($token);
+            }
+            if ($summary) {
+                $this->manager->remove($summary);
+            }
+
+            $this->manager->remove($adherent);
         }
-        if ($summary) {
-            $this->manager->remove($summary);
-        }
-        $this->manager->remove($adherent);
+
         $this->manager->flush();
 
-        $this->mailer->sendMessage($message);
+        $this->mailer->sendMessage(AdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
     private function removeAdherentMemberShips(Adherent $adherent): void

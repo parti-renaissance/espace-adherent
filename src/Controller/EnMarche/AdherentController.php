@@ -9,20 +9,16 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Summary;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\AdherentChangePasswordType;
-use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
-use AppBundle\Form\UnregistrationType;
-use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
-use AppBundle\Membership\MembershipRequest;
-use AppBundle\Membership\UnregistrationCommand;
+use AppBundle\Summary\SummaryManager;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -41,36 +37,12 @@ class AdherentController extends Controller
     const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
-     * @Route("/mon-compte", name="app_adherent_profile")
-     * @Method("GET|POST")
+     * @Route("/accueil", name="app_adherent_home")
+     * @Method("GET")
      */
-    public function profileOverviewAction()
+    public function homeAction(): Response
     {
-        return $this->render('adherent/overview.html.twig');
-    }
-
-    /**
-     * @Route("/mon-compte/modifier", name="app_adherent_edit")
-     * @Method("GET|POST")
-     */
-    public function profileAction(Request $request): Response
-    {
-        $adherent = $this->getUser();
-        $membership = MembershipRequest::createFromAdherent($adherent);
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
-            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
-        ;
-
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->update($adherent, $membership);
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_profile.success'));
-
-            return $this->redirectToRoute('app_adherent_profile');
-        }
-
-        return $this->render('adherent/profile.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('adherent/home.html.twig');
     }
 
     /**
@@ -93,52 +65,6 @@ class AdherentController extends Controller
         }
 
         return $this->render('adherent/pin_interests.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * This action enables an adherent to change his/her current password.
-     *
-     * @Route("/mon-compte/changer-mot-de-passe", name="app_adherent_change_password")
-     * @Method("GET|POST")
-     */
-    public function changePasswordAction(Request $request): Response
-    {
-        $form = $this->createForm(AdherentChangePasswordType::class);
-
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.adherent_change_password_handler')->changePassword($this->getUser(), $form->get('password')->getData());
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_password.success'));
-
-            return $this->redirectToRoute('app_adherent_change_password');
-        }
-
-        return $this->render('adherent/change_password.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * This action enables an adherent to choose his/her email notifications.
-     *
-     * @Route("/mon-compte/preferences-des-emails", name="app_adherent_set_email_notifications")
-     * @Method("GET|POST")
-     */
-    public function setEmailNotificationsAction(Request $request): Response
-    {
-        $form = $this->createForm(AdherentEmailSubscriptionType::class, $this->getUser())
-            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
-        ;
-
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('info', $this->get('translator')->trans('adherent.set_emails_notifications.success'));
-
-            return $this->redirectToRoute('app_adherent_set_email_notifications');
-        }
-
-        return $this->render('adherent/set_email_notifications.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -296,36 +222,16 @@ class AdherentController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/mon-compte/desadherer", name="app_adherent_terminate_membership")
-     * @Method("GET|POST")
-     * @Security("is_granted('UNREGISTER')")
-     */
-    public function terminateMembershipAction(Request $request): Response
+    public function profilPictureAction(): Response
     {
-        $adherent = $this->getUser();
-        $unregistrationCommand = new UnregistrationCommand();
+        $summary = null;
 
-        $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
-            'csrf_token_id' => self::UNREGISTER_TOKEN,
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->terminateMembership($unregistrationCommand, $adherent);
-            $this->get('security.token_storage')->setToken(null);
-            $request->getSession()->invalidate();
-
-            return $this->render('adherent/terminate_membership.html.twig', [
-                'unregistered' => true,
-                'form' => $form->createView(),
-            ]);
+        if ($this->getUser() instanceof Adherent && $summary = $this->getDoctrine()->getRepository(Summary::class)->findOneForAdherent($this->getUser())) {
+            $this->get(SummaryManager::class)->setUrlProfilePicture($summary);
         }
 
-        return $this->render('adherent/terminate_membership.html.twig', [
-            'unregistered' => false,
-            'form' => $form->createView(),
+        return $this->render('adherent/_profil_picture.html.twig', [
+            'urlProfilePicture' => $summary ? $summary->getUrlProfilePicture() : false,
         ]);
     }
 }
