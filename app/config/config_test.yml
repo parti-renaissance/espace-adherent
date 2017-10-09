@@ -34,6 +34,7 @@ parameters:
     app_host: enmarche.dev
     amp_host: m.enmarche.dev
     legislatives_host: legislatives.enmarche.dev
+    env(AUTH_LOGIN_URL): 'http://example.com/login'
     adherent_interests:
         agriculture: Agriculture
         culture: Culture
