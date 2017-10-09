@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -295,6 +296,21 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere(sprintf('%s.managedArea.codes', $alias).' IS NOT NULL');
+
+                    return true;
+                },
+            ])
+            ->add('supervisor', CallbackFilter::class, [
+                'label' => 'N\'afficher que les animateurs',
+                'field_type' => CheckboxType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
+                    $qb->andWhere(sprintf('ms.privilege', $alias).' = :privilege');
+                    $qb->setParameter('privilege', CommitteeMembership::COMMITTEE_SUPERVISOR);
 
                     return true;
                 },
