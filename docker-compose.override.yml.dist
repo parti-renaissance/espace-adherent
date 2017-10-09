@@ -1,29 +1,36 @@
 version: "2"
 
 services:
-    app:
-        volumes:
-            - "~/.composer:/root/.composer"
-        ports:
-            - "8000:80"
-#        environment:
-#            - BLACKFIRE_CLIENT_ID
-#            - BLACKFIRE_CLIENT_TOKEN
+    #nginx-proxy:
+    #    image: jwilder/nginx-proxy
+    #    ports:
+    #        - "80:80"
+    #    volumes:
+    #        - /var/run/docker.sock:/tmp/docker.sock:ro
 
-    rabbitmq:
-        ports:
-            - "15672:15672"
+    #enmarche.dev:
+    #    volumes:
+    #        - "~/.composer:/root/.composer"
+    #    ports:
+    #        - "8000:80"
+    #    environment:
+    #        - BLACKFIRE_CLIENT_ID
+    #        - BLACKFIRE_CLIENT_TOKEN
 
-    db:
-        ports:
-            - "3306:3306"
+    #rabbitmq:
+    #    ports:
+    #        - "15672:15672"
+
+    #enmarche_db:
+    #    ports:
+    #        - "3306:3306"
 
     pma:
         image: phpmyadmin/phpmyadmin
         depends_on:
-            - db
+            - enmarche_db
         environment:
-            PMA_HOST: db
+            PMA_HOST: enmarche_db
             PMA_USER: root
             PMA_PASSWORD: root
         ports:

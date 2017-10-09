@@ -202,10 +202,10 @@ security:
         strategy: unanimous
 
     providers:
+        auth:
+            id: user_provider.entity
         admins_db:
             entity: { class: 'AppBundle\Entity\Administrator' }
-        users_db:
-            entity: { class: 'AppBundle\Entity\Adherent' }
 
     firewalls:
         dev:
@@ -235,35 +235,28 @@ security:
 
         main:
             context: main_context
-            # No pattern means every path is behind this firewall
-            provider: users_db
-            switch_user:
-                provider: users_db
             anonymous:
                 secret: '%env(SECRET)%'
-            form_login:
-                login_path: app_adherent_login
-                check_path: app_adherent_login_check
+            switch_user:
+                provider: auth
+            logout: ~
+            oauth:
+                resource_owners:
+                    auth: "/login/check-auth"
+                login_path:        /connect/auth
+                use_forward:       false
+                failure_path:      /
 
-                default_target_path: app_search_events
-
-                username_parameter: _adherent_email
-                password_parameter: _adherent_password
-                csrf_parameter: _adherent_csrf
-                csrf_token_id: authenticate_adherent
-            logout:
-                path: app_adherent_logout
-                target: homepage
-
+                oauth_user_provider:
+                    service: "user_provider.entity"
 
     access_control:
-        - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
+        - { path: '^/parametres/', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent/', roles: [ROLE_ADHERENT] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/initiative-citoyenne/*/abonner', roles: [ROLE_ADHERENT] }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
