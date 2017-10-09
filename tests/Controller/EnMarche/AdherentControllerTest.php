@@ -43,7 +43,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertNotSame('http://localhost/espace-adherent/mes-evenements', $crawler->getUri());
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
@@ -86,7 +86,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function provideProfilePage()
@@ -563,7 +563,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testDocumentsActionIsAccessibleAsAdherent()
@@ -580,7 +580,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testContactActionForAdherent()

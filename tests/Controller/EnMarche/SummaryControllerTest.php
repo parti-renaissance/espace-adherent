@@ -9,7 +9,6 @@ use AppBundle\DataFixtures\ORM\LoadSkillData;
 use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -43,7 +42,7 @@ class SummaryControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
-        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testAccessAndDisplaySummaryPage()

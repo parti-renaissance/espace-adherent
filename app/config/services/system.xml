@@ -180,5 +180,12 @@
             <argument type="service" id="app.repository.skill" />
             <tag name="form.type" />
         </service>
+
+        <service id="user_provider.entity" parent="hwi_oauth.user.provider.entity">
+            <argument>AppBundle\Entity\Adherent</argument>
+            <argument type="collection">
+                <argument key="auth">emailAddress</argument>
+            </argument>
+        </service>
     </services>
 </container>

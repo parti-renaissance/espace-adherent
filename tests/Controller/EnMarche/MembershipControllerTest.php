@@ -103,6 +103,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
     }
 
+    /**
+     * @group skip
+     */
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->client->request(Request::METHOD_GET, '/inscription');
@@ -161,8 +164,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->logout($this->client);
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client);
-
+        $this->assertClientIsRedirectedToAuth();
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -240,17 +242,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
-        // login
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_adherent_email' => $data['membership_request']['emailAddress'],
-            '_adherent_password' => $data['membership_request']['password']['first'],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
+        $this->authenticateAsAdherent($this->client, $data['membership_request']['emailAddress'], $data['membership_request']['password']['first']);
     }
 
     public function testDonateWithoutTemporaryDonation()

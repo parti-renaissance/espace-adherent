@@ -24,7 +24,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     public function testCoordinatorBackendIsForbiddenForAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     /**
