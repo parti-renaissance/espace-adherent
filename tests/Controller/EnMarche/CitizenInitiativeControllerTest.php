@@ -549,7 +549,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testSubscribeToAdherentActivity()

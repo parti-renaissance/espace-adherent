@@ -21,7 +21,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
 
         $adherent = $this->createAdherent();
 
-        $request = Request::create('POST', '/espace-adherent/connexion');
+        $request = Request::create('POST', '/login');
         $token = new UsernamePasswordToken($adherent, $adherent->getPassword(), 'users_db');
 
         $recorder = new AdherentLoginTimestampRecorder($manager);

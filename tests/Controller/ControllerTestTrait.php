@@ -2,18 +2,18 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Config;
 use Tests\AppBundle\TestHelperTrait;
 
-/**
- * @method assertSame($expected, $actual, $message = '')
- */
 trait ControllerTestTrait
 {
     use TestHelperTrait;
@@ -41,34 +41,46 @@ trait ControllerTestTrait
         );
     }
 
+    public function assertClientIsRedirectedToAuth()
+    {
+        $this->assertSame(
+            $this->container->getParameter('env(auth_login_url)'),
+            rtrim($this->client->getResponse()->headers->get('location'), '/')
+        );
+    }
+
     public function logout(Client $client)
     {
-        $client->request(Request::METHOD_GET, '/espace-adherent/deconnexion');
+        $session = $client->getContainer()->get('session');
+        $session->remove('_security_main_context');
 
-        return $client->followRedirect();
+        $client->request(Request::METHOD_GET, '/');
+
+        return $client;
     }
 
     public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
     {
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $session = $client->getContainer()->get('session');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $firewallContext = 'main_context';
 
-        $client->submit($crawler->selectButton('Je me connecte')->form([
-            '_adherent_email' => $emailAddress,
-            '_adherent_password' => $password,
-        ]));
+        /** @var Adherent $user */
+        $user = $client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository(Adherent::class)
+            ->findOneBy(['emailAddress' => $emailAddress]);
 
-        $shouldBeRedirectedTo = 'http://'.Config::APP_HOST.'/evenements';
+        $token = new OAuthToken('1234', $user->getRoles());
+        $token->setUser($user);
 
-        if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
-            $this->fail(
-                'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdherent() '.
-                'and ensure you are properly loading adherents fixtures.'
-            );
-        }
+        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->save();
 
-        return $client->followRedirect();
+        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+
+        return $client->request(Request::METHOD_GET, '/evenements');
     }
 
     protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void

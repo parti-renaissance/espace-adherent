@@ -1,12 +1,12 @@
 parameters:
-    env(DATABASE_HOST):         db
+    env(DATABASE_HOST):         enmarche_db
     env(DATABASE_PORT):         3306
     env(DATABASE_SOCKET):       ~
     env(DATABASE_NAME):         enmarche
     env(DATABASE_USER):         root
     env(DATABASE_PASSWORD):     root
 
-    env(REDIS_HOST):            redis
+    env(REDIS_HOST):            enmarche_redis
 
     env(RABBITMQ_HOST):         rabbitmq
     env(RABBITMQ_PORT):         5672
@@ -58,3 +58,11 @@ parameters:
     env(APP_HOST): enmarche.dev
     env(AMP_HOST): m.enmarche.dev
     env(LEGISLATIVES_HOST): legislatives.enmarche.dev
+
+    env(AUTH_CLIENT_ID): f80ce2df-af6d-4ce4-8239-04cfcefd5a19
+    env(AUTH_CLIENT_SECRET): 2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs
+    env(AUTH_ACCESS_TOKEN_URL): 'http://auth.en-marche.dev/oauth/v2/token'
+    env(AUTH_ACCESS_AUTHORIZATION_URL): 'http://auth.en-marche.dev/oauth/v2/auth'
+    env(AUTH_LOGIN_URL): 'http://en-marche.dev/connect/auth'
+    env(AUTH_REGISTER_URL): 'http://auth.en-marche.dev/register?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=http://en-marche.dev/register'
+    env(AUTH_INFO_URL): 'http://auth.en-marche.dev/api/me'
