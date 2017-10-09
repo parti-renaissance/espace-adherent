@@ -1,0 +1,138 @@
+.mooc {
+    h2 {
+        @include text--large;
+        margin-bottom: 30px;
+        max-width: 430px;
+        text-align: center;
+    }
+
+    h3 {
+        @include text--medium-large;
+        margin-top: 7px;
+    }
+
+    &__schedule {
+        background: $gray--lighter;
+        border-top: 1px solid $gray--light;
+        border-bottom: 1px solid $gray--light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 60px 0;
+        position: relative;
+
+        @media (min-width: $tablet) {
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: -50px;
+                height: 900px;
+                background-image: url('/images/campus/campus-computer.png'),
+                                  url('/images/campus/campus-plane.png'),
+                                  url('/images/campus/campus-notebook.png');
+                background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+                background-size: 90px, 80px, 145px;
+                background-position: 90% bottom, 70% 0, 5% 40%;
+            }
+        }
+    }
+
+    &__week {
+        @include wrapper--slim;
+        display: flex;
+        margin-top: 10px;
+
+        &--left {
+            flex: 3;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        &--dot {
+            flex: .7;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+
+            > i:first-child {
+                border: 10px solid $green;
+                background: transparent;
+                width: 45px;
+                height: 45px;
+                display: inline-block;
+                border-radius: 50%;
+                box-sizing: border-box;
+            }
+
+            > i:nth-child(2) {
+                width: 7px;
+                min-height: 100px;
+                background: $gray--light;
+                flex: 1;
+                margin-top: 10px;
+            }
+        }
+
+        &:last-child {
+            .mooc__week--dot i:nth-child(2) {
+                display: none;
+            }
+        }
+
+        &--right {
+            flex: 3;
+            padding: 0 15px;
+        }
+
+        @media (max-width: $mobile) {
+            &:nth-child(odd) {
+                .mooc__week--right {
+                    display: none;
+                }
+                .mooc__week--left {
+                    order: 2;
+                    text-align: left;
+                }
+            }
+
+            &:nth-child(even) {
+                .mooc__week--left {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__cta {
+        border-bottom: 1px solid $gray--light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 60px 0;
+    }
+
+    &__partner {
+        color: $gray--muted;
+        padding: 30px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: $font-roboto;
+
+        > div {
+            @include text--medium-small;
+            margin-bottom: 10px;
+        }
+
+        > p {
+            @include text--small;
+            text-align: center;
+        }
+    }
+}
