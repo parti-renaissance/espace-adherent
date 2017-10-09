@@ -26,6 +26,10 @@ parameters:
     app_host:                    '%env(APP_HOST)%'
     amp_host:                    '%env(AMP_HOST)%'
     legislatives_host:           '%env(LEGISLATIVES_HOST)%'
+    auth_user_profile:           '%env(AUTH_API_URL)%/espace-personnel/edit'
+    auth_forgot_password:        '%env(AUTH_API_URL)%/forgot-password'
+    auth_unsubscribe:            '%env(AUTH_API_URL)%/espace-personnel/unsubscribe'
+    auth_client_id:              '%env(AUTH_CLIENT_ID)%'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }
@@ -71,6 +75,7 @@ twig:
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
+        auth_register_url:      "%env(AUTH_API_URL)%/register?client_id=%env(AUTH_CLIENT_ID)%&redirect_uri=%env(APP_URL)%/register"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
@@ -172,6 +177,16 @@ csa_guzzle:
                 base_uri: 'https://graph.facebook.com'
                 timeout: 2.0
 
+        auth:
+            config:
+                base_uri: "%env(AUTH_API_URL)%"
+                timeout: 2.0
+
+        api:
+            config:
+                base_uri: "%env(API_URL)%"
+                timeout: 2.0
+
 scheb_two_factor:
     google:
         enabled: true
@@ -219,9 +234,10 @@ old_sound_rabbit_mq:
             password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            connection_timeout: 60
+            read_write_timeout: 60
+            keepalive: false
+            heartbeat: 30
 
     producers:
         mailer_campaign:
@@ -239,6 +255,12 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
 
+        api_broadcast_user_retry:
+            connection:        default
+            exchange_options:  { name: broadcast_retry, type: topic }
+            queue_options:     { name: enmarche_broadcast_retry, routing_keys: ['#'] arguments: {'x-dead-letter-exchange': ['S', 'broadcast'], 'x-message-ttl': ['I', 360000] } }
+
+        # Use on fixtures load to sync with the auth and api project
         enmarche_sync_user_create:
             connection: default
             exchange_options: { name: 'enmarche_sync_user_create', type: direct }
@@ -265,3 +287,29 @@ old_sound_rabbit_mq:
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        api_broadcast_user:
+            connection:        default
+            exchange_options:  { name: broadcast, type: topic }
+            queue_options:     { name: enmarche_broadcast, routing_keys: ['#'] }
+            callback:          app.consumer.user_account
+
+hwi_oauth:
+    firewall_names: [main]
+    resource_owners:
+        auth:
+            type:                oauth2
+            client_id:           "%env(AUTH_CLIENT_ID)%"
+            client_secret:       "%env(AUTH_CLIENT_SECRET)%"
+            access_token_url:    "%env(AUTH_API_URL)%/oauth/v2/token"
+            authorization_url:   "%env(AUTH_API_URL)%/oauth/v2/auth"
+            infos_url:           "%env(AUTH_API_URL)%/api/me"
+            #scope:               "public"
+            user_response_class: HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse
+            paths:
+                identifier: emailAddress
+                nickname: firstname
+                firstname: firstName
+                lastname: lastName
+                realname: ['firstname', 'lastname']
+                email: emailAddress

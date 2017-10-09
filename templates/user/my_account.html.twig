@@ -1,0 +1,32 @@
+{% extends 'adherent/layout.twig' %}
+
+{% block adherent_profile_form %}
+    <h2>Mon compte</h2>
+
+    <div class="b__nudge--top">
+        <span class="settings__username"><strong>Nom</strong> {{ app.user.fullname }}</span> <br />
+        <span class="settings__username"><strong>Email</strong> {{ app.user.emailaddress }}</span><br />
+        <span class="settings__username"><strong>Code postal</strong> {{ app.user.postAddress.postalCode }}</span><br/>
+
+        {% if app.user.activatedAt %}
+            <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
+        {% else %}
+            <div class="settings__membership">Non adhérent{{ app.user.female ? "e" }}.</div>
+        {% endif %}
+
+        <span class="settings__username"><a href="{{ path('auth_user_profile') }}">Modifier mes informations</a></span><br/>
+        <span class="settings__username"><a href="{{ path('auth_forgot_password') }}">Modifier mon mot de passe</a></span><br/>
+    </div>
+
+    {% if is_granted('ROLE_ADHERENT') %}
+        <p>
+            <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Annuler mon adhésion</a>
+        </p>
+    {% endif %}
+
+    {% if is_granted('UNREGISTER') and app.user.isBasicAdherent() %}
+        <p>
+            <a href="{{ path('auth_unsubscribe') }}" class="settings__delete_account">Supprimer définitivement ce compte</a>
+        </p>
+    {% endif %}
+{% endblock %}

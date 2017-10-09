@@ -4,6 +4,15 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Consumers -->
+        <service id="app.consumer.user_account" class="AppBundle\Consumer\UserAccountConsumer">
+            <argument type="service" id="app.membership.adherent_account_provider"/>
+            <argument type="service" id="app.repository.adherent"/>
+            <argument type="service" id="app.membership_request_handler"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="old_sound_rabbit_mq.api_broadcast_user_retry_producer"/>
+        </service>
+
         <!-- Legislatives -->
         <service id="app.legislatives.contact_handler" class="AppBundle\Legislative\LegislativeCampaignContactMessageHandler">
             <argument type="service" id="app.mailer.transactional"/>
@@ -26,6 +35,13 @@
             <argument type="service" id="app.repository.legislative_candidate"/>
             <argument type="service" id="AppBundle\Twig\AssetRuntime"/>
             <argument type="service" id="router"/>
+        </service>
+
+        <service id="app.api.access_token_manager" class="AppBundle\Api\AccessTokenManager" public="false">
+            <argument type="service" id="csa_guzzle.client.auth"/>
+            <argument type="service" id="cache.app"/>
+            <argument>%env(AUTH_API_CLIENT_ID)%</argument>
+            <argument>%env(AUTH_API_CLIENT_SECRET)%</argument>
         </service>
 
         <!-- Addresses -->
@@ -67,7 +83,6 @@
 
         <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.membership.adherent_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailer.transactional"/>
@@ -80,28 +95,16 @@
             <argument type="service" id="app.activity_subscription.manager"/>
         </service>
 
-        <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.password_encoder"/>
-        </service>
-
-        <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
-            <argument type="service" id="router"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.encoder_factory"/>
-        </service>
-
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
             <argument type="service" id="app.adherent_manager"/>
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.security.authentication_utils"/>
         </service>
 
         <service id="app.membership.adherent_factory" class="AppBundle\Membership\AdherentFactory">
             <argument type="service" id="security.encoder_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer"/>
         </service>
 
         <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
@@ -110,10 +113,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
-            <argument type="service" id="app.repository.adherent"/>
-            <argument type="service" id="security.token_storage" />
-            <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
+        <service id="app.membership.adherent_account_provider" class="AppBundle\Membership\AdherentAccountProvider">
+            <argument type="service" id="app.api.access_token_manager"/>
+            <argument type="service" id="csa_guzzle.client.api"/>
+            <argument type="service" id="logger"/>
         </service>
 
         <service id="AppBundle\Form\MemberInterestsChoiceType">

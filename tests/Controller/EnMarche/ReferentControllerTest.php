@@ -34,7 +34,7 @@ class ReferentControllerTest extends SqliteWebTestCase
     public function testReferentBackendIsForbiddenAsAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     /**
@@ -42,7 +42,7 @@ class ReferentControllerTest extends SqliteWebTestCase
      */
     public function testReferentBackendIsForbiddenAsAdherentNotReferent($path)
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
@@ -53,7 +53,7 @@ class ReferentControllerTest extends SqliteWebTestCase
      */
     public function testReferentBackendIsAccessibleAsReferent($path)
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -61,7 +61,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testCreateEventFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/evenements/creer');
 
@@ -82,7 +82,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testCreateEventSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/evenements/creer');
 
@@ -125,7 +125,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testSearchUserToSendMail()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $this->assertSame(6, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
@@ -177,7 +177,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testCancelSendMail()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
@@ -199,7 +199,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testSendMailFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
@@ -224,7 +224,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testSendMailSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
@@ -279,7 +279,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
     public function testFilterAdherents()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
 

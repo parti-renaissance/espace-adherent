@@ -1,10 +1,11 @@
-{% macro address(address) %}
+{% macro address(address, options = {}) %}
 App.createAddressSelector(
     '{{ address.country.vars.id }}',
     '{{ address.postalCode.vars.id }}',
     '{{ address.city.vars.id }}',
     '{{ address.cityName.vars.id }}',
-    '{{ address.cityName.vars.required }}'
+    '{{ address.cityName.vars.required }}',
+    {{ options|json_encode|raw }}
 );
 {% endmacro %}
 
