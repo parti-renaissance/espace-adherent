@@ -20,6 +20,17 @@ class PageController extends Controller
     use CanaryControllerTrait;
 
     /**
+     * @Route("/mooc", defaults={"_enable_campaign_silence"=true}, name="page_mooc")
+     * @Method("GET")
+     */
+    public function moocAction()
+    {
+        $this->disableInProduction();
+
+        return $this->render('page/mooc.html.twig');
+    }
+
+    /**
      * @Route("/campus", defaults={"_enable_campaign_silence"=true}, name="page_campus")
      * @Method("GET")
      */
