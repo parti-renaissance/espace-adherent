@@ -150,8 +150,8 @@ class ReferentManagedUserRepository extends EntityRepository
         }
 
         if ($filter->includeSupervisors()) {
-            $typeExpression->add('u.type = :type_h AND u.isCommitteeSupervisor = 1');
-            $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
+            $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
         }
 
         $qb->andWhere($typeExpression);
