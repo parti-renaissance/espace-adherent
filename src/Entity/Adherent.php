@@ -247,10 +247,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->isBoardMember()) {
-            $roles[] = 'ROLE_BOARD_MEMBER';
-        }
-
         if ($this->legislativeCandidate || false !== stripos($this->emailAddress, '@en-marche.fr')) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
@@ -682,11 +678,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function isProcurationManager(): bool
     {
         return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
-    }
-
-    public function isBoardMember(): bool
-    {
-        return true;
     }
 
     public function getProcurationManagedAreaCodesAsString(): ?string
