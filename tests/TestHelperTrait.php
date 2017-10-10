@@ -23,6 +23,7 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
@@ -44,6 +45,7 @@ use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
+use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -195,6 +197,11 @@ trait TestHelperTrait
     public function getSummaryRepository(): SummaryRepository
     {
         return $this->getRepository(Summary::class);
+    }
+
+    public function getReferentManagedUserRepository(): ReferentManagedUserRepository
+    {
+        return $this->getRepository(ReferentManagedUser::class);
     }
 
     public function getTonMacronChoiceRepository(): TonMacronChoiceRepository
