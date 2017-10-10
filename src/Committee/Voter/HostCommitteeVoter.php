@@ -24,12 +24,8 @@ class HostCommitteeVoter extends AbstractCommitteeVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, Committee $committee): bool
     {
         if (!$committee->isApproved()) {
-            if ($this->manager->superviseCommittee($adherent, $committee)
-                || $adherent->getUuid()->toString() === $committee->getCreatedBy()) {
-                return true;
-            } else {
-                return false;
-            }
+            return $this->manager->superviseCommittee($adherent, $committee)
+                || $adherent->getUuid()->toString() === $committee->getCreatedBy();
         }
 
         return $this->manager->hostCommittee($adherent, $committee);

@@ -29,7 +29,7 @@ class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
         $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_5_UUID), '1 supervisor');
 
         // Unapproved committees
-        $this->assertCount(1, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_2_UUID));
+        $this->assertCount(0, $this->repository->findHostMembers(LoadAdherentData::COMMITTEE_2_UUID));
     }
 
     public function testCountHostMembersInCommittee()
