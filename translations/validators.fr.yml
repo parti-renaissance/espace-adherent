@@ -184,3 +184,8 @@ summary.mission_type_wishes: Vous devez cocher au minimum 1 élément.
 citizen_initiative.invalid_category: Le type d'événement sélectionné n'est pas valide.
 citizen_initiative.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
 citizen_initiative.invalid_capacity: La capacité doit être un nombre entier valide.
+
+#
+# Board Member
+#
+board_member.area.invalid_choice: Cette région n'est pas valide.

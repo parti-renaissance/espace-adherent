@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
+use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
@@ -160,6 +161,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $procurationManagedArea;
 
     /**
+     * @var BoardMember|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"persist"})
+     */
+    private $boardMember;
+
+    /**
      * @var CommitteeMembership[]|Collection
      *
      * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent", cascade={"remove"})
@@ -241,6 +249,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->legislativeCandidate || false !== stripos($this->emailAddress, '@en-marche.fr')) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
+        }
+
+        if ($this->isBoardMember()) {
+            $roles[] = 'ROLE_BOARD_MEMBER';
         }
 
         return $roles;
@@ -614,6 +626,24 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setCoordinatorManagedArea(CoordinatorManagedArea $coordinatorManagedArea = null): void
     {
         $this->coordinatorManagedArea = $coordinatorManagedArea;
+    }
+
+    public function getBoardMember(): ?BoardMember
+    {
+        return $this->boardMember;
+    }
+
+    public function setBoardMember(string $area, ArrayCollection $roles): void
+    {
+        $this->boardMember = new BoardMember();
+        $this->boardMember->setArea($area);
+        $this->boardMember->setRoles($roles);
+    }
+
+    public function isBoardMember(): bool
+    {
+        return $this->boardMember instanceof BoardMember
+            && !empty($this->boardMember->getArea()) && !empty($this->boardMember->getRoles());
     }
 
     public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void

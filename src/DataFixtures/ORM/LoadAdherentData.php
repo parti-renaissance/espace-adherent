@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
@@ -173,6 +174,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
+        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, [$this->getReference('bmr02')]);
         $referent->enableCommitteesNotifications();
 
         $coordinateur = $adherentFactory->createFromArray([
