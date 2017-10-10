@@ -194,7 +194,7 @@ abstract class BaseEvent implements GeoPointInterface
 
     protected function setName(string $name): void
     {
-        $this->name = $name;
+        $this->name = ucfirst($name);
         $this->canonicalName = static::canonicalize($name);
     }
 
