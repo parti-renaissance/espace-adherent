@@ -36,7 +36,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
-        $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertCount(0, $this->committeeManager->getCommitteeHosts($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
     }
 
     public function testGetCommitteeFollowers()
@@ -61,7 +61,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
 
         // Unapproved committees
-        $this->assertCount(1, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
     }
 
     public function testGetOptinCommitteeFollowers()
@@ -76,7 +76,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
-        $this->assertCount(1, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommitteeMock(LoadAdherentData::COMMITTEE_2_UUID)));
     }
 
     public function testGetNearbyCommittees()
@@ -212,6 +212,38 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
         $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isSupervisor());
         $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isFollower());
+    }
+
+    public function testApproveRefuseCommittee()
+    {
+        // Creator of committee
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Approve committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Refuse approved committee
+        $this->committeeManager->refuseCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Reapprove committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
     }
 
     private function getCommitteeMock(string $uuid)

@@ -503,7 +503,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
-        $manager->persist($adherent6->superviseCommittee($committee2));
+        $manager->persist($adherent6->followCommittee($committee2));
+        $manager->persist($adherent4->followCommittee($committee2));
         $manager->persist($adherent3->followCommittee($committee4));
         $manager->persist($adherent3->followCommittee($committee5));
         $manager->persist($adherent9->superviseCommittee($committee6));
