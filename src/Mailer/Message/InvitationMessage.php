@@ -10,10 +10,8 @@ final class InvitationMessage extends Message
     {
         return new self(
             $invite->getUuid(),
-            '108243',
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à rejoindre En Marche.', self::escape($invite->getSenderFullName())),
             static::getTemplateVars($invite->getFirstName(), $invite->getLastName(), $invite->getMessage())
         );
     }

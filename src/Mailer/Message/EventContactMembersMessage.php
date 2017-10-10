@@ -22,10 +22,8 @@ final class EventContactMembersMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '116586',
             $recipient->getEmailAddress(),
             $recipient->getFirstName(),
-            "L'organisateur d'un événement auquel vous êtes inscrit vous a envoyé un message",
             [
                 'organizer_firstname' => self::escape($organizer->getFirstName()),
                 'target_message' => $content,

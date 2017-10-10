@@ -38,10 +38,8 @@ final class EventCancellationMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '78678',
             $recipient->getEmailAddress(),
-            $recipient->getFirstName().' '.$recipient->getLastName(),
-            sprintf('L\'événement "%s" a été annulé.', $event->getName()),
+            $recipient->getFullName(),
             static::getTemplateVars($event->getName(), $eventsLink),
             $recipientVarsGenerator($recipient),
             $host->getEmailAddress()

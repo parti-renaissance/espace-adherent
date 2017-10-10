@@ -1,0 +1,65 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Visualiser les templates d'emails
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        <thead>
+                        <tr>
+                            <th>
+                                Message
+                            </th>
+                            <th>
+                                Template
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                        {% for class, name in templates %}
+                            <tr>
+                                <td>{{ class|split('\\')|last }}</td>
+                                <td>{{ name }}</td>
+                                <td>
+                                    <a href="{{ path('app_admin_email_template_show', {'name': name}) }}"
+                                       class="btn btn-default btn-sm">
+                                        Informations
+                                    </a>
+                                    <a href="{{ path('app_admin_email_template_html', {'name': name}) }}"
+                                       class="btn btn-default btn-sm" target="_blank">
+                                        Voir en HTML
+                                    </a>
+                                    <a href="{{ path('app_admin_email_template_text', {'name': name}) }}"
+                                       class="btn btn-default btn-sm" target="_blank">
+                                        Voir en texte
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

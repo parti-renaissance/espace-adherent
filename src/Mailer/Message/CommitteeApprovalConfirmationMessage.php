@@ -11,10 +11,8 @@ final class CommitteeApprovalConfirmationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54720',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Votre comité est validé, à vous de jouer',
             static::getTemplateVars($committeeCityName, $committeeUrl),
             static::getRecipientVars($host->getFirstName())
         );

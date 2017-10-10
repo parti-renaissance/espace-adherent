@@ -2,13 +2,13 @@
 
 namespace AppBundle\Mailjet;
 
-use AppBundle\Mailer\Model\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailClient;
 use AppBundle\Mailer\EmailTemplateClientInterface;
 use AppBundle\Mailjet\Exception\MailjetException;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
-class EmailTemplateClient extends MailjetClient implements EmailTemplateClientInterface
+class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateClientInterface
 {
     const MAILJET_TEMPLATE_EDITMODE = 2;
     const MAILJET_TEMPLATE_OWNERTYPE = 'user';
@@ -25,10 +25,7 @@ class EmailTemplateClient extends MailjetClient implements EmailTemplateClientIn
         $this->templating = $templating;
     }
 
-    /**
-     * @param \AppBundle\Entity\MailjetTemplate $template
-     */
-    public function synchronize(EmailTemplate $template): void
+    public function synchronize(string $template): void
     {
         if (!$this->has($template)) {
             $this->create($template);
@@ -39,8 +36,7 @@ class EmailTemplateClient extends MailjetClient implements EmailTemplateClientIn
 
     private function list(): array
     {
-        $response = $this->httpClient->request('GET', 'REST/template', [
-            'auth' => [$this->publicKey, $this->privateKey],
+        $response = $this->request('GET', 'REST/template', [
             'query' => [
                 'Author' => 'En Marche!',
                 'Copyright' => 'En Marche ©',
@@ -62,31 +58,27 @@ class EmailTemplateClient extends MailjetClient implements EmailTemplateClientIn
         }, $this->remoteTemplates);
     }
 
-    private function has(Emailtemplate $template): bool
+    private function has(string $template): bool
     {
         if (empty($this->remoteTemplates)) {
             $this->remoteTemplates = $this->list();
         }
 
-        return array_key_exists($template->getName(), $this->remoteTemplates);
+        return array_key_exists($template, $this->remoteTemplates);
     }
 
-    /**
-     * @param \AppBundle\Entity\MailjetTemplate $template
-     */
-    private function create(EmailTemplate $template): array
+    private function create(string $template): array
     {
         $requestPayload = [
             'Author' => 'En Marche!',
             'Copyright' => 'En Marche ©',
-            'Name' => $template->getName(),
+            'Name' => $template,
             'EditMode' => static::MAILJET_TEMPLATE_EDITMODE,
             'OwnerType' => static::MAILJET_TEMPLATE_OWNERTYPE,
             'Purposes' => static::MAILJET_TEMPLATE_PURPOSES,
         ];
 
-        $response = $this->httpClient->request('POST', 'REST/template', [
-            'auth' => [$this->publicKey, $this->privateKey],
+        $response = $this->request('POST', 'REST/template', [
             'body' => json_encode($requestPayload),
         ]);
 
@@ -97,12 +89,9 @@ class EmailTemplateClient extends MailjetClient implements EmailTemplateClientIn
         return $this->getBody($response);
     }
 
-    /**
-     * @param \AppBundle\Entity\MailjetTemplate $template
-     */
-    private function update(EmailTemplate $template): array
+    private function update(string $template): array
     {
-        $templateWrapper = $this->templating->load(sprintf('email/template/%s.html.twig', $template->getName()));
+        $templateWrapper = $this->templating->load(sprintf('email/template/%s.html.twig', $template));
 
         $requestPayload = [
             'Headers' => [
@@ -118,7 +107,7 @@ class EmailTemplateClient extends MailjetClient implements EmailTemplateClientIn
 
         $uri = sprintf(
             'REST/template/%s/detailcontent',
-            sprintf('%s|%s', static::MAILJET_TEMPLATE_OWNERTYPE, $template->getName())
+            sprintf('%s|%s', static::MAILJET_TEMPLATE_OWNERTYPE, $template)
         );
 
         $response = $this->httpClient->request('POST', $uri, [

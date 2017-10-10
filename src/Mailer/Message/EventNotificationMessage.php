@@ -37,34 +37,24 @@ class EventNotificationMessage extends Message
             throw new \RuntimeException('First recipient must be an Adherent instance.');
         }
 
-        $vars = static::getTemplateVars(
-            $host->getFirstName(),
-            $event->getName(),
-            $event->getDesription(),
-            static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
-            sprintf(
-                '%sh%s',
-                static::formatDate($event->getBeginAt(), 'HH'),
-                static::formatDate($event->getBeginAt(), 'mm')
-            ),
-            $event->getInlineFormattedAddress(),
-            $eventLink,
-            $eventOkLink
-        );
-
         $message = new static(
             Uuid::uuid4(),
-            '54917',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            sprintf(
-                '%s - %s : Nouvel événement de %s : %s',
-                static::formatDate($event->getBeginAt(), 'd MMMM'),
-                $vars['event_hour'],
-                $event->getCommittee()->getName(),
-                $vars['event_name']
+            static::getTemplateVars(
+                $host->getFirstName(),
+                $event->getName(),
+                $event->getDescription(),
+                static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
+                sprintf(
+                    '%sh%s',
+                    static::formatDate($event->getBeginAt(), 'HH'),
+                    static::formatDate($event->getBeginAt(), 'mm')
+                ),
+                $event->getInlineFormattedAddress(),
+                $eventLink,
+                $eventOkLink
             ),
-            $vars,
             $recipientVarsGenerator($recipient),
             $host->getEmailAddress()
         );
@@ -114,19 +104,5 @@ class EventNotificationMessage extends Message
         return [
             'target_firstname' => self::escape($firstName),
         ];
-    }
-
-    private static function formatDate(\DateTime $date, string $format): string
-    {
-        $formatter = new \IntlDateFormatter(
-            'fr_FR',
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::NONE,
-            $date->getTimezone(),
-            \IntlDateFormatter::GREGORIAN,
-            $format
-        );
-
-        return $formatter->format($date);
     }
 }

@@ -19,6 +19,8 @@
             <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
         </service>
 
+        <service id="app.mailer.message_registry" class="AppBundle\Mailer\Message\MessageRegistry" public="false" />
+
         <!-- Mailer (transactional) -->
         <service id="app.mailer.transactional" class="AppBundle\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
@@ -37,6 +39,7 @@
         </service>
 
         <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+            <argument type="service" id="app.mailer.message_registry"/>
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
             <argument>AppBundle\Mailjet\EmailTemplate</argument>
@@ -51,6 +54,8 @@
                 <argument type="service" id="twig" />
             </call>
         </service>
+
+        <service id="app.mailer.message_registry" class="AppBundle\Mailer\Message\MessageRegistry" />
 
         <!-- Mailer (campaign) -->
         <service id="app.mailer.campaign" class="AppBundle\Mailer\MailerService" public="false">
@@ -70,6 +75,7 @@
         </service>
 
         <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+            <argument type="service" id="app.mailer.message_registry"/>
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
             <argument>AppBundle\Mailjet\EmailTemplate</argument>

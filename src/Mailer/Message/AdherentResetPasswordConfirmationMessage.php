@@ -11,11 +11,9 @@ final class AdherentResetPasswordConfirmationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '292297',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmation réinitialisation du mot de passe',
-            ['first_name' => self::escape($adherent->getFirstName())]
+            ['target_firstname' => self::escape($adherent->getFirstName())]
         );
     }
 }

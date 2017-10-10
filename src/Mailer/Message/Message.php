@@ -8,8 +8,6 @@ abstract class Message
 {
     protected $uuid;
     protected $vars;
-    protected $subject;
-    protected $template;
     protected $recipients;
     protected $replyTo;
     protected $senderEmail;
@@ -20,7 +18,6 @@ abstract class Message
      * Message constructor.
      *
      * @param UuidInterface $uuid           The unique identifier of this message
-     * @param string        $template       The Message template ID
      * @param string        $recipientEmail The first recipient email address
      * @param string|null   $recipientName  The first recipient name
      * @param string        $subject        The message subject
@@ -30,18 +27,14 @@ abstract class Message
      */
     final public function __construct(
         UuidInterface $uuid,
-        string $template,
         string $recipientEmail,
-        $recipientName,
-        string $subject,
+        ?string $recipientName,
         array $commonVars = [],
         array $recipientVars = [],
         string $replyTo = null
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
-        $this->template = $template;
-        $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->cc = [];
@@ -62,16 +55,6 @@ abstract class Message
     final public function getVars(): array
     {
         return $this->vars;
-    }
-
-    final public function getSubject(): string
-    {
-        return $this->subject;
-    }
-
-    final public function getTemplate(): string
-    {
-        return $this->template;
     }
 
     public function getReplyTo(): ?string
@@ -115,6 +98,20 @@ abstract class Message
     final protected static function escape(string $string): string
     {
         return htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8', false);
+    }
+
+    protected static function formatDate(\DateTime $date, string $format): string
+    {
+        $formatter = new \IntlDateFormatter(
+            'fr_FR',
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            $date->getTimezone(),
+            \IntlDateFormatter::GREGORIAN,
+            $format
+        );
+
+        return $formatter->format($date);
     }
 
     public function getSenderEmail(): ?string

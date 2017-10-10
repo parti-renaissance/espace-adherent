@@ -21,10 +21,8 @@ final class CommitteeNewFollowerMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '54904',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Un nouveau membre vient de suivre votre comité',
             self::getTemplateVars($committee, $newFollower, $hostUrl),
             self::getRecipientVars($host),
             $newFollower->getEmailAddress()

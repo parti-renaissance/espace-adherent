@@ -16,10 +16,8 @@ final class CommitteeApprovalReferentMessage extends Message
     ): self {
         return new self(
             Uuid::uuid4(),
-            '221238',
             $referent->getEmailAddress(),
             $referent->getFullName(),
-            'Un comité vient d\'être approuvé',
             static::getTemplateVars(
                 $committee->getName(),
                 $committee->getCityName(),

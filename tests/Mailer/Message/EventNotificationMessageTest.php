@@ -18,10 +18,13 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
         $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
 
+        $event = $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386', 'EM Lyon');
+        $event->expects($this->once())->method('getDescription')->willReturn('En Marche à Lyon');
+
         $message = EventNotificationMessage::create(
             $recipients,
             $recipients[0],
-            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386', 'EM Lyon'),
+            $event,
             self::SHOW_EVENT_URL,
             self::ATTEND_EVENT_URL,
             function (Adherent $adherent) {
@@ -30,14 +33,13 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         );
 
         $this->assertInstanceOf(EventNotificationMessage::class, $message);
-        $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
-        $this->assertSame('1 février - 15h30 : Nouvel événement de EM Lyon : En Marche Lyon', $message->getSubject());
-        $this->assertCount(10, $message->getVars());
+        $this->assertCount(11, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
                 'event_name' => 'En Marche Lyon',
+                'event_description' => 'En Marche à Lyon',
                 'event_date' => 'mercredi 1 février 2017',
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
@@ -58,6 +60,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
             [
                 'animator_firstname' => 'Émmanuel',
                 'event_name' => 'En Marche Lyon',
+                'event_description' => 'En Marche à Lyon',
                 'event_date' => 'mercredi 1 février 2017',
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
@@ -78,6 +81,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
             [
                 'animator_firstname' => 'Émmanuel',
                 'event_name' => 'En Marche Lyon',
+                'event_description' => 'En Marche à Lyon',
                 'event_date' => 'mercredi 1 février 2017',
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',

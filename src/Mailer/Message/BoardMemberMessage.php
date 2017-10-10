@@ -24,10 +24,8 @@ final class BoardMemberMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '233701',
             $first->getEmailAddress(),
             $first->getFullName(),
-            $model->getSubject(),
             [
                 'member_firstname' => self::escape($boardMember->getFirstName()),
                 'member_lastname' => self::escape($boardMember->getLastName()),

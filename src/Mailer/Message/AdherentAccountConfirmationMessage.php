@@ -11,10 +11,8 @@ final class AdherentAccountConfirmationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54673',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Et maintenant ?',
             static::getTemplateVars($adherentsCount, $committeesCount),
             static::getRecipientVars($adherent->getFirstName(), $adherent->getLastName())
         );
@@ -25,8 +23,6 @@ final class AdherentAccountConfirmationMessage extends Message
         return [
             'adherents_count' => $adherentsCount,
             'committees_count' => $committeesCount,
-            'target_firstname' => '',
-            'target_lastname' => '',
         ];
     }
 

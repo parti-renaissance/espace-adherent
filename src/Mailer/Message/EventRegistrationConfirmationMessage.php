@@ -14,10 +14,8 @@ final class EventRegistrationConfirmationMessage extends Message
 
         return new self(
             Uuid::uuid4(),
-            '118620',
             $registration->getEmailAddress(),
             $firstName,
-            'Confirmation de participation à un événement En Marche !',
             static::getTemplateVars(
                 $event->getName(),
                 static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),

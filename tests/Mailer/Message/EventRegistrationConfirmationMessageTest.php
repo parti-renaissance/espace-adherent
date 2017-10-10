@@ -24,13 +24,14 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 
         $this->assertInstanceOf(EventRegistrationConfirmationMessage::class, $message);
         $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('118620', $message->getTemplate());
         $this->assertSame('john@bar.com', $message->getRecipient(0)->getEmailAddress());
         $this->assertSame('John', $message->getRecipient(0)->getFullName());
-        $this->assertSame('Confirmation de participation à un événement En Marche !', $message->getSubject());
         $this->assertSame(
             [
                 'event_name' => 'Grand Meeting de Paris',
+                'event_date' => 'mercredi 1 février 2017',
+                'event_hour' => '15h30',
+                'event_address' => 'Palais des Congrés Porte Maillot, 75001 Paris 1er',
                 'event_organiser' => 'Michelle',
                 'event_link' => self::EVENT_LINK,
             ],
@@ -42,6 +43,9 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
         $this->assertSame(
             [
                 'event_name' => 'Grand Meeting de Paris',
+                'event_date' => 'mercredi 1 février 2017',
+                'event_hour' => '15h30',
+                'event_address' => 'Palais des Congrés Porte Maillot, 75001 Paris 1er',
                 'event_organiser' => 'Michelle',
                 'event_link' => self::EVENT_LINK,
                 'prenom' => 'John',

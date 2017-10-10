@@ -22,8 +22,6 @@ class JeMarcheReportMessageTest extends TestCase
 
         $this->assertInstanceOf(JeMarcheReportMessage::class, $message);
         $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('133783', $message->getTemplate());
-        $this->assertSame('Merci pour votre compte-rendu d\'action.', $message->getSubject());
         $this->assertCount(4, $message->getVars());
         $this->assertSame(
             [

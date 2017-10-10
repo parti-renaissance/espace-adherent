@@ -55,7 +55,6 @@ class ProcurationProxyMessageFactoryTest extends TestCase
 
         $this->assertInstanceOf(ProcurationProxyCancelledMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Annulation de la mise en relation', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
         $this->assertNull($message->getRecipient(0)->getFullName());
         $this->assertSame('Procuration En Marche !', $message->getSenderName());
@@ -102,7 +101,6 @@ class ProcurationProxyMessageFactoryTest extends TestCase
 
         $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Votre procuration', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
         $this->assertNull($message->getRecipient(0)->getFullName());
         $this->assertSame('Procuration En Marche !', $message->getSenderName());

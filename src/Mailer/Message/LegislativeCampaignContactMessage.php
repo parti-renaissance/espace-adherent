@@ -11,10 +11,8 @@ final class LegislativeCampaignContactMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '143247',
             $recipient,
             null,
-            'Élections Législatives - Nouvelle demande de contact',
             [
                 'email' => static::escape($contact->getEmailAddress()),
                 'first_name' => static::escape($contact->getFirstName()),

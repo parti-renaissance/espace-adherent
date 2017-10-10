@@ -30,10 +30,8 @@ class CommitteeMessageNotificationMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Des nouvelles de votre comité',
             static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
             $feedItem->getAuthor()->getEmailAddress()

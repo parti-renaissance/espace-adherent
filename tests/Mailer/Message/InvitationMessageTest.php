@@ -20,8 +20,6 @@ class InvitationMessageTest extends TestCase
         ));
 
         $this->assertInstanceOf(InvitationMessage::class, $message);
-        $this->assertSame('108243', $message->getTemplate());
-        $this->assertSame('Paul Auffray vous invite à rejoindre En Marche.', $message->getSubject());
         $this->assertCount(3, $message->getVars());
         $this->assertSame(
             [

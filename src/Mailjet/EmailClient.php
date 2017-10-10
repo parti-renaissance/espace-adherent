@@ -1,4 +1,4 @@
-<?php
+ç<?php
 
 namespace AppBundle\Mailjet;
 

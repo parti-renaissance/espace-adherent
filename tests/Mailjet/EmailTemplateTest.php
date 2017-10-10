@@ -15,21 +15,20 @@ class EmailTemplateTest extends TestCase
      */
     public function testCreateEmailTemplateWithoutRecipients()
     {
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
+        $email = new EmailTemplate(Uuid::uuid4(), 'dummy_message', 'contact@en-marche.fr');
         $email->getBody();
     }
 
     public function testCreateEmailTemplate()
     {
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new EmailTemplate(Uuid::uuid4(), 'dummy_message', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
         $email->addRecipient('vincent777h@example.tld', 'Vincent Durand', ['name' => 'Vincent Durand']);
 
         $body = [
             'FromEmail' => 'contact@en-marche.fr',
             'FromName' => 'En Marche !',
-            'Subject' => 'Votre donation !',
-            'MJ-TemplateID' => '12345',
+            'MJ-TemplateID' => 'dummy_message',
             'MJ-TemplateLanguage' => true,
             'Recipients' => [
                 [
@@ -54,14 +53,13 @@ class EmailTemplateTest extends TestCase
 
     public function testCreateEmailTemplateWithReplyTo()
     {
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
+        $email = new EmailTemplate(Uuid::uuid4(), 'dummy_message', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $body = [
             'FromEmail' => 'contact@en-marche.fr',
             'FromName' => 'En Marche !',
-            'Subject' => 'Votre donation !',
-            'MJ-TemplateID' => '12345',
+            'MJ-TemplateID' => 'dummy_message',
             'MJ-TemplateLanguage' => true,
             'Recipients' => [
                 [
@@ -82,12 +80,15 @@ class EmailTemplateTest extends TestCase
 
     public function testCreateEmailTemplateFromDummyMessage()
     {
-        $email = EmailTemplate::createWithMessage(DummyMessage::create(), 'contact@en-marche.fr');
+        $email = EmailTemplate::createWithMessage(
+            DummyMessage::create(),
+            'dummy_message',
+            'contact@en-marche.fr'
+        );
 
         $body = [
             'FromEmail' => 'contact@en-marche.fr',
-            'Subject' => 'Dummy Message',
-            'MJ-TemplateID' => '66666',
+            'MJ-TemplateID' => 'dummy_message',
             'MJ-TemplateLanguage' => true,
             'Recipients' => [
                 [
@@ -107,8 +108,7 @@ class EmailTemplateTest extends TestCase
     {
         $email = new EmailTemplate(
             Uuid::uuid4(),
-            '12345',
-            'Votre donation !',
+            'dummy_message',
             'contact@en-marche.fr',
             'En Marche !',
             null,
@@ -120,8 +120,7 @@ class EmailTemplateTest extends TestCase
         $body = [
             'FromEmail' => 'contact@en-marche.fr',
             'FromName' => 'En Marche !',
-            'Subject' => 'Votre donation !',
-            'MJ-TemplateID' => '12345',
+            'MJ-TemplateID' => 'dummy_message',
             'MJ-TemplateLanguage' => true,
             'Vars' => [
                 'name' => 'John Smith',

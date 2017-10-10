@@ -11,10 +11,8 @@ final class TonMacronFriendMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '135119',
             $invitation->getFriendEmailAddress(),
             null,
-            $invitation->getMailSubject(),
             ['message' => $invitation->getMailBody()]
         );
 

@@ -21,10 +21,8 @@ final class CommitteeContactMembersMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
             $first->getEmailAddress(),
             $first->getFullName(),
-            'Des nouvelles de votre comité',
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
                 'target_message' => $content,
