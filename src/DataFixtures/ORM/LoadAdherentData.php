@@ -9,13 +9,15 @@ use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
+class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -174,7 +176,9 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
-        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, [$this->getReference('bmr02')]);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('referent'));
+        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->enableCommitteesNotifications();
 
         $coordinateur = $adherentFactory->createFromArray([
@@ -513,5 +517,12 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     private function getCommitteeFactory(): CommitteeFactory
     {
         return $this->container->get('app.committee.factory');
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadBoardMemberRoleData::class,
+        ];
     }
 }

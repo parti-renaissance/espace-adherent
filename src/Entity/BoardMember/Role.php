@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\BoardMember;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,13 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *   name="roles",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="board_member_role_name_unique", columns="name")
+ *     @ORM\UniqueConstraint(name="board_member_role_code_unique", columns="code")
  *   }
  * )
  *
- * @UniqueEntity("name")
- *
- * @Algolia\Index
+ * @UniqueEntity("code")
+ * @UniqueEntity("maleName")
+ * @UniqueEntity("femaleName")
  */
 class Role
 {
@@ -30,14 +29,28 @@ class Role
     private $id;
 
     /**
+     * @ORM\Column(length=20, unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max="20")
+     */
+    private $code;
+
+    /**
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
-    private $name = '';
+    private $maleName = '';
+
+    /**
+     * @ORM\Column(length=100, unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max="100")
+     */
+    private $femaleName = '';
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="roles")
@@ -46,16 +59,11 @@ class Role
      */
     private $boardMembers;
 
-    public function __construct(?string $name = null)
+    public function __construct(?string $code = null, ?string $maleName = null, ?string $femaleName = null)
     {
-        if ($name) {
-            $this->name = $name;
-        }
-    }
-
-    public function __toString(): string
-    {
-        return $this->name ?: '';
+        $this->code = (string) $code;
+        $this->maleName = (string) $maleName;
+        $this->femaleName = (string) $femaleName;
     }
 
     public function getId(): ?int
@@ -63,14 +71,34 @@ class Role
         return $this->id;
     }
 
-    public function getName(): string
+    public function setCode(string $code): void
     {
-        return $this->name;
+        $this->code = $code;
     }
 
-    public function setName(string $name): void
+    public function getCode(): ?string
     {
-        $this->name = $name;
+        return $this->code;
+    }
+
+    public function getMaleName(): string
+    {
+        return $this->maleName;
+    }
+
+    public function setMaleName(string $maleName): void
+    {
+        $this->maleName = $maleName;
+    }
+
+    public function getFemaleName(): string
+    {
+        return $this->maleName;
+    }
+
+    public function setFemaleName(string $femaleName): void
+    {
+        $this->femaleName = $femaleName;
     }
 
     public function addBoardMember(BoardMember $boardMember): void

@@ -5,12 +5,13 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\ActivitySubscription;
 use AppBundle\Entity\Adherent;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentSubscriptionData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
+class LoadAdherentSubscriptionData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -31,5 +32,12 @@ class LoadAdherentSubscriptionData extends AbstractFixture implements FixtureInt
         $manager->persist($activity4);
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadAdherentData::class,
+        ];
     }
 }

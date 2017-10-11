@@ -18,7 +18,6 @@ class BoardMember
 {
     const AREA_FRANCE_METROPOLITAN = 'metropolitan';
     const AREA_OVERSEAS_FRANCE = 'overseas';
-    const AREA_NEW_CALEDONIA = 'new_caledonia';
     const AREA_ABROAD = 'abroad';
 
     /**
@@ -61,8 +60,8 @@ class BoardMember
      *         @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
+     * @ORM\OrderBy({"name"="ASC"})
      * @Assert\NotNull
-     *
      */
     private $roles;
 
@@ -91,10 +90,10 @@ class BoardMember
         $this->area = $area;
     }
 
-    public function addRole(Role $skill): void
+    public function addRole(Role $role): void
     {
-        if (!$this->roles->contains($skill)) {
-            $this->roles->add($skill);
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
         }
     }
 
@@ -104,10 +103,10 @@ class BoardMember
         $this->addRole($new);
     }
 
-    public function removeRole(Role $skill): void
+    public function removeRole(Role $role): void
     {
-        if ($this->roles->contains($skill)) {
-            $this->roles->removeElement($skill);
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
         }
     }
 
@@ -129,7 +128,6 @@ class BoardMember
         return [
             self::AREA_FRANCE_METROPOLITAN,
             self::AREA_OVERSEAS_FRANCE,
-            self::AREA_NEW_CALEDONIA,
             self::AREA_ABROAD,
         ];
     }

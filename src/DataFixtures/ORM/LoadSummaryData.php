@@ -14,11 +14,11 @@ use AppBundle\Summary\JobDuration;
 use AppBundle\Summary\JobLocation;
 use AppBundle\Summary\SummaryFactory;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
+class LoadSummaryData implements FixtureInterface, DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -207,8 +207,11 @@ class LoadSummaryData implements FixtureInterface, OrderedFixtureInterface
         return new SummaryFactory(new Slugify());
     }
 
-    public function getOrder()
+    public function getDependencies()
     {
-        return 3;
+        return [
+            LoadAdherentData::class,
+            LoadSkillData::class,
+        ];
     }
 }

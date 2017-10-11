@@ -13,13 +13,13 @@ use AppBundle\Entity\Event as EntityEvent;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadEventData implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadEventData implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
@@ -367,8 +367,11 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Ordere
         return $this->container->get('app.event.registration_factory');
     }
 
-    public function getOrder()
+    public function getDependencies()
     {
-        return 2;
+        return [
+            LoadAdherentData::class,
+            LoadEventCategoryData::class,
+        ];
     }
 }
