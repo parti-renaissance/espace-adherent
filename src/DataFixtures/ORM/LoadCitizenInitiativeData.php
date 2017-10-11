@@ -11,13 +11,13 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     const CITIZEN_INITIATIVE_1_UUID = '5b603c20-09e3-4c7d-8da1-f326f436e208';
     const CITIZEN_INITIATIVE_2_UUID = '49d77390-ca68-49b7-ad56-bb0f31dc30b9';
@@ -264,8 +264,11 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
         return $this->container->get('app.event.registration_factory');
     }
 
-    public function getOrder()
+    public function getDependencies()
     {
-        return 2;
+        return [
+            LoadAdherentData::class,
+            LoadCitizenInitiativeCategoryData::class,
+        ];
     }
 }

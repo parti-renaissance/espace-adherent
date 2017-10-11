@@ -4,12 +4,13 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
+class LoadProcurationData implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -217,5 +218,12 @@ class LoadProcurationData implements FixtureInterface, ContainerAwareInterface
         $reflectionProperty->setValue($request1, new \DateTime('-48 hours'));
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadAdherentData::class,
+        ];
     }
 }

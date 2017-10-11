@@ -5,13 +5,13 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\Projection\ReferentManagedUserFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadReferentManagedUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadReferentManagedUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -135,8 +135,10 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
         return new ReferentManagedUserFactory();
     }
 
-    public function getOrder()
+    public function getDependencies()
     {
-        return 5;
+        return [
+            LoadAdherentData::class,
+        ];
     }
 }
