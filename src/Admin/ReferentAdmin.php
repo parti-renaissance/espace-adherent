@@ -111,86 +111,86 @@ class ReferentAdmin extends AbstractAdmin
     {
         $mapper
             ->with('Informations personnelles', ['class' => 'col-md-4'])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Vivibilité',
-                'choices' => [
-                    'Visible' => Referent::ENABLED,
-                    'Masqué' => Referent::DISABLED,
-                ],
-            ])
-            ->add('gender', GenderType::class, [
-                'label' => 'Genre',
-                'expanded' => false,
-            ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-                'attr' => [
-                    'placeholder' => 'Dumoulin',
-                ],
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-                'attr' => [
-                    'placeholder' => 'Alexandre',
-                ],
-            ])
-            ->add('emailAddress', EmailType::class, [
-                'label' => 'Adresse e-mail',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'alexandre@dumoulin.com',
-                ],
-            ])
-            ->add('slug', null, [
-                'label' => 'Identifiant URL',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'alexandre-dumoulin',
-                ],
-                'help' => 'Laissez le champ vide pour que le système génère cette valeur automatiquement',
-            ])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Visibilité',
+                    'choices' => [
+                        'Visible' => Referent::ENABLED,
+                        'Masqué' => Referent::DISABLED,
+                    ],
+                ])
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
+                    'expanded' => false,
+                ])
+                ->add('lastName', null, [
+                    'label' => 'Nom',
+                    'attr' => [
+                        'placeholder' => 'Dumoulin',
+                    ],
+                ])
+                ->add('firstName', null, [
+                    'label' => 'Prénom',
+                    'attr' => [
+                        'placeholder' => 'Alexandre',
+                    ],
+                ])
+                ->add('emailAddress', EmailType::class, [
+                    'label' => 'Adresse e-mail',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'alexandre@dumoulin.com',
+                    ],
+                ])
+                ->add('slug', null, [
+                    'label' => 'Identifiant URL',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'alexandre-dumoulin',
+                    ],
+                    'help' => 'Laissez le champ vide pour que le système génère cette valeur automatiquement',
+                ])
             ->end()
             ->with('Zone', ['class' => 'col-md-4'])
-            ->add('areas', TextType::class, [
-                'label' => 'Zone',
-                'required' => true,
-            ])
-            ->add('geojson', TextareaType::class, [
-                'label' => 'Données GeoJSON',
-                'required' => false,
-            ])
-            ->add('areaLabel', TextType::class, [
-                'label' => 'Nom de la zone',
-                'required' => true,
-            ])
+                ->add('areas', TextType::class, [
+                    'label' => 'Zone',
+                    'required' => true,
+                ])
+                ->add('geojson', TextareaType::class, [
+                    'label' => 'Données GeoJSON',
+                    'required' => false,
+                ])
+                ->add('areaLabel', TextType::class, [
+                    'label' => 'Nom de la zone',
+                    'required' => true,
+                ])
             ->end()
             ->with('Photo', ['class' => 'col-md-4'])
-            ->add('media', null, [
-                'label' => false,
-            ])
+                ->add('media', null, [
+                    'label' => false,
+                ])
             ->end()
             ->with('Parcours personnel', ['class' => 'col-md-9'])
-            ->add('description', TextareaType::class, [
-                'label' => 'Contenu',
-                'required' => false,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
-            ])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Contenu',
+                    'required' => false,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
             ->end()
             ->with('Liens Web', ['class' => 'col-md-3'])
-            ->add('twitterPageUrl', UrlType::class, [
-                'label' => 'Page Twitter',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'https://twitter.com/alexandredumoulin',
-                ],
-            ])
-            ->add('facebookPageUrl', UrlType::class, [
-                'label' => 'Page Facebook',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'https://facebook.com/alexandre-dumoulin',
-                ],
-            ])
+                ->add('twitterPageUrl', UrlType::class, [
+                    'label' => 'Page Twitter',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'https://twitter.com/alexandredumoulin',
+                    ],
+                ])
+                ->add('facebookPageUrl', UrlType::class, [
+                    'label' => 'Page Facebook',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'https://facebook.com/alexandre-dumoulin',
+                    ],
+                ])
             ->end()
         ;
         $mapper->get('areas')->addModelTransformer($this->dataTransformer);
