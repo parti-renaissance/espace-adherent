@@ -638,6 +638,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->boardMember = new BoardMember();
         $this->boardMember->setArea($area);
         $this->boardMember->setRoles($roles);
+        $this->boardMember->setAdherent($this);
     }
 
     public function isBoardMember(): bool
