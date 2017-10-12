@@ -22,6 +22,10 @@
             <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
         {% endif %}
 
+        {% if object.isBoardMember %}
+            <span class="label label-primary" style="padding: 2px;">Membre du conseil</span><br/>
+        {% endif %}
+
     {% else %}
         <span class="label label-default">Adhérent</span>
     {% endif %}

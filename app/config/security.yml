@@ -138,6 +138,9 @@ security:
         ROLE_ADMIN_REFERENTS_AREAS:
             - ROLE_APP_ADMIN_REFERENT_AREA_ALL
 
+        ROLE_ADMIN_BOARD_MEMBER_ROLES:
+            - ROLE_APP_ADMIN_ROLE_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -165,6 +168,7 @@ security:
             - ROLE_APP_ADMIN_PAGE_CREATE
             - ROLE_ADMIN_REFERENTS
             - ROLE_ADMIN_REFERENTS_AREAS
+            - ROLE_ADMIN_BOARD_MEMBER_ROLES
 
     access_decision_manager:
         strategy: unanimous
