@@ -93,7 +93,7 @@ class Role
 
     public function getFemaleName(): string
     {
-        return $this->maleName;
+        return $this->femaleName;
     }
 
     public function setFemaleName(string $femaleName): void
@@ -106,5 +106,10 @@ class Role
         if (!$this->boardMembers->contains($boardMember)) {
             $this->boardMembers->add($boardMember);
         }
+    }
+
+    public function __toString(): string
+    {
+        return $this->maleName;
     }
 }

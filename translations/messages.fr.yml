@@ -193,6 +193,14 @@ event.invitation.form.invite: Envoyer
 event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !
 
 #
+# Board Member
+#
+board_member.area.metropolitan: France métropolitaine
+board_member.area.overseas: France d'Outre-Mer
+board_member.area.abroad: Étranger
+
+
+#
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?

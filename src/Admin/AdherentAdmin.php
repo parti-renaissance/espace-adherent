@@ -3,6 +3,8 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\GenderType;
@@ -122,6 +124,18 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Accepte de recevoir des SMS de la part d\'En Marche !',
                 ])
             ->end()
+            ->with('Membre du conseil', ['class' => 'col-md-6'])
+                ->add('isBoardMember', 'boolean', [
+                    'label' => 'Est membre du conseil ?',
+                ])
+                ->add('boardMemberArea', null, [
+                    'label' => 'Région',
+                ])
+                ->add('boardMemberRoles', null, [
+                    'label' => 'Rôles',
+                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
+                ])
+            ->end()
             ->with('Candidat législatives', ['class' => 'col-md-6'])
                 ->add('legislativeCandidate', 'boolean', [
                     'label' => 'Est candidat aux législatives ?',
@@ -180,6 +194,22 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Référent', ['class' => 'col-md-6'])
+                ->add('managedArea.codesAsString', TextType::class, [
+                    'label' => 'Codes des zones gérés',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas référent. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                ])
+                ->add('managedArea.markerLatitude', TextType::class, [
+                    'label' => 'Latitude du point sur la carte des référents',
+                    'required' => false,
+                ])
+                ->add('managedArea.markerLongitude', TextType::class, [
+                    'label' => 'Longitude du point sur la carte des référents',
+                    'required' => false,
+                ])
+            ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
                 ->add('coordinatorManagedAreaCodesAsString', TextType::class, [
                     'label' => 'Codes des zones gérés',
@@ -196,20 +226,20 @@ class AdherentAdmin extends AbstractAdmin
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
-            ->with('Référent', ['class' => 'col-md-3'])
-                ->add('managedArea.codesAsString', TextType::class, [
-                    'label' => 'Codes des zones gérés',
+            ->with('Membre du conseil', ['class' => 'col-md-6'])
+                ->add('boardMemberArea', ChoiceType::class, [
+                    'label' => 'Région',
+                    'choices' => BoardMember::AREAS_CHOICES,
                     'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas référent. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du conseil.',
                 ])
-                ->add('managedArea.markerLatitude', TextType::class, [
-                    'label' => 'Latitude du point sur la carte des référents',
-                    'required' => false,
-                ])
-                ->add('managedArea.markerLongitude', TextType::class, [
-                    'label' => 'Longitude du point sur la carte des référents',
-                    'required' => false,
+                ->add('boardMemberRoles', 'sonata_type_model', [
+                        'expanded' => true,
+                        'by_reference' => false,
+                        'multiple' => true,
+                        'btn_add' => false,
+                        'class' => Role::class,
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du conseil.',
                 ])
             ->end()
         ;

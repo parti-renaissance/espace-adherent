@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
@@ -273,7 +274,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost();
+        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isBoardMember();
     }
 
     public function getPassword(): string
@@ -645,6 +646,50 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         return $this->boardMember instanceof BoardMember
             && !empty($this->boardMember->getArea()) && !empty($this->boardMember->getRoles());
+    }
+
+    public function getBoardMemberArea(): ?string
+    {
+        return $this->boardMember ? $this->boardMember->getArea() : '';
+    }
+
+    public function setBoardMemberArea(?string $area): void
+    {
+        if (!$area) {
+            return;
+        }
+
+        if (!$this->boardMember) {
+            $this->boardMember = new BoardMember();
+            $this->boardMember->setAdherent($this);
+        }
+
+        $this->boardMember->setArea($area);
+    }
+
+    /**
+     * @return Role[]|Collection|iterable
+     */
+    public function getBoardMemberRoles(): iterable
+    {
+        return $this->boardMember ? $this->boardMember->getRoles() : [];
+    }
+
+    /**
+     * @param Role[]|Collection $roles
+     */
+    public function setBoardMemberRoles(iterable $roles): void
+    {
+        if (0 === $roles->count()) {
+            return;
+        }
+
+        if (!$this->boardMember) {
+            $this->boardMember = new BoardMember();
+            $this->boardMember->setAdherent($this);
+        }
+
+        $this->boardMember->setRoles($roles);
     }
 
     public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void

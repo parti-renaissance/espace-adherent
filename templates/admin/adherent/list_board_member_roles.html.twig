@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.boardMember %}
+        {% for role in object.boardMember.roles %}
+            {% if object.gender == constant('AppBundle\\ValueObject\\Genders::MALE') %}
+                {{ role.maleName }}
+            {% else %}
+                {{ role.femaleName }}
+            {% endif %}
+            {%- if not loop.last -%}, {%- endif -%}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
