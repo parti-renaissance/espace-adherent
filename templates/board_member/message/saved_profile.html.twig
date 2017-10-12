@@ -1,0 +1,13 @@
+{% extends 'board_member/message/layout.html.twig' %}
+
+{%- block return_path path('app_board_member_saved_profile') -%}
+
+{% block recipients %}
+    <p>à votre liste de membres sauvegardés</p>
+    {% for member in message.recipients %}
+        <div>
+            <p>{{ member }}</p>
+            <p>{{ member|age }}, {{ member.isFemale ? 'F' : 'M' }}, {{ member.cityName }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

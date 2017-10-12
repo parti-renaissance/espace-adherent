@@ -1,35 +1,44 @@
-{% if boardMembers|length == 0 %}
-    {% if path('app_board_member_search') == currentRoute %}
+{% if results|length == 0 %}
+    {% if 'app_board_member_search' == currentRoute %}
         {% set textBtnHasMemberInList = 'Profil sauvegardé' %}
-        <h1>Aucun resultat pour ces critères de recherche</h1>
-    {% elseif path('app_board_member_saved_profile') == currentRoute %}
+        <h2>Aucun resultat pour ces critères de recherche</h2>
+    {% elseif 'app_board_member_saved_profile' == currentRoute %}
         {% set textBtnHasMemberInList = 'Profil sauvegardé' %}
-        <h1>Aucun profil sauvegardé</h1>
+        <h2>Aucun profil sauvegardé</h2>
     {% endif %}
 {% else %}
-    <table>
-        <tbody>
-            {% for member in boardMembers %}
-                <tr>
-                    <td><img src="" alt=""></td>
-                    <td>
-                        <p>{{ member }}</p>
-                        <p>{{ member|age }}, {{ member.isFemale ? 'F' : 'M' }}, {{ member.cityName }}</p>
-                    </td>
-                    <td>
-                        {% if path('app_board_member_search') == currentRoute %}
-                            {% if app.user.boardMember.hasMember(member)  %}
+    <ul class="b__nudge--top">
+        {% for member in results %}
+            <li>
+                <ul class="spaces__results__row">
+                    <li>
+                        <div>
+                            <img src="{{ asset('images/emojis/waving-hand-sign.svg') }}" width="50" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="text--bold">{{ member }}</div>
+                        <div>{{ member|age }}, {{ member.isFemale ? 'F' : 'M' }}, {{ member.cityName }}</div>
+                    </li>
+                    <li>
+                        <div>Deputé(e)</div>
+                    </li>
+                    <li>
+                        {% if 'app_board_member_search' == currentRoute %}
+                            {% if app.user.boardMember.hasSavedBoardMember(member.boardMember)  %}
                                 <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Profil sauvegardé</span>
                             {% else %}
                                 <span class="btn-add-member-list" data-member-id="{{ member.id }}">Sauvegarder son profil</span>
                             {% endif %}
-                        {% elseif path('app_board_member_saved_profile') == currentRoute %}
+                        {% elseif 'app_board_member_saved_profile' == currentRoute %}
                             <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Supprimer de ma liste</span>
                         {% endif %}
-                        <a href="">Envoyer un message</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                        <a href="{{ path('app_board_member_message_member', {member: member.id}) }}" class="newbtn newbtn--smaller newbtn--light">
+                            Envoyer un message
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}

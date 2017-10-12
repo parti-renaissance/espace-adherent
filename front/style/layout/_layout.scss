@@ -145,6 +145,12 @@
         &--grow-1 {
             flex-grow: 1;
         }
+
+        &--wrap {
+            display: inline-flex;
+            flex-flow: column wrap;
+            max-height: 100%;
+        }
     }
 
     &__tablet {
@@ -348,6 +354,10 @@
 
         &--left-large {
             margin-left: 30px;
+        }
+
+        &--left-medium {
+            margin-left: 15px;
         }
 
         &--left-small {
