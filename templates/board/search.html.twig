@@ -1,5 +1,15 @@
 {% extends 'board/layout.html.twig' %}
+{% set countBoardMembers = boardMembers|length %}
+{% set currentRoute = app.request.attributes.get('_route') %}
 
 {% block content__inner %}
-  <h1>Search page</h1>
+    <h1>Search page</h1>
+    <div>
+        {# form #}
+    </div>
+    <div>
+        <h1>Tous les résultats ({{ countBoardMembers }})</h1>
+        <a href="">Envoyer un message à ces {{ countBoardMembers }} personne{% if countBoardMembers > 1 %}s{% endif %}</a>
+        {% include('board/_list_board_members.html.twig') %}
+    </div>
 {% endblock %}

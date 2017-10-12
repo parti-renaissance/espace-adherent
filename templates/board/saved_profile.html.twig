@@ -1,5 +1,15 @@
 {% extends 'board/layout.html.twig' %}
+{% set countBoardMembers = boardMembers|length %}
+{% set currentRoute = app.request.attributes.get('_route') %}
 
 {% block content__inner %}
-  <h1>Saved profile page</h1>
+    <h1>Saved profile page</h1>
+    <div>
+        {# stats #}
+    </div>
+    <div>
+        <h1>{{ countBoardMembers }} profil{% if countBoardMembers > 1 %}s{% endif %} sauvegardé{% if countBoardMembers > 1 %}s{% endif %}</h1>
+        <a href="">Envoyer un message à ces {{ countBoardMembers }} personne{% if countBoardMembers > 1 %}s{% endif %}</a>
+        {% include('board/_list_board_members.html.twig') %}
+    </div>
 {% endblock %}
