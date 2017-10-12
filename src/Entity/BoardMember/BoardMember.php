@@ -65,6 +65,28 @@ class BoardMember
      */
     private $roles;
 
+    /**
+     * @var BoardMember[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="saved_board_members",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="board_member_owner_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="board_member_saved_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private $savedMembers;
+
+    public function __construct()
+    {
+        $this->savedMembers = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -130,5 +152,37 @@ class BoardMember
             self::AREA_OVERSEAS_FRANCE,
             self::AREA_ABROAD,
         ];
+    }
+
+    /**
+     * @return BoardMember[]|Collection
+     */
+    public function getSavedMembers(): iterable
+    {
+        return $this->savedMembers;
+    }
+
+    public function setSavedMembers(ArrayCollection $savedMembers)
+    {
+        $this->savedMembers = $savedMembers;
+    }
+
+    public function addSavedBoardMember(BoardMember $boardMember): void
+    {
+        if (!$this->savedMembers->contains($boardMember)) {
+            $this->savedMembers->add($boardMember);
+        }
+    }
+
+    public function removeSavedBoardMember(BoardMember $boardMember): void
+    {
+        if ($this->savedMembers->contains($boardMember)) {
+            $this->savedMembers->removeElement($boardMember);
+        }
+    }
+
+    public function hasSavedBoardMember(BoardMember $boardMember): bool
+    {
+        return $this->savedMembers->contains($boardMember);
     }
 }

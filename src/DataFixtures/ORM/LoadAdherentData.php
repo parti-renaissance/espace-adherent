@@ -210,6 +210,9 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-02-16 17:12:08',
         ]);
         $adherent9->setLegislativeCandidate(true);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('adherent'));
+        $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->enableCommitteesNotifications();
 
         $adherent10 = $adherentFactory->createFromArray([
@@ -225,6 +228,9 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '49 2211653540',
             'registered_at' => '2017-02-23 13:56:12',
         ]);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('adherent'));
+        $adherent10->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent10->enableCommitteesNotifications();
 
         $adherent11 = $adherentFactory->createFromArray([
@@ -241,6 +247,9 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-04-10 14:08:12',
         ]);
         $adherent11->enableCommitteesNotifications();
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('adherent'));
+        $adherent11->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
@@ -255,6 +264,12 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '1 2123150100',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('adherent'));
+        $adherent12->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $adherent12->getBoardMember()->addSavedBoardMember($adherent11->getBoardMember());
+        $adherent12->getBoardMember()->addSavedBoardMember($adherent10->getBoardMember());
+        $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
         $adherent12->enableCommitteesNotifications();
         $adherent12->setLegislativeCandidate(true);
 
