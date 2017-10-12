@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\AppBundle\Referent;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Referent\ManagedAreaUtils;
