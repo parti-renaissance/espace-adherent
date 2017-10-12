@@ -124,9 +124,17 @@ class BoardMemberControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
 
-        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
-
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
+        $tr = $crawler->filter('tr');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(3, $tr->count());
+        $this->assertSame('Laura Deloche', $tr->first()->filter('td')->eq(1)->filter('p')->first()->text());
+        $this->assertSame('44, F, Rouen', $tr->first()->filter('td')->eq(1)->filter('p')->eq(1)->text());
+        $this->assertSame('Martine Lindt', $tr->eq(1)->filter('td')->eq(1)->filter('p')->first()->text());
+        $this->assertSame('16, F, Berlin', $tr->eq(1)->filter('td')->eq(1)->filter('p')->eq(1)->text());
+        $this->assertSame('Élodie Dutemps', $tr->eq(2)->filter('td')->eq(1)->filter('p')->first()->text());
+        $this->assertSame('15, F, Singapour', $tr->eq(2)->filter('td')->eq(1)->filter('p')->eq(1)->text());
+        $this->assertSame('3 profils sauvegardés', $crawler->filter('h2')->first()->text());
     }
 
     public function testSendMessageToSearchResult()
