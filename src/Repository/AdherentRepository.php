@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
@@ -14,6 +15,7 @@ use AppBundle\Geocoder\Coordinates;
 use AppBundle\Referent\ManagedAreaUtils;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -319,5 +321,100 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->setParameter('member', $owner);
 
         return new AdherentCollection($qb->getQuery()->getResult());
+    }
+
+    public function createBoardMemberQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->innerJoin('a.boardMember', 'bm')
+        ;
+    }
+
+    public function createBoardMemberFilterQueryBuilder(BoardMemberFilter $filter): QueryBuilder
+    {
+        $qb = $this->createBoardMemberQueryBuilder();
+
+        if ($queryGender = $filter->getQueryGender()) {
+            $qb->andWhere('a.gender = :gender');
+            $qb->setParameter('gender', $queryGender);
+        }
+
+        if ($queryAgeMinimum = $filter->getQueryAgeMinimum()) {
+            $dateMaximum = new \DateTime('now');
+            $dateMaximum->modify('-'.$queryAgeMinimum.' years');
+
+            $qb->andWhere('a.birthdate <= :dateMaximum');
+            $qb->setParameter('dateMaximum', $dateMaximum->format('Y-m-d'));
+        }
+
+        if ($queryAgeMaximum = $filter->getQueryAgeMaximum()) {
+            $dateMinimum = new \DateTime('now');
+            $dateMinimum->modify('-'.$queryAgeMaximum.' years');
+
+            $qb->andWhere('a.birthdate >= :dateMinimum');
+            $qb->setParameter('dateMinimum', $dateMinimum->format('Y-m-d'));
+        }
+
+        if ($queryFirstName = $filter->getQueryFirstName()) {
+            $qb->andWhere('a.firstName LIKE :firstName');
+            $qb->setParameter('firstName', '%'.$queryFirstName.'%');
+        }
+
+        if ($queryLastName = $filter->getQueryLastName()) {
+            $qb->andWhere('a.lastName LIKE :lastName');
+            $qb->setParameter('lastName', '%'.$queryLastName.'%');
+        }
+
+        if ($queryPostalCode = $filter->getQueryPostalCode()) {
+            $queryPostalCode = array_map('trim', explode(',', $queryPostalCode));
+
+            $postalCodeExpression = $qb->expr()->orX();
+
+            foreach ($queryPostalCode as $key => $postalCode) {
+                $postalCodeExpression->add('a.postAddress.postalCode LIKE :postalCode_'.$key);
+                $qb->setParameter('postalCode_'.$key, $postalCode.'%');
+            }
+
+            $qb->andWhere($postalCodeExpression);
+        }
+
+        if (count($queryAreas = $filter->getQueryAreas())) {
+            $areasExpression = $qb->expr()->orX();
+
+            foreach ($queryAreas as $key => $area) {
+                $areasExpression->add('bm.area = :area_'.$key);
+                $qb->setParameter('area_'.$key, $area);
+            }
+
+            $qb->andWhere($areasExpression);
+        }
+
+        if (count($queryRoles = $filter->getQueryRoles())) {
+            $qb->innerJoin('bm.roles', 'bmr');
+
+            $rolesExpression = $qb->expr()->orX();
+
+            foreach ($queryRoles as $key => $role) {
+                $rolesExpression->add('bmr.code = :board_member_role_'.$key);
+                $qb->setParameter('board_member_role_'.$key, $role);
+            }
+
+            $qb->andWhere($rolesExpression);
+        }
+
+        return $qb;
+    }
+
+    public function searchBoardMembers(BoardMemberFilter $filter): Paginator
+    {
+        $query = $this
+            ->createBoardMemberFilterQueryBuilder($filter)
+            ->getQuery()
+            ->setFirstResult($filter->getOffset())
+            ->setMaxResults(BoardMemberFilter::PER_PAGE)
+        ;
+
+        return new Paginator($query);
     }
 }

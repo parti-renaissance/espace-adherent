@@ -1,4 +1,4 @@
-{% if boardMembers|length == 0 %}
+{% if results|length == 0 %}
     {% if path('app_board_member_search') == currentRoute %}
         {% set textBtnHasMemberInList = 'Profil sauvegardé' %}
         <h1>Aucun resultat pour ces critères de recherche</h1>
@@ -9,7 +9,7 @@
 {% else %}
     <table>
         <tbody>
-            {% for member in boardMembers %}
+            {% for member in results %}
                 <tr>
                     <td><img src="" alt=""></td>
                     <td>

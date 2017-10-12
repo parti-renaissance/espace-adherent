@@ -230,7 +230,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
-        $adherent10->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->enableCommitteesNotifications();
 
         $adherent11 = $adherentFactory->createFromArray([
@@ -249,7 +249,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent11->enableCommitteesNotifications();
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
-        $adherent11->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
@@ -266,7 +266,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
-        $adherent12->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $adherent12->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent12->getBoardMember()->addSavedBoardMember($adherent11->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent10->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());

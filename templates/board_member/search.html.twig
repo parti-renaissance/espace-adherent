@@ -1,16 +1,137 @@
 {% extends 'board_member/layout.html.twig' %}
-{% set countBoardMembers = boardMembers|length %}
+
 {% set currentRoute = app.request.attributes.get('_route') %}
 
 {% block content__inner %}
     <h1>Search page</h1>
     <div>
-        {# form #}
+        <form method="get" action="{{ path('app_board_search') }}#send-message">
+
+            <div>Gender</div>
+            <div class="form__row form__radio-button">
+                <input type="radio" value="" id="parameter_gender_all"
+                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                        {{ filter.queryGender|length == 0 ? 'checked="checked"' : '' }} />
+                <label for="parameter_gender_all">
+                    Tous
+                </label>
+            </div>
+            <div class="form__row form__radio-button">
+                <input type="radio" value="female" id="parameter_gender_female"
+                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                        {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
+                <label for="parameter_gender_female">
+                    Femme
+                </label>
+            </div>
+            <div class="form__row form__radio-button">
+                <input type="radio" value="male" id="parameter_gender_male"
+                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                        {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
+                <label for="parameter_gender_male">
+                    Homme
+                </label>
+            </div>
+
+            <div>Age</div>
+            <label class="form form__label">
+                <input type="number"
+                       name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
+                       value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
+                       class="form form__field form--full" />
+            </label>
+            à
+            <label class="form form__label">
+                <input type="number"
+                       name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
+                       value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
+                       class="form form__field form--full" />
+            </label>
+
+            <label class="form form__label">
+                Prénom
+                <input type="text"
+                       name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
+                       value="{{ filter.queryFirstName }}"
+                       class="form form__field form--full" />
+            </label>
+
+            <label class="form form__label">
+                Nom
+                <input type="text"
+                       name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
+                       value="{{ filter.queryLastName }}"
+                       class="form form__field form--full" />
+            </label>
+
+
+            <label class="form form__label">
+                Code postal
+                <input type="text"
+                       name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
+                       value="{{ filter.queryPostalCode }}"
+                       class="form form__field form--full" />
+            </label>
+
+
+            <div>Région</div>
+            <div class="form__row form__checkbox">
+                <input type="checkbox" value="metropolitan" id="parameter_area_metropolitan"
+                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                        {{ 'metropolitan' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                <label for="parameter_area_metropolitan">
+                    Metropolitan
+                </label>
+            </div>
+            <div class="form__row form__checkbox">
+                <input type="checkbox" value="overseas" id="parameter_area_overseas"
+                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                        {{ 'overseas' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                <label for="parameter_area_overseas">
+                    Overseas
+                </label>
+            </div>
+            <div class="form__row form__checkbox">
+                <input type="checkbox" value="abroad" id="parameter_area_abroad"
+                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                        {{ 'abroad' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                <label for="parameter_area_abroad">
+                    Abroad
+                </label>
+            </div>
+
+
+            <div>Rôles</div>
+            {% for role in roles %}
+                <div class="form__row form__checkbox">
+                    <input type="checkbox" value="{{ role.code }}" id="parameter_role_{{ role.code }}"
+                           name="{{ constant('PARAMETER_ROLES', filter) }}[]"
+                            {{ role.code in filter.queryRoles ? 'checked="checked"' : '' }} />
+                    <label for="parameter_role_{{ role.code }}">
+                        {{ role.name }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <div class="referent__filters__buttons">
+                {% if has_filter %}
+                    <a href="{{ path('app_board_search') }}" class="btn btn--no-border">
+                        Réinitialiser le filtre
+                    </a>
+                {% endif %}
+                <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
+                    Filtrer pour envoyer un message
+                </button>
+            </div>
+
+            <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
+        </form>
+
     </div>
     <div>
-        <h2>Tous les résultats ({{ countBoardMembers }})</h2>
-        {% if countBoardMembers > 0  %}
-            <a href="">Envoyer un message à ces {{ countBoardMembers }} personne{% if countBoardMembers > 1 %}s{% endif %}</a>
+        <h2>Tous les résultats ({{ results_count }})</h2>
+        {% if results_count > 0  %}
+            <a href="">Envoyer un message à ces {{ results_count }} personne{% if results_count > 1 %}s{% endif %}</a>
         {% endif %}
         {% include('board_member/_list_board_members.html.twig') %}
     </div>
