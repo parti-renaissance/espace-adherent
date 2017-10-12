@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Adherent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,7 +29,15 @@ class BoardMemberController extends Controller
      */
     public function searchAction()
     {
-        return $this->render('board_member/search.html.twig');
+        $savedMembers = $this->getUser()->getBoardMember()->getSavedMembers();
+        $adherents = [];
+        foreach ($savedMembers as $boardMember) {
+            $adherents[] = $boardMember->getAdherent();
+        }
+
+        return $this->render('board_member/search.html.twig', [
+            'boardMembers' => $adherents,
+        ]);
     }
 
     /**
@@ -37,6 +46,10 @@ class BoardMemberController extends Controller
      */
     public function savedProfilAction()
     {
-        return $this->render('board_member/saved_profile.html.twig');
+        $adherentRepository = $this->getDoctrine()->getRepository(Adherent::class);
+
+        return $this->render('board_member/saved_profile.html.twig', [
+            'boardMembers' => $adherentRepository->findSavedBoardMember($this->getUser()->getId()),
+        ]);
     }
 }

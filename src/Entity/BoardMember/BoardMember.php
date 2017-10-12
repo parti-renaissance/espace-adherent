@@ -5,7 +5,6 @@ namespace AppBundle\Entity\BoardMember;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,7 +54,7 @@ class BoardMember
     private $area;
 
     /**
-     * @var Role[]|Collection
+     * @var Role[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\Role", inversedBy="boardMembers", cascade={"persist"})
      * @ORM\JoinTable(
@@ -73,7 +72,7 @@ class BoardMember
     private $roles;
 
     /**
-     * @var BoardMember[]|Collection
+     * @var BoardMember[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", cascade={"persist"})
      * @ORM\JoinTable(
@@ -140,7 +139,7 @@ class BoardMember
     }
 
     /**
-     * @return Role[]|Collection|iterable
+     * @return Role[]|ArrayCollection|iterable
      */
     public function getRoles(): iterable
     {
@@ -162,7 +161,7 @@ class BoardMember
     }
 
     /**
-     * @return BoardMember[]|Collection
+     * @return BoardMember[]|ArrayCollection|iterable
      */
     public function getSavedMembers(): iterable
     {

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Entity\Adherent;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AdherentExtension extends AbstractExtension
@@ -24,6 +26,13 @@ class AdherentExtension extends AbstractExtension
         ];
     }
 
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('age', [$this, 'getAge']),
+        ];
+    }
+
     public function getMemberInterestLabel(string $interest)
     {
         if (!isset($this->memberInterests[$interest])) {
@@ -40,5 +49,10 @@ class AdherentExtension extends AbstractExtension
         }
 
         return $this->unregistrationReasons[$reasons];
+    }
+
+    public function getAge(Adherent $adherent)
+    {
+        return (new \DateTime())->diff($adherent->getBirthdate())->format('%Y');
     }
 }
