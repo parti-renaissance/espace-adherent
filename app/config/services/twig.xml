@@ -10,6 +10,7 @@
         <service id="AppBundle\Twig\AdherentExtension">
             <argument>%adherent_interests%</argument>
             <argument>%adherent_unregistration_reasons%</argument>
+            <tag name="twig.extension" />
         </service>
 
         <service id="AppBundle\Twig\AssetExtension" />

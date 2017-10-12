@@ -30,7 +30,15 @@ class BoardController extends Controller
      */
     public function searchAction()
     {
-        return $this->render('board/search.html.twig');
+        $savedMembers = $this->getUser()->getBoardMember()->getSavedMembers();
+        $adherents = [];
+        foreach ($savedMembers as $boardMember) {
+            $adherents[] = $boardMember->getAdherent();
+        }
+
+        return $this->render('board/search.html.twig', [
+            'boardMembers' => $adherents,
+        ]);
     }
 
     /**
@@ -39,6 +47,14 @@ class BoardController extends Controller
      */
     public function savedProfilAction()
     {
-        return $this->render('board/saved_profile.html.twig');
+        $savedMembers = $this->getUser()->getBoardMember()->getSavedMembers();
+        $adherents = [];
+        foreach ($savedMembers as $boardMember) {
+            $adherents[] = $boardMember->getAdherent();
+        }
+
+        return $this->render('board/saved_profile.html.twig', [
+            'boardMembers' => $adherents,
+        ]);
     }
 }
