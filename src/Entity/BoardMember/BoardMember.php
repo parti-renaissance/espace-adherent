@@ -4,6 +4,7 @@ namespace AppBundle\Entity\BoardMember;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -66,7 +67,7 @@ class BoardMember
      *         @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
-     * @ORM\OrderBy({"maleName"="ASC"})
+     * @ORM\OrderBy({"name"="ASC"})
      * @Assert\NotNull
      */
     private $roles;
