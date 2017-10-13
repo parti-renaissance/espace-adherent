@@ -1,138 +1,171 @@
 {% extends 'board_member/layout.html.twig' %}
 
-{% set currentRoute = app.request.attributes.get('_route') %}
+{% block page_title 'Recherche membres du conseil' %}
 
 {% block content__inner %}
-    <h1>Search page</h1>
-    <div>
-        <form method="get" action="{{ path('app_board_search') }}#send-message">
-
-            <div>Gender</div>
-            <div class="form__row form__radio-button">
-                <input type="radio" value="" id="parameter_gender_all"
-                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                        {{ filter.queryGender|length == 0 ? 'checked="checked"' : '' }} />
-                <label for="parameter_gender_all">
-                    Tous
-                </label>
-            </div>
-            <div class="form__row form__radio-button">
-                <input type="radio" value="female" id="parameter_gender_female"
-                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                        {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
-                <label for="parameter_gender_female">
-                    Femme
-                </label>
-            </div>
-            <div class="form__row form__radio-button">
-                <input type="radio" value="male" id="parameter_gender_male"
-                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                        {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
-                <label for="parameter_gender_male">
-                    Homme
-                </label>
-            </div>
-
-            <div>Age</div>
-            <label class="form form__label">
-                <input type="number"
-                       name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
-                       value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
-                       class="form form__field form--full" />
-            </label>
-            à
-            <label class="form form__label">
-                <input type="number"
-                       name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
-                       value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
-                       class="form form__field form--full" />
-            </label>
-
-            <label class="form form__label">
-                Prénom
-                <input type="text"
-                       name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
-                       value="{{ filter.queryFirstName }}"
-                       class="form form__field form--full" />
-            </label>
-
-            <label class="form form__label">
-                Nom
-                <input type="text"
-                       name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
-                       value="{{ filter.queryLastName }}"
-                       class="form form__field form--full" />
-            </label>
-
-
-            <label class="form form__label">
-                Code postal
-                <input type="text"
-                       name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
-                       value="{{ filter.queryPostalCode }}"
-                       class="form form__field form--full" />
-            </label>
-
-
-            <div>Région</div>
-            <div class="form__row form__checkbox">
-                <input type="checkbox" value="metropolitan" id="parameter_area_metropolitan"
-                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
-                        {{ 'metropolitan' in filter.queryAreas ? 'checked="checked"' : '' }} />
-                <label for="parameter_area_metropolitan">
-                    Metropolitan
-                </label>
-            </div>
-            <div class="form__row form__checkbox">
-                <input type="checkbox" value="overseas" id="parameter_area_overseas"
-                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
-                        {{ 'overseas' in filter.queryAreas ? 'checked="checked"' : '' }} />
-                <label for="parameter_area_overseas">
-                    Overseas
-                </label>
-            </div>
-            <div class="form__row form__checkbox">
-                <input type="checkbox" value="abroad" id="parameter_area_abroad"
-                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
-                        {{ 'abroad' in filter.queryAreas ? 'checked="checked"' : '' }} />
-                <label for="parameter_area_abroad">
-                    Abroad
-                </label>
-            </div>
-
-
-            <div>Rôles</div>
-            {% for role in roles %}
-                <div class="form__row form__checkbox">
-                    <input type="checkbox" value="{{ role.code }}" id="parameter_role_{{ role.code }}"
-                           name="{{ constant('PARAMETER_ROLES', filter) }}[]"
-                            {{ role.code in filter.queryRoles ? 'checked="checked"' : '' }} />
-                    <label for="parameter_role_{{ role.code }}">
-                        {{ role.name }}
-                    </label>
+    <section class="background--blue-light">
+        <div class="l__wrapper space--30-0">
+            <form method="get" action="{{ path('app_board_search') }}#send-message" class="form__new">
+                <div class="spaces__search__filters">
+                    <ul>
+                        <li>
+                            <legend class="text--bold">Sexe</legend>
+                            <div class="l__row">
+                                <div class="form__radio-button--tab">
+                                    <input type="radio" value="" id="parameter_gender_all"
+                                           name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                            {{ filter.queryGender|length == 0 ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_gender_all">
+                                        Tous
+                                    </label>
+                                </div>
+                                <div class="form__radio-button--tab">
+                                    <input type="radio" value="female" id="parameter_gender_female"
+                                           name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                            {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_gender_female">
+                                        Femme
+                                    </label>
+                                </div>
+                                <div class="form__radio-button--tab">
+                                    <input type="radio" value="male" id="parameter_gender_male"
+                                           name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                            {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_gender_male">
+                                        Homme
+                                    </label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <legend class="text--bold">Age</legend>
+                            <div class="l__row l__row--h-stretch">
+                                <label style="width: 45%">
+                                    <input type="number"
+                                           name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
+                                           value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
+                                           class="form form__field form--full"
+                                           placeholder="18" />
+                                </label>
+                                à
+                                <label style="width: 45%">
+                                    <input type="number"
+                                           name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
+                                           value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
+                                           class="form form__field form--full"
+                                           placeholder="99" />
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <label class="text--bold">
+                                Nom
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
+                                       value="{{ filter.queryLastName }}"
+                                       class="form form__field form--full"
+                                       placeholder="Saisissez un nom" />
+                            </label>
+                        </li>
+                        <li>
+                            <label class="text--bold">
+                                Prénom
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
+                                       value="{{ filter.queryFirstName }}"
+                                       class="form form__field form--full"
+                                       placeholder="Saisissez un prénom" />
+                            </label>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <label class="text--bold">
+                                Code postal ou département
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
+                                       value="{{ filter.queryPostalCode }}"
+                                       class="form form__field form--full"
+                                       placeholder="Saisissez-en un ou plusieurs" />
+                            </label>
+                            <div class="text--gray text--small b__nudge--left-medium b__nudge--top-5">
+                                Exemple: "33450, 12, 8, 75002"
+                            </div>
+                        </li>
+                        <li>
+                            <legend class="text--bold">Région</legend>
+                            <div class="form__checkbox">
+                                <input type="checkbox" value="metropolitan" id="parameter_area_metropolitan"
+                                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                                        {{ 'metropolitan' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                                <label for="parameter_area_metropolitan">
+                                    France métropolitaine
+                                </label>
+                            </div>
+                            <div class="form__checkbox">
+                                <input type="checkbox" value="overseas" id="parameter_area_overseas"
+                                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                                        {{ 'overseas' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                                <label for="parameter_area_overseas">
+                                    France d’Outre-Mer
+                                </label>
+                            </div>
+                            <div class="form__checkbox">
+                                <input type="checkbox" value="abroad" id="parameter_area_abroad"
+                                       name="{{ constant('PARAMETER_AREAS', filter) }}[]"
+                                        {{ 'abroad' in filter.queryAreas ? 'checked="checked"' : '' }} />
+                                <label for="parameter_area_abroad">
+                                    Étranger
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li style="height: 410px;">
+                            <legend class="text--bold">Rôles</legend>
+                                <div class="l__col--wrap l__row--h-stretch">
+                                {% for role in roles %}
+                                    <div class="form__checkbox" style="width: 46%;">
+                                        <input type="checkbox" value="{{ role.code }}" id="parameter_role_{{ role.code }}"
+                                               name="{{ constant('PARAMETER_ROLES', filter) }}[]"
+                                                {{ role.code in filter.queryRoles ? 'checked="checked"' : '' }} />
+                                        <label for="parameter_role_{{ role.code }}">
+                                            {{ role.name }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            {% endfor %}
 
-            <div class="referent__filters__buttons">
-                {% if has_filter %}
-                    <a href="{{ path('app_board_search') }}" class="btn btn--no-border">
-                        Réinitialiser le filtre
-                    </a>
-                {% endif %}
-                <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
-                    Filtrer pour envoyer un message
-                </button>
-            </div>
+                <div class="referent__filters__buttons">
+                    <button type="submit" class="newbtn">
+                        Rechercher
+                    </button>
+                    <div>
+                        {% if has_filter %}
+                            <a href="{{ path('app_board_search') }}"
+                               class="link--newblue text--small b__nudge--top-5">
+                                Réinitialiser
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
 
-            <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
-        </form>
-
-    </div>
-    <div>
-        <h2>Tous les résultats ({{ results_count }})</h2>
-        {% if results_count > 0  %}
-            <a href="">Envoyer un message à ces {{ results_count }} personne{% if results_count > 1 %}s{% endif %}</a>
-        {% endif %}
+                <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
+            </form>
+        </div>
+    </section>
+    <section class="l__wrapper space--60-0">
+        <div class="l__row l__row--h-stretch">
+            <h2>Tous les résultats ({{ results_count }})</h2>
+            {% if results_count > 0  %}
+                <a href="#" class="newbtn">
+                    Envoyer un message à ces {{ results_count }} personne{% if results_count > 1 %}s{% endif %}
+                </a>
+            {% endif %}
+        </div>
         {% include('board_member/_list_board_members.html.twig') %}
-    </div>
+    </section>
 {% endblock %}
