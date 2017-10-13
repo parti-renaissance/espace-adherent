@@ -4,8 +4,15 @@
 
 {% block content__inner %}
     <h1>Saved profile page</h1>
-    <div>
-        {# stats #}
+    <div id="saved_board_members_statistics">
+        <h1>Stats sur ces profils</h1>
+        <div>{{ stats.women }}% femmes / {{ stats.men }}% hommes</div>
+        <div>Moyenne d'âge : {{ stats.average_age }} ans</div>
+        <div>
+            {%- for area, stat in stats.areas -%}
+                {{ stat }}% {{ area|trans }}{% if not loop.last %} / {% endif %}
+            {%- endfor -%}
+        </div>
     </div>
     <div>
         <h2>{{ 'board_member_count_saved_profils'|transchoice(results.count) }}</h2>

@@ -202,6 +202,9 @@ board_member.message.send_to_members: 'one: Envoyer un message à cette personne
 board_member.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 board_member.message.filtered_members: 'one: Au membre filtré|some: Aux %count% membres filtrés'
 board_member_count_saved_profils: 'one: %count% profil sauvegardé|some: %count% profils sauvegardés'
+board_member.stats.area.metropolitan: Métropole
+board_member.stats.area.overseas: DOM-TOM
+board_member.stats.area.abroad: Étranger
 
 #
 # Errors
