@@ -54,7 +54,7 @@ class BoardMember
     private $area;
 
     /**
-     * @var Role[]|ArrayCollection
+     * @var Role[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\Role", inversedBy="boardMembers", cascade={"persist"})
      * @ORM\JoinTable(
@@ -72,9 +72,9 @@ class BoardMember
     private $roles;
 
     /**
-     * @var BoardMember[]|ArrayCollection
+     * @var BoardMember[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", inversedBy="owners", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="saved_board_members",
      *     joinColumns={
@@ -86,6 +86,13 @@ class BoardMember
      * )
      */
     private $savedMembers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="savedMembers")
+     *
+     * @var BoardMember[]
+     */
+    private $owners;
 
     public function __construct()
     {
@@ -139,7 +146,7 @@ class BoardMember
     }
 
     /**
-     * @return Role[]|ArrayCollection|iterable
+     * @return Role[]|Collection|iterable
      */
     public function getRoles(): iterable
     {
@@ -161,7 +168,7 @@ class BoardMember
     }
 
     /**
-     * @return BoardMember[]|ArrayCollection|iterable
+     * @return BoardMember[]|Collection|iterable
      */
     public function getSavedMembers(): iterable
     {

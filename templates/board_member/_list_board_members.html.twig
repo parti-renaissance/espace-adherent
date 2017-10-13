@@ -1,8 +1,8 @@
 {% if boardMembers|length == 0 %}
-    {% if path('app_board_search') == currentRoute %}
+    {% if path('app_board_member_search') == currentRoute %}
         {% set textBtnHasMemberInList = 'Profil sauvegardé' %}
         <h1>Aucun resultat pour ces critères de recherche</h1>
-    {% elseif path('app_board_saved_profile') == currentRoute %}
+    {% elseif path('app_board_member_saved_profile') == currentRoute %}
         {% set textBtnHasMemberInList = 'Profil sauvegardé' %}
         <h1>Aucun profil sauvegardé</h1>
     {% endif %}
@@ -17,13 +17,13 @@
                         <p>{{ member|age }}, {{ member.isFemale ? 'F' : 'M' }}, {{ member.cityName }}</p>
                     </td>
                     <td>
-                        {% if path('app_board_search') == currentRoute %}
+                        {% if path('app_board_member_search') == currentRoute %}
                             {% if app.user.boardMember.hasMember(member)  %}
                                 <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Profil sauvegardé</span>
                             {% else %}
                                 <span class="btn-add-member-list" data-member-id="{{ member.id }}">Sauvegarder son profil</span>
                             {% endif %}
-                        {% elseif path('app_board_saved_profile') == currentRoute %}
+                        {% elseif path('app_board_member_saved_profile') == currentRoute %}
                             <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Supprimer de ma liste</span>
                         {% endif %}
                         <a href="">Envoyer un message</a>

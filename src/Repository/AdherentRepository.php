@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
+use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
@@ -308,16 +309,14 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    public function findSavedBoardMember(int $id): AdherentCollection
+    public function findSavedBoardMember(BoardMember $owner): AdherentCollection
     {
         $qb = $this
-          ->createQueryBuilder('a')
-          ->select('a', 'bm', 'sm', 'sma')
-          ->leftJoin('a.boardMember', 'bm')
-          ->leftJoin('bm.savedMembers', 'sm')
-          ->leftJoin('sm.adherent', 'sma')
-          ->where('a.id = :id')
-          ->setParameter('id', $id);
+            ->createQueryBuilder('a')
+            ->select('a', 'bm')
+            ->leftJoin('a.boardMember', 'bm')
+            ->where(':member MEMBER OF bm.owners')
+            ->setParameter('member', $owner);
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }
