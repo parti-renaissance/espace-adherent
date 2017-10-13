@@ -66,6 +66,17 @@ a {
         }
     }
 
+    &.link--newblue { // temporary until we update our color palette
+        color: $newblue;
+        border-color: transparent;
+        border-width: 3px;
+
+        &:hover {
+            border-color: $pink;
+            box-shadow: inset 0 -4px 0 $pink;
+        }
+    }
+
     &.link--white {
         @include link--white;
     }
