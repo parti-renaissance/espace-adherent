@@ -220,9 +220,52 @@ label {
         }
     }
 
+    &__radio-button--tab {
+        label {
+            border: 1px solid $gray--light;
+            background: white;
+            display: inline-block;
+            padding: 10px 20px;
+            transition: all .2s;
+            @include text--body;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $gray--lighter;
+            }
+        }
+
+        &:first-child label {
+            border-radius: 3px 0 0 3px;
+            border-right: 0;
+        }
+
+        &:last-child label {
+            border-radius: 0 3px 3px 0;
+            border-left: 0;
+        }
+
+        input[type="radio"] {
+            position: absolute;
+            left: -50%;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+            margin: -11px 0 0 -9px;
+            outline: 0;
+            z-index: 1;
+
+            &:checked + label {
+                background-color: $newblue;
+                color: white;
+            }
+        }
+    }
+
     &__checkbox {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        position: relative;
 
         &--col {
             width: 25%;
@@ -234,7 +277,7 @@ label {
 
         label {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin: 5px 0;
             text-align: left;
 
@@ -274,8 +317,8 @@ label {
             opacity: 0;
 
             &:checked + label:before {
-                border-color: $blue;
-                background: $blue;
+                border-color: $newblue;
+                background: $newblue;
                 content: $checkbox__mark;
             }
         }
@@ -410,5 +453,78 @@ input[type=date]::-webkit-inner-spin-button {
         padding: 15px 20px;
         border: 0;
         border-bottom: 1px solid $gray--light;
+    }
+}
+
+.form__new {
+    @include text--default;
+    font-family: $font-roboto;
+
+    label,
+    legend {
+        @include text--default;
+    }
+
+    input {
+        @include text--default;
+        font-family: $font-roboto;
+        border-radius: 3px;
+        border: solid 1px $gray--light;
+        width: 100%;
+        height: auto;
+        padding: 10px 15px;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: none;
+            border-color: $newblue;
+        }
+    }
+
+    padding: 0;
+    text-align: left;
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+        margin-bottom: 20px;
+
+        &.form--split {
+            margin-bottom: 0;
+
+            ul {
+                display: flex;
+                justify-content: space-between;
+
+                > li {
+                    width: 48%;
+                }
+            }
+        }
+    }
+
+    &__forgotten-pw {
+        @include text--small;
+        display: inline-block;
+        margin: 10px 0 0 0;
+    }
+
+    &__checkbox {
+        > div {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        input[type="checkbox"] {
+            width: 60px;
+        }
+
+        label {
+            order: 2;
+            @include text--small;
+        }
     }
 }

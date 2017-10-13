@@ -33,4 +33,18 @@
             }
         }
     }
+
+    &__search__filters {
+        display: flex;
+        justify-content: space-between;
+
+        > ul:first-child,
+        > ul:nth-child(2) {
+            width: 23%;
+        }
+
+        > ul:last-child {
+            width: 48%;
+        }
+    }
 }
