@@ -1,0 +1,36 @@
+.spaces {
+    &__header {
+        &__logo {
+            height: 33px;
+
+            svg {
+                width: 54px;
+                height: 33px;
+            }
+        }
+
+        &__separator {
+            height: 24px;
+            background: $gray--light;
+            width: 1px;
+            margin: 0 10px;
+        }
+
+        &__name {
+            @include text--medium-large;
+            font-weight: 300;
+            color: $newblue;
+            letter-spacing: 0.5px;
+            border-bottom: 0;
+        }
+
+        ul {
+            margin-top: 7px;
+            margin-left: 30px;
+
+            li {
+                @include text--default;
+            }
+        }
+    }
+}
