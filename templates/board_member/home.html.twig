@@ -1,0 +1,23 @@
+{% extends 'board_member/layout.html.twig' %}
+
+{% block content__inner %}
+  <div>
+      <h1>Bienvenue, {{ app.user.firstname }}</h1>
+      <p>Nous avons créé cet espace afin que vous puissiez contacter d’autres personnes membres du conseil.</p>
+      <p>Cet outil vous sera utile si vous cherchez à monter une liste de candidature, ou bien si vous cherchez des parrainages pour vous présenter en tant que délégué(e) général(e) ou membre du bureau exécutif du conseil.  </p>
+
+      <h2>Comment ça marche ?</h2>
+      <ol>
+          <li>Commencez d’abord par remplir <a href="{{ path('app_summary_manager_index') }}">profil</a> et par ajouter votre photo.</li>
+          <li><a href="{{ path('app_board_search') }}">Rechercher des membres.</a> Vous pouvez filtrer selon leur sexe, leur role, leur
+            code postal, département ou région. Ceci vous permet de constituer des listes
+            paritaires et diverses.</li>
+          <li>Vous pouvez contacter les membres de façon groupée ou individuelle. </li>
+          <li>Vous avez aussi la possibilité de “sauvegarder” certains profils. Ces sauvegardes sont
+            personnelles et privées. Une personne sauvegardée ne sera pas notifiée.  </li>
+      </ol>
+
+    <h3>Des questions ?</h3>
+    <p>Contactez nous à <a href="mailto:menbres-conseil@en-marche.fr">menbres-conseil@en-marche.fr</a></p>
+  </div>
+{% endblock %}
