@@ -44,7 +44,7 @@ class ManagedUsersFilter
         $filter->queryPostalCode = $data[self::PARAMETER_QUERY_POSTAL_CODE] ?? '';
         $filter->queryCity = $data[self::PARAMETER_QUERY_CITY] ?? '';
         $filter->queryId = $data[self::PARAMETER_QUERY_ID] ?? '';
-        $filter->offset = $data[self::PARAMETER_OFFSET] ?? true;
+        $filter->offset = $data[self::PARAMETER_OFFSET] ?? 0;
 
         return $filter;
     }
