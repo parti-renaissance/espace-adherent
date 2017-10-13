@@ -11,13 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(
  *   name="roles",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="board_member_role_code_unique", columns="code")
+ *     @ORM\UniqueConstraint(name="board_member_role_code_unique", columns="code"),
+ *     @ORM\UniqueConstraint(name="board_member_role_name_unique", columns="name")
  *   }
  * )
  *
  * @UniqueEntity("code")
- * @UniqueEntity("maleName")
- * @UniqueEntity("femaleName")
+ * @UniqueEntity("name")
  */
 class Role
 {
@@ -42,15 +42,7 @@ class Role
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
-    private $maleName = '';
-
-    /**
-     * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
-     */
-    private $femaleName = '';
+    private $name = '';
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="roles")
@@ -59,11 +51,10 @@ class Role
      */
     private $boardMembers;
 
-    public function __construct(?string $code = null, ?string $maleName = null, ?string $femaleName = null)
+    public function __construct(?string $code = null, ?string $name = null)
     {
         $this->code = (string) $code;
-        $this->maleName = (string) $maleName;
-        $this->femaleName = (string) $femaleName;
+        $this->name = (string) $name;
     }
 
     public function getId(): ?int
@@ -81,24 +72,14 @@ class Role
         return $this->code;
     }
 
-    public function getMaleName(): string
+    public function getName(): string
     {
-        return $this->maleName;
+        return $this->name;
     }
 
-    public function setMaleName(string $maleName): void
+    public function setName(string $name): void
     {
-        $this->maleName = $maleName;
-    }
-
-    public function getFemaleName(): string
-    {
-        return $this->femaleName;
-    }
-
-    public function setFemaleName(string $femaleName): void
-    {
-        $this->femaleName = $femaleName;
+        $this->name = $name;
     }
 
     public function addBoardMember(BoardMember $boardMember): void
@@ -110,6 +91,6 @@ class Role
 
     public function __toString(): string
     {
-        return $this->maleName;
+        return $this->name;
     }
 }

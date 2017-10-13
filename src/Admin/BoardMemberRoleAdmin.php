@@ -15,12 +15,8 @@ class BoardMemberRoleAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code',
             ])
-            ->add('maleName', TextType::class, [
-                'label' => 'Nom masculin',
-                'filter_emojis' => true,
-            ])
-            ->add('femaleName', TextType::class, [
-                'label' => 'Nom féminin',
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
                 'filter_emojis' => true,
             ]);
     }
@@ -31,12 +27,8 @@ class BoardMemberRoleAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code',
             ])
-            ->add('maleName', null, [
-                'label' => 'Nom masculin',
-                'filter_emojis' => true,
-            ])
-            ->add('femaleName', null, [
-                'label' => 'Nom féminin',
+            ->add('name', null, [
+                'label' => 'Nom',
                 'filter_emojis' => true,
             ])
             ->add('_action', null, [
