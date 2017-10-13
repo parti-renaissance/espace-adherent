@@ -221,6 +221,105 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertContains('http://localhost/espace-referent/utilisateurs?', $this->client->getRequest()->getUri());
     }
 
+    public function testFilterAdherents()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+
+        $this->assertCount(6, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+
+        // filter hosts
+        $data = [
+            'h' => true,
+            's' => false,
+            'n' => false,
+            'anc' => false,
+            'aic' => false,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
+        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+
+        // filter supervisors
+        $data = [
+            'h' => false,
+            's' => true,
+            'n' => false,
+            'anc' => false,
+            'aic' => false,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
+        $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertContains('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+
+        // filter newsletter subscriptions
+        $data = [
+            'h' => false,
+            's' => false,
+            'n' => true,
+            'anc' => false,
+            'aic' => false,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('2 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--newsletter'));
+        $this->assertContains('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+
+        // filter adherents in no committee
+        $data = [
+            'h' => false,
+            's' => false,
+            'n' => false,
+            'anc' => true,
+            'aic' => false,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('3 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
+        $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertContains('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertContains('D.', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+
+        // filter adherents in committees
+        $data = [
+            'h' => false,
+            's' => false,
+            'n' => false,
+            'anc' => false,
+            'aic' => true,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
+        $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertContains('V.', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+    }
+
     public function providePages()
     {
         return [
