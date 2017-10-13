@@ -137,7 +137,7 @@ class AdherentRepositoryTest extends MysqlWebTestCase
     {
         $filter = BoardMemberFilter::createFromArray($filters);
 
-        $boardMembers = $this->repository->searchBoardMembers($filter)->getQuery()->getResult();
+        $boardMembers = $this->repository->searchBoardMembers($filter);
 
         $this->assertCount(count($results), $boardMembers);
 
@@ -205,7 +205,7 @@ class AdherentRepositoryTest extends MysqlWebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
             LoadBoardMemberRoleData::class,
             LoadEventCategoryData::class,
@@ -214,13 +214,16 @@ class AdherentRepositoryTest extends MysqlWebTestCase
             LoadCitizenInitiativeData::class,
         ]);
 
-        $this->container = $this->getContainer();
         $this->repository = $this->getAdherentRepository();
     }
 
     protected function tearDown()
     {
         $this->loadFixtures([]);
+
+        foreach ($this->container->get('doctrine')->getManagers() as $name => $entityManager) {
+            $entityManager->close();
+        }
 
         $this->repository = null;
         $this->container = null;

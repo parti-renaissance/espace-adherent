@@ -323,14 +323,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    public function createBoardMemberQueryBuilder(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('a')
-            ->innerJoin('a.boardMember', 'bm')
-        ;
-    }
-
     public function createBoardMemberFilterQueryBuilder(BoardMemberFilter $filter): QueryBuilder
     {
         $qb = $this->createBoardMemberQueryBuilder();
@@ -391,7 +383,10 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         }
 
         if (count($queryRoles = $filter->getQueryRoles())) {
-            $qb->innerJoin('bm.roles', 'bmr');
+            $qb
+                ->innerJoin('bm.roles', 'bmr')
+                ->addSelect('bmr')
+            ;
 
             $rolesExpression = $qb->expr()->orX();
 
@@ -406,15 +401,32 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $qb;
     }
 
-    public function searchBoardMembers(BoardMemberFilter $filter): Paginator
+    public function searchBoardMembers(BoardMemberFilter $filter): array
     {
-        $query = $this
+        return $this
             ->createBoardMemberFilterQueryBuilder($filter)
             ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function paginateBoardMembers(BoardMemberFilter $filter): Paginator
+    {
+        $qb = $this
+            ->createBoardMemberFilterQueryBuilder($filter)
             ->setFirstResult($filter->getOffset())
             ->setMaxResults(BoardMemberFilter::PER_PAGE)
         ;
 
-        return new Paginator($query);
+        return new Paginator($qb);
+    }
+
+    public function createBoardMemberQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->innerJoin('a.boardMember', 'bm')
+            ->addSelect('bm')
+        ;
     }
 }

@@ -5,6 +5,7 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.2/phpunit.xsd"
          backupGlobals="false"
          colors="true"
+         processIsolation="true"
          bootstrap="vendor/autoload.php"
 >
     <php>

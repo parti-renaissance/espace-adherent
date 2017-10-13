@@ -25,7 +25,7 @@
                     {% elseif path('app_board_member_saved_profile') == currentRoute %}
                         <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Supprimer de ma liste</span>
                     {% endif %}
-                    <a href="">Envoyer un message</a>
+                    <a href="{{ path('app_board_member_message_member', {member: member.id}) }}">Envoyer un message</a>
                 </div>
             </li>
         {% endfor %}
