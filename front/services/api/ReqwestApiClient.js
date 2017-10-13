@@ -131,4 +131,23 @@ export default class ReqwestApiClient {
             callback(null);
         });
     }
+
+    deleteBoardMemberOnList(boardMemberId) {
+        return this._reqwest({
+            url: '/espace-membres-conseil/list/boardmember/' + boardMemberId,
+            type: 'json',
+            method: 'delete',
+        });
+    }
+
+    addBoardMemberToList(boardMemberId) {
+        return this._reqwest({
+            url: '/espace-membres-conseil/list/boardmember',
+            type: 'json',
+            method: 'post',
+            data: {
+                'boardMemberId': boardMemberId,
+            }
+        });
+    }
 }

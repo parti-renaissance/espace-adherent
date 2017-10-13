@@ -200,4 +200,51 @@ class BoardMemberController extends Controller
 
         return $statistics;
     }
+
+    /**
+     * @Route("/list/boardmember", defaults={"_enable_campaign_silence"=true}, name="app_board_add_profile_on_list")
+     * @Method("POST")
+     */
+    public function addBoardMemberOnListAction(Request $request)
+    {
+        if (!$id = $request->request->getInt('boardMemberId')) {
+            return new Response('', Response::HTTP_BAD_REQUEST);
+        }
+
+        $boardMemberRepository = $this->getDoctrine()->getManager()->getRepository(BoardMember::class);
+
+        if (!$boadMemberToAdd = $boardMemberRepository->find($id)) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+
+        $currentBoardMember = $boardMemberRepository->findOneBy(['adherent' => $this->getUser()]);
+        $currentBoardMember->addSavedBoardMember($boadMemberToAdd);
+
+        $this->getDoctrine()->getManager()->persist($currentBoardMember);
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/list/boardmember/{boardMemberId}", defaults={"_enable_campaign_silence"=true}, name="app_board_remove_profile_on_list")
+     * @Method("DELETE")
+     */
+    public function deleteBoardMemberOnListAction($boardMemberId)
+    {
+        $boardMemberRepository = $this->getDoctrine()->getRepository(BoardMember::class);
+
+        $boadMemberToDelete = $boardMemberRepository->find($boardMemberId);
+        if (null === $boadMemberToDelete) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+        $currentBoardMember = $boardMemberRepository->findOneBy(['adherent' => $this->getUser()]);
+
+        $currentBoardMember->removeSavedBoardMember($boadMemberToDelete);
+
+        $this->getDoctrine()->getManager()->persist($currentBoardMember);
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('', Response::HTTP_OK);
+    }
 }
