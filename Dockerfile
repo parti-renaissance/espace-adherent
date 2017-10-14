@@ -97,3 +97,5 @@ RUN chmod 0444 gcloud-service-key.json && \
 
     rm -rf docker && \
     rm -rf web/app_dev.php
+
+    CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
