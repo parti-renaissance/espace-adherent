@@ -2,7 +2,9 @@
 
 namespace Tests\AppBundle\Repository;
 
+use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
 use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
@@ -128,19 +130,90 @@ class AdherentRepositoryTest extends MysqlWebTestCase
         $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
     }
 
+    /**
+     * @dataProvider dataProviderSearchBoardMembers
+     */
+    public function testSearchBoardMembers(array $filters, array $results)
+    {
+        $filter = BoardMemberFilter::createFromArray($filters);
+
+        $boardMembers = $this->repository->searchBoardMembers($filter);
+
+        $this->assertCount(count($results), $boardMembers);
+
+        foreach ($boardMembers as $key => $adherent) {
+            $this->assertSame($results[$key], $adherent->getEmailAddress());
+        }
+    }
+
+    public function dataProviderSearchBoardMembers()
+    {
+        return [
+            // Gender
+            [
+                ['g' => 'female'],
+                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
+            ],
+            [
+                ['g' => 'male'],
+                ['referent@en-marche-dev.fr', 'kiroule.p@blabla.tld'],
+            ],
+            // Age
+            [
+                ['amin' => 55],
+                ['referent@en-marche-dev.fr'],
+            ],
+            [
+                ['amax' => 54],
+                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld', 'kiroule.p@blabla.tld'],
+            ],
+            [
+                ['amin' => 52, 'amax' => 54],
+                ['kiroule.p@blabla.tld'],
+            ],
+            // Name
+            [
+                ['f' => 'Pierre'],
+                ['kiroule.p@blabla.tld'],
+            ],
+            [
+                ['l' => 'Lindt'],
+                ['martine.lindt@gmail.com'],
+            ],
+            [
+                ['f' => 'Élodie', 'l' => 'Dutemps'],
+                ['lolodie.dutemps@hotnix.tld'],
+            ],
+            // Location
+            [
+                ['p' => '76, 368645'],
+                ['laura@deloche.com', 'lolodie.dutemps@hotnix.tld'],
+            ],
+            [
+                ['a' => ['metropolitan']],
+                ['referent@en-marche-dev.fr', 'laura@deloche.com'],
+            ],
+            // Role
+            [
+                ['r' => ['referent']],
+                ['referent@en-marche-dev.fr'],
+            ],
+        ];
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
+            LoadBoardMemberRoleData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
             LoadCitizenInitiativeCategoryData::class,
             LoadCitizenInitiativeData::class,
         ]);
 
-        $this->container = $this->getContainer();
         $this->repository = $this->getAdherentRepository();
     }
 

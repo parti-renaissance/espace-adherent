@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set currentRoute = app.request.attributes.get('_route') %}
+
 {% block app_title 'La République En Marche !' %}
 {% block meta_description 'Une majorité pour rassembler, agir et réussir !' %}
 {% block meta_rss '' %}
@@ -9,31 +11,41 @@
 
 {% block banner '' %}
 {% block header '' %}
-{% block footer '' %}
 
 {% block content %}
-  {% block redirection %}
-  {% endblock %}
+{% block redirection %}
+{% endblock %}
 
-  <header class="l__wrapper space--20-0 l__row l__row--h-stretch">
-    <a href="{{ path('legislatives_homepage') }}" class="link--no-decor">
-      <img src="{{ asset('images/logo-LREM.svg') }}"
-           width="200"
-           title="La République En Marche"
-           alt="La République En Marche" />
-    </a>
-    <a href="{{ path('homepage') }}" class="back-to-list icon--with-text text--summary link--white">
-      {{ include('components/caret--left.html.twig') }}
-      Retour au site &nbsp;<strong><em>En Marche !</em></strong>
-    </a>
-    <span>Membres du conseil</span>
-    <a href="{{ path('app_board_member_search') }}">Recherche des membres</a>
-    <a href="{{ path('app_board_member_saved_profile') }}">Profils sauvegardés</a>
-  </header>
+    <header class="l__wrapper space--20-0 l__row l__row--h-stretch spaces__header">
+        <div class="l__row l__tablet--col">
+            <div class="l__row">
+                <a href="{{ path('homepage') }}" class="link--no-decor spaces__header__logo">
+                    {{ include('components/logo-mini-em.html.twig') }}
+                </a>
+                <div class="spaces__header__separator"></div>
+                <a href="{{ path('app_board_member_home') }}" class="spaces__header__name">
+                    Membres du conseil
+                </a>
+            </div>
+            <ul class="list__links list__links--row list__links--no-decor">
+                {% set currentRoute = app.request.attributes.get('_route') %}
+                {% for route, title in {
+                    'app_board_member_search': 'Rechercher des membres',
+                    'app_board_member_saved_profile': 'Profils sauvegardés'
+                } %}
+                <li class="{{ route == currentRoute ? 'text--bold' }}">
+                    <a href="{{ path(route) }}">
+                        {{ title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </header>
 
-  {% block content__outer %}
+    {% block content__outer %}
     <main>
-      {% block content__inner %}{% endblock %}
+        {% block content__inner %}{% endblock %}
     </main>
-  {% endblock %}
+    {% endblock %}
 {% endblock %}

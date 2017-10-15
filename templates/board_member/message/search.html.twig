@@ -1,0 +1,65 @@
+{% extends 'board_member/message/layout.html.twig' %}
+
+{%- block return_path path('app_board_member_search') ~ filter -%}
+
+{% block recipients %}
+    <div>
+        <p>{{ 'board_member.message.filtered_members'|transchoice(message.recipients|length) }}</p>
+
+        Sexe:
+        {% if filter.queryGender is same as('female') %}
+            Femmes seulement
+        {% elseif filter.queryGender is same as('male') %}
+            Hommes seulement
+        {% else %}
+            indifférent
+        {% endif %}
+        <br>
+
+        Age:
+        {% if filter.queryAgeMinimum or filter.queryAgeMaximum %}
+            {% if not filter.queryAgeMaximum %}
+                à partir de {{ filter.queryAgeMinimum }} ans
+            {% elseif not filter.queryAgeMinimum %}
+                jusqu'à {{ filter.queryAgeMaximum }} ans
+            {% else %}
+                entre {{ filter.queryAgeMinimum }} et {{ filter.queryAgeMaximum }} ans
+            {% endif %}
+        {% else %}
+            indifférent
+        {% endif %}
+        <br>
+
+        {% if filter.queryLastName %}
+            Nom: {{ filter.queryLastName }}
+            <br>
+        {% endif %}
+
+        {% if filter.queryFirstName %}
+            Prénom: {{ filter.queryFirstName }}
+            <br>
+        {% endif %}
+
+        {% if filter.queryPostalCode %}
+            Code postal/Département: {{ filter.queryPostalCode }}
+            <br>
+        {% endif %}
+
+        {% if filter.queryAreas|length > 0 %}
+            Régions:
+            {% for area in filter.queryAreas %}
+                {{ ('board_member.area.' ~ area)|trans }}
+                {% if not loop.last %}ou {% endif %}
+            {% endfor %}
+            <br>
+        {% endif %}
+
+        {% if filter.queryRoles|length > 0 %}
+            Roles:
+            {% for role in filter.queryRoles %}
+                {{ roles[role] }}
+                {% if not loop.last %}ou {% endif %}
+            {% endfor %}
+            </br>
+        {% endif %}
+{% endblock %}

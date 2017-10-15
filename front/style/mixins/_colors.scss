@@ -10,6 +10,8 @@ $green-hover: #4CD7A5;
 $blue: #01B2FB;
 $blue--light: rgba(0, 178, 251, 0.15);
 $blue-hover: #009FE1;
+$newblue: #005be2; // temporary until we fully update our color palette
+$newblue--hover: #024fc1;
 $yellow: #edf861;
 $yellow-hover: #c4d02a;
 $orange: #ff7822;
@@ -170,6 +172,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--blue {
     background-color: $blue;
+}
+
+.background--blue-light {
+    background-color: rgba($newblue, 0.1);
 }
 
 .background--green {
