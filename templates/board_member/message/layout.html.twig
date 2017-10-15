@@ -1,5 +1,7 @@
 {% extends 'board_member/layout.html.twig' %}
 
+{% block page_title 'Contacter les membres du conseil' %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
@@ -13,50 +15,60 @@
 {% endblock %}
 
 {% block content__inner %}
-    <div class="l__wrapper--slim">
-        <div>
-            <a href="{%- block return_path path('app_board_member_search') -%}" class="link--newblue text--small b__nudge--top-5">
-                Retour
-            </a>
-        </div>
-        <h3>Envoyer un message</h3>
+    <section class="l__wrapper--600 b__nudge--top-40 b__nudge--bottom">
+        <a href="{%- block return_path path('app_board_member_search') -%}" class="icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour
+        </a>
+    </section>
+
+    <section class="l__wrapper--600">
+        <h2>Envoyer un message</h2>
 
         {% block recipients '' %}
 
-        <div class="space--30-0">
+        <p class="text--body">
+            Vous recevrez les réponses directement dans votre boite e-mail.
+        </p>
+
+        <div class="space--20-0 form__new">
             {{ form_start(form) }}
             {{ form_errors(form) }}
+            <ul>
+                <li>
+                    {{ form_label(form.subject, 'Destinataire(s)', { 'label_attr': {'class': 'label__header'} }) }}
+                    <input type="text" disabled="disabled"
+                           value="{{ results_count }} membre(s) du conseil" />
+                </li>
 
-            <div class="form__row">
-                {{ form_label(form.subject, 'Destinataires') }}
-                <input type="text" disabled="disabled" class="form form__field form--full" value="{{ message.recipients|length }} marcheurs(s)" />
-            </div>
+                <li>
+                    {{ form_label(form.subject, 'Expéditeur', { 'label_attr': {'class': 'label__header'} }) }}
+                    <input type="text" disabled="disabled"
+                           value="{{ app.user.fullName }}" />
+                </li>
 
-            <div class="form__row">
-                {{ form_label(form.subject, 'Expéditeur') }}
-                <input type="text" disabled="disabled" class="form form__field form--full" value="{{ app.user.fullName }}" />
-            </div>
+                <li>
+                    {{ form_label(form.subject, 'Objet', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_errors(form.subject) }}
+                    {{ form_widget(form.subject) }}
+                </li>
 
-            <div class="form__row">
-                {{ form_label(form.subject, 'Objet') }}
-                {{ form_errors(form.subject) }}
-                {{ form_widget(form.subject, {'attr': {'class': 'form--full'}}) }}
-            </div>
+                <li>
+                    {{ form_label(form.content, 'Message', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_errors(form.content) }}
+                    {{ form_widget(form.content) }}
+                </li>
 
-            <div class="form__row">
-                {{ form_label(form.content, 'Message') }}
-                {{ form_errors(form.content) }}
-                {{ form_widget(form.content, {'attr': {'class': 'form--full form__field--textarea-300'}}) }}
-            </div>
-
-            <button class="btn btn--blue b__nudge--bottom-small" type="submit">
-                Envoyer le message
-            </button>
-            <a href="{{- block('return_path') -}}" class="btn">
-                Annuler
-            </a>
-
+                <li class="text--center l__row l__col">
+                    <button class="newbtn b__nudge--bottom-small" type="submit">
+                        Envoyer le message
+                    </button>
+                    <a href="{{- block('return_path') -}}" class="link--newblue">
+                        Annuler
+                    </a>
+                </li>
+            </ul>
             {{ form_end(form) }}
         </div>
-    </div>
+    </section>
 {% endblock %}
