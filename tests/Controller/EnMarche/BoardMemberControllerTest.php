@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
+use AppBundle\Mailjet\Message\BoardMemberMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -126,6 +127,60 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testSendMessageToSearchResult()
+    {
+        $this->authenticateAsBoardMember();
+
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 2 personnes')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
+            'board_member_message' => [
+                'subject' => 'Sujet',
+                'content' => 'Message from search',
+            ],
+        ]));
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'kiroule.p@blabla.tld');
+    }
+
+    public function testSendMessageToMember()
+    {
+        $this->authenticateAsBoardMember();
+
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->click($this->client->getCrawler()->filter('main ul li')->selectLink('Envoyer un message')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('à un membre du conseil', $this->client->getResponse()->getContent());
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
+            'board_member_message' => [
+                'subject' => 'Sujet',
+                'content' => 'Message for one member',
+            ],
+        ]));
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
+    }
+
+    private function authenticateAsBoardMember()
+    {
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
     }
 
     protected function setUp()

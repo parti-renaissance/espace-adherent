@@ -3,7 +3,10 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\BoardMember\BoardMemberFilter;
+use AppBundle\BoardMember\BoardMemberMessage;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Form\BoardMemberMessageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -61,5 +64,95 @@ class BoardMemberController extends Controller
     public function savedProfilAction()
     {
         return $this->render('board_member/saved_profile.html.twig');
+    }
+
+    /**
+     * @Route("/recherche/message", name="app_board_member_message_search")
+     * @Method("GET|POST")
+     */
+    public function sendMessageToSearchResultsAction(Request $request): Response
+    {
+        $filter = new BoardMemberFilter();
+        $filter->handleRequest($request);
+
+        if (!$filter->hasToken() || !$this->isCsrfTokenValid(self::TOKEN_ID, $filter->getToken())) {
+            return $this->redirectToRoute('app_board_member_search');
+        }
+
+        $recipients = $this->get('app.board_member.manager')->searchMembers($filter);
+        $message = $this->createMessage($recipients);
+
+        $form = $this->createForm(BoardMemberMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+
+            return $this->redirect($this->generateUrl('app_board_member_search'));
+        }
+
+        return $this->render('board_member/message/search.html.twig', [
+            'form' => $form->createView(),
+            'message' => $message,
+            'filter' => $filter,
+        ]);
+    }
+
+    /**
+     * @Route("/profils-sauvegardes/message", name="app_board_member_message_saved_profile")
+     * @Method("GET|POST")
+     */
+    public function sendMessageToSavedProfilesAction(Request $request): Response
+    {
+        $recipients = $this->get('app.board_member.manager')->findSavedMembers($this->getUser());
+        $message = $this->createMessage($recipients);
+
+        $form = $this->createForm(BoardMemberMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+
+            return $this->redirect($this->generateUrl('app_board_member_message_saved_profile'));
+        }
+
+        return $this->render('board_member/message/saved_profile.html.twig', [
+            'form' => $form->createView(),
+            'message' => $message,
+        ]);
+    }
+
+    /**
+     * @Route("/message/{member}", name="app_board_member_message_member")
+     * @Method("GET|POST")
+     */
+    public function sendMessageToMemberAction(Request $request, Adherent $member): Response
+    {
+        $message = $this->createMessage([$member]);
+
+        $form = $this->createForm(BoardMemberMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+
+            return $this->redirect($this->generateUrl('app_board_member_search'));
+        }
+
+        return $this->render('board_member/message/member.html.twig', [
+            'form' => $form->createView(),
+            'message' => $message,
+        ]);
+    }
+
+    private function createMessage(array $recipients): BoardMemberMessage
+    {
+        return new BoardMemberMessage($this->getUser(), $recipients);
     }
 }
