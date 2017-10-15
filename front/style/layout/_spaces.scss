@@ -28,8 +28,26 @@
             margin-top: 7px;
             margin-left: 30px;
 
+            @media (max-width: $tablet) {
+                margin: 20px 0 0;
+            }
+
             li {
                 @include text--default;
+            }
+        }
+    }
+
+    &__search {
+        &--mobile {
+            display: none;
+        }
+
+        @media (max-width: 1200px) {
+            display: none;
+
+            &--mobile {
+                display: block;
             }
         }
     }
@@ -45,6 +63,65 @@
 
         > ul:last-child {
             width: 48%;
+        }
+    }
+
+    &__results__row {
+        border-top: 1px solid $gray--light;
+        display: flex;
+        justify-content: space-between;
+        @include text--body;
+        padding: 15px 0;
+        flex-direction: column;
+
+        @media (min-width: $mobile) {
+            flex-direction: row;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+
+            &:nth-child(4) {
+                margin-top: 10px;
+            }
+
+            @media (min-width: $mobile) {
+                align-items: flex-start;
+
+                &:nth-child(1) {
+                    width: 6rem;
+                    justify-content: center;
+
+                    > div {
+                        border: 1px solid $gray--light;
+                        border-radius: 50%;
+                        width: 55px;
+                        height: 55px;
+                        overflow: hidden;
+                        background: $gray--lighter;
+                    }
+                }
+
+                &:nth-child(2) {
+                    width: 14rem;
+                }
+
+                &:nth-child(3) {
+                    width: 25rem;
+                }
+
+                &:nth-child(4) {
+                    width: 30rem;
+                    display: flex;
+                    align-items: flex-end;
+                    margin: 0;
+                }
+            }
         }
     }
 }

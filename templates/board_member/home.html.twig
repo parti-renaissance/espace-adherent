@@ -4,7 +4,10 @@
 
 {% block content__inner %}
   <section class="l__wrapper--slim text--center space--60-0">
-      <h1 class="text--extra-large">Bienvenue, {{ app.user.firstname }} !</h1>
+      <h1 class="text--extra-large">
+          Bienvenue, {{ app.user.firstname }} !
+          <img src="{{ asset('images/emojis/waving-hand-sign.svg') }}" width="50" />
+      </h1>
       <p class="text--body text--medium-small">
           Nous avons créé cet espace afin que vous puissiez contacter d’autres
           personnes membres du conseil.

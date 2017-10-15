@@ -459,13 +459,22 @@ input[type=date]::-webkit-inner-spin-button {
 .form__new {
     @include text--default;
     font-family: $font-roboto;
+    padding: 0;
+    text-align: left;
 
     label,
     legend {
         @include text--default;
+
+        &.label__header {
+            margin-bottom: 3px;
+            display: inline-block;
+            font-weight: bold;
+        }
     }
 
-    input {
+    input,
+    textarea {
         @include text--default;
         font-family: $font-roboto;
         border-radius: 3px;
@@ -475,14 +484,19 @@ input[type=date]::-webkit-inner-spin-button {
         padding: 10px 15px;
         box-sizing: border-box;
 
+        &:disabled {
+            background: $gray--lighter;
+        }
+
         &:focus {
             outline: none;
             border-color: $newblue;
         }
     }
 
-    padding: 0;
-    text-align: left;
+    textarea {
+        height: 150px;
+    }
 
     ul {
         padding: 0;

@@ -353,4 +353,21 @@ button.btn {
 
 .newbtn {
     @include newbtn;
+
+    &--smaller {
+        padding: 5px 15px;
+        @include text--small;
+    }
+
+    &--light {
+        color: $dark;
+        border: 1px solid $gray--light;
+        background-color: white;
+
+        &:hover {
+            background: white;
+            border-color: $newblue;
+            color: $newblue;
+        }
+    }
 }

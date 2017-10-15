@@ -92,7 +92,9 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->sendMessage($message);
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
 
             return $this->redirect($this->generateUrl('app_board_member_message_saved_profile'));
         }
@@ -118,7 +120,9 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->sendMessage($message);
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
 
             return $this->redirect($this->generateUrl('app_board_member_message_saved_profile'));
         }
@@ -141,7 +145,9 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->sendMessage($message);
+            $this->get('app.board_member.message_notifier')->sendMessage($message);
+
+            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
 
             return $this->redirect($this->generateUrl('app_board_member_message_member', ['member' => $member->getId()]));
         }
@@ -155,12 +161,5 @@ class BoardMemberController extends Controller
     private function createMessage(array $recipients): BoardMemberMessage
     {
         return new BoardMemberMessage($this->getUser(), $recipients);
-    }
-
-    private function sendMessage(BoardMemberMessage $message): void
-    {
-        $this->get('app.board_member.message_notifier')->sendMessage($message);
-
-        $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
     }
 }

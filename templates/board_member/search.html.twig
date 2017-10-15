@@ -4,12 +4,12 @@
 
 {% block content__inner %}
     <section class="background--blue-light">
-        <div class="l__wrapper space--30-0">
+        <div class="l__wrapper space--30-0 spaces__search">
             <form method="get" action="{{ path('app_board_member_search') }}#send-message" class="form__new">
                 <div class="spaces__search__filters">
                     <ul>
                         <li>
-                            <legend class="text--bold">Sexe</legend>
+                            <legend class="label__header">Sexe</legend>
                             <div class="l__row">
                                 <div class="form__radio-button--tab">
                                     <input type="radio" value="" id="parameter_gender_all"
@@ -38,7 +38,7 @@
                             </div>
                         </li>
                         <li>
-                            <legend class="text--bold">Age</legend>
+                            <legend class="label__header">Age</legend>
                             <div class="l__row l__row--h-stretch">
                                 <label style="width: 45%">
                                     <input type="number"
@@ -58,7 +58,7 @@
                             </div>
                         </li>
                         <li>
-                            <label class="text--bold">
+                            <label class="label__header">
                                 Nom
                                 <input type="text"
                                        name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
@@ -68,7 +68,7 @@
                             </label>
                         </li>
                         <li>
-                            <label class="text--bold">
+                            <label class="label__header">
                                 Prénom
                                 <input type="text"
                                        name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
@@ -80,7 +80,7 @@
                     </ul>
                     <ul>
                         <li>
-                            <label class="text--bold">
+                            <label class="label__header">
                                 Code postal ou département
                                 <input type="text"
                                        name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
@@ -93,7 +93,7 @@
                             </div>
                         </li>
                         <li>
-                            <legend class="text--bold">Région</legend>
+                            <legend class="label__header">Région</legend>
                             {% for area_key, area_value in areas %}
                             <div class="form__checkbox">
                                 <input type="checkbox" value="{{ area_value }}" id="parameter_area_{{ area_value }}"
@@ -108,7 +108,7 @@
                     </ul>
                     <ul>
                         <li style="height: 410px;">
-                            <legend class="text--bold">Rôles</legend>
+                            <legend class="label__header">Rôles</legend>
                                 <div class="l__col--wrap l__row--h-stretch">
                                 {% for role in roles %}
                                     <div class="form__checkbox" style="width: 46%;">
@@ -142,12 +142,17 @@
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
             </form>
         </div>
+        <div class="l__wrapper space--30-0 spaces__search--mobile text--center">
+            <h3>
+                Élargissez votre écran pour accéder aux filtres de recherche.
+            </h3>
+        </div>
     </section>
     <section class="l__wrapper space--60-0">
-        <div class="l__row l__row--h-stretch">
+        <div class="l__row l__row--h-stretch l__mobile--col">
             <h2>Tous les résultats ({{ results_count }})</h2>
             {% if results_count > 0  %}
-                <a href="{{ path('app_board_member_message_search') ~ filter }}" class="newbtn">
+                <a href="{{ path('app_board_member_message_search') ~ filter }}" class="newbtn newbtn--light newbtn--smaller">
                     {{ 'board_member.message.send_to_members'|transchoice(results_count) }}
                 </a>
             {% endif %}
