@@ -1,0 +1,24 @@
+{% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+{% set last_page = (results.count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+
+{% if filter.offset > 0 %}
+    <a href="{{ path('app_board_member_search') ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
+        Première
+    </a>
+    <a href="{{ path('app_board_member_search') ~ filter.previousPageQueryString }}" class="btn btn--small">
+        Précédente
+    </a>
+{% endif %}
+
+<span class="btn btn--small btn--no-border">
+    Page {{ current_page }} / {{ last_page }}
+</span>
+
+{% if filter.offset + constant('PER_PAGE', filter) < results.count %}
+    <a href="{{ path('app_board_member_search') ~ filter.nextPageQueryString }}" class="btn btn--small">
+        Suivante
+    </a>
+    <a href="{{ path('app_board_member_search') ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
+        Dernière
+    </a>
+{% endif %}
