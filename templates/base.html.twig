@@ -175,6 +175,11 @@
                                                 <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
                                             </li>
                                         {% endif %}
+                                        {% if is_granted('ROLE_BOARD_MEMBER') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_board_member_home') }}">Espace membre conseil</a>
+                                            </li>
+                                        {% endif %}
                                         {% if is_granted('ROLE_REFERENT') %}
                                             <li class="text--small">
                                                 <a href="{{ path('app_referent_users') }}">Espace référent</a>
@@ -273,6 +278,11 @@
                                 {% if is_granted('CREATE_COMMITTEE') %}
                                     <li class="text--small">
                                         <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_BOARD_MEMBER') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_board_member_home') }}">Espace membre conseil</a>
                                     </li>
                                 {% endif %}
                                 {% if is_granted('ROLE_REFERENT') %}
