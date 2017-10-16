@@ -52,3 +52,11 @@
         </main>
     {% endblock %}
 {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runBoardMember();
+        });
+    </script>
+{% endblock %}

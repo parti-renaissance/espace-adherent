@@ -163,6 +163,12 @@ class App {
             module.default();
         });
     }
+
+    runBoardMember() {
+        System.import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

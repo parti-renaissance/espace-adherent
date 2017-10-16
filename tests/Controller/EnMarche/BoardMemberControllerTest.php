@@ -47,8 +47,21 @@ class BoardMemberControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsBoardMember();
 
-        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $resultRow = $crawler->filter('.spaces__results__row');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(4, $resultRow->count());
+        $this->assertSame('Referent Referent', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('55, M, Melun', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('44, F, Rouen', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Martine Lindt', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('16, F, Berlin', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Élodie Dutemps', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('15, F, Singapour', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Tous les résultats (4)', $crawler->filter('h2')->first()->text());
 
         // Gender
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
@@ -121,7 +134,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
     public function testSavedProfilBoardMember()
     {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
+        $this->authenticateAsBoardMember();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
         $members = $crawler->filter('.spaces__results__row');
@@ -194,6 +207,48 @@ class BoardMemberControllerTest extends SqliteWebTestCase
     private function authenticateAsBoardMember()
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
+    }
+
+    public function testSaveBoardMemberOnList()
+    {
+        $this->authenticateAsBoardMember();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
+        $idBoardMemberToAdd = $crawler->filter('.spaces__results__row')
+            ->first()
+            ->filter('li')
+            ->eq(3)
+            ->filter('span.btn-add-member-list')
+            ->attr('data-memberid');
+
+        $this->client->request(Request::METHOD_POST, '/espace-membres-conseil/list/boardmember', [
+            'boardMemberId' => $idBoardMemberToAdd,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_POST, '/espace-membres-conseil/list/boardmember', [
+            'boardMember' => 1234,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_POST, '/espace-membres-conseil/list/boardmember', [
+            'boardMemberId' => 99999,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testDeleteBoardMemberOnList()
+    {
+        $this->authenticateAsBoardMember();
+        $this->client->request(Request::METHOD_DELETE, '/espace-membres-conseil/list/boardmember/2');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->request(Request::METHOD_DELETE, '/espace-membres-conseil/list/boardmember/9999');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     protected function setUp()

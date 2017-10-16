@@ -79,10 +79,10 @@ class BoardMember
      * @ORM\JoinTable(
      *     name="saved_board_members",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="board_member_owner_id", referencedColumnName="id", onDelete="CASCADE")
+     *         @ORM\JoinColumn(name="board_member_owner_id", referencedColumnName="id")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="board_member_saved_id", referencedColumnName="id", onDelete="CASCADE")
+     *         @ORM\JoinColumn(name="board_member_saved_id", referencedColumnName="id")
      *     }
      * )
      */
