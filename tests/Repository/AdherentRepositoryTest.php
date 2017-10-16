@@ -161,7 +161,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             ],
             [
                 ['a' => ['metropolitan']],
-                ['referent@en-marche-dev.fr', 'laura@deloche.com'],
+                ['laura@deloche.com', 'referent@en-marche-dev.fr'],
             ],
             // Role
             [

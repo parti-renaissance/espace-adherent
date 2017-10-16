@@ -32,9 +32,7 @@ class BoardMemberManager
 
     public function findSavedMembers(Adherent $member): AdherentCollection
     {
-        $owner = $this->getBoardMemberRepository()->findOneByAdherent(['id' => $member]);
-
-        return $this->getAdherentRepository()->findSavedBoardMember($owner);
+        return $this->getAdherentRepository()->findSavedBoardMember($member->getBoardMember());
     }
 
     public function findRoles(): array
