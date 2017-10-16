@@ -8,6 +8,6 @@
     <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Supprimer de ma liste</span>
 {% endif %}
 
-<a href="#" class="newbtn newbtn--smaller newbtn--light">
+<a href="{{ path('app_board_member_message_member', {member: member.id}) }}" class="newbtn newbtn--smaller newbtn--light">
     Envoyer un message
 </a>

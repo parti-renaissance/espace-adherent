@@ -338,6 +338,10 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="app.board_member.message_notifier" class="AppBundle\BoardMember\BoardMemberMessageNotifier">
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+        </service>
+
         <!-- Routing -->
         <service id="app.routing.remote_url_generator" class="AppBundle\Routing\RemoteUrlGenerator">
             <argument type="service" id="router"/>
