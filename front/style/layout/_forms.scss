@@ -542,3 +542,90 @@ input[type=date]::-webkit-inner-spin-button {
     }
   }
 }
+
+.form__new {
+    @include text--default;
+    font-family: $font-roboto;
+    padding: 0;
+    text-align: left;
+
+    label,
+    legend {
+        @include text--default;
+
+        &.label__header {
+            margin-bottom: 3px;
+            display: inline-block;
+            font-weight: bold;
+        }
+    }
+
+    input,
+    textarea {
+        @include text--default;
+        font-family: $font-roboto;
+        border-radius: 3px;
+        border: solid 1px $gray--light;
+        width: 100%;
+        height: auto;
+        padding: 10px 15px;
+        box-sizing: border-box;
+
+        &:disabled {
+            background: $gray--lighter;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: $newblue;
+        }
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+        margin-bottom: 20px;
+
+        &.form--split {
+            margin-bottom: 0;
+
+            ul {
+                display: flex;
+                justify-content: space-between;
+
+                > li {
+                    width: 48%;
+                }
+            }
+        }
+    }
+
+    &__forgotten-pw {
+        @include text--small;
+        display: inline-block;
+        margin: 10px 0 0 0;
+    }
+
+    &__checkbox {
+        > div {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        input[type="checkbox"] {
+            width: 60px;
+        }
+
+        label {
+            order: 2;
+            @include text--small;
+        }
+    }
+}

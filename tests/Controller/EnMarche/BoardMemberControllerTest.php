@@ -180,7 +180,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->click($this->client->getCrawler()->filter('main ul li')->selectLink('Envoyer un message')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('à un membre du conseil', $this->client->getResponse()->getContent());
+        $this->assertContains('Un membre du conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',

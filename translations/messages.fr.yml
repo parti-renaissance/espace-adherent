@@ -205,6 +205,7 @@ board_member_count_saved_profils: 'one: %count% profil sauvegardé|some: %count%
 board_member.stats.area.metropolitan: Métropole
 board_member.stats.area.overseas: DOM-TOM
 board_member.stats.area.abroad: Étranger
+board_member.message.recipients: 'one: Un membre du conseil|some: %count% membres du conseil'
 
 #
 # Errors
