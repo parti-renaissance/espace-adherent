@@ -113,12 +113,13 @@
                     align-items: center;
 
                     > div {
-                        border: 1px solid $gray--light;
                         border-radius: 50%;
                         width: 55px;
                         height: 55px;
                         overflow: hidden;
-                        background: $gray--lighter;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                     }
                 }
 

@@ -147,12 +147,12 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertContains('16, F, Berlin', $members->eq(1)->text());
         $this->assertContains('Élodie Dutemps', $members->eq(2)->text());
         $this->assertContains('15, F, Singapour', $members->eq(2)->text());
-        $this->assertContains('3 profils sauvegardés', $crawler->filter('h2')->first()->text());
+        $this->assertContains('3 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
 
         // Statistics
         $stats = $crawler->filter('#saved_board_members_statistics');
         $this->assertContains('100% femmes / 0% hommes', $stats->html());
-        $this->assertContains('Moyenne d\'âge : 25 ans', $stats->html());
+        $this->assertContains('25 ans de moyenne d\'âge', $stats->html());
         $this->assertContains('33% Métropole / 0% DOM-TOM / 67% Étranger', $stats->html());
     }
 

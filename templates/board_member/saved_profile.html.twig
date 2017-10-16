@@ -2,25 +2,43 @@
 
 {% set currentRoute = app.request.attributes.get('_route') %}
 
+{% block page_title 'Profils sauvegardés' %}
+
 {% block content__inner %}
-    <h1>Saved profile page</h1>
-    <div id="saved_board_members_statistics">
-        <h1>Stats sur ces profils</h1>
-        <div>{{ stats.women }}% femmes / {{ stats.men }}% hommes</div>
-        <div>Moyenne d'âge : {{ stats.average_age }} ans</div>
-        <div>
-            {%- for area, stat in stats.areas -%}
-                {{ stat }}% {{ area|trans }}{% if not loop.last %} / {% endif %}
-            {%- endfor -%}
-        </div>
-    </div>
-    <div>
-        <h2>{{ 'board_member_count_saved_profils'|transchoice(results.count) }}</h2>
+    <section class="background--blue-light">
         {% if results.count > 0 %}
-            <a href="{{ path('app_board_member_message_saved_profile') }}">
-                {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
-            </a>
+        <div id="saved_board_members_statistics" class="l__wrapper space--60-0">
+            <h2 class="b__nudge--bottom">Stats sur ces profils</h2>
+            <ul class="text--body">
+                <li>{{ stats.women }}% femmes / {{ stats.men }}% hommes</li>
+                <li>{{ stats.average_age }} ans de moyenne d'âge</li>
+                <li>
+                    {%- for area, stat in stats.areas -%}
+                        {{ stat }}% {{ area|trans }}{% if not loop.last %} / {% endif %}
+                    {%- endfor -%}
+                </li>
+            </ul>
+        </div>
         {% endif %}
+    </section>
+    <section class="l__wrapper space--60-0 spaces__search__results">
+        {% if results.count > 0 %}
+            <div class="l__row l__row--h-stretch l__mobile--col">
+                <h2>{{ 'board_member_count_saved_profils'|transchoice(results.count) }}</h2>
+                    <a href="{{ path('app_board_member_message_saved_profile') }}" class="newbtn newbtn--light">
+                        {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
+                    </a>
+            </div>
+        {% else %}
+            <div class="l__wrapper--slim text--center">
+                <h2>Vous n'avez pas encore sauvegardé de profil</h2>
+                <p class="text--body">
+                    Lors de vous recherches, Vous avez la possibilité de “sauvegarder” certains profils. Ces sauvegardes sont personnelles et privées et apparaitront ici. Une personne sauvegardée ne sera pas notifiée.
+                </p>
+            </div>
+        {% endif %}
+
         {% include('board_member/_list_board_members.html.twig') %}
-    </div>
+
+    </section>
 {% endblock %}
