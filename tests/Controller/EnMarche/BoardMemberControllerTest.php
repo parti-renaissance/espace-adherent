@@ -141,7 +141,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $stats = $crawler->filter('#saved_board_members_statistics');
         $this->assertContains('100% femmes / 0% hommes', $stats->html());
         $this->assertContains('Moyenne d\'âge : 25 ans', $stats->html());
-        $this->assertContains('100% Métropole / 0% DOM-TOM / 0% Étranger', $stats->html());
+        $this->assertContains('33% Métropole / 0% DOM-TOM / 67% Étranger', $stats->html());
     }
 
     public function testSendMessageToSearchResult()
