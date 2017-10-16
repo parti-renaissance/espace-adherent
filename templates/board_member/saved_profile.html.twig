@@ -21,6 +21,6 @@
                 {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
             </a>
         {% endif %}
-        {{ include('board_member/_list_board_members.html.twig', { results: boardMembers }) }}
+        {% include('board_member/_list_board_members.html.twig') %}
     </div>
 {% endblock %}
