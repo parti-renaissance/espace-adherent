@@ -333,6 +333,11 @@
             <argument type="service" id="router" />
         </service>
 
+        <!-- BoardMember -->
+        <service id="app.board_member.manager" class="AppBundle\BoardMember\BoardMemberManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
         <!-- Routing -->
         <service id="app.routing.remote_url_generator" class="AppBundle\Routing\RemoteUrlGenerator">
             <argument type="service" id="router"/>

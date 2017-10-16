@@ -198,7 +198,7 @@ event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyé
 board_member.area.metropolitan: France métropolitaine
 board_member.area.overseas: France d'Outre-Mer
 board_member.area.abroad: Étranger
-
+board_member.message.send_to_members: 'one: Envoyer un message à cette personne|some: Envoyer un message à ces %count% personnes'
 
 #
 # Errors

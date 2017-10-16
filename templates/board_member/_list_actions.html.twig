@@ -1,0 +1,13 @@
+{% if currentRoute is same as('app_board_member_search') %}
+    {% if app.user.boardMember.hasSavedBoardMember(member.boardMember)  %}
+        <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Profil sauvegardé</span>
+    {% else %}
+        <span class="btn-add-member-list" data-member-id="{{ member.id }}">Sauvegarder son profil</span>
+    {% endif %}
+{% elseif currentRoute is same as ('app_board_member_saved_profile') %}
+    <span class="btn-remove-member-list" data-member-id="{{ member.id }}">Supprimer de ma liste</span>
+{% endif %}
+
+<a href="#" class="newbtn newbtn--smaller newbtn--light">
+    Envoyer un message
+</a>

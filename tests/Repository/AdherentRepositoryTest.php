@@ -2,23 +2,22 @@
 
 namespace Tests\AppBundle\Repository;
 
+use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
-use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
+use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenInitiative;
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Repository\AdherentRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
  */
-class AdherentRepositoryTest extends MysqlWebTestCase
+class AdherentRepositoryTest extends SqliteWebTestCase
 {
     /**
      * @var AdherentRepository
@@ -82,50 +81,92 @@ class AdherentRepositoryTest extends MysqlWebTestCase
         $this->assertSame('Francis Brioul', $adherents[1]->getFullName());
     }
 
-    public function testFindNearByCitizenInitiativeInterests()
+    /**
+     * @dataProvider dataProviderSearchBoardMembers
+     */
+    public function testSearchBoardMembers(array $filters, array $results)
     {
-        $citizenInitiative = $this->getMockBuilder(CitizenInitiative::class)->disableOriginalConstructor()->getMock();
-        $citizenInitiative->expects(static::any())->method('getLatitude')->willReturn(48.8713224);
-        $citizenInitiative->expects(static::any())->method('getLongitude')->willReturn(2.3353755);
-        $citizenInitiative->expects(static::any())->method('getInterests')->willReturn(['jeunesse']);
+        $filter = BoardMemberFilter::createFromArray($filters);
 
-        $adherents = $this->repository->findNearByCitizenInitiativeInterests($citizenInitiative);
+        $boardMembers = $this->repository->searchBoardMembers($filter);
 
-        $this->assertCount(1, $adherents);
-        $this->assertSame('Lucie Olivera', $adherents[0]->getFullName());
+        $this->assertCount(count($results), $boardMembers);
+
+        foreach ($boardMembers as $key => $adherent) {
+            $this->assertSame($results[$key], $adherent->getEmailAddress());
+        }
     }
 
-    public function testFindReferentByCommittee()
+    /**
+     * @dataProvider dataProviderSearchBoardMembers
+     */
+    public function testPaginateBoardMembers(array $filters, array $results)
     {
-        // Foreign Committee with Referent
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getCountry')->willReturn('CH');
+        $filter = BoardMemberFilter::createFromArray($filters);
 
-        $referent = $this->repository->findReferentByCommittee($committee);
+        $boardMembers = $this->repository->paginateBoardMembers($filter);
 
-        $this->assertNotNull($referent);
-        $this->assertSame('Referent Referent', $referent->getFullName());
-        $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
+        $this->assertInstanceOf(Paginator::class, $boardMembers);
+        $this->assertCount(count($results), $boardMembers);
 
-        // Committee with no Referent
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getCountry')->willReturn('FR');
-        $committee->expects(static::any())->method('getPostalCode')->willReturn('06200');
+        foreach ($boardMembers as $key => $adherent) {
+            $this->assertSame($results[$key], $adherent->getEmailAddress());
+        }
+    }
 
-        $referent = $this->repository->findReferentByCommittee($committee);
-
-        $this->assertNull($referent);
-
-        // Departemental Commitee with Referent
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getCountry')->willReturn('FR');
-        $committee->expects(static::any())->method('getPostalCode')->willReturn('77190');
-
-        $referent = $this->repository->findReferentByCommittee($committee);
-
-        $this->assertNotNull($referent);
-        $this->assertSame('Referent Referent', $referent->getFullName());
-        $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
+    public function dataProviderSearchBoardMembers()
+    {
+        return [
+            // Gender
+            [
+                ['g' => 'female'],
+                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
+            ],
+            [
+                ['g' => 'male'],
+                ['referent@en-marche-dev.fr', 'kiroule.p@blabla.tld'],
+            ],
+            // Age
+            [
+                ['amin' => 55],
+                ['referent@en-marche-dev.fr'],
+            ],
+            [
+                ['amax' => 54],
+                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld', 'kiroule.p@blabla.tld'],
+            ],
+            [
+                ['amin' => 52, 'amax' => 54],
+                ['kiroule.p@blabla.tld'],
+            ],
+            // Name
+            [
+                ['f' => 'Pierre'],
+                ['kiroule.p@blabla.tld'],
+            ],
+            [
+                ['l' => 'Lindt'],
+                ['martine.lindt@gmail.com'],
+            ],
+            [
+                ['f' => 'Élodie', 'l' => 'Dutemps'],
+                ['lolodie.dutemps@hotnix.tld'],
+            ],
+            // Location
+            [
+                ['p' => '76, 368645'],
+                ['laura@deloche.com', 'lolodie.dutemps@hotnix.tld'],
+            ],
+            [
+                ['a' => ['metropolitan']],
+                ['referent@en-marche-dev.fr', 'laura@deloche.com'],
+            ],
+            // Role
+            [
+                ['r' => ['referent']],
+                ['referent@en-marche-dev.fr'],
+            ],
+        ];
     }
 
     protected function setUp()
@@ -134,10 +175,9 @@ class AdherentRepositoryTest extends MysqlWebTestCase
 
         $this->loadFixtures([
             LoadAdherentData::class,
+            LoadBoardMemberRoleData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
-            LoadCitizenInitiativeCategoryData::class,
-            LoadCitizenInitiativeData::class,
         ]);
 
         $this->container = $this->getContainer();
