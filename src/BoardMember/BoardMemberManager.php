@@ -20,14 +20,14 @@ class BoardMemberManager
         $this->manager = $manager;
     }
 
-    public function searchMembers(BoardMemberFilter $filter): array
+    public function searchMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
-        return $this->getAdherentRepository()->searchBoardMembers($filter);
+        return $this->getAdherentRepository()->searchBoardMembers($filter, $excludedMember);
     }
 
-    public function paginateMembers(BoardMemberFilter $filter): Paginator
+    public function paginateMembers(BoardMemberFilter $filter, Adherent $excludedMember): Paginator
     {
-        return $this->getAdherentRepository()->paginateBoardMembers($filter);
+        return $this->getAdherentRepository()->paginateBoardMembers($filter, $excludedMember);
     }
 
     public function findSavedMembers(Adherent $member): AdherentCollection
