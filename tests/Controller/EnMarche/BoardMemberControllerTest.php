@@ -17,19 +17,32 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testUnothorizeToAccessOnBoardMemberArea()
+    public function testUnauthorizeToAccessOnBoardMemberArea()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
-        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/');
 
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
-
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche/message');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes/message');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/message/2');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_POST, '/espace-membres-conseil/list/boardmember');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_DELETE, '/espace-membres-conseil/list/boardmember/2');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
@@ -179,6 +192,31 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
+    }
+
+    public function testSendMessageToSavedMembers()
+    {
+        $this->authenticateAsBoardMember();
+
+        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 3 personnes')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('3 membres du conseil', $this->client->getResponse()->getContent());
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
+            'board_member_message' => [
+                'subject' => 'Sujet',
+                'content' => 'Message for my special members',
+            ],
+        ]));
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'martine.lindt@gmail.com');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'lolodie.dutemps@hotnix.tld');
     }
 
     public function testSendMessageToMember()
