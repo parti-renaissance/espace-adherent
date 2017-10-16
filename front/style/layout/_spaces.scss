@@ -1,5 +1,9 @@
 .spaces {
     &__header {
+        @media (max-width: $tablet) {
+            padding: 20px 0;
+        }
+
         &__logo {
             height: 33px;
 
@@ -50,19 +54,28 @@
                 display: block;
             }
         }
-    }
 
-    &__search__filters {
-        display: flex;
-        justify-content: space-between;
+        &__filters {
+            display: flex;
+            justify-content: space-between;
 
-        > ul:first-child,
-        > ul:nth-child(2) {
-            width: 23%;
+            > ul:first-child,
+            > ul:nth-child(2) {
+                width: 23%;
+            }
+
+            > ul:last-child {
+                width: 48%;
+            }
         }
 
-        > ul:last-child {
-            width: 48%;
+        &__results {
+            @media (max-width: $mobile) {
+                h2,
+                span {
+                    margin-bottom: 10px;
+                }
+            }
         }
     }
 
@@ -85,6 +98,7 @@
             text-align: center;
             flex-direction: column;
             width: 100%;
+            text-align: left;
 
             &:nth-child(4) {
                 margin-top: 10px;
@@ -96,6 +110,7 @@
                 &:nth-child(1) {
                     width: 6rem;
                     justify-content: center;
+                    align-items: center;
 
                     > div {
                         border: 1px solid $gray--light;
@@ -109,17 +124,25 @@
 
                 &:nth-child(2) {
                     width: 14rem;
+                    padding: 0 10px;
                 }
 
                 &:nth-child(3) {
                     width: 25rem;
+                    padding: 0 10px;
                 }
 
                 &:nth-child(4) {
                     width: 30rem;
                     display: flex;
-                    align-items: flex-end;
+                    align-items: center;
+                    justify-content: flex-end;
+                    flex-direction: row;
                     margin: 0;
+
+                    span {
+                        margin-right: 10px;
+                    }
                 }
             }
         }

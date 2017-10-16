@@ -53,34 +53,34 @@
             <li>
                 <label class="label__header">
                     Nom
-                    <input type="text"
-                           name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
-                           value="{{ filter.queryLastName }}"
-                           class="form form__field form--full"
-                           placeholder="Saisissez un nom" />
                 </label>
+                <input type="text"
+                       name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
+                       value="{{ filter.queryLastName }}"
+                       class="form form__field form--full"
+                       placeholder="Saisissez un nom" />
             </li>
             <li>
                 <label class="label__header">
                     Prénom
-                    <input type="text"
-                           name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
-                           value="{{ filter.queryFirstName }}"
-                           class="form form__field form--full"
-                           placeholder="Saisissez un prénom" />
                 </label>
+                <input type="text"
+                       name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
+                       value="{{ filter.queryFirstName }}"
+                       class="form form__field form--full"
+                       placeholder="Saisissez un prénom" />
             </li>
         </ul>
         <ul>
             <li>
                 <label class="label__header">
                     Code postal ou département
-                    <input type="text"
-                           name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
-                           value="{{ filter.queryPostalCode }}"
-                           class="form form__field form--full"
-                           placeholder="Saisissez-en un ou plusieurs" />
                 </label>
+                <input type="text"
+                       name="{{ constant('PARAMETER_POSTAL_CODE', filter) }}"
+                       value="{{ filter.queryPostalCode }}"
+                       class="form form__field form--full"
+                       placeholder="Saisissez-en un ou plusieurs" />
                 <div class="text--gray text--small b__nudge--left-medium b__nudge--top-5">
                     Exemple: "33450, 12, 8, 75002"
                 </div>
@@ -122,14 +122,14 @@
         <button type="submit" class="newbtn">
             Rechercher
         </button>
-        <div>
-            {% if has_filter %}
+        {% if has_filter %}
+            <div class="b__nudge--top-10">
                 <a href="{{ path('app_board_member_search') }}"
-                   class="link--newblue text--small b__nudge--top-5">
+                   class="link--newblue text--small">
                     Réinitialiser
                 </a>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 
     <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
