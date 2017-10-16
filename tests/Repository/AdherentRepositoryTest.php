@@ -87,8 +87,9 @@ class AdherentRepositoryTest extends SqliteWebTestCase
     public function testSearchBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
+        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
 
-        $boardMembers = $this->repository->searchBoardMembers($filter);
+        $boardMembers = $this->repository->searchBoardMembers($filter, $excludedMember);
 
         $this->assertCount(count($results), $boardMembers);
 
@@ -103,8 +104,9 @@ class AdherentRepositoryTest extends SqliteWebTestCase
     public function testPaginateBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
+        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
 
-        $boardMembers = $this->repository->paginateBoardMembers($filter);
+        $boardMembers = $this->repository->paginateBoardMembers($filter, $excludedMember);
 
         $this->assertInstanceOf(Paginator::class, $boardMembers);
         $this->assertCount(count($results), $boardMembers);
@@ -124,7 +126,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             ],
             [
                 ['g' => 'male'],
-                ['referent@en-marche-dev.fr', 'kiroule.p@blabla.tld'],
+                ['referent@en-marche-dev.fr'],
             ],
             // Age
             [
@@ -133,16 +135,16 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             ],
             [
                 ['amax' => 54],
-                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld', 'kiroule.p@blabla.tld'],
+                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
             ],
             [
-                ['amin' => 52, 'amax' => 54],
-                ['kiroule.p@blabla.tld'],
+                ['amin' => 55, 'amax' => 60],
+                ['referent@en-marche-dev.fr'],
             ],
             // Name
             [
-                ['f' => 'Pierre'],
-                ['kiroule.p@blabla.tld'],
+                ['f' => 'Laura'],
+                ['laura@deloche.com'],
             ],
             [
                 ['l' => 'Lindt'],

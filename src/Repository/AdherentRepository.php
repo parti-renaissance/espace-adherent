@@ -311,19 +311,19 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    public function searchBoardMembers(BoardMemberFilter $filter): array
+    public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
         return $this
-            ->createBoardMemberFilterQueryBuilder($filter)
+            ->createBoardMemberFilterQueryBuilder($filter, $excludedMember)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function paginateBoardMembers(BoardMemberFilter $filter): Paginator
+    public function paginateBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): Paginator
     {
         $qb = $this
-            ->createBoardMemberFilterQueryBuilder($filter)
+            ->createBoardMemberFilterQueryBuilder($filter, $excludedMember)
             ->setFirstResult($filter->getOffset())
             ->setMaxResults(BoardMemberFilter::PER_PAGE)
         ;
@@ -340,9 +340,12 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         ;
     }
 
-    private function createBoardMemberFilterQueryBuilder(BoardMemberFilter $filter): QueryBuilder
+    private function createBoardMemberFilterQueryBuilder(BoardMemberFilter $filter, Adherent $excludedMember): QueryBuilder
     {
         $qb = $this->createBoardMemberQueryBuilder();
+
+        $qb->andWhere('a != :member');
+        $qb->setParameter('member', $excludedMember);
 
         if ($queryGender = $filter->getQueryGender()) {
             $qb->andWhere('a.gender = :gender');

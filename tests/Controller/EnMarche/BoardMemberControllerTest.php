@@ -45,7 +45,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
     public function testSearchBoardMember()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsBoardMember();
 
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -55,9 +55,8 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
-        $this->assertCount(2, $results);
+        $this->assertCount(1, $results);
         $this->assertContains('Referent Referent', $results->first()->text());
-        $this->assertContains('Pierre Kiroule', $results->eq(1)->text());
 
         // Age
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -154,7 +153,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 2 personnes')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à cette personne')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
@@ -167,7 +166,6 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'kiroule.p@blabla.tld');
     }
 
     public function testSendMessageToMember()

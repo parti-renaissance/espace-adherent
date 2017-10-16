@@ -45,7 +45,7 @@ class BoardMemberController extends Controller
             return $this->redirectToRoute('app_board_member_search');
         }
 
-        $results = $this->get('app.board_member.manager')->paginateMembers($filter);
+        $results = $this->get('app.board_member.manager')->paginateMembers($filter, $this->getUser());
 
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
@@ -85,7 +85,7 @@ class BoardMemberController extends Controller
             return $this->redirectToRoute('app_board_member_search');
         }
 
-        $recipients = $this->get('app.board_member.manager')->searchMembers($filter);
+        $recipients = $this->get('app.board_member.manager')->searchMembers($filter, $this->getUser());
         $message = $this->createMessage($recipients);
 
         $form = $this->createForm(BoardMemberMessageType::class, $message);
