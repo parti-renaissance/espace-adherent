@@ -6,7 +6,6 @@ use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\BoardMember\BoardMemberMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
-use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Form\BoardMemberMessageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -65,10 +64,11 @@ class BoardMemberController extends Controller
     public function savedProfilAction()
     {
         $savedMembers = $this->get('app.board_member.manager')->findSavedMembers($this->getUser());
+        $statistics = $this->get('app.board_member.manager')->getStatistics($savedMembers);
 
         return $this->render('board_member/saved_profile.html.twig', [
             'results' => $savedMembers,
-            'stats' => $this->getStatistics($savedMembers),
+            'stats' => $statistics,
         ]);
     }
 
@@ -113,7 +113,7 @@ class BoardMemberController extends Controller
     public function sendMessageToSavedProfilesAction(Request $request): Response
     {
         $recipients = $this->get('app.board_member.manager')->findSavedMembers($this->getUser());
-        $message = $this->createMessage($recipients);
+        $message = $this->createMessage($recipients->toArray());
 
         $form = $this->createForm(BoardMemberMessageType::class, $message);
         $form->handleRequest($request);
@@ -160,45 +160,6 @@ class BoardMemberController extends Controller
     private function createMessage(array $recipients): BoardMemberMessage
     {
         return new BoardMemberMessage($this->getUser(), $recipients);
-    }
-
-    /**
-     * Gets statistics for the saved board members.
-     */
-    private function getStatistics(ArrayCollection $savedBoardMembers)
-    {
-        $statistics['women'] = 0;
-        $statistics['men'] = 0;
-        $statistics['average_age'] = 0;
-        $statistics['areas'] = [];
-        foreach (BoardMember::getAreas() as $area) {
-            $statistics['areas']['board_member.stats.area.'.$area] = 0;
-        }
-
-        if ($savedBoardMembers->count() > 0) {
-            $sum_age = 0;
-            $count = $savedBoardMembers->count();
-
-            foreach ($savedBoardMembers as $member) {
-                if ($member->isFemale()) {
-                    $statistics['women'] += 1;
-                } else {
-                    $statistics['men'] += 1;
-                }
-
-                $sum_age += $member->getAge();
-                $statistics['areas']['board_member.stats.area.'.$member->getBoardMemberArea()] += 1;
-            }
-
-            $statistics['average_age'] = round($sum_age / $count);
-            $statistics['women'] = round($statistics['women'] / $count, 2) * 100;
-            $statistics['men'] = round($statistics['men'] / $count, 2) * 100;
-            foreach ($statistics['areas'] as $area => $value) {
-                $statistics['areas'][$area] = round($value / $count, 2) * 100;
-            }
-        }
-
-        return $statistics;
     }
 
     /**
