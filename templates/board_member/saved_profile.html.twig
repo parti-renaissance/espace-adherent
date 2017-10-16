@@ -1,5 +1,19 @@
 {% extends 'board_member/layout.html.twig' %}
 
+{% set currentRoute = app.request.attributes.get('_route') %}
+
 {% block content__inner %}
-  <h1>Saved profile page</h1>
+    <h1>Saved profile page</h1>
+    <div>
+        {# stats #}
+    </div>
+    <div>
+        <h2>{{ 'board_member_count_saved_profils'|transchoice(results.count) }}</h2>
+        {% if results.count > 0 %}
+            <a href="{{ path('app_board_member_message_saved_profile') }}">
+                {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
+            </a>
+        {% endif %}
+        {% include('board_member/_list_board_members.html.twig') %}
+    </div>
 {% endblock %}

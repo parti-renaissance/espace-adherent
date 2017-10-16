@@ -1,5 +1,7 @@
 {% extends 'board_member/layout.html.twig' %}
 
+{% set currentRoute = app.request.attributes.get('_route') %}
+
 {% block page_title 'Recherche membres du conseil' %}
 
 {% block content__inner %}

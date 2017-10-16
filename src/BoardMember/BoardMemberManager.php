@@ -2,7 +2,9 @@
 
 namespace AppBundle\BoardMember;
 
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -28,6 +30,13 @@ class BoardMemberManager
         return $this->getAdherentRepository()->paginateBoardMembers($filter);
     }
 
+    public function findSavedMembers(Adherent $member): AdherentCollection
+    {
+        $owner = $this->getBoardMemberRepository()->findOneByAdherent(['id' => $member]);
+
+        return $this->getAdherentRepository()->findSavedBoardMember($owner);
+    }
+
     public function findRoles(): array
     {
         return $this->getRoleRepository()->findAll();
@@ -36,6 +45,11 @@ class BoardMemberManager
     private function getAdherentRepository(): AdherentRepository
     {
         return $this->manager->getRepository(Adherent::class);
+    }
+
+    public function getBoardMemberRepository(): ObjectRepository
+    {
+        return $this->manager->getRepository(BoardMember::class);
     }
 
     private function getRoleRepository(): ObjectRepository

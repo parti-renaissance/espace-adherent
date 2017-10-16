@@ -124,9 +124,18 @@ class BoardMemberControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
 
-        $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
+        $members = $crawler->filter('.spaces__results__row');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(3, $members);
+        $this->assertContains('Laura Deloche', $members->first()->text());
+        $this->assertContains('44, F, Rouen', $members->first()->text());
+        $this->assertContains('Martine Lindt', $members->eq(1)->text());
+        $this->assertContains('16, F, Berlin', $members->eq(1)->text());
+        $this->assertContains('Élodie Dutemps', $members->eq(2)->text());
+        $this->assertContains('15, F, Singapour', $members->eq(2)->text());
+        $this->assertContains('3 profils sauvegardés', $crawler->filter('h2')->first()->text());
     }
 
     public function testSendMessageToSearchResult()

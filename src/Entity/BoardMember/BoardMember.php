@@ -75,7 +75,7 @@ class BoardMember
     /**
      * @var BoardMember[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", inversedBy="owners", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="saved_board_members",
      *     joinColumns={
@@ -87,6 +87,13 @@ class BoardMember
      * )
      */
     private $savedMembers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="savedMembers")
+     *
+     * @var BoardMember[]
+     */
+    private $owners;
 
     public function __construct()
     {
@@ -162,7 +169,7 @@ class BoardMember
     }
 
     /**
-     * @return BoardMember[]|Collection
+     * @return BoardMember[]|Collection|iterable
      */
     public function getSavedMembers(): iterable
     {

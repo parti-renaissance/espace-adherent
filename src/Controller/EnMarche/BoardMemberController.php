@@ -63,7 +63,11 @@ class BoardMemberController extends Controller
      */
     public function savedProfilAction()
     {
-        return $this->render('board_member/saved_profile.html.twig');
+        $savedMembers = $this->get('app.board_member.manager')->findSavedMembers($this->getUser());
+
+        return $this->render('board_member/saved_profile.html.twig', [
+            'results' => $savedMembers,
+        ]);
     }
 
     /**

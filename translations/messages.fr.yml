@@ -201,6 +201,7 @@ board_member.area.abroad: Étranger
 board_member.message.send_to_members: 'one: Envoyer un message à cette personne|some: Envoyer un message à ces %count% personnes'
 board_member.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 board_member.message.filtered_members: 'one: Au membre filtré|some: Aux %count% membres filtrés'
+board_member_count_saved_profils: 'one: %count% profil sauvegardé|some: %count% profils sauvegardés'
 
 #
 # Errors
