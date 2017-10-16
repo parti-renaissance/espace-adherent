@@ -418,14 +418,14 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $qb;
     }
 
-    public function findSavedBoardMember(int $id): AdherentCollection
+    public function findSavedBoardMember(BoardMember $owner): AdherentCollection
     {
         $qb = $this
             ->createQueryBuilder('a')
             ->select('a', 'bm')
             ->leftJoin('a.boardMember', 'bm')
             ->where(':member MEMBER OF bm.owners')
-            ->setParameter('member', $id);
+            ->setParameter('member', $owner);
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }

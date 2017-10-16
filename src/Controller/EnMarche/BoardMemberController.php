@@ -63,11 +63,10 @@ class BoardMemberController extends Controller
      */
     public function savedProfilAction()
     {
-        $adherentRepository = $this->getDoctrine()->getRepository(Adherent::class);
-        $owner = $this->getDoctrine()->getRepository(BoardMember::class)->findOneByAdherent(['id' => $this->getUser()]);
+        $savedMembers = $this->get('app.board_member.manager')->findSavedMembers($this->getUser());
 
         return $this->render('board_member/saved_profile.html.twig', [
-            'boardMembers' => $adherentRepository->findSavedBoardMember($owner),
+            'results' => $savedMembers,
         ]);
     }
 
