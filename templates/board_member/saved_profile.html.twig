@@ -8,10 +8,10 @@
         {# stats #}
     </div>
     <div>
-        <h2>{{ results.count }} profil{% if results.count > 1 %}s{% endif %} sauvegardé{% if results.count > 1 %}s{% endif %}</h2>
+        <h2>{{ 'board_member_count_saved_profils'|transchoice(results.count) }}</h2>
         {% if results.count > 0 %}
             <a href="{{ path('app_board_member_message_saved_profile') }}">
-                Envoyer un message à ces {{ results.count }} personne{% if results.count > 1 %}s{% endif %}
+                {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
             </a>
         {% endif %}
         {% include('board_member/_list_board_members.html.twig') %}
