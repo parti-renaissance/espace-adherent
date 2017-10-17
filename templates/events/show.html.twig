@@ -57,6 +57,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
     <script type="text/javascript">
         var map = null;
         function initMap() {
@@ -76,6 +77,7 @@
                 title: '{{ event.name|e('js') }}'
             });
         }
+        initMap();
     </script>
 {% endblock %}
 
