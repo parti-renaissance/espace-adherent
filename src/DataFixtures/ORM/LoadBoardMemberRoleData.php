@@ -15,7 +15,7 @@ class LoadBoardMemberRoleData extends AbstractFixture implements FixtureInterfac
         'referent' => 'Référent(e) territorial(e)',
         'deputy' => 'Député(e) national(e)',
         'european_deputy' => 'Député(e) européen(ne)',
-        'minister' => 'Ministre',
+        'minister' => 'Membre du gouvernement',
         'senator' => 'Sénateur(trice)',
         'consular' => 'Conseiller(ère) Consulaire',
         'president_larem' => 'Président(e) du groupe LaREM d\'un exécutif local',

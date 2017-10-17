@@ -16,10 +16,12 @@ export default (api) => {
         api.addBoardMemberToList(element.dataset.memberid).then(() => {
             element.innerHTML = 'Profil sauvegardé';
             reloadIfNeeded(element);
-            element.className = element.className.replace('btn-add-member-list', 'btn-remove-member-list');
+            element.className = element.className.replace('btn-add-member-list',
+            'btn-remove-member-list newbtn--green');
         }).catch((err) => {
-            element.innerHTML = 'Sauvegarder son profil';
-            window.alert('Impossible d\'ajouter ce membre à votre liste.');
+            element.innerHTML = 'Sauvegarder ce profil';
+            window.alert('Nous n\'arrivons pas à ajouter cette personne à votre liste.\n' +
+                         'Actualisez votre page et réessayez !');
         });
     }
 
@@ -29,17 +31,19 @@ export default (api) => {
         element.innerHTML = 'Suppression en cours...';
 
         api.deleteBoardMemberOnList(element.dataset.memberid).then((response) => {
-            element.className = element.className.replace('btn-remove-member-list', 'btn-add-member-list');
+            element.className = element.className.replace('btn-remove-member-list' +
+            'newbtn--green', 'btn-add-member-list');
             reloadIfNeeded(element);
-            element.innerHTML = 'Sauvegarder son profil';
+            element.innerHTML = 'Sauvegarder ce profil';
         }).catch((err) => {
             element.innerHTML = 'Profil sauvegardé';
-            window.alert('Impossible de supprimer ce membre de votre liste.');
+            window.alert('Nous n\'arrivons pas à supprimer cette personne de votre liste.\n' +
+                         'Actualisez votre page et réessayez !');
         });
     }
 
     document.body.addEventListener('click', (event) => {
-        if (event.target.className.includes('btn-remove-member-list')) {
+        if (event.target.className.includes('newbtn--green')) {
             removeMemberToList(event);
         }
     });

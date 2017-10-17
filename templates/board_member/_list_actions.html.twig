@@ -1,11 +1,11 @@
 {% if currentRoute is same as('app_board_member_search') %}
     {% if app.user.boardMember.hasSavedBoardMember(member.boardMember)  %}
-        <span class="newbtn newbtn--smaller newbtn--light btn-remove-member-list" data-memberid="{{ member.boardMember.id }}">Profil sauvegardé</span>
+        <span class="newbtn newbtn--smaller newbtn--light btn-remove-member-list newbtn--green" data-memberid="{{ member.boardMember.id }}">Profil sauvegardé</span>
     {% else %}
         <span class="newbtn newbtn--smaller newbtn--light btn-add-member-list" data-memberid="{{ member.boardMember.id }}">Sauvegarder ce profil</span>
     {% endif %}
 {% elseif currentRoute is same as ('app_board_member_saved_profile') %}
-    <span class="newbtn newbtn--smaller newbtn--light btn-remove-member-list need-to-refresh" data-memberid="{{ member.boardMember.id }}">Supprimer de ma liste</span>
+    <span class="newbtn newbtn--smaller newbtn--light btn-remove-member-list newbtn--green need-to-refresh" data-memberid="{{ member.boardMember.id }}">Supprimer de ma liste</span>
 {% endif %}
 
 <a href="{{ path('app_board_member_message_member', {member: member.id}) }}" class="newbtn newbtn--smaller newbtn--light">
