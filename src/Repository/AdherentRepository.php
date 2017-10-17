@@ -68,9 +68,13 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $query = $this
             ->createQueryBuilder('a')
             ->addSelect('pma')
+            ->addSelect('cma')
             ->addSelect('cm')
+            ->addSelect('bm')
             ->leftJoin('a.procurationManagedArea', 'pma')
+            ->leftJoin('a.coordinatorManagedArea', 'cma')
             ->leftJoin('a.memberships', 'cm')
+            ->leftJoin('a.boardMember', 'bm')
             ->where('a.emailAddress = :username')
             ->andWhere('a.status = :status')
             ->setParameter('username', $username)
@@ -335,8 +339,16 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         return $this
             ->createQueryBuilder('a')
-            ->innerJoin('a.boardMember', 'bm')
             ->addSelect('bm')
+            ->addSelect('ap')
+            ->addSelect('ac')
+            ->addSelect('cm')
+            ->addSelect('bmr')
+            ->innerJoin('a.boardMember', 'bm')
+            ->leftJoin('a.procurationManagedArea', 'ap')
+            ->leftJoin('a.coordinatorManagedArea', 'ac')
+            ->leftJoin('a.memberships', 'cm')
+            ->innerJoin('bm.roles', 'bmr')
         ;
     }
 
@@ -403,11 +415,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         }
 
         if (count($queryRoles = $filter->getQueryRoles())) {
-            $qb
-                ->innerJoin('bm.roles', 'bmr')
-                ->addSelect('bmr')
-            ;
-
             $rolesExpression = $qb->expr()->orX();
 
             foreach ($queryRoles as $key => $role) {
@@ -424,9 +431,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     public function findSavedBoardMember(BoardMember $owner): AdherentCollection
     {
         $qb = $this
-            ->createQueryBuilder('a')
-            ->select('a', 'bm')
-            ->leftJoin('a.boardMember', 'bm')
+            ->createBoardMemberQueryBuilder()
             ->where(':member MEMBER OF bm.owners')
             ->setParameter('member', $owner);
 
