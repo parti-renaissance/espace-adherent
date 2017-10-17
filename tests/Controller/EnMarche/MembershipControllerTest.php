@@ -21,6 +21,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group membership
  */
 class MembershipControllerTest extends MysqlWebTestCase
 {

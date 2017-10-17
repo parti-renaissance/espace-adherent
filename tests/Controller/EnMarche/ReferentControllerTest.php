@@ -15,6 +15,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group referent
  */
 class ReferentControllerTest extends SqliteWebTestCase
 {

@@ -16,6 +16,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group eventManager
  */
 class EventManagerControllerTest extends SqliteWebTestCase
 {

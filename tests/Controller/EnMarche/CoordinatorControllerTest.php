@@ -11,6 +11,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group coordinator
  */
 class CoordinatorControllerTest extends SqliteWebTestCase
 {
