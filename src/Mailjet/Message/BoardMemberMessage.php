@@ -24,7 +24,7 @@ final class BoardMemberMessage extends MailjetMessage
 
         $message = new self(
             Uuid::uuid4(),
-            '229354',
+            '233701',
             $first->getEmailAddress(),
             self::fixMailjetParsing($first->getFullName() ?: ''),
             $model->getSubject(),
