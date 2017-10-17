@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,13 +38,15 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
      */
     private $roleRepository;
 
+    private $emailNotFound;
+
     protected function configure()
     {
         $this
-          ->setName('app:import:board-member')
-          ->addArgument('fileUrl', InputArgument::REQUIRED)
-          ->setDescription('Import board member from CSV file')
-        ;
+            ->setName('app:import:board-member')
+            ->addOption('csvtypeformurl', 'tfcsv', InputArgument::OPTIONAL, 'URL of type form CSV result', null)
+            ->addOption('othercsv', 'csv', InputArgument::OPTIONAL, 'URL of CSV File', null)
+            ->setDescription('Import board member from CSV file');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -52,17 +55,37 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
         $this->boardMemberRepository = $this->em->getRepository(BoardMember::class);
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
         $this->roleRepository = $this->em->getRepository(Role::class);
+        $this->emailNotFound = [];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $fileNameTypeFormCSV = null;
+        $fileNameOtherCSV = null;
+        $typeFormRows = [];
+        $otherCSVRows = [];
+
+        if (null === ($fileNameTypeFormCSV = $input->getOption(
+                'csvtypeformurl'
+            )) && null === ($fileNameOtherCSV = $input->getOption('othercsv'))) {
+            throw new LogicException('Pass at leat one URL of file');
+        }
+
         try {
-            $rows = $this->parseCSV($input->getArgument('fileUrl'));
+            if ($fileNameTypeFormCSV) {
+                $typeFormRows = $this->parseTypeFormCSV($fileNameTypeFormCSV);
+            }
+
+            if ($fileNameOtherCSV) {
+                $otherCSVRows = $this->parseOtherCSV($fileNameOtherCSV);
+            }
         } catch (FileNotFoundException $e) {
-            $output->writeln(sprintf('%s not found'), $input->getArgument('fileUrl'));
+            $output->writeln(sprintf('%s not found'), $e->getFile());
 
             return 1;
         }
+
+        $rows = array_merge($typeFormRows, $otherCSVRows);
 
         $this->em->beginTransaction();
 
@@ -72,9 +95,15 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
         $this->em->commit();
 
         $output->writeln('Import finish');
+        if (0 < count($this->emailNotFound)) {
+            $output->writeln('The following email adress are not found in DB');
+            foreach ($this->emailNotFound as $email) {
+                $output->writeln($email);
+            }
+        }
     }
 
-    private function parseCSV(string $filename): array
+    private function parseTypeFormCSV(string $filename): array
     {
         $rows = [];
         if (false === ($handle = fopen($filename, 'r'))) {
@@ -106,6 +135,42 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
             ];
         }
         fclose($handle);
+        array_pop($rows);
+
+        return $rows;
+    }
+
+    private function parseOtherCSV(string $filename): array
+    {
+        $rows = [];
+        if (false === ($handle = fopen($filename, 'r'))) {
+            throw new FileNotFoundException(sprintf('% not found', $filename));
+        }
+
+        $isFirstRow = true;
+        while (false !== ($data = fgetcsv($handle, 100000, ';'))) {
+            if (true === $isFirstRow) {
+                $isFirstRow = false;
+
+                continue;
+            }
+
+            $row = array_map('trim', $data);
+            $rows[] = [
+                'email' => $row[9],
+                'execute_mandate' => true,
+                'roles' => [
+                    'mayor_less' => $row[0] === 'Maire >50k' ? true : false,
+                    'president_less' => $row[0] === 'EPCI > 100k' ? true : false,
+                    'minister' => $row[0] === 'Gouvernement' ? true : false,
+                    'deputy' => $row[0] === 'Députés' ? true : false,
+                    'european_deputy' => $row[0] === 'Députés européens' ? true : false,
+                    'referent' => $row[0] === 'Referent' ? true : false,
+                    'other_role' => false,
+                ],
+            ];
+        }
+        fclose($handle);
 
         array_pop($rows);
 
@@ -116,14 +181,28 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
     {
         foreach ($rows as $row) {
             if (null === ($adherent = $this->adherentRepository->findByEmail($row['email']))) {
+                $this->emailNotFound[] = $row['email'];
+
                 continue;
             }
             if ($adherent->isBoardMember()) {
                 continue;
             }
 
+            if (isset($row['area'])) {
+                $area = $this->getTypeOfArea($row['area']['country'], $row['area']['country_type']);
+            } else {
+                $area = implode(
+                    ',',
+                    [
+                        $adherent->getPostAddress()->getPostalCode(),
+                        substr($adherent->getPostAddress()->getPostalCode(), 0, 2),
+                    ]
+                );
+            }
+
             $adherent->setBoardMember(
-                $this->getTypeOfArea($row['area']['country'], $row['area']['country_type']),
+                $area,
                 $this->getRoles($row)
             );
 
