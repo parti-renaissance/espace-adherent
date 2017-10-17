@@ -1,7 +1,7 @@
 {% extends 'events/invitation.html.twig' %}
 
 {% block page_title initiative.name %}
-{% block canonical_url url('app_citizen_initiative_show', {'uuid': initiative.uuid.toString, 'slug': initiative.slug}) %}
+{% block canonical_url url('app_citizen_initiative_show', {'slug': initiative.slug}) %}
 
 {% block content %}
     {% set committee_event = initiative %}

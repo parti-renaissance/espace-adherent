@@ -16,13 +16,13 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url('app_event_show', {uuid: event.uuid.toString, slug: event.slug}) %}
+    {% set event_url = url('app_event_show', {slug: event.slug}) %}
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
 
             {{ include('events/_header.html.twig') }}
 
-            <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path('app_event_show', {'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à l'événement
             </a>
@@ -105,7 +105,7 @@
 
                     <div class="form__row b__nudge--top">
                         <button type="submit" class="btn btn--blue">Enregistrer</button>
-                        <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
+                        <a href="{{ path('app_event_show', {'slug': event.slug}) }}"
                             class="btn">
                             Annuler
                         </a>

@@ -21,9 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/initiative-citoyenne/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/initiative-citoyenne/{slug}")
  * @Security("is_granted('EDIT_CITIZEN_INITIATIVE', initiative)")
- * @Entity("citizen_initiative", expr="repository.findOneActiveByUuid(uuid)")
+ * @Entity("citizen_initiative", expr="repository.findOneActiveBySlug(slug)")
  */
 class CitizenInitiativeManagerContoller extends Controller
 {
@@ -41,7 +41,6 @@ class CitizenInitiativeManagerContoller extends Controller
             $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.update.success'));
 
             return $this->redirectToRoute('app_citizen_initiative_show', [
-                'uuid' => (string) $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -68,7 +67,6 @@ class CitizenInitiativeManagerContoller extends Controller
             $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.cancel.success'));
 
             return $this->redirectToRoute('app_citizen_initiative_show', [
-                'uuid' => (string) $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -107,7 +105,6 @@ class CitizenInitiativeManagerContoller extends Controller
 
         if (!$uuids) {
             return $this->redirectToRoute('app_citizen_initiative_members', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -122,7 +119,6 @@ class CitizenInitiativeManagerContoller extends Controller
 
         if (!$registrations) {
             return $this->redirectToRoute('app_citizen_initiative_members', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -151,7 +147,6 @@ class CitizenInitiativeManagerContoller extends Controller
             $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.contact.none'));
 
             return $this->redirectToRoute('app_citizen_initiative_members', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -175,7 +170,6 @@ class CitizenInitiativeManagerContoller extends Controller
             $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.contact.success'));
 
             return $this->redirectToRoute('app_citizen_initiative_members', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }

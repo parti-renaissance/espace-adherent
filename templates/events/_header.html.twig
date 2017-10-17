@@ -28,7 +28,7 @@
         {% set isFull = true %}
         {% if event.isCitizenInitiative and is_granted('ROLE_SUPERVISOR') %}
             {% set isFull = false %}
-            <a class="btn btn--no-border" href="{{ path("app_citizen_initiative_committee_share", {uuid: event.uuid.toString, slug: event.slug}) }}">Partager dans mon comité</a>
+            <a class="btn btn--no-border" href="{{ path("app_citizen_initiative_committee_share", {slug: event.slug}) }}">Partager dans mon comité</a>
         {% endif %}
         {% if event.finished %}
             <div class="text--body text--white">
@@ -42,7 +42,7 @@
                 L'événement à été annulé
             </div>
         {% elseif event.isCitizenInitiative or not event.full%}
-            <a class="btn btn--no-border {{ isFull?' btn--full':''}}" href="{{ path("app_#{event.type}_attend", {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+            <a class="btn btn--no-border {{ isFull?' btn--full':''}}" href="{{ path("app_#{event.type}_attend", {slug: event.slug}) }}">Je veux participer</a>
         {% else %}
             <button class="btn btn--no-border{{ isFull?' btn--full':''}} btn--text-blue btn--disabled" disabled="disabled">
                 Je veux participer
@@ -70,7 +70,7 @@
                 <i class="fa fa-envelope-o"></i>
             </li>
             <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                <a href="{{ path("app_#{event.type}_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
+                <a href="{{ path("app_#{event.type}_export_ical", {slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                 </a>

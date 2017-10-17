@@ -29,7 +29,6 @@ class ManagedCommitteesExporter
                 'name' => [
                     'label' => $committee->getName(),
                     'url' => $this->urlGenerator->generate('app_committee_show', [
-                        'uuid' => $committee->getUuid()->toString(),
                         'slug' => $committee->getSlug(),
                     ]),
                 ],

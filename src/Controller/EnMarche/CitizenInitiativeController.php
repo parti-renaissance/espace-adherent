@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/initiative-citoyenne")
- * @Entity("initiative", expr="repository.findOnePublishedByUuid(uuid)")
+ * @Entity("initiative", expr="repository.findOnePublishedBySlug(slug)")
  */
 class CitizenInitiativeController extends Controller
 {
@@ -83,7 +83,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"}, name="app_citizen_initiative_show")
+     * @Route("/{slug}", name="app_citizen_initiative_show")
      * @Method("GET")
      */
     public function showAction(CitizenInitiative $initiative): Response
@@ -94,7 +94,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/invitation", requirements={"uuid": "%pattern_uuid%"}, name="app_citizen_initiative_invite")
+     * @Route("/{slug}/invitation", name="app_citizen_initiative_invite")
      * @Method("GET|POST")
      */
     public function inviteAction(Request $request, CitizenInitiative $initiative): Response
@@ -112,7 +112,6 @@ class CitizenInitiativeController extends Controller
             $request->getSession()->set('citizen_initiative_invitations_count', count($invitation->guests));
 
             return $this->redirectToRoute('app_citizen_initiative_invitation_sent', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -124,7 +123,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/assistance_d_expert", requirements={"uuid": "%pattern_uuid%"}, name="app_citizen_initiative_expert_assistance")
+     * @Route("/{slug}/assistance_d_expert", name="app_citizen_initiative_expert_assistance")
      * @Method("GET|POST")
      */
     public function expertAssistanceNeededAction(Request $request, CitizenInitiative $initiative): Response
@@ -135,7 +134,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/ical", name="app_citizen_initiative_export_ical")
+     * @Route("/{slug}/ical", name="app_citizen_initiative_export_ical")
      * @Method("GET")
      */
     public function exportIcalAction(CitizenInitiative $initiative): Response
@@ -150,14 +149,13 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/invitation/merci", name="app_citizen_initiative_invitation_sent")
+     * @Route("/{slug}/invitation/merci", name="app_citizen_initiative_invitation_sent")
      * @Method("GET")
      */
     public function invitationSentAction(Request $request, CitizenInitiative $initiative): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('citizen_initiative_invitations_count')) {
             return $this->redirectToRoute('app_citizen_initiative_invite', [
-                'uuid' => $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ]);
         }
@@ -169,7 +167,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/inscription", name="app_citizen_initiative_attend")
+     * @Route("/{slug}/inscription", name="app_citizen_initiative_attend")
      * @Method("GET|POST")
      */
     public function attendAction(Request $request, CitizenInitiative $initiative): Response
@@ -191,7 +189,6 @@ class CitizenInitiativeController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.registration.success'));
 
             return $this->redirectToRoute('app_citizen_initiative_attend_confirmation', [
-                'uuid' => (string) $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -204,7 +201,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/partage-au-comite", requirements={"uuid": "%pattern_uuid%"}, name="app_citizen_initiative_committee_share")
+     * @Route("/{slug}/partage-au-comite", name="app_citizen_initiative_committee_share")
      * @Method("GET|POST")
      * @Security("is_granted('ROLE_SUPERVISOR')")
      */
@@ -238,7 +235,7 @@ class CitizenInitiativeController extends Controller
 
     /**
      * @Route(
-     *   path="/{uuid}/{slug}/confirmation",
+     *   path="/{slug}/confirmation",
      *   name="app_citizen_initiative_attend_confirmation",
      *   condition="request.query.has('registration')"
      * )
@@ -284,7 +281,7 @@ class CitizenInitiativeController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/abonner", name="app_citizen_initiative_activity_subscription", condition="request.isXmlHttpRequest()")
+     * @Route("/{slug}/abonner", name="app_citizen_initiative_activity_subscription", condition="request.isXmlHttpRequest()")
      * @Method("GET")
      * @Security("is_granted('ROLE_ADHERENT')")
      */

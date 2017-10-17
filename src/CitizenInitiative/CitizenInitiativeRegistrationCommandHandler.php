@@ -47,7 +47,6 @@ class CitizenInitiativeRegistrationCommandHandler
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
         $citizenInitiativeLink = $this->generateUrl('app_citizen_initiative_show', [
-            'uuid' => (string) $command->getEvent()->getUuid(),
             'slug' => $command->getEvent()->getSlug(),
         ]);
 

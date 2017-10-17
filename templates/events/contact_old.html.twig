@@ -17,7 +17,7 @@
 {% block committee_content %}
     <main>
         <section class="l__wrapper--medium space--30-0">
-            <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path('app_event_show', {'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à l'événement
             </a>
@@ -48,7 +48,7 @@
 
                 {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
 
-                <a href="{{ path('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
+                <a href="{{ path('app_event_show', {'slug': event.slug}) }}"
                    class="btn">
                     Annuler
                 </a>

@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/comites/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/comites/{slug}")
  * @Security("is_granted('HOST_COMMITTEE', committee)")
  */
 class CommitteeManagerController extends Controller
@@ -44,7 +44,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.update.success'));
 
             return $this->redirectToRoute('app_committee_manager_edit', [
-                'uuid' => (string) $committee->getUuid(),
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -75,7 +74,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_event_show', [
-                'uuid' => (string) $command->getEvent()->getUuid(),
                 'slug' => (string) $command->getEvent()->getSlug(),
             ]);
         }
@@ -145,7 +143,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.none'));
 
             return $this->redirectToRoute('app_commitee_manager_list_members', [
-                'uuid' => $committee->getUuid(),
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -159,7 +156,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.success'));
 
             return $this->redirectToRoute('app_commitee_manager_list_members', [
-                'uuid' => $committee->getUuid(),
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -197,7 +193,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.promote_host.success'));
 
             return $this->redirectToRoute('app_commitee_manager_list_members', [
-                'uuid' => $committee->getUuid(),
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -235,7 +230,6 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.demote_host.success'));
 
             return $this->redirectToRoute('app_commitee_manager_list_members', [
-                'uuid' => $committee->getUuid(),
                 'slug' => $committee->getSlug(),
             ]);
         }

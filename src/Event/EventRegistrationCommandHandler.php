@@ -41,7 +41,6 @@ class EventRegistrationCommandHandler
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
         $eventLink = $this->generateUrl('app_event_show', [
-            'uuid' => (string) $command->getEvent()->getUuid(),
             'slug' => $command->getEvent()->getSlug(),
         ]);
 

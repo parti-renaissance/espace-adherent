@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn--blue" id="attend-committee-event">
                         Je m'inscris
                     </button>
-                    <a  href="{{ path('app_event_show', {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}"
+                    <a  href="{{ path('app_event_show', {'slug': committee_event.slug}) }}"
                         class="btn">
                         Annuler
                     </a>

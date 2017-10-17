@@ -85,7 +85,6 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $initiative->getOrganizer(),
             $initiative,
             $this->generateUrl('app_citizen_initiative_show', [
-                'uuid' => (string) $initiative->getUuid(),
                 'slug' => $initiative->getSlug(),
             ])
         ));
@@ -135,7 +134,6 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $organizer,
             $citizenInitiative,
             $this->generateUrl('app_citizen_initiative_show', [
-                'uuid' => (string) $citizenInitiative->getUuid(),
                 'slug' => $citizenInitiative->getSlug(),
             ]),
             function (Adherent $adherent) {
@@ -151,7 +149,6 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $organizer,
             $citizenInitiative,
             $this->generateUrl('app_citizen_initiative_show', [
-                'uuid' => (string) $citizenInitiative->getUuid(),
                 'slug' => $citizenInitiative->getSlug(),
             ]),
             function (Adherent $adherent) {
@@ -181,7 +178,6 @@ class CitizenInitiativeMessageNotifier implements EventSubscriberInterface
             $organizer,
             $citizenInitiative,
             $this->generateUrl('app_citizen_initiative_show', [
-                'uuid' => (string) $citizenInitiative->getUuid(),
                 'slug' => $citizenInitiative->getSlug(),
             ]),
             function (Adherent $adherent) {

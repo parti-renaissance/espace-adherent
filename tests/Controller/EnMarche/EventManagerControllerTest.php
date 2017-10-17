@@ -56,8 +56,8 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $slug = date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
 
         return [
-            ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
-            ['/evenements/'.$uuid.'/'.$slug.'/inscrits'],
+            ['/evenements/'.$slug.'/modifier'],
+            ['/evenements/'.$slug.'/inscrits'],
         ];
     }
 
@@ -67,9 +67,9 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $slug = date('Y-m-d', strtotime('+60 days')).'-reunion-de-reflexion-parisienne-annule';
 
         return [
-            ['/evenements/'.$uuid.'/'.$slug.'/modifier'],
-            ['/evenements/'.$uuid.'/'.$slug.'/inscription'],
-            ['/evenements/'.$uuid.'/'.$slug.'/annuler'],
+            ['/evenements/'.$slug.'/modifier'],
+            ['/evenements/'.$slug.'/inscription'],
+            ['/evenements/'.$slug.'/annuler'],
         ];
     }
 
@@ -77,7 +77,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -137,7 +137,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_2_UUID.'/'.date('Y-m-d', strtotime('+10 days')).'-reunion-de-reflexion-dammarienne/annuler');
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.date('Y-m-d', strtotime('+10 days')).'-reunion-de-reflexion-dammarienne/annuler');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -162,7 +162,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
 
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
+        $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -170,7 +170,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testOrganizerCanSeeRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 2));
@@ -180,7 +180,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $exportUrl = $this->client->getRequest()->getPathInfo().'/exporter';
@@ -196,7 +196,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testOrganizerCanExportRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
@@ -234,7 +234,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testOrganizerCanContactRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
@@ -298,7 +298,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testExportIcalEvent()
     {
-        $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
+        $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

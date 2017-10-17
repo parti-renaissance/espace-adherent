@@ -32,7 +32,6 @@ class CommitteeUrlGenerator
 
     private function generateUrl(string $routeName, Committee $committee, array $params = [], int $type = UrlGenerator::ABSOLUTE_PATH): string
     {
-        $params['uuid'] = (string) $committee->getUuid();
         $params['slug'] = $committee->getSlug();
 
         return $this->generate($routeName, $params, $type);

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title event.name %}
-{% block canonical_url url('app_event_show', {'uuid': event.uuid.toString, 'slug': event.slug}) %}
+{% block canonical_url url('app_event_show', {'slug': event.slug}) %}
 
 {% block json_ld %}
     <script type="application/ld+json">
@@ -82,7 +82,7 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url("app_#{event.type}_show", {uuid: event.uuid.toString, slug: event.slug}) %}
+    {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
     <main>
         <section class="commitee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
@@ -96,15 +96,15 @@
                 {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
                     {% if event.active %}
                         <a class="b__nudge--right-small"
-                           href="{{ path("app_#{event.type}_edit", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                           href="{{ path("app_#{event.type}_edit", {'slug': event.slug}) }}">
                             Modifier l'événement
                         </a>
                         <a class="b__nudge--right-small"
-                           href="{{ path("app_#{event.type}_cancel", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                           href="{{ path("app_#{event.type}_cancel", {'slug': event.slug}) }}">
                             Annuler l'événement
                         </a>
                     {% endif %}
-                    <a href="{{ path("app_#{event.type}_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                    <a href="{{ path("app_#{event.type}_members", {'slug': event.slug}) }}">
                         Gérer les participants
                     </a>
                 {% endif %}
@@ -133,7 +133,7 @@
                     <li class="text--bold">À propos</li>
                 {% else %}
                     <li>
-                        <a href="{{ path("app_#{event.type}_show", {'uuid': event.uuid, 'slug': event.slug}) }}">
+                        <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}">
                             À propos
                         </a>
                     </li>
@@ -143,7 +143,7 @@
                         <li class="text--bold">Compétences recherchées</li>
                     {% else %}
                         <li>
-                            <a href="{{ path("app_#{event.type}_expert_assistance", {'uuid': event.uuid, 'slug': event.slug}) }}">
+                            <a href="{{ path("app_#{event.type}_expert_assistance", {'slug': event.slug}) }}">
                                 Compétences recherchées
                             </a>
                         </li>
@@ -151,7 +151,7 @@
                 {% endif %}
                 {% if event.active %}
                     <li>
-                        <a href="{{ path("app_#{event.type}_invite", {'uuid': event.uuid, 'slug': event.slug}) }}">
+                        <a href="{{ path("app_#{event.type}_invite", {'slug': event.slug}) }}">
                             Inviter des amis
                         </a>
                     </li>

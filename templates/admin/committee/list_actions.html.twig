@@ -31,7 +31,7 @@
 
     {% if object.isApproved %}
         <div style="width: 160px; margin-top: 5px;">
-            <a href="{{ path('app_committee_show', {'uuid': object.uuid.toString, 'slug': object.slug}) }}"
+            <a href="{{ path('app_committee_show', {'slug': object.slug}) }}"
                class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
                 <i class="fa fa-eye" aria-hidden="true"></i>
                 Voir sur le site

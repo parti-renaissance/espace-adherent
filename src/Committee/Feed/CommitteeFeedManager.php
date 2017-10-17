@@ -109,11 +109,9 @@ class CommitteeFeedManager
     {
         $initiative = $message->getEvent();
         $citizenInitiativeLink = $this->generateUrl('app_citizen_initiative_show', [
-            'uuid' => (string) $initiative->getUuid(),
             'slug' => $initiative->getSlug(),
         ]);
         $attendLink = $this->generateUrl('app_citizen_initiative_attend', [
-            'uuid' => (string) $initiative->getUuid(),
             'slug' => $initiative->getSlug(),
         ]);
         foreach ($this->getOptinCommitteeFollowersChunks($message->getCommittee()) as $chunk) {

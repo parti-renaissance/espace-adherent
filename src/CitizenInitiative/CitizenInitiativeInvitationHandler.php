@@ -29,7 +29,6 @@ class CitizenInitiativeInvitationHandler
 
         $url = $this->urlGenerator->generateRemoteUrl('app_citizen_initiative_show', [
             'slug' => $initiative->getSlug(),
-            'uuid' => $initiative->getUuid()->toString(),
         ]);
 
         $this->mailjet->sendMessage(CitizenInitiativeInvitationMessage::createFromInvite($invite, $initiative, $url));

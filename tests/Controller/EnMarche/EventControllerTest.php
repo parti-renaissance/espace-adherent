@@ -137,7 +137,7 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $eventUrl = '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise';
+        $eventUrl = '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -163,7 +163,7 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_3_UUID, $slug = $event->getSlug());
+        $eventUrl = sprintf('/evenements/%s', $slug = $event->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
@@ -206,7 +206,7 @@ class EventControllerTest extends MysqlWebTestCase
     public function testAnonymousCanInviteToEvent()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_3_UUID, $slug = $event->getSlug());
+        $eventUrl = sprintf('/evenements/%s', $slug = $event->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
@@ -253,7 +253,7 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/invitation/merci', LoadEventData::EVENT_1_UUID, $event->getSlug()));
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/invitation/merci', $event->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
@@ -262,14 +262,14 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
 
-        $this->assertRedirectionEventNotPublishTest(sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()));
+        $this->assertRedirectionEventNotPublishTest(sprintf('/evenements/%s/confirmation', $event->getSlug()));
     }
 
     public function testAttendConfirmationWithWrongRegistration()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()), [
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => 'wrong_uuid',
         ]);
 
@@ -281,7 +281,7 @@ class EventControllerTest extends MysqlWebTestCase
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_3_UUID, $event->getSlug()), [
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
         ]);
 
@@ -295,7 +295,7 @@ class EventControllerTest extends MysqlWebTestCase
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_3_UUID, $event->getSlug()), [
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
         ]);
 
@@ -305,7 +305,7 @@ class EventControllerTest extends MysqlWebTestCase
     public function testUnpublishedEventNotFound()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_13_UUID);
-        $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_13_UUID, $event->getSlug());
+        $eventUrl = sprintf('/evenements/%s', $event->getSlug());
 
         $this->assertRedirectionEventNotPublishTest($eventUrl);
     }

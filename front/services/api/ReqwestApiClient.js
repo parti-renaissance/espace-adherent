@@ -101,9 +101,9 @@ export default class ReqwestApiClient {
         });
     }
 
-    toggleCommitteeMembership(committeeUuid, committeeSlug, action, token, callback) {
+    toggleCommitteeMembership(committeeSlug, action, token, callback) {
         let request = this._reqwest({
-            url: '/comites/'+committeeUuid+'/'+committeeSlug+'/'+action,
+            url: '/comites/'+committeeSlug+'/'+action,
             type: 'html',
             method: 'post',
             data: {

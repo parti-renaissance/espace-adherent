@@ -4,7 +4,7 @@
 
 {% block content %}
     {% set event = initiative %}
-    {% set event_url = url('app_citizen_initiative_show', {uuid: event.uuid.toString, slug: event.slug}) %}
+    {% set event_url = url('app_citizen_initiative_show', {slug: event.slug}) %}
     <section class="commitee__event l__wrapper">
 
         {{ include('events/_header.html.twig') }}

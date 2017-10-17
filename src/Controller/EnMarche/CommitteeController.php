@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/comites/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/comites/{slug}")
  */
 class CommitteeController extends Controller
 {

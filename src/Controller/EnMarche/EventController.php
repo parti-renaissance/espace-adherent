@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
- * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
- * @Entity("event", expr="repository.findOnePublishedByUuid(uuid)")
+ * @Route("/evenements/{slug}")
+ * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
  */
 class EventController extends Controller
 {
@@ -53,7 +53,7 @@ class EventController extends Controller
     /**
      * @Route("/inscription", name="app_event_attend")
      * @Method("GET|POST")
-     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
+     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function attendAction(Request $request, Event $event): Response
     {
@@ -72,7 +72,6 @@ class EventController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.registration.success'));
 
             return $this->redirectToRoute('app_event_attend_confirmation', [
-                'uuid' => (string) $event->getUuid(),
                 'slug' => $event->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -135,7 +134,6 @@ class EventController extends Controller
             $request->getSession()->set('event_invitations_count', count($invitation->guests));
 
             return $this->redirectToRoute('app_event_invitation_sent', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -154,7 +152,6 @@ class EventController extends Controller
     {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
             return $this->redirectToRoute('app_event_invite', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }

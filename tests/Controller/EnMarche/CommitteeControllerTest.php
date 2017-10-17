@@ -26,7 +26,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     public function testAnonymousUserIsNotAllowedToFollowCommittee()
     {
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -98,7 +98,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         // Browse to the committee details page
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -144,7 +144,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     public function testApprovedCommitteePageIsViewableByAnyone()
     {
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_3_UUID, 'en-marche-dammarie-les-lys');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
 
         // Anonymous
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
@@ -185,7 +185,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     public function testUnapprovedCommitteeIsViewableByItsCreator()
     {
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_2_UUID, 'en-marche-marseille-3');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-marseille-3');
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -206,7 +206,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     public function testAnonymousGuestCanShowCommitteePage()
     {
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-paris-8');
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -226,7 +226,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
-        $committeeUrl = sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_1_UUID, 'en-marche-paris-8');
+        $committeeUrl = sprintf('/comites/%s', 'en-marche-paris-8');
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
