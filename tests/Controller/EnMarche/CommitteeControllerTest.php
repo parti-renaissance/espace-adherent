@@ -16,6 +16,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group committee
  */
 class CommitteeControllerTest extends MysqlWebTestCase
 {

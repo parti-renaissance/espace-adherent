@@ -11,6 +11,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group documents
  */
 class DocumentsControllerTest extends SqliteWebTestCase
 {

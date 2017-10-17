@@ -23,6 +23,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group adherent
  */
 class AdherentControllerTest extends MysqlWebTestCase
 {

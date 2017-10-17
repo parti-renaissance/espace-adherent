@@ -12,6 +12,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group boardMember
  */
 class BoardMemberControllerTest extends SqliteWebTestCase
 {

@@ -15,6 +15,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group donation
  */
 class DonationControllerTest extends SqliteWebTestCase
 {

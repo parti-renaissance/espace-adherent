@@ -35,15 +35,24 @@ test:
         - yarn test
 
         # Prepare PHP tests
-        - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users
-        - ./bin/console doctrine:schema:create --env=test_sqlite
-        - ./bin/console doctrine:schema:drop --force --env=test_mysql
-        - ./bin/console doctrine:schema:create --env=test_mysql
-        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+        - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users:
+            parallel: true
+        - ./bin/console doctrine:schema:create --env=test_sqlite:
+            parallel: true
+        - ./bin/console doctrine:schema:drop --force --env=test_mysql:
+            parallel: true
+        - ./bin/console doctrine:schema:create --env=test_mysql:
+            parallel: true
+        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit:
+            parallel: true
 
         # PHP unit and functional tests
         - yarn run build-amp
-        - ./vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+        - case $CIRCLE_NODE_INDEX in 0) ./vendor/bin/phpunit --group $GROUP1 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 1) ./vendor/bin/phpunit --group $GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 2) ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
+            parallel: true
+            environment:
+                GROUP1: adherent,amp,article,boardMember,citizenInitiative,citizenInitiativeManager,referent,summary
+                GROUP2: committee,committeeManager,coordinator,documents,donation,eventManager,explainer,facebook,home,invitation,legislatives,jeMarche,map,membership
 
         # Try to build production JS
         - yarn run build-prod

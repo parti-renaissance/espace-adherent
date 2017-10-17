@@ -13,6 +13,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group map
  */
 class MapControllerTest extends SqliteWebTestCase
 {
