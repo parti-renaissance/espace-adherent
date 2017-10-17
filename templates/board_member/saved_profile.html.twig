@@ -31,9 +31,10 @@
             </div>
         {% else %}
             <div class="l__wrapper--slim text--center">
-                <h2>Vous n'avez pas encore sauvegardé de profil</h2>
+                <h2>Vous n'avez pas encore sauvegardé de profil !</h2>
                 <p class="text--body">
-                    Lors de vous recherches, Vous avez la possibilité de “sauvegarder” certains profils. Ces sauvegardes sont personnelles et privées et apparaitront ici. Une personne sauvegardée ne sera pas notifiée.
+                    Lors de <a href="{{ path('app_board_member_search') }}" class="link--newblue">vos recherches</a>, vous avez la possibilité de “sauvegarder” certains profils. Ces sauvegardes sont personnelles et privées et apparaîtront ici.<br/>
+                    Une personne sauvegardée ne sera pas notifiée.
                 </p>
             </div>
         {% endif %}

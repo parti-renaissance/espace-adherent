@@ -370,4 +370,16 @@ button.btn {
             color: $newblue;
         }
     }
+
+    &--green {
+        background-color: $newgreen;
+        color: white;
+        border-color: $newgreen;
+
+        &:hover {
+            background-color: $error;
+            border-color: $error;
+            color: white;
+        }
+    }
 }
