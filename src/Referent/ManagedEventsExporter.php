@@ -29,7 +29,6 @@ class ManagedEventsExporter
                 'name' => [
                     'label' => $event->getName(),
                     'url' => $this->urlGenerator->generate('app_event_show', [
-                        'uuid' => $event->getUuid()->toString(),
                         'slug' => $event->getSlug(),
                     ]),
                 ],

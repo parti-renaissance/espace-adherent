@@ -657,7 +657,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(1, $errors->count());
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
 
         $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
 
@@ -685,7 +685,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s/%s', LoadAdherentData::COMMITTEE_10_UUID, 'en-marche-suisse'));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
 
         $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
 

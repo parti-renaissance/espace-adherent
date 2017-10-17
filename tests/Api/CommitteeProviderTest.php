@@ -40,8 +40,8 @@ class CommitteeProviderTest extends TestCase
         $repository->expects($this->once())->method('findApprovedCommittees')->willReturn($committees);
 
         $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
-        $urlGenerator->expects($this->at(0))->method('getPath')->willReturn('/comites/'.$committee1->getUuid().'/'.$committee1->getSlug());
-        $urlGenerator->expects($this->at(1))->method('getPath')->willReturn('/comites/'.$committee2->getUuid().'/'.$committee2->getSlug());
+        $urlGenerator->expects($this->at(0))->method('getPath')->willReturn('/comites/'.$committee1->getSlug());
+        $urlGenerator->expects($this->at(1))->method('getPath')->willReturn('/comites/'.$committee2->getSlug());
 
         $provider = new CommitteeProvider($repository, $urlGenerator);
 
@@ -52,7 +52,7 @@ class CommitteeProviderTest extends TestCase
                     'uuid' => '2bb0472c-4189-409f-9d06-b617843230ea',
                     'slug' => 'comite-paris',
                     'name' => 'Comité de Paris',
-                    'url' => '/comites/2bb0472c-4189-409f-9d06-b617843230ea/comite-paris',
+                    'url' => '/comites/comite-paris',
                     'position' => [
                         'lat' => 48.8705073,
                         'lng' => 2.3032432,
@@ -62,7 +62,7 @@ class CommitteeProviderTest extends TestCase
                     'uuid' => 'ae65d178-3dc6-4c14-843c-36df38c82834',
                     'slug' => 'comite-berlin',
                     'name' => 'Comité de Berlin',
-                    'url' => '/comites/ae65d178-3dc6-4c14-843c-36df38c82834/comite-berlin',
+                    'url' => '/comites/comite-berlin',
                     'position' => [
                         'lat' => 52.5330939,
                         'lng' => 13.4662418,

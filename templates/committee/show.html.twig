@@ -88,7 +88,6 @@
                 toggleMembershipButton.disabled = true;
 
                 di.get('api').toggleCommitteeMembership(
-                    committeeUuid,
                     committeeSlug,
                     toggleMembershipButton.getAttribute('data-action'),
                     toggleMembershipButton.getAttribute('data-csrf-token'),

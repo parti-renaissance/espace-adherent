@@ -79,19 +79,19 @@ class EventRepository extends EntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    public function findOnePublishedByUuid(string $uuid): ?BaseEvent
+    public function findOnePublishedBySlug(string $slug): ?BaseEvent
     {
         return $this
-            ->createUuidQueryBuilder($uuid)
+            ->createSlugQueryBuilder($slug)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
 
-    public function findOneActiveByUuid(string $uuid): ?BaseEvent
+    public function findOneActiveBySlug(string $slug): ?BaseEvent
     {
         return $this
-            ->createUuidQueryBuilder($uuid)
+            ->createSlugQueryBuilder($slug)
             ->andWhere('e.status IN (:statuses)')
             ->setParameter('statuses', Event::ACTIVE_STATUSES)
             ->getQuery()
@@ -99,18 +99,16 @@ class EventRepository extends EntityRepository
         ;
     }
 
-    protected function createUuidQueryBuilder(string $uuid): QueryBuilder
+    protected function createSlugQueryBuilder(string $slug): QueryBuilder
     {
-        self::validUuid($uuid);
-
         return $this
             ->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
-            ->where('e.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
+            ->where('e.slug = :slug')
+            ->setParameter('slug', $slug)
             ->andWhere('e.published = :published')
             ->setParameter('published', true)
         ;

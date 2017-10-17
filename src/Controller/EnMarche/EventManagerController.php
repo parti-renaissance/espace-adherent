@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/evenements/{uuid}/{slug}", requirements={"uuid": "%pattern_uuid%"})
+ * @Route("/evenements/{slug}")
  * @Security("is_granted('HOST_EVENT', event)")
  */
 class EventManagerController extends Controller
@@ -29,7 +29,7 @@ class EventManagerController extends Controller
     /**
      * @Route("/modifier", name="app_event_edit")
      * @Method("GET|POST")
-     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
+     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function editAction(Request $request, Event $event): Response
     {
@@ -41,7 +41,6 @@ class EventManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.update.success'));
 
             return $this->redirectToRoute('app_event_show', [
-                'uuid' => (string) $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -56,7 +55,7 @@ class EventManagerController extends Controller
     /**
      * @Route("/annuler", name="app_event_cancel")
      * @Method("GET|POST")
-     * @Entity("event", expr="repository.findOneActiveByUuid(uuid)")
+     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function cancelAction(Request $request, Event $event): Response
     {
@@ -70,7 +69,6 @@ class EventManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.cancel.success'));
 
             return $this->redirectToRoute('app_event_show', [
-                'uuid' => (string) $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -111,7 +109,6 @@ class EventManagerController extends Controller
 
         if (!$uuids) {
             return $this->redirectToRoute('app_event_members', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -126,7 +123,6 @@ class EventManagerController extends Controller
 
         if (!$registrations) {
             return $this->redirectToRoute('app_event_members', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -155,7 +151,6 @@ class EventManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
 
             return $this->redirectToRoute('app_event_members', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -179,7 +174,6 @@ class EventManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.success'));
 
             return $this->redirectToRoute('app_event_members', [
-                'uuid' => $event->getUuid(),
                 'slug' => $event->getSlug(),
             ]);
         }

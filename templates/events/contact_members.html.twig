@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url("app_#{event.type}_show", {uuid: event.uuid.toString, slug: event.slug}) %}
+    {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
             <div class="committee__event__header">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="committee__event__header__cta">
-                    <a class="btn btn--no-border btn--full" href="{{ path('app_event_attend', {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                    <a class="btn btn--no-border btn--full" href="{{ path('app_event_attend', {slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
                         {{ 'event.participants_count'|transchoice(event.participantsCount) }}
@@ -63,7 +63,7 @@
                     </ul>
                 </div>
             </div>
-            <a href="{{ path("app_#{event.type}_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path("app_#{event.type}_members", {'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à la liste
             </a>
@@ -100,7 +100,7 @@
 
                     {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
 
-                    <a href="{{ path("app_#{event.type}_show", {'uuid': event.uuid.toString, 'slug': event.slug}) }}"
+                    <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}"
                        class="btn">
                         Annuler
                     </a>

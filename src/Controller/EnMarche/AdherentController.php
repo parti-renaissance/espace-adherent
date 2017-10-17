@@ -221,14 +221,12 @@ class AdherentController extends Controller
 
                 if ($from instanceof Committee) {
                     return $this->redirectToRoute('app_committee_show', [
-                        'uuid' => $from->getUuid()->toString(),
                         'slug' => $from->getSlug(),
                     ]);
                 }
 
                 if ($from instanceof Event) {
                     return $this->redirectToRoute('app_event_show', [
-                        'uuid' => $from->getUuid()->toString(),
                         'slug' => $from->getSlug(),
                     ]);
                 }

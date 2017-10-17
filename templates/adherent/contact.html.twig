@@ -11,11 +11,11 @@
         <section class="l__wrapper--slim b__nudge--bottom-60">
             {% if fromType and from %}
                 {% if fromType == 'committee' %}
-                    <a href="{{ path('app_committee_show', {'uuid': from.uuid.toString, 'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
+                    <a href="{{ path('app_committee_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au comité</a>
                 {% else %}
-                    <a href="{{ path('app_event_show', {'uuid': from.uuid.toString, 'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
+                    <a href="{{ path('app_event_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour à l'évenement</a>
                 {% endif %}

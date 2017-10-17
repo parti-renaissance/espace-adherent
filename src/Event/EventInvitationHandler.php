@@ -28,7 +28,6 @@ class EventInvitationHandler
 
         $url = $this->urlGenerator->generateRemoteUrl('app_event_show', [
             'slug' => $event->getSlug(),
-            'uuid' => $event->getUuid()->toString(),
         ]);
 
         $this->mailjet->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));

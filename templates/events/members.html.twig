@@ -91,7 +91,7 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url("app_#{event.type}_show", {uuid: event.uuid.toString, slug: event.slug}) %}
+    {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
     <main class="committee__event__create">
         <section class="commitee__event l__wrapper">
             <div class="committee__event__header">
@@ -122,7 +122,7 @@
                             L'événement à été annulé
                         </div>
                     {% else %}
-                        <a class="btn btn--no-border btn--full" href="{{ path("app_#{event.type}_attend", {uuid: event.uuid.toString, slug: event.slug}) }}">Je veux participer</a>
+                        <a class="btn btn--no-border btn--full" href="{{ path("app_#{event.type}_attend", {slug: event.slug}) }}">Je veux participer</a>
                     {% endif %}
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
@@ -148,7 +148,7 @@
                     </ul>
                 </div>
             </div>
-            <a href="{{ path("app_#{event.type}_show", {'uuid': event.uuid.toString, 'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à l'événement
             </a>
@@ -160,12 +160,12 @@
                 </h2>
                 <div class="committee__members__nav">
                     <div>
-                        <form method="post" action="{{ path("app_#{event.type}_contact_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                        <form method="post" action="{{ path("app_#{event.type}_contact_members", {'slug': event.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
                             <input type="hidden" name="contacts" value="" id="members-contact-selection" />
                             <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
                         </form>
-                        <form method="post" action="{{ path("app_#{event.type}_export_members", {'uuid': event.uuid.toString, 'slug': event.slug}) }}">
+                        <form method="post" action="{{ path("app_#{event.type}_export_members", {'slug': event.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.export_members') }}" id="members-export-token" />
                             <input type="hidden" name="exports" value="" id="members-export-selection" />
                             <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>

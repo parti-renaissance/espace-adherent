@@ -221,7 +221,6 @@ class SitemapFactory
         foreach ($events as $event) {
             $sitemap->add(
                 $this->generateUrl('app_event_show', [
-                    'uuid' => $event['uuid'],
                     'slug' => $event['slug'],
                 ]),
                 $event['updatedAt']->format(\DATE_ATOM),

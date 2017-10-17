@@ -1,6 +1,6 @@
 {%- if is_granted('ROLE_ADHERENT') -%}
     <div id="activity_subscription" class="b__nudge--left-small">
-        <a class="btn btn--small btn--hollow" href="{{ path('app_citizen_initiative_activity_subscription', { uuid: initiative.uuid, slug: initiative.slug }) }}">{% if not app.user.isSubscribedTo(initiative.organizer) %}Suivre{% else %}Ne plus suivre{% endif %}</a>
+        <a class="btn btn--small btn--hollow" href="{{ path('app_citizen_initiative_activity_subscription', { slug: initiative.slug }) }}">{% if not app.user.isSubscribedTo(initiative.organizer) %}Suivre{% else %}Ne plus suivre{% endif %}</a>
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
         <script type="text/javascript">
             $('#activity_subscription a').on('click', function(e) {

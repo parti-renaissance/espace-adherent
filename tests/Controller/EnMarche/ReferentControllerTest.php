@@ -106,7 +106,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $event = $this->getEventRepository()->findOneBy(['name' => 'Premier événement']);
 
         $this->assertInstanceOf(Event::class, $event);
-        $this->assertClientIsRedirectedTo('/evenements/'.$event->getUuid().'/'.$event->getSlug(), $this->client);
+        $this->assertClientIsRedirectedTo('/evenements/'.$event->getSlug(), $this->client);
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

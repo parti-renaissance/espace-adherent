@@ -20,7 +20,6 @@ class LegacyController extends Controller
     public function redirectEventAction(Event $event): Response
     {
         return $this->redirectToRoute('app_event_show', [
-            'uuid' => $event->getUuid()->toString(),
             'slug' => $event->getSlug(),
         ], Response::HTTP_MOVED_PERMANENTLY);
     }
@@ -33,7 +32,6 @@ class LegacyController extends Controller
     public function redirectCommitteeAction(Committee $committee): Response
     {
         return $this->redirectToRoute('app_committee_show', [
-            'uuid' => $committee->getUuid()->toString(),
             'slug' => $committee->getSlug(),
         ], Response::HTTP_MOVED_PERMANENTLY);
     }

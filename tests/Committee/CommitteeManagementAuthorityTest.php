@@ -38,6 +38,8 @@ class CommitteeManagementAuthorityTest extends TestCase
         $urlGenerator->expects($this->any())->method('getUrl')->willReturn(sprintf(
             '/comites/%s/%s',
             LoadAdherentData::COMMITTEE_1_UUID,
+        $urlGenerator->expects($this->once())->method('getUrl')->willReturn(sprintf(
+            '/comites/%s',
             'comite-lille-beach'
         ));
 
