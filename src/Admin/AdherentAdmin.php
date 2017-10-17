@@ -124,9 +124,9 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Accepte de recevoir des SMS de la part d\'En Marche !',
                 ])
             ->end()
-            ->with('Membre du conseil', ['class' => 'col-md-6'])
+            ->with('Membre du Conseil', ['class' => 'col-md-6'])
                 ->add('isBoardMember', 'boolean', [
-                    'label' => 'Est membre du conseil ?',
+                    'label' => 'Est membre du Conseil ?',
                 ])
                 ->add('boardMemberArea', null, [
                     'label' => 'Région',
@@ -226,12 +226,12 @@ class AdherentAdmin extends AbstractAdmin
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
-            ->with('Membre du conseil', ['class' => 'col-md-6'])
+            ->with('Membre du Conseil', ['class' => 'col-md-6'])
                 ->add('boardMemberArea', ChoiceType::class, [
                     'label' => 'Région',
                     'choices' => BoardMember::AREAS_CHOICES,
                     'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du conseil.',
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
                 ->add('boardMemberRoles', 'sonata_type_model', [
                         'expanded' => true,
@@ -239,7 +239,7 @@ class AdherentAdmin extends AbstractAdmin
                         'multiple' => true,
                         'btn_add' => false,
                         'class' => Role::class,
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du conseil.',
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
             ->end()
         ;
