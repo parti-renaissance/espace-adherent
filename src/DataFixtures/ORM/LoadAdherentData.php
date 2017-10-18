@@ -33,6 +33,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
     const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
     const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
+    const ADHERENT_16_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dd';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -281,6 +282,15 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $this->addReference('adherent-14', $adherent14);
 
+        $adherent15 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_16_UUID,
+            'email' => 'foo.bar@example.ch',
+            'first_name' => 'Foo',
+            'last_name' => 'Bar',
+            'address' => PostAddress::createForeignAddress(null, '59000', null, null),
+        ], true);
+        $this->addReference('adherent-16', $adherent14);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -445,6 +455,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent12);
         $manager->persist($adherent13);
         $manager->persist($adherent14);
+        $manager->persist($adherent15);
         $manager->persist($coordinateur);
 
         $manager->persist($key1);

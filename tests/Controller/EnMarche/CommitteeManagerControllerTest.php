@@ -376,7 +376,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testAuthenticatedCommitteeHostCannotPromoteNewHostsAmongMembers()
     {
         // Authenticate as the committee supervisor
-        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 

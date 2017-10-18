@@ -3,22 +3,6 @@
 
     {{ form_errors(form) }}
 
-    <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
-        {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
-        {{ form_errors(form.gender) }}
-    </div>
-
-    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-        <div class="register__form--mid">
-            {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
-            {{ form_errors(form.firstName) }}
-        </div>
-        <div class="register__form--mid">
-            {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
-            {{ form_errors(form.lastName) }}
-        </div>
-    </div>
-
     <div id="membership-address">
         {{ form_errors(form.address) }}
         <div class="l__row l__row--h-stretch register__form--full">
@@ -46,7 +30,22 @@
 
     <div class="space--10-0"></div>
 
+    <div class="l__col l__col--top register__form--third" id="field-birthdate">
+        {{ form_label(form.birthdate, 'Date de naissance', { 'label_attr': {'class': 'text--gray'} }) }}
+        <div class="l__row l__row--h-stretch">
+            {% for field in form.birthdate|reverse %}
+                {{ form_widget(field, {'attr': {'style': 'width: 32%;'}}) }}
+            {% endfor %}
+        </div>
+        {{ form_errors(form.birthdate) }}
+    </div>
+
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
+            {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+            {{ form_errors(form.gender) }}
+        </div>
+
         <div class="l__col l__col--top register__form__phone register__form--third">
             {{ form_label(form.phone, 'Téléphone', { 'label_attr': {'class': 'text--gray'} }) }}
             <div class="l__row l__row--top l__row--h-stretch">
@@ -54,22 +53,6 @@
                 {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
             </div>
             {{ form_errors(form.phone) }}
-        </div>
-
-        <div class="l__col l__col--top register__form--third">
-            {{ form_label(form.position, 'Profession', { 'label_attr': {'class': 'text--gray'} }) }}
-            {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
-            {{ form_errors(form.position) }}
-        </div>
-
-        <div class="l__col l__col--top register__form--third" id="field-birthdate">
-            {{ form_label(form.birthdate, 'Date de naissance', { 'label_attr': {'class': 'text--gray'} }) }}
-           <div class="l__row l__row--h-stretch">
-               {% for field in form.birthdate|reverse %}
-                   {{ form_widget(field, {'attr': {'style': 'width: 32%;'}}) }}
-               {% endfor %}
-           </div>
-            {{ form_errors(form.birthdate) }}
         </div>
     </div>
 
@@ -120,6 +103,7 @@
 
     <div class="register__form">
         {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
+        <a href="{{ url('homepage') }}" >Je ne souhaite pas adhérer maintenant</a>
     </div>
 
     {{ form_end(form) }}

@@ -2,12 +2,10 @@
 
 namespace Tests\AppBundle\Membership;
 
-use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
-use AppBundle\Membership\MembershipRequest;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -81,43 +79,36 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());
     }
 
-    public function testCreateFrenchAdherentFromMembershipRequest()
+    public function testCreateFrenchAdherentFromAPIResponse()
     {
-        $address = new Address();
-        $address->setAddress('122 rue de Mouxy');
-        $address->setPostalCode('73100');
-        $address->setCountry('FR');
-        $address->setCity('73100-73182');
-
-        $request = new MembershipRequest();
-        $request->password = 'secret$secret';
-        $request->setEmailAddress('carl999@example.fr');
-        $request->firstName = 'Carl';
-        $request->lastName = 'Mirabeau';
-        $request->setAddress($address);
-        $request->position = ActivityPositions::RETIRED;
-        $request->setBirthdate(new \DateTime('1950-07-08'));
-        $request->gender = 'male';
+        $data = [
+            'uuid' => '79b67fa4-b25d-45dd-b6dc-bf73f2b53fa2',
+            'emailAddress' => 'carl999@example.fr',
+            'firstName' => 'Carl',
+            'lastName' => 'Mirabeau',
+            'zipCode' => '73100',
+        ];
 
         $factory = $this->createFactory();
-        $adherent = $factory->createFromMembershipRequest($request);
+        $adherent = $factory->createFromAPIResponse($data);
 
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertInstanceOf(UuidInterface::class, $adherent->getUuid());
         $this->assertNull($adherent->getPhone());
         $this->assertNull($adherent->getSalt());
+        $this->assertNull($adherent->getPassword());
+        $this->assertNull($adherent->getGender());
+        $this->assertNull($adherent->getCountry());
+        $this->assertNull($adherent->getAddress());
+        $this->assertNull($adherent->getCity());
+        $this->assertNull($adherent->getBirthdate());
+        $this->assertNull($adherent->getPosition());
+        $this->assertNull($adherent->getGender());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
-        $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());
-        $this->assertSame('FR', $adherent->getCountry());
-        $this->assertSame('122 rue de Mouxy', $adherent->getAddress());
         $this->assertSame('73100', $adherent->getPostalCode());
-        $this->assertSame('73100-73182', $adherent->getCity());
-        $this->assertEquals($request->getBirthdate(), $adherent->getBirthdate());
-        $this->assertNotSame($request->getBirthdate(), $adherent->getBirthdate());
-        $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());
     }
 
     private function createFactory()
