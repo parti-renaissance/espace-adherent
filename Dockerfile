@@ -85,7 +85,7 @@ RUN chmod 0444 gcloud-service-key.json && \
 
     chown -R www-data:www-data var && \
 
-    mv docker/prod/php.ini /etc/php/7.1/cli/conf.d/50-setting.ini && \
+    cp docker/prod/php.ini /etc/php/7.1/cli/conf.d/50-setting.ini && \
     mv docker/prod/php.ini /etc/php/7.1/fpm/conf.d/50-setting.ini && \
     rm -rf /etc/php/7.1/fpm/pool.d/www.conf && \
     mv docker/prod/pool.conf /etc/php/7.1/fpm/pool.d/www.conf && \
