@@ -37,8 +37,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $this->client->request(Request::METHOD_GET, $path);
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->redirectionEventNotPublishTest($path);
     }
 
     /**
@@ -319,6 +318,18 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         // Header row is part of the count
         return $count === count($crawler->filter('table > tr'));
+    }
+
+    private function redirectionEventNotPublishTest($url)
+    {
+        $this->client->request(Request::METHOD_GET, '/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     protected function setUp()

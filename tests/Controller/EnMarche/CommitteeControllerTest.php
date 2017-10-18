@@ -396,6 +396,18 @@ class CommitteeControllerTest extends MysqlWebTestCase
         }
     }
 
+    public function assertRedictIfCommitteeNotExist()
+    {
+        $this->client->request(Request::METHOD_GET, '/comites/a591f199-afc9-52c3-8344-db69c88cb845/ariege-leze');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/comites', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
     protected function setUp()
     {
         parent::setUp();

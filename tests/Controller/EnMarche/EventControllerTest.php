@@ -262,9 +262,7 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()));
-
-        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        $this->assertRedirectionEventNotPublishTest(sprintf('/evenements/%s/%s/confirmation', LoadEventData::EVENT_1_UUID, $event->getSlug()));
     }
 
     public function testAttendConfirmationWithWrongRegistration()
@@ -309,9 +307,7 @@ class EventControllerTest extends MysqlWebTestCase
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_13_UUID);
         $eventUrl = sprintf('/evenements/%s/%s', LoadEventData::EVENT_13_UUID, $event->getSlug());
 
-        $this->client->request(Request::METHOD_GET, $eventUrl);
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertRedirectionEventNotPublishTest($eventUrl);
     }
 
     private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
@@ -323,6 +319,23 @@ class EventControllerTest extends MysqlWebTestCase
         }
 
         return 1 === count($flash);
+    }
+
+    public function testRedirectIfEventNotExist()
+    {
+        $this->assertRedirectionEventNotPublishTest('/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+    }
+
+    private function assertRedirectionEventNotPublishTest($url)
+    {
+        $this->client->request(Request::METHOD_GET, '/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     protected function setUp()
