@@ -12,6 +12,7 @@ class UpdateMembershipRequestType extends AbstractType
     {
         $builder
             ->remove('conditions')
+            ->add('position', ActivityPositionType::class)
         ;
     }
 
