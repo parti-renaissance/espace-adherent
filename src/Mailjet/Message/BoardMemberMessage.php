@@ -37,6 +37,7 @@ final class BoardMemberMessage extends MailjetMessage
             $boardMember->getEmailAddress()
         );
 
+        $message->setSenderEmail('jemarche@en-marche.fr');
         $message->setSenderName(sprintf('%s, membre du Conseil de LaREM', $boardMember->getFullName()));
 
         foreach ($recipients as $recipient) {
