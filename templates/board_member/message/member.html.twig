@@ -3,7 +3,7 @@
 {% set member = message.recipients|first %}
 
 {% block recipients %}
-    <p>à un membre du conseil</p>
+    <p>à un membre du Conseil</p>
     <div>
         <p>{{ member }}</p>
         <p>{{ member.age }}, {{ member.isFemale ? 'F' : 'M' }}, {{ member.cityName }}</p>

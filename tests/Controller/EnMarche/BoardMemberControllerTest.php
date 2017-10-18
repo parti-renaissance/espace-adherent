@@ -205,7 +205,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 3 personnes')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('3 membres du conseil', $this->client->getResponse()->getContent());
+        $this->assertContains('3 membres du Conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',
@@ -230,7 +230,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->click($this->client->getCrawler()->filter('.spaces__results__row')->first()->selectLink('Envoyer un message')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Un membre du conseil', $this->client->getResponse()->getContent());
+        $this->assertContains('Un membre du Conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',
