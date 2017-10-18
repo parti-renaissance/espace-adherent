@@ -23,7 +23,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MembershipRequestHandler
 {
     private $dispatcher;
-    private $adherentFactory;
     private $addressFactory;
     private $urlGenerator;
     private $mailjet;
@@ -37,7 +36,6 @@ class MembershipRequestHandler
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         UrlGeneratorInterface $urlGenerator,
         MailjetService $mailjet,
@@ -49,7 +47,6 @@ class MembershipRequestHandler
         CommitteeFeedManager $committeeFeedManager,
         ActivitySubscriptionManager $activitySubscriptionManager
     ) {
-        $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->urlGenerator = $urlGenerator;
@@ -63,12 +60,11 @@ class MembershipRequestHandler
         $this->activitySubscriptionManager = $activitySubscriptionManager;
     }
 
-    public function handle(MembershipRequest $membershipRequest)
+    public function handle(Adherent $adherent, MembershipRequest $membershipRequest)
     {
-        $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $token = AdherentActivationToken::generate($adherent);
 
-        $this->manager->persist($adherent);
         $this->manager->persist($token);
         $this->manager->flush();
 

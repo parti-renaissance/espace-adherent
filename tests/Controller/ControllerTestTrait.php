@@ -43,18 +43,19 @@ trait ControllerTestTrait
 
     public function assertClientIsRedirectedToAuth()
     {
+        $redirectUrl = str_replace('http://localhost', '', rtrim($this->client->getResponse()->headers->get('location'), '/'));
+        $this->assertNotNull($redirectUrl);
+
         $this->assertSame(
-            'http://localhost/connect/auth',
-            rtrim($this->client->getResponse()->headers->get('location'), '/')
+            '/connect/auth',
+            $redirectUrl
         );
     }
 
     public function logout(Client $client)
     {
-        $session = $client->getContainer()->get('session');
-        $session->remove('_security_main_context');
-
-        $client->request(Request::METHOD_GET, '/');
+        $client->request(Request::METHOD_GET, '/logout');
+        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
 
         return $client;
     }

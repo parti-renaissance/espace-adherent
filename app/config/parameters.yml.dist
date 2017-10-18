@@ -1,12 +1,12 @@
 parameters:
-    env(DATABASE_HOST):         enmarche_db
+    env(DATABASE_HOST):         db
     env(DATABASE_PORT):         3306
     env(DATABASE_SOCKET):       ~
     env(DATABASE_NAME):         enmarche
     env(DATABASE_USER):         root
     env(DATABASE_PASSWORD):     root
 
-    env(REDIS_HOST):            enmarche_redis
+    env(REDIS_HOST):            redis
 
     env(RABBITMQ_HOST):         rabbitmq
     env(RABBITMQ_PORT):         5672
@@ -65,3 +65,4 @@ parameters:
     env(AUTH_ACCESS_AUTHORIZATION_URL): 'http://auth.en-marche.dev/oauth/v2/auth'
     env(AUTH_REGISTER_URL): 'http://auth.en-marche.dev/register?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=http://en-marche.dev/register'
     env(AUTH_INFO_URL): 'http://auth.en-marche.dev/api/me'
+    env(AUTH_URL): 'http://auth.en-marche.dev'
