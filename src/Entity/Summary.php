@@ -307,7 +307,7 @@ class Summary
      *     groups={"synthesis"}
      * )
      */
-    public function getCurrentPosition(): string
+    public function getCurrentPosition(): ?string
     {
         return $this->member->getPosition();
     }

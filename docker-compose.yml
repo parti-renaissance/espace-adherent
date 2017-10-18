@@ -10,18 +10,19 @@ services:
             - redis
         volumes:
             - .:/app
+        networks:
+            - enmarche
+            - default
 
     db:
         image: mysql:5.7
-        container_name: enmarche_db
         environment:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        container_name: auth_redis
         image: redis:3.2
 
 networks:
-    default:
+    enmarche:
         external:
             name: enmarche
