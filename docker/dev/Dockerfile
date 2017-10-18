@@ -79,6 +79,7 @@ RUN wget -O - https://packagecloud.io/gpg.key | apt-key add - \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/fpm/conf.d/blackfire.ini
 
 COPY php.ini /etc/php/7.1/cli/conf.d/50-setting.ini
+COPY php.ini /etc/php/7.1/fpm/conf.d/50-setting.ini
 COPY pool.conf /etc/php/7.1/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
