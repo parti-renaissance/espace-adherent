@@ -2,23 +2,34 @@
 
 namespace AppBundle\Redirection;
 
-use AppBundle\Entity\Redirection;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\RedirectionRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * Handle dynamic redirections editable in the administration panel.
  */
 class DynamicRedirectionsSubscriber implements EventSubscriberInterface
 {
-    private $repository;
+    const REDIRECTIONS = [
+        '/evenements/' => '/evenements',
+        '/comites/' => '/comites',
+    ];
 
-    public function __construct(RedirectionRepository $repository)
+    private $redirectRepository;
+    private $urlMatcher;
+    private $eventRepository;
+
+    public function __construct(RedirectionRepository $redirectionRepository, EventRepository $eventRepository, UrlMatcherInterface $urlMatcher)
     {
-        $this->repository = $repository;
+        $this->redirectRepository = $redirectionRepository;
+        $this->urlMatcher = $urlMatcher;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
@@ -39,13 +50,29 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
 
         $requestUri = rtrim($event->getRequest()->getRequestUri(), '/');
 
-        /** @var Redirection $redirection */
-        $redirection = $this->repository->findOneBy(['from' => $requestUri]);
+        if ($redirection = $this->redirectRepository->findOneByOriginUri($requestUri)) {
+            $event->setResponse(new RedirectResponse($redirection->getTo(), $redirection->getType()));
 
-        if (!$redirection) {
             return;
         }
 
-        $event->setResponse(new RedirectResponse($redirection->getTo(), $redirection->getType()));
+        $redirectCode = Response::HTTP_MOVED_PERMANENTLY;
+        foreach (self::REDIRECTIONS as $patternToMatch => $urlToRedirect) {
+            if (0 !== strpos($requestUri, $patternToMatch)) {
+                continue;
+            }
+
+            if ('/evenements/' === $patternToMatch
+                && ($routeParams = $this->urlMatcher->match($requestUri))
+                && isset($routeParams['uuid'])
+                && ($eventEntity = $this->eventRepository->findOneByUuid($routeParams['uuid']))
+                && !$eventEntity->isPublished()) {
+                $redirectCode = Response::HTTP_FOUND;
+            }
+
+            $event->setResponse(new RedirectResponse($urlToRedirect, $redirectCode));
+
+            return;
+        }
     }
 }
