@@ -193,6 +193,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
 
     public function testSendMessageToSavedMembers()
@@ -218,6 +219,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'martine.lindt@gmail.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'lolodie.dutemps@hotnix.tld');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
 
     public function testSendMessageToMember()
@@ -241,6 +243,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(BoardMemberMessage::class));
         $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
+        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
 
     private function authenticateAsBoardMember()
