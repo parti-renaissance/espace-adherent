@@ -189,7 +189,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         ;
     }
 
-    public function findReferentByCommittee(Committee $committee): ?Adherent
+    public function findReferentsByCommittee(Committee $committee): AdherentCollection
     {
         $qb = $this
             ->createReferentQueryBuilder()
@@ -197,7 +197,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->setParameter('code', ManagedAreaUtils::getCodeFromCommittee($committee))
         ;
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return new AdherentCollection($qb->getQuery()->getResult());
     }
 
     /**

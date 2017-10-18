@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Committee;
 
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManagementAuthority;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteeUrlGenerator;
@@ -14,46 +15,52 @@ use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @functional
+ */
 class CommitteeManagementAuthorityTest extends TestCase
 {
     public function testApprove()
     {
-        $committeeUuid = $this->createMock(Uuid::class);
-        $committeeUuid->expects($this->once())->method('__toString')->willReturn(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
 
-        $committee = $this->createMock(Committee::class);
-        $committee->expects($this->once())->method('getUuid')->willReturn($committeeUuid);
-        $committee->expects($this->any())->method('getCityName')->willReturn('Lille-Beach');
-
-        $animatorUuid = $this->createMock(Uuid::class);
-        $animatorUuid->expects($this->once())->method('__toString')->willReturn(LoadAdherentData::ADHERENT_3_UUID);
-
-        $animator = $this->createMock(Adherent::class);
-        $animator->expects($this->once())->method('getUuid')->willReturn($animatorUuid);
-
-        $referent = $this->createMock(Adherent::class);
-
-        $manager = $this->createMock(CommitteeManager::class);
+        $manager = $this->createManager($committee, $animator);
+        // ensure committee is approved
         $manager->expects($this->once())->method('approveCommittee')->with($committee);
-        $manager->expects($this->once())->method('getCommitteeCreator')->willReturn($animator);
-        $manager->expects($this->once())->method('getCommitteeReferent')->willReturn($referent);
 
         $mailer = $this->createMock(MailjetService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class));
 
-        $mailer->expects($this->at(1))
-            ->method('sendMessage')
-            ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class));
-
         $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
-        $urlGenerator->expects($this->once())->method('getUrl')->willReturn(sprintf(
+        $urlGenerator->expects($this->any())->method('getUrl')->willReturn(sprintf(
             '/comites/%s/%s',
             LoadAdherentData::COMMITTEE_1_UUID,
             'comite-lille-beach'
         ));
-        $urlGenerator->expects($this->once())->method('generate')->willReturn(sprintf(
+
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority->approve($committee);
+    }
+
+    public function testNotifyReferentsForApproval()
+    {
+        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
+        $referent = $this->createMock(Adherent::class);
+
+        $referents = new AdherentCollection([$referent]);
+        $manager = $this->createManager($committee, $animator, $referents);
+
+        $mailer = $this->createMock(MailjetService::class);
+        $mailer->expects($this->at(0))
+            ->method('sendMessage')
+            ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class));
+
+        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
+        $urlGenerator->expects($this->any())->method('generate')->willReturn(sprintf(
             '/espace-adherent/contacter/%s?from=%s&id=%s',
             LoadAdherentData::ADHERENT_3_UUID,
             'committee',
@@ -61,6 +68,66 @@ class CommitteeManagementAuthorityTest extends TestCase
         ));
 
         $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
-        $committeeManagementAuthority->approve($committee);
+        $committeeManagementAuthority->notifyReferentsForApproval($committee);
+    }
+
+    /**
+     * @expectedException \AppBundle\Committee\MultipleReferentsFoundException
+     */
+    public function testNotifyReferentsForApprovalWithMultipleReferents()
+    {
+        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
+        $referent = $this->createMock(Adherent::class);
+
+        $referents = new AdherentCollection([$referent, $animator]);
+
+        $manager = $this->createManager($committee, $animator, $referents);
+
+        $mailer = $this->createMock(MailjetService::class);
+        // ensure no mail is sent
+        $mailer->expects($this->never())->method('sendMessage')->with($this->anything());
+
+        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
+        $urlGenerator->expects($this->never())->method('generate')->with($this->anything());
+
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority->notifyReferentsForApproval($committee);
+    }
+
+    private function createCommittee(string $uuid, string $cityName): Committee
+    {
+        $committeeUuid = Uuid::fromString($uuid);
+
+        $committee = $this->createMock(Committee::class);
+        $committee->expects($this->any())->method('getUuid')->willReturn($committeeUuid);
+        $committee->expects($this->any())->method('getCityName')->willReturn($cityName);
+
+        return $committee;
+    }
+
+    private function createAnimator(string $uuid): Adherent
+    {
+        $animatorUuid = Uuid::fromString($uuid);
+
+        $animator = $this->createMock(Adherent::class);
+        $animator->expects($this->any())->method('getUuid')->willReturn($animatorUuid);
+
+        return $animator;
+    }
+
+    private function createManager(Committee $committee, ?Adherent $animator = null, ?AdherentCollection $referents = null): CommitteeManager
+    {
+        $manager = $this->createMock(CommitteeManager::class);
+
+        if ($animator) {
+            $manager->expects($this->any())->method('getCommitteeCreator')->willReturn($animator);
+        }
+
+        if ($referents) {
+            $manager->expects($this->any())->method('getCommitteeReferents')->willReturn($referents);
+        }
+
+        return $manager;
     }
 }

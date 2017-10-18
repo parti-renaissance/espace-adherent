@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Committee\MultipleReferentsFoundException;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\CommitteeException;
@@ -33,6 +34,19 @@ class AdminCommitteeController extends Controller
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
         } catch (CommitteeException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
+        }
+
+        try {
+            $this->get('app.committee.authority')->notifyReferentsForApproval($committee);
+        } catch (MultipleReferentsFoundException $exception) {
+            $this->addFlash('warning', sprintf(
+                'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité. 
+                Aucun mail de notification pour la validation de ce comité ne leur a été envoyé. 
+                Nommez un seul référent pour permettre les notifications de ce type.',
+                implode(', ', array_map(function (Adherent $referent) {
+                    return $referent->getEmailAddress();
+                }, $exception->getReferents()->toArray()))
+            ));
         }
 
         return $this->redirectToRoute('admin_app_committee_list');
