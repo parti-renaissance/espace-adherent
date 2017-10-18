@@ -9,9 +9,9 @@ parameters:
     env(REDIS_HOST):            redis
 
     env(RABBITMQ_HOST):         rabbitmq
-    env(RABBITMQ_PORT):         ~
-    env(RABBITMQ_USER):         ~
-    env(RABBITMQ_PASSWORD):     ~
+    env(RABBITMQ_PORT):         5672
+    env(RABBITMQ_USER):         guest
+    env(RABBITMQ_PASSWORD):     guest
 
     env(SENTRY_DSN):            ~
     env(SENTRY_PUBLIC_DSN):     ~

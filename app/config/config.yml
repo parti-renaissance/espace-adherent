@@ -211,11 +211,14 @@ old_sound_rabbit_mq:
     connections:
         default:
             host: "%env(RABBITMQ_HOST)%"
+            port: "%env(RABBITMQ_PORT)%"
+            user: "%env(RABBITMQ_USER)%"
+            password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 86400
-            read_write_timeout: 86400
-            heartbeat: 0
+            connection_timeout: 10
+            read_write_timeout: 10
+            heartbeat: 5
 
     producers:
         mailjet_campaign:
