@@ -315,7 +315,7 @@
         </service>
 
         <service id="app.admin.board_member_roles" class="AppBundle\Admin\BoardMemberRoleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du conseil" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du Conseil" group="Territoire" />
 
             <argument />
             <argument>AppBundle\Entity\BoardMember\Role</argument>
