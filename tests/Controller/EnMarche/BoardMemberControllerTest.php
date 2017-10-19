@@ -20,7 +20,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
     public function testUnauthorizeToAccessOnBoardMemberArea()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
 
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -49,7 +49,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
     public function testIndexBoardMember()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/');
 
@@ -248,7 +248,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
     private function authenticateAsBoardMember()
     {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
     }
 
     public function testSaveBoardMemberOnList()

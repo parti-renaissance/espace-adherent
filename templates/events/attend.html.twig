@@ -21,7 +21,7 @@
             {% if not is_granted('ROLE_ADHERENT') %}
                 <p>
                     Avez-vous déjà un compte En Marche ?
-                    <a href="{{ path('auth_login') }}">Connectez-vous</a>.
+                    <a href="{{ hwi_oauth_login_url('auth') }}">Connectez-vous</a>.
                 </p>
             {% endif %}
 

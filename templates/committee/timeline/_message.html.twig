@@ -2,7 +2,7 @@
     <div class="text--body text--with-bullet">{{ item.content|raw }}</div>
 {% else %}
     <div class="committee-message-invisible text--body space--10-0">
-        <a href="{{ path('auth_login') }}">Connectez-vous</a>
+        <a href="{{ hwi_oauth_login_url('auth') }}">Connectez-vous</a>
         (ou <a href="{{ path('app_membership_register') }}">rejoignez En-Marche.fr</a>)
         afin de voir ce message.
     </div>

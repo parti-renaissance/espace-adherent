@@ -256,7 +256,6 @@ trait TestHelperTrait
         return new Adherent(
             Adherent::createUuid($email),
             $email,
-            'super-password',
             'male',
             'John',
             'Smith',
