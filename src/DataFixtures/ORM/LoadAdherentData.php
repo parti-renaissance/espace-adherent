@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
-    const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
+    const ADHERENT_1_UUID = 'bc8d4840-84c5-4805-8c2a-914399e6a64c';
     const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
     const ADHERENT_3_UUID = 'a046adbe-9c7b-56a9-a676-6151a6785dda';
     const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
