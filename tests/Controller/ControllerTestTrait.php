@@ -47,10 +47,7 @@ trait ControllerTestTrait
         $redirectUrl = str_replace('http://localhost', '', rtrim($this->client->getResponse()->headers->get('location'), '/'));
         $this->assertNotNull($redirectUrl);
 
-        $this->assertSame(
-            '/connect/auth',
-            $redirectUrl
-        );
+        $this->assertSame('/connect/auth', $redirectUrl);
     }
 
     public function logout(Client $client)
