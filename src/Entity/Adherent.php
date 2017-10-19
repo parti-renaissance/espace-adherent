@@ -12,6 +12,7 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\ActivityPositions;
+use AppBundle\Membership\AdherentAccountData;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
@@ -504,17 +505,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->interests = $interests;
     }
 
+    public function updateAccount(AdherentAccountData $data): void
+    {
+        $this->firstName = $data->getFirstName();
+        $this->lastName = $data->getLastName();
+        $this->emailAddress = $data->getEmailAddress();
+    }
+
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
     {
         $this->gender = $membership->gender;
-        $this->firstName = $membership->firstName;
-        $this->lastName = $membership->lastName;
         $this->birthdate = $membership->getBirthdate();
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
         $this->comEmail = $membership->comEmail;
         $this->comMobile = $membership->comMobile;
-        $this->emailAddress = $membership->getEmailAddress();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;

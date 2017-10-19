@@ -59,10 +59,17 @@ parameters:
     env(AMP_HOST): m.enmarche.dev
     env(LEGISLATIVES_HOST): legislatives.enmarche.dev
 
+    # Credentials for server-to-server communications
+    env(AUTH_API_URL): 'http://auth.en-marche.dev'
+    env(AUTH_API_CLIENT_ID): '4122f4ce-f994-45f7-9ff5-f9f09ab3991e'
+    env(AUTH_API_CLIENT_SECRET): 'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA='
+
+    # Credentials for 2-legged OAuth authorization
     env(AUTH_CLIENT_ID): f80ce2df-af6d-4ce4-8239-04cfcefd5a19
     env(AUTH_CLIENT_SECRET): 2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs
     env(AUTH_ACCESS_TOKEN_URL): 'http://auth.en-marche.dev/oauth/v2/token'
     env(AUTH_ACCESS_AUTHORIZATION_URL): 'http://auth.en-marche.dev/oauth/v2/auth'
     env(AUTH_REGISTER_URL): 'http://auth.en-marche.dev/register?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=http://en-marche.dev/register'
     env(AUTH_INFO_URL): 'http://auth.en-marche.dev/api/me'
-    env(AUTH_URL): 'http://auth.en-marche.dev'
+
+    env(API_URL): 'http://api.en-marche.dev'

@@ -92,7 +92,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
             ],
         ]));
 
-        $invitation->friendInterests = $this->getChoices([29, 47]);
+        $invitation->friendInterests = $this->getChoices([29, 47])->toArray();
         $invitation->marking = InvitationProcessor::STATE_NEEDS_SELF_REASONS;
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());

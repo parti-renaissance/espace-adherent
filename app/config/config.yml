@@ -173,9 +173,14 @@ csa_guzzle:
                 base_uri: 'https://graph.facebook.com'
                 timeout: 2.0
 
-        auth_user_api:
+        auth:
             config:
-                base_uri: '%env(AUTH_URL)%'
+                base_uri: "%env(AUTH_API_URL)%"
+                timeout: 2.0
+
+        api:
+            config:
+                base_uri: "%env(API_URL)%"
                 timeout: 2.0
 
 scheb_two_factor:
@@ -225,9 +230,10 @@ old_sound_rabbit_mq:
             password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            connection_timeout: 60
+            read_write_timeout: 60
+            keepalive: false
+            heartbeat: 30
 
     producers:
         mailjet_campaign:
@@ -271,6 +277,12 @@ old_sound_rabbit_mq:
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        api_broadcast_user:
+            connection:        default
+            exchange_options:  { name: broadcast, type: topic }
+            queue_options:     { name: 'enmarche_broadcast', routing_keys: ['user.*'] }
+            callback:          app.consumer.user_account
 
 hwi_oauth:
     firewall_names: [main]

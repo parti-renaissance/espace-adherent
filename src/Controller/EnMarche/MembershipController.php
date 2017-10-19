@@ -69,7 +69,7 @@ class MembershipController extends Controller
             return $this->redirectToRoute('hwi_oauth_service_redirect', ['service' => 'auth']);
         }
 
-        $result = $this->get('csa_guzzle.client.auth_user_api')->request(
+        $result = $this->get('csa_guzzle.client.auth')->request(
             'GET',
             sprintf('/api/users/%s', $uuid), ['CONTENT_TYPE' => 'application/json']
         );

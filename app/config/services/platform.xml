@@ -4,6 +4,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <!-- Consumers -->
+        <service id="app.consumer.user_account" class="AppBundle\Consumer\UserAccountConsumer">
+            <argument type="service" id="app.membership.adherent_account_provider"/>
+            <argument type="service" id="app.repository.adherent"/>
+            <argument type="service" id="app.membership_request_handler"/>
+            <argument type="service" id="logger"/>
+        </service>
+
         <!-- Legislatives -->
         <service id="app.legislatives.contact_handler" class="AppBundle\Legislative\LegislativeCampaignContactMessageHandler">
             <argument type="service" id="app.mailjet.transactional_mailer"/>
@@ -26,6 +34,13 @@
             <argument type="service" id="app.repository.legislative_candidate"/>
             <argument type="service" id="AppBundle\Twig\AssetRuntime"/>
             <argument type="service" id="router"/>
+        </service>
+
+        <service id="app.api.access_token_manager" class="AppBundle\Api\AccessTokenManager" public="false">
+            <argument type="service" id="csa_guzzle.client.auth"/>
+            <argument type="service" id="cache.app"/>
+            <argument>%env(AUTH_API_CLIENT_ID)%</argument>
+            <argument>%env(AUTH_API_CLIENT_SECRET)%</argument>
         </service>
 
         <!-- Addresses -->
@@ -94,6 +109,11 @@
             <argument type="service" id="session"/>
             <argument type="service" id="request_stack" on-invalid="ignore"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.membership.adherent_account_provider" class="AppBundle\Membership\AdherentAccountProvider">
+            <argument type="service" id="app.api.access_token_manager"/>
+            <argument type="service" id="csa_guzzle.client.api"/>
         </service>
 
         <service id="AppBundle\Form\MemberInterestsChoiceType">
