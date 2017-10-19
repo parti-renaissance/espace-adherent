@@ -36,7 +36,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
      */
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->redirectionEventNotPublishTest($path);
     }
 
@@ -45,7 +45,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
      */
     public function testRegisteredAdherentUserCannotEditEvent($path)
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request('GET', $path);
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -75,7 +75,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanEditEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
@@ -135,7 +135,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanCancelEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_2_UUID.'/'.date('Y-m-d', strtotime('+10 days')).'-reunion-de-reflexion-dammarienne/annuler');
 
@@ -160,7 +160,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testCommitteeHostCanEditEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
@@ -169,7 +169,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanSeeRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -178,7 +178,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
@@ -195,7 +195,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanExportRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -233,7 +233,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function testOrganizerCanContactRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request('GET', '/evenements/'.LoadEventData::EVENT_1_UUID.'/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 

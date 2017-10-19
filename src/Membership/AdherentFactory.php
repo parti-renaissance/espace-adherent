@@ -26,7 +26,6 @@ class AdherentFactory
         return new Adherent(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
-            $this->encodePassword($request->password),
             $request->gender,
             $request->firstName,
             $request->lastName,
@@ -51,7 +50,6 @@ class AdherentFactory
         return new Adherent(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
-            $this->encodePassword($data['password']),
             $data['gender'],
             $data['first_name'],
             $data['last_name'],
@@ -60,7 +58,10 @@ class AdherentFactory
             $data['address'],
             $phone,
             Adherent::DISABLED,
-            isset($data['registered_at']) ? $data['registered_at'] : 'now'
+            isset($data['registered_at']) ? $data['registered_at'] : 'now',
+            false,
+            false,
+            isset($data['password']) ? $this->encodePassword($data['password']) : null
         );
     }
 

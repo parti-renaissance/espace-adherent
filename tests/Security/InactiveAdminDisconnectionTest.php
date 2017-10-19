@@ -43,7 +43,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 
     public function testNoLogoutInactiveAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         // wait
