@@ -26,10 +26,8 @@ class AdherentTest extends TestCase
         $this->assertNull($adherent->getSalt());
         $this->assertNull($adherent->getLastLoggedAt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
-        $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('john.smith@example.org', $adherent->getUsername());
         $this->assertSame('john.smith@example.org', $adherent->getEmailAddress());
-        $this->assertSame('super-password', $adherent->getPassword());
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('John', $adherent->getFirstName());
         $this->assertSame('Smith', $adherent->getLastName());
@@ -125,7 +123,6 @@ class AdherentTest extends TestCase
         return new Adherent(
             Adherent::createUuid($email),
             $email,
-            'super-password',
             'male',
             'John',
             'Smith',
