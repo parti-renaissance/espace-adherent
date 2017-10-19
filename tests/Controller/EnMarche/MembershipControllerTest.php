@@ -242,7 +242,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
-        $this->authenticateAsAdherent($this->client, $data['membership_request']['emailAddress'], $data['membership_request']['password']['first']);
+        $this->authenticateAsAdherent($this->client, $data['membership_request']['emailAddress']);
     }
 
     public function testDonateWithoutTemporaryDonation()
@@ -456,10 +456,6 @@ class MembershipControllerTest extends MysqlWebTestCase
                 'firstName' => 'Paul',
                 'lastName' => 'Dupont',
                 'emailAddress' => 'paul@dupont.tld',
-                'password' => [
-                    'first' => '#example!12345#',
-                    'second' => '#example!12345#',
-                ],
                 'address' => [
                     'country' => 'FR',
                     'postalCode' => '92110',

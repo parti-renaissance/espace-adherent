@@ -29,16 +29,12 @@ class LegislativesControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertSame(0, $crawler->filter('#legislatives_campaign_contact_form')->count());
         $this->assertClientIsRedirectedToAuth();
     }
 
     public function testRegularAdherentIsForbiddenToSendContactMessage()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');
 
@@ -51,7 +47,7 @@ class LegislativesControllerTest extends SqliteWebTestCase
      */
     public function testLegislativeCandidateIsAllowedToSendContactMessage(string $expectedRecipient, string $selectedRecipient)
     {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld', 'politique2017');
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');
 

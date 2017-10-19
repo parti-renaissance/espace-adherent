@@ -80,18 +80,6 @@
             <argument type="service" id="app.activity_subscription.manager"/>
         </service>
 
-        <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.password_encoder"/>
-        </service>
-
-        <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
-            <argument type="service" id="router"/>
-            <argument type="service" id="app.mailjet.transactional_mailer"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.encoder_factory"/>
-        </service>
-
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
             <argument type="service" id="app.adherent_manager"/>
             <argument type="service" id="app.committee.manager"/>

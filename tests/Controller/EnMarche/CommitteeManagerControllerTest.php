@@ -50,7 +50,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
     public function testCommitteeHostCanEditCommitteeInformation()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -117,7 +117,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -129,7 +129,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
     public function testCommitteeHostCanPublishNewEvent()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -254,7 +254,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $committeeUrl = $this->client->getRequest()->getPathInfo();
@@ -315,7 +315,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testAuthenticatedFollowerCannotSeeCommitteeMembers(string $username, string $password)
     {
         // Authenticate as a committee follower
-        $crawler = $this->authenticateAsAdherent($this->client, $username, $password);
+        $crawler = $this->authenticateAsAdherent($this->client, $username);
         $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $this->client->request(Request::METHOD_GET, sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
 
@@ -336,7 +336,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testAuthenticatedHostCanSeeCommitteeMembers(string $username, string $password)
     {
         // Authenticate as the committee supervisor
-        $crawler = $this->authenticateAsAdherent($this->client, $username, $password);
+        $crawler = $this->authenticateAsAdherent($this->client, $username);
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
@@ -359,7 +359,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testAuthenticatedCommitteeSupervisorCanPromoteNewHostsAmongMembers()
     {
         // Authenticate as the committee supervisor
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
@@ -386,7 +386,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeExportMembers()
     {
         // Authenticate as the committee supervisor
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
@@ -426,7 +426,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeContactMembers()
     {
         // Authenticate as the committee supervisor
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
