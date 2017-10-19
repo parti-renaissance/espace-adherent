@@ -35,9 +35,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getPhone());
         $this->assertNull($adherent->getSalt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
-        $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('michelle.dufour@example.ch', $adherent->getUsername());
-        $this->assertSame('secret!12345', $adherent->getPassword());
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('Michelle', $adherent->getFirstName());
         $this->assertSame('Dufour', $adherent->getLastName());
@@ -71,9 +69,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertNull($adherent->getSalt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
-        $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
-        $this->assertSame('12345!secret', $adherent->getPassword());
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());
@@ -111,9 +107,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getPhone());
         $this->assertNull($adherent->getSalt());
         $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
-        $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
-        $this->assertSame('secret$secret', $adherent->getPassword());
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());

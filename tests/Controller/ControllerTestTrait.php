@@ -44,7 +44,7 @@ trait ControllerTestTrait
     public function assertClientIsRedirectedToAuth()
     {
         $this->assertSame(
-            $this->container->getParameter('env(auth_login_url)'),
+            'http://localhost/connect/auth',
             rtrim($this->client->getResponse()->headers->get('location'), '/')
         );
     }
@@ -59,11 +59,9 @@ trait ControllerTestTrait
         return $client;
     }
 
-    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
+    public function authenticateAsAdherent(Client $client, string $emailAddress)
     {
         $session = $client->getContainer()->get('session');
-
-        $firewallContext = 'main_context';
 
         /** @var Adherent $user */
         $user = $client
@@ -75,7 +73,7 @@ trait ControllerTestTrait
         $token = new OAuthToken('1234', $user->getRoles());
         $token->setUser($user);
 
-        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->set('_security_main_context', serialize($token));
         $session->save();
 
         $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
