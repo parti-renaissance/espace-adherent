@@ -8,13 +8,13 @@
             Bienvenue, {{ app.user.firstname }} !
             <img src="{{ asset('images/emojis/waving-hand-sign.svg') }}" width="50" />
         </h1>
-        <p class="text--body text--medium-small">
+        <p class="text--body text--medium-small b__nudge--top text--gray">
             Nous avons crée un espace dédié aux membres du Conseil.
         </p>
     </section>
 
-    <section class="l__wrapper--slim b__nudge--bottom-huge">
-        <h2>À quoi ça sert ?</h2>
+    <section class="l__wrapper--slim b__nudge--bottom-huge text--with-bullet">
+        <h2 class="b__nudge--bottom">À quoi ça sert ?</h2>
         <ul class="text--body">
             <li>Mieux vous connaître !</li>
             <li>Monter une liste de candidature pour vous présenter à la fonction de délégué(e) général(e) ou membre du bureau exécutif.</li>
@@ -41,8 +41,8 @@
         </ol>
     </section>
 
-    <section class="l__wrapper--slim b__nudge--bottom-huge">
-        <h2>Des questions ?</h2>
+    <section class="l__wrapper--slim b__nudge--bottom-huge text--with-bullet">
+        <h2 class="b__nudge--bottom">Des questions ?</h2>
             <ul class="text--body">
                 <li>Vous cherchez des informations sur le Conseil, les modalités de candidature au Bureau Exécutif et au poste de Délégué(e) Général(e) ?
                     <a class="link--newblue" href="{{ path('article_view', {slug: 'le-conseil-de-la-republique-en-marche'}) }}"></a>Cliquez ici.</li>
