@@ -3,11 +3,11 @@
 namespace Tests\AppBundle\Api;
 
 use AppBundle\Api\CommitteeProvider;
-use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\CommitteeRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeProviderTest extends TestCase
 {
@@ -39,9 +39,9 @@ class CommitteeProviderTest extends TestCase
         $repository = $this->createMock(CommitteeRepository::class);
         $repository->expects($this->once())->method('findApprovedCommittees')->willReturn($committees);
 
-        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
-        $urlGenerator->expects($this->at(0))->method('getPath')->willReturn('/comites/'.$committee1->getSlug());
-        $urlGenerator->expects($this->at(1))->method('getPath')->willReturn('/comites/'.$committee2->getSlug());
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->expects($this->at(0))->method('generate')->willReturn('/comites/'.$committee1->getSlug());
+        $urlGenerator->expects($this->at(1))->method('generate')->willReturn('/comites/'.$committee2->getSlug());
 
         $provider = new CommitteeProvider($repository, $urlGenerator);
 

@@ -44,6 +44,7 @@
             <argument type="service" id="app.repository.proposal" />
             <argument type="service" id="app.repository.order_article" />
             <argument type="service" id="router" />
+            <argument>%pattern_uuid%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 

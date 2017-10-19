@@ -224,7 +224,7 @@ class CitizenInitiativeController extends Controller
                 $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
             }
 
-            return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $committee));
+            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
 
         return $this->render('citizen_initiative/share_committee.html.twig', [

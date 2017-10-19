@@ -18,7 +18,7 @@ class CommitteeManagementAuthority
 
     public function __construct(
         CommitteeManager $manager,
-        CommitteeUrlGenerator $urlGenerator,
+        UrlGeneratorInterface $urlGenerator,
         MailjetService $mailjet
     ) {
         $this->manager = $manager;
@@ -33,7 +33,7 @@ class CommitteeManagementAuthority
         $this->mailjet->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $this->manager->getCommitteeCreator($committee),
             $committee->getCityName(),
-            $this->urlGenerator->getUrl('app_committee_show', $committee)
+            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 
@@ -89,7 +89,7 @@ class CommitteeManagementAuthority
             $committee,
             $hosts,
             $adherent,
-            $this->urlGenerator->getUrl('app_commitee_manager_list_members', $committee)
+            $this->urlGenerator->generate('app_commitee_manager_list_members', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 }

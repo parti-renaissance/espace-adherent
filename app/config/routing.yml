@@ -51,6 +51,13 @@ lexik_paybox:
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
 
+# This route must be loaded first to prevent an override
+map_events:
+    path: /evenements/la-carte
+    methods: GET
+    defaults: { _controller: 'AppBundle:EnMarche/Map:events' }
+    condition: "not (context.getHost() matches '/legislatives/i')"
+
 app_enmarche:
     host:     "%app_host%"
     resource: "@AppBundle/Controller/EnMarche"

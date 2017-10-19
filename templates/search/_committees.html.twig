@@ -1,5 +1,5 @@
 {% for committee in results %}
-    <a href="{{ committee_path('app_committee_show', committee) }}" class="search__committee__box">
+    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="search__committee__box">
         <div class="search__results__meta">
             <h2 class="text--medium text--normal">
                 {{ committee.name }}

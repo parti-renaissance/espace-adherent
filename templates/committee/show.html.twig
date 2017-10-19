@@ -1,7 +1,7 @@
 {% extends 'committee/_layout.html.twig' %}
 
 {% block page_title committee.name %}
-{% block canonical_url committee_url('app_committee_show', committee) %}
+{% block canonical_url url('app_committee_show', {'slug': committee.slug}) %}
 
 {% block json_ld %}
     <script type="application/ld+json">
@@ -49,7 +49,6 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
-            var committeeUuid = '{{ committee.uuid }}';
             var committeeSlug = '{{ committee.slug }}';
 
             {% if committee_timeline is defined and committee_timeline|length %}
@@ -60,7 +59,6 @@
             moreButton && on(moreButton, 'click', function() {
                 page++;
                 di.get('api').getCommitteeTimelineFeed(
-                    committeeUuid,
                     committeeSlug,
                     ((page - 1) * limit),
                     function (response) {
@@ -184,7 +182,7 @@
                 <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
                 <ul class="list__links list__links--default list__links--row">
                     <li>
-                        <a href="{{ committee_path('app_committee_manager_edit', committee) }}" class="icon--with-text">
+                        <a href="{{ path('app_committee_manager_edit', {'slug': committee.slug}) }}" class="icon--with-text">
                             <i class="fa fa-sliders"></i>
                             Éditer le comité
                         </a>

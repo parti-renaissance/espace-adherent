@@ -24,6 +24,18 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     private $committeeRepository;
 
+    public function testRedirectionComiteFromOldUrl()
+    {
+        $this->client->request(Request::METHOD_GET, '/comites/'.LoadAdherentData::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/comites/en-marche-dammarie-les-lys', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
     public function testAnonymousUserIsNotAllowedToFollowCommittee()
     {
         $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
@@ -398,7 +410,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
     public function assertRedictIfCommitteeNotExist()
     {
-        $this->client->request(Request::METHOD_GET, '/comites/a591f199-afc9-52c3-8344-db69c88cb845/ariege-leze');
+        $this->client->request(Request::METHOD_GET, '/comites/ariege-leze');
 
         $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
 

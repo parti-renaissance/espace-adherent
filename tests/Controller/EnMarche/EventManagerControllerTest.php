@@ -322,7 +322,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     private function redirectionEventNotPublishTest($url)
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+        $this->client->request(Request::METHOD_GET, '/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
 
         $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
 

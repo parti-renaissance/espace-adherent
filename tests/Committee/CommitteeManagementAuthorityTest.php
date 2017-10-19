@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManagementAuthority;
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
@@ -14,6 +13,7 @@ use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @functional
@@ -34,11 +34,8 @@ class CommitteeManagementAuthorityTest extends TestCase
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class));
 
-        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
-        $urlGenerator->expects($this->any())->method('getUrl')->willReturn(sprintf(
-            '/comites/%s/%s',
-            LoadAdherentData::COMMITTEE_1_UUID,
-        $urlGenerator->expects($this->once())->method('getUrl')->willReturn(sprintf(
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->expects($this->at(0))->method('generate')->willReturn(sprintf(
             '/comites/%s',
             'comite-lille-beach'
         ));
@@ -61,7 +58,7 @@ class CommitteeManagementAuthorityTest extends TestCase
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class));
 
-        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->any())->method('generate')->willReturn(sprintf(
             '/espace-adherent/contacter/%s?from=%s&id=%s',
             LoadAdherentData::ADHERENT_3_UUID,
@@ -90,7 +87,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         // ensure no mail is sent
         $mailer->expects($this->never())->method('sendMessage')->with($this->anything());
 
-        $urlGenerator = $this->createMock(CommitteeUrlGenerator::class);
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->never())->method('generate')->with($this->anything());
 
         $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);

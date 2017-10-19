@@ -159,7 +159,7 @@ class AdherentController extends Controller
             $this->get('app.committee.creation_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.creation.success'));
 
-            return $this->redirect($this->get('app.committee.url_generator')->getPath('app_committee_show', $command->getCommittee()));
+            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]));
         }
 
         return $this->render('adherent/create_committee.html.twig', [

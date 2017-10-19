@@ -148,7 +148,7 @@ export default class AlgoliaSearch extends React.Component {
         }
 
         if ('event' === hit.type) {
-            return `/evenements/${hit.uuid}/${hit.slug}`;
+            return `/evenements/${hit.slug}`;
         }
 
         return hit.url;
