@@ -8,6 +8,7 @@ use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailjet\Message\CommitteeApprovalReferentMessage;
 use AppBundle\Mailjet\Message\CommitteeNewFollowerMessage;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManagementAuthority
 {
@@ -29,28 +30,36 @@ class CommitteeManagementAuthority
     {
         $this->manager->approveCommittee($committee);
 
-        $animator = $this->manager->getCommitteeCreator($committee);
-
         $this->mailjet->sendMessage(CommitteeApprovalConfirmationMessage::create(
-            $animator,
+            $this->manager->getCommitteeCreator($committee),
             $committee->getCityName(),
             $this->urlGenerator->getUrl('app_committee_show', $committee)
         ));
+    }
 
-        if (!$referent = $this->manager->getCommitteeReferent($committee)) {
-            return;
+    public function notifyReferentsForApproval(Committee $committee): void
+    {
+        $referents = $this->manager->getCommitteeReferents($committee);
+
+        if ($referents->count() > 1) {
+            throw new MultipleReferentsFoundException($referents);
         }
 
-        $this->mailjet->sendMessage(CommitteeApprovalReferentMessage::create(
-            $referent,
-            $animator,
-            $committee,
-            $this->urlGenerator->generate('app_adherent_contact', [
-                'uuid' => (string) $animator->getUuid(),
-                'from' => 'committee',
-                'id' => (string) $committee->getUuid(),
-            ])
-        ));
+        $animator = $this->manager->getCommitteeCreator($committee);
+        $animatorLink = $this->urlGenerator->generate('app_adherent_contact', [
+            'uuid' => (string) $animator->getUuid(),
+            'from' => 'committee',
+            'id' => (string) $committee->getUuid(),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        foreach ($referents as $referent) {
+            $this->mailjet->sendMessage(CommitteeApprovalReferentMessage::create(
+                $referent,
+                $animator,
+                $committee,
+                $animatorLink
+            ));
+        }
     }
 
     public function preApprove(Committee $committee): void

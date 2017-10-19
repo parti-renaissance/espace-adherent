@@ -24,6 +24,8 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
 
+        $this->assertFalse($committee->isApproved());
+
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
         // connect as admin

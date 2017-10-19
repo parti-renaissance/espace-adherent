@@ -36,15 +36,19 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
         $this->assertSame('Lucie Olivera', $adherents[0]->getFullName());
     }
 
-    public function testFindReferentByCommittee()
+    public function testFindReferentsByCommittee()
     {
         // Foreign Committee with Referent
         $committee = $this->createMock(Committee::class);
         $committee->expects(static::any())->method('getCountry')->willReturn('CH');
 
-        $referent = $this->repository->findReferentByCommittee($committee);
+        $referents = $this->repository->findReferentsByCommittee($committee);
 
-        $this->assertNotNull($referent);
+        $this->assertNotEmpty($referents);
+        $this->assertCount(1, $referents);
+
+        $referent = $referents->first();
+
         $this->assertSame('Referent Referent', $referent->getFullName());
         $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
 
@@ -53,18 +57,21 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
         $committee->expects(static::any())->method('getCountry')->willReturn('FR');
         $committee->expects(static::any())->method('getPostalCode')->willReturn('06200');
 
-        $referent = $this->repository->findReferentByCommittee($committee);
+        $referents = $this->repository->findReferentsByCommittee($committee);
 
-        $this->assertNull($referent);
+        $this->assertEmpty($referents);
 
         // Departemental Commitee with Referent
         $committee = $this->createMock(Committee::class);
         $committee->expects(static::any())->method('getCountry')->willReturn('FR');
         $committee->expects(static::any())->method('getPostalCode')->willReturn('77190');
 
-        $referent = $this->repository->findReferentByCommittee($committee);
+        $referents = $this->repository->findReferentsByCommittee($committee);
 
-        $this->assertNotNull($referent);
+        $this->assertCount(1, $referents);
+
+        $referent = $referents->first();
+
         $this->assertSame('Referent Referent', $referent->getFullName());
         $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
     }
