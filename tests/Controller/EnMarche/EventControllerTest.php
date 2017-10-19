@@ -323,12 +323,24 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testRedirectIfEventNotExist()
     {
-        $this->assertRedirectionEventNotPublishTest('/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+        $this->assertRedirectionEventNotPublishTest('/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+    }
+
+    public function testRedirectionEventFromOldUrl()
+    {
+        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     private function assertRedirectionEventNotPublishTest($url)
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/0cf668bc-f3b4-449d-8cfe-12cdb1ae12aa/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+        $this->client->request(Request::METHOD_GET, '/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
 
         $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
 
@@ -343,7 +355,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
 
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_14_UUID);
-        $eventUrl = sprintf('/evenements/%s/%s/inscription', LoadEventData::EVENT_14_UUID, $event->getSlug());
+        $eventUrl = sprintf('/evenements/%s/inscription', $event->getSlug());
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

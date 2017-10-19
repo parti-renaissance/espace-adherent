@@ -14,7 +14,7 @@
 {% block committee_content %}
     <main>
         <section class="l__wrapper--medium space--30-0">
-            <a href="{{ committee_path('app_committee_show', committee) }}"
+            <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
                class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
                 Retour au comité</a>
@@ -31,7 +31,7 @@
                     <button type="submit" id="edit-committee" class="btn btn--blue">
                         Enregistrer
                     </button>
-                    <a href="{{ committee_path('app_committee_show', committee) }}" class="btn">
+                    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="btn">
                         Annuler
                     </a>
                 </div>

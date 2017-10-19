@@ -23,6 +23,7 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
 {
     const REDIRECTIONS = [
         '/evenements/' => '/evenements',
+        '/initiative-citoyenne/' => '/initiative-citoyenne',
         '/comites/' => '/comites',
         '/articles/tout' => '/articles',
         '/article/' => '/articles/',
@@ -38,6 +39,7 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
     private $articleRepository;
     private $proposalRepository;
     private $orderArticleRepository;
+    private $patternUuid;
 
     public function __construct(
         RedirectionRepository $redirectionRepository,
@@ -45,7 +47,8 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
         ArticleRepository $articleRepository,
         ProposalRepository $proposalRepository,
         OrderArticleRepository $orderArticleRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        string $patternUuid
     ) {
         $this->redirectRepository = $redirectionRepository;
         $this->router = $router;
@@ -53,6 +56,7 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
         $this->articleRepository = $articleRepository;
         $this->proposalRepository = $proposalRepository;
         $this->orderArticleRepository = $orderArticleRepository;
+        $this->patternUuid = $patternUuid;
     }
 
     /**
@@ -83,6 +87,15 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
         foreach (self::REDIRECTIONS as $patternToMatch => $urlToRedirect) {
             if (0 !== strpos($requestUri, $patternToMatch)) {
                 continue;
+            }
+
+            // For all old URLs with uuid/slug we remove uuid from URL
+            preg_match(sprintf("/\/%s/", $this->patternUuid), $requestUri, $matches);
+            if (count($matches) > 0) {
+                $redirectionUrl = str_replace($matches[0], '', $requestUri);
+                $event->setResponse(new RedirectResponse($redirectionUrl, $redirectCode));
+
+                return;
             }
 
             try {

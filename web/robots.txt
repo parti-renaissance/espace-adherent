@@ -2,5 +2,5 @@
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
 User-agent: *
-Disallow: /evenements/92655f42-67a0-4a86-b1c5-8f41606c7e6a/2017-07-19-test-de-tess
-Disallow: /comites/9146c40a-5af9-5fe6-b7ce-c16a01aa7b6e/comite-en-marche-test
+Disallow: /evenements/2017-07-19-test-de-tess
+Disallow: /comites/comite-en-marche-test

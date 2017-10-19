@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 
 class CitizenInitiativeRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 {
-    const CITIZEN_INITIATIVE_LINK = 'http://en-marche.fr/initiative-citoyenne/254/2017-12-27-initiative-citoyenne-a-lyon';
+    const CITIZEN_INITIATIVE_LINK = 'http://en-marche.fr/initiative-citoyenne/2017-12-27-initiative-citoyenne-a-lyon';
 
     public function testCreateMessageFromEventRegistration()
     {

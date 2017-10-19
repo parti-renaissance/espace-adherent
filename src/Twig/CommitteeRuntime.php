@@ -4,7 +4,6 @@ namespace AppBundle\Twig;
 
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -13,15 +12,12 @@ class CommitteeRuntime
 {
     private $authorizationChecker;
     private $committeeManager;
-    private $urlGenerator;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CommitteeUrlGenerator $urlGenerator,
         CommitteeManager $committeeManager = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->urlGenerator = $urlGenerator;
         $this->committeeManager = $committeeManager;
     }
 
@@ -71,15 +67,5 @@ class CommitteeRuntime
     public function canSee(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissions::SHOW, $committee);
-    }
-
-    public function getPath(string $routeName, Committee $committee, array $params = []): string
-    {
-        return $this->urlGenerator->getPath($routeName, $committee, $params);
-    }
-
-    public function getUrl(string $routeName, Committee $committee, array $params = []): string
-    {
-        return $this->urlGenerator->getUrl($routeName, $committee, $params);
     }
 }

@@ -17,9 +17,9 @@ export default class ReqwestApiClient {
         });
     }
 
-    getCommitteeTimelineFeed(committeeUuid, committeeSlug, offset, callback) {
+    getCommitteeTimelineFeed(committeeSlug, offset, callback) {
         this._createRequest(callback, {
-            url: '/comites/'+committeeUuid+'/'+committeeSlug+'/timeline?offset='+offset,
+            url: '/comites/'+committeeSlug+'/timeline?offset='+offset,
             type: 'html'
         });
     }

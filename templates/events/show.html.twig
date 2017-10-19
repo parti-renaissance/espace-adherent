@@ -26,7 +26,7 @@
             {% if committee is defined and committee %}
             "@type": "Organization",
             "name": "{{ committee.name }}",
-            "url": "{{ committee_url('app_committee_show', committee) }}"
+            "url": "{{ url('app_committee_show', {'slug': committee.slug}) }}"
             {% else %}
             "@type": "Person",
             "givenName": "{{ event.organizer.firstName }}",

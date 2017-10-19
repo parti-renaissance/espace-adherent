@@ -27,10 +27,7 @@ class MapController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/evenements/la-carte", name="map_events")
-     * @Method("GET")
-     */
+    // Unlike the other actions of this class the route of this action is defined in the config to prevent an override.
     public function eventsAction()
     {
         $doctrine = $this->getDoctrine();

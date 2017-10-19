@@ -106,7 +106,7 @@
                             Organisé par <span class="text--bold">{{ event.organizer }}</span>
                             {% if committee is defined and committee %}
                                 du comité
-                                <a class="link--white" href="{{ committee_path('app_committee_show', committee) }}">
+                                <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
                                 {{- committee.name -}}
                                 </a>
                             {% endif %}

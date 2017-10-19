@@ -19,10 +19,6 @@ class CommitteeExtension extends AbstractExtension
             new TwigFunction('can_unfollow', [CommitteeRuntime::class, 'canUnfollow']),
             new TwigFunction('can_create', [CommitteeRuntime::class, 'canCreate']),
             new TwigFunction('can_see', [CommitteeRuntime::class, 'canSee']),
-
-            // Routing
-            new TwigFunction('committee_path', [CommitteeRuntime::class, 'getPath']),
-            new TwigFunction('committee_url', [CommitteeRuntime::class, 'getUrl']),
         ];
     }
 }

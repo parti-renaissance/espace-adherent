@@ -38,7 +38,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
     }
 
     /**

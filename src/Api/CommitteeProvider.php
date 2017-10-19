@@ -2,15 +2,15 @@
 
 namespace AppBundle\Api;
 
-use AppBundle\Committee\CommitteeUrlGenerator;
 use AppBundle\Repository\CommitteeRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeProvider
 {
     private $repository;
     private $urlGenerator;
 
-    public function __construct(CommitteeRepository $repository, CommitteeUrlGenerator $urlGenerator)
+    public function __construct(CommitteeRepository $repository, UrlGeneratorInterface $urlGenerator)
     {
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;
@@ -29,7 +29,7 @@ class CommitteeProvider
                 'uuid' => $committee->getUuid()->toString(),
                 'slug' => $committee->getSlug(),
                 'name' => $committee->getName(),
-                'url' => $this->urlGenerator->getPath('app_committee_show', $committee),
+                'url' => $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()]),
                 'position' => [
                     'lat' => (float) $committee->getLatitude(),
                     'lng' => (float) $committee->getLongitude(),

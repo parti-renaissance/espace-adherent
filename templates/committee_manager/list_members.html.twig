@@ -125,14 +125,14 @@
 
                 <div class="committee__members__nav">
                     <div>
-                        <form method="post" action="{{ committee_path('app_commitee_contact_members', committee) }}">
+                        <form method="post" action="{{ path('app_commitee_contact_members', {'slug': committee.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" id="members-contact-token" />
                             <input type="hidden" name="contacts" value="" id="members-contact-selection" />
 
                             <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
                         </form>
 
-                        <form method="post" action="{{ committee_path('app_commitee_manager_export_members', committee) }}">
+                        <form method="post" action="{{ path('app_commitee_manager_export_members', {'slug': committee.slug}) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
                             <input type="hidden" name="exports" value="" id="members-export-selection" />
 
@@ -188,13 +188,13 @@
                             {% if is_supervisor %}
                                 <td>
                                     {% if is_promotable_host %}
-                                        <a href="{{ committee_path('app_committee_promote_host', committee, {'member_uuid': member.uuid}) }}"
+                                        <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
                                            title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
                                            class="promote-host-link btn btn--small">
                                             Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
                                         </a>
                                     {% elseif is_demotable_host %}
-                                        <a href="{{ committee_path('app_committee_demote_host', committee, {'member_uuid': member.uuid}) }}"
+                                        <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
                                            title="Définir membre"
                                            class="demote-host-link btn btn--small">
                                             Définir membre

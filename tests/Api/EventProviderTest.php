@@ -45,8 +45,8 @@ class EventProviderTest extends TestCase
         $repository->expects($this->once())->method('findUpcomingEvents')->willReturn($events);
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn('/evenements/'.$event1->getUuid().'/'.$event1->getSlug());
-        $urlGenerator->expects($this->at(1))->method('generate')->willReturn('/evenements/'.$event2->getUuid().'/'.$event2->getSlug());
+        $urlGenerator->expects($this->at(0))->method('generate')->willReturn('/evenements/'.$event1->getSlug());
+        $urlGenerator->expects($this->at(1))->method('generate')->willReturn('/evenements/'.$event2->getSlug());
 
         $provider = new EventProvider($repository, $urlGenerator);
 
@@ -57,7 +57,7 @@ class EventProviderTest extends TestCase
                     'uuid' => '2bb0472c-4189-409f-9d06-b617843230ea',
                     'slug' => 'evenement-paris',
                     'name' => 'Événement de Paris',
-                    'url' => '/evenements/2bb0472c-4189-409f-9d06-b617843230ea/evenement-paris',
+                    'url' => '/evenements/evenement-paris',
                     'position' => [
                         'lat' => 48.8705073,
                         'lng' => 2.3032432,
@@ -68,7 +68,7 @@ class EventProviderTest extends TestCase
                     'uuid' => 'ae65d178-3dc6-4c14-843c-36df38c82834',
                     'slug' => 'evenement-berlin',
                     'name' => 'Événement de Berlin',
-                    'url' => '/evenements/ae65d178-3dc6-4c14-843c-36df38c82834/evenement-berlin',
+                    'url' => '/evenements/evenement-berlin',
                     'position' => [
                         'lat' => 52.5330939,
                         'lng' => 13.4662418,

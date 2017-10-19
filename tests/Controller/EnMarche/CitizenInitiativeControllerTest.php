@@ -172,7 +172,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $eventUrl = '/initiative-citoyenne/'.date('Y-m-d', strtotime('+15 days')).'-nettoyage-de-la-kilchberg-non-publiee';
         $this->client->request('GET', $eventUrl);
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
     }
 
     public function testShowPublishedInitiative()
@@ -190,7 +190,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $initiativeUrl = sprintf('/initiative-citoyenne/%s', $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/invitation');
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
     }
 
     public function testAdherentCanInviteToEvent()
@@ -298,7 +298,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $initiativeUrl = sprintf('/initiative-citoyenne/%s', $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/inscription');
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
     }
 
     public function testAnonymousUserCanRegisterToEvent()
@@ -421,7 +421,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $initiativeUrl = sprintf('/initiative-citoyenne/%s', $slug = $initiative->getSlug());
         $this->client->request(Request::METHOD_GET, $initiativeUrl.'/partage-au-comite');
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
     }
 
     public function testAnonymousUserShareToCommittee()
@@ -562,7 +562,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a')->text());
 
         // User clicks on 'Suivre'
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), [], [], [
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/abonner', $initiative->getSlug()), [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -572,7 +572,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame('Ne plus suivre', $crawler->filter('#activity_subscription a')->text());
 
         // User clicks on 'Ne plus suivre'
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), [], [], [
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/abonner', $initiative->getSlug()), [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -580,6 +580,18 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s', $initiative->getSlug()));
 
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a:contains("Suivre")')->text());
+    }
+
+    public function testRedirectionCitizenInitiativeFromOldUrl()
+    {
+        $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
     protected function setUp()

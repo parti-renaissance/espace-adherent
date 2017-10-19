@@ -14,7 +14,7 @@
         <!-- Api -->
         <service id="app.api.committee_provider" class="AppBundle\Api\CommitteeProvider">
             <argument type="service" id="app.repository.committee"/>
-            <argument type="service" id="app.committee.url_generator"/>
+            <argument type="service" id="router"/>
         </service>
 
         <service id="app.api.event_provider" class="AppBundle\Api\EventProvider">
@@ -161,16 +161,12 @@
 
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
             <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.committee.url_generator"/>
+            <argument type="service" id="router"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>
         </service>
 
         <service id="app.committee.factory" class="AppBundle\Committee\CommitteeFactory">
             <argument type="service" id="app.address.post_address_factory"/>
-        </service>
-
-        <service id="app.committee.url_generator" class="AppBundle\Committee\CommitteeUrlGenerator">
-            <argument type="service" id="router"/>
         </service>
 
         <service id="app.committee.update_handler" class="AppBundle\Committee\CommitteeUpdateCommandHandler">
