@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
@@ -57,7 +56,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         // Create adherent users list
         $adherent1 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
-            'password' => 'secret!12345',
             'email' => 'michelle.dufour@example.ch',
             'gender' => 'female',
             'first_name' => 'Michelle',
@@ -69,7 +67,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent2 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
-            'password' => 'secret!12345',
             'email' => 'carl999@example.fr',
             'gender' => 'male',
             'first_name' => 'Carl',
@@ -85,7 +82,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent3 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
-            'password' => 'changeme1337',
             'email' => 'jacques.picard@en-marche.fr',
             'gender' => 'male',
             'first_name' => 'Jacques',
@@ -101,7 +97,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent4 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,
-            'password' => 'EnMarche2017',
             'email' => 'luciole1989@spambox.fr',
             'gender' => 'female',
             'first_name' => 'Lucie',
@@ -120,7 +115,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
-            'password' => 'ILoveYouManu',
             'email' => 'gisele-berthoux@caramail.com',
             'gender' => 'female',
             'first_name' => 'Gisele',
@@ -136,7 +130,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent6 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_6_UUID,
-            'password' => 'HipHipHip',
             'email' => 'benjyd@aol.com',
             'gender' => 'male',
             'first_name' => 'Benjamin',
@@ -152,7 +145,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
-            'password' => 'Champion20',
             'email' => 'francis.brioul@yahoo.com',
             'gender' => 'male',
             'first_name' => 'Francis',
@@ -168,7 +160,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_8_UUID,
-            'password' => 'referent',
             'email' => 'referent@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Referent',
@@ -187,7 +178,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $coordinateur = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
-            'password' => 'coordinateur',
             'email' => 'coordinateur@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Coordinateur',
@@ -202,7 +192,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
-            'password' => 'password12345',
             'email' => 'laura@deloche.com',
             'gender' => 'female',
             'first_name' => 'Laura',
@@ -222,7 +211,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent10 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_10_UUID,
-            'password' => 'politique2017',
             'email' => 'martine.lindt@gmail.com',
             'gender' => 'female',
             'first_name' => 'Martine',
@@ -241,7 +229,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent11 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_11_UUID,
-            'password' => 'politique2017',
             'email' => 'lolodie.dutemps@hotnix.tld',
             'gender' => 'female',
             'first_name' => 'Élodie',
@@ -260,7 +247,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
-            'password' => 'politique2017',
             'email' => 'kiroule.p@blabla.tld',
             'gender' => 'male',
             'first_name' => 'Pierre',
@@ -283,7 +269,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent13 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_13_UUID,
-            'password' => 'secret!12345',
             'email' => 'michel.vasseur@example.ch',
             'gender' => 'male',
             'first_name' => 'Michel',
@@ -295,7 +280,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent14 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_14_UUID,
-            'password' => 'newpassword',
             'email' => 'damien.schmidt@example.ch',
             'gender' => 'male',
             'first_name' => 'Damien',
@@ -471,9 +455,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         ]);
         $committee10->approved('2017-05-09 13:17:42');
 
-        // Make an adherent request a new password
-        $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
-
         // °\_O_/° Persist all the things (in memory) !!!
         $manager->persist($adherent1);
         $manager->persist($adherent2);
@@ -508,8 +489,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key14);
         $manager->persist($key15);
         $manager->persist($key16);
-
-        $manager->persist($resetPasswordToken);
 
         $manager->persist($committee1);
         $manager->persist($committee2);

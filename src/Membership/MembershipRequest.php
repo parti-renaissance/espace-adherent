@@ -64,12 +64,6 @@ class MembershipRequest implements MembershipInterface
     public $position;
 
     /**
-     * @Assert\NotBlank(groups="Registration")
-     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
-     */
-    public $password;
-
-    /**
      * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Registration"})
      */
     public $conditions;
