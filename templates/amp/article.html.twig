@@ -1,7 +1,7 @@
 {% extends 'amp/_layout.html.twig' %}
 
 {% block title article.title %}
-{% block canonical_url url('article_view', {'slug': article.slug}) %}
+{% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
 {% block json_ld %}
     {% set image = article.media ? (homepage_url ~ (media_asset(article.media)|raw)) : default_sharer %}

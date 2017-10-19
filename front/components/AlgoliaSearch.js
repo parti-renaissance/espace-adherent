@@ -136,7 +136,7 @@ export default class AlgoliaSearch extends React.Component {
 
     _createLinkURL(hit) {
         if ('article' === hit.type) {
-            return `/articles/${hit.slug}`;
+            return `/articles/${hit.category.slug}/${hit.slug}`;
         }
 
         if ('proposal' === hit.type) {

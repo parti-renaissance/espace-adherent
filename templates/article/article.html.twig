@@ -4,9 +4,9 @@
 {% block meta_description article.description %}
 {% block meta_twitter_description article.twitterDescription ?: article.description %}
 
-{% block canonical_url url('article_view', {'slug': article.slug}) %}
+{% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
-{% block amp_link %}<link rel="amphtml" href="{{ url('amp_article_view', {'slug': article.slug}) }}" />{% endblock %}
+{% block amp_link %}<link rel="amphtml" href="{{ url('amp_article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" />{% endblock %}
 
 {% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
 {% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
@@ -124,22 +124,22 @@
             {% for article in latestArticles %}
                 <li class="card card--content card--content--article l__col--bottom">
                     <div class="cs card--small">
-                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="background-container">
+                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="background-container">
                             <div class="background card__background progressive-background"
                                  data-sd="{{ media_asset(article.media, {'w': 300, 'q': 20}) }}"
                                  data-hd="{{ media_asset(article.media, {'w': 1200, 'q': 70}) }}"
                                  style="background-color: #000000;">
                             </div>
                         </a>
-                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="headline link--no-decor">
+                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="headline link--no-decor">
                             <h2>{{ article.title }}</h2>
                         </a>
                         <div class="share">
                             Partagez
-                            <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-facebook-square"></i>
                             </span>
-                            <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                            <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
                                 <i class="fa fa-twitter"></i>
                             </span>
                         </div>

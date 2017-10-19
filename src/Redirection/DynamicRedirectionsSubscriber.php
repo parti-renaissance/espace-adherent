@@ -2,6 +2,7 @@
 
 namespace AppBundle\Redirection;
 
+use AppBundle\Repository\ArticleRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\RedirectionRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Handle dynamic redirections editable in the administration panel.
@@ -19,17 +20,26 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
     const REDIRECTIONS = [
         '/evenements/' => '/evenements',
         '/comites/' => '/comites',
+        '/articles/tout' => '/articles',
+        '/article/' => '/articles/',
+        '/amp/article/' => '/amp/articles/',
     ];
 
     private $redirectRepository;
-    private $urlMatcher;
+    private $router;
     private $eventRepository;
+    private $articleRepository;
 
-    public function __construct(RedirectionRepository $redirectionRepository, EventRepository $eventRepository, UrlMatcherInterface $urlMatcher)
-    {
+    public function __construct(
+        RedirectionRepository $redirectionRepository,
+        EventRepository $eventRepository,
+        ArticleRepository $articleRepository,
+        RouterInterface $router
+    ) {
         $this->redirectRepository = $redirectionRepository;
-        $this->urlMatcher = $urlMatcher;
+        $this->router = $router;
         $this->eventRepository = $eventRepository;
+        $this->articleRepository = $articleRepository;
     }
 
     /**
@@ -63,11 +73,31 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
             }
 
             if ('/evenements/' === $patternToMatch
-                && ($routeParams = $this->urlMatcher->match($requestUri))
+                && ($routeParams = $this->router->match($requestUri))
                 && isset($routeParams['uuid'])
                 && ($eventEntity = $this->eventRepository->findOneByUuid($routeParams['uuid']))
                 && !$eventEntity->isPublished()) {
                 $redirectCode = Response::HTTP_FOUND;
+            }
+
+            if (0 === strpos($requestUri, '/article/')) {
+                $pathToContent = substr($requestUri, 9);
+                $urlToRedirect = null !== ($article = $this->articleRepository->findOnePublishedBySlug($pathToContent))
+                    ? $this->router->generate('article_view', [
+                        'categorySlug' => $article->getCategory()->getSlug(),
+                        'articleSlug' => $article->getSlug(),
+                    ])
+                    : substr_replace($requestUri, '/articles/', 0, 10);
+            }
+
+            if (0 === strpos($requestUri, '/amp/article/')) {
+                $pathToContent = substr($requestUri, 13);
+                $urlToRedirect = null !== ($article = $this->articleRepository->findOnePublishedBySlug($pathToContent))
+                    ? $urlToRedirect = $this->router->generate('amp_article_view', [
+                        'categorySlug' => $article->getCategory()->getSlug(),
+                        'articleSlug' => $article->getSlug(),
+                    ])
+                    : substr_replace($requestUri, '/amp/articles/', 0, 14);
             }
 
             $event->setResponse(new RedirectResponse($urlToRedirect, $redirectCode));

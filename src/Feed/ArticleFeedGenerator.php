@@ -89,7 +89,14 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
      */
     private function appendArticleItem(Article $article, Channel $channel): Item
     {
-        $articleUrl = $this->urlGenerator->generate('article_view', ['slug' => $article->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $articleUrl = $this->urlGenerator->generate(
+            'article_view',
+            [
+                'categorySlug' => $article->getCategory()->getSlug(),
+                'articleSlug' => $article->getSlug(),
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         return (new Item())
             ->title($article->getTitle())

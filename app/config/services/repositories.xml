@@ -89,5 +89,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.article" class="AppBundle\Repository\ArticleRepository" public="false">
+            <argument>AppBundle\Entity\Article</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
