@@ -8,19 +8,21 @@
             Bienvenue, {{ app.user.firstname }} !
             <img src="{{ asset('images/emojis/waving-hand-sign.svg') }}" width="50" />
         </h1>
-        <p class="text--body text--medium-small">
-            Nous avons créé cet espace afin que vous puissiez contacter d’autres
-            personnes membres du Conseil.
-        </p>
-        <p class="text--body text--medium-small">
-            Cet outil vous sera utile si vous cherchez à monter une liste de
-            candidature, ou bien si vous cherchez des parrainages pour vous
-            présenter en tant que délégué(e) général(e) ou membre du bureau
-            exécutif du Conseil.
+        <p class="text--body text--medium-small b__nudge--top text--gray">
+            Nous avons crée un espace dédié aux membres du Conseil.
         </p>
     </section>
-    <section class="l__wrapper--slim b__nudge--bottom-huge">
 
+    <section class="l__wrapper--slim b__nudge--bottom-huge text--with-bullet">
+        <h2 class="b__nudge--bottom">À quoi ça sert ?</h2>
+        <ul class="text--body">
+            <li>Mieux vous connaître !</li>
+            <li>Monter une liste de candidature pour vous présenter à la fonction de délégué(e) général(e) ou membre du bureau exécutif.</li>
+            <li>Chercher des parrainages dans le cadre d'une candidature à la fonction de délégué(e) général(e)</li>
+        </ul>
+    </section>
+
+    <section class="l__wrapper--slim b__nudge--bottom-huge">
         <h2>Comment ça marche ?</h2>
         <ol class="text--body">
             <li>
@@ -28,25 +30,23 @@
             </li>
             <li>
                 <a href="{{ path('app_board_member_search') }}" class="link--newblue">Rechercher des membres</a>.
-                Vous pouvez filtrer selon leur sexe, leur role, leur code postal,
-                département ou région. Ceci vous permet de constituer des listes
-                paritaires et diverses.
+                Vous pouvez filtrer selon leur sexe, leur role, leur code postal, département ou région. Ceci vous permet de constituer des listes paritaires et diverses.
             </li>
             <li>
                 Vous pouvez contacter les membres de façon groupée ou individuelle.
             </li>
             <li>
-                Vous avez aussi la possibilité de “sauvegarder” certains profils.
-                Ces sauvegardes sont personnelles et privées. Une personne
-                sauvegardée ne sera pas notifiée.
+                Vous avez aussi la possibilité de “sauvegarder” certains profils. Ces sauvegardes sont personnelles et privées. Une personne sauvegardée ne sera pas notifiée.
             </li>
         </ol>
     </section>
 
-    <section class="l__wrapper--slim b__nudge--bottom-huge">
-        <h2>Des questions ?</h2>
-        <p class="text--body">
-            Contactez nous à <a href="mailto:membres-conseil@en-marche.fr" class="link--newblue">membres-conseil@en-marche.fr</a>.
-        </p>
+    <section class="l__wrapper--slim b__nudge--bottom-huge text--with-bullet">
+        <h2 class="b__nudge--bottom">Des questions ?</h2>
+            <ul class="text--body">
+                <li>Vous cherchez des informations sur le Conseil, les modalités de candidature au Bureau Exécutif et au poste de Délégué(e) Général(e) ?
+                    <a class="link--newblue" href="{{ path('article_view', {slug: 'le-conseil-de-la-republique-en-marche'}) }}"></a>Cliquez ici.</li>
+                <li>Si malgré notre super article, vous ne trouvez toujours pas la réponse à votre question, contactez nous à <a href="mailto:membres-conseil@en-marche.fr" class="link--newblue">membres-conseil@en-marche.fr</a>.</li>
+            </ul>
     </section>
 {% endblock %}
