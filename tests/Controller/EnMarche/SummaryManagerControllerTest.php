@@ -79,7 +79,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
      */
     public function testActionsAreSuccessfulAsAdherentWithSummary(string $path)
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, $path);
 
@@ -91,7 +91,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
      */
     public function testActionsAreSuccessfulAsAdherentWithoutSummary(string $path)
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $this->client->request(Request::METHOD_GET, $path);
 
@@ -106,7 +106,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -152,7 +152,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testCreateExperienceChangesOrder()
     {
         // This adherent has a summary and experiences already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -216,7 +216,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testEditExperienceChangesOrder()
     {
         // This adherent has a summary and experiences already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -253,7 +253,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testDeleteExperienceChangesOrder()
     {
         // This adherent has a summary and experiences already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -293,7 +293,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -336,7 +336,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testCreateTrainingChangesOrder()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -396,7 +396,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testEditTrainingChangesOrder()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -433,7 +433,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testDeleteTrainingChangesOrder()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -473,7 +473,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -509,7 +509,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testCreateLanguageWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -543,7 +543,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testEditLanguage()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -579,7 +579,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testDeleteLanguage()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -605,7 +605,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
     public function testSearchSkillUserHasNot()
     {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         // Search the skill that user has not, should find one skill
         $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=outi');
@@ -625,7 +625,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
     public function testSearchSkillUserHas()
     {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         // Search the skill that user already has, nothing should be found
         $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=sof');
@@ -647,7 +647,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -688,7 +688,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testModifySkillsWithSummary()
     {
         // This adherent has a summary and skills already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
@@ -727,7 +727,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
@@ -774,7 +774,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testStepSynthesisWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
@@ -820,7 +820,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/missions');
 
@@ -858,7 +858,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testStepMissionsWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/missions');
 
@@ -898,7 +898,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/motivation');
 
@@ -934,7 +934,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testStepMotivationWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/motivation');
 
@@ -971,7 +971,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
@@ -1005,7 +1005,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testStepInterestsWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
@@ -1042,7 +1042,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
@@ -1076,7 +1076,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testStepContactWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
@@ -1115,7 +1115,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $summariesCount = count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/publier');
 
@@ -1131,7 +1131,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testPublishingProcessWithSummary()
     {
         // This adherent has a summary and trainings already
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/depublier');
 
@@ -1157,7 +1157,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testAddProfilePictureAndCreateSummary()
     {
         // This adherent has no summary
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $this->assertFileInStorage('images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', false);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
@@ -1188,7 +1188,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testAddProfilePictureToSummary()
     {
         // This adherent has a summary
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
         $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
@@ -1217,7 +1217,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
 
     public function testShowHideRecentActivities()
     {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
         $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));

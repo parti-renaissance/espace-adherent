@@ -136,7 +136,6 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         return new Adherent(
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
             'john.smith@example.org',
-            'super-password',
             'male',
             'John',
             'Smith',

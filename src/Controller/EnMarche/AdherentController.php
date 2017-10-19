@@ -11,7 +11,6 @@ use AppBundle\Entity\Event;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
@@ -92,28 +91,6 @@ class AdherentController extends Controller
         }
 
         return $this->render('adherent/pin_interests.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * This action enables an adherent to change his/her current password.
-     *
-     * @Route("/mon-compte/changer-mot-de-passe", name="app_adherent_change_password")
-     * @Method("GET|POST")
-     */
-    public function changePasswordAction(Request $request): Response
-    {
-        $form = $this->createForm(AdherentChangePasswordType::class);
-
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.adherent_change_password_handler')->changePassword($this->getUser(), $form->get('password')->getData());
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_password.success'));
-
-            return $this->redirectToRoute('app_adherent_change_password');
-        }
-
-        return $this->render('adherent/change_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }

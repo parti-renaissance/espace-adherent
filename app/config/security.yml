@@ -215,9 +215,9 @@ security:
             oauth:
                 resource_owners:
                     auth: "/login/check-auth"
-                login_path:        '%env(AUTH_LOGIN_URL)%'
+                login_path:        /connect/auth
                 use_forward:       false
-                failure_path:      '%env(AUTH_LOGIN_URL)%'
+                failure_path:      /
 
                 oauth_user_provider:
                     service: "user_provider.entity"

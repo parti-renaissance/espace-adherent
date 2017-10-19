@@ -36,7 +36,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
      */
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledCitizenInitiative($path)
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
@@ -46,7 +46,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
      */
     public function testRegisteredAdherentUserCannotEditCitizenInitiative($path)
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -75,7 +75,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanEditCitizenInitiative()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
 
         $crawler = $this->client->request('GET', '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg/modifier');
 
@@ -135,7 +135,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanCancelCitizenInitiative()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
@@ -171,7 +171,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanSeeRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
         $crawler = $this->client->request('GET', '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -180,7 +180,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
 
         $crawler = $this->client->request('GET', '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
@@ -197,7 +197,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanExportRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
         $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -235,7 +235,7 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanContactRegistrations()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
         $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 

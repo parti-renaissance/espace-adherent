@@ -192,7 +192,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
-        string $password,
         string $gender,
         string $firstName,
         string $lastName,
@@ -203,10 +202,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         bool $comEmail = false,
-        bool $comMobile = false
+        bool $comMobile = false,
+        string $password = null
     ) {
         $this->uuid = $uuid;
-        $this->password = $password;
         $this->gender = $gender;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -221,6 +220,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->memberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
+        $this->password = $password;
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -277,7 +277,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isBoardMember();
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return !$this->password ? $this->oldPassword : $this->password;
     }
@@ -439,25 +439,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         $this->status = self::ENABLED;
         $this->activatedAt = new \DateTime($timestamp);
-    }
-
-    /**
-     * Resets the Adherent password using a reset pasword token.
-     *
-     * @throws \InvalidArgumentException
-     * @throws AdherentException
-     * @throws AdherentTokenException
-     */
-    public function resetPassword(AdherentResetPasswordToken $token): void
-    {
-        if (!$newPassword = $token->getNewPassword()) {
-            throw new \InvalidArgumentException('Token must have a new password.');
-        }
-
-        $token->consume($this);
-
-        $this->clearOldPassword();
-        $this->password = $newPassword;
     }
 
     public function clearOldPassword(): void
