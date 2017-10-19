@@ -1277,7 +1277,10 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
             'path' => $path,
             's' => $signature,
         ], UrlGeneratorInterface::ABSOLUTE_PATH);
+
+        ob_start();
         $this->client->request(Request::METHOD_GET, $path);
+        ob_end_clean();
 
         if ($isPresent) {
             $this->assertStatusCode(Response::HTTP_OK, $this->client);
