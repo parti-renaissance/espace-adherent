@@ -437,4 +437,9 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }
+
+    public function save()
+    {
+        $this->_em->flush();
+    }
 }

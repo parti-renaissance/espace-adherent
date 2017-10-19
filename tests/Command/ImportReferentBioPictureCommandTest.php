@@ -5,6 +5,8 @@ namespace AppBundle\Command;
 use AppBundle\DataFixtures\ORM\LoadReferentData;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Referent;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
@@ -48,9 +50,18 @@ class ImportReferentBioPictureCommandTest extends SqliteWebTestCase
     public function testCommandWithoutCsvInArchive()
     {
         $this->createZipArchiveWithoutCsv();
-        $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::ARCHIVE_WITHOUT_CSV_NAME]);
+        $application = new Application($this->get('kernel'));
 
-        $this->assertContains('exited with code "1"', $output);
+        $application->add(new ImportReferentBioPictureCommand());
+
+        $command = $application->find(ImportReferentBioPictureCommand::COMMAND_NAME);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(array(
+            'command' => $command->getName(),
+            'fileUrl' => self::ARCHIVE_WITHOUT_CSV_NAME,
+        ));
+
+        $this->assertSame(1, $commandTester->getStatusCode());
     }
 
     public function testCommandWithNotExistReferentInDb()
