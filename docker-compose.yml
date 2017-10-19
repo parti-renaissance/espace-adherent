@@ -4,7 +4,8 @@ services:
     app:
         build:
             context: docker/dev
-        container_name: enmarche_app
+        image: enmarche_app
+        container_name: en-marche.dev
         depends_on:
             - db
             - redis
@@ -21,6 +22,18 @@ services:
 
     redis:
         image: redis:3.2
+
+    worker-user:
+        image: enmarche_app
+        container_name: enmarche_worker_user
+        networks:
+            - enmarche
+            - default
+        command: sh -c "dockerize -wait tcp://rabbitmq:5672 && bin/console rabbitmq:consumer -w api_broadcast_user"
+        volumes:
+            - ./:/app
+        depends_on:
+            - db
 
 networks:
     enmarche:
