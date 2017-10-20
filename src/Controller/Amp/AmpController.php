@@ -53,6 +53,19 @@ class AmpController extends Controller
         return $this->render('amp/order_article.html.twig', ['article' => $article]);
     }
 
+    /**
+     * @Route("/sitemap.xml", name="amp_sitemap")
+     * @Method("GET")
+     */
+    public function sitemapIndexAction(): Response
+    {
+        return new Response(
+            $this->get('app.content.sitemap_factory')->createAmpSitemap(),
+            Response::HTTP_OK,
+            ['Content-type' => 'text/xml']
+        );
+    }
+
     private function disableProfiler()
     {
         if ($this->container->has('profiler')) {
