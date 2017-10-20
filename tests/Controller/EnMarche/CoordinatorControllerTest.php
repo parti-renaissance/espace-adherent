@@ -52,7 +52,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
 
-        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur local')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
@@ -87,7 +87,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
 
-        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur local')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
@@ -117,7 +117,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
 
-        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur local')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
