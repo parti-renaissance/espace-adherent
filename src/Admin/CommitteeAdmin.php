@@ -324,6 +324,8 @@ class CommitteeAdmin extends AbstractAdmin
                         'En attente' => Committee::PENDING,
                         'Accepté' => Committee::APPROVED,
                         'Refusé' => Committee::REFUSED,
+                        'Pré-approuvé' => Committee::PRE_APPROVED,
+                        'Pré-refusé' => Committee::PRE_REFUSED,
                     ],
                 ],
             ])
