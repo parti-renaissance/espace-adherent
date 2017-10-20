@@ -147,6 +147,12 @@ csa_guzzle:
     profiler: '%kernel.debug%'
     logger: true
     clients:
+        enmarche_api:
+            config:
+                base_uri: 'https://api.en-marche.dev'
+                timeout: 2.0
+                headers:
+                    Content-Type: 'application/json'
         mailjet_api:
             config:
                 base_uri: 'https://api.mailjet.com/v3/'
