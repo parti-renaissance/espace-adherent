@@ -54,3 +54,7 @@ parameters:
     env(ENABLE_SILENCE_RULE):   'false'
 
     env(SESSION_MAX_IDLE_TIME): 1800
+
+    env(APP_HOST): enmarche.dev
+    env(AMP_HOST): m.enmarche.dev
+    env(LEGISLATIVES_HOST): legislatives.enmarche.dev

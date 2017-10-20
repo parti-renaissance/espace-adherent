@@ -6,10 +6,11 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\EventCancellationMessage;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
+use Tests\AppBundle\Config;
 
 class EventCancellationMessageTest extends AbstractEventMessageTest
 {
-    const SEARCH_EVENTS_URL = 'https://localhost/evenements';
+    const SEARCH_EVENTS_URL = 'https://'.Config::APP_HOST.'/evenements';
 
     public function testCreateEventCancellationMessage()
     {

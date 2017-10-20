@@ -69,6 +69,10 @@ RUN apt-get update -q && \
 
 COPY . /app
 
+COPY docker/prod/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 RUN chmod 0444 gcloud-service-key.json && \
 
     mkdir /run/php && \

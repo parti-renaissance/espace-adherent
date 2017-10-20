@@ -4,11 +4,12 @@ namespace Tests\AppBundle\Mailjet\Message;
 
 use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
+use Tests\AppBundle\Config;
 
 class CommitteeCitizenInitiativeNotificationMessageTest extends AbstractEventMessageTest
 {
-    const SHOW_CITIZEN_INITIATIVE_URL = 'https://localhost/initiative-citoyenne/46ba94dc-b1ff-4807-b8a3-db7366ec805f/2017-08-18-apprenez-a-sauver-des-vies';
-    const ATTEND_CITIZEN_INITIATIVE_URL = 'https://localhost/initiative-citoyenne/46ba94dc-b1ff-4807-b8a3-db7366ec805f/2017-08-18-apprenez-a-sauver-des-vies/inscription';
+    const SHOW_CITIZEN_INITIATIVE_URL = 'https://'.Config::APP_HOST.'/initiative-citoyenne/46ba94dc-b1ff-4807-b8a3-db7366ec805f/2017-08-18-apprenez-a-sauver-des-vies';
+    const ATTEND_CITIZEN_INITIATIVE_URL = 'https://'.Config::APP_HOST.'/initiative-citoyenne/46ba94dc-b1ff-4807-b8a3-db7366ec805f/2017-08-18-apprenez-a-sauver-des-vies/inscription';
 
     public function testCreateCommitteeCitizenInitiativeNotificationMessage()
     {
