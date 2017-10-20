@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\Legislatives;
 use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -17,7 +18,7 @@ class HomeControllerTest extends SqliteWebTestCase
 
     public function testLegislativesCandidatesDirectory()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/');
+        $crawler = $this->client->request(Request::METHOD_GET, 'https://'.Config::LEGISLATIVES_HOST);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
