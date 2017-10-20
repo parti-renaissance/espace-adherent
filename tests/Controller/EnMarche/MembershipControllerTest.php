@@ -16,6 +16,7 @@ use AppBundle\Repository\MailjetEmailRepository;
 use AppBundle\Membership\MembershipUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
@@ -173,7 +174,7 @@ class MembershipControllerTest extends MysqlWebTestCase
             '_adherent_password' => '#example!12345#',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://localhost/evenements', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/evenements', $this->client);
 
         $this->client->followRedirect();
     }

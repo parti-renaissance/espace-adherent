@@ -5,11 +5,12 @@ namespace Tests\AppBundle\Mailjet\Message;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
+use Tests\AppBundle\Config;
 
 class EventNotificationMessageTest extends AbstractEventMessageTest
 {
-    const SHOW_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
-    const ATTEND_EVENT_URL = 'https://localhost/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
+    const SHOW_EVENT_URL = 'https://'.Config::APP_HOST.'/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
+    const ATTEND_EVENT_URL = 'https://'.Config::APP_HOST.'/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
 
     public function testCreateEventNotificationMessage()
     {

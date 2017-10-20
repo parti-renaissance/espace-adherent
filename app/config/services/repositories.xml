@@ -94,5 +94,15 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.proposal" class="AppBundle\Repository\ProposalRepository" public="false">
+            <argument>AppBundle\Entity\Proposal</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.order_article" class="AppBundle\Repository\OrderArticleRepository" public="false">
+            <argument>AppBundle\Entity\OrderArticle</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
