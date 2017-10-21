@@ -38,7 +38,18 @@ class PageController extends Controller
     {
         $this->disableInProduction();
 
-        return $this->render('page/campus.html.twig');
+        return $this->render('page/campus/home.html.twig');
+    }
+
+    /**
+     * @Route("/campus/dificultes-internet", defaults={"_enable_campaign_silence"=true}, name="page_campus_internet")
+     * @Method("GET")
+     */
+    public function campusInternetAction()
+    {
+        $this->disableInProduction();
+
+        return $this->render('page/campus/internet.html.twig');
     }
 
     /**
