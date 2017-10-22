@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Campus' %}
+{% block meta_description 'Nous mettons à votre disposition une plateforme de formation citoyenne en ligne, gratuite et ouverte à tous.' %}
+{% block canonical_url url('page_campus') %}
+
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main class="campus">
+        <header class="hero">
+            <h1>
+                Tous les outils pour comprendre et agir
+            </h1>
+            <p>
+                Nous mettons à votre disposition une plateforme gratuite et ouverte à tous, adhérents et non-adhérents.
+                Elle est destinée à permettre à chaque citoyen de s'inspirer, d'apprendre et de passer à l'action sur les thèmes qui lui sont chers.
+            </p>
+            <div class="hero__graphic--atop">
+                <img src="{{ asset('images/campus/campus-illustration.png') }}" />
+            </div>
+        </header>
+
+        <section class="space--60-0 b__border--top-bot">
+            <div class="text--medium text--bold text--center l__wrapper--narrow">
+                La France ne nous a pas attendus pour se mettre en marche ! <br/>
+                C'est pour cela que nous avons d’abord rassemblé des initiatives et des outils existants, puis créé nos propres outils comme les microlearning et les MOOC pour aller encore plus loin.
+            </div>
+        </section>
+
+        <section class="campus__row campus__row__inspiration">
+            <div class="campus__row__inspiration__text">
+                <div class="campus__text">
+                    <h2>S'inspirer et d'informer</h2>
+                    <p>
+                        Nous avons répertorié des initiatives citoyennes, des cours d'universités, des contenus pour vous donner des idées mais aussi pour vous aider à les mettre en oeuvre.
+                    </p>
+                    <div class="l__row">
+                        <a href="https://inspiration.en-marche.fr"
+                           class="btn btn--blue b__nudge--right-small"
+                           target="_blank">S'inspirer</a>
+                        <a href="https://formation.en-marche.fr"
+                           class="btn btn--blue"
+                           target="_blank">S'informer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="campus__row__inspiration__graphic progressive-background"
+                 data-sd="{{ static_asset('campus/inspiration.png', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('campus/inspiration.png', {'w': 2000, 'q': 70}) }}">
+            </div>
+        </section>
+
+        <section class="campus__row campus__row__learn">
+            <div class="campus__row__learn__graphic progressive-background"
+                 data-sd="{{ static_asset('campus/learn.png', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('campus/learn.png', {'w': 2000, 'q': 70}) }}">
+            </div>
+            <div class="campus__row__learn__text">
+                <div class="campus__text">
+                    <h2>Se former</h2>
+                    <p>
+                        Nous avons conçu des microlearning : ce sont des parcours
+                        éducatifs et ludique en ligne à suivre à votre rythme,
+                        pour approfondir vos connaissances sur le fonctionnement
+                        de la France en 100 notions essentielles sur chaque thème.
+                    </p>
+                    <a href="https://enmarche.typeform.com/to/ZaC9SE"
+                       target="_blank"
+                       class="btn btn--blue">Être prévenu du lancement</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="campus__row campus__row__action">
+            <div>
+                <div class="campus__text campus__text--center">
+                    <h2>Agir</h2>
+                    <p>
+                        Nous sommes en train de développer des MOOC - "Massive Open Online Courses" (formations en ligne ouverte à tous). Ce sont des formations vidéos à suivre sur 5 semaines avec des milliers d'autres citoyens pour vous aider à monter vos propres projets d'intérêt général.
+                    </p>
+                    <p>
+                        Le premier MOOC aura pour thème "Agir au niveau local". Départ en novembre !
+                    </p>
+                    <div class="text--center">
+                        <a href="#" class="btn btn--blue">
+                            Découvrir le MOOC
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="campus__row">
+            <div>
+                <div class="campus__text campus__text--center text--center">
+                    <h2>Vous avez des difficultés d’accès à Internet ?</h2>
+                    <p>
+                        Nous avons réuni des ressources qui peuvent vous aider !
+                    </p>
+                    <div class="text--center">
+                        <a href="{{ path('page_campus_internet') }}" class="btn btn--blue">
+                            Accéder à ces ressources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}

@@ -7,20 +7,55 @@
     }
 
     h3 {
-        @include text--medium-large;
+        @include text--medium;
         margin-top: 7px;
     }
 
+    &__testimonials {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        li {
+            width: 48%;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+
+                &:first-child {
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
+        &__pic {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+
+            img {
+                border-radius: 50px;
+            }
+        }
+    }
+
     &__schedule {
-        background: $gray--lighter;
-        border-top: 1px solid $gray--light;
-        border-bottom: 1px solid $gray--light;
+        background: $pink;
+        color: white;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         padding: 60px 0;
         position: relative;
+
+        p {
+            color: $yellow;
+            text-transform: uppercase;
+            @include text--small;
+            letter-spacing: 2px;
+        }
 
         @media (min-width: $tablet) {
             &:before {
@@ -30,12 +65,11 @@
                 right: 0;
                 top: -50px;
                 height: 900px;
-                background-image: url('/images/campus/campus-computer.png'),
-                                  url('/images/campus/campus-plane.png'),
+                background-image: url('/images/campus/campus-plane.png'),
                                   url('/images/campus/campus-notebook.png');
-                background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-                background-size: 90px, 80px, 145px;
-                background-position: 90% bottom, 70% 0, 5% 40%;
+                background-repeat: no-repeat, no-repeat;
+                background-size: 120px, 145px;
+                background-position: 80% 0, 20% 20%;
             }
         }
     }
@@ -59,7 +93,7 @@
             flex-direction: column;
 
             > i:first-child {
-                border: 10px solid $green;
+                border: 10px solid $yellow;
                 background: transparent;
                 width: 45px;
                 height: 45px;
@@ -71,7 +105,7 @@
             > i:nth-child(2) {
                 width: 7px;
                 min-height: 100px;
-                background: $gray--light;
+                background: rgba($yellow, 0.5);
                 flex: 1;
                 margin-top: 10px;
             }
@@ -118,7 +152,7 @@
 
     &__partner {
         color: $gray--muted;
-        padding: 30px 0;
+        padding: 60px 0;
         display: flex;
         justify-content: center;
         align-items: center;
