@@ -337,6 +337,20 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
+    
+    public function testEventWithSpecialCharInTitle()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_14_UUID);
+        $eventUrl = sprintf('/evenements/%s/%s/inscription', LoadEventData::EVENT_14_UUID, $event->getSlug());
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $link = $crawler->filter('.list__links.list__links--row.list__links--default li a')->eq(0)->attr('href');
+        $needle = http_build_query(['text' => $event->getName()], '', '&', PHP_QUERY_RFC3986);
+        $this->assertContains($needle, $link);
+    }
 
     protected function setUp()
     {
