@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mooc' %}
+{% block meta_description 'Nous mettons à votre disposition une plateforme de formation citoyenne en ligne, gratuite et ouverte à tous.' %}
+{% block canonical_url url('page_mooc') %}
+
+{% block final_stylesheets include('bot/_stylesheet.html.twig') %}
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main class="mooc">
+        <header class="hero hero--simple">
+            <h1>
+                En 5 semaines, passez de l’intention à l’action
+            </h1>
+            <p class="text--gray">
+                Ce MOOC “Agir au niveau local” dure 5 semaines. Top depart le
+                20 novembre : vous allez rencontrer des gens, vous allez
+                apprendre, vous allez réfléchir, mais surtout vous allez faire.
+                Vous avez tout à gagner !
+            </p>
+            <a href="https://enmarche.typeform.com/to/PgTBcd"
+               class="btn btn--blue"
+               target="_blank">Se pré-inscrire</a>
+           <div class="text--body b__nudge--top text--center">
+               📹 Ici apparaîtra la video de Brune Poirson 📹
+           </div>
+        </header>
+
+        <section class="mooc__testimonials space--60-0 text--body background--lighter">
+            <h2>Témoignages</h2>
+            <ul class="l__row l__row--h-stretch l__wrapper l__mobile--col l__row--top">
+                <li class="l__row l__row--top">
+                    <div class="mooc__testimonials__pic">
+                        <img src="{{ asset('images/campus/testimonials/sylvie.jpg') }}"
+                             width="100"
+                             height="100"
+                             alt="Photo de Monique"/>
+                    </div>
+                    <div>
+                        "Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et tres utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée.
+                        Formation à faire sans modération !"
+                        <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
+                            Sylvie dans le 91
+                        </div>
+                    </div>
+                </li>
+                <li class="l__row l__row--top">
+                    <div class="mooc__testimonials__pic">
+                        <img src="{{ asset('images/campus/testimonials/helene.jpg') }}"
+                             width="100"
+                             height="100"
+                             alt="Photo de Hélène"/>
+                    </div>
+                    <div>
+                        "Ce module est un guide - compagnon : il nous dit
+                        comment faire, c’est facile ! Les vidéos montrent
+                        que partout des gens agissent  et on réalise qu’on
+                        peut faire comme eux ! Alors on se lance :) Merci
+                        à l’équipe pour ces bons moments !!!"
+                        <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
+                            Hélène dans le 78
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="mooc__schedule">
+            <h2>
+                Ce que vous apprendrez en 5 semaines
+            </h2>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p>Semaine 1</p>
+                    <h3>
+                        Comprendre qui fait quoi sur mon territoire et identifier les acteurs en place.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p>Semaine 2</p>
+                    <h3>
+                        Identifier les problèmes de mon territoire qui me tiennent à coeur.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p>Semaine 3</p>
+                    <h3>
+                        Trouver le projet local pour répondre au problème sur lequel je veux agir.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p>Semaine 4</p>
+                    <h3>
+                        Définir mon plan d'action et poser la première pierre de mon projet.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right"></div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p>Semaine 5</p>
+                    <h3>
+                        Donner un cadre à mon projet sur la durée et explorer l'univers des suites possibles !
+                    </h3>
+                </div>
+            </div>
+            <div class="l__wrapper-500 text--center b__nudge--top">
+                <img src="{{ asset('images/emojis/trophy.svg') }}" width="120" />
+                <p>
+                    Certificat officiel de la République En Marche !
+                </p>
+                <h3>
+                    Les meilleurs projets seront accompagnés par le mouvement et
+                    promus au niveau national.
+                </h3>
+            </div>
+        </section>
+
+        <section class="mooc__cta">
+            <h2>
+                Alors, qu’attendez-vous ? Rejoignez-nous ! C’est gratuit !
+            </h2>
+            <a href="https://enmarche.typeform.com/to/PgTBcd"
+               class="btn btn--blue"
+               target="_blank">Se pré-inscrire</a>
+        </section>
+
+        <section class="mooc__partner">
+            <div>
+                Créé en partenariat avec
+                <a target="_blank" class="link--no-decor" href="https://360learning.com/?utm_source=enmarchefr">
+                    <img src="{{ asset('images/360-learning-logo.svg') }}" width="160" />
+                </a>
+            </div>
+            <p class="l__wrapper--600">
+                360Learning est une plateforme de formation en ligne qui permet à n'importe qui de créer ses propres contenus de formation. <a href="https://360learning.com/?utm_source=enmarchefr" target="_blank">En savoir plus</a>.
+            </p>
+        </section>
+
+    </main>
+{% endblock %}
