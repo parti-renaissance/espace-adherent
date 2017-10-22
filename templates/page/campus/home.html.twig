@@ -14,7 +14,7 @@
                 Tous les outils pour comprendre et agir
             </h1>
             <p>
-                Nous mettons à votre disposition une plateforme gratuite et ouverte à tous, adhérents et non-adhérents.
+                Nous mettons à votre disposition une plateforme de formation gratuite et ouverte à tous, adhérents et non-adhérents.
                 Elle est destinée à permettre à chaque citoyen de s'inspirer, d'apprendre et de passer à l'action sur les thèmes qui lui sont chers.
             </p>
             <div class="hero__graphic--atop">
@@ -47,15 +47,14 @@
                 </div>
             </div>
             <div class="campus__row__inspiration__graphic progressive-background"
-                 data-sd="{{ static_asset('campus/inspiration.png', {'w': 300, 'q': 20}) }}"
-                 data-hd="{{ static_asset('campus/inspiration.png', {'w': 2000, 'q': 70}) }}">
+                 data-sd="{{ static_asset('campus/inspire.png', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('campus/inspire.png', {'w': 2000, 'q': 70}) }}">
             </div>
         </section>
 
         <section class="campus__row campus__row__learn">
-            <div class="campus__row__learn__graphic progressive-background"
-                 data-sd="{{ static_asset('campus/learn.png', {'w': 300, 'q': 20}) }}"
-                 data-hd="{{ static_asset('campus/learn.png', {'w': 2000, 'q': 70}) }}">
+            <div class="campus__row__learn__graphic progressive-background">
+                L'image arrive bientôt 🏃
             </div>
             <div class="campus__row__learn__text">
                 <div class="campus__text">
@@ -84,7 +83,7 @@
                         Le premier MOOC aura pour thème "Agir au niveau local". Départ en novembre !
                     </p>
                     <div class="text--center">
-                        <a href="#" class="btn btn--blue">
+                        <a href="{{ path('page_mooc') }}" class="btn btn--blue">
                             Découvrir le MOOC
                         </a>
                     </div>
