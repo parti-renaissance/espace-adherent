@@ -117,6 +117,7 @@
     &__text {
         max-width: 400px;
         padding: 0 40px;
+        position: relative;
 
         @media (max-width: $mobile) {
             padding: 100px 40px;

@@ -14,7 +14,7 @@
                 En 5 semaines, passez de l’intention à l’action
             </h1>
             <p class="text--gray">
-                Ce MOOC “Agir au niveau local” dure 5 semaines. Top depart le
+                Le MOOC "Agir au niveau local" dure 5 semaines. Top départ le
                 20 novembre : vous allez rencontrer des gens, vous allez
                 apprendre, vous allez réfléchir, mais surtout vous allez faire.
                 Vous avez tout à gagner !
@@ -23,13 +23,22 @@
                class="btn btn--blue"
                target="_blank">Se pré-inscrire</a>
            <div class="text--body b__nudge--top text--center">
-               📹 Ici apparaîtra la video de Brune Poirson 📹
+               <video width="560" height="315" controls>
+                   <source src="{{ static_asset('campus/mooc-brune-poirson.mp4') }}" type="video/mp4">
+                Votre navigateur ne peut pas jouer cette vidéo.
+                </video>
+                <div class="l__wrapper--slim text--gray">
+                    Message interne : demain on la met sur youtube, donc il n'y aura pas ces boutons et on pourra controler la still frame. Voili voilou. 😊
+                </div>
            </div>
         </header>
 
-        <section class="mooc__testimonials space--60-0 text--body background--lighter">
-            <h2>Témoignages</h2>
-            <ul class="l__row l__row--h-stretch l__wrapper l__mobile--col l__row--top">
+        <section class="mooc__testimonials space--60-0 background--lighter">
+            <h2>Ils l'ont fait !</h2>
+            <p class="l__wrapper--slim text--body b__nudge--bottom-large text--center text--gray">
+                Quelques centaines d'adhérents tirés au sort nous ont aidé à créer ce premier MOOC en participant à une session pilote. Voici quelques témoignages.
+            </p>
+            <ul class="l__row l__row--h-stretch l__wrapper l__mobile--col l__row--top text--body">
                 <li class="l__row l__row--top">
                     <div class="mooc__testimonials__pic">
                         <img src="{{ asset('images/campus/testimonials/sylvie.jpg') }}"
@@ -38,10 +47,9 @@
                              alt="Photo de Monique"/>
                     </div>
                     <div>
-                        "Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et tres utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée.
-                        Formation à faire sans modération !"
+                        "Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et très utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée. Formation à faire sans modération !"
                         <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
-                            Sylvie dans le 91
+                            Sylvie, Essonne
                         </div>
                     </div>
                 </li>
@@ -53,13 +61,9 @@
                              alt="Photo de Hélène"/>
                     </div>
                     <div>
-                        "Ce module est un guide - compagnon : il nous dit
-                        comment faire, c’est facile ! Les vidéos montrent
-                        que partout des gens agissent  et on réalise qu’on
-                        peut faire comme eux ! Alors on se lance :) Merci
-                        à l’équipe pour ces bons moments !!!"
+                        "Ce MOOC est un guide - compagnon : il nous dit comment faire, c’est facile ! Les vidéos montrent que partout des gens agissent  et on réalise qu’on peut faire comme eux ! Alors on se lance 🙂 Merci à l’équipe pour ces bons moments !!!"
                         <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
-                            Hélène dans le 78
+                            Hélène, Yvelines
                         </div>
                     </div>
                 </li>
@@ -67,7 +71,7 @@
         </section>
 
         <section class="mooc__schedule">
-            <h2>
+            <h2 class="b__nudge--bottom-large">
                 Ce que vous apprendrez en 5 semaines
             </h2>
             <div class="mooc__week">
@@ -150,7 +154,7 @@
         </section>
 
         <section class="mooc__cta">
-            <h2>
+            <h2 class=" b__nudge--bottom-large">
                 Alors, qu’attendez-vous ? Rejoignez-nous ! C’est gratuit !
             </h2>
             <a href="https://enmarche.typeform.com/to/PgTBcd"

@@ -1,7 +1,6 @@
 .mooc {
     h2 {
         @include text--large;
-        margin-bottom: 30px;
         max-width: 430px;
         text-align: center;
     }
