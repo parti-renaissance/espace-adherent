@@ -28,7 +28,7 @@
             <td>
                 {% for messages in app.flashes(["error_#{committee.id}"]) %}
                     {% for message in messages %}
-                        <div class="form__errors">
+                        <div class="form--warning">
                             {{ message }}
                         </div>
                     {% endfor %}
