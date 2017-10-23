@@ -16,25 +16,36 @@
         justify-content: center;
         align-items: center;
 
-        li {
-            width: 48%;
+        &__text {
+            font-weight: bold;
+            font-style: italic;
+            @include wrapper;
+            width: 80%;
+            margin-bottom: 10px;
+        }
 
-            @media (max-width: $mobile) {
-                width: 100%;
+        &__name {
+            font-family: $font-roboto;
+            @include text--all-caps;
+            @include text--smallest;
+            color: $pink;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-                &:first-child {
-                    margin-bottom: 20px;
-                }
-            }
+        .carousel__control {
+            border-color: $pink;
+        }
+
+        .carousel__indicator {
+            display: none;
         }
 
         &__pic {
-            width: 100px;
-            height: 100px;
-            margin-right: 20px;
-
             img {
                 border-radius: 50px;
+                width: 50px;
+                height: 50px;
             }
         }
     }
