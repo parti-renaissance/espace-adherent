@@ -38,36 +38,85 @@
             <p class="l__wrapper--slim text--body b__nudge--bottom-large text--center text--gray">
                 Quelques centaines d'adhérents tirés au sort nous ont aidé à créer ce premier MOOC en participant à une session pilote. Voici quelques témoignages.
             </p>
-            <ul class="l__row l__row--h-stretch l__wrapper l__mobile--col l__row--top text--body">
-                <li class="l__row l__row--top">
-                    <div class="mooc__testimonials__pic">
-                        <img src="{{ asset('images/campus/testimonials/sylvie.jpg') }}"
-                             width="100"
-                             height="100"
-                             alt="Photo de Monique"/>
+            <div class="carousel-container l__wrapper">
+                <div class="l__wrapper--slim carousel carousel--translate">
+                    <input class="carousel__activator" type="radio" name="carousel" id="sylvie" checked="checked"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="eric"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="helene"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="monique"/>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="monique"></label>
+                        <label class="carousel__control carousel__control--forward" for="eric"></label>
                     </div>
-                    <div>
-                        "Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et très utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée. Formation à faire sans modération !"
-                        <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
-                            Sylvie, Essonne
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="sylvie"></label>
+                        <label class="carousel__control carousel__control--forward" for="helene"></label>
+                    </div>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="eric"></label>
+                        <label class="carousel__control carousel__control--forward" for="monique"></label>
+                    </div>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="helene"></label>
+                        <label class="carousel__control carousel__control--forward" for="sylvie"></label>
+                    </div>
+                    <div class="carousel__track">
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et très utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la
+                                première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée. Formation à faire sans modération ! "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Sylvie, Essonne
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/sylvie.jpg') }}"
+                                     width="65" height="65"
+                                     alt="Photo de Sylvie"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Le rythme et le contenu des parcours et très enthousiasmant, ils apportent de nombreuses informations et permettent de se situer du niveau local au niveau national afin de trouver les actions les plus approprié à mener. C'est plaisant de voir que chacun peut en fonction de ces envie et possibilités jouer un rôle et participer à son échelle à la vie de notre pays et avoir un réel impact. "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Éric, Pyrénées Orientales
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/eric.jpg') }}" alt="Photo de Éric"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Ce MOOC est un guide - compagnon : il nous dit comment faire, c’est facile ! Les vidéos montrent que partout des gens agissent et on réalise qu’on peut faire comme eux ! Alors on se lance 🙂 Merci à l’équipe pour ces bons moments !!! "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Hélène, Yvelines
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/helene.jpg') }}" alt="Photo de Hélène"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Je trouve intéressant la progression des séquences, la qualité des reportages vidéos, les sujets traités et l’accompagnement qui nous est donné pour nous projeter dans une action. "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Monique, Var
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/monique.jpg') }}" alt="Photo de Monique"/>
+                            </div>
                         </div>
                     </div>
-                </li>
-                <li class="l__row l__row--top">
-                    <div class="mooc__testimonials__pic">
-                        <img src="{{ asset('images/campus/testimonials/helene.jpg') }}"
-                             width="100"
-                             height="100"
-                             alt="Photo de Hélène"/>
+                    <div class="carousel__indicators">
+                        <label class="carousel__indicator" for="sylvie"></label>
+                        <label class="carousel__indicator" for="eric"></label>
+                        <label class="carousel__indicator" for="helene"></label>
+                        <label class="carousel__indicator" for="monique"></label>
                     </div>
-                    <div>
-                        "Ce MOOC est un guide - compagnon : il nous dit comment faire, c’est facile ! Les vidéos montrent que partout des gens agissent  et on réalise qu’on peut faire comme eux ! Alors on se lance 🙂 Merci à l’équipe pour ces bons moments !!!"
-                        <div class="text--all-caps text--smallest text--pink text--bold b__nudge--top-10">
-                            Hélène, Yvelines
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         </section>
 
         <section class="mooc__schedule">
