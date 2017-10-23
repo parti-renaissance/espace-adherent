@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CitizenInitiativeAdmin extends AbstractAdmin
@@ -133,52 +134,54 @@ class CitizenInitiativeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Initiative citoyenne', array('class' => 'col-md-7'))
-            ->add('name', null, [
-                'label' => 'Nom',
-            ])
-            ->add('category', CitizenInitiativeCategoryType::class, [
-                'label' => 'Catégorie',
-            ])
-            ->add('description', null, [
-                'label' => 'Description',
-                'attr' => [
-                    'rows' => '3',
-                ],
-            ])
-            ->add('beginAt', null, [
-                'label' => 'Date de début',
-            ])
-            ->add('finishAt', null, [
-                'label' => 'Date de fin',
-            ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Statut',
-                'choices' => array_combine(CitizenInitiative::STATUSES, CitizenInitiative::STATUSES),
-                'choice_translation_domain' => 'forms',
-            ])
-            ->add('published', null, [
-                'label' => 'Publié',
-            ])
+                ->add('name', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('category', CitizenInitiativeCategoryType::class, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('beginAt', null, [
+                    'label' => 'Date de début',
+                ])
+                ->add('finishAt', null, [
+                    'label' => 'Date de fin',
+                ])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Statut',
+                    'choices' => array_combine(CitizenInitiative::STATUSES, CitizenInitiative::STATUSES),
+                    'choice_translation_domain' => 'forms',
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié',
+                ])
             ->end()
             ->with('Adresse', array('class' => 'col-md-5'))
-            ->add('postAddress.address', TextType::class, [
-                'label' => 'Rue',
-            ])
-            ->add('postAddress.postalCode', TextType::class, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', TextType::class, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', UnitedNationsCountryType::class, [
-                'label' => 'Pays',
-            ])
-            ->add('postAddress.latitude', TextType::class, [
-                'label' => 'Latitude',
-            ])
-            ->add('postAddress.longitude', TextType::class, [
-                'label' => 'Longitude',
-            ])
+                ->add('postAddress.address', TextType::class, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', TextType::class, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', TextType::class, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('postAddress.latitude', TextType::class, [
+                    'label' => 'Latitude',
+                ])
+                ->add('postAddress.longitude', TextType::class, [
+                    'label' => 'Longitude',
+                ])
+            ->end()
+            ->with('Description', ['class' => 'col-md-12'])
+                ->add('description', TextareaType::class, [
+                    'label' => 'description',
+                    'required' => false,
+                    'filter_emojis' => true,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
             ->end();
     }
 
