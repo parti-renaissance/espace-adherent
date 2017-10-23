@@ -250,7 +250,6 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
-        //
         $event13->setPublished(false);
 
         $event14 = $committeeEventFactory->createFromArray([
@@ -265,7 +264,6 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
-        //
         $event14->setPublished(true);
 
         $manager->persist($event1);
