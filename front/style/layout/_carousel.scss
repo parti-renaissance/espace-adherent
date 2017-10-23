@@ -6,6 +6,10 @@
     position: relative;
     padding: 0;
     list-style: none;
+
+    @media (max-width: $mobile) {
+        height: 380px;
+    }
 }
 
 .carousel__activator,
@@ -227,6 +231,10 @@
 
 .carousel-container {
     display: inline-block;
+
+    @media (max-width: $mobile) {
+        width: 100% !important;
+    }
 }
 
 .carousel__slide {
