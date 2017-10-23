@@ -64,13 +64,6 @@
         padding: 60px 0;
         position: relative;
 
-        p {
-            color: $yellow;
-            text-transform: uppercase;
-            @include text--small;
-            letter-spacing: 2px;
-        }
-
         @media (min-width: $tablet) {
             &:before {
                 content: '';
@@ -92,6 +85,13 @@
         @include wrapper--slim;
         display: flex;
         margin-top: 10px;
+
+        &__title {
+            color: $yellow;
+            text-transform: uppercase;
+            @include text--small;
+            letter-spacing: 2px;
+        }
 
         &--left {
             flex: 3;
