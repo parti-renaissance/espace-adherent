@@ -70,10 +70,13 @@
         }
 
         &__action {
-            border-top: 1px solid $gray--light;
-            border-bottom: 1px solid $gray--light;
             position: relative;
-            background-color: $gray--lighter;
+            background-color: $pink;
+            color: white;
+
+            p {
+                color: white;
+            }
 
             @media (min-width: $tablet) {
                 &:before {
@@ -88,7 +91,7 @@
                                       url('/images/campus/campus-plane.png'),
                                       url('/images/campus/campus-flag.png');
                     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-                    background-size: 160px, 80px, 215px, 80px;
+                    background-size: 160px, 80px, 215px, 0;
                     background-position: 85% 0%, 32% 1%, 5% 25%, 90% bottom;
                 }
             }

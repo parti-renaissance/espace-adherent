@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Mooc' %}
-{% block meta_description 'Nous mettons à votre disposition une plateforme de formation citoyenne en ligne, gratuite et ouverte à tous.' %}
+{% block page_title 'En 5 semaines, passez de l’intention à l’action' %}
+{% block meta_description 'Le MOOC "Agir au niveau local" dure 5 semaines. Top départ le
+20 novembre : vous allez rencontrer des gens, vous allez apprendre, vous allez réfléchir, mais surtout vous allez faire. Vous avez tout à gagner, et en plus c’est gratuit !' %}
 {% block canonical_url url('page_mooc') %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
@@ -17,15 +18,106 @@
                 Le MOOC "Agir au niveau local" dure 5 semaines. Top départ le
                 20 novembre : vous allez rencontrer des gens, vous allez
                 apprendre, vous allez réfléchir, mais surtout vous allez faire.
-                Vous avez tout à gagner !
+                <br/>
+                Vous avez tout à gagner, et en plus c’est gratuit !
+                <br/>
+                <i class="text--small">
+                    Les MOOCs "Massive Open Online Courses" sont des formations en ligne ouverte à tous.
+                </i>
             </p>
+            <div class="text--body b__nudge--bottom text--center">
+                <iframe width="375" height="211" src="https://www.youtube.com/embed/IRaW9dIt1Sg?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
             <a href="https://enmarche.typeform.com/to/PgTBcd"
                class="btn btn--blue"
-               target="_blank">Se pré-inscrire</a>
-           <div class="text--body b__nudge--top-large text--center">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/IRaW9dIt1Sg?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-           </div>
+               target="_blank">Être prévenu du lancement</a>
         </header>
+
+        <section class="mooc__schedule">
+            <h2 class="l__wrapper">
+                Ce que vous apprendrez en 5 semaines
+            </h2>
+            <p class="text--body b__nudge--bottom-large b__nudge--top-5">
+                Comptez environ une heure de travail par semaine.
+            </p>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 1</p>
+                    <h3>
+                        Comprendre qui fait quoi sur mon territoire et identifier les acteurs en place.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p class="mooc__week__title">Semaine 2</p>
+                    <h3>
+                        Identifier les problèmes de mon territoire qui me tiennent à coeur.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 3</p>
+                    <h3>
+                        Trouver le projet local pour répondre au problème sur lequel je veux agir.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p class="mooc__week__title">Semaine 4</p>
+                    <h3>
+                        Définir mon plan d'action et poser la première pierre de mon projet.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right"></div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 5</p>
+                    <h3>
+                        Donner un cadre à mon projet sur la durée et explorer l'univers des suites possibles !
+                    </h3>
+                </div>
+            </div>
+            <div class="l__wrapper-500 text--center b__nudge--top">
+                <img src="{{ asset('images/emojis/trophy.svg') }}" width="120" />
+                <p class="mooc__week__title">
+                    Certificat officiel de la République En Marche !
+                </p>
+                <h3>
+                    Les meilleurs projets seront accompagnés par le mouvement et
+                    promus au niveau national.
+                </h3>
+            </div>
+        </section>
 
         <section class="mooc__testimonials space--60-0 background--lighter">
             <h2>Ils l'ont fait !</h2>
@@ -113,96 +205,13 @@
             </div>
         </section>
 
-        <section class="mooc__schedule">
-            <h2 class="b__nudge--bottom-large l__wrapper">
-                Ce que vous apprendrez en 5 semaines
-            </h2>
-            <div class="mooc__week">
-                <div class="mooc__week--left"></div>
-                <div class="mooc__week--dot">
-                    <i></i>
-                    <i></i>
-                </div>
-                <div class="mooc__week--right">
-                    <p>Semaine 1</p>
-                    <h3>
-                        Comprendre qui fait quoi sur mon territoire et identifier les acteurs en place.
-                    </h3>
-                </div>
-            </div>
-            <div class="mooc__week">
-                <div class="mooc__week--left">
-                    <p>Semaine 2</p>
-                    <h3>
-                        Identifier les problèmes de mon territoire qui me tiennent à coeur.
-                    </h3>
-                </div>
-                <div class="mooc__week--dot">
-                    <i></i>
-                    <i></i>
-                </div>
-                <div class="mooc__week--right">
-                </div>
-            </div>
-            <div class="mooc__week">
-                <div class="mooc__week--left">
-                </div>
-                <div class="mooc__week--dot">
-                    <i></i>
-                    <i></i>
-                </div>
-                <div class="mooc__week--right">
-                    <p>Semaine 3</p>
-                    <h3>
-                        Trouver le projet local pour répondre au problème sur lequel je veux agir.
-                    </h3>
-                </div>
-            </div>
-            <div class="mooc__week">
-                <div class="mooc__week--left">
-                    <p>Semaine 4</p>
-                    <h3>
-                        Définir mon plan d'action et poser la première pierre de mon projet.
-                    </h3>
-                </div>
-                <div class="mooc__week--dot">
-                    <i></i>
-                    <i></i>
-                </div>
-                <div class="mooc__week--right"></div>
-            </div>
-            <div class="mooc__week">
-                <div class="mooc__week--left"></div>
-                <div class="mooc__week--dot">
-                    <i></i>
-                    <i></i>
-                </div>
-                <div class="mooc__week--right">
-                    <p>Semaine 5</p>
-                    <h3>
-                        Donner un cadre à mon projet sur la durée et explorer l'univers des suites possibles !
-                    </h3>
-                </div>
-            </div>
-            <div class="l__wrapper-500 text--center b__nudge--top">
-                <img src="{{ asset('images/emojis/trophy.svg') }}" width="120" />
-                <p>
-                    Certificat officiel de la République En Marche !
-                </p>
-                <h3>
-                    Les meilleurs projets seront accompagnés par le mouvement et
-                    promus au niveau national.
-                </h3>
-            </div>
-        </section>
-
         <section class="mooc__cta">
             <h2 class=" b__nudge--bottom-large">
                 Alors, qu’attendez-vous ? Rejoignez-nous ! C’est gratuit !
             </h2>
             <a href="https://enmarche.typeform.com/to/PgTBcd"
                class="btn btn--blue"
-               target="_blank">Se pré-inscrire</a>
+               target="_blank">Être prévenu du lancement</a>
         </section>
 
         <section class="mooc__partner">
