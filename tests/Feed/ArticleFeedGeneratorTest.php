@@ -70,6 +70,7 @@ class ArticleFeedGeneratorTest extends TestCase
         $articlePublishDate = $this->createMock('DateTime');
         $articlePublishDateTimeStamp = 42;
         $category = $this->createMock(ArticleCategory::class);
+        $categorySlug = 'category-slug';
 
         $article->expects($this->once())
             ->method('getSlug')
@@ -84,18 +85,21 @@ class ArticleFeedGeneratorTest extends TestCase
             ->method('format')
             ->with($this->equalTo('U'))
             ->will($this->returnValue($articlePublishDateTimeStamp));
-        $article->expects($this->once())
+        $article->expects($this->any())
             ->method('getCategory')
             ->will($this->returnValue($category));
         $category->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('Category name'));
+        $category->expects($this->once())
+            ->method('getSlug')
+            ->will($this->returnValue($categorySlug));
 
         $this->urlGenerator->expects($this->exactly(2))
             ->method('generate')
             ->will($this->returnValueMap([
                 ['homepage', [], UrlGeneratorInterface::ABSOLUTE_URL, 'https://en-marche.fr'],
-                ['article_view', ['slug' => $articleSlug], UrlGeneratorInterface::ABSOLUTE_URL, 'https://en-marche.fr/articles/'.$articleSlug],
+                ['article_view', ['categorySlug' => $categorySlug, 'articleSlug' => $articleSlug], UrlGeneratorInterface::ABSOLUTE_URL, sprintf('https://en-marche.fr/articles/%s/%s', $categorySlug, $articleSlug)],
             ]));
         $this->markdownParser->expects($this->once())
             ->method('convertToHtml')

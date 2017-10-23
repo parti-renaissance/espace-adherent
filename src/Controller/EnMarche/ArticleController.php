@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
@@ -19,13 +20,17 @@ class ArticleController extends Controller
      * @Route(
      *     "/articles/{category}/{page}",
      *     requirements={"category"="\w+", "page"="\d+"},
-     *     defaults={"page"=1, "_enable_campaign_silence"=true},
+     *     defaults={"category"="tout", "page"=1, "_enable_campaign_silence"=true},
      *     name="articles_list"
      * )
      * @Method("GET")
      */
-    public function actualitesAction(string $category, int $page): Response
+    public function actualitesAction(Request $request, string $category, int $page): Response
     {
+        if ('/articles/'.ArticleCategory::DEFAULT_CATEGORY === $request->getRequestUri()) {
+            return $this->redirectToRoute('articles_list', [], Response::HTTP_MOVED_PERMANENTLY);
+        }
+
         $noFilterByCategory = new ArticleCategory('Toute l\'actualité', ArticleCategory::DEFAULT_CATEGORY);
 
         $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
@@ -36,8 +41,6 @@ class ArticleController extends Controller
         if (!$articleCategory) {
             throw $this->createNotFoundException();
         }
-
-        $page = (int) $page;
 
         $categories = $categoriesRepo->findAll();
         array_unshift($categories, $noFilterByCategory);
@@ -58,9 +61,9 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/article/{slug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
+     * @Route("/articles/{categorySlug}/{articleSlug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
      * @Method("GET")
-     * @Entity("article", expr="repository.findOnePublishedBySlug(slug)")
+     * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
     public function articleAction(Article $article): Response
     {

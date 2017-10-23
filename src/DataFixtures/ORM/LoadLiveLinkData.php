@@ -18,7 +18,7 @@ class LoadLiveLinkData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'position' => 1,
             'title' => 'Guadeloupe',
-            'link' => '/article/outre-mer',
+            'link' => '/articles/actualites/outre-mer',
         ]));
 
         $manager->persist($factory->createFromArray([

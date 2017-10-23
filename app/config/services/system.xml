@@ -40,6 +40,7 @@
         <service id="app.dynamic_redirections_subscriber" class="AppBundle\Redirection\DynamicRedirectionsSubscriber">
             <argument type="service" id="app.repository.redirection" />
             <argument type="service" id="app.repository.event" />
+            <argument type="service" id="app.repository.article" />
             <argument type="service" id="router" />
             <tag name="kernel.event_subscriber" />
         </service>

@@ -18,9 +18,21 @@ class ArticleControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    public function testRedirectArticlePublished()
+    {
+        $this->client->request(Request::METHOD_GET, '/article/outre-mer');
+
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+
+        $this->assertClientIsRedirectedTo('/articles/actualites/outre-mer', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+    }
+
     public function testArticlePublished()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/article/outre-mer');
+        $crawler = $this->client->request(Request::METHOD_GET, '/articles/actualites/outre-mer');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
@@ -29,7 +41,7 @@ class ArticleControllerTest extends SqliteWebTestCase
 
     public function testArticleWithoutImage()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/article/sans-image');
+        $crawler = $this->client->request(Request::METHOD_GET, '/articles/discours/sans-image');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
@@ -38,7 +50,7 @@ class ArticleControllerTest extends SqliteWebTestCase
 
     public function testArticleDraft()
     {
-        $this->client->request(Request::METHOD_GET, '/article/brouillon');
+        $this->client->request(Request::METHOD_GET, '/articles/actualites/brouillon');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 

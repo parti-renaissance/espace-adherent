@@ -46,14 +46,14 @@
                 <ul>
                     {% for article in articles %}
                     <li>
-                        <a href="{{ path('article_view', {'slug': article.slug}) }}" class="thumbnail">
+                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="thumbnail">
                             <img src="{{ media_asset(article.media, {'w': 250, 'h': 170, 'fit': 'crop'}) }}"
                                  title="{{ article.media.name }}"
                                  alt="{{ article.media.name }}" />
                         </a>
                         <div>
                             <h2>
-                                <a href="{{ path('article_view', {'slug': article.slug}) }}">
+                                <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}">
                                     {{ article.title }}
                                 </a>
                             </h2>
@@ -62,10 +62,10 @@
                             </div>
                             <div class="share">
                                 Partagez
-                                <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|e('js') }}')">
                                     <i class="fa fa-facebook-square"></i>
                                 </span>
-                                <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'slug': article.slug}) }}', '{{ article.title|e('js') }}')">
+                                <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|e('js') }}')">
                                     <i class="fa fa-twitter"></i>
                                 </span>
                             </div>

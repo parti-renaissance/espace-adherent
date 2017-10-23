@@ -171,7 +171,7 @@ En décembre 2016, j’ai démissionné de la fonction publique. Voilà pour la 
     capacité de faire face aux changements.
 </p>
 <p class="text--body text--bold text--medium-small">
-    <a href="https://staging.en-marche.fr/article/comment-emmanuel-macron-a-t-il-construit-ses-propositions">
+    <a href="https://staging.en-marche.fr/articles/actualites/comment-emmanuel-macron-a-t-il-construit-ses-propositions">
         Comment Emmanuel Macron a-t-il construit ses propositions ?
     </a>
 </p>
