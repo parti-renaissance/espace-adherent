@@ -337,7 +337,7 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
-    
+
     public function testEventWithSpecialCharInTitle()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');

@@ -17,7 +17,7 @@
             Ajouter au calendrier :
           </li>
           <li role="button" aria-label="{{ 'committee.event.show.share.cal_google'|trans }}">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ committee_event.name| url_encode }}&amp;dates={{ committee_event.beginAt|date('Ymd') }}T{{ committee_event.beginAt|date('His') }}Z/{{ committee_event.finishAt|date('Ymd') }}T{{ committee_event.finishAt|date('His') }}Z&amp;location={{ committee_event.inlineFormattedAddress }}" target="_blank" title="{{ 'committee.event.show.share.cal_google'|trans }}">
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ committee_event.name|url_encode }}&amp;dates={{ committee_event.beginAt|date('Ymd') }}T{{ committee_event.beginAt|date('His') }}Z/{{ committee_event.finishAt|date('Ymd') }}T{{ committee_event.finishAt|date('His') }}Z&amp;location={{ committee_event.inlineFormattedAddress }}" target="_blank" title="{{ 'committee.event.show.share.cal_google'|trans }}">
                   Google
                   <span class="sr-only">{{ 'committee.event.show.share.cal_google'|trans }}</span>
               </a>
