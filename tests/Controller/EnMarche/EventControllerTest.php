@@ -348,7 +348,7 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $link = $crawler->filter('.list__links.list__links--row.list__links--default li a')->eq(0)->attr('href');
-        $needle = http_build_query(['text' => $event->getName()], '', '&', PHP_QUERY_RFC3986);
+        $needle = 'text=Meeting%20%2311%20de%20Brooklyn';
         $this->assertContains($needle, $link);
     }
 
