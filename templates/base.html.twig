@@ -107,11 +107,9 @@
                     <li>
                         <a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
                     </li>
-                    {% if enable_canary %}
-                        <li class="text--medium-small">
-                            <a href="{{ path('page_campus') }}">Campus</a>
-                        </li>
-                    {% endif %}
+                    <li class="text--medium-small">
+                        <a href="{{ path('page_campus') }}">Campus</a>
+                    </li>
                     <li>
                         <a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
                     </li>
@@ -330,11 +328,9 @@
                                 <hr>
                             {% endif %}
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
-                            {% if enable_canary %}
-                                <li class="text--medium-small">
-                                    <a href="{{ path('page_campus') }}">Campus</a>
-                                </li>
-                            {% endif %}
+                            <li class="text--medium-small">
+                                <a href="{{ path('page_campus') }}">Campus</a>
+                            </li>
                             <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a></li>
                             <li><a class="text--medium-small" href="https://aide.en-marche.fr">Aide</a></li>
                             <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
@@ -412,25 +408,60 @@
                         </ul>
                     </div>
                     <div class="l__row l__row--h-stretch l__row--top b__nudge--bottom-large l__row--wrap l__mobile--col">
-                      <ul class="list__links list__links--col list__links--no-decor">
-                          <li><h4><a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a></h4></li>
-                          <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
-                          <li><a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a></li>
-                          <li><a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
-                          <li>
-                              <a href="https://legislatives.en-marche.fr" target="_blank" rel="noopener noreferrer">
-                                  Nos candidats
-                              </a>
-                          </li>
-                          {% if not campaign_expired %}
-                              <li><a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a></li>
-                              <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
-                              <li><a href="{{ path('map_committees') }}">La carte des comités</a></li>
-                              <li><a href="{{ path('map_events') }}">La carte des événements</a></li>
-                              <li><a href="{{ path('page_bot') }}">Le Bot En Marche !</a></li>
-                          {% endif %}
-                          <li><a href="{{ path('page_elles_marchent') }}">Elles Marchent</a></li>
-                       </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li>
+                                <h4>
+                                    <a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a>
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
+                            </li>
+                            <li>
+                                <a href="https://legislatives.en-marche.fr" target="_blank" rel="noopener noreferrer">
+                                    Nos candidats
+                                </a>
+                            </li>
+                            {% if not campaign_expired %}
+                                <li>
+                                    <a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('map_committees') }}">La carte des comités</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('map_events') }}">La carte des événements</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('page_bot') }}">Le Bot En Marche !</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('page_elles_marchent') }}">Elles Marchent</a>
+                            </li>
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li>
+                                <h4>
+                                    <a href="{{ path('page_campus') }}" class="text--bold text--medium-small">Campus</a>
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_campus') }}">Toutes les ressources</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_mooc') }}">Le MOOC</a>
+                            </li>
+                        </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
                             <li><h4><a href="{{ path('articles_list', {'category': 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
                             <li><a href="{{ path('articles_list', {'category': 'tout'}) }}">Toute l'actualité</a></li>

@@ -25,8 +25,6 @@ class PageController extends Controller
      */
     public function moocAction()
     {
-        $this->disableInProduction();
-
         return $this->render('page/campus/mooc.html.twig');
     }
 
@@ -36,8 +34,6 @@ class PageController extends Controller
      */
     public function campusAction()
     {
-        $this->disableInProduction();
-
         return $this->render('page/campus/home.html.twig');
     }
 
@@ -47,8 +43,6 @@ class PageController extends Controller
      */
     public function campusInternetAction()
     {
-        $this->disableInProduction();
-
         return $this->render('page/campus/internet.html.twig');
     }
 
