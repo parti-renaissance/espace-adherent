@@ -113,5 +113,11 @@
             <argument>AppBundle\Entity\GroupMembership</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
+
+        <service id="app.repository.referent_managed_user" class="AppBundle\Repository\Projection\ReferentManagedUserRepository" public="false">
+            <argument>AppBundle\Entity\Projection\ReferentManagedUser</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

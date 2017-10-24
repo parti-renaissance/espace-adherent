@@ -3,9 +3,10 @@
 namespace AppBundle\Consumer;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectManager;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,47 +15,37 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractConsumer implements ConsumerInterface
 {
-    protected $container;
+    use LoggerAwareTrait;
 
-    public function __construct(ContainerInterface $container)
+    protected $logger;
+    protected $validator;
+    protected $registry;
+
+    public function __construct(ValidatorInterface $validator, Registry $registry)
     {
-        $this->container = $container;
+        $this->validator = $validator;
+        $this->registry = $registry;
     }
 
     public function execute(AMQPMessage $message)
     {
-        $logger = $this->getLogger();
-
         try {
             $data = \GuzzleHttp\json_decode($message->body, true);
         } catch (\Exception $e) {
-            $logger->error('Message is not valid JSON', [
+            $this->getLogger()->error('Message is not valid JSON', [
                 'message' => $message->body,
             ]);
 
-            return true;
+            return ConsumerInterface::MSG_ACK;
         }
 
-        $violations = $this->getValidator()->validate($data, new Assert\Collection([
-            'allowExtraFields' => false,
-            'allowMissingFields' => false,
-            'fields' => $this->configureDataConstraints(),
-        ]));
-
-        if ($violations->count() > 0) {
-            $messages = [];
-
-            /** @var ConstraintViolationInterface $violation */
-            foreach ($violations as $violation) {
-                $messages[$violation->getPropertyPath()][] = $violation->getMessage();
-            }
-
-            $logger->error('Message structure is not valid', [
+        if ($messages = $this->validate($data)) {
+            $this->getLogger()->error('Message structure is not valid', [
                 'message' => $message->body,
                 'violations' => $messages,
             ]);
 
-            return true;
+            return ConsumerInterface::MSG_ACK;
         }
 
         return $this->doExecute($data);
@@ -62,22 +53,49 @@ abstract class AbstractConsumer implements ConsumerInterface
 
     public function writeln($name, $message): void
     {
-        echo $name.' | '.$message."\n";
+        echo $name.' | '.$message.PHP_EOL;
     }
 
-    protected function getLogger(): LoggerInterface
+    public function getLogger(): LoggerInterface
     {
-        return $this->container->get(LoggerInterface::class);
+        return $this->logger;
     }
 
     private function getValidator(): ValidatorInterface
     {
-        return $this->container->get(ValidatorInterface::class);
+        return $this->validator;
     }
 
     protected function getDoctrine(): Registry
     {
-        return $this->container->get('doctrine');
+        return $this->registry;
+    }
+
+    protected function getManager(): ObjectManager
+    {
+        return $this->getDoctrine()->getManager();
+    }
+
+    private function validate(array $data): ? array
+    {
+        $violations = $this->getValidator()->validate($data, new Assert\Collection([
+            'allowExtraFields' => false,
+            'allowMissingFields' => false,
+            'fields' => $this->configureDataConstraints(),
+        ]));
+
+        if (!$violations->count()) {
+            return null;
+        }
+
+        $messages = [];
+
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violations as $violation) {
+            $messages[$violation->getPropertyPath()][] = $violation->getMessage();
+        }
+
+        return $messages;
     }
 
     /**
@@ -90,5 +108,5 @@ abstract class AbstractConsumer implements ConsumerInterface
     /**
      * Once the data validated, executes the real message.
      */
-    abstract protected function doExecute(array $data): bool;
+    abstract protected function doExecute(array $data): int;
 }

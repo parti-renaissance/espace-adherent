@@ -14,20 +14,46 @@
                 <argument key="doctrine" type="service" id="doctrine" />
                 <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
                 <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
+                <argument key="app.repository.adherent" type="service" id="app.repository.adherent"/>
+                <argument key="app.repository.referent_managed_user" type="service" id="app.repository.referent_managed_user"/>
             </argument>
 
             <tag name="container.service_locator" />
         </service>
 
-        <service id="AppBundle\Consumer\CampaignMailjetConsumer">
+        <service id="AppBundle\Consumer\CampaignMailjetConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setMailjetClient">
+                <argument type="service" id="app.mailjet.campaign_client"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Consumer\TransactionalMailjetConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setMailjetClient">
+                <argument type="service" id="app.mailjet.transactional_client"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
+            <call method="setAdherentRepository">
+                <argument type="service" id="app.repository.adherent"/>
+            </call>
+            <call method="setMailer">
+                <argument type="service" id="app.mailjet.campaign_mailer"/>
+            </call>
+            <call method="setReferentManagedUserRepository">
+                <argument type="service" id="app.repository.referent_managed_user"/>
+            </call>
             <argument type="service" id="app.consumer.service_locator" />
         </service>
 
-        <service id="AppBundle\Consumer\TransactionalMailjetConsumer">
-            <argument type="service" id="app.consumer.service_locator" />
-        </service>
-
-        <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer">
+        <service id="app_abstract_consumer" class="AppBundle\Consumer\AbstractConsumer" abstract="true">
+            <argument type="service" id="validator" />
+            <argument type="service" id="doctrine" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
             <argument type="service" id="app.consumer.service_locator" />
         </service>
 
