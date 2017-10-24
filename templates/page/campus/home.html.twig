@@ -9,18 +9,13 @@
 
 {% block content %}
     <main class="campus">
-        <header class="hero">
+        <header class="hero hero--simple">
             <h1>
-                Le Campus : tous les outils pour comprendre et agir
+                Le Campus, <br/>tous les ressources pour comprendre et agir.
             </h1>
             <p>
-                La France ne nous a pas attendus pour se mettre en marche ! <br/>
-                C'est pour cela que nous avons d’abord rassemblé des initiatives et des outils existants, puis créé nos propres outils comme les microlearnings et les MOOC pour aller encore plus loin.<br/>
-                Ces outils sont ouverts à tous les citoyens.
+                <strong>Les citoyens ne manquent ni d’idées, ni d’envie d’agir.</strong> Mais nombreux sont ceux qui n’osent pas franchir le pas. Le Campus met à la disposition de toutes celles et ceux qui souhaitent s'engager toutes les ressources pour se lancer. Ces outils sont ouverts à tous les citoyens qui souhaitent développer leurs propres projets citoyens.
             </p>
-            <div class="hero__graphic--atop">
-                <img src="{{ asset('images/campus/campus-illustration.png') }}" />
-            </div>
         </header>
 
         <section class="campus__row campus__row__inspiration">
@@ -28,7 +23,7 @@
                 <div class="campus__text">
                     <h2>S'inspirer et se documenter</h2>
                     <p>
-                        Nous avons répertorié des initiatives citoyennes, des cours d'universités, des contenus pour vous donner des idées mais aussi pour vous aider à les mettre en oeuvre.
+                        Vous trouverez sur cette page des initiatives citoyennes innovantes, des cours et des conseils venus d’un peu partout en France pour vous aider à trouver l’inspiration et à lancer votre projet.
                     </p>
                     <div class="l__row">
                         <a href="https://inspiration.en-marche.fr"
@@ -38,6 +33,9 @@
                            class="btn btn--blue"
                            target="_blank">Se documenter</a>
                     </div>
+                    <p class="text--body text--gray text--smallest">
+                        Ces ressources ont été répertoriées par nos Marcheurs. Les sites vers lesquels elles renvoient sont indépendants de La République en Marche.
+                    </p>
                 </div>
             </div>
             <div class="campus__row__inspiration__graphic progressive-background"
@@ -55,29 +53,25 @@
                 <div class="campus__text">
                     <h2>Se former</h2>
                     <p>
-                        Nous avons conçu des microlearnings : ce sont des parcours
-                        éducatifs et ludiques en ligne à suivre à votre rythme,
-                        pour approfondir vos connaissances sur le fonctionnement
-                        de la France en 100 notions essentielles sur chaque thème.
+                        Vous trouverez sur cette page nos cours sur la vie politique. Ces « microlearning » sont des parcours éducatifs et ludiques à suivre en ligne, à votre rythme, pour mieux comprendre le fonctionnement de la vie politique française et européenne.
                     </p>
                     <a href="https://enmarche.typeform.com/to/ZaC9SE"
                        target="_blank"
-                       class="btn btn--blue">Être Prévenu(e) du lancement</a>
+                       class="btn btn--blue">Être prévenu(e) du lancement</a>
                 </div>
             </div>
         </section>
 
         <section class="campus__row campus__row__action">
             <div>
-                <div class="campus__text campus__text--center text--center">
+                <div class="campus__text campus__text--center">
                     <h2>Passer à l'action</h2>
                     <p>
-                        Nous sommes en train de développer des MOOC - "Massive Open Online Courses" (formations en ligne ouvertes à tous).<br/>
+                        RDV au mois de novembre pour le lancement de notre première formation collective qui aura pour thème : « Agir au niveau local ».<br/>
                         Ce sont des formations vidéo à suivre sur 5 semaines avec des milliers d'autres citoyens pour vous aider à monter vos propres projets d'intérêt général.
                     </p>
                     <p>
-                        Le premier MOOC aura pour thème "Agir au niveau local".<br/>
-                        Départ en novembre !
+                        Ce MOOC, comme on l’appelle (« Massive Open Online Courses »), est une formation vidéo en ligne, ouverte à tous, à suivre sur 5 semaines avec des milliers d’autres citoyens qui, comme vous, souhaitent s’engager. A la fin de cette formation, vous aurez tous les outils et les conseils nécessaires pour que vos intuitions se transforment en vraies idées et en projets concrets.
                     </p>
                     <div class="text--center">
                         <a href="{{ path('page_mooc') }}" class="btn btn--blue">
