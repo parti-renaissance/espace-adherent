@@ -8,6 +8,7 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -20,14 +21,14 @@ class MapsControllerTest extends SqliteWebTestCase
 
     public function testCandidates()
     {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/la-carte');
+        $this->client->request(Request::METHOD_GET, 'https://'.Config::LEGISLATIVES_HOST.'/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testEvents()
     {
-        $this->client->request(Request::METHOD_GET, 'https://legislatives-en-marche.dev/les-evenements');
+        $this->client->request(Request::METHOD_GET, 'https://'.Config::LEGISLATIVES_HOST.'/les-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

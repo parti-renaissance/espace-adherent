@@ -11,6 +11,7 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -104,11 +105,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordAction()
     {
-        $client = $this->makeClient();
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'), 'No error should be displayed on initial display');
@@ -116,15 +115,13 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithEmptyEmail()
     {
-        $client = $this->makeClient();
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), ['form' => ['email' => '']]);
 
-        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), ['form' => ['email' => '']]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
@@ -133,19 +130,17 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithUnknownEmail()
     {
-        $client = $this->makeClient();
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $formData = [
             'form' => ['email' => 'toto@example.org'],
         ];
 
-        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), $formData);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
@@ -155,19 +150,17 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
     {
-        $client = $this->makeClient();
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
 
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $formData = [
             'form' => ['email' => 'carl999@example.fr'],
         ];
 
-        $crawler = $client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), $formData);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
@@ -178,7 +171,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testResetPasswordAction()
     {
-        $client = $this->client = $this->makeClient();
+        $client = $this->makeClient(false, ['HTTP_HOST' => Config::APP_HOST]);
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();

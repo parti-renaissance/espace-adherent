@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace AppBundle\Controller\Amp;
 
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Article;
@@ -12,9 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("/amp")
- */
 class AmpController extends Controller
 {
     use CanaryControllerTrait;
