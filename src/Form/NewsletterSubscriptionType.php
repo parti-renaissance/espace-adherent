@@ -6,8 +6,10 @@ use AppBundle\Entity\NewsletterSubscription;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class NewsletterSubscriptionType extends AbstractType
 {
@@ -23,6 +25,11 @@ class NewsletterSubscriptionType extends AbstractType
             ->add('postalCode', TextType::class, [
                 'required' => false,
                 'filter_emojis' => true,
+            ])
+            ->add('conditions', CheckboxType::class, [
+                'required' => false,
+                'constraints' => new IsTrue(['message' => 'newsletter.conditions.required']),
+                'mapped' => false,
             ])
         ;
     }
