@@ -191,7 +191,7 @@ class SitemapFactory
 
         foreach ($articles as $article) {
             $sitemap->add(
-                $this->generateUrl('article_view', ['slug' => $article->getSlug()]),
+                $this->generateUrl('article_view', ['articleSlug' => $article->getSlug(), 'categorySlug' => $article->getCategory()->getSlug()]),
                 $article->getUpdatedAt()->format(\DATE_ATOM),
                 ChangeFrequency::WEEKLY,
                 0.6
