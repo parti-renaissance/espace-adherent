@@ -4,8 +4,6 @@ namespace AppBundle\Redirection;
 
 use AppBundle\Repository\ArticleRepository;
 use AppBundle\Repository\EventRepository;
-use AppBundle\Repository\OrderArticleRepository;
-use AppBundle\Repository\ProposalRepository;
 use AppBundle\Repository\RedirectionRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,33 +22,24 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
         '/comites/' => '/comites',
         '/articles/tout' => '/articles',
         '/article/' => '/articles/',
-        // AMP pages are redirected to another subdomain
-        '/amp/article/' => null,
-        '/amp/proposition/' => null,
-        '/amp/transformer-la-france/' => null,
+        '/amp/article/' => '/amp/articles/',
     ];
 
     private $redirectRepository;
     private $router;
     private $eventRepository;
     private $articleRepository;
-    private $proposalRepository;
-    private $orderArticleRepository;
 
     public function __construct(
         RedirectionRepository $redirectionRepository,
         EventRepository $eventRepository,
         ArticleRepository $articleRepository,
-        ProposalRepository $proposalRepository,
-        OrderArticleRepository $orderArticleRepository,
         RouterInterface $router
     ) {
         $this->redirectRepository = $redirectionRepository;
         $this->router = $router;
         $this->eventRepository = $eventRepository;
         $this->articleRepository = $articleRepository;
-        $this->proposalRepository = $proposalRepository;
-        $this->orderArticleRepository = $orderArticleRepository;
     }
 
     /**
@@ -102,40 +91,13 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
             }
 
             if (0 === strpos($requestUri, '/amp/article/')) {
-                $articleSlug = substr($requestUri, 13);
-
-                if (!$article = $this->articleRepository->findOnePublishedBySlug($articleSlug)) {
-                    continue;
-                }
-
-                $urlToRedirect = $this->router->generate('amp_article_view', [
-                    'categorySlug' => $article->getCategory()->getSlug(),
-                    'articleSlug' => $article->getSlug(),
-                ]);
-            }
-
-            if (0 === strpos($requestUri, '/amp/proposition/')) {
-                $proposalSlug = substr($requestUri, 17);
-
-                if (!$proposal = $this->proposalRepository->findPublishedProposal($proposalSlug)) {
-                    continue;
-                }
-
-                $urlToRedirect = $this->router->generate('amp_proposal_view', [
-                    'slug' => $proposal->getSlug(),
-                ]);
-            }
-
-            if (0 === strpos($requestUri, '/amp/transformer-la-france/')) {
-                $orderArticleSlug = substr($requestUri, 27);
-
-                if (!$orderArticle = $this->orderArticleRepository->findPublishedArticle($orderArticleSlug)) {
-                    continue;
-                }
-
-                $urlToRedirect = $this->router->generate('amp_explainer_article_show', [
-                    'slug' => $orderArticle->getSlug(),
-                ]);
+                $pathToContent = substr($requestUri, 13);
+                $urlToRedirect = null !== ($article = $this->articleRepository->findOnePublishedBySlug($pathToContent))
+                    ? $urlToRedirect = $this->router->generate('amp_article_view', [
+                        'categorySlug' => $article->getCategory()->getSlug(),
+                        'articleSlug' => $article->getSlug(),
+                    ])
+                    : substr_replace($requestUri, '/amp/articles/', 0, 14);
             }
 
             $event->setResponse(new RedirectResponse($urlToRedirect, $redirectCode));

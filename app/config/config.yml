@@ -23,9 +23,6 @@ parameters:
     legislatives_standard_hotline_email: 'campagne.legislatives@en-marche.fr'
     algolia.application_id:      '%env(ALGOLIA_APP_ID)%'
     algolia.api_key:             '%env(ALGOLIA_BACK_API_KEY)%'
-    app_host:                    '%env(APP_HOST)%'
-    amp_host:                    '%env(AMP_HOST)%'
-    legislatives_host:           '%env(LEGISLATIVES_HOST)%'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }

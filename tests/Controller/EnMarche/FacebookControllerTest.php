@@ -35,12 +35,7 @@ class FacebookControllerTest extends WebTestCase
         $this->init([
             LoadHomeBlockData::class,
         ]);
-    }
 
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
+        $this->client = $this->makeClient();
     }
 }

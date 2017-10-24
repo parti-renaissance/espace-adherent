@@ -7,9 +7,9 @@ use AppBundle\Entity\Donation;
 use AppBundle\Mailjet\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
 use Goutte\Client as PayboxClient;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -20,6 +20,9 @@ use Tests\AppBundle\SqliteWebTestCase;
 class DonationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
+
+    /* @var Client */
+    private $appClient;
 
     /* @var PayboxClient */
     private $payboxClient;
@@ -41,7 +44,7 @@ class DonationControllerTest extends SqliteWebTestCase
      */
     public function testSuccessFulProcess(int $duration)
     {
-        $appClient = $this->client;
+        $appClient = $this->appClient;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
 
@@ -49,7 +52,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
-        $this->client->submit($crawler->filter('form[name=app_donation]')->form([
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation' => [
                 'gender' => 'male',
                 'lastName' => 'Doe',
@@ -130,7 +133,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertRegexp('#Paiement r&eacute;alis&eacute; avec succ&egrave;s|PAIEMENT ACCEPT&Eacute;#', $content);
 
         $callbackUrl = $crawler->filter('a')->attr('href');
-        $callbackUrlRegExp = 'http://'.Config::APP_HOST.'/don/callback/(.+)'; // token
+        $callbackUrlRegExp = 'http://localhost/don/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
             $durationRegExp = $duration < 0 ? 0 : $duration - 1;
@@ -173,7 +176,7 @@ class DonationControllerTest extends SqliteWebTestCase
      */
     public function testRetryProcess(int $duration)
     {
-        $appClient = $this->client;
+        $appClient = $this->appClient;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
 
@@ -181,7 +184,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
-        $this->client->submit($crawler->filter('form[name=app_donation]')->form([
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation' => [
                 'gender' => 'male',
                 'lastName' => 'Doe',
@@ -245,7 +248,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $crawler = $this->payboxClient->submit($formNode->form());
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
         $cancelUrl = $crawler->filter('#pbx-annuler a')->attr('href');
-        $cancelUrlRegExp = 'http://'.Config::APP_HOST.'/don/callback/(.+)'; // token
+        $cancelUrlRegExp = 'http://localhost/don/callback/(.+)'; // token
         $cancelUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
             $durationRegExp = $duration < 0 ? 0 : $duration - 1;
@@ -286,7 +289,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->assertRegExp('#'.$retryUrlRegExp.'#', $retryUrl);
 
-        $crawler = $this->client->request(Request::METHOD_GET, $retryUrl);
+        $crawler = $this->appClient->request(Request::METHOD_GET, $retryUrl);
 
         $this->assertStatusCode(Response::HTTP_OK, $appClient);
         $this->assertContains('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
@@ -294,26 +297,26 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function testCallbackWithNoId()
     {
-        $this->client->request(Request::METHOD_GET, '/don/callback/token');
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token');
 
-        $this->assertClientIsRedirectedTo('/don', $this->client);
+        $this->assertClientIsRedirectedTo('/don', $this->appClient);
     }
 
     public function testCallbackWithWrongUuid()
     {
-        $this->client->request(Request::METHOD_GET, '/don/callback/token', [
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token', [
             'id' => 'wrong_uuid',
         ]);
 
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/don', $this->client);
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->appClient);
+        $this->assertClientIsRedirectedTo('/don', $this->appClient);
     }
 
     public function testCallbackWithWrongToken()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/don/coordonnees?montant=30');
+        $crawler = $this->appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30'));
 
-        $this->client->submit($crawler->filter('form[name=app_donation]')->form([
+        $this->appClient->submit($crawler->filter('form[name=app_donation]')->form([
             'app_donation' => [
                 'gender' => 'male',
                 'lastName' => 'Doe',
@@ -334,30 +337,31 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $donations = $this->donationRepository->findAll());
         $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
 
-        $this->client->request(Request::METHOD_GET, '/don/callback/token', [
+        $this->appClient->request(Request::METHOD_GET, '/don/callback/token', [
             'id' => $donation->getUuid().'_',
         ]);
 
-        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->appClient);
     }
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->init();
         $this->loadFixtures([]);
 
+        $this->appClient = $this->makeClient();
         $this->payboxClient = new PayboxClient();
+        $this->container = $this->appClient->getContainer();
         $this->donationRepository = $this->getDonationRepository();
     }
 
     protected function tearDown()
     {
-        $this->kill();
-
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = null;
+        $this->container = null;
+        $this->appClient = null;
 
         parent::tearDown();
     }
