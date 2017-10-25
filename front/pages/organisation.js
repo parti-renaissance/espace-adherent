@@ -2,8 +2,13 @@
  * Organization page map
  */
 export default (mapFactory, api) => {
+    const domMap = dom('#map');
+    if (null === domMap) {
+        return;
+    }
+
     api.getReferents((referents) => {
-        const map = mapFactory.createMap(dom('#map'), {
+        const map = mapFactory.createMap(domMap, {
             center: { lat: 46.7699, lng: 2.4279 },
             streetViewControl: false,
             scrollwheel: false,
