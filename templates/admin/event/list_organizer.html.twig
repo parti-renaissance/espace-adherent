@@ -2,13 +2,17 @@
 
 {% block field %}
     {% set organizer = object.organizer %}
-    <a href="{{ path('admin_app_adherent_show', {'id': organizer.id}) }}">
-        {{ organizer.fullName }}
-    </a>
-    <br />
-    {{ organizer.emailAddress }}
-    {% if organizer.phone %}
+    {% if organizer %}
+        <a href="{{ path('admin_app_adherent_show', {'id': organizer.id}) }}">
+            {{ organizer.fullName }}
+        </a>
         <br />
-        {{ organizer.phone|phone_number_format }}
+        {{ organizer.emailAddress }}
+        {% if organizer.phone %}
+            <br />
+            {{ organizer.phone|phone_number_format }}
+        {% endif %}
+    {% else %}
+        Anonyme (adhérent désadhéré)
     {% endif %}
 {% endblock %}

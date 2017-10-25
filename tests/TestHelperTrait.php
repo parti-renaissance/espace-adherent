@@ -32,6 +32,7 @@ use AppBundle\Repository\ActivitySubscriptionRepository;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use AppBundle\Repository\CitizenInitiativeRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeRepository;
@@ -129,7 +130,7 @@ trait TestHelperTrait
         return $this->getRepository(Event::class);
     }
 
-    public function getCitizenInitiativeRepository(): EventRepository
+    public function getCitizenInitiativeRepository(): CitizenInitiativeRepository
     {
         return $this->getRepository(CitizenInitiative::class);
     }
