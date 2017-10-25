@@ -875,6 +875,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isHost(): bool
     {
+        return false;
         return $this->getMemberships()->countCommitteeHostMemberships() >= 1;
     }
 

@@ -1,0 +1,130 @@
+<footer class="background--lighter space--30-0">
+    <div class="l__wrapper">
+        <div class="l__row l__row--h-stretch b__nudge--bottom-large l__tablet--col l__mobile--col-center">
+            <a href="{{ path('homepage') }}" class="link--no-decor">
+                {{ include('components/logo-mini-em.html.twig') }}
+            </a>
+            <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
+                <li class="head">Suivez La République En Marche !</li>
+                <li><a href="https://www.facebook.com/EnMarche/" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-square"></i></a></li>
+                <li><a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-square"></i></a></li>
+                <li><a href="https://medium.com/@enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-medium"></i></a></li>
+                <li><a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square"></i></a></li>
+                <li><a href="https://www.snapchat.com/add/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-snapchat-ghost"></i></a></li>
+            </ul>
+        </div>
+        <div class="l__row l__row--h-stretch l__row--top b__nudge--bottom-large l__row--wrap l__mobile--col">
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li>
+                    <h4>
+                        <a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a>
+                    </h4>
+                </li>
+                <li>
+                    <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
+                </li>
+                <li>
+                    <a href="https://legislatives.en-marche.fr" target="_blank" rel="noopener noreferrer">
+                        Nos candidats
+                    </a>
+                </li>
+                {% if not campaign_expired %}
+                    <li>
+                        <a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('map_committees') }}">La carte des comités</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('map_events') }}">La carte des événements</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('page_bot') }}">Le Bot En Marche !</a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ path('page_elles_marchent') }}">Elles Marchent</a>
+                </li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li>
+                    <h4>
+                        <a href="{{ path('page_campus') }}" class="text--bold text--medium-small">Campus</a>
+                    </h4>
+                </li>
+                <li>
+                    <a href="{{ path('page_campus') }}">Toutes les ressources</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_mooc') }}">Le MOOC</a>
+                </li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li><h4><a href="{{ path('articles_list', {'category': 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                <li><a href="{{ path('articles_list', {'category': 'tout'}) }}">Toute l'actualité</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'actualites'}) }}">Articles</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'videos'}) }}">Vidéos</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'discours'}) }}">Discours</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'medias'}) }}">Médias</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'tribunes'}) }}">Tribunes</a></li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+                {% if not campaign_expired %}
+                    <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
+                    <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
+                    <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
+                {% else %}
+                    <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>
+                {% endif %}
+                <li><a href="{{ path('donation_index') }}">Je donne en ligne</a></li>
+                <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Je donne par chèque</a></li>
+                {% if not campaign_expired %}
+                    <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
+                    <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
+                    <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
+                    <li>
+                        <a href="{{ path(is_granted('ROLE_ADHERENT') ? 'app_adherent_profile' : 'app_adherent_login') }}">
+                            Connexion
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
+                <li><a href="https://boutique.en-marche.fr" target="_blank" rel="noopener noreferrer">La Boutique</a></li>
+                <li><a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a></li>
+                <li><a href="https://lesjam.fr/" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+            </ul>
+        </div>
+        <div class="l__row l__row--h-stretch l__tablet--col">
+            <div class="donate-mail">
+                Vous pouvez envoyer vos dons en
+                <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="text--bold" target="_blank" rel="noopener noreferrer">téléchargeant ce bulletin</a>.
+            </div>
+            <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
+                <li><a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a></li>
+                <li><a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">Écrivez-nous</a></li>
+                <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Presse</a></li>
+                <li><a href="{{ path('page_mentions_legales') }}">Mentions Légales</a></li>
+                {#
+                    <li><a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a></li>
+                #}
+                <li>En Marche &copy;</li>
+            </ul>
+        </div>
+    </div>
+</footer>
