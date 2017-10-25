@@ -2,7 +2,6 @@
 # Health
 #
 app_health:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/HealthController.php"
     type:     "annotation"
 
@@ -10,7 +9,6 @@ app_health:
 # Assets
 #
 app_assets:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/AssetsController.php"
     type:     "annotation"
 
@@ -18,7 +16,6 @@ app_assets:
 # API
 #
 app_api:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/Api"
     type:     "annotation"
     prefix:   "/api"
@@ -27,50 +24,42 @@ app_api:
 # Admin panel
 #
 admin_dashboard:
-    host:     "%app_host%"
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix:   "/admin"
+    condition: "not (context.getHost() matches '/legislatives/i')"
 
 admin_crud:
-    host:     "%app_host%"
     resource: .
     type:     sonata_admin
     prefix:   "/admin"
+    condition: "not (context.getHost() matches '/legislatives/i')"
 
 app_admin:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/Admin"
     type:     "annotation"
     prefix:   "/admin"
+    condition: "not (context.getHost() matches '/legislatives/i')"
 
 #
 # En Marche app
 #
 lexik_paybox:
-    host:     "%app_host%"
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
+    condition: "not (context.getHost() matches '/legislatives/i')"
 
 app_enmarche:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/EnMarche"
     type:     "annotation"
-
-#
-# AMP pages
-#
-app_enmarche_amp:
-    host:     "%amp_host%"
-    resource: "@AppBundle/Controller/Amp"
-    type:     "annotation"
+    condition: "not (context.getHost() matches '/legislatives/i')"
 
 #
 # Legislatives app
 #
 app_legislatives:
-    host:     "%legislatives_host%"
     resource: "@AppBundle/Controller/Legislatives"
     type:     "annotation"
+    condition: "context.getHost() matches '/legislatives/i'"
 
 #
 # Legacy
@@ -86,6 +75,5 @@ app_desintox:
 # Redirections
 #
 app_redirecting:
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/RedirectingController.php"
     type:     "annotation"
