@@ -20,6 +20,7 @@
 
         @media (max-width: $mobile) {
             flex-direction: column;
+            padding: 60px 0;
         }
 
         &__inspiration {
@@ -123,7 +124,8 @@
         position: relative;
 
         @media (max-width: $mobile) {
-            padding: 100px 40px;
+            padding: 50px 0;
+            width: 80%;
         }
 
         &--center {

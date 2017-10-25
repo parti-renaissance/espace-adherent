@@ -410,8 +410,16 @@ $text--size-extra-large: 48px;
 
             li {
                 padding: 0 0 4px 0;
+
+                .btn {
+                    margin-bottom: 6px;
+                }
             }
         }
+    }
+
+    &__links--left {
+        justify-content: flex-start;
     }
 
     &__links--no-decor {
