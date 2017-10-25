@@ -23,7 +23,7 @@ class EventRepositoryTest extends SqliteWebTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(13, $this->repository->count());
+        $this->assertSame(14, $this->repository->count());
     }
 
     public function testFindUpcomingEvents()

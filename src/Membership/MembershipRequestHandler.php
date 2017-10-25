@@ -11,6 +11,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Summary;
+use AppBundle\Event\EventManager;
 use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
@@ -30,6 +31,7 @@ class MembershipRequestHandler
     private $committeeManager;
     private $registrationManager;
     private $citizenInitiativeManager;
+    private $eventManager;
     private $committeeFeedManager;
     private $activitySubscriptionManager;
 
@@ -43,6 +45,7 @@ class MembershipRequestHandler
         CommitteeManager $committeeManager,
         EventRegistrationManager $registrationManager,
         CitizenInitiativeManager $citizenInitiativeManager,
+        EventManager $eventManager,
         CommitteeFeedManager $committeeFeedManager,
         ActivitySubscriptionManager $activitySubscriptionManager
     ) {
@@ -56,6 +59,7 @@ class MembershipRequestHandler
         $this->registrationManager = $registrationManager;
         $this->citizenInitiativeManager = $citizenInitiativeManager;
         $this->committeeFeedManager = $committeeFeedManager;
+        $this->eventManager = $eventManager;
         $this->activitySubscriptionManager = $activitySubscriptionManager;
     }
 
@@ -106,6 +110,7 @@ class MembershipRequestHandler
 
         $this->removeAdherentMemberShips($adherent);
         $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
+        $this->eventManager->removeOrganizerEvents($adherent);
         $this->registrationManager->anonymizeAdherentRegistrations($adherent);
         $this->committeeFeedManager->removeAuthorItems($adherent);
         $this->activitySubscriptionManager->removeAdherentActivities($adherent);

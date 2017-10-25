@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Events;
 use AppBundle\Repository\CitizenInitiativeRepository;
+use AppBundle\Repository\EventRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -64,7 +65,7 @@ class CitizenInitiativeManager
 
     public function removeOrganizerCitizenInitiatives(Adherent $adherent): void
     {
-        $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_PAST, true);
-        $this->repository->removeOrganizerCitizenInitiatives($adherent, CitizenInitiativeRepository::TYPE_UPCOMING);
+        $this->repository->removeOrganizerEvents($adherent, EventRepository::TYPE_PAST, true);
+        $this->repository->removeOrganizerEvents($adherent, EventRepository::TYPE_UPCOMING);
     }
 }

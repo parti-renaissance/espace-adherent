@@ -75,6 +75,7 @@
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.event.registration_manager"/>
             <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager"/>
+            <argument type="service" id="AppBundle\Event\EventManager"/>
             <argument type="service" id="app.committee.feed_manager"/>
             <argument type="service" id="app.activity_subscription.manager"/>
         </service>
@@ -241,20 +242,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
-        <service id="app.citizen_initiative.handler" class="AppBundle\CitizenInitiative\CitizenInitiativeCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.event.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailjet.transactional_mailer"/>
-        </service>
-
         <service id="app.event.invitation_handler" class="AppBundle\Event\EventInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailjet.transactional_mailer"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <service id="app.citizen_initiative.invitation_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeInvitationHandler">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
@@ -263,14 +251,6 @@
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.mailjet.transactional_mailer"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <service id="app.citizen_initiative.registration_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeRegistrationCommandHandler">
-            <argument type="service" id="app.event.registration_factory"/>
-            <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.activity_subscription.manager"/>
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
@@ -299,7 +279,32 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="AppBundle\Event\EventManager">
+            <argument type="service" id="app.repository.event"/>
+        </service>
+
         <!-- CitizenInitiative -->
+        <service id="app.citizen_initiative.handler" class="AppBundle\CitizenInitiative\CitizenInitiativeCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.event.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+        </service>
+
+        <service id="app.citizen_initiative.invitation_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeInvitationHandler">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
+        </service>
+
+        <service id="app.citizen_initiative.registration_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeRegistrationCommandHandler">
+            <argument type="service" id="app.event.registration_factory"/>
+            <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.activity_subscription.manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
+        </service>
+
         <service id="app.citizen_initiative.message_notifier" class="AppBundle\CitizenInitiative\CitizenInitiativeMessageNotifier">
             <argument type="service" id="app.mailjet.transactional_mailer"/>
             <argument type="service" id="app.adherent_manager"/>

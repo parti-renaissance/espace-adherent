@@ -34,7 +34,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
     const EVENT_11_UUID = 'f48c4863-dc9b-404c-8fd5-72b1c002788c';
     const EVENT_12_UUID = '50dd58d7-f370-4874-8fbb-3746ca06d5d5';
     const EVENT_13_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d5d5';
-    const EVENT_14_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d6d6';
+    const EVENT_14_UUID = 'f0574b51-40e0-4236-a2ff-62c42cb16029';
+    const EVENT_15_UUID = 'a6709808-b3fa-40fc-95a4-da49ddc314ff';
 
     use ContainerAwareTrait;
 
@@ -51,12 +52,14 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $author7 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_7_UUID);
         $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
         $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
+        $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
 
         $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
         $committee3 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_3_UUID);
         $committee4 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_4_UUID);
         $committee5 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_5_UUID);
+        $committee10 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_10_UUID);
 
         // Singapore
         $committee8 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_8_UUID);
@@ -266,6 +269,20 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         ]);
         $event14->setPublished(true);
 
+        $event15 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_15_UUID,
+            'organizer' => $author13,
+            'committee' => $committee10,
+            'name' => 'Event of non AL',
+            'category' => $eventCategory10,
+            'description' => 'HAPPINESS FOR EVERYBODY, FREE, AND NO ONE WILL GO AWAY UNSATISFIED!',
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
+            'begin_at' => date('Y-m-d', strtotime('yesterday')).' 10:00:00',
+            'finish_at' => date('Y-m-d', strtotime('yesterday')).' 18:00:00',
+            'capacity' => 5,
+        ]);
+        $event15->setPublished(true);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -280,6 +297,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($event12);
         $manager->persist($event13);
         $manager->persist($event14);
+        $manager->persist($event15);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
