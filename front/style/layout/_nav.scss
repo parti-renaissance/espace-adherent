@@ -167,6 +167,11 @@
             &__account {
                 padding: 20px 25px;
                 font-family: $font-roboto;
+
+                li:hover {
+                    background-color: $blue;
+                    color: white;
+                }
             }
 
             &__separator {
