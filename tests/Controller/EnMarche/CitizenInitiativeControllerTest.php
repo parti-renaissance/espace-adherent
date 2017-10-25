@@ -542,9 +542,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertSame(0, $crawler->filter('#activity_subscription')->count());
 
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
+        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $crawler = $this->client->followRedirect();
@@ -561,24 +559,14 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a')->text());
 
-        // User clicks on 'Suivre'
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $crawler = $this->client->click($crawler->selectLink('Suivre')->link());
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
-
+        $this->assertSame(sprintf('http://localhost/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
         $this->assertSame('Ne plus suivre', $crawler->filter('#activity_subscription a')->text());
 
-        // User clicks on 'Ne plus suivre'
-        $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $crawler = $this->client->click($crawler->selectLink('Ne plus suivre')->link());
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/initiative-citoyenne/%s/%s', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()));
-
+        $this->assertSame(sprintf('http://localhost/initiative-citoyenne/%s/%s/abonner', LoadCitizenInitiativeData::CITIZEN_INITIATIVE_5_UUID, $initiative->getSlug()), $this->client->getRequest()->getUri());
         $this->assertSame('Suivre', $crawler->filter('#activity_subscription a:contains("Suivre")')->text());
     }
 

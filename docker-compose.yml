@@ -11,6 +11,7 @@ services:
             - .:/app
             - /app/var/cache
             - /app/var/sessions
+
     db:
         image: mysql:5.7
         environment:

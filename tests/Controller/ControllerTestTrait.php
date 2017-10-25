@@ -8,7 +8,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
@@ -59,7 +58,7 @@ trait ControllerTestTrait
             '_adherent_password' => $password,
         ]));
 
-        $shouldBeRedirectedTo = 'http://'.Config::APP_HOST.'/evenements';
+        $shouldBeRedirectedTo = $client->getRequest()->getSchemeAndHttpHost().'/evenements';
 
         if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
             throw new \RuntimeException(
@@ -92,13 +91,13 @@ trait ControllerTestTrait
         return $this->manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 
-    protected function init(array $fixtures = [], string $host = Config::APP_HOST)
+    protected function init(array $fixtures = [])
     {
         if ($fixtures) {
             $this->loadFixtures($fixtures);
         }
 
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $host]);
+        $this->client = $this->makeClient();
         $this->container = $this->client->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
     }
