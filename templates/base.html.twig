@@ -26,9 +26,7 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
         <meta name="referrer" content="origin">
-        {% block meta %}
-            <meta property="og:type" content="{% block open_graph_type 'website' %}" />
-        {% endblock %}
+        {% block meta '' %}
 
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
         <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
@@ -44,6 +42,7 @@
         {% block amp_link '' %}
 
         <meta property="og:site_name" content="En Marche !" />
+        <meta property="og:type" content="{% block open_graph_type 'website' %}" />
         <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
         <meta property="og:title" content="{% block open_graph_title block('title') %}" />
         <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
@@ -101,7 +100,14 @@
 
         {% block header %}
         <header>
-            <!--  Header / Navigation Mobile-->
+            {% set adherent_committees = '' %}
+            {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
+            {% if is_granted('ROLE_ADHERENT') %}
+                {% set adherent_committees %}
+                    {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
+                {% endset %}
+            {% endif %}
+            <!--  Header / Navigation Desktop -->
             {{ include('components/_nav_desktop.html.twig') }}
             <!--  Header / Navigation Mobile-->
             {{ include('components/_nav_mobile.html.twig') }}
@@ -120,6 +126,7 @@
                 <a href="javascript:void(0)" id="je-ferme-la-recherche"
                    class="l__row l__row--center text--body link--no-decor icon--with-text--reversed btn__icon">
                     <span>Fermer la recherche</span>
+                    9b8c422d... Change navigation bar & menu
                     {{ include('components/close.html.twig') }}
                 </a>
             </div>
