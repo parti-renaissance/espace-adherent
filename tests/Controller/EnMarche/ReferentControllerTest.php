@@ -10,6 +10,7 @@ use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -27,7 +28,7 @@ class ReferentControllerTest extends SqliteWebTestCase
     public function testReferentBackendIsForbiddenAsAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
     }
 
     /**
@@ -163,11 +164,11 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('http://localhost/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
+        $this->assertContains('http://'.Config::APP_HOST.'/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
 
         $this->client->click($this->client->getCrawler()->selectLink('Annuler')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertEquals('http://localhost/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
+        $this->assertEquals('http://'.Config::APP_HOST.'/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
     }
 
     public function testSendMailFailed()
@@ -219,7 +220,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('http://localhost/espace-referent/utilisateurs?', $this->client->getRequest()->getUri());
+        $this->assertContains('http://'.Config::APP_HOST.'/espace-referent/utilisateurs?', $this->client->getRequest()->getUri());
     }
 
     public function testFilterAdherents()

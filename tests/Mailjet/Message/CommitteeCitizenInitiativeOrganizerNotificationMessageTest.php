@@ -2,11 +2,12 @@
 
 namespace AppBundle\Mailjet\Message;
 
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Mailjet\Message\AbstractEventMessageTest;
 
 class CommitteeCitizenInitiativeOrganizerNotificationMessageTest extends AbstractEventMessageTest
 {
-    const CONTACT_ADHERENT_URL = 'https://localhost/espace-adherent/contacter/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4?from=committee&id=464d4c23-cf4c-4d3a-8674-a43910da6419';
+    const CONTACT_ADHERENT_URL = 'https://'.Config::APP_HOST.'/espace-adherent/contacter/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4?from=committee&id=464d4c23-cf4c-4d3a-8674-a43910da6419';
 
     public function testCreateCreateCommitteeCitizenInitiativeOrganizerNotificationMessage()
     {

@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -20,7 +21,7 @@ class DocumentsControllerTest extends SqliteWebTestCase
     public function testDocumentsIndexAsAnonymous()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
     }
 
     public function testDocumentsIndexAsAdherent()
