@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventCategoryRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MoocEventCategoryRepository")
  * @ORM\Table(
- *   name="events_categories",
+ *   name="mooc_event_categories",
  *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="event_category_name_unique", columns="name")
+ *     @ORM\UniqueConstraint(name="mooc_event_category_name_unique", columns="name")
  *   }
  * )
  *
@@ -19,6 +19,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @Algolia\Index
  */
-class EventCategory extends BaseEventCategory
+class MoocEventCategory extends BaseEventCategory
 {
 }
