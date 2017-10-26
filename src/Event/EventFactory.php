@@ -44,8 +44,8 @@ class EventFactory
 
     public function createCitizenInitiativeFromArray(array $data): CitizenInitiative
     {
-        foreach (['uuid', 'organizer', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
-                     'expert_assistance_needed', 'coaching_requested', 'capacity', ] as $key) {
+        foreach (['uuid', 'organizer', 'name', 'category', 'description', 'address',
+                     'expert_assistance_needed', 'coaching_requested', 'place', ] as $key) {
             if (!array_key_exists($key, $data)) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
             }
@@ -60,13 +60,11 @@ class EventFactory
             $data['category'],
             $data['description'],
             $data['address'],
-            $data['begin_at'],
-            $data['finish_at'],
             $data['expert_assistance_needed'],
             $data['coaching_requested'],
             null,
             [],
-            $data['capacity']
+            $data['place']
         );
     }
 
@@ -79,13 +77,11 @@ class EventFactory
             $command->getCategory(),
             $command->getDescription(),
             $this->addressFactory->createFromAddress($command->getAddress()),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
             $command->isExpertAssistanceNeeded(),
             $command->isCoachingRequested(),
             $command->getCoachingRequest(),
             $command->getInterests(),
-            $command->getCapacity()
+            $command->getPlace()
         );
 
         $initiative->setSkills($command->getSkills());

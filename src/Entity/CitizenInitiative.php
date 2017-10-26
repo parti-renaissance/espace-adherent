@@ -74,6 +74,15 @@ class CitizenInitiative extends BaseEvent
      */
     private $wasPublished = false;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=255, nullable=true)
+     *
+     * @Algolia\Attribute
+     */
+    private $place;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
@@ -81,13 +90,11 @@ class CitizenInitiative extends BaseEvent
         CitizenInitiativeCategory $citizenInitiativeCategory,
         string $description,
         PostAddress $address,
-        \DateTime $beginAt,
-        \DateTime $finishAt,
         bool $expertAssistanceNeeded = false,
         bool $coachingRequested = false,
         CoachingRequest $coachingRequest = null,
         array $interests = [],
-        int $capacity = null,
+        ?string $place,
         \DateTime $createdAt = null,
         int $participantsCount = 0
     ) {
@@ -98,8 +105,6 @@ class CitizenInitiative extends BaseEvent
         $this->description = $description;
         $this->postAddress = $address;
         $this->participantsCount = $participantsCount;
-        $this->beginAt = $beginAt;
-        $this->finishAt = $finishAt;
         $this->createdAt = $createdAt ?: new \DateTimeImmutable('now');
         $this->updatedAt = $createdAt ?: new \DateTime('now');
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
@@ -108,7 +113,7 @@ class CitizenInitiative extends BaseEvent
         $this->interests = $interests;
         $this->status = self::STATUS_SCHEDULED;
         $this->skills = new ArrayCollection();
-        $this->capacity = $capacity;
+        $this->place = $place;
         $this->setPublished(false);
     }
 
@@ -122,26 +127,24 @@ class CitizenInitiative extends BaseEvent
         CitizenInitiativeCategory $citizenInitiativeCategory,
         string $description,
         PostAddress $address,
-        \DateTime $beginAt,
-        \DateTime $finishAt,
         bool $expertAssistanceNeeded = false,
         bool $coachingRequested = false,
         CoachingRequest $coachingRequest = null,
         array $interests = [],
+        ?string $place = null,
         int $capacity = null,
         $skills = null
     ) {
         $this->setName($name);
         $this->citizenInitiativeCategory = $citizenInitiativeCategory;
         $this->description = $description;
-        $this->beginAt = $beginAt;
-        $this->finishAt = $finishAt;
         $this->expertAssistanceNeeded = $expertAssistanceNeeded;
         $this->coachingRequested = $coachingRequested;
         $this->coachingRequest = $coachingRequest;
         $this->setInterests($interests);
         $this->capacity = $capacity;
         $this->skills = $skills;
+        $this->place = $place;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
@@ -257,5 +260,15 @@ class CitizenInitiative extends BaseEvent
         $this->wasPublished = $wasPublished;
 
         return $this;
+    }
+
+    public function getPlace(): ? string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(string $place)
+    {
+        $this->place = $place;
     }
 }

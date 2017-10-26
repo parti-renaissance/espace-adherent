@@ -134,22 +134,12 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $data = [];
         $data['citizen_initiative']['name'] = 'Mon initiative';
-        $data['citizen_initiative']['beginAt']['date']['day'] = 14;
-        $data['citizen_initiative']['beginAt']['date']['month'] = 12;
-        $data['citizen_initiative']['beginAt']['date']['year'] = 2017;
-        $data['citizen_initiative']['beginAt']['time']['hour'] = 9;
-        $data['citizen_initiative']['beginAt']['time']['minute'] = 0;
-        $data['citizen_initiative']['finishAt']['date']['day'] = 15;
-        $data['citizen_initiative']['finishAt']['date']['month'] = 12;
-        $data['citizen_initiative']['finishAt']['date']['year'] = 2017;
-        $data['citizen_initiative']['finishAt']['time']['hour'] = 18;
-        $data['citizen_initiative']['finishAt']['time']['minute'] = 0;
         $data['citizen_initiative']['address']['address'] = 'Pilgerweg 58';
         $data['citizen_initiative']['address']['cityName'] = 'Kilchberg';
         $data['citizen_initiative']['address']['postalCode'] = '8802';
         $data['citizen_initiative']['address']['country'] = 'CH';
         $data['citizen_initiative']['description'] = 'Mon initiative en Suisse';
-        $data['citizen_initiative']['capacity'] = 15;
+        $data['citizen_initiative']['address']['place'] = 'Aareschlucht';
         $data['citizen_initiative']['expert_assistance_needed'] = 1;
         $data['citizen_initiative']['coaching_requested'] = 1;
         $data['citizen_initiative']['coaching_request']['problem_description'] = 'Mon problème est ...';

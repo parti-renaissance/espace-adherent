@@ -76,12 +76,12 @@ abstract class BaseEvent implements GeoPointInterface
     protected $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $beginAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $finishAt;
 

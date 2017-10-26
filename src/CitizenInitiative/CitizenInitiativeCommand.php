@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CitizenInitiativeCommand
 {
@@ -38,18 +37,6 @@ class CitizenInitiativeCommand
     private $description;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     */
-    private $beginAt;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     */
-    private $finishAt;
-
-    /**
      * @var Address
      *
      * @Assert\NotBlank
@@ -69,29 +56,20 @@ class CitizenInitiativeCommand
     private $coachingRequested;
 
     /**
-     * @Assert\Regex("/^\d+$/", message="citizen_initiative.invalid_capacity")
-     */
-    private $capacity;
-
-    /**
      * @var CoachingRequest
      */
     private $coachingRequest;
 
+    private $place;
+
     public function __construct(
         Adherent $author = null,
         UuidInterface $uuid = null,
-        Address $address = null,
-        int $capacity = null,
-        \DateTimeInterface $beginAt = null,
-        \DateTimeInterface $finishAt = null
+        Address $address = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
         $this->address = $address ?: new Address();
-        $this->capacity = $capacity;
-        $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
-        $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
         $this->skills = new ArrayCollection();
     }
 
@@ -100,10 +78,7 @@ class CitizenInitiativeCommand
         $command = new self(
             $citizenInitiative->getOrganizer(),
             $citizenInitiative->getUuid(),
-            Address::createFromAddress($citizenInitiative->getPostAddressModel()),
-            $citizenInitiative->getCapacity(),
-            $citizenInitiative->getBeginAt(),
-            $citizenInitiative->getFinishAt()
+            Address::createFromAddress($citizenInitiative->getPostAddressModel())
         );
 
         $command->name = $citizenInitiative->getName();
@@ -114,6 +89,7 @@ class CitizenInitiativeCommand
         $command->coachingRequest = $citizenInitiative->getCoachingRequest();
         $command->interests = $citizenInitiative->getInterests();
         $command->skills = $citizenInitiative->getSkills();
+        $command->place = $citizenInitiative->getPlace();
 
         return $command;
     }
@@ -148,26 +124,6 @@ class CitizenInitiativeCommand
         $this->description = $description;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
-    {
-        return $this->beginAt;
-    }
-
-    public function setBeginAt(\DateTime $beginAt): void
-    {
-        $this->beginAt = $beginAt;
-    }
-
-    public function getFinishAt(): ?\DateTimeInterface
-    {
-        return $this->finishAt;
-    }
-
-    public function setFinishAt(\DateTime $finishAt): void
-    {
-        $this->finishAt = $finishAt;
-    }
-
     public function setAddress(Address $address): void
     {
         $this->address = $address;
@@ -181,26 +137,6 @@ class CitizenInitiativeCommand
     public function getAuthor(): Adherent
     {
         return $this->author;
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public static function validateDateRange(self $command, ExecutionContextInterface $context): void
-    {
-        $beginAt = $command->getBeginAt();
-        $finishAt = $command->getFinishAt();
-
-        if (!$beginAt instanceof \DateTimeInterface || !$finishAt instanceof \DateTimeInterface) {
-            return;
-        }
-
-        if ($finishAt <= $beginAt) {
-            $context
-                ->buildViolation('citizen_initiative.invalid_date_range')
-                ->atPath('finishAt')
-                ->addViolation();
-        }
     }
 
     public function setCitizenInitiative(CitizenInitiative $citizenInitiative): void
@@ -263,17 +199,13 @@ class CitizenInitiativeCommand
         return $this->coachingRequest;
     }
 
-    public function getCapacity(): ?int
+    public function getPlace(): ? string
     {
-        return null !== $this->capacity ? (int) $this->capacity : null;
+        return $this->place;
     }
 
-    public function setCapacity($capacity): void
+    public function setPlace(string $place): void
     {
-        if (null !== $capacity) {
-            $capacity = (string) $capacity;
-        }
-
-        $this->capacity = $capacity;
+        $this->place = $place;
     }
 }

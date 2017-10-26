@@ -152,4 +152,14 @@ class Address implements AddressInterface, GeocodableInterface
 
         return $inseeCode;
     }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(string $place)
+    {
+        $this->place = $place;
+    }
 }

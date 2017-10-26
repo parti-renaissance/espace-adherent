@@ -9,8 +9,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,20 +28,15 @@ class CitizenInitiativeType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
+                'required' => true,
             ])
             ->add('category', CitizenInitiativeCategoryType::class)
             ->add('description', TextareaType::class, [
                 'filter_emojis' => true,
                 'purify_html' => true,
             ])
-            ->add('address', AddressType::class)
-            ->add('beginAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
-            ->add('finishAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
+            ->add('address', AddressType::class, [
+                'required' => true,
             ])
             ->add('interests', MemberInterestsChoiceType::class)
             ->add('expert_assistance_needed', ChoiceType::class, [
@@ -77,8 +70,13 @@ class CitizenInitiativeType extends AbstractType
             ->add('coaching_request', CoachingRequestType::class, [
                 'required' => false,
             ])
-            ->add('capacity', IntegerType::class, [
-                'required' => false,
+            ->add('readCharter', CheckboxType::class, [
+                'required' => true,
+                'mapped' => false,
+            ])
+            ->add('place', TextType::class, [
+                'filter_emojis' => true,
+                'purify_html' => true,
             ])
         ;
 

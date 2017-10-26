@@ -52,11 +52,10 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '30 Zeppelinstrasse', 47.3950062, 8.53838),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
             'expert_assistance_needed' => true,
             'coaching_requested' => false,
             'capacity' => 20,
+            'place' => null,
         ]);
         $initiative1->setPublished(true);
         $initiative1->setWasPublished(true);
@@ -71,11 +70,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', 45.7218703, 5.929463),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+9 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+ 9 days')).' 19:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 30,
+            'place' => 'Fablab',
         ]);
         $initiative2->setPublished(true);
         $initiative2->setWasPublished(true);
@@ -89,11 +86,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category3,
             'description' => 'Venez vous initier aux gestes qui sauvent',
             'address' => PostAddress::createFrenchAddress('16 rue de la Paix', '75008-75108', 48.869331, 2.331595),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 09:30:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 16:00:00'),
             'expert_assistance_needed' => true,
             'coaching_requested' => true,
-            'capacity' => 20,
+            'place' => 'SAMU',
         ]);
         $initiative3->setPublished(true);
         $initiative3->setWasPublished(true);
@@ -108,11 +103,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Nous allons rendre notre ville propre',
             'address' => PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', 48.869878, 2.332197),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 10:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 15:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 20,
+            'place' => null,
         ]);
         $initiative4->setPublished(true);
         $initiative4->setWasPublished(true);
@@ -126,11 +119,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Nous allons rendre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 10,
+            'place' => 'Kilchberg',
         ]);
         $initiative5->setPublished(true);
         $initiative5->setWasPublished(true);
@@ -144,11 +135,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'On a annulé cette initiative citoyenne.',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 18:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 5,
+            'place' => null,
         ]);
         $initiative6->setPublished(true);
         $initiative6->setWasPublished(true);
@@ -162,11 +151,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Nous allons rendre notre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 10,
+            'place' => 'Kilchberg',
         ]);
         $initiative7->setPublished(true);
         $initiative7->setWasPublished(true);
@@ -180,11 +167,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Nous allons rendre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 10,
+            'place' => 'Kilchberg',
         ]);
         $initiative8->setInterests(['environement']);
 
@@ -195,11 +180,9 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'category' => $category1,
             'description' => 'Nous allons rendre notre Vieux-Port propre',
             'address' => PostAddress::createForeignAddress('FR', '13001', 'Marseille', '25 Quai des Belges', 43.2943855, 5.3737235),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 12:00:00'),
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
-            'capacity' => 10,
+            'place' => 'Vieux-Port',
         ]);
         $initiative9->setPublished(true);
         $initiative9->setWasPublished(true);
