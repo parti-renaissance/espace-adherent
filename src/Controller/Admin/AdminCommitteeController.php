@@ -5,7 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Committee\MultipleReferentsFoundException;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Exception\CommitteeException;
+use AppBundle\Exception\BaseGroupException;
 use AppBundle\Exception\CommitteeMembershipException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,7 +32,7 @@ class AdminCommitteeController extends Controller
         try {
             $this->get('app.committee.authority')->approve($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
-        } catch (CommitteeException $exception) {
+        } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
         }
 
@@ -64,7 +64,7 @@ class AdminCommitteeController extends Controller
         try {
             $this->get('app.committee.authority')->refuse($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
-        } catch (CommitteeException $exception) {
+        } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
         }
 
