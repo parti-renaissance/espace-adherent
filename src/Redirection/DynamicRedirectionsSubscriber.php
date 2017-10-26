@@ -81,23 +81,29 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
             }
 
             if (0 === strpos($requestUri, '/article/')) {
-                $pathToContent = substr($requestUri, 9);
-                $urlToRedirect = null !== ($article = $this->articleRepository->findOnePublishedBySlug($pathToContent))
-                    ? $this->router->generate('article_view', [
-                        'categorySlug' => $article->getCategory()->getSlug(),
-                        'articleSlug' => $article->getSlug(),
-                    ])
-                    : substr_replace($requestUri, '/articles/', 0, 10);
+                $articleSlug = substr($requestUri, 9);
+
+                if (!$article = $this->articleRepository->findOnePublishedBySlug($articleSlug)) {
+                    continue;
+                }
+
+                $urlToRedirect = $this->router->generate('article_view', [
+                    'categorySlug' => $article->getCategory()->getSlug(),
+                    'articleSlug' => $article->getSlug(),
+                ]);
             }
 
             if (0 === strpos($requestUri, '/amp/article/')) {
-                $pathToContent = substr($requestUri, 13);
-                $urlToRedirect = null !== ($article = $this->articleRepository->findOnePublishedBySlug($pathToContent))
-                    ? $urlToRedirect = $this->router->generate('amp_article_view', [
-                        'categorySlug' => $article->getCategory()->getSlug(),
-                        'articleSlug' => $article->getSlug(),
-                    ])
-                    : substr_replace($requestUri, '/amp/articles/', 0, 14);
+                $articleSlug = substr($requestUri, 13);
+
+                if (!$article = $this->articleRepository->findOnePublishedBySlug($articleSlug)) {
+                    continue;
+                }
+
+                $urlToRedirect = $urlToRedirect = $this->router->generate('amp_article_view', [
+                    'categorySlug' => $article->getCategory()->getSlug(),
+                    'articleSlug' => $article->getSlug(),
+                ]);
             }
 
             $event->setResponse(new RedirectResponse($urlToRedirect, $redirectCode));
