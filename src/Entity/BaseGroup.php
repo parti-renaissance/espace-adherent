@@ -217,7 +217,7 @@ abstract class BaseGroup implements GeoPointInterface
     public function refused(string $timestamp = 'now')
     {
         $this->status = self::REFUSED;
-        $this->refusedAt = new \DateTimeImmutable($timestamp);
+        $this->refusedAt = new \DateTime($timestamp);
         $this->approvedAt = null;
     }
 
@@ -277,7 +277,7 @@ abstract class BaseGroup implements GeoPointInterface
         $this->setName($name);
         $this->description = $description;
 
-        if (null === $this->postAddress || !$this->postAddress->equals($address)) {
+        if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
         }
 
