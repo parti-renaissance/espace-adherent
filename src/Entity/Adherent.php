@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
+use AppBundle\Collection\GroupMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -176,11 +177,25 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $memberships;
 
     /**
+     * @var GroupMembership[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="GroupMembership", mappedBy="adherent", cascade={"remove"})
+     */
+    private $groupMemberships;
+
+    /**
      * @var CommitteeFeedItem[]|Collection|iterable
      *
      * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
      */
     private $committeeFeedItems;
+
+    /**
+     * @var GroupFeedItem[]|Collection|iterable
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\GroupFeedItem", mappedBy="author", cascade={"remove"})
+     */
+    private $groupFeedItems;
 
     /**
      * @var ActivitySubscription[]|Collection
@@ -219,6 +234,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->legislativeCandidate = false;
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
+        $this->groupMemberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
     }
@@ -551,6 +567,29 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return CommitteeMembership::createForAdherent($committee->getUuid(), $this, $privilege, $subscriptionDate);
     }
 
+    /**
+     * Joins a group as a ADMINISTRATOR privileged person.
+     */
+    public function administrateGroup(Group $group, string $subscriptionDate = 'now'): GroupMembership
+    {
+        return $this->joinGroup($group, GroupMembership::GROUP_ADMINISTRATOR, $subscriptionDate);
+    }
+
+    /**
+     * Joins a group as a simple FOLLOWER privileged person.
+     */
+    public function followGroup(Group $group, string $subscriptionDate = 'now'): GroupMembership
+    {
+        return $this->joinGroup($group, GroupMembership::GROUP_FOLLOWER, $subscriptionDate);
+    }
+
+    private function joinGroup(Group $group, string $privilege, string $subscriptionDate): GroupMembership
+    {
+        $group->incrementMembersCount();
+
+        return GroupMembership::createForAdherent($group->getUuid(), $this, $privilege, $subscriptionDate);
+    }
+
     public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
@@ -789,11 +828,35 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->memberships;
     }
 
+    final public function getGroupMemberships(): GroupMembershipCollection
+    {
+        if ($this->groupMemberships instanceof Collection) {
+            if (!$this->groupMemberships instanceof GroupMembershipCollection) {
+                $this->groupMemberships = new GroupMembershipCollection($this->groupMemberships->toArray());
+            }
+        } else {
+            $this->groupMemberships = new GroupMembershipCollection((array) $this->groupMemberships);
+        }
+
+        return $this->groupMemberships;
+    }
+
     public function getMembershipFor(Committee $committee): ?CommitteeMembership
     {
         foreach ($this->memberships as $membership) {
             if ($membership->matches($this, $committee)) {
                 return $membership;
+            }
+        }
+
+        return null;
+    }
+
+    public function getGroupMembershipFor(Group $group): ?GroupMembership
+    {
+        foreach ($this->groupMemberships as $groupMembership) {
+            if ($groupMembership->matches($this, $group)) {
+                return $groupMembership;
             }
         }
 
@@ -817,6 +880,20 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         return $membership->canHostCommittee();
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->getGroupMemberships()->countGroupAdministratorMemberships() >= 1;
+    }
+
+    public function isAdministratorOf(Group $group): bool
+    {
+        if (!$membership = $this->getGroupMembershipFor($group)) {
+            return false;
+        }
+
+        return $membership->canAdministrateGroup();
     }
 
     public function isSubscribedTo(Adherent $adherent = null): bool
@@ -882,5 +959,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getCommitteeFeedItems(): iterable
     {
         return $this->committeeFeedItems;
+    }
+
+    public function getGroupFeedItems(): iterable
+    {
+        return $this->groupFeedItems;
     }
 }

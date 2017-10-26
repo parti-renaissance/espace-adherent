@@ -5,10 +5,8 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Exception\CommitteeAlreadyTreatedException;
-use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -31,56 +29,10 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee implements GeoPointInterface
+class Committee extends BaseGroup
 {
-    const APPROVED = 'APPROVED';
     const PRE_APPROVED = 'PRE_APPROVED';
-    const PENDING = 'PENDING';
-    const REFUSED = 'REFUSED';
     const PRE_REFUSED = 'PRE_REFUSED';
-
-    use EntityIdentityTrait;
-    use EntityCrudTrait;
-    use EntityPostAddressTrait;
-    use EntityTimestampableTrait;
-
-    /**
-     * The committee name.
-     *
-     * @ORM\Column
-     *
-     * @Algolia\Attribute
-     */
-    private $name;
-
-    /**
-     * The committee name.
-     *
-     * @ORM\Column
-     *
-     * @Algolia\Attribute
-     */
-    private $canonicalName;
-
-    /**
-     * The committee slug.
-     *
-     * @ORM\Column
-     *
-     * @Gedmo\Slug(fields={"canonicalName"})
-     *
-     * @Algolia\Attribute
-     */
-    private $slug;
-
-    /**
-     * The committee description.
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Algolia\Attribute
-     */
-    private $description;
 
     /**
      * The committee Facebook page URL.
@@ -102,48 +54,6 @@ class Committee implements GeoPointInterface
      * @ORM\Column(nullable=true)
      */
     private $googlePlusPageUrl;
-
-    /**
-     * The committee current status.
-     *
-     * @ORM\Column(length=20)
-     */
-    private $status;
-
-    /**
-     * The timestamp when an administrator approved this committee.
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $approvedAt;
-
-    /**
-     * The timestamp when an administrator refused this committee.
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $refusedAt;
-
-    /**
-     * The adherent UUID who created this committee.
-     *
-     * @ORM\Column(type="uuid", nullable=true)
-     */
-    private $createdBy;
-
-    /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     */
-    private $phone;
-
-    /**
-     * The cached number of members (followers and hosts).
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Algolia\Attribute
-     */
-    private $membersCounts;
 
     /**
      * @var string
@@ -201,11 +111,6 @@ class Committee implements GeoPointInterface
         $this->updatedAt = $createdAt;
     }
 
-    public function __toString()
-    {
-        return $this->name ?: '';
-    }
-
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
     {
         $committee = new self(
@@ -234,31 +139,6 @@ class Committee implements GeoPointInterface
         $committee->createdAt = new \DateTime($createdAt);
 
         return $committee;
-    }
-
-    public static function createUuid(string $name): UuidInterface
-    {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    public function getPostAddress(): PostAddress
-    {
-        return $this->postAddress;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     public function getFacebookPageUrl(): ?string
@@ -296,24 +176,6 @@ class Committee implements GeoPointInterface
         $this->coordinatorComment = $coordinatorComment;
     }
 
-    public function isWaitingForApproval(): bool
-    {
-        return self::PENDING === $this->status && !$this->approvedAt;
-    }
-
-    /**
-     * @Algolia\IndexIf
-     */
-    public function isApproved(): bool
-    {
-        return self::APPROVED === $this->status && $this->approvedAt;
-    }
-
-    public function isPending(): bool
-    {
-        return self::PENDING === $this->status;
-    }
-
     public function isPreApproved(): bool
     {
         return self::PRE_APPROVED === $this->status;
@@ -322,26 +184,6 @@ class Committee implements GeoPointInterface
     public function isPreRefused(): bool
     {
         return self::PRE_REFUSED === $this->status;
-    }
-
-    public function isRefused(): bool
-    {
-        return self::REFUSED === $this->status;
-    }
-
-    public function getMembersCount(): int
-    {
-        return $this->membersCounts;
-    }
-
-    public function incrementMembersCount(int $increment = 1)
-    {
-        $this->membersCounts += $increment;
-    }
-
-    public function decrementMembersCount(int $increment = 1)
-    {
-        $this->membersCounts -= $increment;
     }
 
     /**
@@ -384,18 +226,6 @@ class Committee implements GeoPointInterface
         $this->status = self::PRE_REFUSED;
     }
 
-    /**
-     * Marks this committee as refused/rejected.
-     *
-     * @param string $timestamp
-     */
-    public function refused(string $timestamp = 'now')
-    {
-        $this->status = self::REFUSED;
-        $this->refusedAt = new \DateTime($timestamp);
-        $this->approvedAt = null;
-    }
-
     public function setSocialNetworks(
         string $facebookPageUrl = null,
         string $twitterNickname = null,
@@ -421,27 +251,6 @@ class Committee implements GeoPointInterface
         $this->googlePlusPageUrl = $googlePlusPageUrl;
     }
 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-        $this->canonicalName = static::canonicalize($name);
-    }
-
-    public static function canonicalize(string $name): string
-    {
-        return mb_strtolower($name);
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy->toString();
-    }
-
-    public function isCreatedBy(UuidInterface $uuid): bool
-    {
-        return $this->createdBy && $this->createdBy->equals($uuid);
-    }
-
     public function setCreator(?Adherent $creator): void
     {
         $this->creator = $creator;
@@ -450,31 +259,6 @@ class Committee implements GeoPointInterface
     public function getCreator(): ?Adherent
     {
         return $this->creator;
-    }
-
-    public function setPhone(PhoneNumber $phone = null): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Returns the approval date and time.
-     *
-     * @return \DateTime|null
-     */
-    public function getApprovedAt(): ?\DateTime
-    {
-        return $this->approvedAt;
-    }
-
-    public function updateSlug(string $slug)
-    {
-        $this->slug = $slug;
     }
 
     /**
@@ -504,24 +288,5 @@ class Committee implements GeoPointInterface
     private function createLink(string $url, string $label): Link
     {
         return new Link($url, $label);
-    }
-
-    public function equals(self $other): bool
-    {
-        return $this->uuid->equals($other->getUuid());
-    }
-
-    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone)
-    {
-        $this->setName($name);
-        $this->description = $description;
-
-        if (!$this->postAddress->equals($address)) {
-            $this->postAddress = $address;
-        }
-
-        if (null === $this->phone || !$this->phone->equals($phone)) {
-            $this->phone = $phone;
-        }
     }
 }
