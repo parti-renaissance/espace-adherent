@@ -16,7 +16,7 @@ final class CommitteeApprovalReferentMessage extends MailjetMessage
     ): self {
         return new self(
             Uuid::uuid4(),
-            '233705',
+            '221238',
             $referent->getEmailAddress(),
             $referent->getFullName(),
             'Un comité vient d\'être approuvé',
