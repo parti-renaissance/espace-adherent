@@ -57,6 +57,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => true,
             'coaching_requested' => false,
             'capacity' => 20,
+            'place' => null,
         ]);
         $initiative1->setPublished(true);
         $initiative1->setWasPublished(true);
@@ -76,6 +77,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 30,
+            'place' => null,
         ]);
         $initiative2->setPublished(true);
         $initiative2->setWasPublished(true);
@@ -94,6 +96,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => true,
             'coaching_requested' => true,
             'capacity' => 20,
+            'place' => null,
         ]);
         $initiative3->setPublished(true);
         $initiative3->setWasPublished(true);
@@ -113,6 +116,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 20,
+            'place' => null,
         ]);
         $initiative4->setPublished(true);
         $initiative4->setWasPublished(true);
@@ -131,6 +135,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 10,
+            'place' => 'Kilchberg',
         ]);
         $initiative5->setPublished(true);
         $initiative5->setWasPublished(true);
@@ -149,6 +154,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 5,
+            'place' => null,
         ]);
         $initiative6->setPublished(true);
         $initiative6->setWasPublished(true);
@@ -167,6 +173,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 10,
+            'place' => null,
         ]);
         $initiative7->setPublished(true);
         $initiative7->setWasPublished(true);
@@ -185,6 +192,7 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 10,
+            'place' => null,
         ]);
         $initiative8->setInterests(['environement']);
 
@@ -200,7 +208,13 @@ class LoadCitizenInitiativeData extends AbstractFixture implements FixtureInterf
             'expert_assistance_needed' => false,
             'coaching_requested' => false,
             'capacity' => 10,
+            'place' => null,
         ]);
+        $initiative9->setPublished(true);
+        $initiative9->setWasPublished(true);
+        $initiative9->incrementParticipantsCount(2);
+        $initiative9->setInterests(['environement']);
+
         $initiative9->setPublished(true);
         $initiative9->setWasPublished(true);
         $initiative9->incrementParticipantsCount(2);

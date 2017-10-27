@@ -115,7 +115,6 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
                         'minute' => '0',
                     ],
                 ],
-                'capacity' => '100',
             ],
         ]));
 
