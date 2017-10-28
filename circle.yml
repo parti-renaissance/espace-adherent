@@ -79,6 +79,9 @@ deployment:
             # Push the images to Google Cloud
             - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
 
+            # Tag image as latest
+            - sudo /opt/google-cloud-sdk/bin/gcloud container images add-tag eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 eu.gcr.io/$GCLOUD_PROJECT/app:latest --quiet
+
             # Deploy to staging
             - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
             - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
