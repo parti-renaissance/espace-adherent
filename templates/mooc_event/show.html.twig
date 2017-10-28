@@ -1,0 +1,19 @@
+{% extends 'events/show.html.twig' %}
+
+{% block page_title mooc_event.name %}
+{% block canonical_url url('app_mooc_event_show', {'slug': mooc_event.slug}) %}
+
+{% block json_ld %}
+    {% set event = mooc_event %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set event = mooc_event %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {% set event = mooc_event %}
+    {{ parent() }}
+{% endblock %}

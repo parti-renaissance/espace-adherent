@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
 class GroupFeedItem
 {
     const MESSAGE = 'message';
-    const EVENT_MOOC = 'event_mooc';
+    const MOOC_EVENT = 'mooc_event';
     const CITIZEN_INITIATIVE = 'citizen_initiative';
 
     use EntityIdentityTrait;
@@ -100,13 +100,32 @@ class GroupFeedItem
     ): self {
         $item = new static(
             Uuid::uuid5(Uuid::NAMESPACE_OID, (string) $event->getUuid()),
-            self::EVENT_MOOC,
+            self::MOOC_EVENT,
             $event->getGroup(),
             $author,
             $published,
             $createdAt
         );
         $item->event = $event;
+
+        return $item;
+    }
+
+    public static function createMoocEvent(
+        MoocEvent $moocEvent,
+        Adherent $author,
+        bool $published = true,
+        string $createdAt = 'now'
+    ): self {
+        $item = new static(
+            Uuid::uuid5(Uuid::NAMESPACE_OID, (string) $moocEvent->getUuid()),
+            self::MOOC_EVENT,
+            $moocEvent->getGroup(),
+            $author,
+            $published,
+            $createdAt
+        );
+        $item->event = $moocEvent;
 
         return $item;
     }

@@ -231,6 +231,10 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="app.voter.organizer_mooc_event_voter" class="AppBundle\MoocEvent\Voter\OrganizerMoocEventVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
         <!-- Groups -->
         <service id="app.group.manager" class="AppBundle\Group\GroupManager">
             <argument type="service" id="doctrine"/>
@@ -347,6 +351,19 @@
             <argument type="service" id="router" />
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <!-- MoocEvent -->
+        <service id="app.mooc_event.handler" class="AppBundle\MoocEvent\MoocEventCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.event.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="AppBundle\MoocEvent\MoocEventManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.repository.mooc_event"/>
         </service>
 
         <!-- Referents -->

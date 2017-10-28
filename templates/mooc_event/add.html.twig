@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Nouvel événement' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+            {{ js.ckeditor('mooc_event_description') }}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="citizen_initiative__create l__wrapper">
+    <section class="content ">
+        {% if mooc_event.slug is defined %}
+        <header class="space--30-0 l__wrapper--slim">
+            <h1 class="text--large text--center">
+                Je modifie mon événement MOOC
+            </h1>
+        </header>
+        <hr/>
+        {% else %}
+        <header class="space--60-0 l__wrapper--slim">
+            <h1 class="text--large text--center">
+                Créer mon événement
+            </h1>
+            <div class="text--body text--center b__nudge--top-10">
+                Vous créez un événement au sein de votre équipe MOOC.
+            </div>
+        </header>
+        <hr/>
+        {% endif %}
+    </section>
+    <section class="l__wrapper--slim">
+        <div id="citizen-initiative-form">
+            {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+            {{ form_errors(form) }}
+
+            <div class="form__row" id="citizen-initiative-description-field">
+                {{ form_errors(form.category) }}
+                {{ form_label(form.category, "Type d'événement") }}
+                {{ form_widget(form.category, { attr: { class: 'form--full citizen_initiative__form__category', 'placeholder': "Choisissez le thème de l'initiative" } }) }}
+            </div>
+
+            <div class="form__row" id="citizen-initiative-name-field">
+                {{ form_errors(form.name) }}
+                {{ form_label(form.name, "Nom de l'événement") }}
+                {{ form_widget(form.name, { attr: { class: 'form--full citizen_initiative__form__name', 'placeholder': "Entrez le nom de l'initiative (Max 100 caractères)" } }) }}
+            </div>
+
+            <div class="form__row" id="citizen-initiative-beginat-field">
+                {{ form_errors(form.beginAt) }}
+                {{ form_label(form.beginAt, 'Début') }}
+                {{ form_widget(form.beginAt, { attr: { class: 'citizen_initiative__begin_at l__row' } }) }}
+            </div>
+
+            <div class="form__row" id="citizen-initiative-finishat-field">
+                {{ form_errors(form.finishAt) }}
+                {{ form_label(form.finishAt, 'Fin') }}
+                {{ form_widget(form.finishAt, { attr: { class: 'citizen_initiative__finish_at l__row' } }) }}
+            </div>
+
+            <div id="citizen-initiative-address" class="form__row">
+                {{ form_errors(form.address) }}
+
+                <div class="form__row citizen_initiative__form--trunc" id="citizen-initiative-address-address-field">
+                    {{ form_errors(form.address.address) }}
+                    {{ form_label(form.address.address, "Adresse") }}
+                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez le lieu de l'initiative" } }) }}
+                </div>
+
+                <div class="citizen_initiative__address l__row l__row--h-stretch l__mobile--col">
+                    <div class="form__row citizen_initiative__form__zip_code register__form--third"
+                         id="citizen-initiative-address-zipcode-field">
+                        {{ form_label(form.address.postalCode, "Code postal") }}
+                        {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
+                    </div>
+
+                    <div class="form__row citizen_initiative__form__city register__form--third"
+                         id="citizen-initiative-address-city-field">
+                        {{ form_errors(form.address.city) }}
+                        {{ form_label(form.address.cityName, "Ville") }}
+                        {{ form_widget(form.address.city, { attr: { class: 'citizen_initiative__form__city'}}) }}
+                        {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full citizen_initiative__form__city_name', 'placeholder': 'Ville' } }) }}
+                    </div>
+
+                    <div class="form__row citizen_initiative__form__country register__form--third"
+                         id="citizen-initiative-address-country-field">
+                        {{ form_errors(form.address.country) }}
+                        {{ form_label(form.address.country, "Pays") }}
+                        {{ form_widget(form.address.country, { attr: { class: 'form--full', 'placeholder': 'Choisissez le pays' } }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form__row" id="citizen-initiative-description-field">
+                {{ form_errors(form.description) }}
+                {{ form_label(form.description, 'À propos') }}
+                {{ form_widget(form.description, { attr: { class: 'citizen_initiative__description', 'placeholder': 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '15', 'cols': '70' } }) }}
+            </div>
+
+            <div class="form__row l__col" id="committee-event-capacity-field">
+                {{ form_errors(form.capacity) }}
+                {{ form_label(form.capacity, 'Nombre de participants') }}
+                {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity register__form--third' } }) }}
+            </div>
+
+            {% if mooc_event.slug is defined %}
+                <div class="form__row b__nudge--top">
+                    <button type="submit" class="btn btn--blue">Enregistrer</button>
+                    <a href="{{ path('app_mooc_event_show', {'slug': mooc_event.slug}) }}"
+                       class="btn">
+                        Annuler
+                    </a>
+                </div>
+            {% else %}
+                <div class="form__row text--center b__nudge--top-40 b__nudge--bottom-huge">
+                    <button type="submit" class="btn btn--blue btn--medium">Je crée mon événement MOOC</button>
+                </div>
+            {% endif %}
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+</main>
+{% endblock %}

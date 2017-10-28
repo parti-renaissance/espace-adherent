@@ -1,0 +1,26 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block actions %}
+    {% if object.isPublished %}
+        <li>
+            <a href="{{ path('app_mooc_event_show', {'slug': object.slug}) }}"
+               class="sonata-action-element" title="Voir sur le site">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                Voir sur le site
+            </a>
+        </li>
+    {% endif %}
+    <li>
+        <a href="{{ path('admin_app_moocevent_show', {id: object.id}) }}" class="sonata-action-element" title="Afficher">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            Afficher
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_app_moocevent_list') }}" class="sonata-action-element" title="Éditer">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Retourner à la liste
+        </a>
+    </li>
+{% endblock %}
+
