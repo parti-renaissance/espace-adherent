@@ -11,6 +11,7 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
+use AppBundle\Referent\ReferentMessageNotifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -65,13 +66,15 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
-        $message = new ReferentMessage($this->getUser(), $filter);
+        $messageNotifier = $this->get(ReferentMessageNotifier::class);
+
+        $message = ReferentMessage::create($this->getUser(), $filter);
 
         $form = $this->createForm(ReferentMessageType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('old_sound_rabbit_mq.referent_message_dispatcher_producer')->scheduleDispatch($message);
+            $messageNotifier->sendMessage($message);
             $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
 
             return $this->redirect($this->generateUrl('app_referent_users').$filter);

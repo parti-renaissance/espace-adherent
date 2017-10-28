@@ -4,12 +4,13 @@ namespace Tests\AppBundle\Consumer;
 
 use AppBundle\Consumer\ReferentMessageDispatcherConsumer;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\ReferentMessage as Message;
-use AppBundle\Referent\ReferentMessage;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -35,16 +36,28 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
 
     public function setUp()
     {
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this
+            ->entityManager
+            ->expects($this->any())
+            ->method('getConnection')
+            ->willReturn($this->createMock(Connection::class));
+
         $this->validator = $this->createMock(ValidatorInterface::class);
+    }
+
+    public function tearDown()
+    {
+        $this->entityManager = null;
+        $this->validator = null;
     }
 
     public function testDoExecuteReferentNotFoundByUuidInMessage()
     {
         $uuid = 'aze-aze';
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->expects($this->once())->method('findByUuid')->willReturn(null);
+        $referentMessageRepository = $this->createMock(ReferentManagedUsersMessageRepository::class);
+        $referentMessageRepository->expects($this->once())->method('findOneByUuid')->willReturn(null);
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -54,29 +67,30 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer = new ReferentMessageDispatcherConsumer($this->validator, $this->entityManager);
 
         $message = $this->createMock(AMQPMessage::class);
-        $messageContent = ['referent_uuid' => $uuid];
+        $messageContent = ['uuid' => $uuid];
         $message->body = json_encode($messageContent);
         $logger = $this->createMock(LoggerInterface::class);
 
         $referentMessageDispatcherConsumer->setLogger($logger);
-        $referentMessageDispatcherConsumer->setAdherentRepository($adherentRepository);
+        $referentMessageDispatcherConsumer->setReferentMessageRepository($referentMessageRepository);
 
-        $this->expectOutputString($uuid.' | Referent not found, rejecting'.PHP_EOL);
+        $this->expectOutputString($uuid.' | Referent message not found, rejecting'.PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $referentMessageDispatcherConsumer->execute($message));
     }
 
     public function testDoExecuteWithNoMessageToSend()
     {
         $uuid = 'aze-aze';
-        $messageContent = ['referent_uuid' => $uuid];
-
-        $referentMessage = $this->createMock(ReferentMessage::class);
+        $messageContent = ['uuid' => $uuid];
 
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects($this->once())->method('getEmailAddress')->willReturn('hello@world.com');
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->expects($this->once())->method('findByUuid')->willReturn($adherent);
+        $referentMessage = $this->createMock(ReferentManagedUsersMessage::class);
+        $referentMessage->expects($this->any())->method('getFrom')->willReturn($adherent);
+
+        $referentMessageRepository = $this->createMock(ReferentManagedUsersMessageRepository::class);
+        $referentMessageRepository->expects($this->once())->method('findOneByUuid')->willReturn($referentMessage);
 
         $iterableResult = $this->createMock(IterableResult::class);
 
@@ -91,15 +105,17 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer = $this
             ->getMockBuilder(ReferentMessageDispatcherConsumer::class)
             ->setConstructorArgs([$this->validator, $this->entityManager])
-            ->setMethods(['createReferentMessage', 'getAdherentRepository', 'getReferentManagedUserRepository'])
+            ->setMethods(['getReferentManagedUserRepository', 'getReferentMessageRepository'])
             ->getMock();
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode($messageContent);
 
-        $referentMessageDispatcherConsumer->expects($this->once())->method('getAdherentRepository')->willReturn($adherentRepository);
-        $referentMessageDispatcherConsumer->expects($this->any())->method('createReferentMessage')->willReturn($referentMessage);
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $referentMessageDispatcherConsumer->setLogger($logger);
         $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
+        $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentMessageRepository')->willReturn($referentMessageRepository);
         $this->expectOutputString($uuid.' | Dispatching message from hello@world.com'.PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $referentMessageDispatcherConsumer->execute($message));
     }
@@ -107,24 +123,30 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
     public function testDoExecuteWithMessageToSendWithChunk()
     {
         $uuid = 'aze-aze';
-        $messageContent = ['referent_uuid' => $uuid];
+        $messageContent = ['uuid' => $uuid];
 
-        $referentMessage = $this->getMockBuilder(ReferentMessage::class)->disableOriginalConstructor()->getMock();
+        $mailer = $this->createMock(MailerService::class);
+        $mailer->expects($this->any())->method('sendMessage')->willReturn(true);
 
-        $mailer = $this->getMockBuilder(MailerService::class)->disableOriginalConstructor()->setMethods(['sendMessage'])->getMock();
+        $adherent = $this->createMock(Adherent::class);
+        $adherent->expects($this->any())->method('getEmailAddress')->willReturn('hello@world.com');
 
         $uuidInterface = $this->createMock(UuidInterface::class);
         $uuidInterface->expects($this->any())->method('toString')->willReturn($uuid);
 
-        $adherent = $this->createMock(Adherent::class);
-        $adherent->expects($this->any())->method('getEmailAddress')->willReturn('hello@world.com');
-        $adherent->expects($this->any())->method('getUuid')->willReturn($uuidInterface);
-        $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->expects($this->once())->method('findByUuid')->willReturn($adherent);
+        $referentMessage = $this->createMock(ReferentManagedUsersMessage::class);
+        $referentMessage->expects($this->any())->method('getFrom')->willReturn($adherent);
+        $referentMessage->expects($this->any())->method('getUuid')->willReturn($uuidInterface);
+
+        $referentMessageRepository = $this->createMock(ReferentManagedUsersMessageRepository::class);
+        $referentMessageRepository->expects($this->once())->method('findOneByUuid')->willReturn($referentMessage);
 
         $recipients = [];
         for ($i = 0; $i < (MailerService::PAYLOAD_MAXSIZE + 10); ++$i) {
-            $recipients[$i][] = uniqid().'@tld.com';
+            $recipient = $this->createMock(ReferentManagedUser::class);
+            $recipient->expects($this->any())->method('getEmail')->willReturn(uniqid().'@tld.com');
+
+            $recipients[$i][] = $recipient;
         }
         $iterableResult = $this->createIterator($recipients);
 
@@ -136,15 +158,12 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
 
-        $miljetReferentMessage = new Message($uuidInterface, 'a', 'b', 'c', 'd');
         $referentMessageDispatcherConsumer = $this
             ->getMockBuilder(ReferentMessageDispatcherConsumer::class)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods([
-                'createReferentMessage',
-                'getAdherentRepository',
+                'getReferentMessageRepository',
                 'getReferentManagedUserRepository',
-                'createMailerReferentMessage',
                 'getManager',
                 'getMailer',
             ])
@@ -153,12 +172,13 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode($messageContent);
 
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $referentMessageDispatcherConsumer->setLogger($logger);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getMailer')->willReturn($mailer);
-        $referentMessageDispatcherConsumer->expects($this->once())->method('getAdherentRepository')->willReturn($adherentRepository);
-        $referentMessageDispatcherConsumer->expects($this->any())->method('createReferentMessage')->willReturn($referentMessage);
-        $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
-        $referentMessageDispatcherConsumer->expects($this->any())->method('createMailerReferentMessage')->willReturn($miljetReferentMessage);
-        $referentMessageDispatcherConsumer->expects($this->once())->method('getManager')->willReturn($this->entityManager);
+        $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
+        $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentMessageRepository')->willReturn($referentMessageRepository);
+        $referentMessageDispatcherConsumer->expects($this->any())->method('getManager')->willReturn($this->entityManager);
         $this->entityManager->expects($this->once())->method('clear');
 
         $this->expectOutputString(

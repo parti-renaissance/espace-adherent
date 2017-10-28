@@ -9,6 +9,8 @@ class ReferentMessageDispatcherProducer extends Producer implements ReferentMess
 {
     public function scheduleDispatch(ReferentMessage $message): void
     {
-        $this->publish(\GuzzleHttp\json_encode($message->toArray()));
+        $this->publish(\GuzzleHttp\json_encode([
+            'uuid' => $message->getUuid()->toString(),
+        ]));
     }
 }
