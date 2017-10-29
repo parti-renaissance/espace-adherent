@@ -12,7 +12,7 @@ class FilesystemAdapterFactory
 {
     public static function createAdapter(string $environment, string $localPath, $gcloudId, $gcloudKeyFilePath, $gcloudBucket)
     {
-        if ($environment !== 'prod') {
+        if ('prod' !== $environment) {
             return new Local($localPath);
         }
 

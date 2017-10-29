@@ -38,7 +38,7 @@ class ClarificationAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $slugEditable =
-            $this->getSubject()->getTitle() === null   // Creation
+            null === $this->getSubject()->getTitle()   // Creation
             || !$this->getSubject()->isPublished()     // Draft
         ;
 

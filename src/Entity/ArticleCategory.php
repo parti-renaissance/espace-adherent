@@ -112,6 +112,6 @@ class ArticleCategory
 
     public static function isDefault(string $category): bool
     {
-        return $category === self::DEFAULT_CATEGORY;
+        return self::DEFAULT_CATEGORY === $category;
     }
 }

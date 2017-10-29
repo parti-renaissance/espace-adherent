@@ -72,7 +72,7 @@ class BuildAmpContentCommand extends ContainerAwareCommand
 
             $item->setAmpContent($amp->convertToAmpHtml());
 
-            if ($k % 10 === 0) {
+            if (0 === $k % 10) {
                 $progressbar->advance();
             }
         }

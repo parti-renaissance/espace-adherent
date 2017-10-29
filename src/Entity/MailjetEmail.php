@@ -145,7 +145,7 @@ class MailjetEmail
 
     public function isDelivered(): bool
     {
-        return $this->responsePayload !== null;
+        return null !== $this->responsePayload;
     }
 
     public function getCreatedAt(): \DateTime

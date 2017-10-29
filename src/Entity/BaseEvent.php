@@ -306,7 +306,7 @@ abstract class BaseEvent implements GeoPointInterface
 
     public function isCitizenInitiative(): bool
     {
-        return $this->getType() === self::CITIZEN_INITIATIVE_TYPE;
+        return self::CITIZEN_INITIATIVE_TYPE === $this->getType();
     }
 
     public function equals(self $other): bool

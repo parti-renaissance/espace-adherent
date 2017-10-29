@@ -36,7 +36,7 @@ final class CommitteeContactMembersMessage extends MailjetMessage
         );
 
         $sender = $host->getFirstName().', ';
-        $sender .= $host->getGender() === Genders::FEMALE ? 'animatrice' : 'animateur';
+        $sender .= Genders::FEMALE === $host->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 
         $message->setSenderName($sender);

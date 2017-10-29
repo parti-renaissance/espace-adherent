@@ -38,7 +38,7 @@ class TonMacronChoiceRepository extends EntityRepository
 
     public function findGenderChoice(?string $gender): ?TonMacronChoice
     {
-        if ($gender === Genders::FEMALE) {
+        if (Genders::FEMALE === $gender) {
             return $this->findOneBy(['contentKey' => TonMacronChoice::FEMALE_KEY]);
         }
 
