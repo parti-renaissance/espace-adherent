@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -83,8 +85,14 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
                 continue;
             }
 
+            try {
+                $routeParams = $this->router->match($requestUri);
+            } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
+                $routeParams = false;
+            }
+
             if ('/evenements/' === $patternToMatch
-                && ($routeParams = $this->router->match($requestUri))
+                && $routeParams
                 && isset($routeParams['uuid'])
                 && ($eventEntity = $this->eventRepository->findOneByUuid($routeParams['uuid']))
                 && !$eventEntity->isPublished()) {
