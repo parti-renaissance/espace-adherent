@@ -2,7 +2,7 @@ machine:
     node:
         version: 4.5.0
     php:
-        version: 7.1.0
+        version: 7.1.6
     environment:
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
