@@ -181,11 +181,14 @@
             <tag name="form.type" />
         </service>
 
-        <service id="user_provider.entity" parent="hwi_oauth.user.provider.entity">
+        <service id="user_provider.entity" parent="hwi_oauth.user.provider.entity" class="AppBundle\Security\EntityUserProvider">
             <argument>AppBundle\Entity\Adherent</argument>
             <argument type="collection">
                 <argument key="auth">emailAddress</argument>
             </argument>
+            <argument>default</argument>
+            <argument type="service" id="csa_guzzle.client.auth" />
+            <argument type="service" id="app.membership.adherent_factory" />
         </service>
     </services>
 </container>
