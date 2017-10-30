@@ -123,7 +123,7 @@ class Donation implements GeoPointInterface
             $this->payboxAuthorizationCode = $payboxPayload['authorization'];
         }
 
-        if ($this->payboxResultCode === '00000') {
+        if ('00000' === $this->payboxResultCode) {
             $this->donatedAt = new \DateTime();
         }
     }

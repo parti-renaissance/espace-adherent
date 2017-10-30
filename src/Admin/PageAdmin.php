@@ -22,7 +22,7 @@ class PageAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if ($this->getSubject()->getId() === null) {
+        if (null === $this->getSubject()->getId()) {
             $formMapper
                 ->with('Title', ['class' => 'col-md-12'])
                     ->add('title', TextType::class, [

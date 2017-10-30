@@ -199,7 +199,7 @@ class AdherentController extends Controller
 
         try {
             if ($fromType && $fromId) {
-                if ($fromType === 'committee') {
+                if ('committee' === $fromType) {
                     $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
                 } else {
                     $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);

@@ -160,12 +160,12 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
                 'email' => $row[9],
                 'execute_mandate' => true,
                 'roles' => [
-                    'mayor_less' => $row[0] === 'Maire >50k' ? true : false,
-                    'president_less' => $row[0] === 'EPCI > 100k' ? true : false,
-                    'minister' => $row[0] === 'Gouvernement' ? true : false,
-                    'deputy' => $row[0] === 'Députés' ? true : false,
-                    'european_deputy' => $row[0] === 'Députés européens' ? true : false,
-                    'referent' => $row[0] === 'Referent' ? true : false,
+                    'mayor_less' => 'Maire >50k' === $row[0] ? true : false,
+                    'president_less' => 'EPCI > 100k' === $row[0] ? true : false,
+                    'minister' => 'Gouvernement' === $row[0] ? true : false,
+                    'deputy' => 'Députés' === $row[0] ? true : false,
+                    'european_deputy' => 'Députés européens' === $row[0] ? true : false,
+                    'referent' => 'Referent' === $row[0] ? true : false,
                     'other_role' => false,
                 ],
             ];

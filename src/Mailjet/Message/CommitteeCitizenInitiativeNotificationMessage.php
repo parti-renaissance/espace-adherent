@@ -61,7 +61,7 @@ final class CommitteeCitizenInitiativeNotificationMessage extends MailjetMessage
         );
 
         $sender = $feedItem->getAuthor()->getFirstName().', ';
-        $sender .= $feedItem->getAuthor()->getGender() === Genders::FEMALE ? 'animatrice' : 'animateur';
+        $sender .= Genders::FEMALE === $feedItem->getAuthor()->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 
         $message->setSenderName($sender);

@@ -55,7 +55,7 @@ class AssetRuntime
 
     public function webpackAsset(string $path, $packageName = null): string
     {
-        if ($this->env === 'dev') {
+        if ('dev' === $this->env) {
             return $this->symfonyAssetExtension->getAssetUrl('built/'.$path, $packageName);
         }
 

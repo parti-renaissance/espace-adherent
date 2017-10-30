@@ -198,7 +198,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
                     $areas[$zipCode] = [
                           'name' => sprintf(
                           'Paris %s',
-                          substr($zipCode, -2, 1) === '0'
+                          '0' === substr($zipCode, -2, 1)
                             ? substr($zipCode, -1)
                             : substr($zipCode, -2)
                         ),

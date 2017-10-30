@@ -355,7 +355,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             ];
         }
 
-        if ($uuid === LoadAdherentData::COMMITTEE_3_UUID) {
+        if (LoadAdherentData::COMMITTEE_3_UUID === $uuid) {
             yield [
                 'text' => 'Lancement du comité !',
                 'created_at' => '2017-01-16 13:14:56',

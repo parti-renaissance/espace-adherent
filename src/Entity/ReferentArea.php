@@ -163,7 +163,7 @@ class ReferentArea
 
         $areaCode = (int) $this->areaCode;
 
-        if (strlen($areaCode) === 5 && substr($areaCode, 0, 2) <= 95) {
+        if (5 === strlen($areaCode) && substr($areaCode, 0, 2) <= 95) {
             return self::ZONE_ARRONDISSEMENT;
         }
 
