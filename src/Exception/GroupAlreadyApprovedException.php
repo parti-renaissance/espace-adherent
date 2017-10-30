@@ -6,10 +6,10 @@ use Ramsey\Uuid\UuidInterface;
 
 class GroupAlreadyApprovedException extends BaseGroupException
 {
-    public function __construct(UuidInterface $committeeUuid, \Exception $previous = null)
+    public function __construct(UuidInterface $groupUuid, \Exception $previous = null)
     {
-        $message = sprintf('Group %s has already been approved by an administrator.', $committeeUuid->toString());
+        $message = sprintf('Group %s has already been approved by an administrator.', $groupUuid->toString());
 
-        parent::__construct($committeeUuid, $message, $previous);
+        parent::__construct($groupUuid, $message, $previous);
     }
 }

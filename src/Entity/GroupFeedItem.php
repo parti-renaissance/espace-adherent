@@ -32,7 +32,7 @@ class GroupFeedItem
     private $group;
 
     /**
-     * @var Adherent Any host of the group
+     * @var Adherent Any administrator of the group
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="groupFeedItems")
      */

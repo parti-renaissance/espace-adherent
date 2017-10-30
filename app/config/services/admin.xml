@@ -460,6 +460,22 @@
 
         <!--
         ######################################################
+        # Groups
+        ######################################################
+         -->
+
+        <service id="app.admin.group" class="AppBundle\Admin\GroupAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Équipes MOOC" group="MOOC" />
+
+            <argument />
+            <argument>AppBundle\Entity\Group</argument>
+            <argument />
+            <argument type="service" id="app.group.manager" />
+            <argument type="service" id="app.repository.group_membership" />
+        </service>
+
+        <!--
+        ######################################################
         # Data Transformer
         ######################################################
          -->

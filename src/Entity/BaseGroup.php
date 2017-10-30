@@ -98,7 +98,7 @@ abstract class BaseGroup implements GeoPointInterface
     protected $phone;
 
     /**
-     * The cached number of members (followers and hosts).
+     * The cached number of members (followers and hosts/administrators).
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
