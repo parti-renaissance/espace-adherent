@@ -104,5 +104,14 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.group" class="AppBundle\Repository\GroupRepository" public="false">
+            <argument>AppBundle\Entity\Group</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.group_membership" class="AppBundle\Repository\GroupMembershipRepository" public="false">
+            <argument>AppBundle\Entity\GroupMembership</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
     </services>
 </container>

@@ -31,7 +31,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GroupMembership
 {
-    const GROUP_ADMINISTRATOR = 'HOST';
+    const GROUP_ADMINISTRATOR = 'ADMINISTRATOR';
     const GROUP_FOLLOWER = 'FOLLOWER';
 
     const PRIVILEGES = [
@@ -60,11 +60,11 @@ class GroupMembership
     /**
      * The privilege given to the member in the group.
      *
-     * Privilege is either HOST or FOLLOWER.
+     * Privilege is either ADMINISTRATOR or FOLLOWER.
      *
      * @var string
      *
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=15)
      */
     private $privilege;
 

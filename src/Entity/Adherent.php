@@ -193,7 +193,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @var GroupFeedItem[]|Collection|iterable
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\GroupFeedItem", mappedBy="author", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GroupFeedItem", mappedBy="author", cascade={"remove"})
      */
     private $groupFeedItems;
 
@@ -272,6 +272,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_BOARD_MEMBER';
         }
 
+        if ($this->isAdministrator()) {
+            $roles[] = 'ROLE_ADMINISTRATOR';
+        }
+
         return $roles;
     }
 
@@ -290,7 +294,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isBoardMember();
+        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isAdministrator() || $this->isBoardMember();
     }
 
     public function getPassword(): string

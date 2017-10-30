@@ -34,11 +34,6 @@ class GroupMembershipCollection extends ArrayCollection
         }));
     }
 
-    public function countGroupSupervisorMemberships(): int
-    {
-        return $this->getGroupSupervisorMemberships()->count();
-    }
-
     public function getGroupAdministratorMemberships(): self
     {
         $groups = $this->filter(function (GroupMembership $membership) {
@@ -52,13 +47,6 @@ class GroupMembershipCollection extends ArrayCollection
     {
         return $this->filter(function (GroupMembership $membership) {
             return $membership->isFollower();
-        });
-    }
-
-    public function getGroupSupervisorMemberships(): self
-    {
-        return $this->filter(function (GroupMembership $membership) {
-            return $membership->isAdministrator();
         });
     }
 
