@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailjet\Message\MailjetMessageRecipient;
 use PHPUnit\Framework\TestCase;
+use Tests\AppBundle\Config;
 
 class AdherentAccountActivationMessageTest extends TestCase
 {
@@ -16,7 +17,7 @@ class AdherentAccountActivationMessageTest extends TestCase
         $adherent->expects($this->once())->method('getFullName')->willReturn('Jérôme Pichoud');
         $adherent->expects($this->once())->method('getFirstName')->willReturn('Jérôme');
 
-        $message = AdherentAccountActivationMessage::createFromAdherent($adherent, 'https://localhost/activation');
+        $message = AdherentAccountActivationMessage::createFromAdherent($adherent, 'https://'.Config::APP_HOST.'/activation');
 
         $this->assertInstanceOf(AdherentAccountActivationMessage::class, $message);
         $this->assertSame('54665', $message->getTemplate());
@@ -31,7 +32,7 @@ class AdherentAccountActivationMessageTest extends TestCase
         $this->assertSame(
             [
                 'target_firstname' => 'Jérôme',
-                'confirmation_link' => 'https://localhost/activation',
+                'confirmation_link' => 'https://'.Config::APP_HOST.'/activation',
             ],
             $recipient->getVars()
         );

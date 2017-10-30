@@ -19,6 +19,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -71,7 +72,7 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     public function testActionsAreForbiddenAsAnonymous(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://localhost/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
     }
 
     /**
@@ -608,7 +609,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         // Search the skill that user has not, should find one skill
-        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=outi');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/competences/autocompletion?term=outi', [], [], [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -628,7 +631,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         // Search the skill that user already has, nothing should be found
-        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=sof');
+        $this->client->request(Request::METHOD_GET, 'espace-adherent/mon-profil/competences/autocompletion?term=sof', [], [], [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
