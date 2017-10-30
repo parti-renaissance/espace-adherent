@@ -183,6 +183,7 @@ class SitemapFactory
         $sitemap->add($this->generateUrl('page_le_mouvement_les_comites'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_le_mouvement_devenez_benevole'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_mentions_legales'), null, ChangeFrequency::WEEKLY, 0.2);
+        $sitemap->add($this->generateUrl('page_politique_cookies'), null, ChangeFrequency::WEEKLY, 0.2);
     }
 
     private function addArticles(Sitemap $sitemap)

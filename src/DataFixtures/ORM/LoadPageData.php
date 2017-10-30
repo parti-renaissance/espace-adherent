@@ -110,6 +110,15 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'politique cookies',
+            'title' => 'Politique des Cookies',
+            'slug' => 'politique-cookies',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../cookies.md'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'keywords' => 'programme propositions',
             'title' => 'Les propositions d\'Emmanuel Macron',
             'slug' => 'emmanuel-macron-propositions',

@@ -137,6 +137,16 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/politique-cookies", defaults={"_enable_campaign_silence"=true}, name="page_politique_cookies")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('politique-cookies')")
+     */
+    public function politiqueCookiesAction(Page $page)
+    {
+        return $this->render('page/politique-cookies.html.twig', ['page' => $page]);
+    }
+
+    /**
      * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter")
      * @Method("GET")
      */
