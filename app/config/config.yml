@@ -239,6 +239,11 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
 
+        enmarche_sync_user_create:
+            connection: default
+            exchange_options: { name: 'enmarche_sync_user_create', type: direct }
+            queue_options:    { name: 'enmarche_sync_user_create', durable: true }
+
     consumers:
         mailjet_campaign:
             connection:        default
