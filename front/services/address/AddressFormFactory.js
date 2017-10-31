@@ -5,13 +5,14 @@ export default class AddressFormFactory {
         this._api = api;
     }
 
-    createAddressForm(country, postalCode, city, cityName) {
+    createAddressForm(country, postalCode, city, cityName, cityNameRequired) {
         return new AddressForm(
             this._api,
             dom('#'+country),
             dom('#'+postalCode),
             dom('#'+city),
-            dom('#'+cityName)
+            dom('#'+cityName),
+            cityNameRequired
         );
     }
 }

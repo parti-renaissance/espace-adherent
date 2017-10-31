@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller
 {
@@ -66,6 +67,15 @@ class SearchController extends Controller
             'results' => $results ?? [],
             'errors' => $errors ?? [],
         ]);
+    }
+
+    /**
+     * @Route("/groupes", name="app_search_groups")
+     * @Method("GET")
+     */
+    public function searchAction(Request $request): Response
+    {
+        return new Response();
     }
 
     /**

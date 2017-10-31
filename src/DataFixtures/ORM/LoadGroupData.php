@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Group\GroupFactory;
-use AppBundle\Entity\PostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -37,7 +37,7 @@ class LoadGroupData extends AbstractFixture implements FixtureInterface, Contain
             'name' => 'MOOC à Paris 8',
             'slug' => 'mooc-a-paris-8',
             'description' => 'L\'équipe MOOC des habitants du 8ème arrondissement de Paris.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
         ]);
         $group1->approved('2017-10-12 15:54:18');
         $this->addReference('group-1', $group1);
@@ -48,7 +48,7 @@ class LoadGroupData extends AbstractFixture implements FixtureInterface, Contain
             'created_at' => '2017-10-12 18:34:12',
             'name' => 'MOOC à Marseille',
             'description' => "L'équipe MOOC à Marseille !",
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
             'phone' => '33 673643424',
         ]);
         $this->addReference('group-2', $group2);
@@ -80,7 +80,7 @@ class LoadGroupData extends AbstractFixture implements FixtureInterface, Contain
             'created_at' => '2017-10-19 11:54:28',
             'name' => 'Formation en ligne ouverte à tous à Évry',
             'description' => 'Équipe de la formation en ligne ouverte à tous à Évry',
-            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
+            'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
             'phone' => '33 673654349',
         ]);
         $group5->approved();
@@ -123,7 +123,7 @@ class LoadGroupData extends AbstractFixture implements FixtureInterface, Contain
             'created_at' => '2017-10-09 12:16:22',
             'name' => 'MOOC à New York City',
             'description' => 'Équipe MOOC à New York City.',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
             'phone' => '1 2123150100',
         ]);
         $group9->approved('2017-10-09 13:27:42');

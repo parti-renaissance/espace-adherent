@@ -9,10 +9,12 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\Group;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Mailer\Message\AdherentContactMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
 use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
+use AppBundle\Mailer\Message\GroupCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
@@ -431,6 +433,110 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
         $this->assertTrue($adherent->hasSubscribedMainEmails());
+    }
+
+    public function testAnonymousUserCannotCreateGroup()
+    {
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
+    }
+
+    public function testAdherentCanCreateNewGroup()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->assertSame(2, $crawler->selectLink('Créer une équipe MOOC')->count());
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testGroupAdministratorCanCreateAnotherGroup()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->assertSame(2, $crawler->selectLink('Créer une équipe MOOC')->count());
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testCreateGroupFailed()
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+
+        $data = [];
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+
+        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+        );
+
+        $data = [];
+        $data['group']['name'] = 'M';
+        $data['group']['description'] = 'MOOC';
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+
+        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(
+            'Vous devez saisir au moins 2 caractères.',
+            $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Votre texte de description est trop court. Il doit compter 5 caractères minimum.',
+            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+        );
+    }
+
+    public function testCreateGroupSuccessful()
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+
+        $data = [];
+        $data['group']['name'] = 'Mon équipe MOOC';
+        $data['group']['description'] = 'Ma première équipe MOOC';
+        $data['group']['address']['address'] = 'Pilgerweg 58';
+        $data['group']['address']['cityName'] = 'Kilchberg';
+        $data['group']['address']['postalCode'] = '8802';
+        $data['group']['address']['country'] = 'CH';
+        $data['group']['phone']['country'] = 'CH';
+        $data['group']['phone']['number'] = '31 359 21 11';
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+        $group = $this->getGroupRepository()->findOneBy(['name' => 'Mon équipe MOOC']);
+
+        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertInstanceOf(Group::class, $group);
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(GroupCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+    }
+
+    public function testCreateGroupWithoutAddressAndPhoneSuccessful()
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+
+        $data = [];
+        $data['group']['name'] = 'Mon équipe';
+        $data['group']['description'] = 'Ma première équipe';
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+        $group = $this->getGroupRepository()->findOneBy(['name' => 'Mon équipe']);
+
+        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertInstanceOf(Group::class, $group);
+
+        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(GroupCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
     }
 
     /**

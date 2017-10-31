@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Group;
 
+use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Group\GroupCommand;
 use AppBundle\Entity\Group;
-use AppBundle\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -24,7 +24,7 @@ class GroupCommandTest extends TestCase
             Uuid::fromString(self::CREATOR_UUID),
             $name,
             $description,
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
+            NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-lyon'
         );

@@ -71,6 +71,11 @@ committee.promote_host.success: Le membre a été promu animateur du comité ave
 committee.demote_host.success: Le membre a été redéfini simple membre du comité avec succès.
 
 #
+# Group
+#
+group.creation.success: Votre équipe MOOC est en attente de validation par l'équipe de LaREM. Vous en serez informé(e) par mail. Une fois validée, vous pourrez vous organiser les citoyens qui la réjoignent.
+
+#
 # Summary
 #
 summary.handle_experience.success: L'expérience a bien été sauvegardée.

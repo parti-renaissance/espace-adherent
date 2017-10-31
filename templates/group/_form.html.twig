@@ -1,0 +1,60 @@
+{{ form_errors(form) }}
+
+<div class="form__row" id="field-name">
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name, {
+        'attr': {
+            'class': 'form--full',
+            'placeholder': 'Nom de votre équipe MOOC. Ex: Equipe MOOC de Boulogne (Max 60 caractères)',
+        }
+    }) }}
+</div>
+
+<div class="form__row" id="field-description">
+    {{ form_errors(form.description) }}
+    {{ form_widget(form.description, {
+        'attr': {
+            'class': 'form--full form__field--textarea-120',
+            'placeholder': 'Description du groupe (Max 140 caractères). Ex.: Une belle équipe pour travailler ensemble sur le MOOC',
+        }
+    }) }}
+</div>
+
+<p class="group-optional">Situez géographiquement votre groupe (facultatif)</p>
+<div class="form__row" id="group-address">
+    {{ form_errors(form.address) }}
+    <div class="l__row l__row--h-stretch register__form--full" id="field-address">
+        {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+        {{ form_errors(form.address.address) }}
+    </div>
+
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="register__form__zip_code register__form--third" id="field-postal-code-city">
+            {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+        </div>
+
+        <div class="register__form__city register__form--third">
+            {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+            {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+            {{ form_errors(form.address.city) }}
+        </div>
+
+        <div class="register__form__country register__form--third" id="field-country">
+            {{ form_widget(form.address.country) }}
+            {{ form_errors(form.address.country) }}
+        </div>
+    </div>
+
+    <p class="group-optional">Téléphone (facultatif)</p>
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="l__col l__col--top register__form__phone register__form--third">
+            {{ form_label(form.phone, 'Téléphone', { 'label_attr': {'class': 'text--gray'} }) }}
+            <div class="l__row l__row--top l__row--h-stretch">
+                {{ form_widget(form.phone.country) }}
+                {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+            </div>
+            {{ form_errors(form.phone) }}
+        </div>
+    </div>
+
+</div>

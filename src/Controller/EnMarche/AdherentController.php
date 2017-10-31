@@ -16,8 +16,10 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Form\GroupCommandType;
 use AppBundle\Form\UnregistrationType;
 use AppBundle\Form\UpdateMembershipRequestType;
+use AppBundle\Group\GroupCreationCommand;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\UnregistrationCommand;
 use GuzzleHttp\Exception\ConnectException;
@@ -163,6 +165,34 @@ class AdherentController extends Controller
         }
 
         return $this->render('adherent/create_committee.html.twig', [
+            'form' => $form->createView(),
+            'adherent' => $user,
+        ]);
+    }
+
+    /**
+     * This action enables an adherent to create a committee.
+     *
+     * @Route("/creer-mon-equipe-mooc", name="app_adherent_create_group")
+     * @Method("GET|POST")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function createGroupAction(Request $request): Response
+    {
+        $this->disableInProduction();
+
+        $command = GroupCreationCommand::createFromAdherent($user = $this->getUser());
+        $form = $this->createForm(GroupCommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('app.group.creation_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('group.creation.success'));
+
+            return $this->redirect($this->generateUrl('app_group_show', ['slug' => $command->getGroup()->getSlug()]));
+        }
+
+        return $this->render('adherent/create_group.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
         ]);

@@ -53,8 +53,6 @@ test:
             parallel: true
         - ./bin/console doctrine:schema:create --env=test_mysql:
             parallel: true
-        - ./bin/console doctrine:query:sql "ALTER TABLE groups CHANGE address_country address_country VARCHAR(2) DEFAULT NULL" --env=test_mysql:
-            parallel: true
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit:
             parallel: true
 

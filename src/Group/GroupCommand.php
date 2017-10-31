@@ -2,7 +2,7 @@
 
 namespace AppBundle\Group;
 
-use AppBundle\Address\Address;
+use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\Group;
 use AppBundle\Validator\UniqueGroup as AssertUniqueGroup;
 use libphonenumber\PhoneNumber;
@@ -20,7 +20,7 @@ class GroupCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=2, max=50)
+     * @Assert\Length(min=2, max=60)
      */
     public $name;
 
@@ -33,7 +33,7 @@ class GroupCommand
     /**
      * The group address.
      *
-     * @var Address
+     * @var NullableAddress
      *
      * @Assert\Valid
      */
@@ -44,14 +44,14 @@ class GroupCommand
      */
     protected $phone;
 
-    protected function __construct(Address $address = null)
+    protected function __construct(NullableAddress $address = null)
     {
         $this->address = $address;
     }
 
     public static function createFromGroup(Group $group): self
     {
-        $address = $group->getPostAddress() ? Address::createFromAddress($group->getPostAddress()) : null;
+        $address = $group->getPostAddress() ? NullableAddress::createFromAddress($group->getPostAddress()) : null;
         $dto = new self($address);
         $dto->name = $group->getName();
         $dto->description = $group->getDescription();
@@ -59,15 +59,6 @@ class GroupCommand
         $dto->group = $group;
 
         return $dto;
-    }
-
-    public function updateGroup(): Group
-    {
-        if (!$this->group) {
-            throw new \RuntimeException('A Group instance is required.');
-        }
-
-        $this->group->update($this);
     }
 
     public function getCityName(): string
@@ -100,12 +91,12 @@ class GroupCommand
         return $this->group->getSlug();
     }
 
-    public function setAddress(Address $address): void
+    public function setAddress(NullableAddress $address = null): void
     {
         $this->address = $address;
     }
 
-    public function getAddress(): Address
+    public function getAddress(): ?NullableAddress
     {
         return $this->address;
     }

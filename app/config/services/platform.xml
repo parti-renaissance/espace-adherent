@@ -247,6 +247,17 @@
             <tag name="validator.constraint_validator" alias="app.validator.unique_group"/>
         </service>
 
+        <service id="app.group.creation_handler" class="AppBundle\Group\GroupCreationCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.group.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+        </service>
+
+        <service id="app.voter.show_group_voter" class="AppBundle\Group\Voter\ShowGroupVoter" public="false">
+            <tag name="security.voter"/>
+        </service>
+
         <!-- Events -->
         <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
 

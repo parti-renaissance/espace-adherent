@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Je crée mon équipe MOOC !' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper--medium b__nudge--bottom-huge">
+            <a href="{{ path('app_search_groups') }}" class="back-to-list icon--with-text text--summary">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à la liste des équipes MOOC</a>
+
+            <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
+                <h1 class="b__nudge--bottom-small text--large">
+                    Je crée mon équipe MOOC !
+                </h1>
+                <p class="text--body">
+                    En créant votre groupe, vous pourrez réunir des citoyens pour débattre et partager autour
+                    de sujets qui vous intéressent !
+                </p>
+                <p class="text--body">
+                    Consultez la <a href="{{ path('app_group_help') }}">FAQ</a> pour en savoir plus.
+                </p>
+            </header>
+
+            <div class="group__form">
+                <form method="post" id="create-group-form" class="form group-form">
+                    {{ include('group/_form.html.twig') }}
+
+                    <div class="space--20-30">
+                        <h3>Rappel de vos informations personnelles</h3>
+
+                        <div class="form__row" id="field-personal-information">
+                            <strong>Nom</strong> : {{ app.user.lastName|upper }}<br/>
+                            <strong>Prénom</strong> : {{ app.user.firstName|capitalize }}<br/>
+                            <strong>Adresse e-mail</strong> : {{ app.user.emailAddress }}<br/>
+                        </div>
+
+                        <p class="wrong-personal-infos">
+                            Ces informations ne sont pas justes ?
+                            <a href="{{ path('app_adherent_profile') }}">Éditez-les</a>.
+                        </p>
+                    </div>
+
+                    <div class="text--center">
+                        <button type="submit" class="btn btn--blue btn--medium" id="create-my-group">
+                            Créer mon équipe MOOC
+                        </button>
+                    </div>
+
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

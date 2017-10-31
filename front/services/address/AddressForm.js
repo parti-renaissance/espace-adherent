@@ -1,5 +1,5 @@
 export default class AddressForm {
-    constructor(api, country, postalCode, city, cityName) {
+    constructor(api, country, postalCode, city, cityName, cityNameRequired) {
         this._api = api;
         this._country = country;
         this._postalCode = postalCode;
@@ -8,6 +8,8 @@ export default class AddressForm {
 
         this._initialCity = this._city.value;
         this._initialCityName = this._cityName.value;
+
+        this._cityNameRequired = typeof cityNameRequired === 'undefined' ? true : cityNameRequired;
 
         this._state = {
             country: this._country.value,
@@ -47,7 +49,7 @@ export default class AddressForm {
 
         if ('FR' !== this._state.country) {
             show(this._cityName);
-            this._cityName.required = true;
+            this._cityName.required = this._cityNameRequired;
             this._cityName.value = this._initialCityName;
             return;
         }

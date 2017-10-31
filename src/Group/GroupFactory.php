@@ -63,7 +63,7 @@ class GroupFactory
             $command->getAdherent(),
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null,
             $command->getPhone()
         );
 

@@ -50,9 +50,9 @@ class App {
         this._di.get('sharer').share(type, url, title);
     }
 
-    createAddressSelector(country, postalCode, city, cityName) {
+    createAddressSelector(country, postalCode, city, cityName, cityNameRequired) {
         const formFactory = this._di.get('address.form_factory');
-        const form = formFactory.createAddressForm(country, postalCode, city, cityName);
+        const form = formFactory.createAddressForm(country, postalCode, city, cityName, cityNameRequired);
 
         form.prepare();
         form.refresh();

@@ -2,12 +2,13 @@
 
 namespace Tests\AppBundle\Group;
 
-use AppBundle\Address\Address;
+use AppBundle\Address\NullableAddress;
+use AppBundle\Entity\NullablePostAddress;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Group\GroupCreationCommand;
 use AppBundle\Group\GroupFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Group;
-use AppBundle\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +20,7 @@ class GroupFactoryTest extends TestCase
         $uuid = Adherent::createUuid($email);
         $name = 'MOOC à Lyon 1er Lyon 1er';
         $description = 'L\équipe MOOC à  Lyon 1er';
-        $address = Address::createFromAddress(PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
+        $address = NullableAddress::createFromAddress(NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
 
         $adherent = new Adherent(
             $uuid,
