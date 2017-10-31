@@ -108,7 +108,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
             'ton_macron_invitation[selfReasons]' => [1 => '62', 2 => '63'],
         ]));
 
-        $invitation->selfReasons = $this->getChoices([62, 63]);
+        $invitation->selfReasons = $this->getChoices([62, 63], true);
         $invitation->marking = InvitationProcessor::STATE_SUMMARY;
 
         $currentInvitation = $this->getCurrentInvitation();
@@ -213,7 +213,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
         return $this->container->get('app.ton_macron.invitation_processor_handler');
     }
 
-    private function getCurrentInvitation()
+    private function getCurrentInvitation(): InvitationProcessor
     {
         return $this->getTonMacronInvitationHandler()->start($this->client->getRequest()->getSession());
     }
@@ -226,10 +226,12 @@ class TonMacronControllerTest extends SqliteWebTestCase
     /**
      * @param int[] $ids
      *
-     * @return TonMacronChoice[]|ArrayCollection
+     * @return TonMacronChoice[]|ArrayCollection|array
      */
-    private function getChoices(array $ids): ArrayCollection
+    private function getChoices(array $ids, bool $asCollection = false)
     {
-        return new ArrayCollection($this->tonMacronChoiceRepository->findBy(['id' => $ids]));
+        $choices = $this->tonMacronChoiceRepository->findBy(['id' => $ids]);
+
+        return $asCollection ? new ArrayCollection($choices) : $choices;
     }
 }
