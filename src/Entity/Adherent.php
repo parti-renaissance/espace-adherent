@@ -805,7 +805,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->coordinatorManagedArea->setCodesAsString((string) $codes);
     }
 
-    final public function getMemberships(): CommitteeMembershipCollection
+    public function getMemberships(): CommitteeMembershipCollection
     {
         if ($this->memberships instanceof Collection) {
             if (!$this->memberships instanceof CommitteeMembershipCollection) {
