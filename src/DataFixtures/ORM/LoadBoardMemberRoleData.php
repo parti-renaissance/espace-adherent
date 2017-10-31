@@ -24,6 +24,7 @@ class LoadBoardMemberRoleData extends AbstractFixture implements FixtureInterfac
         'mayor_more' => 'Maire d\'une commune de plus de 50 000 habitants',
         'president_less' => 'Président(e) d\'établissement de coopération intercommunale EPCI < 100 000 habitants',
         'president_more' => 'Président(e) d\'établissement de coopération intercommunale EPCI > 100 000 habitants',
+        'personality' => 'Personnalité',
     ];
 
     public function load(ObjectManager $manager)
