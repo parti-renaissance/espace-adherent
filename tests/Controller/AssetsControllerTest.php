@@ -147,6 +147,7 @@ class AssetsControllerTest extends SqliteWebTestCase
 
         $this->init();
 
+        $this->client->setServerParameter('HTTPS', true);
         $this->signature = SignatureFactory::create($this->container->getParameter('kernel.secret'));
     }
 
