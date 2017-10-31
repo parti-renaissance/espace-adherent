@@ -62,7 +62,7 @@ trait ControllerTestTrait
         $shouldBeRedirectedTo = 'http://'.Config::APP_HOST.'/evenements';
 
         if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
-            throw new \RuntimeException(
+            $this->fail(
                 'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdherent() '.
                 'and ensure you are properly loading adherents fixtures.'
             );

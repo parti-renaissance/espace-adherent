@@ -129,8 +129,10 @@ class MembershipRequestHandler
 
     private function removeAdherentMemberShips(Adherent $adherent): void
     {
+        $committeeRepository = $this->manager->getRepository(Committee::class);
+
         foreach ($adherent->getMemberships() as $membership) {
-            $committee = $this->manager->getRepository(Committee::class)->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
+            $committee = $committeeRepository->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
             $this->committeeManager->unfollowCommittee($adherent, $committee, false);
         }
     }
