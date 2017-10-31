@@ -287,7 +287,7 @@ class CitizenInitiativeCommand
         return $this->place;
     }
 
-    public function setPlace(?string $place)
+    public function setPlace(?string $place): void
     {
         $this->place = $place;
     }

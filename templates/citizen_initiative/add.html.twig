@@ -153,14 +153,15 @@
                 <div class="form__row citizen_initiative__form--trunc" id="citizen-initiative-address-address-field">
                     {{ form_errors(form.place) }}
                     {{ form_label(form.place, 'Où se déroule mon initiative ?', {'label_attr': { class: 'text--bold' }}) }}
-                    {{ form_widget(form.place, { attr: { class: 'form--full', placeholder: "Ex : Fablab Antipolis / Quartier des Murettes / Pays du Morvan." } }) }}
-                    <div class="text--gray text--italic">Si pertinent, indiquez le lieu où se déroulera votre initiative.</div>
+                    {{ form_widget(form.place, { attr: { class: 'form--full', placeholder: "Si pertinent, indiquez le lieu où se déroulera votre initiative (100 caractères max)." } }) }}
+                    <div class="text--gray text--italic">Ex : Fablab Antipolis / Quartier des Murettes / Pays du Morvan.</div>
                 </div>
 
                 <div class="form__row citizen_initiative__form--trunc" id="citizen-initiative-address-address-field">
                     {{ form_errors(form.address.address) }}
                     {{ form_label(form.address.address, 'Adresse', {'label_attr': { class: 'text--bold' }}) }}
-                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'initiative" } }) }}
+                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Si votre initiative ne se déroule pas dans un lieu précis, indiquez l'adresse qui vous semble la plus pertinente." } }) }}
+                    <div class="text--gray text--italic">Ex : 127, rue de Paradis</div>
                 </div>
 
                 <div class="citizen_initiative__address l__row l__row--h-stretch l__mobile--col">
