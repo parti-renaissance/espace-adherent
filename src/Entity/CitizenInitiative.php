@@ -74,6 +74,15 @@ class CitizenInitiative extends BaseEvent
      */
     private $wasPublished = false;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Algolia\Attribute
+     */
+    private $place;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
@@ -89,7 +98,8 @@ class CitizenInitiative extends BaseEvent
         array $interests = [],
         int $capacity = null,
         \DateTime $createdAt = null,
-        int $participantsCount = 0
+        int $participantsCount = 0,
+        ?string $place = null
     ) {
         $this->uuid = $uuid;
         $this->organizer = $organizer;
@@ -110,6 +120,7 @@ class CitizenInitiative extends BaseEvent
         $this->skills = new ArrayCollection();
         $this->capacity = $capacity;
         $this->setPublished(false);
+        $this->place = $place;
     }
 
     public function __toString(): string
@@ -129,7 +140,8 @@ class CitizenInitiative extends BaseEvent
         CoachingRequest $coachingRequest = null,
         array $interests = [],
         int $capacity = null,
-        $skills = null
+        $skills = null,
+        ?string $place = null
     ) {
         $this->setName($name);
         $this->citizenInitiativeCategory = $citizenInitiativeCategory;
@@ -142,6 +154,7 @@ class CitizenInitiative extends BaseEvent
         $this->setInterests($interests);
         $this->capacity = $capacity;
         $this->skills = $skills;
+        $this->setPlace($place);
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
@@ -257,5 +270,15 @@ class CitizenInitiative extends BaseEvent
         $this->wasPublished = $wasPublished;
 
         return $this;
+    }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?string $place): void
+    {
+        $this->place = $place;
     }
 }
