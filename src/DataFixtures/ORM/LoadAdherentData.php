@@ -347,7 +347,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
-        $adherent14->activate($key15, '2017-05-04 09:34:21');
+        $adherent15->activate($key15, '2017-05-04 09:34:21');
         // $key16 is not activated, but adherent is enabled
         $coordinateur->activate($key17, '2017-09-20 17:44:32');
 
