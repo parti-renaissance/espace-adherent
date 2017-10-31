@@ -78,13 +78,16 @@ class CitizenInitiativeCommand
      */
     private $coachingRequest;
 
+    private $place;
+
     public function __construct(
         Adherent $author = null,
         UuidInterface $uuid = null,
         Address $address = null,
         int $capacity = null,
         \DateTimeInterface $beginAt = null,
-        \DateTimeInterface $finishAt = null
+        \DateTimeInterface $finishAt = null,
+        ?string $place = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
@@ -93,6 +96,7 @@ class CitizenInitiativeCommand
         $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
         $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
         $this->skills = new ArrayCollection();
+        $this->place = $place;
     }
 
     public static function createFromCitizenInitiative(CitizenInitiative $citizenInitiative): self
@@ -103,7 +107,8 @@ class CitizenInitiativeCommand
             Address::createFromAddress($citizenInitiative->getPostAddressModel()),
             $citizenInitiative->getCapacity(),
             $citizenInitiative->getBeginAt(),
-            $citizenInitiative->getFinishAt()
+            $citizenInitiative->getFinishAt(),
+            $citizenInitiative->getPlace()
         );
 
         $command->name = $citizenInitiative->getName();
@@ -275,5 +280,15 @@ class CitizenInitiativeCommand
         }
 
         $this->capacity = $capacity;
+    }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?string $place): void
+    {
+        $this->place = $place;
     }
 }
