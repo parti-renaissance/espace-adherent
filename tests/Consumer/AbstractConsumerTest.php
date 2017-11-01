@@ -1,15 +1,14 @@
 <?php
+
 namespace Tests\AppBundle\Consumer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractConsumerTest extends TestCase
@@ -17,45 +16,39 @@ class AbstractConsumerTest extends TestCase
     const CLASS_NAME = 'AppBundle\Consumer\AbstractConsumer';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
      */
     private $validator;
+
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
      */
-    private $objectManager;
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $registry;
+    private $entityManager;
 
     public function setUp()
     {
-        $this->objectManager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->registry = $this
-            ->getMockBuilder(Registry::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->registry->method('getManager')->willReturn($this->objectManager);
     }
 
     public function testExecuteWithInvalidMessageBody()
     {
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
-            ->setConstructorArgs([$this->validator, $this->registry])
+            ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
             ->getMockForAbstractClass();
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = 'toto';
 
+        $this->setOutputCallback(function () {
+        });
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error')->with('Message is not valid JSON', ['message' => $message->body]);
         $abstractConsumer->method('getLogger')->willReturn($logger);
 
-        $this->assertEquals(ConsumerInterface::MSG_ACK, $abstractConsumer->execute($message));
+        $this->assertSame(ConsumerInterface::MSG_ACK, $abstractConsumer->execute($message));
     }
 
     public function testExecuteWithMessageViolation()
@@ -72,7 +65,7 @@ class AbstractConsumerTest extends TestCase
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
-            ->setConstructorArgs([$this->validator, $this->registry])
+            ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
             ->getMockForAbstractClass();
 
@@ -81,22 +74,21 @@ class AbstractConsumerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error')->with('Message structure is not valid', [
             'message' => $message->body,
-            'violations' => ['name' => ['is missing']]
+            'violations' => ['name' => ['is missing']],
         ]);
         $abstractConsumer->method('getLogger')->willReturn($logger);
-        $this->assertEquals(ConsumerInterface::MSG_ACK, $abstractConsumer->execute($message));
+        $this->assertSame(ConsumerInterface::MSG_ACK, $abstractConsumer->execute($message));
     }
 
     public function testWriteln()
     {
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
-            ->setConstructorArgs([$this->validator, $this->registry])
+            ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
             ->getMockForAbstractClass();
 
         $this->expectOutputString(sprintf('%s | %s', 'Mon message', 'mon output').PHP_EOL);
         $abstractConsumer->writeln('Mon message', 'mon output');
     }
-
 }

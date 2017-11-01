@@ -2,7 +2,9 @@
 
 namespace AppBundle\Consumer;
 
+use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Mailjet\ClientInterface;
+use AppBundle\Mailjet\Exception\MailjetException;
 use AppBundle\Repository\MailjetEmailRepository;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -16,7 +18,7 @@ class AbstractMailjetConsumer extends AbstractConsumer
     protected function configureDataConstraints(): array
     {
         return [
-            'uuid' => [new Assert\NotBlank()],
+            'uuid' => [new Assert\NotBlank(), new Assert\Uuid()],
         ];
     }
 
@@ -42,10 +44,21 @@ class AbstractMailjetConsumer extends AbstractConsumer
             return $delivered ? ConsumerInterface::MSG_ACK : ConsumerInterface::MSG_REJECT_REQUEUE;
         } catch (ConnectException $error) {
             $this->writeln($data['uuid'], 'API timeout');
-            $this->getLogger()->error('RabbitMQ API timeout while sending a mail with UUID '.$data['uuid'], ['exception' => $error]);
+            $this->getLogger()->error(
+                'RabbitMQ connection timeout while sending a mail with UUID '.$data['uuid'],
+                ['exception' => $error]
+            );
 
             // to prevent requeuing in loop and user from receiving tens of mails
             return ConsumerInterface::MSG_ACK;
+        } catch (InvalidUuidException $invalidUuidException) {
+            $this->getLogger()->error('UUID is invalid format', ['exception' => $invalidUuidException]);
+
+            return ConsumerInterface::MSG_ACK;
+        } catch (MailjetException $mailjetException) {
+            $this->getLogger()->error('Unable to send email to recipients.', ['exception' => $mailjetException]);
+
+            return ConsumerInterface::MSG_REJECT_REQUEUE;
         } catch (\Exception $error) {
             $this->getLogger()->error('Consumer failed', ['exception' => $error]);
 
@@ -53,9 +66,9 @@ class AbstractMailjetConsumer extends AbstractConsumer
         }
     }
 
-    protected function getMailjetClient(): ClientInterface
+    public function setMailjetRepository(MailjetEmailRepository $mailjetEmailRepository): void
     {
-        return $this->client;
+        $this->mailjetEmailRepository = $mailjetEmailRepository;
     }
 
     public function setMailjetClient(ClientInterface $client): void
@@ -63,13 +76,13 @@ class AbstractMailjetConsumer extends AbstractConsumer
         $this->client = $client;
     }
 
+    protected function getMailjetClient(): ClientInterface
+    {
+        return $this->client;
+    }
+
     protected function getMailjetRepository(): MailjetEmailRepository
     {
         return $this->mailjetEmailRepository;
-    }
-
-    public function setMailjetRepository(MailjetEmailRepository $mailjetEmailRepository): void
-    {
-        $this->mailjetEmailRepository = $mailjetEmailRepository;
     }
 }

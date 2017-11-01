@@ -2,8 +2,7 @@
 
 namespace AppBundle\Consumer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;
@@ -19,12 +18,12 @@ abstract class AbstractConsumer implements ConsumerInterface
 
     protected $logger;
     protected $validator;
-    protected $registry;
+    protected $manager;
 
-    public function __construct(ValidatorInterface $validator, Registry $registry)
+    public function __construct(ValidatorInterface $validator, EntityManagerInterface $manager)
     {
         $this->validator = $validator;
-        $this->registry = $registry;
+        $this->manager = $manager;
     }
 
     public function execute(AMQPMessage $message)
@@ -61,19 +60,9 @@ abstract class AbstractConsumer implements ConsumerInterface
         return $this->logger;
     }
 
-    private function getValidator(): ValidatorInterface
+    protected function getManager(): EntityManagerInterface
     {
-        return $this->validator;
-    }
-
-    protected function getDoctrine(): Registry
-    {
-        return $this->registry;
-    }
-
-    protected function getManager(): ObjectManager
-    {
-        return $this->getDoctrine()->getManager();
+        return $this->manager;
     }
 
     private function validate(array $data): ? array
@@ -96,6 +85,11 @@ abstract class AbstractConsumer implements ConsumerInterface
         }
 
         return $messages;
+    }
+
+    private function getValidator(): ValidatorInterface
+    {
+        return $this->validator;
     }
 
     /**

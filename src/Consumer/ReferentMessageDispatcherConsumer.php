@@ -2,6 +2,7 @@
 
 namespace AppBundle\Consumer;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Mailjet\MailjetService;
 use AppBundle\Mailjet\Message\ReferentMessage as MailjetMessage;
 use AppBundle\Referent\ReferentMessage;
@@ -36,21 +37,21 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         ];
     }
 
-    public function doExecute(array $data): bool
+    public function doExecute(array $data): int
     {
         try {
-            if (!$referent = $this->adherentRepository->findByUuid($data['referent_uuid'])) {
+            if (!$referent = $this->getAdherentRepository()->findByUuid($data['referent_uuid'])) {
                 $this->getLogger()->error('Referent not found', $data);
                 $this->writeln($data['referent_uuid'], 'Referent not found, rejecting');
 
                 return ConsumerInterface::MSG_ACK;
             }
 
-            $message = ReferentMessage::createFromArray($referent, $data);
+            $message = $this->createReferentMessage($referent, $data);
             $this->writeln($data['referent_uuid'], 'Dispatching message from '.$referent->getEmailAddress());
 
             /** @var IterableResult $results */
-            $results = $this->referentManagedUserRepository->createDispatcherIterator($referent, $message->getFilter());
+            $results = $this->getReferentManagedUserRepository()->createDispatcherIterator($referent, $message->getFilter());
 
             $i = 0;
             $count = 0;
@@ -62,7 +63,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 $chunk[] = $result[0];
 
                 if (MailjetService::PAYLOAD_MAXSIZE === $i) {
-                    $this->mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
+                    $this->getMailer()->sendMessage($this->createMailjetReferentMessage($message, $chunk));
                     $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
 
                     $i = 0;
@@ -73,7 +74,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
             }
 
             if (!empty($chunk)) {
-                $this->mailer->sendMessage(MailjetMessage::createFromModel($message, $chunk));
+                $this->getMailer()->sendMessage($this->createMailjetReferentMessage($message, $chunk));
                 $this->writeln($data['referent_uuid'], 'Message from '.$referent->getEmailAddress().' dispatched ('.$count.')');
             }
 
@@ -90,13 +91,38 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         $this->mailer = $mailjetService;
     }
 
+    public function getMailer(): MailjetService
+    {
+        return $this->mailer;
+    }
+
     public function setReferentManagedUserRepository(ReferentManagedUserRepository $referentManagedUserRepository): void
     {
         $this->referentManagedUserRepository = $referentManagedUserRepository;
     }
 
+    public function getReferentManagedUserRepository(): ReferentManagedUserRepository
+    {
+        return $this->referentManagedUserRepository;
+    }
+
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;
+    }
+
+    public function getAdherentRepository(): AdherentRepository
+    {
+        return $this->adherentRepository;
+    }
+
+    public function createReferentMessage(Adherent $referent, array $data): ReferentMessage
+    {
+        return ReferentMessage::createFromArray($referent, $data);
+    }
+
+    public function createMailjetReferentMessage(ReferentMessage $message, array $recipients): MailjetMessage
+    {
+        return MailjetMessage::createFromModel($message, $recipients);
     }
 }
