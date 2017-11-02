@@ -6,6 +6,10 @@ services:
             context: docker/dev
         image: enmarche_app
         container_name: en-marche.dev
+        extra_hosts:
+            - "enmarche.dev:127.0.0.1"
+            - "m.enmarche.dev:127.0.0.1"
+            - "legislatives.enmarche.dev:127.0.0.1"
         depends_on:
             - db
             - redis

@@ -243,4 +243,3 @@ security:
         - { path: '^/initiative-citoyenne/*/abonner', roles: [ROLE_ADHERENT] }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/adhesion, roles: [ROLE_ADHERENT] }

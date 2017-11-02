@@ -45,7 +45,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_15_UUID));
+        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -60,7 +60,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
     {
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_15_UUID));
+        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -77,7 +77,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_16_UUID));
+        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -136,7 +136,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testCreateMembershipAccountIsSuccessful($country, $city, $cityName, $postalCode, $address)
     {
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_16_UUID));
+        $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -177,7 +177,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         // register
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_15_UUID));
+        $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -205,7 +205,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         // register
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/%s', LoadAdherentData::ADHERENT_15_UUID));
+        $this->client->request(Request::METHOD_GET, '/adhesion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

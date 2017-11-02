@@ -1,15 +1,15 @@
 {% if not campaign_expired %}
     <div class="nav__user">
-        {% if user_is_admin %}
+        {% if has_role_admin %}
             <a href="{{ path('sonata_admin_dashboard') }}" class="icon--with-text text--medium-small nav__user__name">
                 Administration
             </a>
         {% else %}
-            <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}" class="icon--with-text text--medium-small nav__user__name">
+            <a href="{{ path(has_role_user ? 'app_adherent_profile' : 'app_adherent_login') }}" class="icon--with-text text--medium-small nav__user__name">
                 {{ include('components/user.html.twig') }}
-                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                {{ has_role_user ? app.user.fullName : 'Espace perso' }}
             </a>
-            {% if user_is_adherent %}
+            {% if has_role_user %}
                 <div class="nav__user__caret">
                     <span class="nav__user__caret--outer"></span>
                     <span class="nav__user__caret--inner"></span>
