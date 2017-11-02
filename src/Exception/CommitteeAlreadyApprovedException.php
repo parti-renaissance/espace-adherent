@@ -4,7 +4,7 @@ namespace AppBundle\Exception;
 
 use Ramsey\Uuid\UuidInterface;
 
-class CommitteeAlreadyApprovedException extends CommitteeException
+class CommitteeAlreadyApprovedException extends BaseGroupException
 {
     public function __construct(UuidInterface $committeeUuid, \Exception $previous = null)
     {

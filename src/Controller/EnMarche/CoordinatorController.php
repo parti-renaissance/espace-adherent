@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Committee;
-use AppBundle\Exception\CommitteeException;
+use AppBundle\Exception\BaseGroupException;
 use AppBundle\Committee\Filter\CommitteeFilters;
 use AppBundle\Form\CoordinatorCommitteeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -74,7 +74,7 @@ class CoordinatorController extends Controller
                     $this->get('app.committee.authority')->preApprove($committee);
                     $this->addFlash('info', sprintf('Merci. Votre appréciation a été transmise à nos équipes.', $committee->getName()));
                 }
-            } catch (CommitteeException $exception) {
+            } catch (BaseGroupException $exception) {
                 throw $this->createNotFoundException(sprintf('Committee %u has already been treated by an administrator.', $committee->getId()), $exception);
             }
         } else {

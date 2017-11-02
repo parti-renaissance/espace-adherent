@@ -160,13 +160,6 @@ class CommitteeMembership
         }
     }
 
-    private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
-    {
-        $key = sha1(sprintf('%s|%s', $adherentUuid, $committeeUuid));
-
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
-    }
-
     /**
      * Returns whether or not this membership is a supervisor privileged membership.
      */
@@ -256,5 +249,12 @@ class CommitteeMembership
     public function matches(Adherent $adherent, Committee $committee): bool
     {
         return $adherent->equals($this->getAdherent()) && $this->committeeUuid->equals($committee->getUuid());
+    }
+
+    private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
+    {
+        $key = sha1(sprintf('%s|%s', $adherentUuid, $committeeUuid));
+
+        return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
     }
 }

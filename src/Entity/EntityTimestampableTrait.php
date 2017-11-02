@@ -15,7 +15,7 @@ trait EntityTimestampableTrait
      *
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -24,7 +24,7 @@ trait EntityTimestampableTrait
      *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function getCreatedAt(): \DateTime
     {
