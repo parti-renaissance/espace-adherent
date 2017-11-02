@@ -298,6 +298,7 @@ events.type AS event_type, events.address_address AS event_address_address,
 events.address_country AS event_address_country, events.address_city_name AS event_address_city_name, 
 events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code, 
 events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, 
+event_category.name AS event_category_name, 
 committees.uuid AS committee_uuid, committees.name AS committee_name, 
 committees.description AS committee_description, committees.created_by AS committee_created_by, 
 committees.address_address AS committee_address_address, committees.address_country AS committee_address_country, 
@@ -318,7 +319,7 @@ adherents.address_longitude AS adherent_address_longitude, adherents.position AS
 FROM events 
 LEFT JOIN adherents ON adherents.id = events.organizer_id
 LEFT JOIN committees ON committees.id = events.committee_id
-LEFT JOIN events_categories ON events_categories.id = events.category_id
+LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id
 WHERE (events.address_latitude IS NOT NULL 
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
