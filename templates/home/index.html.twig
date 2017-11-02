@@ -93,7 +93,7 @@
             {% endif %}
 
             <div class="newsletter l__row l__row--h-stretch background--light space--20-30 l__row--wrap l__tablet--col b__nudge--top">
-                <div class="text--small text--all-caps space--10-0">Recevez la newsletter du mouvement</div>
+                <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
                 <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
                     {{ form_widget(newsletter_form.email, {
                         'attr': {
@@ -156,7 +156,7 @@
             </ul>
 
             <div class="l__wrapper space--5-20 l__row l__row--center l__hide--on-tablet">
-                <div class="icon--with-text text--all-caps text--bold b__nudge--right">
+                <div class="icon--with-text text--uppercase text--bold b__nudge--right">
                     {{ include('components/lightening-bolt.html.twig') }}
                     En Direct
                 </div>
@@ -202,7 +202,7 @@
         {% if not campaign_expired %}
             <section class="background--blue space--60-0">
                 <div class="l__wrapper-500 text--center b__nudge--bottom-larger">
-                    <h3 class="text--white text--all-caps-wide text--normal b__nudge--bottom-small">Le Mouvement</h3>
+                    <h3 class="text--white text--uppercase-wide text--normal b__nudge--bottom-small">Le Mouvement</h3>
                     <div class="text--white text--large text--bold">« Tout commence par la rénovation de l’engagement politique. »</div>
                 </div>
                 <div class="l__wrapper--medium">

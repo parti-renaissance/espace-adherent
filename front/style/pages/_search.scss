@@ -132,21 +132,8 @@
             background-color: $gray--lighter;
             position: relative;
 
-            &:hover {
-                background-color: $gray--light;
-            }
-
-            &__link {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                left: 0;
-                top: 0;
-                font-size: 0;
-            }
-
             .search-map {
-                height: 220px;
+                height: 180px;
 
                 @media (max-width: $mobile) {
                     display: none;
@@ -159,6 +146,18 @@
                 &:hover {
                     background: #e9dbb3;
                 }
+            }
+        }
+
+        &__date {
+            padding: 24px 0 20px 20px;
+            width: 90px;
+            box-sizing: border-box;
+        }
+
+        &__tag {
+            div:nth-child(2) {
+                margin-left: 10px;
             }
         }
 

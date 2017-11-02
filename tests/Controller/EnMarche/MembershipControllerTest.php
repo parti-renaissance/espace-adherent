@@ -155,7 +155,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         // User is automatically logged-in and redirected to the events page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Événements', $crawler->filter('.search-title')->text());
+        $this->assertSame('Rejoignez des événements', $crawler->filter('.search-title')->text());
 
         // Activate user account twice
         $this->logout($this->client);

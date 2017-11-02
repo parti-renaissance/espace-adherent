@@ -140,7 +140,7 @@ $text--size-extra-large: 48px;
     color: $blue
 }
 
-@mixin text--all-caps {
+@mixin text--uppercase {
     text-transform: uppercase;
     letter-spacing: 1.5px;
 }
@@ -272,11 +272,11 @@ $text--size-extra-large: 48px;
         }
     }
 
-    &--all-caps {
-        @include text--all-caps;
+    &--uppercase {
+        @include text--uppercase;
     }
 
-    &--all-caps-wide {
+    &--uppercase-wide {
         text-transform: uppercase;
         letter-spacing: 2.5px;
     }
@@ -335,13 +335,17 @@ $text--size-extra-large: 48px;
 }
 
 .tag {
-  &--orange {
-    @include text--all-caps;
+    @include text--uppercase;
     @include text--smallest;
-    background: $orange;
-    color: white;
-    display: inline;
-    padding: 2px 5px;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-family: $font-roboto;
+
+  &--orange {
+      padding: 0 5px;
+      background: $orange;
+      color: white;
   }
 }
 

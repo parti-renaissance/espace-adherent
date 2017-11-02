@@ -210,7 +210,7 @@
         h4 {
             @include text--medium-small;
             @include text--blue;
-            @include text--all-caps;
+            @include text--uppercase;
             font-family: $font-gillsans;
             text-align: center;
             font-weight: 700;
