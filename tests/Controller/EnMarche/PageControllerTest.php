@@ -63,6 +63,13 @@ class PageControllerTest extends SqliteWebTestCase
         yield ['/mentions-legales'];
         yield ['/bot'];
         yield ['/elles-marchent'];
+        yield ['/campus/mooc'];
+        yield ['/campus'];
+        yield ['/campus/mooc'];
+        yield ['/campus/dificultes-internet'];
+        yield ['/action-talents'];
+        yield ['/action-talents/candidater'];
+        yield ['/carrieres'];
     }
 
     protected function setUp()
