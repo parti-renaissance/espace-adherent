@@ -89,9 +89,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    public function provideProfilePage()
+    {
+        yield ['/espace-adherent/mon-compte', 'Mon compte'];
+        yield ['/espace-adherent/mon-compte/modifier', 'Mes informations personnelles'];
+        yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
+        yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Notifications'];
+    }
+
     public function testProfileActionIsAccessibleForAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
@@ -105,12 +110,35 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
     }
 
-    public function provideProfilePage()
+    public function testProfileActionIsAccessibleForInactiveAdherent()
     {
-        yield ['/espace-adherent/mon-compte', 'Mon compte'];
-        yield ['/espace-adherent/mon-compte/modifier', 'Mes informations personnelles'];
-        yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
-        yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Notifications'];
+        $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $current = $crawler->filter('.settings .settings-menu ul li.active a'));
+        $this->assertSame('Thomas Leclerc', $crawler->filter('.settings__username')->text());
+        $this->assertSame('Non adhérent.', $crawler->filter('.settings__membership')->text());
+        $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
+    }
+
+    public function testProfileActionIsNotAccessibleForDisabledAdherent()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+            '_adherent_email' => 'michelle.dufour@example.ch',
+            '_adherent_password' => 'secret!12345',
+        ]));
+
+        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
+
+        $this->client->followRedirect();
+
+        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
     }
 
     public function testEditAdherentProfile()

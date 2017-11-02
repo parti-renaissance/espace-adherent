@@ -8,7 +8,11 @@
         <span class="settings__username">{{ app.user.fullname }}</span>
         <span class="text--gray">({{ app.user.emailaddress }})</span>.
     </div>
-    <div class="settings__membership">Adhérent{{ app.user.gender == "female" ? "e" }} depuis {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
+    {% if app.user.activatedAt %}
+        <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
+    {% else %}
+        <div class="settings__membership">Non adhérent{{ app.user.female ? "e" }}.</div>
+    {% endif %}
 
     {% if is_granted('UNREGISTER') %}
         <p>

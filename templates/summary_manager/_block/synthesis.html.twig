@@ -14,7 +14,11 @@
         <ul>
             <li>
                 <div class="text--normal">Date d'adhésion</div>
-                {{ app.user.activatedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                {% if summary.member.activatedAt %}
+                    {{ summary.member.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                {% else %}
+                    -
+                {% endif %}
             </li>
             <li>
                 <div class="text--normal">Participation</div>
