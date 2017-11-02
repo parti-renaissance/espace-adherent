@@ -192,4 +192,14 @@ class PageController extends Controller
     {
         return $this->render('page/action-talents/apply.html.twig', ['page' => $page]);
     }
+
+    /**
+     * @Route("/carrieres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('jobs')")
+     */
+    public function jobsAction(Page $page)
+    {
+        return $this->render('page/jobs.html.twig', ['page' => $page]);
+    }
 }
