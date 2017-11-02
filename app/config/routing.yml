@@ -10,6 +10,7 @@ app_health:
 # Assets
 #
 app_assets:
+    schemes:  [https]
     host:     "%app_host%"
     resource: "@AppBundle/Controller/AssetsController.php"
     type:     "annotation"

@@ -36,7 +36,7 @@ class ArticleControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertContains('<img src="https://enmarche.dev/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleWithoutImage()
@@ -45,7 +45,7 @@ class ArticleControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertNotContains('<img src="https://enmarche.dev/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleDraft()
