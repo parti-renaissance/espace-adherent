@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if not object.isPublished %}
+        <a class="label label-warning" href="{{ path('app_admin_mooc_event_publish', {uuid: object.uuid.toString}) }}">Dépublié</a>
+    {% elseif object.isCancelled %}
+        <span class="label label-danger">Annulé</span>
+    {% else %}
+        <span class="label label-primary">Programmé</span>
+    {% endif %}
+{% endblock %}

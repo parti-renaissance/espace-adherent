@@ -465,6 +465,18 @@
         ######################################################
          -->
 
+        <service id="app.admin.mooc_event" class="AppBundle\Admin\MoocEventAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Événements MOOC" group="Événements MOOC" />
+
+            <argument />
+            <argument>AppBundle\Entity\MoocEvent</argument>
+            <argument />
+
+            <call method="setMoocEventManager">
+                <argument type="service" id="AppBundle\MoocEvent\MoocEventManager" />
+            </call>
+        </service>
+
         <service id="app.admin.mooc_event_category" class="AppBundle\Admin\MoocEventCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements MOOC" group="Événements MOOC" />
 

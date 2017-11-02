@@ -194,6 +194,12 @@ citizen_initiative.invalid_date_range: La date de fin de l'événement doit êtr
 citizen_initiative.invalid_capacity: La capacité doit être un nombre entier valide.
 
 #
+# MoocEvent
+#
+mooc_event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
+mooc_event.invalid_capacity: La capacité doit être un nombre entier valide.
+
+#
 # Board Member
 #
 board_member.area.invalid_choice: Cette région n'est pas valide.

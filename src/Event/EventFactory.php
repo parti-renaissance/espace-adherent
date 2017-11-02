@@ -6,6 +6,8 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\MoocEvent;
+use AppBundle\MoocEvent\MoocEventCommand;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
@@ -70,6 +72,31 @@ class EventFactory
         );
     }
 
+    public function createMoocEventFromArray(array $data): MoocEvent
+    {
+        foreach (['uuid', 'organizer', 'group', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
+                     'capacity', ] as $key) {
+            if (!array_key_exists($key, $data)) {
+                throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
+            }
+        }
+
+        $uuid = Uuid::fromString($data['uuid']);
+
+        return new MoocEvent(
+            $uuid,
+            $data['organizer'],
+            $data['group'],
+            $data['name'],
+            $data['category'],
+            $data['description'],
+            $data['address'],
+            $data['begin_at'],
+            $data['finish_at'],
+            $data['capacity']
+        );
+    }
+
     public function createFromCitizenInitiativeCommand(CitizenInitiativeCommand $command): CitizenInitiative
     {
         $initiative = new CitizenInitiative(
@@ -110,6 +137,22 @@ class EventFactory
         );
     }
 
+    public function createFromMoocEventCommand(MoocEventCommand $command): MoocEvent
+    {
+        return new MoocEvent(
+            $command->getUuid(),
+            $command->getAuthor(),
+            $command->getGroup(),
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->getCapacity()
+        );
+    }
+
     public function updateFromEventCommand(Event $event, EventCommand $command): Event
     {
         $event->update(
@@ -144,5 +187,20 @@ class EventFactory
         );
 
         return $initiative;
+    }
+
+    public function updateFromMoocEventCommand(MoocEvent $moocEvent, MoocEventCommand $command): MoocEvent
+    {
+        $moocEvent->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->addressFactory->createFromAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->getCapacity()
+        );
+
+        return $moocEvent;
     }
 }

@@ -1,0 +1,18 @@
+{% extends 'mooc_event/add.html.twig' %}
+
+{% block page_title mooc_event.name %}
+
+{% block content %}
+    {% set event = mooc_event %}
+    {% set event_url = url('app_mooc_event_show', {slug: event.slug}) %}
+    <section class="commitee__event l__wrapper">
+
+        {{ include('events/_header.html.twig') }}
+
+        <a href="{{ event_url }}" class="back-to-list icon--with-text b__nudge--top-15 text--summary">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la page de l'événement MOOC
+        </a>
+    </section>
+    {{ parent() }}
+{% endblock %}
