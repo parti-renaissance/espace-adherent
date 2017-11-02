@@ -68,39 +68,18 @@ test:
         - yarn run build-prod
 
 deployment:
-    staging:
-        branch: [staging, master]
+    master:
+        branch: master
         owner: EnMarche
         commands:
-            # Check packages security
-            - bin/console security:check
+            # Builds and pushes image to registry
+            - ./scripts/build.sh stable
+    staging:
+        branch: staging
+        owner: EnMarche
+        commands:
+            # Builds and pushes image to registry
+            - ./scripts/build.sh latest
 
-            # Google Cloud authentication
-            - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json && cp ${HOME}/gcloud-service-key.json gcloud-service-key.json
-            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-            - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-            - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
-
-            # Build the image
-            - yarn run build-prod
-            - yarn run build-amp
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 .
-
-            # Push the images to Google Cloud
-            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-
-            # Tag images
-            - >
-              if [ $CIRCLE_BRANCH = 'staging' ]; then
-                sudo /opt/google-cloud-sdk/bin/gcloud container images add-tag eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 eu.gcr.io/$GCLOUD_PROJECT/app:latest --quiet
-              elif [ $CIRCLE_BRANCH = 'master' ]; then
-                sudo /opt/google-cloud-sdk/bin/gcloud container images add-tag eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 eu.gcr.io/$GCLOUD_PROJECT/app:stable --quiet
-              fi
-
-            # Deploy to staging
-            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-mailjet-campaign enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-mailjet-transactional enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-worker-referent enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            # Deploys image and migrates database
+            - ./scripts/deployment.sh
