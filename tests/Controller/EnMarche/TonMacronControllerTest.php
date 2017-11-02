@@ -228,7 +228,7 @@ class TonMacronControllerTest extends SqliteWebTestCase
      *
      * @return TonMacronChoice[]|ArrayCollection|array
      */
-    private function getChoices(array $ids, bool $asCollection = false)
+    private function getChoices(array $ids, bool $asCollection = false): iterable
     {
         $choices = $this->tonMacronChoiceRepository->findBy(['id' => $ids]);
 
