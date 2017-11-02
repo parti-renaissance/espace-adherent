@@ -71,7 +71,7 @@ class EventHydrator extends AbstractHydrator
             $organizer,
             $committee,
             $row['event_name'],
-            new EventCategory(),
+            new EventCategory($row['event_category_name']),
             $row['event_description'],
             $addressEvent,
             $row['event_begin_at'],
