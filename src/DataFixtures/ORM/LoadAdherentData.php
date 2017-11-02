@@ -311,6 +311,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'first_name' => 'Foo',
             'last_name' => 'Bar',
             'address' => PostAddress::createForeignAddress(null, '59000', null, null),
+            'isAdherent' => false,
         ], true);
         $this->addReference('adherent-16', $adherent14);
 
