@@ -15,7 +15,7 @@
 
 ### Styles:
 - `.text--italic`
-- `.text--all-caps`
+- `.text--uppercase`
 - `.text--center`
 - `.text--limited`
 

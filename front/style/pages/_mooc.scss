@@ -35,7 +35,7 @@
 
         &__name {
             font-family: $font-roboto;
-            @include text--all-caps;
+            @include text--uppercase;
             @include text--smallest;
             color: $pink;
             font-weight: bold;

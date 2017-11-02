@@ -271,7 +271,7 @@
             padding: 15px 0 10px 0;
             margin: 0;
             @include text--small;
-            @include text--all-caps;
+            @include text--uppercase;
             font-weight: normal;
 
             svg {
