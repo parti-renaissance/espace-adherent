@@ -152,6 +152,14 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'title' => 'Carrières',
+            'slug' => 'jobs',
+            'description' => $description,
+            'content' => 'Voici nos offres d\'emplois et stages',
+            'media' => $media,
+        ]));
+
         $manager->flush();
     }
 
