@@ -104,6 +104,12 @@ class AmpControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testSitemap()
+    {
+        $this->client->request(Request::METHOD_GET, '/sitemap.xml');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
     protected function setUp()
     {
         parent::setUp();

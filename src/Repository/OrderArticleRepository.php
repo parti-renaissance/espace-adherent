@@ -32,4 +32,14 @@ class OrderArticleRepository extends EntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findAllPublished(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.published = :published')
+            ->setParameter('published', true)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

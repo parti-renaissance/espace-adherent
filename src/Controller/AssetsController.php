@@ -38,10 +38,14 @@ class AssetsController extends Controller
             ]);
         }
 
-        try {
-            SignatureFactory::create($this->getParameter('kernel.secret'))->validateRequest($path, $parameters);
-        } catch (SignatureException $e) {
-            throw $this->createNotFoundException('', $e);
+        if (count($parameters) > 0) {
+            try {
+                // No signature validation if no parameters
+                // added to generate URL without parameters that not produce 404, useful especially for sitemap
+                SignatureFactory::create($this->getParameter('kernel.secret'))->validateRequest($path, $parameters);
+            } catch (SignatureException $e) {
+                throw $this->createNotFoundException('', $e);
+            }
         }
 
         if ('gif' === substr($path, -3)) {

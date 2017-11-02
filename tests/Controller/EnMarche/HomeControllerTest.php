@@ -58,6 +58,9 @@ class HomeControllerTest extends SqliteWebTestCase
             ['/sitemap_content_1.xml'],
             ['/sitemap_committees_1.xml'],
             ['/sitemap_events_1.xml'],
+            ['/sitemap_citizen_initiatives_1.xml'],
+            ['/sitemap_images_1.xml'],
+            ['/sitemap_videos_1.xml'],
         ];
     }
 

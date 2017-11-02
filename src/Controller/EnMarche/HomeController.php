@@ -35,7 +35,7 @@ class HomeController extends Controller
     /**
      * @Route(
      *     "/sitemap_{type}_{page}.xml",
-     *     requirements={"type"="main|content|committees|events", "page"="\d+"},
+     *     requirements={"type"=AppBundle\Sitemap\SitemapFactory::ALL_TYPES, "page"="\d+"},
      *     defaults={"page"="1", "_enable_campaign_silence"=true},
      *     name="app_sitemap"
      * )
