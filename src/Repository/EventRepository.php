@@ -299,7 +299,7 @@ events.address_country AS event_address_country, events.address_city_name AS eve
 events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code, 
 events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, 
 event_category.name AS event_category_name, 
-committees.uuid AS committee_uuid, committees.name AS committee_name, 
+committees.uuid AS committee_uuid, committees.name AS committee_name, committees.slug AS committee_slug, 
 committees.description AS committee_description, committees.created_by AS committee_created_by, 
 committees.address_address AS committee_address_address, committees.address_country AS committee_address_country, 
 committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee, 
