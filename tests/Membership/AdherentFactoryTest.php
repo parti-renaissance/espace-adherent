@@ -32,7 +32,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertInstanceOf(UuidInterface::class, $adherent->getUuid());
         $this->assertNull($adherent->getPhone());
         $this->assertNull($adherent->getSalt());
-        $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
+        $this->assertSame(['ROLE_USER', 'ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertSame('michelle.dufour@example.ch', $adherent->getUsername());
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('Michelle', $adherent->getFirstName());
@@ -66,7 +66,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertInstanceOf(UuidInterface::class, $adherent->getUuid());
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertNull($adherent->getSalt());
-        $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
+        $this->assertSame(['ROLE_USER', 'ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Carl', $adherent->getFirstName());
@@ -104,7 +104,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getBirthdate());
         $this->assertNull($adherent->getPosition());
         $this->assertNull($adherent->getGender());
-        $this->assertSame(['ROLE_ADHERENT'], $adherent->getRoles());
+        $this->assertSame(['ROLE_USER', 'ROLE_ADHERENT'], $adherent->getRoles());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());

@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,19 +29,28 @@ class MembershipController extends Controller
     /**
      * This action enables a guest user to adhere to the community.
      *
-     * @Route("/adhesion/{uuid}", name="app_register_fully")
+     * @Route("/adhesion", name="app_register_fully")
      * @Method("GET|POST")
+     *
+     * @Security("is_granted('ROLE_USER')")
      */
-    public function finaliseRegistrationAction(Request $request, Adherent $adherent): Response
+    public function finaliseRegistrationAction(Request $request): Response
     {
-        $membership = MembershipRequest::createFromAdherentWithCaptcha($adherent, $request->request->get('g-recaptcha-response'));
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        if ($user->isAdherent()) {
+            throw $this->createNotFoundException();
+        }
+
+        $membership = MembershipRequest::createFromAdherentWithCaptcha($user, $request->request->get('g-recaptcha-response'));
         $form = $this->createForm(MembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->get('app.membership_request_handler')->handle($adherent, $membership);
+                $this->get('app.membership_request_handler')->handle($user, $membership);
 
                 return $this->redirectToRoute('app_membership_donate');
             }
@@ -80,7 +90,7 @@ class MembershipController extends Controller
         $this->getDoctrine()->getManager()->persist($adherent);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('app_register_fully', ['uuid' => $uuid]);
+        return $this->redirectToRoute('app_register_fully');
     }
 
     /**
