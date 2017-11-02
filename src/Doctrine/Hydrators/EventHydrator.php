@@ -53,7 +53,7 @@ class EventHydrator extends AbstractHydrator
         if ($row['committee_uuid']) {
             $uuidCommittee = Uuid::fromString($row['committee_uuid']);
             $uuidCommitteeOrganizer = $row['committee_created_by'] ? Uuid::fromString($row['committee_created_by']) : $uuidEvent; // to fix the problem on staging where committee can be without creator; this value is used only for 'new Committee()'
-            $committee = new Committee($uuidCommittee, $uuidCommitteeOrganizer, $row['committee_name'], $row['committee_description'], $addressCommittee);
+            $committee = new Committee($uuidCommittee, $uuidCommitteeOrganizer, $row['committee_name'], $row['committee_description'], $addressCommittee, null, $row['committee_slug']);
         }
 
         $password = $row['adherent_password'] ?? $row['adherent_old_password'];
