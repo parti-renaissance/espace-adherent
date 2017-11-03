@@ -8,7 +8,6 @@ use AppBundle\DataFixtures\ORM\LoadOrderSectionData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -37,12 +36,12 @@ class AmpControllerTest extends SqliteWebTestCase
 
     public function testRedirectionToArticle()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => Config::APP_HOST]);
+        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $this->client->request(Request::METHOD_GET, '/amp/article/outre-mer');
 
         $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
 
-        $this->assertClientIsRedirectedTo('//'.Config::AMP_HOST.'/articles/actualites/outre-mer', $this->client);
+        $this->assertClientIsRedirectedTo('//'.$this->hosts['amp'].'/articles/actualites/outre-mer', $this->client);
         $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
@@ -50,12 +49,12 @@ class AmpControllerTest extends SqliteWebTestCase
 
     public function testRedirectionToProposal()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => Config::APP_HOST]);
+        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $this->client->request(Request::METHOD_GET, '/amp/proposition/produire-en-france-et-sauver-la-planete');
 
         $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
 
-        $this->assertClientIsRedirectedTo('//'.Config::AMP_HOST.'/proposition/produire-en-france-et-sauver-la-planete', $this->client);
+        $this->assertClientIsRedirectedTo('//'.$this->hosts['amp'].'/proposition/produire-en-france-et-sauver-la-planete', $this->client);
         $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
@@ -63,12 +62,12 @@ class AmpControllerTest extends SqliteWebTestCase
 
     public function testRedirectionToOrderArticle()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => Config::APP_HOST]);
+        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $this->client->request(Request::METHOD_GET, '/amp/transformer-la-france/premiere-article');
 
         $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
 
-        $this->assertClientIsRedirectedTo('//'.Config::AMP_HOST.'/transformer-la-france/premiere-article', $this->client);
+        $this->assertClientIsRedirectedTo('//'.$this->hosts['amp'].'/transformer-la-france/premiere-article', $this->client);
         $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
@@ -119,7 +118,7 @@ class AmpControllerTest extends SqliteWebTestCase
             LoadOrderArticleData::class,
             LoadArticleData::class,
             LoadProposalData::class,
-        ], Config::AMP_HOST);
+        ], 'amp');
     }
 
     protected function tearDown()

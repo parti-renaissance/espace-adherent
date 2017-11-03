@@ -8,7 +8,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
@@ -17,6 +16,8 @@ use Tests\AppBundle\TestHelperTrait;
 trait ControllerTestTrait
 {
     use TestHelperTrait;
+
+    private $hosts = [];
 
     /**
      * @var Client
@@ -59,7 +60,7 @@ trait ControllerTestTrait
             '_adherent_password' => $password,
         ]));
 
-        $shouldBeRedirectedTo = 'http://'.Config::APP_HOST.'/evenements';
+        $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/evenements';
 
         if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
             $this->fail(
@@ -92,14 +93,19 @@ trait ControllerTestTrait
         return $this->manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 
-    protected function init(array $fixtures = [], string $host = Config::APP_HOST)
+    protected function init(array $fixtures = [], string $host = 'app')
     {
         if ($fixtures) {
             $this->loadFixtures($fixtures);
         }
 
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $host]);
-        $this->container = $this->client->getContainer();
+        $this->container = $this->getContainer();
+
+        $this->hosts['app'] = $this->container->getParameter('app_host');
+        $this->hosts['amp'] = $this->container->getParameter('amp_host');
+        $this->hosts['legislatives'] = $this->container->getParameter('legislatives_host');
+
+        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts[$host]]);
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
     }
 
@@ -109,5 +115,6 @@ trait ControllerTestTrait
         $this->client = null;
         $this->container = null;
         $this->manager = null;
+        $this->hosts = [];
     }
 }
