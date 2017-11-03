@@ -75,6 +75,7 @@
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.event.registration_manager"/>
             <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager"/>
+            <argument type="service" id="AppBundle\CitizenAction\CitizenActionManager"/>
             <argument type="service" id="AppBundle\Event\EventManager"/>
             <argument type="service" id="app.committee.feed_manager"/>
             <argument type="service" id="app.activity_subscription.manager"/>
@@ -385,6 +386,11 @@
 
         <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
             <tag name="security.voter"/>
+        </service>
+
+        <!-- CitizenActions -->
+        <service id="AppBundle\CitizenAction\CitizenActionManager">
+            <argument type="service" id="app.repository.citizen_action"/>
         </service>
 
         <!-- Referents -->
