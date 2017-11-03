@@ -13,6 +13,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Summary;
 use AppBundle\Event\EventManager;
 use AppBundle\Event\EventRegistrationManager;
+use AppBundle\CitizenAction\CitizenActionManager;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
@@ -31,6 +32,7 @@ class MembershipRequestHandler
     private $committeeManager;
     private $registrationManager;
     private $citizenInitiativeManager;
+    private $citizenActionManager;
     private $eventManager;
     private $committeeFeedManager;
     private $activitySubscriptionManager;
@@ -45,6 +47,7 @@ class MembershipRequestHandler
         CommitteeManager $committeeManager,
         EventRegistrationManager $registrationManager,
         CitizenInitiativeManager $citizenInitiativeManager,
+        CitizenActionManager $citizenActionManager,
         EventManager $eventManager,
         CommitteeFeedManager $committeeFeedManager,
         ActivitySubscriptionManager $activitySubscriptionManager
@@ -58,6 +61,7 @@ class MembershipRequestHandler
         $this->committeeManager = $committeeManager;
         $this->registrationManager = $registrationManager;
         $this->citizenInitiativeManager = $citizenInitiativeManager;
+        $this->citizenActionManager = $citizenActionManager;
         $this->committeeFeedManager = $committeeFeedManager;
         $this->eventManager = $eventManager;
         $this->activitySubscriptionManager = $activitySubscriptionManager;
@@ -109,6 +113,7 @@ class MembershipRequestHandler
         $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
 
         $this->removeAdherentMemberShips($adherent);
+        $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
         $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
         $this->eventManager->removeOrganizerEvents($adherent);
         $this->registrationManager->anonymizeAdherentRegistrations($adherent);
