@@ -177,10 +177,10 @@ class CitizenInitiativeAdmin extends AbstractAdmin
             ->end()
             ->with('Description', ['class' => 'col-md-12'])
                 ->add('description', TextareaType::class, [
-                    'label' => 'description',
+                    'label' => 'Description',
                     'required' => false,
                     'filter_emojis' => true,
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                    'attr' => ['class' => 'ck-editor'],
                 ])
             ->end();
     }
