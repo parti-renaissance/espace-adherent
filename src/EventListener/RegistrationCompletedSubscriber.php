@@ -26,7 +26,6 @@ class RegistrationCompletedSubscriber implements EventSubscriberInterface
         $request = $event->getMembershipRequest();
 
         $message = [
-            'uuid' => $event->getAdherent()->getUuid()->toString(),
             'emailAddress' => $request->getEmailAddress(),
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
