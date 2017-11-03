@@ -331,7 +331,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key13 = AdherentActivationToken::generate($adherent13);
         $key14 = AdherentActivationToken::generate($adherent14);
         $key15 = AdherentActivationToken::generate($adherent15);
-        $key16 = AdherentActivationToken::generate($adherent16);
         $key17 = AdherentActivationToken::generate($coordinateur);
 
         // Enable some adherents accounts
@@ -348,8 +347,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
-        $adherent15->activate($key15, '2017-05-04 09:34:21');
-        // $key16 is not activated, but adherent is enabled
+        // $key15 and $key16 is not activated, but adherent is enabled
         $coordinateur->activate($key17, '2017-09-20 17:44:32');
 
         // Create some default committees and make people join them
@@ -502,7 +500,6 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($key13);
         $manager->persist($key14);
         $manager->persist($key15);
-        $manager->persist($key16);
         $manager->persist($key17);
 
         $manager->persist($committee1);

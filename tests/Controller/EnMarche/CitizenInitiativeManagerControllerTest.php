@@ -170,8 +170,8 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanSeeRegistrations()
     {
-        $crawler = $this->client->request('GET', '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
+        $crawler = $this->client->request('GET', '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 2));
@@ -196,6 +196,8 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanExportRegistrations()
     {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
+
         $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -233,8 +235,8 @@ class CitizenInitiativeManagerControllerTest extends MysqlWebTestCase
 
     public function testOrganizerCanContactRegistrations()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
+        $crawler = $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-kilchberg');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
