@@ -92,7 +92,6 @@ class AdherentControllerTest extends MysqlWebTestCase
     {
         yield ['/espace-adherent/mon-compte', 'Mon compte'];
         yield ['/espace-adherent/mon-compte/modifier', 'Mes informations personnelles'];
-        yield ['/espace-adherent/mon-compte/changer-mot-de-passe', 'Mot de passe'];
         yield ['/espace-adherent/mon-compte/preferences-des-emails', 'Notifications'];
     }
 
@@ -120,24 +119,6 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Thomas Leclerc', $crawler->filter('.settings__username')->text());
         $this->assertSame('Non adhérent.', $crawler->filter('.settings__membership')->text());
         $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
-    }
-
-    public function testProfileActionIsNotAccessibleForDisabledAdherent()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_adherent_email' => 'michelle.dufour@example.ch',
-            '_adherent_password' => 'secret!12345',
-        ]));
-
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
-
-        $this->client->followRedirect();
-
-        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
     }
 
     public function testEditAdherentProfile()
