@@ -87,7 +87,7 @@ class CitizenInitiativeAdmin extends AbstractAdmin
             ])
             ->add('status', 'choice', [
                 'label' => 'Statut',
-                'choices' => array_combine(CitizenInitiative::STATUSES, CitizenInitiative::STATUSES),
+                'choices' => CitizenInitiative::STATUSES,
                 'catalogue' => 'forms',
             ])
             ->add('expertAssistanceNeeded', null, [
@@ -148,7 +148,7 @@ class CitizenInitiativeAdmin extends AbstractAdmin
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
-                    'choices' => array_combine(CitizenInitiative::STATUSES, CitizenInitiative::STATUSES),
+                    'choices' => CitizenInitiative::STATUSES,
                     'choice_translation_domain' => 'forms',
                 ])
                 ->add('published', null, [
