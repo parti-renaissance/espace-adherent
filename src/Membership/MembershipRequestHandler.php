@@ -63,6 +63,8 @@ class MembershipRequestHandler
     public function handle(Adherent $adherent, MembershipRequest $membershipRequest)
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+        $adherent->join();
+
         $token = AdherentActivationToken::generate($adherent);
 
         $this->manager->persist($token);
@@ -71,7 +73,7 @@ class MembershipRequestHandler
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailjet->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent));
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)

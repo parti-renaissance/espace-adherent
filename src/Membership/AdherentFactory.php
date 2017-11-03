@@ -59,6 +59,7 @@ class AdherentFactory
             isset($data['registered_at']) ? $data['registered_at'] : 'now',
             false,
             false,
+            isset($data['isAdherent']) ? $data['isAdherent'] : true,
             isset($data['password']) ? $this->encodePassword($data['password']) : null
         );
     }

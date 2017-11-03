@@ -6,8 +6,8 @@
 {% set default_sharer_width = 1905 %}
 {% set default_sharer_height = 1000 %}
 
-{% set user_is_adherent = is_granted('ROLE_ADHERENT') %}
-{% set user_is_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
+{% set has_role_user = is_granted('ROLE_USER') %}
+{% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
 
 <!DOCTYPE html>
 <!--
@@ -125,7 +125,7 @@
                 <div class="l__row">
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right-nano">Je donne</a>
 
-                    {% if not campaign_expired and not user_is_adherent %}
+                    {% if not campaign_expired and not has_role_user %}
                         <a href="{{ hwi_oauth_login_url('auth') }}"
                            class="btn b__nudge--right-nano">
                             Connexion
@@ -139,17 +139,17 @@
 
                     {% if not campaign_expired %}
                     <div class="nav__user">
-                        {% if user_is_admin %}
+                        {% if has_role_admin %}
                             <a href="{{ path('sonata_admin_dashboard') }}" class="icon--with-text text--medium-small nav__user__name">
                                 Administration
                             </a>
                         {% else %}
-                            {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                            {% set url = has_role_user ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
                             <a href="{{ url }}" class="icon--with-text text--medium-small nav__user__name">
                                 {{ include('components/user.html.twig') }}
-                                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                                {{ has_role_user ? app.user.fullName : 'Espace perso' }}
                             </a>
-                            {% if user_is_adherent %}
+                            {% if has_role_user %}
                                 <div class="nav__user__caret">
                                     <span class="nav__user__caret--outer"></span>
                                     <span class="nav__user__caret--inner"></span>
@@ -238,7 +238,7 @@
                     <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
                     {% if not campaign_expired %}
                         <li class="l__row">
-                            {% if not user_is_adherent %}
+                            {% if not has_role_user %}
                                 <a href="{{ path('app_membership_register') }}"
                                    class="btn b__nudge--right-nano l__hide--on-mobile">
                                     J'adhère
@@ -255,15 +255,15 @@
                     <label for="nav-menu">Menu de navigation</label>
                     <div class="nav__mobile--menu">
                         <div class="l__row l__row--h-stretch">
-                            {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                            {% set url = has_role_user ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
                             <a href="{{ url }}"
                                class="icon--with-text text--medium-small">
                                 {{ include('components/user.html.twig') }}
-                                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                                {{ has_role_user ? app.user.fullName : 'Espace perso' }}
                             </a>
                         </div>
                         <hr>
-                        {% if user_is_adherent %}
+                        {% if has_role_user %}
                             <div class="text--medium-small">
                                 {{ adherent_committees }}
                                 <hr>
@@ -271,7 +271,7 @@
                         {% endif %}
 
                         <ul class="list__links list__links--col list__links--no-decor list__links--nav">
-                            {% if user_is_adherent %}
+                            {% if has_role_user %}
                                 <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
                                 <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
                                 <li><a href="{{ path('map_committees') }}">La carte des comités</a></li>
@@ -495,7 +495,7 @@
                                 <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
                                 <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                                 <li>
-                                    {% set url = user_is_adherent ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
+                                    {% set url = has_role_user ? path('app_adherent_profile') : hwi_oauth_login_url('auth') %}
                                     <a href="{{ url }}">
                                         Connexion
                                     </a>

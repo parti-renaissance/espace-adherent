@@ -205,6 +205,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $activitiySubscriptions;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=0})
+     */
+    private $adherent = false;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -219,6 +226,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         ?string $registeredAt = 'now',
         bool $comEmail = false,
         bool $comMobile = false,
+        bool $isAdherent = true,
         string $password = null
     ) {
         $this->uuid = $uuid;
@@ -237,6 +245,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->groupMemberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
+        $this->adherent = $isAdherent;
         $this->password = $password;
     }
 
@@ -247,7 +256,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_ADHERENT'];
+        $roles = ['ROLE_USER'];
+
+        if ($this->isAdherent()) {
+            $roles[] = 'ROLE_ADHERENT';
+        }
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
@@ -727,6 +740,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->managedArea->setCodes($codes);
         $this->managedArea->setMarkerLatitude($markerLatitude);
         $this->managedArea->setMarkerLongitude($markerLongitude);
+    }
+
+    public function isAdherent(): bool
+    {
+        return $this->adherent;
+    }
+
+    public function join()
+    {
+        $this->adherent = true;
     }
 
     public function isReferent(): bool

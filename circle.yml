@@ -10,17 +10,12 @@ machine:
         DATABASE_USER: ubuntu
         DATABASE_PASSWORD: ''
         DATABASE_NAME: circle_test
-        RABBITMQ_HOST: 'localhost'
-        RABBITMQ_PORT: '5672'
-        RABBITMQ_USER: 'guest'
-        RABBITMQ_PASSWORD: 'guest'
     hosts:
         enmarche.dev: 127.0.0.1
         m.enmarche.dev: 127.0.0.1
         legislatives.enmarche.dev: 127.0.0.1
     services:
         - docker
-        - rabbitmq-server
 
 dependencies:
     cache_directories:
@@ -36,7 +31,6 @@ dependencies:
     override:
         - yarn install
         - composer install --no-interaction
-        - bin/console rabbitmq:setup-fabric
 
 test:
     override:
