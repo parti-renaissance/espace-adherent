@@ -36,6 +36,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($speechCategory = new ArticleCategory('Discours', 'discours', 3));
         $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 4));
         $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 5));
+        $manager->persist($opinionsCategory = new ArticleCategory('Opinions', 'opinions', 6));
 
         $manager->flush();
 
@@ -49,6 +50,19 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
             'published' => true,
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => '« Mes opinions »',
+            'slug' => 'mes-opinions',
+            'description' => 'mes-opinions',
+            'media' => $media,
+            'displayMedia' => true,
+            'published' => true,
+            'publishedAt' => $faker->dateTimeThisDecade,
+            'category' => $opinionsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
@@ -80,7 +94,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         // A lot of articles for listing
-        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory] as $category) {
+        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory] as $category) {
             for ($i = 0; $i < 25; ++$i) {
                 $manager->persist($factory->createFromArray([
                     'title' => $faker->sentence(),

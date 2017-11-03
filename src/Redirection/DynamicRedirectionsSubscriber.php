@@ -31,6 +31,7 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
         '/amp/article/' => null,
         '/amp/proposition/' => null,
         '/amp/transformer-la-france/' => null,
+        '/articles/tribunes/' => '/articles/opinions/',
     ];
 
     private $redirectRepository;
@@ -160,6 +161,10 @@ class DynamicRedirectionsSubscriber implements EventSubscriberInterface
                 $urlToRedirect = $this->router->generate('amp_explainer_article_show', [
                     'slug' => $orderArticle->getSlug(),
                 ]);
+            }
+
+            if (0 === strpos($requestUri, '/articles/tribunes/')) {
+                $urlToRedirect = str_replace('/articles/tribunes/', $urlToRedirect, $requestUri);
             }
 
             $event->setResponse(new RedirectResponse($urlToRedirect, $redirectCode));
