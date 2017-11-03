@@ -34,7 +34,7 @@ class MembershipController extends Controller
      *
      * @Security("is_granted('ROLE_USER')")
      */
-    public function finaliseRegistrationAction(Request $request): Response
+    public function finalizeRegistrationAction(Request $request): Response
     {
         /** @var Adherent $user */
         $user = $this->getUser();

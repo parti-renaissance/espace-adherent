@@ -63,6 +63,8 @@ class MembershipRequestHandler
     public function handle(Adherent $adherent, MembershipRequest $membershipRequest)
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+        $adherent->join();
+
         $token = AdherentActivationToken::generate($adherent);
 
         $this->manager->persist($token);
