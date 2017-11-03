@@ -18,7 +18,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"event" = "AppBundle\Entity\Event", "citizen_initiative" = "AppBundle\Entity\CitizenInitiative"})
+ * @ORM\DiscriminatorMap({
+ *     "event" = "AppBundle\Entity\Event",
+ *     "citizen_initiative" = "AppBundle\Entity\CitizenInitiative",
+ *     "mooc_event" = "AppBundle\Entity\MoocEvent"
+ * })
  *
  * @Algolia\Index
  */
@@ -26,6 +30,7 @@ abstract class BaseEvent implements GeoPointInterface
 {
     const CITIZEN_INITIATIVE_TYPE = 'citizen_initiative';
     const EVENT_TYPE = 'event';
+    const MOOC_EVENT_TYPE = 'mooc_event';
 
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';
@@ -145,12 +150,12 @@ abstract class BaseEvent implements GeoPointInterface
         return $this->description;
     }
 
-    public function getBeginAt(): \DateTime
+    public function getBeginAt(): \DateTimeInterface
     {
         return $this->beginAt;
     }
 
-    public function getFinishAt(): \DateTime
+    public function getFinishAt(): \DateTimeInterface
     {
         return $this->finishAt;
     }
@@ -165,7 +170,7 @@ abstract class BaseEvent implements GeoPointInterface
         return $this->organizer ? $this->organizer->getFirstName() : '';
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
