@@ -272,6 +272,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_BOARD_MEMBER';
         }
 
+        if ($this->isAdministrator()) {
+            $roles[] = 'ROLE_ADMINISTRATOR';
+        }
+
         return $roles;
     }
 
@@ -290,7 +294,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isBoardMember();
+        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isAdministrator() || $this->isBoardMember();
     }
 
     public function getPassword(): string

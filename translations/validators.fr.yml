@@ -81,6 +81,14 @@ committee.description.max_length: Votre texte de description est trop long. Il d
 committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 
 #
+# Group
+#
+group.canonical_name.not_unique: Ce nom d'équipe MOOC est déjà utilisé.
+
+group.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
+group.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
+
+#
 # Donation
 #
 donation.amount.not_blank: Cette valeur ne doit pas être vide.

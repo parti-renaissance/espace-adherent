@@ -29,6 +29,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 class Group extends BaseGroup
 {
+    /**
+     * A cached list of the administrators (for admin).
+     */
+    public $administrators = [];
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -64,7 +69,7 @@ class Group extends BaseGroup
         $this->updatedAt = $createdAt;
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PhoneNumber $phone, PostAddress $address = null, string $createdAt = 'now'): self
+    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address = null, PhoneNumber $phone = null, string $createdAt = 'now'): self
     {
         $group = new self(
             $uuid,
@@ -79,7 +84,7 @@ class Group extends BaseGroup
         return $group;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, PhoneNumber $phone, PostAddress $address = null, string $createdAt = 'now'): self
+    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address = null, PhoneNumber $phone = null, string $createdAt = 'now'): self
     {
         $group = new self(
             self::createUuid($name),

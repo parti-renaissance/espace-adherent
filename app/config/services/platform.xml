@@ -227,6 +227,26 @@
             <tag name="security.voter"/>
         </service>
 
+        <!-- Groups -->
+        <service id="app.group.manager" class="AppBundle\Group\GroupManager">
+            <argument type="service" id="doctrine"/>
+        </service>
+
+        <service id="app.group.authority" class="AppBundle\Group\GroupManagementAuthority">
+            <argument type="service" id="app.group.manager"/>
+            <argument type="service" id="router" />
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+        </service>
+
+        <service id="app.group.factory" class="AppBundle\Group\GroupFactory">
+            <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.validator.unique_group" class="AppBundle\Validator\UniqueGroupValidator">
+            <argument type="service" id="app.repository.group"/>
+            <tag name="validator.constraint_validator" alias="app.validator.unique_group"/>
+        </service>
+
         <!-- Events -->
         <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
 

@@ -1,0 +1,7 @@
+{% if group.isRefused %}
+    <span class="label label-danger">Refusé</span>
+{% elseif group.isApproved %}
+    <span class="label label-success">Accepté</span>
+{% else %}
+    <span class="label label-primary">En attente</span>
+{% endif %}

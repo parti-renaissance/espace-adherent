@@ -2,12 +2,11 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Group\GroupManager;
+use AppBundle\Entity\Group;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
-use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Repository\GroupMembershipRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,9 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class CommitteeAdmin extends AbstractAdmin
+class GroupAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -32,15 +30,15 @@ class CommitteeAdmin extends AbstractAdmin
     ];
 
     private $manager;
-    private $committeeMembershipRepository;
+    private $groupMembershipRepository;
     private $cachedDatagrid;
 
-    public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om)
+    public function __construct($code, $class, $baseControllerName, GroupManager $manager, GroupMembershipRepository $repository)
     {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->manager = $manager;
-        $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
+        $this->groupMembershipRepository = $repository;
     }
 
     /**
@@ -49,7 +47,7 @@ class CommitteeAdmin extends AbstractAdmin
     public function getDatagrid()
     {
         if (!$this->cachedDatagrid) {
-            $this->cachedDatagrid = new CommitteeDatagrid(parent::getDatagrid(), $this->manager);
+            $this->cachedDatagrid = new GroupDatagrid(parent::getDatagrid(), $this->manager);
         }
 
         return $this->cachedDatagrid;
@@ -58,11 +56,11 @@ class CommitteeAdmin extends AbstractAdmin
     public function getTemplate($name)
     {
         if ('show' === $name) {
-            return 'admin/committee/show.html.twig';
+            return 'admin/group/show.html.twig';
         }
 
         if ('edit' === $name) {
-            return 'admin/committee/edit.html.twig';
+            return 'admin/group/edit.html.twig';
         }
 
         return parent::getTemplate($name);
@@ -71,7 +69,7 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Équipe MOOC', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -88,15 +86,6 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('phone', null, [
                     'label' => 'Téléphone',
                     'template' => 'admin/adherent/show_phone.html.twig',
-                ])
-                ->add('facebookPageUrl', UrlType::class, [
-                    'label' => 'Facebook',
-                ])
-                ->add('twitterNickname', null, [
-                    'label' => 'Twitter',
-                ])
-                ->add('googlePlusPageUrl', UrlType::class, [
-                    'label' => 'Google+',
                 ])
                 ->add('status', null, [
                     'label' => 'Statut',
@@ -137,7 +126,7 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Équipe MOOC', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -150,39 +139,18 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
-                ->add('facebookPageUrl', UrlType::class, [
-                    'label' => 'Facebook',
-                    'required' => false,
-                ])
-                ->add('twitterNickname', null, [
-                    'label' => 'Twitter',
-                    'required' => false,
-                ])
-                ->add('googlePlusPageUrl', UrlType::class, [
-                    'label' => 'Google+',
-                    'required' => false,
-                ])
             ->end()
             ->with('Localisation', array('class' => 'col-md-5'))
-                ->add('postAddress.latitude', TextType::class, [
+                ->add('postAddress.latitude', null, [
+                    'required' => false,
+                    'empty_data' => null,
                     'label' => 'Latitude',
                 ])
-                ->add('postAddress.longitude', TextType::class, [
+                ->add('postAddress.longitude', null, [
+                    'required' => false,
+                    'empty_data' => null,
                     'label' => 'Longitude',
-                    'help' => 'Pour modifier l\'adresse, impersonnifiez un animateur de ce comité.',
-                ])
-            ->end()
-            ->with('Commentaire', array('class' => 'col-md-5'))
-                ->add('adminComment', TextareaType::class, [
-                    'label' => 'Commentaire sur l\'AL',
-                    'attr' => ['rows' => 5],
-                    'required' => false,
-                ])
-                ->add('coordinatorComment', TextareaType::class, [
-                    'label' => 'Commentaire sur l\'AL du coordinateur',
-                    'attr' => ['rows' => 5],
-                    'disabled' => true,
-                    'required' => false,
+                    'help' => 'Pour modifier l\'adresse, impersonnifiez un administrateur de cette équipe MOOC.',
                 ])
             ->end()
         ;
@@ -190,7 +158,7 @@ class CommitteeAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $committeeMembershipRepository = $this->committeeMembershipRepository;
+        $groupMembershipRepository = $this->groupMembershipRepository;
 
         $datagridMapper
             ->add('id', null, [
@@ -205,16 +173,16 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Date de création',
                 'field_type' => 'sonata_type_date_range_picker',
             ])
-            ->add('hostFirstName', CallbackFilter::class, [
-                'label' => 'Prénom de l\'animateur',
+            ->add('administratorFirstName', CallbackFilter::class, [
+                'label' => 'Prénom de l\'administrateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($groupMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value'])) {
+                    if (!$ids = $groupMembershipRepository->findGroupsUuidByAdministratorFirstName($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
@@ -226,16 +194,16 @@ class CommitteeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('hostLastName', CallbackFilter::class, [
-                'label' => 'Nom de l\'animateur',
+            ->add('administratorLastName', CallbackFilter::class, [
+                'label' => 'Nom de l\'administrateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($groupMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value'])) {
+                    if (!$ids = $groupMembershipRepository->findGroupsUuidByAdministratorLastName($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
@@ -247,16 +215,16 @@ class CommitteeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('hostEmailAddress', CallbackFilter::class, [
-                'label' => 'Email de l\'animateur',
+            ->add('administratorEmailAddress', CallbackFilter::class, [
+                'label' => 'Email de l\'administrateur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($groupMembershipRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value'])) {
+                    if (!$ids = $groupMembershipRepository->findGroupsUuidByAdministratorEmailAddress($value['value'])) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
@@ -321,11 +289,9 @@ class CommitteeAdmin extends AbstractAdmin
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
-                        'En attente' => Committee::PENDING,
-                        'Accepté' => Committee::APPROVED,
-                        'Refusé' => Committee::REFUSED,
-                        'Pré-approuvé' => Committee::PRE_APPROVED,
-                        'Pré-refusé' => Committee::PRE_REFUSED,
+                        'En attente' => Group::PENDING,
+                        'Accepté' => Group::APPROVED,
+                        'Refusé' => Group::REFUSED,
                     ],
                 ],
             ])
@@ -360,17 +326,17 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
-            ->add('hosts', TextType::class, [
-                'label' => 'Animateur(s)',
-                'template' => 'admin/committee/list_hosts.html.twig',
+            ->add('administrators', TextType::class, [
+                'label' => 'Administrateur(s)',
+                'template' => 'admin/group/list_administrators.html.twig',
             ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
-                'template' => 'admin/committee/list_status.html.twig',
+                'template' => 'admin/group/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/committee/list_actions.html.twig',
+                'template' => 'admin/group/list_actions.html.twig',
             ])
         ;
     }

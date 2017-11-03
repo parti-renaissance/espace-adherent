@@ -15,6 +15,7 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Group;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\MailjetEmail;
@@ -39,6 +40,7 @@ use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\GroupRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\MailjetEmailRepository;
@@ -123,6 +125,11 @@ trait TestHelperTrait
     public function getCommitteeRepository(): CommitteeRepository
     {
         return $this->getRepository(Committee::class);
+    }
+
+    public function getGroupRepository(): GroupRepository
+    {
+        return $this->getRepository(Group::class);
     }
 
     public function getEventRepository(): EventRepository

@@ -116,6 +116,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130');
+        $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
@@ -147,6 +148,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->enableCommitteesNotifications();
+        $this->addReference('adherent-6', $adherent6);
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
@@ -216,6 +218,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $roles->add($this->getReference('adherent'));
         $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->enableCommitteesNotifications();
+        $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_10_UUID,
@@ -234,6 +237,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $roles->add($this->getReference('adherent'));
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->enableCommitteesNotifications();
+        $this->addReference('adherent-10', $adherent10);
 
         $adherent11 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_11_UUID,
@@ -252,6 +256,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
+        $this->addReference('adherent-11', $adherent11);
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
@@ -274,6 +279,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
         $adherent12->enableCommitteesNotifications();
         $adherent12->setLegislativeCandidate(true);
+        $this->addReference('adherent-12', $adherent12);
 
         $adherent13 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_13_UUID,
