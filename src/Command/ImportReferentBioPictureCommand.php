@@ -117,11 +117,11 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
         }
     }
 
-    private function extractArchive($pahToAriche): string
+    private function extractArchive($pahToArchive): string
     {
         $zip = new ZipArchive();
 
-        if ($statusCode = (true !== $zip->open($pahToAriche))) {
+        if ($statusCode = (true !== $zip->open($pahToArchive))) {
             throw new \Exception($this->zipStatusString($statusCode), $statusCode);
         }
 
@@ -170,7 +170,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
     {
         $rows = [];
         if (false === ($handle = @fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
+            throw new FileNotFoundException(sprintf('%s not found', $filename));
         }
 
         $firstline = true;

@@ -50,7 +50,7 @@ class ImportReferentBioPictureCommandTest extends SqliteWebTestCase
         $this->createZipArchiveWithoutCsv();
         $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::ARCHIVE_WITHOUT_CSV_NAME]);
 
-        $this->assertContains('exited with code "1"', $output);
+        $this->assertContains('csv not found', $output);
     }
 
     public function testCommandWithNotExistReferentInDb()
