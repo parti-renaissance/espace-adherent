@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-final class TonMacronChoice
+class TonMacronChoice
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;

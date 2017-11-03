@@ -17,7 +17,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-final class TonMacronFriendInvitation
+class TonMacronFriendInvitation
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;

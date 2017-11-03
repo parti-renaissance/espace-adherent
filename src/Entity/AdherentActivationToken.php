@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-final class AdherentActivationToken extends AdherentToken
+class AdherentActivationToken extends AdherentToken
 {
     public function getType(): string
     {

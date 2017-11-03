@@ -1083,16 +1083,16 @@
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "8ddb4ad9207945c3e3f6287ee2485a51f249358b"
+                "reference": "a9e506369f931351a2a6dd2aef588a822802b1b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/8ddb4ad9207945c3e3f6287ee2485a51f249358b",
-                "reference": "8ddb4ad9207945c3e3f6287ee2485a51f249358b",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/a9e506369f931351a2a6dd2aef588a822802b1b7",
+                "reference": "a9e506369f931351a2a6dd2aef588a822802b1b7",
                 "shasum": ""
             },
             "require": {
@@ -1102,7 +1102,7 @@
                 "symfony/framework-bundle": "~2.7|~3.3|~4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8"
+                "phpunit/phpunit": "^4.8.36"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1140,7 +1140,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2017-10-30T19:37:38+00:00"
+            "time": "2017-11-01T09:13:26+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -5549,7 +5549,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-05-23 07:03:24"
+            "time": "2017-05-23T07:03:24+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
