@@ -95,6 +95,27 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertSame('application/rss+xml', $response->headers->get('Content-Type'));
     }
 
+    public function testRedirectArticleTribunesToOpinions()
+    {
+        $this->client->request(Request::METHOD_GET, '/articles/tribunes/mes-opinions');
+
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+
+        $this->assertClientIsRedirectedTo('/articles/opinions/mes-opinions', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_GET, '/articles/tribunes/not-exist');
+
+        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+
+        $this->assertClientIsRedirectedTo('/articles/opinions/not-exist', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $response = $this->client->getResponse());
+    }
+
     protected function setUp()
     {
         parent::setUp();
