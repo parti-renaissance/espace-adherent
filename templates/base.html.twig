@@ -116,9 +116,6 @@
                     <li>
                         <a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
                     </li>
-                    <li>
-                        <a class="text--medium-small" href="https://aide.en-marche.fr">Aide</a>
-                    </li>
                     <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                         <a href="javascript:void(0)" class="je-cherche">
                             {{ include('components/search.html.twig') }}
