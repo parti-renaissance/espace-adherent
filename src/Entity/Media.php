@@ -132,7 +132,7 @@ class Media
      *
      * @return Media
      */
-    public function setName($name): Media
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -152,7 +152,7 @@ class Media
      *
      * @return Media
      */
-    public function setPath($path): Media
+    public function setPath($path): self
     {
         $this->path = $path;
 
@@ -172,7 +172,7 @@ class Media
      *
      * @return Media
      */
-    public function setWidth($width): Media
+    public function setWidth($width): self
     {
         $this->width = $width;
 
@@ -192,7 +192,7 @@ class Media
      *
      * @return Media
      */
-    public function setHeight($height): Media
+    public function setHeight($height): self
     {
         $this->height = $height;
 
@@ -212,7 +212,7 @@ class Media
      *
      * @return Media
      */
-    public function setSize($size): Media
+    public function setSize($size): self
     {
         $this->size = $size;
 
@@ -232,7 +232,7 @@ class Media
      *
      * @return Media
      */
-    public function setMimeType($mimeType): Media
+    public function setMimeType($mimeType): self
     {
         $this->mimeType = $mimeType;
 
@@ -244,7 +244,7 @@ class Media
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): Media
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -256,7 +256,7 @@ class Media
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): Media
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -286,7 +286,7 @@ class Media
      *
      * @return Media
      */
-    public function setFile(File $file = null): Media
+    public function setFile(File $file = null): self
     {
         if (!$file) {
             return $this;

@@ -181,21 +181,21 @@ class BoardMember
         $this->savedMembers = $savedMembers;
     }
 
-    public function addSavedBoardMember(BoardMember $boardMember): void
+    public function addSavedBoardMember(self $boardMember): void
     {
         if (!$this->savedMembers->contains($boardMember)) {
             $this->savedMembers->add($boardMember);
         }
     }
 
-    public function removeSavedBoardMember(BoardMember $boardMember): void
+    public function removeSavedBoardMember(self $boardMember): void
     {
         if ($this->savedMembers->contains($boardMember)) {
             $this->savedMembers->removeElement($boardMember);
         }
     }
 
-    public function hasSavedBoardMember(BoardMember $boardMember): bool
+    public function hasSavedBoardMember(self $boardMember): bool
     {
         return $this->savedMembers->contains($boardMember);
     }

@@ -900,12 +900,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $membership->canAdministrateGroup();
     }
 
-    public function isSubscribedTo(Adherent $adherent = null): bool
+    public function isSubscribedTo(self $adherent = null): bool
     {
         return null === $adherent || null === $this->getActivitySubscriptionTo($adherent) ? false : true;
     }
 
-    public function getActivitySubscriptionTo(Adherent $followed): ?ActivitySubscription
+    public function getActivitySubscriptionTo(self $followed): ?ActivitySubscription
     {
         foreach ($this->activitiySubscriptions as $subscription) {
             if ($subscription->matches($this, $followed) && $subscription->isSubscribed()) {

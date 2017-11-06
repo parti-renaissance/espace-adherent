@@ -28,7 +28,7 @@ class CitizenInitiativeAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    public function setCitizenInitiativeManager(CitizenInitiativeManager $manager): CitizenInitiativeAdmin
+    public function setCitizenInitiativeManager(CitizenInitiativeManager $manager): self
     {
         $this->manager = $manager;
 

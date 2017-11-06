@@ -86,14 +86,14 @@ class Proposal implements EntityContentInterface
         return $this->position;
     }
 
-    public function setPosition($position): Proposal
+    public function setPosition($position): self
     {
         $this->position = $position;
 
         return $this;
     }
 
-    public function addTheme(ProposalTheme $theme): Proposal
+    public function addTheme(ProposalTheme $theme): self
     {
         $this->themes[] = $theme;
 
@@ -121,7 +121,7 @@ class Proposal implements EntityContentInterface
         return $this->published;
     }
 
-    public function setPublished(bool $published): Proposal
+    public function setPublished(bool $published): self
     {
         $this->published = $published;
 
@@ -141,7 +141,7 @@ class Proposal implements EntityContentInterface
      *
      * @return Proposal
      */
-    public function setMedia(Media $media = null): Proposal
+    public function setMedia(Media $media = null): self
     {
         $this->media = $media;
 
@@ -153,7 +153,7 @@ class Proposal implements EntityContentInterface
         return $this->displayMedia;
     }
 
-    public function setDisplayMedia(bool $displayMedia): Proposal
+    public function setDisplayMedia(bool $displayMedia): self
     {
         $this->displayMedia = $displayMedia;
 

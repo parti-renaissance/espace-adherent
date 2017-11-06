@@ -79,7 +79,7 @@ class ArticleCategory
         return $this->position;
     }
 
-    public function setPosition(int $position): ArticleCategory
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
@@ -91,7 +91,7 @@ class ArticleCategory
         return $this->name;
     }
 
-    public function setName(string $name): ArticleCategory
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -103,7 +103,7 @@ class ArticleCategory
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): ArticleCategory
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
