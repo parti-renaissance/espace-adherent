@@ -284,4 +284,30 @@ class CommitteeRepository extends EntityRepository
             ->getResult()
         ;
     }
+
+    public function countCommitteeForAdherentAndStatus(Adherent $adherent, string $status)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.createdBy = :creator')
+            ->andWhere('c.status = :status')
+            ->setParameter('creator', $adherent->getUuid()->toString())
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function hasCommitteeInStatus(Adherent $adherent, array $status)
+    {
+        $nb = $this->createQueryBuilder('c')
+            ->select('COUNT(c) AS nb')
+            ->where('c.createdBy = :creator')
+            ->andWhere('c.status IN (:status)')
+            ->setParameter('creator', $adherent->getUuid()->toString())
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $nb > 0;
+    }
 }

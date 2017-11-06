@@ -364,6 +364,10 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Animateur(s)',
                 'template' => 'admin/committee/list_hosts.html.twig',
             ])
+            ->add('creator', TextType::class, [
+                'label' => 'Créateur',
+                'template' => 'admin/committee/list_creator.html.twig',
+            ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',

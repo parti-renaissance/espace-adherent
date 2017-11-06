@@ -2,12 +2,15 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Mailjet\Message\EventNotificationMessage;
 use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\EventRepository;
@@ -484,6 +487,79 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo($membersUrl, $this->client);
+    }
+
+    public function testAllowToCreateCommmitee()
+    {
+        /** @var CommitteeManager $manager */
+        $manager = $this->get('app.committee.manager');
+
+        $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com', 'politique2017');
+        $adherent = $this->getAdherentRepository()->findByEmail('martine.lindt@gmail.com');
+        $committee = $this->getCommitteeRepository()->findOneByName('En Marche - Comité de Berlin');
+
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $manager->changePrivilege(
+            $adherent,
+            $committee,
+            CommitteeMembership::COMMITTEE_FOLLOWER
+        );
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $manager->changePrivilege(
+            $adherent,
+            $committee,
+            CommitteeMembership::COMMITTEE_HOST
+        );
+
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->logout($this->client);
+
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+
+        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+        $manager->unfollowCommittee($adherent, $this->getCommitteeRepository()->findOneByName('En Marche - Suisse'));
+
+        $committee = $this->get('app.committee.factory')->createFromArray([
+            'uuid' => '79638242-6662-11e7-b114-ef08860a1845',
+            'created_by' => (string) $adherent->getUuid(),
+            'created_at' => '2017-01-12 19:34:12',
+            'name' => 'En Marche Lille 20',
+            'description' => "En Marche ! C'est aussi dans le NORD",
+            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'phone' => '33 673643424',
+        ]);
+        $this->manager->persist($committee);
+        $this->manager->flush();
+        $committee = $this->getCommitteeRepository()->findOneByName('En Marche Lille 20');
+
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $manager->preApproveCommittee($committee);
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $manager->preRefuseCommittee($committee);
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $manager->refuseCommittee($committee);
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+
+        $this->logout($this->client);
+
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+
+        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     private function getCommitteeSubscribersCount(string $committeeUuid): int

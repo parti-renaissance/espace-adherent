@@ -29,6 +29,7 @@ class CommitteeDatagrid implements DatagridInterface
 
             foreach ($results as $result) {
                 $result->hosts = $this->manager->getCommitteeHosts($result);
+                $result->creator = $this->manager->getCommitteeCreator($result);
             }
 
             $this->cachedResults = $results;
