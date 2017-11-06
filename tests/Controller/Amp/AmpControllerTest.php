@@ -26,7 +26,7 @@ class AmpControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="https://'.Config::APP_HOST.'/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertContains('<amp-img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleDraft()
@@ -80,7 +80,7 @@ class AmpControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="https://'.Config::APP_HOST.'/assets/images/proposal.jpg', $this->client->getResponse()->getContent());
+        $this->assertContains('<amp-img src="/assets/images/proposal.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testProposalDraft()
@@ -95,7 +95,7 @@ class AmpControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="https://'.Config::APP_HOST.'/assets/images/order_article.jpg', $this->client->getResponse()->getContent());
+        $this->assertContains('<amp-img src="/assets/images/order_article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testOrderArticleDraft()

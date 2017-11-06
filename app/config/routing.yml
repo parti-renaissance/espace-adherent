@@ -10,8 +10,6 @@ app_health:
 # Assets
 #
 app_assets:
-    schemes:  [https]
-    host:     "%app_host%"
     resource: "@AppBundle/Controller/AssetsController.php"
     type:     "annotation"
 
@@ -54,10 +52,10 @@ lexik_paybox:
 
 # This route must be loaded first to prevent an override
 map_events:
-    path: /evenements/la-carte
+    host:    "%app_host%"
+    path:    /evenements/la-carte
     methods: GET
     defaults: { _controller: 'AppBundle:EnMarche/Map:events' }
-    condition: "not (context.getHost() matches '/legislatives/i')"
 
 app_enmarche:
     host:     "%app_host%"
