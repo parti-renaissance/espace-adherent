@@ -166,7 +166,7 @@ class CitizenInitiative extends BaseEvent
         return $this->citizenInitiativeCategory;
     }
 
-    public function setCategory(CitizenInitiativeCategory $category): CitizenInitiative
+    public function setCategory(CitizenInitiativeCategory $category): self
     {
         $this->citizenInitiativeCategory = $category;
 
@@ -178,7 +178,7 @@ class CitizenInitiative extends BaseEvent
         return $this->citizenInitiativeCategory;
     }
 
-    public function setCitizenInitiativeCategory(CitizenInitiativeCategory $category): CitizenInitiative
+    public function setCitizenInitiativeCategory(CitizenInitiativeCategory $category): self
     {
         $this->citizenInitiativeCategory = $category;
 
@@ -265,7 +265,7 @@ class CitizenInitiative extends BaseEvent
         return true === $this->wasPublished;
     }
 
-    public function setWasPublished(bool $wasPublished): CitizenInitiative
+    public function setWasPublished(bool $wasPublished): self
     {
         $this->wasPublished = $wasPublished;
 

@@ -86,7 +86,7 @@ class Article implements EntityMediaInterface, EntityContentInterface
      *
      * @return Article
      */
-    public function setCategory(ArticleCategory $category = null): Article
+    public function setCategory(ArticleCategory $category = null): self
     {
         $this->category = $category;
 
@@ -98,7 +98,7 @@ class Article implements EntityMediaInterface, EntityContentInterface
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt): Article
+    public function setPublishedAt(\DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 

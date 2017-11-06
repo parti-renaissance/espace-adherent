@@ -153,7 +153,7 @@ class Invite
      *
      * @return Invite
      */
-    public function setLastName($lastName): Invite
+    public function setLastName($lastName): self
     {
         $this->lastName = $lastName;
 
@@ -173,7 +173,7 @@ class Invite
      *
      * @return Invite
      */
-    public function setFirstName($firstName): Invite
+    public function setFirstName($firstName): self
     {
         $this->firstName = $firstName;
 
@@ -193,7 +193,7 @@ class Invite
      *
      * @return Invite
      */
-    public function setEmail($email): Invite
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -213,7 +213,7 @@ class Invite
      *
      * @return Invite
      */
-    public function setMessage($message): Invite
+    public function setMessage($message): self
     {
         $this->message = $message;
 
@@ -228,7 +228,7 @@ class Invite
         return $this->clientIp;
     }
 
-    public function setClientIp(string $clientIp): Invite
+    public function setClientIp(string $clientIp): self
     {
         $this->clientIp = $clientIp;
 

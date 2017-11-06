@@ -57,7 +57,7 @@ class ProposalTheme
         return $this->name;
     }
 
-    public function setName(?string $name): ProposalTheme
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -69,7 +69,7 @@ class ProposalTheme
         return $this->color;
     }
 
-    public function setColor(?string $color): ProposalTheme
+    public function setColor(?string $color): self
     {
         $this->color = $color;
 

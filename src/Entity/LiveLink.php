@@ -77,7 +77,7 @@ class LiveLink
         return $this->position;
     }
 
-    public function setPosition($position): LiveLink
+    public function setPosition($position): self
     {
         $this->position = $position;
 
@@ -89,7 +89,7 @@ class LiveLink
         return $this->title;
     }
 
-    public function setTitle($title): LiveLink
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -101,7 +101,7 @@ class LiveLink
         return $this->link;
     }
 
-    public function setLink($link): LiveLink
+    public function setLink($link): self
     {
         $this->link = $link;
 
@@ -113,7 +113,7 @@ class LiveLink
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): LiveLink
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
