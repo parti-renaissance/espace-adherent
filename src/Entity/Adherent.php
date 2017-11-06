@@ -779,10 +779,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setProcurationManagedAreaCodesAsString(string $codes = null): void
     {
-        if (!$codes) {
-            return;
-        }
-
         if (!$this->procurationManagedArea) {
             $this->procurationManagedArea = new ProcurationManagedArea();
             $this->procurationManagedArea->setAdherent($this);
@@ -807,10 +803,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setCoordinatorManagedAreaCodesAsString(string $codes = null): void
     {
-        if (!$codes) {
-            return;
-        }
-
         if (!$this->coordinatorManagedArea) {
             $this->coordinatorManagedArea = new CoordinatorManagedArea();
             $this->coordinatorManagedArea->setAdherent($this);
