@@ -114,7 +114,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $this->client->getCrawler()->filter('span.committee-event-address')->text());
         $this->assertSame('Mercredi 14 juin 2017, 9h00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
         $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
-        $this->assertContains('100 inscrits', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
+        $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
     }
 
     public function testSearchUserToSendMail()
