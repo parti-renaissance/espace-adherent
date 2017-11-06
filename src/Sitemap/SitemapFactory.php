@@ -77,6 +77,9 @@ class SitemapFactory
                 $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_CITIZEN_INITIATIVES, 'page' => $i]), null);
             }
 
+            // AMP
+            $sitemapIndex->add($this->generateUrl('amp_sitemap'), null);
+
             $index->set((string) $sitemapIndex);
             $index->expiresAfter(self::EXPIRATION_TIME);
 
