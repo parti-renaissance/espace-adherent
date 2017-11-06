@@ -104,7 +104,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getBirthdate());
         $this->assertNull($adherent->getPosition());
         $this->assertNull($adherent->getGender());
-        $this->assertSame(['ROLE_USER', 'ROLE_ADHERENT'], $adherent->getRoles());
+        $this->assertSame(['ROLE_USER'], $adherent->getRoles());
         $this->assertSame('carl999@example.fr', $adherent->getUsername());
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());

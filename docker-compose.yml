@@ -5,7 +5,7 @@ services:
         build:
             context: docker/dev
         image: enmarche_app
-        container_name: en-marche.dev
+        container_name: enmarche.dev
         depends_on:
             - db
             - redis
