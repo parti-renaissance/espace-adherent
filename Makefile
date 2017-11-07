@@ -1,3 +1,8 @@
+$(shell docker network create enmarche 1>/dev/null 2>&1 || true)
+$(shell test -f ./rabbitmq.mk || cp ./rabbitmq.mk.dist ./rabbitmq.mk)
+
+include rabbitmq.mk
+
 FIG=docker-compose
 RUN=$(FIG) run --rm app
 EXEC=$(FIG) exec app

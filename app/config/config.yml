@@ -71,6 +71,7 @@ twig:
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
+        auth_register_url:      "%env(AUTH_REGISTER_URL)%"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
@@ -172,6 +173,16 @@ csa_guzzle:
                 base_uri: 'https://graph.facebook.com'
                 timeout: 2.0
 
+        auth:
+            config:
+                base_uri: "%env(AUTH_API_URL)%"
+                timeout: 2.0
+
+        api:
+            config:
+                base_uri: "%env(API_URL)%"
+                timeout: 2.0
+
 scheb_two_factor:
     google:
         enabled: true
@@ -219,9 +230,10 @@ old_sound_rabbit_mq:
             password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            connection_timeout: 60
+            read_write_timeout: 60
+            keepalive: false
+            heartbeat: 30
 
     producers:
         mailjet_campaign:
@@ -238,11 +250,6 @@ old_sound_rabbit_mq:
             connection:       default
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
-
-        enmarche_sync_user_create:
-            connection: default
-            exchange_options: { name: 'enmarche_sync_user_create', type: direct }
-            queue_options:    { name: 'enmarche_sync_user_create', durable: true }
 
     consumers:
         mailjet_campaign:
@@ -265,3 +272,29 @@ old_sound_rabbit_mq:
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        api_broadcast_user:
+            connection:        default
+            exchange_options:  { name: broadcast, type: topic }
+            queue_options:     { name: 'enmarche_broadcast', routing_keys: ['user.*'] }
+            callback:          app.consumer.user_account
+
+hwi_oauth:
+    firewall_names: [main]
+    resource_owners:
+        auth:
+            type:                oauth2
+            client_id:           "%env(AUTH_CLIENT_ID)%"
+            client_secret:       "%env(AUTH_CLIENT_SECRET)%"
+            access_token_url:    "%env(AUTH_ACCESS_TOKEN_URL)%"
+            authorization_url:   "%env(AUTH_ACCESS_AUTHORIZATION_URL)%"
+            infos_url:           "%env(AUTH_INFO_URL)%"
+            #scope:               "public"
+            user_response_class: HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse
+            paths:
+                identifier: emailAddress
+                nickname: firstname
+                firstname: firstName
+                lastname: lastName
+                realname: ['firstname', 'lastname']
+                email: emailAddress

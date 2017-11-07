@@ -102,7 +102,7 @@ class CommitteeMembership
         $this->joinedAt = new \DateTime($subscriptionDate);
     }
 
-    final public static function getHostPrivileges(): array
+    public static function getHostPrivileges(): array
     {
         return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
     }

@@ -199,7 +199,7 @@ class LegislativeDistrictZone
         return ltrim($this->areaCode, '0');
     }
 
-    final public function getAreaTypeLabel(): string
+    public function getAreaTypeLabel(): string
     {
         if (self::isCorsica($this->areaCode)) {
             return self::ZONE_FRANCE;
