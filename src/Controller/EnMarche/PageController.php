@@ -174,6 +174,15 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/listes-bureau-executif", defaults={"_enable_campaign_silence"=true}, name="page_burex")
+     * @Method("GET")
+     */
+    public function burexAction()
+    {
+        return $this->render('page/burex-lists.html.twig');
+    }
+
+    /**
      * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents-home')")
