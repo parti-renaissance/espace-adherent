@@ -15,8 +15,8 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Form\MembershipRequestType;
 use AppBundle\Form\UnregistrationType;
-use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\UnregistrationCommand;
 use GuzzleHttp\Exception\ConnectException;
@@ -55,7 +55,7 @@ class AdherentController extends Controller
     {
         $adherent = $this->getUser();
         $membership = MembershipRequest::createFromAdherent($adherent);
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
+        $form = $this->createForm(MembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
 

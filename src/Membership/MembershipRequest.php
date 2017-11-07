@@ -4,7 +4,6 @@ namespace AppBundle\Membership;
 
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -44,8 +43,6 @@ class MembershipRequest implements MembershipInterface
     public $lastName;
 
     /**
-     * @Assert\Valid
-     *
      * @var Address
      */
     private $address;
@@ -67,12 +64,6 @@ class MembershipRequest implements MembershipInterface
     public $comMobile = false;
 
     public $comEmail = false;
-
-    /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
-     * @AssertRecaptcha(groups={"Registration"})
-     */
-    public $recaptcha;
 
     /**
      * @Assert\NotBlank(message="common.email.not_blank")
@@ -99,14 +90,6 @@ class MembershipRequest implements MembershipInterface
         $this->conditions = false;
         $this->emailAddress = '';
         $this->address = new Address();
-    }
-
-    public static function createFromAdherentWithCaptcha(Adherent $adherent, string $recaptchaAnswer = null): self
-    {
-        $dto = self::createFromAdherent($adherent);
-        $dto->recaptcha = $recaptchaAnswer;
-
-        return $dto;
     }
 
     public static function createFromAdherent(Adherent $adherent): self

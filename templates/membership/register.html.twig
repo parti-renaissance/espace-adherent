@@ -22,7 +22,6 @@
             App.runRegistration();
         });
     </script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -52,6 +51,7 @@
             </article>
             <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
                 <div class="register__form">
+                    {% set isCreateForm = true %}
                     {{ block('adherent_membership_form') }}
                 </div>
                 <p class="text--summary b__nudge--top-50">
