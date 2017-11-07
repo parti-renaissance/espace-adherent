@@ -6,6 +6,7 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\MoocEvent;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
@@ -70,6 +71,31 @@ class EventFactory
             null,
             0,
             $data['place']
+        );
+    }
+
+    public function createMoocEventFromArray(array $data): MoocEvent
+    {
+        foreach (['uuid', 'organizer', 'group', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
+                     'capacity', ] as $key) {
+            if (!array_key_exists($key, $data)) {
+                throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
+            }
+        }
+
+        $uuid = Uuid::fromString($data['uuid']);
+
+        return new MoocEvent(
+            $uuid,
+            $data['organizer'],
+            $data['group'],
+            $data['name'],
+            $data['category'],
+            $data['description'],
+            $data['address'],
+            $data['begin_at'],
+            $data['finish_at'],
+            $data['capacity']
         );
     }
 

@@ -34,6 +34,11 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.mooc_event" class="AppBundle\Repository\MoocEventRepository" public="false">
+            <argument>AppBundle\Entity\MoocEvent</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.event_registration" class="AppBundle\Repository\EventRegistrationRepository" public="false">
             <argument>AppBundle\Entity\EventRegistration</argument>
             <factory service="doctrine" method="getRepository"/>
