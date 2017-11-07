@@ -25,18 +25,16 @@ class MembershipRequestType extends AbstractType
                     'day' => 'JJ',
                 ],
             ])
-            ->add('address', AddressType::class)
+            ->add('address', AddressType::class, [
+                'postalCode' => [
+                    'disabled' => true,
+                ]
+            ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('conditions', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('comMobile', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('comEmail', CheckboxType::class, [
                 'required' => false,
             ])
         ;
@@ -49,7 +47,6 @@ class MembershipRequestType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
             'translation_domain' => false,
-            'validation_groups' => ['Default', 'Registration'],
             'years' => array_combine($years, $years),
         ]);
     }
