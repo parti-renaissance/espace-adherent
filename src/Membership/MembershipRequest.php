@@ -69,12 +69,6 @@ class MembershipRequest implements MembershipInterface
     public $comEmail = false;
 
     /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
-     * @AssertRecaptcha(groups={"Registration"})
-     */
-    public $recaptcha;
-
-    /**
      * @Assert\NotBlank(message="common.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
@@ -99,14 +93,6 @@ class MembershipRequest implements MembershipInterface
         $this->conditions = false;
         $this->emailAddress = '';
         $this->address = new Address();
-    }
-
-    public static function createFromAdherentWithCaptcha(Adherent $adherent, string $recaptchaAnswer = null): self
-    {
-        $dto = self::createFromAdherent($adherent);
-        $dto->recaptcha = $recaptchaAnswer;
-
-        return $dto;
     }
 
     public static function createFromAdherent(Adherent $adherent): self
