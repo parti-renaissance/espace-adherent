@@ -194,7 +194,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/carrieres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
+     * @Route("/nos-offres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('jobs')")
      */
