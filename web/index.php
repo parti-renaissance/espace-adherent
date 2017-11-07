@@ -40,6 +40,11 @@ if ('prod' === getenv('APP_ENV')) {
 
 $kernel = new AppKernel(getenv('APP_ENV'), getenv('APP_DEBUG'));
 $request = Request::createFromGlobals();
+
+if (getenv('TRUSTED_PROXIES')) {
+    Request::setTrustedProxies(json_decode(getenv('TRUSTED_PROXIES'), true), Request::HEADER_X_FORWARDED_ALL);
+}
+
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
