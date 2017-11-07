@@ -4,13 +4,16 @@ services:
     app:
         build:
             context: docker/dev
+        image: enmarche_app
+        container_name: enmarche.dev
         depends_on:
             - db
             - redis
         volumes:
             - .:/app
-            - /app/var/cache
-            - /app/var/sessions
+        networks:
+            - enmarche
+            - default
 
     db:
         image: mysql:5.7
@@ -20,5 +23,19 @@ services:
     redis:
         image: redis:3.2
 
-    rabbitmq:
-        image: rabbitmq:3-management
+    worker-user:
+        image: enmarche_app
+        container_name: enmarche_worker_user
+        networks:
+            - enmarche
+            - default
+        command: sh -c "dockerize -wait tcp://rabbitmq:5672 && bin/console rabbitmq:consumer -w api_broadcast_user"
+        volumes:
+            - ./:/app
+        depends_on:
+            - db
+
+networks:
+    enmarche:
+        external:
+            name: enmarche

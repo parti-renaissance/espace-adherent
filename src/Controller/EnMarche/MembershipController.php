@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,19 +29,28 @@ class MembershipController extends Controller
     /**
      * This action enables a guest user to adhere to the community.
      *
-     * @Route("/inscription", name="app_membership_register")
+     * @Route("/adhesion", name="app_register_fully")
      * @Method("GET|POST")
+     *
+     * @Security("is_granted('ROLE_USER')")
      */
-    public function registerAction(Request $request): Response
+    public function finalizeRegistrationAction(Request $request): Response
     {
-        $membership = MembershipRequest::createWithCaptcha($request->request->get('g-recaptcha-response'));
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        if ($user->isAdherent()) {
+            throw $this->createNotFoundException();
+        }
+
+        $membership = MembershipRequest::createFromAdherentWithCaptcha($user, $request->request->get('g-recaptcha-response'));
         $form = $this->createForm(MembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->get('app.membership_request_handler')->handle($membership);
+                $this->get('app.membership_request_handler')->handle($user, $membership);
 
                 return $this->redirectToRoute('app_membership_donate');
             }
@@ -53,6 +63,34 @@ class MembershipController extends Controller
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
+    }
+
+    /**
+     * @Route("/register", name="app_membership_register")
+     * @Method("GET")
+     */
+    public function registerAction(Request $request): Response
+    {
+        if (!$uuid = $request->get('uuid')) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->getDoctrine()->getRepository(Adherent::class)->findOneBy(['uuid' => $uuid])) {
+            return $this->redirectToRoute('hwi_oauth_service_redirect', ['service' => 'auth']);
+        }
+
+        $result = $this->get('csa_guzzle.client.auth')->request(
+            'GET',
+            sprintf('/api/users/%s', $uuid), ['CONTENT_TYPE' => 'application/json']
+        );
+
+        $userData = (array) \GuzzleHttp\json_decode($result->getBody()->getContents());
+        $adherent = $this->get('app.membership.adherent_factory')->createFromAPIResponse($userData);
+
+        $this->getDoctrine()->getManager()->persist($adherent);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('app_register_fully');
     }
 
     /**
@@ -238,10 +276,6 @@ class MembershipController extends Controller
      */
     public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
     {
-        if ($this->getUser()) {
-            $this->redirectToRoute('app_search_events');
-        }
-
         try {
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
@@ -254,7 +288,6 @@ class MembershipController extends Controller
         }
 
         // Other exceptions that may be raised will be caught by Symfony.
-
-        return $this->redirectToRoute('app_adherent_login');
+        return $this->redirectToRoute('homepage');
     }
 }

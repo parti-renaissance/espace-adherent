@@ -12,6 +12,7 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\ActivityPositions;
+use AppBundle\Membership\AdherentAccountData;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
@@ -56,7 +57,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $oldPassword;
 
     /**
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, nullable=true)
      */
     private $gender;
 
@@ -76,7 +77,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $birthdate;
 
     /**
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20, nullable=true)
      */
     private $position;
 
@@ -204,24 +205,31 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $activitiySubscriptions;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=0})
+     */
+    private $adherent = false;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
-        string $password,
-        string $gender,
+        ?string $gender,
         string $firstName,
         string $lastName,
-        \DateTime $birthdate,
-        string $position,
-        PostAddress $postAddress,
-        PhoneNumber $phone = null,
-        string $status = self::DISABLED,
-        string $registeredAt = 'now',
+        ?\DateTime $birthdate,
+        ?string $position,
+        ?PostAddress $postAddress,
+        ?PhoneNumber $phone = null,
+        ?string $status = self::DISABLED,
+        ?string $registeredAt = 'now',
         bool $comEmail = false,
-        bool $comMobile = false
+        bool $comMobile = false,
+        bool $isAdherent = true,
+        string $password = null
     ) {
         $this->uuid = $uuid;
-        $this->password = $password;
         $this->gender = $gender;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -237,6 +245,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->groupMemberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
+        $this->adherent = $isAdherent;
+        $this->password = $password;
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -246,7 +256,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_ADHERENT'];
+        $roles = ['ROLE_USER'];
+
+        if ($this->isAdherent()) {
+            $roles[] = 'ROLE_ADHERENT';
+        }
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
@@ -297,7 +311,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isAdministrator() || $this->isBoardMember();
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return !$this->password ? $this->oldPassword : $this->password;
     }
@@ -339,7 +353,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->phone;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
@@ -461,25 +475,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->activatedAt = new \DateTime($timestamp);
     }
 
-    /**
-     * Resets the Adherent password using a reset pasword token.
-     *
-     * @throws \InvalidArgumentException
-     * @throws AdherentException
-     * @throws AdherentTokenException
-     */
-    public function resetPassword(AdherentResetPasswordToken $token): void
-    {
-        if (!$newPassword = $token->getNewPassword()) {
-            throw new \InvalidArgumentException('Token must have a new password.');
-        }
-
-        $token->consume($this);
-
-        $this->clearOldPassword();
-        $this->password = $newPassword;
-    }
-
     public function clearOldPassword(): void
     {
         $this->oldPassword = null;
@@ -523,17 +518,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->interests = $interests;
     }
 
+    public function updateAccount(AdherentAccountData $data): void
+    {
+        $this->firstName = $data->getFirstName();
+        $this->lastName = $data->getLastName();
+        $this->emailAddress = $data->getEmailAddress();
+    }
+
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
     {
         $this->gender = $membership->gender;
-        $this->firstName = $membership->firstName;
-        $this->lastName = $membership->lastName;
         $this->birthdate = $membership->getBirthdate();
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
         $this->comEmail = $membership->comEmail;
         $this->comMobile = $membership->comMobile;
-        $this->emailAddress = $membership->getEmailAddress();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -743,6 +742,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->managedArea->setMarkerLongitude($markerLongitude);
     }
 
+    public function isAdherent(): bool
+    {
+        return $this->adherent;
+    }
+
+    public function join()
+    {
+        $this->adherent = true;
+    }
+
     public function isReferent(): bool
     {
         return $this->managedArea instanceof ManagedArea && !empty($this->managedArea->getCodes());
@@ -819,7 +828,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->coordinatorManagedArea->setCodesAsString((string) $codes);
     }
 
-    final public function getMemberships(): CommitteeMembershipCollection
+    public function getMemberships(): CommitteeMembershipCollection
     {
         if ($this->memberships instanceof Collection) {
             if (!$this->memberships instanceof CommitteeMembershipCollection) {

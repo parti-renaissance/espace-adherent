@@ -151,7 +151,7 @@ class ReferentArea
         return ltrim($this->areaCode, '0');
     }
 
-    final public function getAreaTypeLabel(): string
+    public function getAreaTypeLabel(): string
     {
         if (preg_match('/^[A-Z]/', strtoupper($this->areaCode))) {
             return self::ZONE_FOREIGN;
