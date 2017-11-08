@@ -68,6 +68,13 @@
             background-color: $gray;
         }
 
+        .profile-pic {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
         .share {
             a {
                 border: 0;
@@ -114,11 +121,15 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 125px;
         box-sizing: border-box;
 
         @media (max-width: $mobile) {
             height: 135px;
+        }
+
+        .bio {
+            @include text--small;
+            color: $dark;
         }
     }
 
