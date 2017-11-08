@@ -174,7 +174,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/listes-bureau-executif", defaults={"_enable_campaign_silence"=true}, name="page_burex")
+     * @Route("/candidatures-delegue-general-et-bureau-executif", defaults={"_enable_campaign_silence"=true}, name="page_burex")
      * @Method("GET")
      */
     public function burexAction()
