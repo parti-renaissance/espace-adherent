@@ -70,7 +70,7 @@ class PageControllerTest extends SqliteWebTestCase
         yield ['/action-talents'];
         yield ['/action-talents/candidater'];
         yield ['/nos-offres'];
-        yield ['/listes-bureau-executif'];
+        yield ['/candidatures-delegue-general-et-bureau-executif'];
     }
 
     protected function setUp()
