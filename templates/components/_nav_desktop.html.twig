@@ -77,10 +77,10 @@
                         Administration
                     </a>
                 {% else %}
-                    <a href="{{ path(is_granted('ROLE_ADHERENT') ? 'app_adherent_profile' : path('hwi_oauth_service_redirect', {service: 'auth'})) }}" class="icon--with-text text--medium-small nav__user__name">
+                    <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_adherent_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) }}" class="icon--with-text text--medium-small nav__user__name">
                         {{ include('components/user.html.twig') }}
                     </a>
-                    {% if app.user.isAdherent %}
+                    {% if app.user and app.user.isAdherent %}
                         <a class="btn" href="{{ path('app_create_citizen_initiative') }}">Créer une initiative</a>
                     {% endif %}
                     {% if is_granted('ROLE_ADHERENT') %}
