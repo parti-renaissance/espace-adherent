@@ -14,6 +14,6 @@ class Version20171024022242 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->addSql('ALTER TABLE emails RENAME mailjet_email');
+        $this->addSql('ALTER TABLE emails RENAME mailjet_emails');
     }
 }
