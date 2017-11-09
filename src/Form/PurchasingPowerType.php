@@ -75,6 +75,7 @@ class PurchasingPowerType extends AbstractType
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
+                        'data' => 'Pourquoi le premier budget du quinquennat est juste, équilibré et profite à tous.',
                         'filter_emojis' => true,
                     ])
                     ->add('messageContent', TextareaType::class, [
