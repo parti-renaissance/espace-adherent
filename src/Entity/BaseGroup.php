@@ -234,7 +234,7 @@ abstract class BaseGroup implements GeoPointInterface
 
     public function getCreatedBy(): ?string
     {
-        return $this->createdBy->toString();
+        return $this->createdBy ? $this->createdBy->toString() : null;
     }
 
     public function isCreatedBy(UuidInterface $uuid): bool

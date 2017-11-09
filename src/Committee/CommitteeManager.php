@@ -153,9 +153,9 @@ class CommitteeManager
         return $this->getMembershipRepository()->findHostMembers($committee->getUuid());
     }
 
-    public function getCommitteeCreator(Committee $committee): Adherent
+    public function getCommitteeCreator(Committee $committee): ?Adherent
     {
-        return $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findByUuid($committee->getCreatedBy()) : null;
     }
 
     public function getCommitteeReferents(Committee $committee): AdherentCollection
