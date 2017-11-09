@@ -21,6 +21,12 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CommitteeManager
 {
+    const COMMITTEE_STATUS_NOT_ALLOWED_TO_CREATE_ANOTHER = [
+        Committee::PRE_REFUSED,
+        Committee::PRE_APPROVED,
+        Committee::PENDING,
+        Committee::REFUSED,
+    ];
     const EXCLUDE_HOSTS = false;
     const INCLUDE_HOSTS = true;
 
@@ -147,9 +153,9 @@ class CommitteeManager
         return $this->getMembershipRepository()->findHostMembers($committee->getUuid());
     }
 
-    public function getCommitteeCreator(Committee $committee): Adherent
+    public function getCommitteeCreator(Committee $committee): ?Adherent
     {
-        return $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
+        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findByUuid($committee->getCreatedBy()) : null;
     }
 
     public function getCommitteeReferents(Committee $committee): AdherentCollection
@@ -461,5 +467,15 @@ class CommitteeManager
         }
 
         return $committees;
+    }
+
+    public function isSupervisorOfAnyCommittee(Adherent $adherent): bool
+    {
+        return $this->getMembershipRepository()->superviseCommittee($adherent);
+    }
+
+    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
+    {
+        return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
     }
 }

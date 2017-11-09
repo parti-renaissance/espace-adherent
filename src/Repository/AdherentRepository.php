@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -438,5 +439,62 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->setParameter('member', $owner);
 
         return new AdherentCollection($qb->getQuery()->getResult());
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findAdherentsUuidByFirstName(string $firstName): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->select('a.uuid')
+            ->where('LOWER(a.firstName) LIKE :firstName')
+            ->setParameter('firstName', '%'.strtolower($firstName).'%')
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findAdherentsUuidByLastName(string $lastName): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->select('a.uuid')
+            ->where('LOWER(a.lastName) LIKE :lastName')
+            ->setParameter('lastName', '%'.strtolower($lastName).'%')
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findAdherentsUuidByEmailAddress(string $emailAddress): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->select('a.uuid')
+            ->where('LOWER(a.emailAddress) LIKE :emailAddress')
+            ->setParameter('emailAddress', '%'.strtolower($emailAddress).'%')
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 }

@@ -10,6 +10,7 @@ use AppBundle\Committee\Filter\CommitteeFilters;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Ramsey\Uuid\UuidInterface;
 
 class CommitteeRepository extends EntityRepository
 {
@@ -283,5 +284,35 @@ class CommitteeRepository extends EntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
+    {
+        $nb = $this->createQueryBuilder('c')
+            ->select('COUNT(c) AS nb')
+            ->where('c.createdBy = :creator')
+            ->andWhere('c.status IN (:status)')
+            ->setParameter('creator', $adherent->getUuid()->toString())
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $nb > 0;
+    }
+
+    public function findCommitteesUuidByCreatorUuids(array $creatorsUuid): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $query = $qb
+            ->select('c.uuid')
+            ->where('c.createdBy IN (:creatorsUuid)')
+            ->setParameter('creatorsUuid', $creatorsUuid)
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 }

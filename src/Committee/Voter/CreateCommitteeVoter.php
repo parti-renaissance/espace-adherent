@@ -28,15 +28,22 @@ class CreateCommitteeVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        return $this->voteOnCreateCommitteeAttribute($adherent);
-    }
-
-    private function voteOnCreateCommitteeAttribute(Adherent $adherent)
-    {
         if ($adherent->isReferent()) {
             return self::ACCESS_DENIED;
         }
 
-        return $this->manager->isCommitteeHost($adherent) ? self::ACCESS_DENIED : self::ACCESS_GRANTED;
+        if ($this->manager->isSupervisorOfAnyCommittee($adherent)) {
+            return self::ACCESS_DENIED;
+        }
+
+        if ($this->manager->isCommitteeHost($adherent)) {
+            return self::ACCESS_DENIED;
+        }
+
+        if ($this->manager->hasCommitteeInStatus($adherent, CommitteeManager::COMMITTEE_STATUS_NOT_ALLOWED_TO_CREATE_ANOTHER)) {
+            return self::ACCESS_DENIED;
+        }
+
+        return self::ACCESS_GRANTED;
     }
 }

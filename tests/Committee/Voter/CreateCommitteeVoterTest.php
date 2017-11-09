@@ -29,6 +29,20 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
             ->with($this->adherent)
             ->willReturn(false);
 
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('isSupervisorOfAnyCommittee')
+            ->with($this->adherent)
+            ->willReturn(false);
+
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('hasCommitteeInStatus')
+            ->with($this->adherent)
+            ->willReturn(false);
+
         $token = $this->createAuthenticationToken($this->adherent);
 
         $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
@@ -53,6 +67,34 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken($this->referent);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
+    }
+
+    public function testCreateCommitteePermissionIsDeniedWhenAdherentIsAlreadySupervisor()
+    {
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('isSupervisorOfAnyCommittee')
+            ->with($this->adherent)
+            ->willReturn(true);
+
+        $token = $this->createAuthenticationToken($this->adherent);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
+    }
+
+    public function testCreateCommitteePermissionIsDeniedWhenAdherentHasAlreadyCommitteeOnUnauthorizedStatus()
+    {
+        $this
+            ->committeeManager
+            ->expects($this->once())
+            ->method('hasCommitteeInStatus')
+            ->with($this->adherent)
+            ->willReturn(true);
+
+        $token = $this->createAuthenticationToken($this->adherent);
 
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
