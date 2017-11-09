@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\UnitedNationsCountryType;
@@ -34,6 +35,8 @@ class CommitteeAdmin extends AbstractAdmin
     private $manager;
     private $committeeMembershipRepository;
     private $cachedDatagrid;
+    private $committeeRepository;
+    private $adherentRepository;
 
     public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om)
     {
@@ -41,6 +44,8 @@ class CommitteeAdmin extends AbstractAdmin
 
         $this->manager = $manager;
         $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
+        $this->committeeRepository = $om->getRepository(Committee::class);
+        $this->adherentRepository = $om->getRepository(Adherent::class);
     }
 
     /**
@@ -191,6 +196,8 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $committeeMembershipRepository = $this->committeeMembershipRepository;
+        $committeeRepository = $this->committeeRepository;
+        $adherentRepository = $this->adherentRepository;
 
         $datagridMapper
             ->add('id', null, [
@@ -205,65 +212,74 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Date de création',
                 'field_type' => 'sonata_type_date_range_picker',
             ])
-            ->add('hostFirstName', CallbackFilter::class, [
-                'label' => 'Prénom de l\'animateur',
+            ->add('hostOrCreatorFirstName', CallbackFilter::class, [
+                'label' => 'Prénom de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value'])) {
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByFirstName($value['value']));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value']);
+                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
             ])
-            ->add('hostLastName', CallbackFilter::class, [
-                'label' => 'Nom de l\'animateur',
+            ->add('hostOrCreatorLastName', CallbackFilter::class, [
+                'label' => 'Nom de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $committeeRepository, $adherentRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value'])) {
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByLastName($value['value']));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value']);
+                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
             ])
-            ->add('hostEmailAddress', CallbackFilter::class, [
-                'label' => 'Email de l\'animateur',
+            ->add('hostOrCreatorEmailAddress', CallbackFilter::class, [
+                'label' => 'Email de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value'])) {
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByEmailAddress($value['value']));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value']);
+                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
