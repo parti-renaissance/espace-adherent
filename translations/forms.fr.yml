@@ -5,10 +5,18 @@ SCHEDULED: Programmé
 CANCELLED: Annulé
 
 #
-# Campagne => Ton Macron => Choix
+# Interactives => Ton Macron => Choix
 #
-not_visible: 'Étape 0 : choix hors étapes du tunnel Ton Macron'
-friend_professional_position: Etape 1 - Dîtes en plus votre ami(e)
-friend_project: Etape 2 - Quel est son projet pour les 5 prochaines années ?
-friend_interests: Etape 3 - Sélectionnez 2 sujets qui intéressent votre ami(e)
-self_reasons: Etape 4 - Expliquez à votre ce qui plaît chez Emmanuel Macron
+ton_macron.not_visible: Étape 0 - choix hors étapes du tunnel Ton Macron
+ton_macron.friend_professional_position: Étape 1 - Dîtes en plus votre ami(e)
+ton_macron.friend_project: Étape 2 - Quel est son projet pour les 5 prochaines années ?
+ton_macron.friend_interests: Étape 3 - Sélectionnez 2 sujets qui intéressent votre ami(e)
+ton_macron.self_reasons: Étape 4 - Éxpliquez à votre ce qui plaît chez Emmanuel Macron
+
+#
+# Interactives => Purchasing Power => Choix
+#
+purchasing_power.not_visible: Étape 0 - Morceaux qui apparaitront pour tout le monde
+purchasing_power.friend_professional_position: Étape 1 - Quelle est la situation professionnelle de votre ami(e) ? [ 1 choix ]
+purchasing_power.friend_cases: Étape 2 - Votre ami(e) est-il(elle) dans une des situations suivantes ? [ 2 choix possibles aujourd'hui]
+purchasing_power.friend_appreciations: Étape 3 - Laquelle de ces valeurs importe le plus pour votre ami(e) ? [ 2 choix possibles aujourd'hui]

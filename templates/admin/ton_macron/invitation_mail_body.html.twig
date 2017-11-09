@@ -1,7 +1,2 @@
-{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+{% extends 'admin/interactive/invitation_mail_body.html.twig' %}
 
-{% block field_value %}
-    <pre style="max-height: 400px; overflow: scroll;">
-        {{- object.mailBody -}}
-    </pre>
-{% endblock %}

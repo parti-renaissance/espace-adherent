@@ -1,0 +1,69 @@
+<div class="interactive__header">
+    <h1 class="text--large b__nudge--top-large text--center l__wrapper--slim">
+        Votre message pour {{ interactive.friendFirstName }} est prêt !
+    </h1>
+</div>
+
+<section class="interactive__content l__wrapper--medium l__mobile--col space--60-0">
+    <div>
+        <ul class="tonmacron__steps">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li class="active"></li>
+        </ul>
+
+        {{ form_start(interactive_form) }}
+
+        <h5 class="interactive__title">
+            Récapitulatif de votre message
+        </h5>
+
+        {{ form_errors(interactive_form) }}
+
+        <div class="form__row">
+            {{ form_label(interactive_form.messageSubject, 'Objet') }}
+            {{ form_errors(interactive_form.messageSubject) }}
+            {{ form_widget(interactive_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+        </div>
+
+        <div class="form__row">
+            {{ form_label(interactive_form.messageContent, 'Message') }}
+            {{ form_errors(interactive_form.messageContent) }}
+            {{ form_widget(interactive_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
+        </div>
+
+        <div class="l__wrapper-500 b__nudge--top-50">
+            <div class="form__row">
+                {{ form_label(interactive_form.selfFirstName, 'Votre prénom') }}
+                {{ form_errors(interactive_form.selfFirstName) }}
+                {{ form_widget(interactive_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(interactive_form.selfLastName, 'Votre nom') }}
+                {{ form_errors(interactive_form.selfLastName) }}
+                {{ form_widget(interactive_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(interactive_form.selfEmail, 'Votre adresse e-mail') }}
+                {{ form_errors(interactive_form.selfEmail) }}
+                {{ form_widget(interactive_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre ami(e)') }}
+                {{ form_errors(interactive_form.friendEmail) }}
+                {{ form_widget(interactive_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+            </div>
+        </div>
+
+        <div class="text--center b__nudge--top-large">
+            <a href="{{ path('app_purchasing_power_restart') }}" class="btn">Recommencer</a>
+            {{ form_widget(interactive_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
+        </div>
+
+        {{ form_end(interactive_form) }}
+    </div>
+</section>

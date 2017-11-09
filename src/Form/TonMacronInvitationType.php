@@ -85,7 +85,6 @@ class TonMacronInvitationType extends AbstractType
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
-                        'data' => 'Les raisons pour lesquelles je pense que tu devrais voter pour La République En Marche',
                         'filter_emojis' => true,
                     ])
                     ->add('messageContent', TextareaType::class, [

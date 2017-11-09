@@ -124,6 +124,21 @@
 
         <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
 
+        <!-- Interactives -->
+        <service id="app.interactive.purchasing_power_processor_handler" class="AppBundle\Interactive\PurchasingPowerProcessorHandler">
+            <argument type="service" id="app.purchasing_power.message_body_builder"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="state_machine.purchasing_power"/>
+        </service>
+
+        <service id="app.purchasing_power.message_body_builder" class="AppBundle\Interactive\PurchasingPowerMessageBodyBuilder">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="app.repository.purchasing_power_choice_repository"/>
+        </service>
+
+        <service id="app.purchasing_power.serializer" class="AppBundle\Interactive\PurchasingPowerSerializer" />
+
         <!-- Facebook filters -->
         <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">
             <argument type="service" id="app.facebook.api" />

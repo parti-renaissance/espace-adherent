@@ -1,17 +1,7 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% extends 'admin/interactive/choice_list_actions.html.twig' %}
 
 {% block field %}
-    <div style="width: 100px; margin-top: 5px;">
-        <a href="{{ path('admin_app_tonmacronchoice_edit', {id: object.id}) }}" class="btn btn-xs btn-default" title="Éditer">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Éditer
-        </a>
-    </div>
-
-    <div style="width: 100px; margin-top: 5px;">
-        <a href="{{ path('admin_app_tonmacronchoice_delete', {id: object.id}) }}" class="btn btn-xs btn-default" title="Supprimer">
-            <i class="fa fa-times" aria-hidden="true"></i>
-            Supprimer
-        </a>
-    </div>
+    {% set editPath = path('admin_app_tonmacronchoice_edit', {id: object.id}) %}
+    {% set deletePath = path('admin_app_tonmacronchoice_delete', {id: object.id}) %}
+    {{ parent() }}
 {% endblock %}

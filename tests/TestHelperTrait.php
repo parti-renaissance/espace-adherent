@@ -25,6 +25,8 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\PurchasingPowerInvitation;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
@@ -49,6 +51,8 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\PurchasingPowerChoiceRepository;
+use AppBundle\Repository\PurchasingPowerInvitationRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -220,6 +224,16 @@ trait TestHelperTrait
     public function getTonMacronInvitationRepository(): TonMacronFriendInvitationRepository
     {
         return $this->getRepository(TonMacronFriendInvitation::class);
+    }
+
+    public function getPurchasingPowerChoiceRepository(): PurchasingPowerChoiceRepository
+    {
+        return $this->getRepository(PurchasingPowerChoice::class);
+    }
+
+    public function getPurchasingPowerInvitationRepository(): PurchasingPowerInvitationRepository
+    {
+        return $this->getRepository(PurchasingPowerInvitation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

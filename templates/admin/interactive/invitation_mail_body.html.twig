@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    <pre style="max-height: 400px; overflow: scroll;">
+        {{- object.mailBody -}}
+    </pre>
+{% endblock %}

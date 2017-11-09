@@ -216,22 +216,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Campagne" />
-
-            <argument />
-            <argument>AppBundle\Entity\TonMacronChoice</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Campagne" />
-
-            <argument />
-            <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.unregistration" class="AppBundle\Admin\UnregistrationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Désinscriptions" group="Campagne" />
 
@@ -487,6 +471,44 @@
             <argument />
             <argument type="service" id="app.group.manager" />
             <argument type="service" id="app.repository.group_membership" />
+        </service>
+
+        <!--
+        ######################################################
+        # Interactives
+        ######################################################
+         -->
+
+        <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Interactifs" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronChoice</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Interactifs" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Interactifs" />
+
+            <argument />
+            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.purchasing_power_invitation" class="AppBundle\Admin\PurchasingPowerInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Invitations" group="Interactifs" />
+
+            <argument />
+            <argument>AppBundle\Entity\PurchasingPowerInvitation</argument>
+            <argument />
         </service>
 
         <!--

@@ -14,10 +14,6 @@ class TonMacronSerializer
      */
     public function serializeChoices(array $choices): string
     {
-        if (!is_iterable($choices)) {
-            throw new \InvalidArgumentException();
-        }
-
         $handle = fopen('php://memory', 'rb+');
         fputcsv($handle, [
             'id',
@@ -49,10 +45,6 @@ class TonMacronSerializer
      */
     public function serializeInvitations(array $invitations): string
     {
-        if (!is_iterable($invitations)) {
-            throw new \InvalidArgumentException();
-        }
-
         $handle = fopen('php://memory', 'rb+');
         foreach ($invitations as $invitation) {
             fputcsv($handle, [

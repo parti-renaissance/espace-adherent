@@ -1,18 +1,7 @@
-{% extends 'SonataAdminBundle:CRUD:list.html.twig' %}
+{% extends 'admin/interactive/invitation_list.html.twig' %}
 
 {% block list_filters_actions %}
-    <ul class="nav navbar-nav navbar-left">
-        <li class="sonata-actions">
-            <a href="{{ path('app_admin_tonmacron_export_choices') }}">
-                Exporter les choix
-            </a>
-        </li>
-        <li class="sonata-actions">
-            <a href="{{ path('app_admin_tonmacron_export_invitations') }}">
-                Exporter les invitations
-            </a>
-        </li>
-    </ul>
-
+    {% set urlAdminExportChoices = path('app_admin_tonmacron_export_choices') %}
+    {% set urlAdminExportInvitations = path('app_admin_tonmacron_export_invitations') %}
     {{ parent() }}
 {% endblock %}
