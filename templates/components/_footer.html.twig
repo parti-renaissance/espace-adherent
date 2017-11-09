@@ -95,7 +95,7 @@
                     <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
                     <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
                     <li>
-                        <a href="{{ path(is_granted('ROLE_ADHERENT') ? 'app_adherent_profile' : 'app_adherent_login') }}">
+                        <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_adherent_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) }}">
                             Connexion
                         </a>
                     </li>
