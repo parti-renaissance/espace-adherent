@@ -9,7 +9,6 @@ use AppBundle\Repository\DonationRepository;
 use Goutte\Client as PayboxClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -130,7 +129,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $this->assertRegexp('#Paiement r&eacute;alis&eacute; avec succ&egrave;s|PAIEMENT ACCEPT&Eacute;#', $content);
 
         $callbackUrl = $crawler->filter('a')->attr('href');
-        $callbackUrlRegExp = 'http://'.Config::APP_HOST.'/don/callback/(.+)'; // token
+        $callbackUrlRegExp = 'http://'.$this->hosts['app'].'/don/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
             $durationRegExp = $duration < 0 ? 0 : $duration - 1;
@@ -245,7 +244,7 @@ class DonationControllerTest extends SqliteWebTestCase
         $crawler = $this->payboxClient->submit($formNode->form());
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
         $cancelUrl = $crawler->filter('#pbx-annuler a')->attr('href');
-        $cancelUrlRegExp = 'http://'.Config::APP_HOST.'/don/callback/(.+)'; // token
+        $cancelUrlRegExp = 'http://'.$this->hosts['app'].'/don/callback/(.+)'; // token
         $cancelUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
             $durationRegExp = $duration < 0 ? 0 : $duration - 1;

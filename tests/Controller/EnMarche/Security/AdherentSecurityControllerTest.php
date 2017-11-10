@@ -11,7 +11,6 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -171,7 +170,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testResetPasswordAction()
     {
-        $client = $this->makeClient(false, ['HTTP_HOST' => Config::APP_HOST]);
+        $client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();

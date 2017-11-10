@@ -18,7 +18,6 @@ use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\MailjetEmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Config;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
@@ -134,7 +133,7 @@ class AdherentControllerTest extends MysqlWebTestCase
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.Config::APP_HOST.'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
 
         $this->client->followRedirect();
 
@@ -672,7 +671,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Supprimer mon adhésion et mon compte')->link());
 
-        $this->assertEquals('http://'.Config::APP_HOST.'/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
+        $this->assertEquals('http://'.$this->hosts['app'].'/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
@@ -703,7 +702,7 @@ class AdherentControllerTest extends MysqlWebTestCase
             ],
         ]));
 
-        $this->assertEquals('http://'.Config::APP_HOST.'/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
+        $this->assertEquals('http://'.$this->hosts['app'].'/espace-adherent/mon-compte/desadherer', $this->client->getRequest()->getUri());
 
         $errors = $crawler->filter('.form__errors > li');
 

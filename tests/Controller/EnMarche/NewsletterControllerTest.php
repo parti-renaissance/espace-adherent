@@ -187,6 +187,8 @@ class NewsletterControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
+        $this->manager->clear();
+
         $this->assertCount(5, $subscriptions = $this->subscriptionsRepository->findAll());
 
         $subscription = $this->subscriptionsRepository->findOneBy(['email' => 'abc@en-marche-dev.fr']);
