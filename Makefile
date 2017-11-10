@@ -20,7 +20,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:          ## Install and start the project
-start: build up app/config/parameters.yml db web/built assets-amp perm
+start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -47,6 +47,8 @@ cc:
 	$(RUN) $(CONSOLE) cache:clear --no-warmup
 	$(RUN) $(CONSOLE) cache:warmup
 
+rabbitmq-fabric:
+	$(RUN) $(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
