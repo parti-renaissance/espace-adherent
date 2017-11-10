@@ -27,11 +27,13 @@
         {% if committee.isPending %}
             <td>
                 {% for messages in app.flashes(["error_#{committee.id}"]) %}
-                    {% for message in messages %}
-                        <div class="form--warning">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+                    <ul class="form form__errors">
+                        {% for message in messages %}
+                            <li class="form__error">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endfor %}
                 {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
             </td>
