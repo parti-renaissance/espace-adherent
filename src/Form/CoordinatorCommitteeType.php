@@ -21,7 +21,6 @@ class CoordinatorCommitteeType extends AbstractType
             ->add('coordinatorComment', TextareaType::class, [
                 'required' => true,
                 'filter_emojis' => true,
-                'purify_html' => true,
                 'attr' => [
                     'placeholder' => 'En laissant un commentaire sur le créateur, restez toujours convenable !',
                 ],
