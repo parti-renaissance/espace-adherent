@@ -7,6 +7,7 @@ use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
 use AppBundle\Repository\AdherentRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 
@@ -16,33 +17,47 @@ class UserAccountConsumer implements ConsumerInterface
     private $repository;
     private $logger;
     private $membershipRequestHandler;
+    private $retryProducer;
 
     public function __construct(
         AdherentAccountProvider $provider,
         AdherentRepository $repository,
         MembershipRequestHandler $membershipRequestHandler,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProducerInterface $retryProducer
     ) {
         $this->provider = $provider;
         $this->repository = $repository;
         $this->membershipRequestHandler = $membershipRequestHandler;
         $this->logger = $logger;
+        $this->retryProducer = $retryProducer;
     }
 
     public function execute(AMQPMessage $message): bool
     {
-        if (false === $data = \GuzzleHttp\json_decode($message->getBody(), true)) {
-            return false;
-        }
+        try {
+            if (false === $data = \GuzzleHttp\json_decode($message->getBody(), true)) {
+                throw new \RuntimeException(sprintf('cannot decode the message. Body: "%s"', $message->getBody()));
+            }
 
-        switch ($key = $message->get('routing_key')) {
-            case 'user.modification':
-                return $this->updateUser($key, $data);
-            case 'user.deletion':
-                return $this->deleteUser($key, $data);
-        }
+            switch ($key = $message->get('routing_key')) {
+                case 'user.modification':
+                    return $this->updateUser($key, $data);
+                case 'user.deletion':
+                    return $this->deleteUser($key, $data);
+            }
 
-        return false;
+            throw new \RuntimeException(sprintf('Routing key "%s" cannot be handled', $key));
+        } catch (\Throwable $e) {
+            $this->retryProducer->publish($message->getBody(), $message->get('routing_key'));
+
+            $this->logger->warning('Redirect message to retry exchange.', [
+                'message' => $message,
+                'exception' => $e,
+            ]);
+
+            return true;
+        }
     }
 
     private function updateUser(string $key, array $data): bool
@@ -64,7 +79,7 @@ class UserAccountConsumer implements ConsumerInterface
                 ['exception' => $e, 'data' => $data]
             );
 
-            return false;
+            throw $e;
         }
 
         $this->repository->save();
@@ -95,7 +110,7 @@ class UserAccountConsumer implements ConsumerInterface
                 ['exception' => $e, 'data' => $data]
             );
 
-            return false;
+            throw $e;
         }
 
         return true;
