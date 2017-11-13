@@ -10,10 +10,7 @@ class UpdateMembershipRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->remove('conditions')
-            ->add('position', ActivityPositionType::class)
-        ;
+        $builder->add('position', ActivityPositionType::class);
     }
 
     public function getParent()

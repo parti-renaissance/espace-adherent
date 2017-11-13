@@ -72,7 +72,7 @@
     {% if form.comMobile is defined %}
         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
             {{ form_widget(form.comMobile) }}
-            <label class="form form__label" for="membership_request_comMobile"><span>J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
+            <label class="form form__label" for="{{ form.comMobile.vars.id }}"><span>J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
         </div>
     {% endif %}
 
