@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Bienvenue, ' ~ app.user.firstName %}
+
+{% block content %}
+    <main>
+        <section class="content b__nudge--bottom-huge">
+            <header class="l__wrapper--slim space--60-0">
+                <h1 class="text--center text--large">
+                    Bienvenue, {{ app.user.firstName }} ! 👋
+                </h1>
+            </header>
+
+            <article class="l__wrapper--slim">
+                <p class="text--body">
+                    Merci encore de nous avoir rejoint ! Voici quelques action à votre disposition dés maintenant.
+                </p>
+
+                <nav>
+                    <ul>
+                        <li><a href="{{ path('app_search_events') }}">Chercher des événements autour de moi</a></li>
+                        <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
+                        <li><a href="{{ path('app_create_citizen_initiative') }}">Créer une initiative citoyenne</a></li>
+                        <li><a href="{{ path('app_documents_index') }}">Decouvrir mon kit La République En Marche</a></li>
+                        <li><a href="{{ path('app_adherent_profile') }}">Remplir mon profil</a></li>
+                    </ul>
+                </nav>
+            </article>
+        </section>
+    </main>
+{% endblock %}
