@@ -135,7 +135,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $inputPattern = 'input[name="update_membership_request[%s]"]';
         $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
 
-        $this->assertSame('male', $crawler->filter(sprintf($inputPattern, 'gender').'[checked="checked"]')->attr('value'));
+        $this->assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         $this->assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
         $this->assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
         $this->assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
@@ -153,7 +153,6 @@ class AdherentControllerTest extends MysqlWebTestCase
                 'address' => [
                     'address' => '',
                     'country' => 'FR',
-                    'postalCode' => '99999',
                     'city' => '10102-45029',
                 ],
                 'phone' => [
@@ -168,9 +167,9 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(3, $errors->count());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(0)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(1)->text());
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(2)->text());
+        $this->assertSame('Cette ville n\'est pas une ville française valide.', $errors->eq(0)->text());
+        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(1)->text());
+        $this->assertSame('L\'adresse est obligatoire.', $errors->eq(2)->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
@@ -181,9 +180,8 @@ class AdherentControllerTest extends MysqlWebTestCase
                 'address' => [
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
-                    'postalCode' => '06000',
-                    'city' => '06000-6088', // Nice
-                    'cityName' => '',
+                    'city' => '73100-73008',
+                    'cityName' => 'Aix-les-Bains',
                 ],
                 'phone' => [
                     'country' => 'FR',
@@ -210,8 +208,8 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('9 rue du Lycée', $adherent->getAddress());
-        $this->assertSame('06000', $adherent->getPostalCode());
-        $this->assertSame('Nice', $adherent->getCityName());
+        $this->assertSame('73100', $adherent->getPostalCode());
+        $this->assertSame('Aix-les-Bains', $adherent->getCityName());
         $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
         $this->assertSame('student', $adherent->getPosition());
         $this->assertNotNull($newLatitude = $adherent->getLatitude());
