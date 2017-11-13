@@ -40,7 +40,6 @@ if ('prod' === getenv('APP_ENV')) {
 
 $kernel = new AppKernel(getenv('APP_ENV'), getenv('APP_DEBUG'));
 $request = Request::createFromGlobals();
-Request::setTrustedProxies(['127.0.0.1', $request->server->get('REMOTE_ADDR')], Request::HEADER_X_FORWARDED_ALL);
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
