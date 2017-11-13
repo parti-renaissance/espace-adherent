@@ -251,6 +251,11 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
 
+        api_broadcast_user_retry:
+            connection:        default
+            exchange_options:  { name: broadcast_retry, type: topic }
+            queue_options:     { name: enmarche_broadcast_retry, routing_keys: ['#'] arguments: {'x-dead-letter-exchange': ['S', 'broadcast'], 'x-message-ttl': ['I', 360000] } }
+
     consumers:
         mailjet_campaign:
             connection:        default
@@ -276,7 +281,7 @@ old_sound_rabbit_mq:
         api_broadcast_user:
             connection:        default
             exchange_options:  { name: broadcast, type: topic }
-            queue_options:     { name: 'enmarche_broadcast', routing_keys: ['user.*'] }
+            queue_options:     { name: enmarche_broadcast, routing_keys: ['#'] }
             callback:          app.consumer.user_account
 
 hwi_oauth:
