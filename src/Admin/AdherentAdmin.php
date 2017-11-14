@@ -32,6 +32,25 @@ class AdherentAdmin extends AbstractAdmin
         '_sort_by' => 'registeredAt',
     ];
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+        $query
+            ->addSelect('t, bm, cma, pma, m, gm, cfi, gfi, acs')
+            ->leftJoin($query->getRootAlias().'.tags', 't')
+            ->leftJoin($query->getRootAlias().'.boardMember', 'bm')
+            ->leftJoin($query->getRootAlias().'.coordinatorManagedArea', 'cma')
+            ->leftJoin($query->getRootAlias().'.procurationManagedArea', 'pma')
+            ->leftJoin($query->getRootAlias().'.memberships', 'm')
+            ->leftJoin($query->getRootAlias().'.groupMemberships', 'gm')
+            ->leftJoin($query->getRootAlias().'.committeeFeedItems', 'cfi')
+            ->leftJoin($query->getRootAlias().'.groupFeedItems', 'gfi')
+            ->leftJoin($query->getRootAlias().'.activitiySubscriptions', 'acs')
+        ;
+
+        return $query;
+    }
+
     public function getTemplate($name)
     {
         if ('show' === $name) {
@@ -251,6 +270,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('tags', 'sonata_type_model', [
                     'multiple' => true,
                     'by_reference' => false,
+                    'btn_add' => false,
                 ])
             ->end()
         ;
