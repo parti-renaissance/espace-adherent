@@ -13,6 +13,22 @@
 {% endblock %}
 
 {% block content %}
+    <header class="interactive__header hero hero--minimalist hero--gradient hero--minimalist--center-20 progressive-background"
+            data-sd="{{ static_asset('pouvoir-achat.png', {'w': 300, 'q': 20}) }}"
+            data-hd="{{ static_asset('pouvoir-achat.png', {'w': 2000, 'q': 70}) }}">
+        <div class="hero--minimalist__nav">
+            <a href="{{ path('homepage') }}">En Marche !</a>
+        </div>
+        <div class="hero--minimalist__content">
+            <h1>
+                Qu'est-ce qu'on y gagne ?
+            </h1>
+            <p>
+                Dites-nous en un peu plus sur le profil d'un(e) ami(e) : <br/>
+                nous générerons un e-mail personnalisé à lui envoyer ! 
+            </p>
+        </div>
+    </header>
     <main class="interactive">
         {{ include('interactive/_'~transition~'.html.twig') }}
     </main>
