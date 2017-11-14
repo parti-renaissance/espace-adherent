@@ -35,7 +35,7 @@ class ManagedEventsExporter
                 'beginAt' => $event->getBeginAt()->format('d/m/Y H:i'),
                 'category' => $event->getCategoryName(),
                 'postalCode' => $event->getPostalCode(),
-                'organizer' => $event->getOrganizer()->getPartialName(),
+                'organizer' => $event->getOrganizer() ? $event->getOrganizer()->getPartialName() : 'un ancien adhérent',
                 'participants' => $event->getParticipantsCount(),
             ];
         }

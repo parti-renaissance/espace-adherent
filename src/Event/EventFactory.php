@@ -20,7 +20,7 @@ class EventFactory
 
     public function createFromArray(array $data): Event
     {
-        foreach (['uuid', 'organizer', 'committee', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
+        foreach (['uuid', 'committee', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
@@ -30,7 +30,7 @@ class EventFactory
 
         return new Event(
             $uuid,
-            $data['organizer'],
+            $data['organizer'] ?? null,
             $data['committee'],
             $data['name'],
             $data['category'],
