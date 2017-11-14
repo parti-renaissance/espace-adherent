@@ -364,6 +364,22 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertContains($needle, $link);
     }
 
+    public function testSearchCategoryForm()
+    {
+        $crawler = $this->client->request('GET', '/evenements');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $options = $crawler->filter('.search__bar__options__types option');
+        $array = $options->getIterator();
+        $labels = [];
+        foreach ($array as $element) {
+            /* @var \DOMElement $element */
+            $labels[] = $element->textContent;
+        }
+        $this->assertFalse(in_array('Catégorie masquée', $labels));
+        $this->assertSame(count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 1, $options->count());
+    }
+
     protected function setUp()
     {
         parent::setUp();

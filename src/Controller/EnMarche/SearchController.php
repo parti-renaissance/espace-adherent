@@ -36,7 +36,7 @@ class SearchController extends Controller
         return $this->render('search/search_events.html.twig', [
             'search_max_results' => $this->getParameter('search_max_results'),
             'search_type' => SearchParametersFilter::TYPE_EVENTS,
-            'event_categories' => $this->getDoctrine()->getRepository(EventCategory::class)->findAllOrderedByName(),
+            'event_categories' => $this->getDoctrine()->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],

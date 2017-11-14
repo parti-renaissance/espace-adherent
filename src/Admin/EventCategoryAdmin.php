@@ -2,10 +2,12 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\BaseEventCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventCategoryAdmin extends AbstractAdmin
@@ -23,6 +25,9 @@ class EventCategoryAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('status', null, [
+                'label' => 'Visible',
+            ])
         ;
     }
 
@@ -31,6 +36,13 @@ class EventCategoryAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
+            ])
+            ->add('status', ChoiceType::class, [
+                'label' => 'Visibilité',
+                'choices' => [
+                    'Visible' => BaseEventCategory::ENABLED,
+                    'Masqué' => BaseEventCategory::DISABLED,
+                ],
             ])
         ;
     }
@@ -41,6 +53,10 @@ class EventCategoryAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('status', null, [
+                'label' => 'Visible',
+            ])
+
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [

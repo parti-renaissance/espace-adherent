@@ -28,6 +28,8 @@ class LoadEventCategoryData implements FixtureInterface
             $manager->persist(new EventCategory($name));
         }
 
+        $manager->persist(new EventCategory('Catégorie masquée', EventCategory::DISABLED));
+
         $manager->flush();
     }
 }
