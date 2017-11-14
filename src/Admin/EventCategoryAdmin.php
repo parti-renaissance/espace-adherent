@@ -6,7 +6,6 @@ use AppBundle\Entity\BaseEventCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -18,18 +17,6 @@ class EventCategoryAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
-
-    protected function configureShowFields(ShowMapper $showMapper): void
-    {
-        $showMapper
-            ->add('name', null, [
-                'label' => 'Nom',
-            ])
-            ->add('status', null, [
-                'label' => 'Visible',
-            ])
-        ;
-    }
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
@@ -54,9 +41,9 @@ class EventCategoryAdmin extends AbstractAdmin
                 'label' => 'Nom',
             ])
             ->add('status', null, [
-                'label' => 'Visible',
+                'label' => 'Visibilité',
+                'template' => 'admin/event_category/list_status.html.twig',
             ])
-
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
