@@ -161,7 +161,6 @@
     }
 
     &__cta {
-        border-bottom: 1px solid $gray--light;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -170,6 +169,7 @@
     }
 
     &__partner {
+        border-top: 1px solid $gray--light;
         color: $gray--muted;
         padding: 60px 0;
         display: flex;
