@@ -141,6 +141,11 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Est candidat aux législatives ?',
                 ])
             ->end()
+            ->with('Tags', ['class' => 'col-md-6'])
+                ->add('tags', null, [
+                    'label' => 'Tags de l\'adhérent',
+                ])
+            ->end()
         ;
     }
 
@@ -242,6 +247,12 @@ class AdherentAdmin extends AbstractAdmin
                         'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
             ->end()
+            ->with('Tags', ['class' => 'col-md-6'])
+                ->add('tags', 'sonata_type_model', [
+                    'multiple' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
         ;
     }
 
@@ -339,6 +350,21 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+
+            ->add('tags', CallbackFilter::class, [
+                'label' => 'Tags',
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $qb->leftJoin(sprintf('%s.tags', $alias), 't');
+                    $qb->andWhere($qb->expr()->in('LOWER(t.name)', $value));
+
+                    return true;
+                },
+            ])
         ;
     }
 
@@ -382,6 +408,9 @@ class AdherentAdmin extends AbstractAdmin
             ->add('type', null, [
                 'label' => 'Type',
                 'template' => 'admin/adherent/list_status.html.twig',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

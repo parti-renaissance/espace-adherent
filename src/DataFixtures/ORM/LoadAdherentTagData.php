@@ -20,8 +20,10 @@ class LoadAdherentTagData extends AbstractFixture implements FixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::ADHERENT_TAG as $name) {
-            $manager->persist(new AdherentTag($name));
+        foreach (self::ADHERENT_TAG as $code => $name) {
+            $adherentTag = new AdherentTag($name);
+            $manager->persist($adherentTag);
+            $this->addReference('adherent_tag_'.strtolower($code), $adherentTag);
         }
 
         $manager->flush();
