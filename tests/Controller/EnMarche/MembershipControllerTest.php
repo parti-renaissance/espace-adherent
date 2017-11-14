@@ -42,38 +42,6 @@ class MembershipControllerTest extends MysqlWebTestCase
      */
     private $emailRepository;
 
-    public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
-    {
-        $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['membership_request']['conditions'] = false;
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
-    }
-
-    public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
-    {
-        $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
-        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['membership_request']['address']['postalCode'] = '73100';
-        $data['membership_request']['address']['city'] = '73100-73999';
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Cette ville n\'est pas une ville française valide.', $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
-        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
-    }
-
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'foo.bar@example.ch');
@@ -81,7 +49,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), static::createFormData());
+        $this->client->submit($crawler->selectButton('J\'adhère')->form(), static::createFormData());
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
@@ -385,12 +353,10 @@ class MembershipControllerTest extends MysqlWebTestCase
     private static function createFormData()
     {
         return [
-            'g-recaptcha-response' => 'dummy',
             'membership_request' => [
                 'gender' => 'male',
                 'address' => [
                     'country' => 'FR',
-                    'postalCode' => '92110',
                     'city' => '92110-92024',
                     'cityName' => '',
                     'address' => '92 Bld Victor Hugo',
@@ -404,7 +370,6 @@ class MembershipControllerTest extends MysqlWebTestCase
                     'month' => '1',
                     'day' => '20',
                 ],
-                'conditions' => true,
                 'comMobile' => true,
             ],
         ];

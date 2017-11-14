@@ -65,6 +65,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.8790183,
             'lon' => 2.3379062,
         ],
+        '9 rue du lycée, 73100 aix-les-bains, fr' => [
+            'lat' => 43.699488,
+            'lon' => 7.274206,
+        ],
     ];
 
     public function geocode(string $address): Coordinates

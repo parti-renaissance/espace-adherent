@@ -4,52 +4,56 @@
     {{ form_errors(form) }}
 
     <div id="membership-address">
+        <strong>Adresse</strong>
         {{ form_errors(form.address) }}
         <div class="l__row l__row--h-stretch register__form--full">
-            {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+            {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse' } }) }}
             {{ form_errors(form.address.address) }}
         </div>
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form__country register__form--third">
-                {{ form_widget(form.address.country) }}
-                {{ form_errors(form.address.country) }}
-            </div>
-
-            <div class="register__form__zip_code register__form--third">
-                {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
-            </div>
-
-            <div class="register__form__city register__form--third">
+            <div class="register__form__city register__form--mid">
                 {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
                 {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
                 {{ form_errors(form.address.city) }}
             </div>
+             <div class="register__form__zip_code register__form--mid">
+                {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+            </div>
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form__country register__form--full">
+            {{ form_widget(form.address.country) }}
+            {{ form_errors(form.address.country) }}
         </div>
     </div>
 
     <div class="space--10-0"></div>
 
-    <div class="l__col l__col--top register__form--third" id="field-birthdate">
-        {{ form_label(form.birthdate, 'Date de naissance', { 'label_attr': {'class': 'text--gray'} }) }}
-        <div class="l__row l__row--h-stretch">
-            {% for field in form.birthdate|reverse %}
-                {{ form_widget(field, {'attr': {'style': 'width: 32%;'}}) }}
-            {% endfor %}
-        </div>
-        {{ form_errors(form.birthdate) }}
-    </div>
-
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-        <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
+        <div class="register__form--mid" id="field-birthdate">
+            <strong>Date de naissance</strong>
+            <div class="l__row l__row--h-stretch">
+                {% for field in form.birthdate|reverse %}
+                    {{ form_widget(field, {attr: {style: 'width: 32%;'}}) }}
+                {% endfor %}
+            </div>
+            {{ form_errors(form.birthdate) }}
+        </div>
+        <div class="form__radio-button register__form--mid">
+            <strong>Sexe</strong>
             {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
             {{ form_errors(form.gender) }}
         </div>
+    </div>
 
-        <div class="l__col l__col--top register__form__phone register__form--third">
-            {{ form_label(form.phone, 'Téléphone', { 'label_attr': {'class': 'text--gray'} }) }}
-            <div class="l__row l__row--top l__row--h-stretch">
-                {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone'} }) }}
+    <div class="space--10-0"></div>
+
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+        <div class="register__form--full">
+            <strong>Numéro de téléphone mobile</strong>
+            <div class="l__row l__row--h-stretch">
+                {{ form_widget(form.phone.country, { placeholder: 'common.country'|trans, attr: { class: 'membership_request__form__phone'} }) }}
                 {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
             </div>
             {{ form_errors(form.phone) }}
@@ -65,45 +69,19 @@
         </div>
     {% endif %}
 
-    {% if form.conditions is defined %}
-        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
-            {{ form_widget(form.conditions) }}
-            {% block _form_conditions_label %}
-                <label class="form form__label" for="membership_request_conditions"><span><strong>Oui, j'adhère à la <a href="charte.pdf" target="_blank">charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</a> <sup>*</sup></strong></span></label>
-            {% endblock %}
-            {{ form_errors(form.conditions) }}
-        </div>
-    {% endif %}
-
-    {% set prefix = form.vars.data.firstName ? 'update_' %}
-
     {% if form.comMobile is defined %}
         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
             {{ form_widget(form.comMobile) }}
-            <label class="form form__label" for="{{ prefix }}membership_request_comMobile"><span>J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
+            <label class="form form__label" for="{{ form.comMobile.vars.id }}"><span>J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
         </div>
     {% endif %}
 
-    {% if form.comEmail is defined %}
-        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
-            {{ form_widget(form.comEmail) }}
-            <label class="form form__label" for="{{ prefix }}membership_request_comEmail"><span>J'accepte de recevoir par courrier électronique des sollicitations ou informations à des fins de communication politique de la part de <em>En Marche</em>.</span></label>
-        </div>
-    {% endif %}
-
-    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-    {% if recaptcha_public_key is not empty %}
-        {% for flashMessage in app.flashes("error_recaptcha") %}
-            <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-        {% endfor %}
-        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
-    {% elseif app.debug %}
-        <input type="hidden" name="g-recaptcha-response" value="fake" />
-    {% endif %}
-
-    <div class="register__form">
+    <div class="register__form--full">
         {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
-        <a href="{{ url('homepage') }}" >Je ne souhaite pas adhérer maintenant</a>
+
+        {% if isCreateForm is defined and isCreateForm %}
+            <a href="{{ url('homepage') }}" >Je ne souhaite pas adhérer maintenant</a>
+        {% endif %}
     </div>
 
     {{ form_end(form) }}

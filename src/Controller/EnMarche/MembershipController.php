@@ -14,7 +14,6 @@ use AppBundle\Form\MembershipChooseNearbyCommitteeType;
 use AppBundle\Form\MembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
-use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -43,19 +42,15 @@ class MembershipController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $membership = MembershipRequest::createFromAdherentWithCaptcha($user, $request->request->get('g-recaptcha-response'));
+        $membership = MembershipRequest::createFromAdherent($user);
         $form = $this->createForm(MembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
-        try {
-            if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->get('app.membership_request_handler')->handle($user, $membership);
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get('app.membership_request_handler')->handle($user, $membership);
 
-                return $this->redirectToRoute('app_membership_donate');
-            }
-        } catch (ConnectException $e) {
-            $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
+            return $this->redirectToRoute('app_membership_donate');
         }
 
         return $this->render('membership/register.html.twig', [
