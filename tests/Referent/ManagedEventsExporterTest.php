@@ -25,8 +25,10 @@ class ManagedEventsExporterTest extends SqliteWebTestCase
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
 
+        $expectedBeginAt = $event->getBeginAt()->format('d\\\/m\\\/Y H:i');
+
         $this->assertSame(
-            '[{"id":1,"name":{"label":"R\u00e9union de r\u00e9flexion parisienne","url":"\/\/'.$this->hosts['app'].'\/evenements\/2017-11-17-reunion-de-reflexion-parisienne"},"beginAt":"17\/11\/2017 09:30","category":"Atelier du programme","postalCode":"75008","organizer":"Jacques P.","participants":1}]',
+            '[{"id":1,"name":{"label":"R\u00e9union de r\u00e9flexion parisienne","url":"\/\/'.$this->hosts['app'].'\/evenements\/2017-11-17-reunion-de-reflexion-parisienne"},"beginAt":"'.$expectedBeginAt.'","category":"Atelier du programme","postalCode":"75008","organizer":"Jacques P.","participants":1}]',
             $this->exporter->exportAsJson([$event])
         );
     }
@@ -35,8 +37,10 @@ class ManagedEventsExporterTest extends SqliteWebTestCase
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_14_UUID);
 
+        $expectedBeginAt = $event->getBeginAt()->format('d\\\/m\\\/Y H:i');
+
         $this->assertSame(
-            '[{"id":14,"name":{"label":"Meeting #11 de Brooklyn","url":"\/\/'.$this->hosts['app'].'\/evenements\/2017-11-14-meeting-11-de-brooklyn"},"beginAt":"14\/11\/2017 17:00","category":"Marche","postalCode":"10019","organizer":"un ancien adh\u00e9rent","participants":0}]',
+            '[{"id":14,"name":{"label":"Meeting #11 de Brooklyn","url":"\/\/'.$this->hosts['app'].'\/evenements\/2017-11-14-meeting-11-de-brooklyn"},"beginAt":"'.$expectedBeginAt.'","category":"Marche","postalCode":"10019","organizer":"un ancien adh\u00e9rent","participants":0}]',
             $this->exporter->exportAsJson([$event])
         );
     }
