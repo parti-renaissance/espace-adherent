@@ -88,7 +88,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      */
     private $longitude;
 
-    private function __construct(?string $country, string $postalCode, string $cityName = null, string $street = null, float $latitude = null, $longitude = null)
+    private function __construct(?string $country, ?string $postalCode, string $cityName = null, string $street = null, float $latitude = null, $longitude = null)
     {
         $this->country = $country;
         $this->address = $street;
