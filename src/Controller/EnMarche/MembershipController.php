@@ -50,7 +50,7 @@ class MembershipController extends Controller
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get('app.membership_request_handler')->handle($user, $membership);
 
-            return $this->redirectToRoute('app_membership_donate');
+            return $this->redirectToRoute('app_adherent_home');
         }
 
         return $this->render('membership/register.html.twig', [

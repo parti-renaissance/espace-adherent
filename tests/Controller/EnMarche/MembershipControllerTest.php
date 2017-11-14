@@ -51,7 +51,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->submit($crawler->selectButton('J\'adhère')->form(), static::createFormData());
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/accueil', $this->client);
 
         $this->client->followRedirect();
 
@@ -116,7 +116,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/accueil', $this->client);
 
         $adherent = $this->getAdherentRepository()->findByEmail('foo.bar@example.ch');
         $this->assertInstanceOf(Adherent::class, $adherent);
@@ -157,7 +157,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/accueil', $this->client);
     }
 
     public function testDonateWithoutTemporaryDonation()
@@ -185,8 +185,10 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
-        $crawler = $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo('/espace-adherent/accueil', $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/inscription/don');
+        $crawler = $this->client->getCrawler();
         $form = $crawler->selectButton('Je soutiens maintenant')->form();
         $this->client->submit($form, ['app_donation[amount]' => 'NaN']);
 

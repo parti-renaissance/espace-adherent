@@ -42,9 +42,18 @@ class AdherentController extends Controller
      * @Route("/mon-compte", name="app_adherent_profile")
      * @Method("GET|POST")
      */
-    public function profileOverviewAction()
+    public function profileOverviewAction(): Response
     {
         return $this->render('adherent/overview.html.twig');
+    }
+
+    /**
+     * @Route("/accueil", name="app_adherent_home")
+     * @Method("GET")
+     */
+    public function homeAction(): Response
+    {
+        return $this->render('adherent/home.html.twig');
     }
 
     /**
