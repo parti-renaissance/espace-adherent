@@ -257,7 +257,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
         $event14 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_14_UUID,
-            'organizer' => $author12,
+            'organizer' => null,
             'committee' => $committee9,
             'name' => 'Meeting #11 de Brooklyn',
             'category' => $eventCategory10,
