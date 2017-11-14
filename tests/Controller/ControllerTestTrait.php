@@ -44,7 +44,8 @@ trait ControllerTestTrait
 
     public function assertClientIsRedirectedToAuth()
     {
-        $redirectUrl = str_replace('http://'.Config::APP_HOST, '', rtrim($this->client->getResponse()->headers->get('location'), '/'));
+        $redirectUrl = str_replace('http://'.$this->hosts['app'], '', rtrim($this->client->getResponse()->headers->get('location'), '/'));
+        $redirectUrl = str_replace('http://'.$this->hosts['amp'], '', $redirectUrl);
         $this->assertNotNull($redirectUrl);
 
         $this->assertSame('/connect/auth', $redirectUrl);
