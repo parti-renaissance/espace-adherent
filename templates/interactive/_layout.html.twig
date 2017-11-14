@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Pourquoi voter pour le ou la candidat(e) La République En Marche ! aux législatives' %}
-{% block canonical_url url('app_ton_macron_invite') %}
-{% block meta_description 'Aidez à convaincre vos proches en leur envoyant les propositions qui les concernent !' %}
+{% block banner '' %}
+{% block header '' %}
 
-{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/pourquoi-voter-legislatives.png', {'q': 70}))|raw %}
+{% block page_title 'Qu\'est-ce qu\'on y gagne ?' %}
+{% block canonical_url url('app_purchasing_power') %}
+{% block meta_description 'Dites-nous en un peu plus sur le profil d\'un(e) ami(e), nous générerons
+un e-mail personnalisé à lui envoyer ! ' %}
+
+{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/pouvoir-achat.jpg', {'q': 70}))|raw %}
 {% block open_graph_image_width 1280 %}
 {% block open_graph_image_height 720 %}

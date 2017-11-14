@@ -21,7 +21,8 @@ label {
   &__field {
     padding-left: 12px;
     padding-right: 12px;
-    border: 1px solid $gray;
+    border-radius: 3px;
+    border: solid 1px $gray--light;
     height: 41px;
     box-sizing: border-box;
     margin-right: 10px;
