@@ -51,6 +51,7 @@ committee.message_published: Votre message a bien été publié.
 committee.members_count: '1 adhérent|%count% adhérents'
 event.participants_count: '1 inscrit|%count% inscrits'
 event.capacity: '1 inscrit|%count% inscrits'
+capacity: 'inscrit|inscrits'
 
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
 committee.event.update.success: L'événement a bien été modifié.

@@ -53,7 +53,7 @@
         {% endif %}
         <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees">
             {{ include('components/participants.html.twig') }}
-            {{ event.participantsCount }} / {{ 'event.capacity'|transchoice(event.capacity)  }}
+            {{ event.participantsCount }} {{ 'capacity'|transchoice(event.participantsCount)  }}
         </div>
         <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
             <li class="head">Partagez</li>

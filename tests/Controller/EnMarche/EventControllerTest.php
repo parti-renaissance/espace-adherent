@@ -41,7 +41,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
@@ -83,7 +83,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
     }
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
@@ -98,7 +98,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
@@ -125,7 +125,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 / 50 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $this->client->click($crawler->selectLink('Mes événements')->link());
 
@@ -142,7 +142,7 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $headerText = $crawler->filter('.committee__event__header__cta')->text();
-        $this->assertContains('1 / 1 inscrit', $headerText);
+        $this->assertContains('1 inscrit', $headerText);
         $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
 
         $crawler = $this->client->request('GET', $eventUrl.'/inscription');

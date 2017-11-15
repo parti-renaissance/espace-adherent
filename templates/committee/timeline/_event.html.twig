@@ -39,7 +39,7 @@
             <li class="icon--with-text text--body">
                 {{ include('components/participants.html.twig') }}
                 <span class="committee-event-attendees">
-                    {{ item.event.participantsCount }} / {{ 'event.capacity'|transchoice(item.event.capacity)  }}
+                    {{ item.event.participantsCount }} {{ 'capacity'|transchoice(item.event.participantsCount)  }}
                 </span>
             </li>
         </ul>
