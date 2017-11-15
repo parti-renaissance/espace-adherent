@@ -260,7 +260,7 @@ class RequirementCollection implements IteratorAggregate
      *
      * @param RequirementCollection $collection A RequirementCollection instance
      */
-    public function addCollection(self $collection)
+    public function addCollection(RequirementCollection $collection)
     {
         $this->requirements = array_merge($this->requirements, $collection->all());
     }
