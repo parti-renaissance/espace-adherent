@@ -209,6 +209,25 @@ board_member.stats.area.abroad: Étranger
 board_member.message.recipients: 'one: Un membre du Conseil|some: %count% membres du Conseil'
 
 #
+# Interactive
+#
+interactive.form.male: Homme
+interactive.form.female: Femme
+interactive.form.friend_first_name: Son prénom
+interactive.form.friend_age: Son âge
+interactive.form.friend_position: Sa situation professionnelle
+interactive.form.submit_fill_info: Continuer
+interactive.form.submit_fill_project: Continuer
+interactive.form.submit_fill_cases: Continuer
+interactive.form.submit_fill_appreciations: Continuer
+interactive.form.default_subject: Les 10 raisons pour lesquelles je pense que tu devrais voter Macron
+interactive.form.self_first_name: Votre prénom
+interactive.form.self_last_name: Votre nom
+interactive.form.self_email: Votre e-mail
+interactive.form.friend_email: E-mail de votre ami
+interactive.form.submit_send: Envoyer
+
+#
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?

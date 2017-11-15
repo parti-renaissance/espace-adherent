@@ -26,11 +26,11 @@ class TonMacronChoice
     const MALE_KEY = 'S00C03';
     const FEMALE_KEY = 'S00C04';
 
-    const STEP_NOT_VISIBLE = 'not_visible';
-    const STEP_FRIEND_PROFESSIONAL_POSITION = 'friend_professional_position';
-    const STEP_FRIEND_PROJECT = 'friend_project';
-    const STEP_FRIEND_INTERESTS = 'friend_interests';
-    const STEP_SELF_REASONS = 'self_reasons';
+    const STEP_NOT_VISIBLE = 'ton_macron.not_visible';
+    const STEP_FRIEND_PROFESSIONAL_POSITION = 'ton_macron.friend_professional_position';
+    const STEP_FRIEND_PROJECT = 'ton_macron.friend_project';
+    const STEP_FRIEND_INTERESTS = 'ton_macron.friend_interests';
+    const STEP_SELF_REASONS = 'ton_macron.self_reasons';
 
     const STEPS = [
         self::STEP_NOT_VISIBLE => 0,

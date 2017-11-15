@@ -1,0 +1,14 @@
+{{ introduction.content|replace({'%friend_first_name%': interactive.friendFirstName|e})|raw }}
+
+{% spaceless %}
+    <ul>
+        {% if common %}
+            <li>{{ common.content|raw }}</li>
+        {% endif %}
+        {% for argument in interactive.arguments %}
+            <li>{{- argument|raw }}</li>
+        {% endfor %}
+    </ul>
+{% endspaceless %}
+
+{{ conclusion.content|raw }}

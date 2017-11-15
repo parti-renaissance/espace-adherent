@@ -54,6 +54,11 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.purchasing_power_choice_repository" class="AppBundle\Repository\PurchasingPowerChoiceRepository" public="false">
+            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.redirection" class="AppBundle\Repository\RedirectionRepository" public="false">
             <argument>AppBundle\Entity\Redirection</argument>
             <factory service="doctrine" method="getRepository"/>

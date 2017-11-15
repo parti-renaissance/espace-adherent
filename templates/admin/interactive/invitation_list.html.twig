@@ -1,0 +1,21 @@
+{% extends 'SonataAdminBundle:CRUD:list.html.twig' %}
+
+{% set urlAdminExportChoices = path('app_admin_purchasingpower_export_choices') %}
+{% set urlAdminExportInvitations = path('app_admin_purchasingpower_export_invitations') %}
+
+{% block list_filters_actions %}
+    <ul class="nav navbar-nav navbar-left">
+        <li class="sonata-actions">
+            <a href="{{ urlAdminExportChoices }}">
+                Exporter les choix
+            </a>
+        </li>
+        <li class="sonata-actions">
+            <a href="{{ urlAdminExportInvitations }}">
+                Exporter les invitations
+            </a>
+        </li>
+    </ul>
+
+    {{ parent() }}
+{% endblock %}

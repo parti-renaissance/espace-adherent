@@ -49,7 +49,7 @@ class TonMacronChoiceAdmin extends AbstractAdmin
                 'attr' => ['rows' => 10],
             ])
             ->add('step', ChoiceType::class, [
-                'label' => 'Etape',
+                'label' => 'Étape',
                 'choices' => TonMacronChoice::STEPS,
                 'choice_translation_domain' => 'forms',
             ])

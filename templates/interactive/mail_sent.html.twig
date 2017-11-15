@@ -1,0 +1,42 @@
+{% extends 'interactive/_layout.html.twig' %}
+
+{% block content %}
+    <main class="interactive b__nudge--bottom-huge">
+        <section class="l__wrapper--slim text--center">
+            <h1 class="b__nudge--top-50 b__nudge--bottom-large">
+                Votre message pour {{ interactive.friendFirstName }} a bien été envoyé !
+            </h1>
+
+            <div class="text--body b__nudge--bottom-large">
+                Vous êtes en copie de celui-ci.
+            </div>
+
+            <div class="b__nudge--bottom-huge">
+                <a href="{{ path('app_purchasing_power_restart') }}" class="btn btn--blue">
+                    Je recommence pour un autre indécis
+                </a>
+            </div>
+
+            <div class="b__nudge--top-50 text--body">
+                Je partage <strong>« Pourquoi voter pour le ou la candidat(e) <em>La République En Marche !</em> aux législatives »</strong>
+            </div>
+            <ul class="space--20-0">
+                <li role="button" aria-label="Partagez sur Facebook"
+                    class="btn btn--social btn--facebook"
+                    onclick="App.share('facebook', '{{ url('app_purchasing_power') }}', 'Envoyez à vos proches les propositions qui les concernent !')">
+                    <i class="fa fa-facebook-square"></i> <span>Partagez</span>
+                </li>
+                <li role="button" aria-label="Partagez via Twitter"
+                    class="btn btn--social btn--twitter"
+                    onclick="App.share('twitter', '{{ url('app_purchasing_power') }}', 'Envoyez à vos proches les propositions qui les concernent !')">
+                    <i class="fa fa-twitter"></i> <span>Tweetez</span>
+                </li>
+                <li role="button" aria-label="Partagez via email"
+                    class="btn btn--social btn--email"
+                    onclick="App.share('email', '{{ url('app_purchasing_power') }}', 'Envoyez à vos proches les propositions qui les concernent !')">
+                    <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+{% endblock %}

@@ -197,3 +197,9 @@ citizen_initiative.invalid_capacity: La capacité doit être un nombre entier va
 # Board Member
 #
 board_member.area.invalid_choice: Cette région n'est pas valide.
+
+#
+# Interactive
+#
+interactive.friend_cases.count: Vous devez sélectionner 2 situations.
+interactive.friend_appreciations.count: Vous devez sélectionner 2 valeurs.
