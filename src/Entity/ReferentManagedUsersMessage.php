@@ -64,7 +64,7 @@ class ReferentManagedUsersMessage
     /**
      * @ORM\Column
      */
-    private $queryPostalCode;
+    private $queryAreaCode;
 
     /**
      * @ORM\Column
@@ -91,7 +91,7 @@ class ReferentManagedUsersMessage
         bool $includeAdherentsInCommittee,
         bool $includeHosts,
         bool $includeSupevisors,
-        string $queryPostalCode,
+        string $queryAreaCode,
         string $queryCity,
         string $queryId,
         int $offset = 0
@@ -105,7 +105,7 @@ class ReferentManagedUsersMessage
         $this->includeAdherentsInCommittee = $includeAdherentsInCommittee;
         $this->includeHosts = $includeHosts;
         $this->includeSupevisors = $includeSupevisors;
-        $this->queryPostalCode = $queryPostalCode;
+        $this->queryAreaCode = $queryAreaCode;
         $this->queryCity = $queryCity;
         $this->queryId = $queryId;
         $this->offset = $offset;
@@ -123,7 +123,7 @@ class ReferentManagedUsersMessage
             $message->getFilter()->includeAdherentsInCommittee(),
             $message->getFilter()->includeHosts(),
             $message->getFilter()->includeSupervisors(),
-            $message->getFilter()->getQueryPostalCode(),
+            $message->getFilter()->getQueryAreaCode(),
             $message->getFilter()->getQueryCity(),
             $message->getFilter()->getQueryId()
         );
@@ -174,9 +174,9 @@ class ReferentManagedUsersMessage
         return $this->includeSupevisors;
     }
 
-    public function getQueryPostalCode(): string
+    public function getQueryAreaCode(): string
     {
-        return $this->queryPostalCode;
+        return $this->queryAreaCode;
     }
 
     public function getQueryCity(): string

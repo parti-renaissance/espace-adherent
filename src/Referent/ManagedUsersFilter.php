@@ -42,7 +42,7 @@ class ManagedUsersFilter
         $filter->includeAdherentsInCommittee = $message->includeAdherentsInCommittee();
         $filter->includeHosts = $message->includeHosts();
         $filter->includeSupevisors = $message->includeSupevisors();
-        $filter->queryPostalCode = $message->getQueryPostalCode();
+        $filter->queryAreaCode = $message->getQueryAreaCode();
         $filter->queryCity = $message->getQueryCity();
         $filter->queryId = $message->getQueryId();
         $filter->offset = $message->getOffset();

@@ -66,15 +66,13 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
-        $messageNotifier = $this->get(ReferentMessageNotifier::class);
-
         $message = ReferentMessage::create($this->getUser(), $filter);
 
         $form = $this->createForm(ReferentMessageType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $messageNotifier->sendMessage($message);
+            $this->get(ReferentMessageNotifier::class)->sendMessage($message);
             $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
 
             return $this->redirect($this->generateUrl('app_referent_users').$filter);
