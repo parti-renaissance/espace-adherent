@@ -18,7 +18,11 @@
             <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
         {% endif %}
 
-        {% if object.isHost %}
+        {% if object.isHostOnly %}
+            <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
+        {% endif %}
+
+        {% if object.isSupervisor %}
             <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
         {% endif %}
 
