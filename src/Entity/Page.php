@@ -33,10 +33,27 @@ class Page implements EntityMediaInterface, EntityContentInterface
     private $id;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100)
+     */
+    private $pageTitle;
+
+    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getPageTitle(): ?string
+    {
+        return $this->pageTitle;
+    }
+
+    public function setPageTitle(?string $pageTitle): void
+    {
+        $this->pageTitle = $pageTitle;
     }
 }

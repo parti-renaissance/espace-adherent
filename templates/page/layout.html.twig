@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Nos offres d\'emploi et stages' %}
-{% block canonical_url url('page_jobs') %}
+{% block page_title page.title %}
+{% block canonical_url url('app_static_page', { slug: page.slug }) %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
 
 {% block content %}
     <main>
         <section class="content">
             <header class="space--60-0 l__wrapper--slim">
                 <h1 class="text--large b__nudge--bottom-small">
-                    Nos offres d'emploi et stages
+                    {{ page.title }}
                 </h1>
             </header>
 

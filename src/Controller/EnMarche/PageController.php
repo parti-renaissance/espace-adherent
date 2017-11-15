@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -47,26 +48,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-ce-que-je-suis')")
-     */
-    public function emmanuelMacronAction(Page $page)
-    {
-        return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', ['page' => $page]);
-    }
-
-    /**
-     * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-revolution')")
-     */
-    public function emmanuelMacronRevolutionAction(Page $page)
-    {
-        return $this->render('page/emmanuel-macron/revolution.html.twig', ['page' => $page]);
-    }
-
-    /**
      * @Route("/emmanuel-macron/videos", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_videos")
      * @Method("GET")
      */
@@ -78,72 +59,12 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-nos-valeurs')")
-     */
-    public function mouvementValeursAction(Page $page)
-    {
-        return $this->render('page/le-mouvement/nos-valeurs.html.twig', ['page' => $page]);
-    }
-
-    /**
-     * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-notre-organisation')")
-     */
-    public function mouvementOrganisationAction(Page $page)
-    {
-        return $this->render('page/le-mouvement/notre-organisation.html.twig', ['page' => $page]);
-    }
-
-    /**
      * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
      * @Method("GET")
      */
     public function mouvementLegislativesAction()
     {
         return $this->redirect('https://legislatives.en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
-    }
-
-    /**
-     * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-les-comites')")
-     */
-    public function mouvementComitesAction(Page $page)
-    {
-        return $this->render('page/le-mouvement/les-comites.html.twig', ['page' => $page]);
-    }
-
-    /**
-     * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-devenez-benevole')")
-     */
-    public function mouvementBenevoleAction(Page $page)
-    {
-        return $this->render('page/le-mouvement/devenez-benevole.html.twig', ['page' => $page]);
-    }
-
-    /**
-     * @Route("/mentions-legales", defaults={"_enable_campaign_silence"=true}, name="page_mentions_legales")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('mentions-legales')")
-     */
-    public function mentionsLegalesAction(Page $page)
-    {
-        return $this->render('page/mentions-legales.html.twig', ['page' => $page]);
-    }
-
-    /**
-     * @Route("/politique-cookies", defaults={"_enable_campaign_silence"=true}, name="page_politique_cookies")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('politique-cookies')")
-     */
-    public function politiqueCookiesAction(Page $page)
-    {
-        return $this->render('page/politique-cookies.html.twig', ['page' => $page]);
     }
 
     /**
@@ -174,32 +95,31 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('action-talents-home')")
+     * @Entity("page", expr="repository.findOneBySlug(slug)")
      */
-    public function actionTalentsAction(Page $page)
+    public function showPageAction(Request $request, Page $page)
     {
-        return $this->render('page/action-talents/home.html.twig', ['page' => $page]);
-    }
+        $template = 'page/layout.html.twig';
 
-    /**
-     * @Route("/action-talents/candidater", defaults={"_enable_campaign_silence"=true}, name="page_action_talents_apply")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('action-talents-apply')")
-     */
-    public function actionTalentsApplicationAction(Page $page)
-    {
-        return $this->render('page/action-talents/apply.html.twig', ['page' => $page]);
-    }
+        switch ($request->query->get('slug')) {
+            case 'le-mouvement/notre-organisation':
+                $template = 'page/le-mouvement/notre-organisation.html.twig';
 
-    /**
-     * @Route("/nos-offres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('jobs')")
-     */
-    public function jobsAction(Page $page)
-    {
-        return $this->render('page/jobs.html.twig', ['page' => $page]);
+                break;
+            case 'politique-cookies':
+                $template = 'page/politique-cookies.html.twig';
+
+                break;
+            case 'action-talents':
+                $template = 'page/action-talents/home.html.twig';
+
+                break;
+            case 'action-talents/candidater':
+                $template = 'page/action-talents/apply.html.twig';
+
+                break;
+        }
+
+        return $this->render($template, ['page' => $page]);
     }
 }

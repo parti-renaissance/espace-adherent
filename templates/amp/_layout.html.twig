@@ -128,21 +128,21 @@
     {% block content '' %}
 
     {% if not app.debug %}
-    <amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-TTW2FMQ&gtm.url=SOURCE_URL" data-credentials="include">
-        <script type="application/json">
-            {
-                "vars": {
-                    "account": "UA-72646335-1"
-                },
-                "triggers": {
-                    "trackPageview": {
-                        "on": "visible",
-                        "request": "pageview"
+        <amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-TTW2FMQ&gtm.url=SOURCE_URL" data-credentials="include">
+            <script type="application/json">
+                {
+                    "vars": {
+                        "account": "UA-72646335-1"
+                    },
+                    "triggers": {
+                        "trackPageview": {
+                            "on": "visible",
+                            "request": "pageview"
+                        }
                     }
                 }
-            }
-        </script>
-    </amp-analytics>
+            </script>
+        </amp-analytics>
     {% endif %}
 
     {{ include('non.li.html.twig') }}

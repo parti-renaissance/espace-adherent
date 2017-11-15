@@ -1,7 +1,7 @@
 {% extends 'page/action-talents/layout.html.twig' %}
 
 {% block page_title 'Action talents - Candidater' %}
-{% block canonical_url url('page_action_talents_apply') %}
+{% block canonical_url url('app_static_page', { slug: 'action-talents' }) %}
 {% block meta_description page.description %}
 {% block meta_twitter_description page.twitterDescription ?: page.description %}
 
@@ -22,7 +22,7 @@
 
 {% block action_talents_content %}
     <div class="space--20-0 b__nudge--top">
-        <a href="{{ path('page_action_talents') }}"
+        <a href="{{ path('app_static_page', { slug: 'action-talents' }) }}"
            class="icon--with-text text--summary">
         {{ include('components/caret--left.html.twig') }}
         Retour</a>

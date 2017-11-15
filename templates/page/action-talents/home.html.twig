@@ -1,7 +1,7 @@
 {% extends 'page/action-talents/layout.html.twig' %}
 
 {% block page_title 'Action talents' %}
-{% block canonical_url url('page_action_talents') %}
+{% block canonical_url url('app_static_page', { slug: 'action-talents/candidater' }) %}
 {% block meta_description page.description %}
 {% block meta_twitter_description page.twitterDescription ?: page.description %}
 
