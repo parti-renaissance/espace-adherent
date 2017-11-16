@@ -1,0 +1,42 @@
+{% extends 'citizen_project/_layout.html.twig' %}
+
+{% block page_title 'Modifier mon comité' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+        });
+    </script>
+{% endblock %}
+
+{% block citizen_project_content %}
+    <main>
+        <section class="l__wrapper--medium space--30-0">
+            <a href="{{ path('app_citizen_project_show', {'slug': citizenProject.slug}) }}"
+               class="back-to-list icon--with-text text--summary">
+                {{ include('components/caret--left.html.twig') }}
+                Retour au comité</a>
+
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">
+                    Modifier mon comité
+                </h1>
+            </header>
+
+            <form method="post" id="edit-citizen-project-form" class="form citizen-project-form">
+                {{ include('citizen_project/_form.html.twig') }}
+                <div>
+                    <button type="submit" id="edit-citizen-project" class="btn btn--blue">
+                        Enregistrer
+                    </button>
+                    <a href="{{ path('app_citizen_project_show', {'slug': citizenProject.slug}) }}" class="btn">
+                        Annuler
+                    </a>
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </section>
+    </main>
+{% endblock %}
