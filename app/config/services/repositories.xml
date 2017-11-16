@@ -34,8 +34,8 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.mooc_event" class="AppBundle\Repository\MoocEventRepository" public="false">
-            <argument>AppBundle\Entity\MoocEvent</argument>
+        <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" public="false">
+            <argument>AppBundle\Entity\CitizenAction</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
@@ -114,13 +114,13 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.group" class="AppBundle\Repository\GroupRepository" public="false">
-            <argument>AppBundle\Entity\Group</argument>
+        <service id="app.repository.citizen_project" class="AppBundle\Repository\CitizenProjectRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProject</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.group_membership" class="AppBundle\Repository\GroupMembershipRepository" public="false">
-            <argument>AppBundle\Entity\GroupMembership</argument>
+        <service id="app.repository.citizen_project_membership" class="AppBundle\Repository\CitizenProjectMembershipRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProjectMembership</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 

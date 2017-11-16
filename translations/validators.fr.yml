@@ -81,12 +81,12 @@ committee.description.max_length: Votre texte de description est trop long. Il d
 committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 
 #
-# Group
+# CitizenProject
 #
-group.canonical_name.not_unique: Ce nom d'équipe MOOC est déjà utilisé.
+citizen_project.canonical_name.not_unique: Ce nom de projet citoyen est déjà utilisé.
 
-group.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
-group.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
+citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
+citizen_project.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
 
 #
 # Donation

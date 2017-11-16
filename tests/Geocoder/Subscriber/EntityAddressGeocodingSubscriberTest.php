@@ -5,12 +5,12 @@ namespace Tests\AppBundle\Geocoder\Subscriber;
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\Group;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
-use AppBundle\Group\GroupWasCreatedEvent;
+use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
@@ -119,49 +119,49 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
     }
 
-    public function testOnGroupCreatedSucceeds()
+    public function testOnCitizenProjectCreatedSucceeds()
     {
-        $group = $this->createGroup('6 rue Neyret');
+        $citizenProject = $this->createCitizenProject('6 rue Neyret');
 
-        $this->assertInstanceOf(GeoPointInterface::class, $group);
-        $this->assertNull($group->getLatitude());
-        $this->assertNull($group->getLongitude());
+        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
+        $this->assertNull($citizenProject->getLatitude());
+        $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onGroupCreated(new GroupWasCreatedEvent($group, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
-        $this->assertSame(45.7713288, $group->getLatitude());
-        $this->assertSame(4.8288758, $group->getLongitude());
+        $this->assertSame(45.7713288, $citizenProject->getLatitude());
+        $this->assertSame(4.8288758, $citizenProject->getLongitude());
     }
 
-    public function testOnGroupCreatedWithoutAddressSucceeds()
+    public function testOnCitizenProjectCreatedWithoutAddressSucceeds()
     {
-        $group = $this->createGroup();
+        $citizenProject = $this->createCitizenProject();
 
-        $this->assertInstanceOf(GeoPointInterface::class, $group);
-        $this->assertNull($group->getLatitude());
-        $this->assertNull($group->getLongitude());
+        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
+        $this->assertNull($citizenProject->getLatitude());
+        $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onGroupCreated(new GroupWasCreatedEvent($group, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
-        $this->assertNull($group->getLatitude());
-        $this->assertNull($group->getLongitude());
+        $this->assertNull($citizenProject->getLatitude());
+        $this->assertNull($citizenProject->getLongitude());
     }
 
-    public function testOnGroupCreatedFailed()
+    public function testOnCitizenProjectCreatedFailed()
     {
-        $group = $this->createGroup('12 rue Jean Paul II');
+        $citizenProject = $this->createCitizenProject('12 rue Jean Paul II');
 
-        $this->assertInstanceOf(GeoPointInterface::class, $group);
-        $this->assertNull($group->getLatitude());
-        $this->assertNull($group->getLongitude());
+        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
+        $this->assertNull($citizenProject->getLatitude());
+        $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onGroupCreated(new GroupWasCreatedEvent($group, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
-        $this->assertNull($group->getLatitude());
-        $this->assertNull($group->getLongitude());
+        $this->assertNull($citizenProject->getLatitude());
+        $this->assertNull($citizenProject->getLongitude());
     }
 
     private function createCommittee(string $address): Committee
@@ -179,19 +179,19 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         return $committee;
     }
 
-    private function createGroup(string $address = null): Group
+    private function createCitizenProject(string $address = null): CitizenProject
     {
-        $group = new Group(
+        $citizenProject = new CitizenProject(
             Uuid::fromString('7eaa4d91-aec7-4b0d-b6f6-50ff6d77c082'),
             Uuid::fromString('6c77b5f9-52e8-4502-85fd-1f2316c2764b'),
-            'MOOC à Lyon',
-            'L\'équipe MOOC à Lyon village',
+            'Projet citoyen à Lyon',
+            'Le projet citoyen à Lyon village',
             $address ? NullablePostAddress::createFrenchAddress($address, '69001-69381') : null,
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('040708050&'),
-            '69001-mooc-lyon'
+            '69001-projet-citoyen-lyon'
         );
 
-        return $group;
+        return $citizenProject;
     }
 
     private function createAdherent(string $address): Adherent

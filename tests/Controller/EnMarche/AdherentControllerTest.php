@@ -9,12 +9,12 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\Group;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Mailer\Message\AdherentContactMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
 use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
-use AppBundle\Mailer\Message\GroupCreationConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
@@ -435,39 +435,39 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertTrue($adherent->hasSubscribedMainEmails());
     }
 
-    public function testAnonymousUserCannotCreateGroup()
+    public function testAnonymousUserCannotCreateCitizenProject()
     {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
     }
 
-    public function testAdherentCanCreateNewGroup()
+    public function testAdherentCanCreateNewCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $this->assertSame(2, $crawler->selectLink('Créer une équipe MOOC')->count());
+        $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testGroupAdministratorCanCreateAnotherGroup()
+    public function testCitizenProjectAdministratorCanCreateAnotherCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $this->assertSame(2, $crawler->selectLink('Créer une équipe MOOC')->count());
+        $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testCreateGroupFailed()
+    public function testCreateCitizenProjectFailed()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
 
         $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
@@ -480,9 +480,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         );
 
         $data = [];
-        $data['group']['name'] = 'M';
-        $data['group']['description'] = 'MOOC';
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
+        $data['citizen_project']['name'] = 'P';
+        $data['citizen_project']['description'] = 'test';
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
 
         $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
@@ -495,48 +495,48 @@ class AdherentControllerTest extends MysqlWebTestCase
         );
     }
 
-    public function testCreateGroupSuccessful()
+    public function testCreateCitizenProjectSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $data['group']['name'] = 'Mon équipe MOOC';
-        $data['group']['description'] = 'Ma première équipe MOOC';
-        $data['group']['address']['address'] = 'Pilgerweg 58';
-        $data['group']['address']['cityName'] = 'Kilchberg';
-        $data['group']['address']['postalCode'] = '8802';
-        $data['group']['address']['country'] = 'CH';
-        $data['group']['phone']['country'] = 'CH';
-        $data['group']['phone']['number'] = '31 359 21 11';
+        $data['citizen_project']['name'] = 'Mon projet citoyen';
+        $data['citizen_project']['description'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['address']['address'] = 'Pilgerweg 58';
+        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
+        $data['citizen_project']['address']['postalCode'] = '8802';
+        $data['citizen_project']['address']['country'] = 'CH';
+        $data['citizen_project']['phone']['country'] = 'CH';
+        $data['citizen_project']['phone']['number'] = '31 359 21 11';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
-        $group = $this->getGroupRepository()->findOneBy(['name' => 'Mon équipe MOOC']);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(Group::class, $group);
+        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(GroupCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
     }
 
-    public function testCreateGroupWithoutAddressAndPhoneSuccessful()
+    public function testCreateCitizenProjectWithoutAddressAndPhoneSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-equipe-mooc');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $data['group']['name'] = 'Mon équipe';
-        $data['group']['description'] = 'Ma première équipe';
+        $data['citizen_project']['name'] = 'Mon équipe';
+        $data['citizen_project']['description'] = 'Ma première équipe';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon équipe MOOC')->form(), $data);
-        $group = $this->getGroupRepository()->findOneBy(['name' => 'Mon équipe']);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon équipe']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(Group::class, $group);
+        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(GroupCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
     }
 
     /**

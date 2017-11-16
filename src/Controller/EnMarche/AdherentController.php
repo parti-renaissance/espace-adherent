@@ -16,10 +16,10 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
-use AppBundle\Form\GroupCommandType;
+use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\Form\UnregistrationType;
 use AppBundle\Form\UpdateMembershipRequestType;
-use AppBundle\Group\GroupCreationCommand;
+use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\UnregistrationCommand;
 use GuzzleHttp\Exception\ConnectException;
@@ -171,28 +171,28 @@ class AdherentController extends Controller
     }
 
     /**
-     * This action enables an adherent to create a committee.
+     * This action enables an adherent to create a citizen project.
      *
-     * @Route("/creer-mon-equipe-mooc", name="app_adherent_create_group")
+     * @Route("/creer-mon-projet-citoyen", name="app_adherent_create_citizen_project")
      * @Method("GET|POST")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function createGroupAction(Request $request): Response
+    public function createCitizenProjectAction(Request $request): Response
     {
         $this->disableInProduction();
 
-        $command = GroupCreationCommand::createFromAdherent($user = $this->getUser());
-        $form = $this->createForm(GroupCommandType::class, $command);
+        $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
+        $form = $this->createForm(CitizenProjectCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.group.creation_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('group.creation.success'));
+            $this->get('app.citizen_project.creation_handler')->handle($command);
+            $this->addFlash('info', $this->get('translator')->trans('citizen_project.creation.success'));
 
-            return $this->redirect($this->generateUrl('app_group_show', ['slug' => $command->getGroup()->getSlug()]));
+            return $this->redirect($this->generateUrl('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]));
         }
 
-        return $this->render('adherent/create_group.html.twig', [
+        return $this->render('adherent/create_citizen_project.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
         ]);

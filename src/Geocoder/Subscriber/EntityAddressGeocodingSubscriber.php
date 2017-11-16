@@ -12,7 +12,7 @@ use AppBundle\Event\EventCreatedEvent;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Geocoder\GeocoderInterface;
 use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Group\GroupWasCreatedEvent;
+use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentEvents;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
@@ -82,9 +82,9 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($initiative->getCitizenInitiative());
     }
 
-    public function onGroupCreated(GroupWasCreatedEvent $event)
+    public function onCitizenProjectCreated(CitizenProjectWasCreatedEvent $event)
     {
-        $this->updateGeocodableEntity($event->getGroup());
+        $this->updateGeocodableEntity($event->getCitizenProject());
     }
 
     private function geocode(string $address)
@@ -108,7 +108,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             Events::EVENT_UPDATED => ['onEventUpdated', -256],
             Events::CITIZEN_INITIATIVE_CREATED => ['onCitizenInitiativeCreated', -256],
             Events::CITIZEN_INITIATIVE_UPDATED => ['onCitizenInitiativeUpdated', -256],
-            Events::GROUP_CREATED => ['onGroupCreated', -256],
+            Events::CITIZEN_PROJECT_CREATED => ['onCitizenProjectCreated', -256],
         ];
     }
 }
