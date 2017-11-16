@@ -65,9 +65,9 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->client->followRedirect();
 
-        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
+        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Cette valeur ne doit pas être vide.',
-            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->text()));
+            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->text()));
 
         $data = [];
         $data['coordinator_committee']['coordinatorComment'] = 'test';
@@ -78,9 +78,9 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->client->followRedirect();
 
-        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
+        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Vous devez saisir au moins 10 caractères.',
-            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->text()));
+            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->text()));
     }
 
     public function testPreAcceptCommitteeWithSuccess()
@@ -102,7 +102,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/espace-coordinateur/comites', $this->client);
         $this->client->followRedirect();
 
-        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
+        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
         $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
@@ -132,7 +132,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/espace-coordinateur/comites', $this->client);
         $this->client->followRedirect();
 
-        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__errors')->count());
+        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
         $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
