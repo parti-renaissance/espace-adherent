@@ -8,8 +8,8 @@ use AppBundle\Group\GroupManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Group;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\GroupApprovalConfirmationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\GroupApprovalConfirmationMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,7 +28,7 @@ class GroupManagementAuthorityTest extends TestCase
         // ensure group is approved
         $manager->expects($this->once())->method('approveGroup')->with($group);
 
-        $mailer = $this->createMock(MailjetService::class);
+        $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
             ->with($this->isInstanceOf(GroupApprovalConfirmationMessage::class));

@@ -44,8 +44,8 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.mailjet_email" class="AppBundle\Repository\MailjetEmailRepository" public="false">
-            <argument>AppBundle\Entity\MailjetEmail</argument>
+        <service id="app.repository.email" class="AppBundle\Repository\EmailRepository" public="false">
+            <argument>AppBundle\Entity\Email</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 

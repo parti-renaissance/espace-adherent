@@ -10,12 +10,12 @@ use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Unregistration;
-use AppBundle\Mailjet\Message\AdherentContactMessage;
-use AppBundle\Mailjet\Message\AdherentTerminateMembershipMessage;
-use AppBundle\Mailjet\Message\CommitteeCreationConfirmationMessage;
+use AppBundle\Mailer\Message\AdherentContactMessage;
+use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -32,7 +32,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     /* @var CommitteeRepository */
     private $committeeRepository;
 
-    /* @var MailjetEmailRepository */
+    /* @var EmailRepository */
     private $emailRepository;
 
     public function testMyEventsPageIsProtected()
@@ -603,7 +603,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertContains('Votre message a bien été envoyé.', $crawler->filter('#notice-flashes')->text());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(AdherentContactMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(AdherentContactMessage::class));
     }
 
     public function testContactActionWithInvalidUuid()
@@ -710,7 +710,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $errors->count());
         $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
 
@@ -745,7 +745,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()

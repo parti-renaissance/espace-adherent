@@ -5,8 +5,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\Mailjet\Message\EventCancellationMessage;
-use AppBundle\Mailjet\Message\EventContactMembersMessage;
+use AppBundle\Mailer\Message\EventCancellationMessage;
+use AppBundle\Mailer\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,7 +150,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         static::assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
 
-        $messages = $this->getMailjetEmailRepository()->findMessages(EventCancellationMessage::class);
+        $messages = $this->getEmailRepository()->findMessages(EventCancellationMessage::class);
         /** @var EventCancellationMessage $message */
         $message = array_shift($messages);
 
@@ -273,7 +273,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.');
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(EventContactMembersMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(EventContactMembersMessage::class));
 
         // Try to illegally contact an adherent
         $uuids[] = Uuid::uuid4();

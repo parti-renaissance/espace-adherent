@@ -224,15 +224,15 @@ old_sound_rabbit_mq:
             heartbeat: 5
 
     producers:
-        mailjet_campaign:
+        mailer_campaign:
             connection:       default
-            exchange_options: { name: 'mailjet-delayed-campaign', type: direct }
-            class:            AppBundle\Producer\MailjetProducer
+            exchange_options: { name: 'mailer-delayed-campaign', type: direct }
+            class:            AppBundle\Producer\MailerProducer
 
-        mailjet_transactional:
+        mailer_transactional:
             connection:       default
-            exchange_options: { name: 'mailjet-delayed-transactional', type: direct }
-            class:            AppBundle\Producer\MailjetProducer
+            exchange_options: { name: 'mailer-delayed-transactional', type: direct }
+            class:            AppBundle\Producer\MailerProducer
 
         referent_message_dispatcher:
             connection:       default
@@ -245,18 +245,18 @@ old_sound_rabbit_mq:
             queue_options:    { name: 'enmarche_sync_user_create', durable: true }
 
     consumers:
-        mailjet_campaign:
+        mailer_campaign:
             connection:        default
-            exchange_options:  { name: 'mailjet-delayed-campaign', type: direct }
-            queue_options:     { name: 'mailjet-delayed-campaign', durable: false }
-            callback:          AppBundle\Consumer\CampaignMailjetConsumer
+            exchange_options:  { name: 'mailer-delayed-campaign', type: direct }
+            queue_options:     { name: 'mailer-delayed-campaign', durable: false }
+            callback:          AppBundle\Consumer\CampaignMailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
-        mailjet_transactional:
+        mailer_transactional:
             connection:        default
-            exchange_options:  { name: 'mailjet-delayed-transactional', type: direct }
-            queue_options:     { name: 'mailjet-delayed-transactional', durable: false }
-            callback:          AppBundle\Consumer\TransactionalMailjetConsumer
+            exchange_options:  { name: 'mailer-delayed-transactional', type: direct }
+            queue_options:     { name: 'mailer-delayed-transactional', durable: false }
+            callback:          AppBundle\Consumer\TransactionalMailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         referent_message_dispatcher:

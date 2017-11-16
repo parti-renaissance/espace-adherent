@@ -391,11 +391,11 @@
             </call>
         </service>
 
-        <service id="app.admin.mailjet_email" class="AppBundle\Admin\MailjetEmailAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Logs Mailjet" group="Système" />
+        <service id="app.admin.email" class="AppBundle\Admin\EmailAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Emails" />
 
             <argument />
-            <argument>AppBundle\Entity\MailjetEmail</argument>
+            <argument>AppBundle\Entity\Email</argument>
             <argument />
         </service>
 

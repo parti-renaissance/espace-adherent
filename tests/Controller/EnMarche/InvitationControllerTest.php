@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Invite;
-use AppBundle\Mailjet\Message\InvitationMessage;
+use AppBundle\Mailer\Message\InvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
@@ -54,7 +54,7 @@ class InvitationControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(InvitationMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(InvitationMessage::class));
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');

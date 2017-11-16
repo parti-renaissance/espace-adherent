@@ -3,31 +3,31 @@
 namespace AppBundle\Group;
 
 use AppBundle\Entity\Group;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\GroupApprovalConfirmationMessage;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\GroupApprovalConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GroupManagementAuthority
 {
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $urlGenerator;
 
     public function __construct(
         GroupManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailjetService $mailjet
+        MailerService $mailer
     ) {
         $this->manager = $manager;
         $this->urlGenerator = $urlGenerator;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
     }
 
     public function approve(Group $group): void
     {
         $this->manager->approveGroup($group);
 
-        $this->mailjet->sendMessage(GroupApprovalConfirmationMessage::create(
+        $this->mailer->sendMessage(GroupApprovalConfirmationMessage::create(
             $this->manager->getGroupCreator($group),
             $group->getCityName(),
             $this->urlGenerator->generate('app_group_show', ['slug' => $group->getSlug()])

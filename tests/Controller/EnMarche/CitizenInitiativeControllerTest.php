@@ -10,11 +10,11 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
-use AppBundle\Mailjet\Message\CitizenInitiativeCreationConfirmationMessage;
-use AppBundle\Mailjet\Message\CitizenInitiativeInvitationMessage;
-use AppBundle\Mailjet\Message\CitizenInitiativeRegistrationConfirmationMessage;
-use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeNotificationMessage;
-use AppBundle\Mailjet\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
+use AppBundle\Mailer\Message\CitizenInitiativeCreationConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenInitiativeInvitationMessage;
+use AppBundle\Mailer\Message\CitizenInitiativeRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeCitizenInitiativeNotificationMessage;
+use AppBundle\Mailer\Message\CommitteeCitizenInitiativeOrganizerNotificationMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -161,7 +161,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
 
         $initiative = $this->getCitizenInitiativeRepository()->findOneBy(['name' => 'Mon initiative']);
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenInitiativeCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
         $this->assertInstanceOf(CitizenInitiative::class, $initiative);
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/initiative-citoyenne/creer', $this->client);
@@ -233,7 +233,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
         $this->assertContains(str_replace('/', '\/', $initiativeUrl), $messages[0]->getRequestPayloadJson());
     }
 
@@ -279,7 +279,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getMailjetEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(CitizenInitiativeInvitationMessage::class));
         $this->assertContains(str_replace('/', '\/', $initiativeUrl), $messages[0]->getRequestPayloadJson());
     }
 
@@ -336,7 +336,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_3_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -370,7 +370,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID, 'benjyd@aol.com'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenInitiativeRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
 
@@ -472,8 +472,8 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
             ],
         ]));
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
 
         $crawler = $this->client->followRedirect();
 
@@ -511,8 +511,8 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
             ],
         ]));
 
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->getMailjetEmailRepository()->findMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeCitizenInitiativeOrganizerNotificationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(CommitteeCitizenInitiativeNotificationMessage::class, 'luciole1989@spambox.fr'));
 
         $crawler = $this->client->followRedirect();
 

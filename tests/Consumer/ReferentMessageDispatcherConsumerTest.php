@@ -4,7 +4,8 @@ namespace Tests\AppBundle\Consumer;
 
 use AppBundle\Consumer\ReferentMessageDispatcherConsumer;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailjet\MailjetService;
+use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\ReferentMessage as Message;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
@@ -17,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use AppBundle\Mailjet\Message\ReferentMessage as MailjetMessage;
 
 class ReferentMessageDispatcherConsumerTest extends TestCase
 {
@@ -111,7 +111,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
 
         $referentMessage = $this->getMockBuilder(ReferentMessage::class)->disableOriginalConstructor()->getMock();
 
-        $mailer = $this->getMockBuilder(MailjetService::class)->disableOriginalConstructor()->setMethods(['sendMessage'])->getMock();
+        $mailer = $this->getMockBuilder(MailerService::class)->disableOriginalConstructor()->setMethods(['sendMessage'])->getMock();
 
         $uuidInterface = $this->createMock(UuidInterface::class);
         $uuidInterface->expects($this->any())->method('toString')->willReturn($uuid);
@@ -123,7 +123,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $adherentRepository->expects($this->once())->method('findByUuid')->willReturn($adherent);
 
         $recipients = [];
-        for ($i = 0; $i < (MailjetService::PAYLOAD_MAXSIZE + 10); ++$i) {
+        for ($i = 0; $i < (MailerService::PAYLOAD_MAXSIZE + 10); ++$i) {
             $recipients[$i][] = uniqid().'@tld.com';
         }
         $iterableResult = $this->createIterator($recipients);
@@ -136,16 +136,15 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
 
-        $miljetReferentMessage = new MailjetMessage($uuidInterface, 'a', 'b', 'c', 'd');
+        $miljetReferentMessage = new Message($uuidInterface, 'a', 'b', 'c', 'd');
         $referentMessageDispatcherConsumer = $this
             ->getMockBuilder(ReferentMessageDispatcherConsumer::class)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods([
-                'getDoctrine',
                 'createReferentMessage',
                 'getAdherentRepository',
                 'getReferentManagedUserRepository',
-                'createMailjetReferentMessage',
+                'createMailerReferentMessage',
                 'getManager',
                 'getMailer',
             ])
@@ -158,7 +157,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer->expects($this->once())->method('getAdherentRepository')->willReturn($adherentRepository);
         $referentMessageDispatcherConsumer->expects($this->any())->method('createReferentMessage')->willReturn($referentMessage);
         $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
-        $referentMessageDispatcherConsumer->expects($this->any())->method('createMailjetReferentMessage')->willReturn($miljetReferentMessage);
+        $referentMessageDispatcherConsumer->expects($this->any())->method('createMailerReferentMessage')->willReturn($miljetReferentMessage);
         $referentMessageDispatcherConsumer->expects($this->once())->method('getManager')->willReturn($this->entityManager);
         $this->entityManager->expects($this->once())->method('clear');
 

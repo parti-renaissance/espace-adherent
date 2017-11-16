@@ -8,10 +8,10 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailjet\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
@@ -31,8 +31,8 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
 
-    /* @var MailjetEmailRepository */
-    private $mailjetEmailRepository;
+    /* @var EmailRepository */
+    private $emailRepository;
 
     public function testCreateMessage()
     {
@@ -78,7 +78,7 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $this->manager = $this->get('app.committee.feed_manager');
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
-        $this->mailjetEmailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
 
         parent::setUp();
     }
@@ -91,7 +91,7 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $this->manager = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
-        $this->mailjetEmailRepository = null;
+        $this->emailRepository = null;
 
         parent::tearDown();
     }

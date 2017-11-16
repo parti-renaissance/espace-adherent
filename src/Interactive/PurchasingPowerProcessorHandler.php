@@ -3,8 +3,8 @@
 namespace AppBundle\Interactive;
 
 use AppBundle\Entity\PurchasingPowerInvitation;
-use AppBundle\Mailjet\MailjetService;
-use AppBundle\Mailjet\Message\PurchasingPowerMessage;
+use AppBundle\Mailer\Message\PurchasingPowerMessage;
+use AppBundle\Mailer\MailerService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
@@ -15,18 +15,18 @@ final class PurchasingPowerProcessorHandler
 
     private $builder;
     private $manager;
-    private $mailjet;
+    private $mailer;
     private $stateMachine;
 
     public function __construct(
         PurchasingPowerMessageBodyBuilder $builder,
         ObjectManager $manager,
-        MailjetService $mailjet,
+        MailerService $mailer,
         StateMachine $stateMachine
     ) {
         $this->builder = $builder;
         $this->manager = $manager;
-        $this->mailjet = $mailjet;
+        $this->mailer = $mailer;
         $this->stateMachine = $stateMachine;
     }
 
@@ -63,7 +63,7 @@ final class PurchasingPowerProcessorHandler
             $this->manager->persist($purchasingPower);
             $this->manager->flush();
 
-            $this->mailjet->sendMessage(PurchasingPowerMessage::createFromInvitation($purchasingPower));
+            $this->mailer->sendMessage(PurchasingPowerMessage::createFromInvitation($purchasingPower));
             $this->terminate($session);
             $this->stateMachine->apply($processor, PurchasingPowerProcessor::TRANSITION_SEND);
 

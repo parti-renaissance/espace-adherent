@@ -7,10 +7,10 @@
         <!-- RabbitMQ -->
         <service id="app.consumer.service_locator" public="false">
             <argument type="collection">
-                <argument key="app.mailjet.campaign_mailer" type="service" id="app.mailjet.campaign_mailer" />
-                <argument key="app.mailjet.transactional_mailer" type="service" id="app.mailjet.transactional_mailer" />
-                <argument key="app.mailjet.campaign_client" type="service" id="app.mailjet.campaign_client" />
-                <argument key="app.mailjet.transactional_client" type="service" id="app.mailjet.transactional_client" />
+                <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
+                <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
+                <argument key="app.mailer.campaign_client" type="service" id="app.mailer.campaign_client" />
+                <argument key="app.mailer.transactional_client" type="service" id="app.mailer.transactional_client" />
                 <argument key="manager" type="service" id="doctrine.orm.entity_manager" />
                 <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
                 <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
@@ -21,24 +21,24 @@
             <tag name="container.service_locator" />
         </service>
 
-        <service id="AppBundle\Consumer\CampaignMailjetConsumer" parent="app.consumer.abstract_mailjet_consumer">
+        <service id="AppBundle\Consumer\CampaignMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
             <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailjetClient">
-                <argument type="service" id="app.mailjet.campaign_client"/>
+            <call method="setEmailClient">
+                <argument type="service" id="app.mailer.campaign_client"/>
             </call>
         </service>
 
-        <service id="AppBundle\Consumer\TransactionalMailjetConsumer" parent="app.consumer.abstract_mailjet_consumer">
+        <service id="AppBundle\Consumer\TransactionalMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
             <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailjetClient">
-                <argument type="service" id="app.mailjet.transactional_client"/>
+            <call method="setEmailClient">
+                <argument type="service" id="app.mailer.transactional_client"/>
             </call>
         </service>
 
-        <service id="app.consumer.abstract_mailjet_consumer" class="AppBundle\Consumer\AbstractMailjetConsumer" parent="app_abstract_consumer">
+        <service id="app.consumer.abstract_mailer_consumer" class="AppBundle\Consumer\AbstractMailerConsumer" parent="app_abstract_consumer">
             <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailjetRepository">
-                <argument type="service" id="app.repository.mailjet_email"/>
+            <call method="setEmailRepository">
+                <argument type="service" id="app.repository.email"/>
             </call>
         </service>
 
@@ -47,7 +47,7 @@
                 <argument type="service" id="app.repository.adherent"/>
             </call>
             <call method="setMailer">
-                <argument type="service" id="app.mailjet.campaign_mailer"/>
+                <argument type="service" id="app.mailer.campaign"/>
             </call>
             <call method="setReferentManagedUserRepository">
                 <argument type="service" id="app.repository.referent_managed_user"/>
