@@ -128,7 +128,7 @@ class ReferentControllerTest extends SqliteWebTestCase
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
-            'pc' => 77,
+            'ac' => 77,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
@@ -146,6 +146,26 @@ class ReferentControllerTest extends SqliteWebTestCase
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            'ac' => 'CH',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $data = [
+            'n' => 1,
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            'ac' => 13,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()

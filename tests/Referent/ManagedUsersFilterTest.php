@@ -19,7 +19,7 @@ class ManagedUsersFilterTest extends TestCase
         $this->assertSame($expected['includeAdherentsInCommittee'], $filter->includeAdherentsInCommittee());
         $this->assertSame($expected['includeHosts'], $filter->includeHosts());
         $this->assertSame($expected['includeSupervisors'], $filter->includeSupervisors());
-        $this->assertSame($expected['queryPostalCode'], $filter->getQueryPostalCode());
+        $this->assertSame($expected['queryAreaCode'], $filter->getQueryAreaCode());
         $this->assertSame($expected['queryCity'], $filter->getQueryCity());
         $this->assertSame($expected['queryId'], $filter->getQueryId());
         $this->assertSame($expected['offset'], $filter->getOffset());
@@ -36,7 +36,7 @@ class ManagedUsersFilterTest extends TestCase
                     'aic' => false,
                     'h' => true,
                     's' => false,
-                    'pc' => '06330',
+                    'ac' => '06330',
                     'city' => '',
                     'id' => '1234',
                     'o' => 10,
@@ -47,7 +47,7 @@ class ManagedUsersFilterTest extends TestCase
                     'includeAdherentsInCommittee' => false,
                     'includeHosts' => true,
                     'includeSupervisors' => false,
-                    'queryPostalCode' => '06330',
+                    'queryAreaCode' => '06330',
                     'queryCity' => '',
                     'queryId' => '1234',
                     'offset' => 10,
@@ -63,7 +63,7 @@ class ManagedUsersFilterTest extends TestCase
                     'includeAdherentsInCommittee' => true,
                     'includeHosts' => true,
                     'includeSupervisors' => true,
-                    'queryPostalCode' => '',
+                    'queryAreaCode' => '',
                     'queryCity' => '',
                     'queryId' => '',
                     'offset' => 0,
