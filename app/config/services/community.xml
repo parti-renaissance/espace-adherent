@@ -128,7 +128,7 @@
         <service id="app.interactive.purchasing_power_processor_handler" class="AppBundle\Interactive\PurchasingPowerProcessorHandler">
             <argument type="service" id="app.purchasing_power.message_body_builder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailjet.transactional_mailer"/>
+            <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="state_machine.purchasing_power"/>
         </service>
 

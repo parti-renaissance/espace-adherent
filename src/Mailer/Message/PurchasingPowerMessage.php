@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailjet\Message;
+namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\PurchasingPowerInvitation;
 use Ramsey\Uuid\Uuid;
 
-final class PurchasingPowerMessage extends MailjetMessage
+final class PurchasingPowerMessage extends Message
 {
     public static function createFromInvitation(PurchasingPowerInvitation $invitation): self
     {
@@ -19,7 +19,7 @@ final class PurchasingPowerMessage extends MailjetMessage
         );
 
         $message->setReplyTo($invitation->getAuthorEmailAddress());
-        $message->setSenderName(self::fixMailjetParsing($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName()));
+        $message->setSenderName($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName());
         $message->addCC($invitation->getAuthorEmailAddress());
 
         return $message;

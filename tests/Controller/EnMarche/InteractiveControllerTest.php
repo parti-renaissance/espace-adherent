@@ -5,7 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
 use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Repository\MailjetEmailRepository;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use AppBundle\Repository\PurchasingPowerInvitationRepository;
 use AppBundle\Interactive\PurchasingPowerProcessor;
@@ -33,7 +33,7 @@ class InteractiveControllerTest extends SqliteWebTestCase
     /* @var PurchasingPowerInvitationRepository */
     private $PurchasingPowerInvitationRepository;
 
-    /* @var MailjetEmailRepository */
+    /* @var EmailRepository */
     private $emailRepository;
 
     public function testPurchasingPowerAction()
@@ -97,7 +97,7 @@ class InteractiveControllerTest extends SqliteWebTestCase
 
         $this->PurchasingPowerChoiceRepository = $this->getPurchasingPowerChoiceRepository();
         $this->PurchasingPowerInvitationRepository = $this->getPurchasingPowerInvitationRepository();
-        $this->emailRepository = $this->getMailjetEmailRepository();
+        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()
