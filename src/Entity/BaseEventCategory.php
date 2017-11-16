@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class BaseEventCategory
 {
+    const ENABLED = 'ENABLED';
+    const DISABLED = 'DISABLED';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -28,11 +31,18 @@ abstract class BaseEventCategory
      */
     protected $name = '';
 
-    public function __construct(?string $name = null)
+    /**
+     * @ORM\Column(length=10, options={"default"="ENABLED"})
+     * @Algolia\Attribute
+     */
+    protected $status;
+
+    public function __construct(?string $name = null, ?string $status = self::ENABLED)
     {
         if ($name) {
             $this->name = $name;
         }
+        $this->status = $status;
     }
 
     public function __toString(): string
@@ -53,5 +63,20 @@ abstract class BaseEventCategory
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isVisible(): bool
+    {
+        return self::ENABLED === $this->status;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

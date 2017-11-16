@@ -21,12 +21,15 @@ class LoadEventCategoryData implements FixtureInterface
         'CE010' => 'Marche',
         'CE011' => 'Support party',
     ];
+    const HIDDEN_CATEGORY_NAME = 'Catégorie masquée';
 
     public function load(ObjectManager $manager)
     {
         foreach (self::LEGACY_EVENT_CATEGORIES as $name) {
             $manager->persist(new EventCategory($name));
         }
+
+        $manager->persist(new EventCategory(self::HIDDEN_CATEGORY_NAME, EventCategory::DISABLED));
 
         $manager->flush();
     }
