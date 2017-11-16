@@ -73,3 +73,6 @@ parameters:
     env(AUTH_INFO_URL): 'http://auth.enmarche.dev/api/me'
 
     env(API_URL): 'http://api.enmarche.dev'
+
+    env(AUTH_USER_PROFILE): 'http://auth.enmarche.dev/espace-personnel/edit'
+    env(AUTH_FORGOT_PASSWORD): 'http://auth.enmarche.dev/forgot-password'

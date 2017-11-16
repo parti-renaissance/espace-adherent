@@ -527,6 +527,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->firstName = $data->getFirstName();
         $this->lastName = $data->getLastName();
         $this->emailAddress = $data->getEmailAddress();
+
+        if ($this->postAddress) {
+            $this->postAddress->setPostalCode($data->getZipCode());
+        }
     }
 
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void

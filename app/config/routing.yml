@@ -21,6 +21,18 @@ auth_logout:
     path: /logout
     methods: [GET]
 
+auth_user_profile:
+    path: /auth-user-profile
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: '%auth_user_profile%'
+
+auth_forgot_password:
+    path: /auth-format-password
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: '%auth_forgot_password%'
+
 #
 # Health
 #

@@ -5,7 +5,7 @@
                 Administration
             </a>
         {% else %}
-            <a href="{{ path(has_role_user ? 'app_adherent_profile' : 'app_adherent_login') }}" class="icon--with-text text--medium-small nav__user__name">
+            <a href="{{ path(has_role_user ? 'app_user_profile' : 'app_adherent_login') }}" class="icon--with-text text--medium-small nav__user__name">
                 {{ include('components/user.html.twig') }}
                 {{ has_role_user ? app.user.fullName : 'Espace perso' }}
             </a>
@@ -71,7 +71,7 @@
                             <a href="{{ path('app_adherent_events') }}">Mes événements</a>
                         </li>
                         <li class="text--small">
-                            <a href="{{ path('app_adherent_profile') }}">Mon compte</a>
+                            <a href="{{ path('app_user_profile') }}">Mon compte</a>
                         </li>
                         <li class="text--small">
                             <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
