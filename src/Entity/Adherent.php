@@ -204,6 +204,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $activitiySubscriptions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
+     */
+    private $tags;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -218,7 +223,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         bool $comEmail = false,
-        bool $comMobile = false
+        bool $comMobile = false,
+        ?array $tags = []
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -237,6 +243,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->groupMemberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
+        $this->tags = new ArrayCollection($tags);
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -960,5 +967,27 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getGroupFeedItems(): iterable
     {
         return $this->groupFeedItems;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function setTags(ArrayCollection $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function addTag(AdherentTag $adherentTag): void
+    {
+        if (!$this->tags->contains($adherentTag)) {
+            $this->tags->add($adherentTag);
+        }
+    }
+
+    public function removeTag(AdherentTag $adherentTag): void
+    {
+        $this->tags->remove($adherentTag);
     }
 }
