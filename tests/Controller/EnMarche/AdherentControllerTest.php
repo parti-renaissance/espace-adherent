@@ -54,7 +54,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $crawler = $this->client->click($crawler->selectLink('Mes événements')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes activités')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
