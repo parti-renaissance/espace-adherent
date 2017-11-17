@@ -2,16 +2,27 @@
     <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
         <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
     </ul>
+    {% if (not app.user) %}
+        <a href="{{ path('hwi_oauth_service_redirect', {service: 'auth'}) }}" class="btn">Connexion</a>
+        <a href="{{ auth_register_url }}" class="btn">Inscription</a>
+    {% endif %}
+    {% if app.user %}
+        {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADHERENT') %}
+            <a class="btn" href="{{ path('app_create_citizen_initiative') }}">Créer une initiative</a>
+        {% endif %}
+    {% endif %}
     <div class="nav__mobile">
         <input type="checkbox" id="nav-menu">
         <label for="nav-menu">Menu de navigation</label>
         <div class="nav__mobile--menu">
             <div class="l__row l__row--h-stretch">
-                <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_adherent_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) }}"
-                   class="icon--with-text text--medium-small">
-                    {{ include('components/user.html.twig') }}
-                    {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
-                </a>
+                {% if app.user %}
+                    <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_adherent_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) }}"
+                       class="icon--with-text text--medium-small">
+                        {{ include('components/user.html.twig') }}
+                        {{ is_granted('ROLE_ADHERENT') ? app.user.fullName : 'Espace perso' }}
+                    </a>
+                {% endif %}
             </div>
             <hr>
             {% if is_granted('ROLE_ADHERENT') %}
@@ -27,10 +38,10 @@
                     <li class="text--small text--gray">
                         {% if not is_granted('ROLE_ADHERENT') %}
                             Non-adhérent(e)
-                        {% elseif app.user.isHost %}
-                            {% if app.user.isFemale %}Animatrice{% else %}Animateur{% endif %}
                         {% elseif is_granted('ROLE_REFERENT') %}
                             {% if app.user.isFemale %}Référente{% else %}Référent{% endif %}
+                        {% elseif app.user.isHost %}
+                            {% if app.user.isFemale %}Animatrice{% else %}Animateur{% endif %}
                         {% elseif is_granted('ROLE_ADHERENT') %}
                             {% if app.user.isFemale %}Adhérente{% else %}Adhérent{% endif %}
                         {% endif %}
@@ -52,18 +63,14 @@
                             <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
                         </li>
                     {% endif %}
-                    {% if not is_granted('ROLE_ADHERENT') %}
-                        <li class="nav__user__menu__separator"></li>
-                        <li>
-                            <a href="{{ path('app_adherent_create_committee') }}">Devenir adhérent(e)</a>
-                        </li>
-                    {% endif %}
                     <li class="nav__user__menu__separator"></li>
                     <li>
-                        <a class="text--gray" href="{{ path('app_create_citizen_initiative') }}">Notifications</a>
+                        {# @TODO change route name when PR will be merge #}
+                        <a class="text--gray" href="{{ path('homepage') }}">Notifications</a>
                     </li>
                     <li>
-                        <a class="text--gray" href="{{ path('app_create_citizen_initiative') }}">Paramètres</a>
+                        {# @TODO change route name when PR will be merge #}
+                        <a class="text--gray" href="{{ path('homepage') }}">Paramètres</a>
                     </li>
                     <li>
                         <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
@@ -96,14 +103,10 @@
                 </li>
                 {% if app.user and not is_granted('ROLE_ADHERENT') %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('homepage') }}">Devenir adhérent(e)</a>
+                        <a class="text--medium-small" href="{{ path('app_register_fully') }}">Devenir adhérent(e)</a>
                     </li>
                 {% endif %}
-                {% if app.user and (is_granted('ROLE_ADHERENT') or app.user.isHost or app.user.getMemberships|length) %}
-                    <li>
-                        <a class="text--medium-small" href="{{ path('homepage') }}">Mon comité</a>
-                    </li>
-                {% endif %}
+                {{ adherent_committees }}
                 {% if is_granted('ROLE_REFERENT') %}
                     <li>
                         <a class="text--medium-small" href="{{ path('app_referent_users') }}">Espace référent</a>
@@ -131,7 +134,7 @@
                         </a>
                     </li>
                 {% endif %}
-                {% if app.user and (is_granted('ROLE_ADHERENT') or app.user.isHost) %}
+                {% if app.user and (is_granted('ROLE_ADHERENT') or is_granted('ROLE_HOST')) %}
                     <li>
                         <a class="text--medium-small" href="{{ path('app_documents_index') }}">Mon kit</a>
                     </li>
@@ -141,6 +144,12 @@
                         <a href="{{ path('donation_index') }}">Donner</a>
                     </li>
                 {% endif %}
+
+                <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                    <a href="javascript:void(0)" class="je-cherche">
+                        {{ include('components/search.html.twig') }}
+                    </a>
+                </li>
             </ul>
             <hr>
             <ul class="list__links list__links--row b__nudge--bottom-small">

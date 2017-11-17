@@ -383,7 +383,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 / 20 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $this->client->click($crawler->selectLink('Mes événements')->link());
+        $this->client->click($crawler->selectLink('Mes activités')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Nettoyage de la ville', $this->client->getResponse()->getContent());

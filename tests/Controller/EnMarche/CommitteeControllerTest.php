@@ -67,7 +67,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         // Login as host
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -256,7 +256,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The follower should not see the "register link"');
@@ -272,7 +272,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     public function testAuthenticatedCommitteeHostCanShowCommitteePage()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');

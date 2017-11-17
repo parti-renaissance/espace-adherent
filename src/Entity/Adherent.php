@@ -290,6 +290,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_ADMINISTRATOR';
         }
 
+        if ($this->isHost()) {
+            $roles[] = 'ROLE_HOST';
+        }
+
         return $roles;
     }
 

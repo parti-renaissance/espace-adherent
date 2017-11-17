@@ -42,7 +42,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -54,7 +54,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeHostCanEditCommitteeInformation()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -121,7 +121,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -133,7 +133,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testCommitteeHostCanPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -258,7 +258,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
 
         $committeeUrl = $this->client->getRequest()->getPathInfo();
 
@@ -319,7 +319,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     {
         // Authenticate as a committee follower
         $crawler = $this->authenticateAsAdherent($this->client, $username);
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->client->click($crawler->selectLink('Mon comité')->link());
         $this->client->request(Request::METHOD_GET, sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -340,7 +340,12 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     {
         // Authenticate as the committee supervisor
         $crawler = $this->authenticateAsAdherent($this->client, $username);
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $adherent = $this->getAdherentRepository()->findByEmail($username);
+        if (count($adherent->getMemberships()) > 1) {
+            $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        } else {
+            $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
+        }
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
@@ -380,7 +385,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     {
         // Authenticate as the committee supervisor
         $crawler = $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mon comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
 
         $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
