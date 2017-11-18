@@ -127,12 +127,12 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             ],
             [
                 ['g' => 'male'],
-                ['referent@en-marche-dev.fr'],
+                ['carl999@example.fr', 'referent@en-marche-dev.fr'],
             ],
             // Age
             [
                 ['amin' => 55],
-                ['referent@en-marche-dev.fr'],
+                ['carl999@example.fr', 'referent@en-marche-dev.fr'],
             ],
             [
                 ['amax' => 54],

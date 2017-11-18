@@ -81,6 +81,9 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'registered_at' => '2016-11-16 20:45:33',
         ]);
         $adherent2->disableCommitteesNotifications();
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('adherent'));
+        $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $adherentFactory->createFromArray([

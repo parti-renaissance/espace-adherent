@@ -66,24 +66,27 @@ class BoardMemberControllerTest extends SqliteWebTestCase
 
         $resultRow = $crawler->filter('.spaces__results__row');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(4, $resultRow->count());
-        $this->assertSame('Laura Deloche', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('44, F, Rouen', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
-        $this->assertSame('Martine Lindt', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('17, F, Berlin', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
-        $this->assertSame('Élodie Dutemps', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('15, F, Singapour', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
-        $this->assertSame('Tous les résultats (4)', $crawler->filter('h2')->first()->text());
-        $this->assertSame('Referent Referent', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('55, M, Melun', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Tous les résultats (5)', $crawler->filter('h2')->first()->text());
+        $this->assertSame(5, $resultRow->count());
+        $this->assertSame('Carl Mirabeau', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('67, M, Mouxy', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('44, F, Rouen', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Martine Lindt', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('17, F, Berlin', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Élodie Dutemps', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('15, F, Singapour', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Referent Referent', $resultRow->eq(4)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertSame('55, M, Melun', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
 
         // Gender
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
-        $this->assertCount(1, $results);
-        $this->assertContains('Referent Referent', $results->first()->text());
+        $this->assertCount(2, $results);
+        $this->assertContains('Carl Mirabeau', $results->first()->text());
+        $this->assertContains('Referent Referent', $results->eq(1)->text());
 
         // Age
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -180,7 +183,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à cette personne')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 2 personnes')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
@@ -192,6 +195,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCountMails(1, BoardMemberMessage::class, 'carl999@example.fr');
         $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
         $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
@@ -229,7 +233,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->filter('.spaces__results__row')->first()->selectLink('Envoyer un message')->link());
+        $this->client->click($this->client->getCrawler()->filter('.spaces__results__row')->eq(1)->selectLink('Envoyer un message')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertContains('Un membre du Conseil', $this->client->getResponse()->getContent());
@@ -258,7 +262,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/recherche');
         $idBoardMemberToAdd = $crawler
             ->filter('.spaces__results__row')
-            ->eq(3)
+            ->eq(4)
             ->filter('.btn-add-member-list')
             ->attr('data-memberid');
 

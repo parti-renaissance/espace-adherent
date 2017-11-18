@@ -629,9 +629,12 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
-    public function testReferentCannotTerminateMembership()
+    /**
+     * @dataProvider dataProviderCannotTerminateMembership
+     */
+    public function testCannotTerminateMembership(string $email, string $password)
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, $email, $password);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
@@ -643,18 +646,11 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
     }
 
-    public function testAdherentHostCannotTerminateMembership()
+    public function dataProviderCannotTerminateMembership()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('.settings_unsubscribe'));
-
-        $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
-
-        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        yield 'Host' => ['gisele-berthoux@caramail.com', 'ILoveYouManu'];
+        yield 'Referent' => ['referent@en-marche-dev.fr', 'referent'];
+        yield 'BoardMember' => ['carl999@example.fr', 'secret!12345'];
     }
 
     public function testAdherentTerminatesMembership()
