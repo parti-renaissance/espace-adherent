@@ -10,23 +10,21 @@ use PHPUnit\Framework\TestCase;
 
 class AdherentAccountConfirmationMessageTest extends TestCase
 {
-    public function testCreateAdherentAccountConfirmationMessage()
+    public function testCreateFromAdherent()
     {
-        $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
+        $adherent = $this->createMock(Adherent::class);
         $adherent->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');
         $adherent->expects($this->once())->method('getFullName')->willReturn('Jérôme Pichoud');
         $adherent->expects($this->once())->method('getFirstName')->willReturn('Jérôme');
-        $adherent->expects($this->once())->method('getLastName')->willReturn('Pichoud');
 
-        $message = AdherentAccountConfirmationMessage::createFromAdherent($adherent, 8, 15);
+        $message = AdherentAccountConfirmationMessage::createFromAdherent($adherent, 8);
 
         $this->assertInstanceOf(AdherentAccountConfirmationMessage::class, $message);
         $this->assertInstanceOf(Message::class, $message);
-        $this->assertCount(2, $message->getVars());
+        $this->assertCount(1, $message->getVars());
         $this->assertSame(
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
             ],
             $message->getVars()
         );
@@ -39,9 +37,7 @@ class AdherentAccountConfirmationMessageTest extends TestCase
         $this->assertSame(
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
                 'target_firstname' => 'Jérôme',
-                'target_lastname' => 'Pichoud',
             ],
             $recipient->getVars()
         );

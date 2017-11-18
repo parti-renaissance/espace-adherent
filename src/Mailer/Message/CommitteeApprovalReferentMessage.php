@@ -18,13 +18,13 @@ final class CommitteeApprovalReferentMessage extends Message
             Uuid::uuid4(),
             $referent->getEmailAddress(),
             $referent->getFullName(),
-            static::getTemplateVars(
+            self::getTemplateVars(
                 $committee->getName(),
                 $committee->getCityName(),
                 $animator->getFirstName(),
                 $contactLink
             ),
-            static::getRecipientVars($referent->getFirstName())
+            self::getRecipientVars($referent->getFirstName())
         );
     }
 

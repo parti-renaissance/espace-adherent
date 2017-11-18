@@ -13,21 +13,44 @@ final class LegislativeCampaignContactMessage extends Message
             Uuid::uuid4(),
             $recipient,
             null,
-            [
-                'email' => static::escape($contact->getEmailAddress()),
-                'first_name' => static::escape($contact->getFirstName()),
-                'last_name' => static::escape($contact->getLastName()),
-                'department_number' => static::escape($contact->getDepartmentNumber()),
-                'electoral_district_number' => static::escape($contact->getElectoralDistrictNumber()),
-                'role' => static::escape($contact->getRole()),
-                'subject' => static::escape($contact->getSubject()),
-                'message' => nl2br(static::escape($contact->getMessage())),
-            ]
+            self::getTemplateVars(
+                $contact->getEmailAddress(),
+                $contact->getFirstName(),
+                $contact->getLastName(),
+                $contact->getDepartmentNumber(),
+                $contact->getElectoralDistrictNumber(),
+                $contact->getRole(),
+                $contact->getSubject(),
+                $contact->getMessage()
+            )
         );
 
         $message->setSenderName($contact->getFullName());
         $message->addCC($contact->getEmailAddress());
 
         return $message;
+    }
+
+    private static function getTemplateVars(
+        ?string $emailAddress,
+        ?string $firstName,
+        ?string $lastName,
+        ?string $departmentNumber,
+        ?string $electoralDistrictNumber,
+        ?string $role,
+        ?string $subject,
+        ?string $message
+    ): array
+    {
+        return [
+            'email' => static::escape($emailAddress),
+            'first_name' => static::escape($firstName),
+            'last_name' => static::escape($lastName),
+            'department_number' => static::escape($departmentNumber),
+            'electoral_district_number' => static::escape($electoralDistrictNumber),
+            'role' => static::escape($role),
+            'subject' => static::escape($subject),
+            'message' => nl2br(static::escape($message)),
+        ];
     }
 }

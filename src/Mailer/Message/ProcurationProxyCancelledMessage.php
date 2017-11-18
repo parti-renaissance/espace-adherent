@@ -11,15 +11,16 @@ final class ProcurationProxyCancelledMessage extends Message
     public static function create(ProcurationRequest $request, ?Adherent $referent): self
     {
         $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            [
-                'target_firstname' => self::escape($request->getFirstNames()),
-                'voter_first_name' => $proxy->getFirstNames(),
-                'voter_last_name' => $proxy->getLastName(),
-            ]
+            self::getTemplateVars(
+                $request->getFirstNames(),
+                $proxy->getFirstNames(),
+                $proxy->getLastName()
+            )
         );
 
         $message->setSenderName('Procuration En Marche !');
@@ -35,5 +36,17 @@ final class ProcurationProxyCancelledMessage extends Message
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(
+        string $targetFirstName,
+        string $voterFirstName,
+        string $voterLastName
+    ): array {
+        return [
+            'target_firstname' => self::escape($targetFirstName),
+            'voter_first_name' => $voterFirstName,
+            'voter_last_name' => $voterLastName,
+        ];
     }
 }

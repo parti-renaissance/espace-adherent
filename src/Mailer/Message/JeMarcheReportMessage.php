@@ -13,17 +13,26 @@ final class JeMarcheReportMessage extends Message
             Uuid::uuid4(),
             $jeMarcheReport->getEmailAddress(),
             null,
-            static::getTemplateVars($jeMarcheReport)
+            self::getTemplateVars(
+                $jeMarcheReport->countConvinced(),
+                $jeMarcheReport->countAlmostConvinced(),
+                $jeMarcheReport->getConvincedList(', '),
+                $jeMarcheReport->getAlmostConvincedList(', ')
+            )
         );
     }
 
-    private static function getTemplateVars(JeMarcheReport $jeMarcheReport): array
-    {
+    private static function getTemplateVars(
+        int $countConvinced,
+        int $countAlmostConvinced,
+        string $convicedList,
+        string $almostConvincedList
+    ): array {
         return [
-            'nombre_emails_convaincus' => $jeMarcheReport->countConvinced(),
-            'nombre_emails_indecis' => $jeMarcheReport->countAlmostConvinced(),
-            'emails_collected_convaincus' => $jeMarcheReport->getConvincedList(', '),
-            'emails_collected_indecis' => $jeMarcheReport->getAlmostConvincedList(', '),
+            'nombre_emails_convaincus' => $countConvinced,
+            'nombre_emails_indecis' => $countAlmostConvinced,
+            'emails_collected_convaincus' => $convicedList,
+            'emails_collected_indecis' => $almostConvincedList,
         ];
     }
 }

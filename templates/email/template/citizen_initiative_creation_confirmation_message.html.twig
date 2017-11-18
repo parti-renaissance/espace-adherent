@@ -7,27 +7,26 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:prenom}},
-                    </p>
-                    <p>
-                        Vous venez de créer l'initiative citoyenne
-                        <strong>{{var:IC_name}}</strong>. Elle sera mise en ligne dès sa validation.
-                    </p>
-                    <p>
-                        Merci pour votre engagement !
-                    </p>
-                    <p>
-                        À très bientôt,
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            Vous venez de créer l'initiative citoyenne
+                            <strong>{{var:IC_name:""}}</strong>. Elle sera mise en ligne dès sa validation.
+                        </p>
+                        <p>
+                            Merci pour votre engagement !
+                        </p>
+                        <p>
+                            À très bientôt,
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

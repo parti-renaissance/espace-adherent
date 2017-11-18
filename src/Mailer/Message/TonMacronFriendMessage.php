@@ -13,13 +13,21 @@ final class TonMacronFriendMessage extends Message
             Uuid::uuid4(),
             $invitation->getFriendEmailAddress(),
             null,
-            ['message' => $invitation->getMailBody()]
+            self::getTemplateVars($invitation->getMailBody()),
+            [],
+            $invitation->getAuthorEmailAddress()
         );
 
-        $message->setReplyTo($invitation->getAuthorEmailAddress());
         $message->setSenderName($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName());
         $message->addCC($invitation->getAuthorEmailAddress());
 
         return $message;
+    }
+
+    private static function getTemplateVars(string $message): array
+    {
+        return [
+            'message' => $message,
+        ];
     }
 }

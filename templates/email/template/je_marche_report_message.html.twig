@@ -7,41 +7,41 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Chère volontaire, cher volontaire,
-                    </p>
-                    <p>
-                        Merci beaucoup pour votre compte-rendu d'action ! Les petits ruisseaux font les grandes rivières, chacun de vos échanges aura un impact dans la décision des personnes rencontrées. Toutes les informations que vous nous envoyez sont prises en compte.
-                    </p>
-                    <p>
-                        Voici un récapitulatif des informations que vous avez renseignées. N'hésitez pas à le transférer au responsable mobilisation de votre département pour information.
-                    </p>
-                    <p>
-                        Nombre d'emails de convaincus récoltés :
-                        {{var:nombre_emails_convaincus}}
-                    </p>
-                    <p>
-                        Nombre d'emails d'indécis récoltés :
-                        {{var:nombre_emails_indecis}}
-                    </p>
-                    <p>
-                        Liste des emails de convaincus :
-                        {{var:emails_collected_convaincus}}
-                    </p>
-                    <p>
-                        Liste des emails d'indécis :
-                        {{var:emails_collected_indecis}}
-                    </p>
-                    <p>
-                        Merci beaucoup pour votre action et à très bientôt,
-                    </p>
-                    <p>
-                        L’équipe d’En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Chère volontaire, cher volontaire,
+                        </p>
+                        <p>
+                            Merci beaucoup pour votre compte-rendu d'action ! Les petits ruisseaux font les grandes rivières, chacun de vos échanges aura un impact dans la décision des personnes rencontrées. Toutes les informations que vous nous envoyez sont prises en compte.
+                        </p>
+                        <p>
+                            Voici un récapitulatif des informations que vous avez renseignées. N'hésitez pas à le transférer au responsable mobilisation de votre département pour information.
+                        </p>
+                        <p>
+                            Nombre d'emails de convaincus récoltés :
+                            {{var:nombre_emails_convaincus:""}}
+                        </p>
+                        <p>
+                            Nombre d'emails d'indécis récoltés :
+                            {{var:nombre_emails_indecis:""}}
+                        </p>
+                        <p>
+                            Liste des emails de convaincus :
+                            {{var:emails_collected_convaincus:""}}
+                        </p>
+                        <p>
+                            Liste des emails d'indécis :
+                            {{var:emails_collected_indecis:""}}
+                        </p>
+                        <p>
+                            Merci beaucoup pour votre action et à très bientôt,
+                        </p>
+                        <p>
+                            L’équipe d’En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

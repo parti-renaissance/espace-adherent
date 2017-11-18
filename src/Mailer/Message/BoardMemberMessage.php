@@ -3,6 +3,7 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\BoardMember\BoardMemberMessage as BoardMemberMessageModel;
+use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
 final class BoardMemberMessage extends Message
@@ -19,18 +20,18 @@ final class BoardMemberMessage extends Message
             throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
+        $recipient = array_shift($recipients);
+        if (!$recipient instanceof Adherent) {
+            throw new \RuntimeException('First recipient must be an Adherent instance.');
+        }
+
         $boardMember = $model->getFrom();
-        $first = array_shift($recipients);
 
         $message = new self(
             Uuid::uuid4(),
-            $first->getEmailAddress(),
-            $first->getFullName(),
-            [
-                'member_firstname' => self::escape($boardMember->getFirstName()),
-                'member_lastname' => self::escape($boardMember->getLastName()),
-                'target_message' => $model->getContent(),
-            ],
+            $recipient->getEmailAddress(),
+            $recipient->getFullName(),
+            self::getTemplateVars($model->getContent()),
             [],
             $boardMember->getEmailAddress()
         );
@@ -41,6 +42,10 @@ final class BoardMemberMessage extends Message
         $message->addRecipient('jemarche@en-marche.fr', 'Je Marche');
 
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException('This message builder requires a collection of Adherent instances');
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName()
@@ -48,5 +53,12 @@ final class BoardMemberMessage extends Message
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(string $message): array
+    {
+        return [
+            'target_message' => $message,
+        ];
     }
 }

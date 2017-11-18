@@ -12,7 +12,11 @@ final class InvitationMessage extends Message
             $invite->getUuid(),
             $invite->getEmail(),
             null,
-            static::getTemplateVars($invite->getFirstName(), $invite->getLastName(), $invite->getMessage())
+            self::getTemplateVars(
+                $invite->getFirstName(),
+                $invite->getLastName(),
+                $invite->getMessage()
+            )
         );
     }
 

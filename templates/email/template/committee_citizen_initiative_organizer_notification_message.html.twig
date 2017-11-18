@@ -7,43 +7,38 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:prenom}},
-                    </p>
-                    <p>
-                        {{var:animator_firstname}}
-                        vient de partager votre initiative citoyenne
-                        <b>{{var:IC_name}}</b>
-                        auprès des membres de son comité
-                        {{var:committee_name}}.
-                    </p>
-                    <p>
-                        N'hésitez pas à contacter
-                        {{var:animator_firstname}}
-                        pour le remercier.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:animator_contact_link}}" target="_blank" class="btn">Le contacter</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            {{var:animator_firstname:""}} vient de partager votre initiative citoyenne
+                            <b>{{var:IC_name:""}}</b>
+                            auprès des membres de son comité {{var:committee_name:""}}.
+                        </p>
+                        <p>
+                            N'hésitez pas à contacter {{var:animator_firstname:""}} pour le remercier.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:animator_contact_link:""}}" target="_blank" class="btn">Le contacter</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
 
-                    <p>
-                        A très bientôt !
+                        <p>
+                            A très bientôt !
 
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

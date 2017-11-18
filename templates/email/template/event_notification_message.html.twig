@@ -9,53 +9,47 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:target_firstname:""}},
-                    </p>
-                    <p>
-                        {{var:animator_firstname:""}}
-                        vient de créer un événement dans votre comité :
-                        <strong>{{var:event_name:""}}</strong>.
-                    </p>
-                    <p>
-                        Celui-ci se déroulera le
-                        {{var:event_date:""}}
-                        à
-                        {{var:event_hour:""}},
-                        {{var:event_address:""}}.
-                    </p>
-                    <p>
-                        <strong>À propos de cette événement :</strong>
-                        <br/>
-                        {{var:event_description}}
-                    </p>
-                    <p>
-                        Indiquez dès maintenant à
-                        {{var:animator_firstname:""}}
-                        si vous participez à cet événement, en cliquant ci-dessous.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:event_slug:" "}}" target="_blank" class="btn">S'inscrire à l'événement</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:target_firstname:""}},
+                        </p>
+                        <p>
+                            {{var:animator_firstname:""}} vient de créer un événement dans votre comité :
+                            <strong>{{var:event_name:""}}</strong>.
+                        </p>
+                        <p>
+                            Celui-ci se déroulera le {{var:event_date:""}}
+                            à {{var:event_hour:""}}, {{var:event_address:""}}.
+                        </p>
+                        <p>
+                            <strong>À propos de cette événement :</strong>
+                            <br/>
+                            {{var:event_description:""}}
+                        </p>
+                        <p>
+                            Indiquez dès maintenant à {{var:animator_firstname:""}}
+                            si vous participez à cet événement, en cliquant ci-dessous.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:event_slug:""}}" target="_blank" class="btn">S'inscrire à l'événement</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
 
-                        Merci pour votre implication et à très bientôt !
+                            Merci pour votre implication et à très bientôt !
 
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

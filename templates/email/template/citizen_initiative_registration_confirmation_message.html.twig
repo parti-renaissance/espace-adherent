@@ -10,27 +10,28 @@
         {% block content %}
             {% verbatim %}
                 <tr>
-                  <td align="left">
-                      <p>
-                          Bonjour {{var:prenom}},
-                      </p>
-                      <p>
-                        Vous êtes bien inscrit(e) à l'initiative citoyenne <strong>{{var:IC_name:""}}</strong> organisée par {{var:IC_organizer_firstname:""}} {{var:IC_organizer_lastname:""}} .
-                      </p>
-                      <p>
-                          Merci pour votre engagement !
-                      </p>
-                      <p>
-                          À très bientôt,
-                      </p>
-                          L'équipe d'En Marche !
-                      </p>
-                  </td>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            Vous êtes bien inscrit(e) à l'initiative citoyenne <strong>{{var:IC_name:""}}</strong>
+                            organisée par {{var:IC_organizer_firstname:""}} {{var:IC_organizer_lastname:""}}.
+                        </p>
+                        <p>
+                            Merci pour votre engagement !
+                        </p>
+                        <p>
+                            À très bientôt,
+                        </p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
                 </tr>
                 <tr>
-                  <td align="center">
-                      <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u={{var:IC_link:" https%3A//en-marche.fr/evenements "}}" target="_blank">Partager sur Facebook !</a>
-                  </td>
+                    <td align="center">
+                        <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u={{var:IC_link:"https%3A//en-marche.fr/evenements"}}" target="_blank">Partager sur Facebook !</a>
+                    </td>
                 </tr>
             {% endverbatim %}
         {% endblock %}

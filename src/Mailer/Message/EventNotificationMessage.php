@@ -15,8 +15,6 @@ class EventNotificationMessage extends Message
      * @param Adherent   $host
      * @param Event      $event
      * @param string     $eventLink
-     * @param string     $eventOkLink
-     * @param \Closure   $recipientVarsGenerator
      *
      * @return EventNotificationMessage
      */
@@ -24,9 +22,7 @@ class EventNotificationMessage extends Message
         array $recipients,
         Adherent $host,
         Event $event,
-        string $eventLink,
-        string $eventOkLink,
-        \Closure $recipientVarsGenerator
+        string $eventLink
     ): self {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipients is required.');
@@ -41,7 +37,7 @@ class EventNotificationMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars(
+            self::getTemplateVars(
                 $host->getFirstName(),
                 $event->getName(),
                 $event->getDescription(),
@@ -52,10 +48,9 @@ class EventNotificationMessage extends Message
                     static::formatDate($event->getBeginAt(), 'mm')
                 ),
                 $event->getInlineFormattedAddress(),
-                $eventLink,
-                $eventOkLink
+                $eventLink
             ),
-            $recipientVarsGenerator($recipient),
+            self::getRecipientVars($recipient->getFirstName()),
             $host->getEmailAddress()
         );
 
@@ -64,7 +59,7 @@ class EventNotificationMessage extends Message
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName(),
-                $recipientVarsGenerator($recipient)
+                self::getRecipientVars($recipient->getFirstName())
             );
         }
 
@@ -78,11 +73,9 @@ class EventNotificationMessage extends Message
         string $eventDate,
         string $eventHour,
         string $eventAddress,
-        string $eventLink,
-        string $eventOkLink
+        string $eventLink
     ): array {
         return [
-            // Global common variables
             'animator_firstname' => self::escape($hostFirstName),
             'event_name' => self::escape($eventName),
             'event_description' => self::escape($eventDescription),
@@ -90,16 +83,10 @@ class EventNotificationMessage extends Message
             'event_hour' => $eventHour,
             'event_address' => self::escape($eventAddress),
             'event_slug' => $eventLink,
-            'event-slug' => $eventLink,
-            'event_ok_link' => $eventOkLink,
-            'event_ko_link' => $eventLink,
-
-            // Recipient specific template variables
-            'target_firstname' => '',
         ];
     }
 
-    public static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(string $firstName): array
     {
         return [
             'target_firstname' => self::escape($firstName),

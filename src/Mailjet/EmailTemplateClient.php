@@ -4,7 +4,8 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailer\AbstractEmailClient;
 use AppBundle\Mailer\EmailTemplateClientInterface;
-use AppBundle\Mailjet\Exception\MailjetException;
+use AppBundle\Mailer\Template;
+use AppBundle\Mailer\Exception\MailjetException;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
@@ -48,7 +49,7 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
         ]);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new MailjetException('Unable to retrieve the template list.');
+            throw new MailerException('Unable to retrieve the template list.');
         }
 
         return array_reduce($this->getBody($response)['Data'], function (array $templates, array $data): array {
@@ -67,12 +68,12 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
         return array_key_exists($template, $this->remoteTemplates);
     }
 
-    private function create(string $template): array
+    private function create(Template $template): array
     {
         $requestPayload = [
             'Author' => 'En Marche!',
             'Copyright' => 'En Marche ©',
-            'Name' => $template,
+            'Name' => $template->getName(),
             'EditMode' => static::MAILJET_TEMPLATE_EDITMODE,
             'OwnerType' => static::MAILJET_TEMPLATE_OWNERTYPE,
             'Purposes' => static::MAILJET_TEMPLATE_PURPOSES,
@@ -83,19 +84,22 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
         ]);
 
         if (Response::HTTP_CREATED !== $response->getStatusCode()) {
-            throw new MailjetException('Unable to create remote email template.');
+            throw new MailerException('Unable to create remote email template.');
         }
 
         return $this->getBody($response);
     }
 
-    private function update(string $template): array
+    private function update(Template $template): array
     {
-        $templateWrapper = $this->templating->load(sprintf('email/template/%s.html.twig', $template));
+        $templateWrapper = $this->templating->load(sprintf(
+            'email/template/%s_message.html.twig',
+            $template->getName())
+        );
 
         $requestPayload = [
             'Headers' => [
-                'From' => $template->getSender(),
+                'From' => $template->getFrom(),
                 'Subject' => $templateWrapper->renderBlock('subject'),
             ],
             'Html-part' => $templateWrapper->renderBlock('body_html'),
@@ -107,7 +111,7 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
 
         $uri = sprintf(
             'REST/template/%s/detailcontent',
-            sprintf('%s|%s', static::MAILJET_TEMPLATE_OWNERTYPE, $template)
+            sprintf('%s|%s', static::MAILJET_TEMPLATE_OWNERTYPE, $template->getName())
         );
 
         $response = $this->httpClient->request('POST', $uri, [
@@ -116,7 +120,7 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
         ]);
 
         if (Response::HTTP_CREATED !== $response->getStatusCode()) {
-            throw new MailjetException('Unable to create remote email template.');
+            throw new MailerException('Unable to create remote email template.');
         }
 
         return $this->getBody($response);

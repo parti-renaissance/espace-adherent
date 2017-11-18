@@ -2,16 +2,15 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\EventNotificationMessage;
+use AppBundle\Mailer\Message\Message;
 use AppBundle\Mailer\Message\MessageRecipient;
 
 class EventNotificationMessageTest extends AbstractEventMessageTest
 {
-    const SHOW_EVENT_URL = 'https://test.enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
-    const ATTEND_EVENT_URL = 'https://test.enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
+    private const SHOW_EVENT_URL = 'https://test.enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
 
-    public function testCreateEventNotificationMessage()
+    public function testCreate()
     {
         $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
         $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');
@@ -25,16 +24,13 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
             $recipients,
             $recipients[0],
             $event,
-            self::SHOW_EVENT_URL,
-            self::ATTEND_EVENT_URL,
-            function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
-            }
+            self::SHOW_EVENT_URL
         );
 
         $this->assertInstanceOf(EventNotificationMessage::class, $message);
-        $this->assertCount(4, $message->getRecipients());
-        $this->assertCount(11, $message->getVars());
+        $this->assertInstanceOf(Message::class, $message);
+        $this->assertCount(7, $message->getVars());
+        $this->assertSame('em@example.com', $message->getReplyTo());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
@@ -44,13 +40,10 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
-                'event-slug' => self::SHOW_EVENT_URL,
-                'event_ok_link' => self::ATTEND_EVENT_URL,
-                'event_ko_link' => self::SHOW_EVENT_URL,
-                'target_firstname' => '',
             ],
             $message->getVars()
         );
+        $this->assertCount(4, $message->getRecipients());
 
         $recipient = $message->getRecipient(0);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
@@ -65,9 +58,6 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
-                'event-slug' => self::SHOW_EVENT_URL,
-                'event_ok_link' => self::ATTEND_EVENT_URL,
-                'event_ko_link' => self::SHOW_EVENT_URL,
                 'target_firstname' => 'Émmanuel',
             ],
             $recipient->getVars()
@@ -86,9 +76,6 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event_hour' => '15h30',
                 'event_address' => '15 allées Paul Bocuse, 69006 Lyon 6e',
                 'event_slug' => self::SHOW_EVENT_URL,
-                'event-slug' => self::SHOW_EVENT_URL,
-                'event_ok_link' => self::ATTEND_EVENT_URL,
-                'event_ko_link' => self::SHOW_EVENT_URL,
                 'target_firstname' => 'Éric',
             ],
             $recipient->getVars()

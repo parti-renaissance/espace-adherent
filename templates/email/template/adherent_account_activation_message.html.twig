@@ -7,27 +7,26 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-              <td align="left">
-                  <p>
-                      Bonjour {{var:target_firstname:""}},
-                  </p>
-                  <p>
-                      Merci d'avoir rejoint le mouvement !
-                  </p>
-                  <p>
-                      Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
-                  </p>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td align="center">
-                  <a href="{{var:confirmation_link}}" class="btn" target="_blank">
-                    Confirmer mon adresse e-mail
-                  </a>
-              </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:target_firstname:""}},
+                        </p>
+                        <p>
+                            Merci d'avoir rejoint le mouvement !
+                        </p>
+                        <p>
+                            Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                      <a href="{{var:confirmation_link:""}}" class="btn" target="_blank">
+                        Confirmer mon adresse e-mail
+                      </a>
+                  </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

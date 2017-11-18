@@ -12,21 +12,16 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour
-                        {{var:prenom}},
+                        Bonjour {{var:prenom:""}},
                     </p>
                     <p>
                         Vous êtes bien inscrit(e) à l'événement
-                        <strong>{{var:event_name}}</strong>
-                        organisé par
-                        {{var:event_organiser}}.
+                        <strong>{{var:event_name:""}}</strong>
+                        organisé par {{var:event_organizer:""}}.
                     </p>
                     <p>
-                        Celui-ci se déroulera le
-                        {{var:event_date:""}}
-                        à
-                        {{var:event_hour:""}},
-                        {{var:event_address:""}}.
+                        Celui-ci se déroulera le {{var:event_date:""}}
+                        à {{var:event_hour:""}}, {{var:event_address:""}}.
                     </p>
                     <p>
                         Merci pour votre engagement !
@@ -41,7 +36,7 @@
             </tr>
             <tr>
                 <td align="center">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{var:event_link:" https%3A//en-marche.fr/evenements "}}" target="_blank" class="btn">Partager sur Facebook !</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{var:event_link:"https%3A//en-marche.fr/evenements"}}" target="_blank" class="btn">Partager sur Facebook !</a>
                 </td>
             </tr>
             {% endverbatim %}

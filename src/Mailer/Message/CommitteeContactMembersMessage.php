@@ -17,19 +17,17 @@ final class CommitteeContactMembersMessage extends Message
      */
     public static function create(array $recipients, Adherent $host, string $content): self
     {
-        $first = array_shift($recipients);
+        $recipient = array_shift($recipients);
+        if (!$recipient instanceof Adherent) {
+            throw new \RuntimeException('First recipient must be an Adherent instance.');
+        }
 
         $message = new self(
             Uuid::uuid4(),
-            $first->getEmailAddress(),
-            $first->getFullName(),
-            [
-                'animator_firstname' => self::escape($host->getFirstName()),
-                'target_message' => $content,
-            ],
-            [
-                'target_firstname' => self::escape($first->getFirstName()),
-            ],
+            $recipient->getEmailAddress(),
+            $recipient->getFullName(),
+            self::getTemplateVars($content),
+            [],
             $host->getEmailAddress()
         );
 
@@ -46,13 +44,17 @@ final class CommitteeContactMembersMessage extends Message
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
-                [
-                    'target_firstname' => self::escape($recipient->getFirstName()),
-                ]
+                $recipient->getFullName()
             );
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(string $targetMessage): array
+    {
+        return [
+            'target_message' => $targetMessage,
+        ];
     }
 }

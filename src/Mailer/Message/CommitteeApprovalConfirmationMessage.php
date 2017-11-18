@@ -7,23 +7,21 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeApprovalConfirmationMessage extends Message
 {
-    public static function create(Adherent $host, string $committeeCityName, string $committeeUrl): self
+    public static function create(Adherent $host, string $committeeCityName): self
     {
         return new self(
             Uuid::uuid4(),
             $host->getEmailAddress(),
             $host->getFullName(),
-            static::getTemplateVars($committeeCityName, $committeeUrl),
-            static::getRecipientVars($host->getFirstName())
+            self::getTemplateVars($committeeCityName),
+            self::getRecipientVars($host->getFirstName())
         );
     }
 
-    private static function getTemplateVars(string $committeeCityName, string $committeeUrl): array
+    private static function getTemplateVars(string $committeeCityName): array
     {
         return [
-            'animator_firstname' => '',
             'committee_city' => $committeeCityName,
-            'committee_url' => $committeeUrl,
         ];
     }
 

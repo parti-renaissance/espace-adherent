@@ -7,46 +7,41 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:prenom}},
-                    </p>
-                    <p>
-                        {{var:animator_firstname}}
-                        vient de partager une initiative citoyenne dans votre comité :
-                        <strong>{{var:IC_name}}</strong>.
-                    </p>
-                    <p>
-                        Celle-ci se déroulera le
-                        {{var:IC_date}}
-                        à
-                        {{var:IC_hour}},
-                        {{var:IC_address}}.
-                    </p>
-                    <p>
-                        <strong>À propos de cette initiative :</strong>
-                        <br/>
-                        {{var:IC_description}}
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:IC_slug}}" target="_blank" class="btn">Participer</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
-                        Merci pour votre implication et à très bientôt !
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            {{var:animator_firstname:""}} vient de partager une initiative citoyenne dans votre comité :
+                            <strong>{{var:IC_name:""}}</strong>.
+                        </p>
+                        <p>
+                            Celle-ci se déroulera le {{var:IC_date:""}}
+                            à {{var:IC_hour:""}}, {{var:IC_address:""}}.
+                        </p>
+                        <p>
+                            <strong>À propos de cette initiative :</strong>
+                            <br/>
+                            {{var:IC_description:""}}
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:IC_slug:""}}" target="_blank" class="btn">Participer</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Merci pour votre implication et à très bientôt !
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

@@ -1,6 +1,6 @@
 {% block subject %}
     {% verbatim %}
-        Nouvelle initiative citoyenne: {{var:IC_name}}
+        Nouvelle initiative citoyenne: {{var:IC_name:""}}
     {% endverbatim %}
 {% endblock %}
 
@@ -9,44 +9,41 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour {{var:prenom}},
-                    </p>
-                    <p>
-                        {{var:IC_organizer_firstname}} {{var:IC_organizer_lastname}}
-                        vient de créer une nouvelle initiative citoyenne :
-                        <strong>{{var:IC_name}}</strong>. Vous en êtes informé(e) car vous êtes abonné(e) à son activité.
-                    </p>
-                    <p>
-                        Celle-ci se déroulera le {{var:IC_date}}
-                        à {{var:IC_hour}}, {{var:IC_address}}.
-                    </p>
-                    <p>
-                        Indiquez dès maintenant à
-                        {{var:IC_organizer_firstname}}
-                        {{var:IC_organizer_lastname}}
-                        si vous participez à cet initiative, en cliquant ci-dessous.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:IC_link}}" target="_blank" class="btn">Participer</a>
-                </a>
-            </td>
-            </tr>
-            <tr>
-            <td align="left">
-                <p>
-                    Merci pour votre implication et à très bientôt !
-                </p>
-                <p>
-                    L'équipe d'En Marche !
-                </p>
-            </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            {{var:IC_organizer_firstname:""}} {{var:IC_organizer_lastname:""}}
+                            vient de créer une nouvelle initiative citoyenne :
+                            <strong>{{var:IC_name:""}}</strong>. Vous en êtes informé(e) car vous êtes abonné(e) à son activité.
+                        </p>
+                        <p>
+                            Celle-ci se déroulera le {{var:IC_date:""}}
+                            à {{var:IC_hour:""}}, {{var:IC_address:""}}.
+                        </p>
+                        <p>
+                            Indiquez dès maintenant à {{var:IC_organizer_firstname:""}} {{var:IC_organizer_lastname:""}}
+                            si vous participez à cet initiative, en cliquant ci-dessous.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:IC_link:""}}" target="_blank" class="btn">Participer</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Merci pour votre implication et à très bientôt !
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

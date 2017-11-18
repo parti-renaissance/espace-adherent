@@ -13,7 +13,7 @@ final class NewsletterInvitationMessage extends Message
             Uuid::uuid4(),
             $invite->getEmail(),
             null,
-            static::getTemplateVars($invite->getFirstName(), $subscribeUrl)
+            self::getTemplateVars($invite->getFirstName(), $subscribeUrl)
         );
     }
 

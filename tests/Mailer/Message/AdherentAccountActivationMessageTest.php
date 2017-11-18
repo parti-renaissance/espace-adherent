@@ -12,7 +12,7 @@ class AdherentAccountActivationMessageTest extends TestCase
 {
     private const CONFIRMATION_URL = 'https://enmarche.dev/activation';
 
-    public function testCreateAdherentAccountActivationMessage()
+    public function testCreateFromAdherent()
     {
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');

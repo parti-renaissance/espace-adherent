@@ -12,11 +12,10 @@ final class EventCancellationMessage extends Message
     /**
      * Creates a new message instance for a list of recipients.
      *
-     * @param EventRegistration[] $recipients
-     * @param Adherent            $host
-     * @param BaseEvent           $event
-     * @param string              $eventsLink
-     * @param \Closure            $recipientVarsGenerator
+     * @param Adherent[] $recipients
+     * @param Adherent   $host
+     * @param BaseEvent  $event
+     * @param string     $eventsLink
      *
      * @return EventCancellationMessage
      */
@@ -24,11 +23,10 @@ final class EventCancellationMessage extends Message
         array $recipients,
         Adherent $host,
         BaseEvent $event,
-        string $eventsLink,
-        \Closure $recipientVarsGenerator
+        string $eventsLink
     ): self {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
 
         $recipient = array_shift($recipients);
@@ -40,17 +38,21 @@ final class EventCancellationMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($event->getName(), $eventsLink),
-            $recipientVarsGenerator($recipient),
+            self::getTemplateVars($event->getName(), $eventsLink),
+            self::getRecipientVars($recipient->getFirstName()),
             $host->getEmailAddress()
         );
 
         /* @var Adherent[] $recipients */
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException('This message builder requires a collection of Adherent instances');
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFirstName().' '.$recipient->getLastName(),
-                $recipientVarsGenerator($recipient)
+                self::getRecipientVars($recipient->getFirstName())
             );
         }
 
@@ -65,7 +67,7 @@ final class EventCancellationMessage extends Message
         ];
     }
 
-    public static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(string $firstName): array
     {
         return [
             'target_firstname' => self::escape($firstName),

@@ -9,36 +9,35 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour,
-                    </p>
-                    <p>
-                        {{var:sender_firstname:""}}
-                        souhaiterait vous inviter à un événement En Marche :
-                        <strong>{{var:event_name:""}}</strong>.
-                    </p>
-                    <p>
-                        "<i>{{var:sender_message}}</i>"
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:event_slug}}" target="_blank" class="btn">Répondre à l'invitation</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
-                        À très vite,
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour,
+                        </p>
+                        <p>
+                            {{var:sender_firstname:""}} souhaiterait vous inviter à un événement En Marche :
+                            <strong>{{var:event_name:""}}</strong>.
+                        </p>
+                        <p>
+                            "<i>{{var:sender_message:""}}</i>"
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:event_slug:""}}" target="_blank" class="btn">Répondre à l'invitation</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            À très vite,
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

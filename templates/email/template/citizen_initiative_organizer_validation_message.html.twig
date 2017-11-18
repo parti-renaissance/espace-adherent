@@ -7,34 +7,30 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:prenom:""}},
-                    </p>
-                    <p>
-                        Votre initiative citoyenne
-                        <strong>{{var:IC_name:""}}</strong>
-                        qui aura lieu le
-                        {{var:IC_date:""}}
-                        à
-                        {{var:IC_hour:""}}
-                        à
-                        {{var:IC_address:""}}
-                        a été publiée.
-                    </p>
-                    <p>
-                        Les adhérents ayant renseigné dans leur profil le même centre d'intérêt en seront informés et pourront la rejoindre. Les animateurs se trouvant à 5 km de votre initiative pourront la partager dans leur comité.
-                    </p>
-                    <p>
-                        Merci de votre engagement !
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:prenom:""}},
+                        </p>
+                        <p>
+                            Votre initiative citoyenne
+                            <strong>{{var:IC_name:""}}</strong>
+                            qui aura lieu le {{var:IC_date:""}}
+                            à {{var:IC_hour:""}}
+                            à {{var:IC_address:""}}
+                            a été publiée.
+                        </p>
+                        <p>
+                            Les adhérents ayant renseigné dans leur profil le même centre d'intérêt en seront informés et pourront la rejoindre. Les animateurs se trouvant à 5 km de votre initiative pourront la partager dans leur comité.
+                        </p>
+                        <p>
+                            Merci de votre engagement !
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

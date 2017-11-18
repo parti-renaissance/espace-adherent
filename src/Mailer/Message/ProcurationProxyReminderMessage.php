@@ -10,11 +10,13 @@ final class ProcurationProxyReminderMessage extends Message
 {
     public static function create(ProcurationRequest $request, string $infoUrl): self
     {
+        $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            self::createRecipientVariables($request, $infosUrl)
+            self::createRecipientVariables($request, $infoUrl)
         );
 
         $message->setSenderName('Procuration En Marche !');

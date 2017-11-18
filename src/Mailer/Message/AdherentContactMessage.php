@@ -14,12 +14,19 @@ final class AdherentContactMessage extends Message
             $contactMessage->getTo()->getEmailAddress(),
             $contactMessage->getTo()->getFullName(),
             [],
-            [
-                'animator_firstname' => self::escape($contactMessage->getTo()->getFirstName()),
-                'member_firstname' => self::escape($contactMessage->getFrom()->getFirstName()),
-                'target_message' => nl2br(self::escape($contactMessage->getContent())),
-            ],
+            self::getRecipientVars(
+                $contactMessage->getFrom()->getFirstName(),
+                $contactMessage->getContent()
+            ),
             $contactMessage->getFrom()->getEmailAddress()
         );
+    }
+
+    private static function getRecipientVars(string $fromFirstName, string $message): array
+    {
+        return [
+            'from_firstname' => self::escape($fromFirstName),
+            'target_message' => nl2br(self::escape($message)),
+        ];
     }
 }

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class AdherentContactMessageTest extends TestCase
 {
-    public function testCreateAdherentContactMessage()
+    public function testCreateFromModel()
     {
         $from = $this->createMock(Adherent::class);
         $from->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');
@@ -20,7 +20,6 @@ class AdherentContactMessageTest extends TestCase
         $to = $this->createMock(Adherent::class);
         $to->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');
         $to->expects($this->once())->method('getFullName')->willReturn('Jérôme Pichoud');
-        $to->expects($this->once())->method('getFirstName')->willReturn('Jérôme');
 
         $contactMessage = $this->createMock(ContactMessage::class);
         $contactMessage->expects($this->once())->method('getContent')->willReturn('I like trains.');
@@ -40,8 +39,7 @@ class AdherentContactMessageTest extends TestCase
         $this->assertSame('Jérôme Pichoud', $recipient->getFullName());
         $this->assertSame(
             [
-                'animator_firstname' => 'Jérôme',
-                'member_firstname' => 'Jérôme',
+                'from_firstname' => 'Jérôme',
                 'target_message' => 'I like trains.',
             ],
             $recipient->getVars()

@@ -16,7 +16,7 @@ final class EventRegistrationConfirmationMessage extends Message
             Uuid::uuid4(),
             $registration->getEmailAddress(),
             $firstName,
-            static::getTemplateVars(
+            self::getTemplateVars(
                 $event->getName(),
                 static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
                 sprintf(
@@ -28,7 +28,7 @@ final class EventRegistrationConfirmationMessage extends Message
                 $event->getOrganizerName(),
                 $eventLink
             ),
-            static::getRecipientVars($firstName)
+            self::getRecipientVars($firstName)
         );
     }
 
@@ -45,7 +45,7 @@ final class EventRegistrationConfirmationMessage extends Message
             'event_date' => $eventDate,
             'event_hour' => $eventHour,
             'event_address' => self::escape($eventAddress),
-            'event_organiser' => self::escape($organizerName),
+            'event_organizer' => self::escape($organizerName),
             'event_link' => $eventLink,
         ];
     }

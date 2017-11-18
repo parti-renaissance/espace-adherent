@@ -17,24 +17,49 @@ final class ProcurationProxyFoundMessage extends Message
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            [
-                'target_firstname' => self::escape($request->getFirstNames()),
-                'info_link' => $infosUrl,
-                'elections' => implode(', ', $request->getElectionRoundLabels()),
-                'voter_first_name' => self::escape($proxy->getFirstNames()),
-                'voter_last_name' => self::escape($proxy->getLastName()),
-                'voter_phone' => PhoneNumberFormatter::format($proxy->getPhone()),
-                'mandant_first_name' => self::escape($request->getFirstNames()),
-                'mandant_last_name' => self::escape($request->getLastName()),
-                'mandant_phone' => PhoneNumberFormatter::format($request->getPhone()),
-            ]
+            self::getTemplateVars(
+                $request->getFirstNames(),
+                $infosUrl,
+                implode(', ', $request->getElectionRoundLabels()),
+                $proxy->getFirstNames(),
+                $proxy->getLastName(),
+                PhoneNumberFormatter::format($proxy->getPhone()),
+                $request->getFirstNames(),
+                $request->getLastName(),
+                PhoneNumberFormatter::format($request->getPhone())
+            ),
+            [],
+            $proxy->getEmailAddress()
         );
 
         $message->setSenderName('Procuration En Marche !');
         $message->addCC($request->getFoundBy()->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
-        $message->setReplyTo($proxy->getEmailAddress());
 
         return $message;
+    }
+
+    private static function getTemplateVars(
+        string $targetFirstName,
+        string $infoLink,
+        string $elections,
+        string $voterFirstName,
+        string $voterLastName,
+        string $voterPhone,
+        string $mandantFirstName,
+        string $mandantLastName,
+        string $mandantPhone
+    ): array {
+        return [
+            'target_firstname' => self::escape($targetFirstName),
+            'info_link' => $infoLink,
+            'elections' => $elections,
+            'voter_first_name' => self::escape($voterFirstName),
+            'voter_last_name' => self::escape($voterLastName),
+            'voter_phone' => $voterPhone,
+            'mandant_first_name' => self::escape($mandantFirstName),
+            'mandant_last_name' => self::escape($mandantLastName),
+            'mandant_phone' => $mandantPhone,
+        ];
     }
 }

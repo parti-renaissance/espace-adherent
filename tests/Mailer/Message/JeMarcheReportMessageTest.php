@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Mailer\Message\JeMarcheReportMessage;
+use AppBundle\Mailer\Message\Message;
+use AppBundle\Mailer\Message\MessageRecipient;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 
 class JeMarcheReportMessageTest extends TestCase
 {
@@ -21,7 +22,7 @@ class JeMarcheReportMessageTest extends TestCase
         $message = JeMarcheReportMessage::createFromJeMarcheReport($jeMarcheReport);
 
         $this->assertInstanceOf(JeMarcheReportMessage::class, $message);
-        $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
+        $this->assertInstanceOf(Message::class, $message);
         $this->assertCount(4, $message->getVars());
         $this->assertSame(
             [
@@ -31,6 +32,21 @@ class JeMarcheReportMessageTest extends TestCase
                 'emails_collected_indecis' => 'test3@gmail.tld, test4@gmail.tld',
             ],
             $message->getVars()
+        );
+        $this->assertCount(1, $message->getRecipients());
+
+        $recipient = $message->getRecipient(0);
+        $this->assertInstanceOf(MessageRecipient::class, $recipient);
+        $this->assertSame('jerome.picon@gmail.tld', $recipient->getEmailAddress());
+        $this->assertNull($recipient->getFullName());
+        $this->assertSame(
+            [
+                'nombre_emails_convaincus' => 2,
+                'nombre_emails_indecis' => 2,
+                'emails_collected_convaincus' => 'test1@gmail.tld, test2@gmail.tld',
+                'emails_collected_indecis' => 'test3@gmail.tld, test4@gmail.tld',
+            ],
+            $recipient->getVars()
         );
     }
 }

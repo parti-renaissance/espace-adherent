@@ -14,7 +14,7 @@ final class AdherentTerminateMembershipMessage extends Message
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             [],
-            static::getRecipientVars($adherent->getFirstName())
+            self::getRecipientVars($adherent->getFirstName())
         );
     }
 

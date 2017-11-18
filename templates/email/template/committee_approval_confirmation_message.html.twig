@@ -7,44 +7,41 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:target_firstname:""}},
-                    </p>
-                    <p>
-                        Nous sommes heureux de vous annoncer que votre comité local à
-                        {{var:committee_city:""}}
-                        a été validé.
-                    </p>
-                    <p>
-                        Votre rôle est désormais d’être au service des membres de votre comité, et de l’animer dans le respect des valeurs de notre mouvement, au premier rang desquelles la bienveillance et l’écoute.
-                    </p>
-                    <p>
-                        Vous trouverez l’ensemble des documents utiles à l’animation de votre comité dans votre espace « Documents », dédié aux animateur(rice)s locaux.
-                    </p>
-                    <p>
-                        La prochaine étape est maintenant de créer votre premier événement !
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="http://en-marche.fr/evenements" target="_blank" class="btn">Organiser mon premier événement</a>
-                </a>
-            </td>
-            </tr>
-            <tr>
-            <td align="left">
-                <p>
-                    À très bientôt,
-                </p>
-                <p>
-                    Houda, pour l'équipe d'En Marche !
-                </p>
-            </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:animator_firstname:""}},
+                        </p>
+                        <p>
+                            Nous sommes heureux de vous annoncer que votre comité local à
+                            {{var:committee_city:""}} a été validé.
+                        </p>
+                        <p>
+                            Votre rôle est désormais d’être au service des membres de votre comité, et de l’animer dans le respect des valeurs de notre mouvement, au premier rang desquelles la bienveillance et l’écoute.
+                        </p>
+                        <p>
+                            Vous trouverez l’ensemble des documents utiles à l’animation de votre comité dans votre espace « Documents », dédié aux animateur(rice)s locaux.
+                        </p>
+                        <p>
+                            La prochaine étape est maintenant de créer votre premier événement !
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="http://en-marche.fr/evenements" target="_blank" class="btn">Organiser mon premier événement</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            À très bientôt,
+                        </p>
+                        <p>
+                            Houda, pour l'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

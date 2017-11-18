@@ -7,55 +7,54 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour,
-                    </p>
-                    <p>
-                        {{var:sender_firstname}}
-                        {{var:sender_lastname}}
-                        vous invite à nous rejoindre. Voici son message :
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <p>
-                        {{var:target_message:""}}
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
-                        L'adhésion est gratuite.
-                    </p>
-                    <p>
-                        Cela ne vous prendra pas plus de 2 minutes.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="https://en-marche.fr/inscription?utm_source=INVITSITE&utm_medium=EMAIL&utm_campaign=PARRAINAGESITE" class="btn" target="_blank">
-                        Rejoindre le mouvement en moins de 3 min
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
-                        Nous restons bien sûr à votre disposition.
-                    </p>
-                    <p>
-                        À très bientôt !
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour,
+                        </p>
+                        <p>
+                            {{var:sender_firstname:""}} {{var:sender_lastname:""}}
+                            vous invite à nous rejoindre. Voici son message :
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <p>
+                            {{var:target_message:""}}
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            L'adhésion est gratuite.
+                        </p>
+                        <p>
+                            Cela ne vous prendra pas plus de 2 minutes.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="https://en-marche.fr/inscription?utm_source=INVITSITE&utm_medium=EMAIL&utm_campaign=PARRAINAGESITE" class="btn" target="_blank">
+                            Rejoindre le mouvement en moins de 3 min
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Nous restons bien sûr à votre disposition.
+                        </p>
+                        <p>
+                            À très bientôt !
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

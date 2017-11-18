@@ -9,37 +9,34 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:animator_firstname:""}},
-                    </p>
-                    <p>
-                        Un nouveau membre vient de rejoindre votre comité “{{var:committee_name:""}}” sur le site d'En Marche !
-                    </p>
-                    <p>
-                        Voici ses coordonées :
-                        <br>
-                        {{var:member_firstname:""}}
-                        {{var:member_lastname:""}}
-                        <br>
-                        {{var:member_age:""}}
-                        ans
-                        <br>
-                        {{var:member_city:""}}
-                    </p>
-                    <p>
-                        <strong>Nous vous invitons à lui souhaiter la bienvenue en répondant à cet e-mail !</strong>
-                    </p>
-                    <p>
-                        À très bientôt,
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:animator_firstname:""}},
+                        </p>
+                        <p>
+                            Un nouveau membre vient de rejoindre votre comité “{{var:committee_name:""}}” sur le site d'En Marche !
+                        </p>
+                        <p>
+                            Voici ses coordonées :
+                            <br>
+                            {{var:member_firstname:""}} {{var:member_lastname:""}}
+                            <br>
+                            {{var:member_age:""}} ans
+                            <br>
+                            {{var:member_city:""}}
+                        </p>
+                        <p>
+                            <strong>Nous vous invitons à lui souhaiter la bienvenue en répondant à cet e-mail !</strong>
+                        </p>
+                        <p>
+                            À très bientôt,
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

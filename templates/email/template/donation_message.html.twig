@@ -9,29 +9,28 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:target_firstname:""}},
-                    </p>
-                    <p class="text--pink">
-                        <strong>Merci pour votre don.</strong>
-                    </p>
-                    <p>
-                        Chaque euro reçu nous permet de développer l'activité d'En Marche pour le renouvellement de la vie politique !
-                    </p>
-                    <p>
-                        Si vous avez la moindre question, contactez-nous par téléphone au 01 86 95 02 86 ou par e-mail, à l’adresse suivante : <a href="mailto:contact@en-marche.fr" class="text--link">contact@en-marche.fr</a>.
-                    </p>
-                    <p>
-                        À très bientôt,
-                    </p>
-                    <p>
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:target_firstname:""}},
+                        </p>
+                        <p class="text--pink">
+                            <strong>Merci pour votre don.</strong>
+                        </p>
+                        <p>
+                            Chaque euro reçu nous permet de développer l'activité d'En Marche pour le renouvellement de la vie politique !
+                        </p>
+                        <p>
+                            Si vous avez la moindre question, contactez-nous par téléphone au 01 86 95 02 86 ou par e-mail, à l’adresse suivante : <a href="mailto:contact@en-marche.fr" class="text--link">contact@en-marche.fr</a>.
+                        </p>
+                        <p>
+                            À très bientôt,
+                        </p>
+                        <p>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}

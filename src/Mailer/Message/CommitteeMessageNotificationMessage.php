@@ -28,44 +28,41 @@ class CommitteeMessageNotificationMessage extends Message
             throw new \RuntimeException('First recipient must be an Adherent instance.');
         }
 
+        $author = $feedItem->getAuthor();
+
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
-            static::getRecipientVars($recipient->getFirstName()),
-            $feedItem->getAuthor()->getEmailAddress()
+            static::getTemplateVars($feedItem->getContent()),
+            [],
+            $author->getEmailAddress()
         );
 
-        $sender = $feedItem->getAuthor()->getFirstName().', ';
-        $sender .= Genders::FEMALE === $feedItem->getAuthor()->getGender() ? 'animatrice' : 'animateur';
+        $sender = $author->getFirstName().', ';
+        $sender .= Genders::FEMALE === $author->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 
         $message->setSenderName($sender);
 
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException('This message builder requires a collection of Adherent instances');
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName(),
-                static::getRecipientVars($recipient->getFirstName())
+                $recipient->getFullName()
             );
         }
 
         return $message;
     }
 
-    private static function getTemplateVars(string $hostFirstName, string $hostMessage): array
+    private static function getTemplateVars(string $hostMessage): array
     {
         return [
-            'animator_firstname' => self::escape($hostFirstName),
             'target_message' => $hostMessage,
-        ];
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'target_firstname' => self::escape($firstName),
         ];
     }
 }

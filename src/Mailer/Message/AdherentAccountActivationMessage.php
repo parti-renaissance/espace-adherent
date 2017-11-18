@@ -14,7 +14,7 @@ final class AdherentAccountActivationMessage extends Message
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             [],
-            static::getRecipientVars(
+            self::getRecipientVars(
                 $adherent->getFirstName(),
                 $confirmationLink
             )

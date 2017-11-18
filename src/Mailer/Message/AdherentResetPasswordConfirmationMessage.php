@@ -13,7 +13,15 @@ final class AdherentResetPasswordConfirmationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            ['target_firstname' => self::escape($adherent->getFirstName())]
+            [],
+            self::getRecipientVars($adherent->getFirstName())
         );
+    }
+
+    private static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'target_firstname' => self::escape($firstName),
+        ];
     }
 }

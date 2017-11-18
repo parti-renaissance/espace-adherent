@@ -21,19 +21,14 @@ final class ReferentMessage extends Message
         }
 
         $referent = $model->getFrom();
-        $first = array_shift($recipients);
+        $recipient = array_shift($recipients);
 
         $message = new self(
             Uuid::uuid4(),
-            $first->getEmail(),
-            $first->getFullName() ?: '',
-            [
-                'referant_firstname' => self::escape($referent->getFirstName()),
-                'target_message' => $model->getContent(),
-            ],
-            [
-                'target_firstname' => self::escape($first->getFirstName() ?: ''),
-            ],
+            $recipient->getEmail(),
+            $recipient->getFullName() ?: '',
+            self::getTemplateVars($referent->getFirstName(), $model->getContent()),
+            self::getRecipientVars($recipient->getFirstName() ?: ''),
             $referent->getEmailAddress()
         );
 
@@ -43,12 +38,25 @@ final class ReferentMessage extends Message
             $message->addRecipient(
                 $recipient->getEmail(),
                 $recipient->getFullName() ?: '',
-                [
-                    'target_firstname' => self::escape($recipient->getFirstName() ?: ''),
-                ]
+                self::getRecipientVars($recipient->getFirstName() ?: '')
             );
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(string $referentFirstName, string $targetMessage): array
+    {
+        return [
+            'referent_firstname' => self::escape($referentFirstName),
+            'target_message' => $targetMessage,
+        ];
+    }
+
+    private static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'target_firstname' => self::escape($firstName),
+        ];
     }
 }

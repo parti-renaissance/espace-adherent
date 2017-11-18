@@ -9,37 +9,36 @@
     {% embed 'email/layout.html.twig' %}
         {% block content %}
             {% verbatim %}
-            <tr>
-                <td align="left">
-                    <p>
-                        Bonjour
-                        {{var:target_firstname:""}},
-                    </p>
-                    <p>
-                        L'événement
-                        <strong>{{var:event_name:""}}</strong>, auquel vous deviez participer a malheureusement été supprimé.
-                    </p>
-                    <p>
-                        Nous vous remercions de votre engagement et vous invitons à rejoindre d’autres événements proches de chez vous.
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="{{var:event_slug:" "}}" target="_blank" class="btn">Consulter les événements</a>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <p>
-                        À très bientôt,
-                    </p>
-                    <p>
+                <tr>
+                    <td align="left">
+                        <p>
+                            Bonjour {{var:target_firstname:""}},
+                        </p>
+                        <p>
+                            L'événement
+                            <strong>{{var:event_name:""}}</strong>, auquel vous deviez participer a malheureusement été supprimé.
+                        </p>
+                        <p>
+                            Nous vous remercions de votre engagement et vous invitons à rejoindre d’autres événements proches de chez vous.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="{{var:event_slug:""}}" target="_blank" class="btn">Consulter les événements</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <p>
+                            À très bientôt,
+                        </p>
+                        <p>
 
-                        L'équipe d'En Marche !
-                    </p>
-                </td>
-            </tr>
+                            L'équipe d'En Marche !
+                        </p>
+                    </td>
+                </tr>
             {% endverbatim %}
         {% endblock %}
     {% endembed %}
