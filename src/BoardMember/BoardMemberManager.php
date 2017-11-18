@@ -62,7 +62,7 @@ class BoardMemberManager
                 }
 
                 $sum_age += $member->getAge();
-                $statistics['areas']['board_member.stats.area.'.$member->getBoardMemberArea()] += 1;
+                $statistics['areas']['board_member.stats.area.'.$member->getBoardMember()->getArea()] += 1;
             }
 
             $statistics['average_age'] = round($sum_age / $count);

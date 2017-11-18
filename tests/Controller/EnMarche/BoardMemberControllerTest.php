@@ -157,20 +157,22 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $members = $crawler->filter('.spaces__results__row');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(3, $members);
-        $this->assertContains('Laura Deloche', $members->first()->text());
-        $this->assertContains('44, F, Rouen', $members->first()->text());
-        $this->assertContains('Martine Lindt', $members->eq(1)->text());
-        $this->assertContains('17, F, Berlin', $members->eq(1)->text());
-        $this->assertContains('Élodie Dutemps', $members->eq(2)->text());
-        $this->assertContains('15, F, Singapour', $members->eq(2)->text());
-        $this->assertContains('3 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
+        $this->assertCount(4, $members);
+        $this->assertContains('Carl Mirabeau', $members->first()->text());
+        $this->assertContains('67, M, Mouxy', $members->first()->text());
+        $this->assertContains('Laura Deloche', $members->eq(1)->text());
+        $this->assertContains('44, F, Rouen', $members->eq(1)->text());
+        $this->assertContains('Martine Lindt', $members->eq(2)->text());
+        $this->assertContains('17, F, Berlin', $members->eq(2)->text());
+        $this->assertContains('Élodie Dutemps', $members->eq(3)->text());
+        $this->assertContains('15, F, Singapour', $members->eq(3)->text());
+        $this->assertContains('4 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
 
         // Statistics
         $stats = $crawler->filter('#saved_board_members_statistics');
-        $this->assertContains('100% femmes / 0% hommes', $stats->html());
-        $this->assertContains('25 ans de moyenne d\'âge', $stats->html());
-        $this->assertContains('33% Métropole / 0% DOM-TOM / 67% Étranger', $stats->html());
+        $this->assertContains('75% femmes / 25% hommes', $stats->html());
+        $this->assertContains('36 ans de moyenne d\'âge', $stats->html());
+        $this->assertContains('25% Métropole / 0% DOM-TOM / 75% Étranger', $stats->html());
     }
 
     public function testSendMessageToSearchResult()
@@ -207,10 +209,10 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/profils-sauvegardes');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 3 personnes')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 4 personnes')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('3 membres du Conseil', $this->client->getResponse()->getContent());
+        $this->assertContains('4 membres du Conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',
@@ -220,6 +222,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
+        $this->assertCountMails(1, BoardMemberMessage::class, 'carl999@example.fr');
         $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'martine.lindt@gmail.com');
         $this->assertCountMails(1, BoardMemberMessage::class, 'lolodie.dutemps@hotnix.tld');

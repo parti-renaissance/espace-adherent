@@ -6,7 +6,6 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Collection\GroupMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
@@ -165,7 +164,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @var BoardMember|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $boardMember;
 
@@ -684,12 +683,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->boardMember;
     }
 
-    public function setBoardMember(string $area, ArrayCollection $roles): void
+    public function setBoardMember(string $area, iterable $roles): void
     {
-        $this->boardMember = new BoardMember();
+        if (!$this->boardMember) {
+            $this->boardMember = new BoardMember();
+            $this->boardMember->setAdherent($this);
+        }
+
         $this->boardMember->setArea($area);
         $this->boardMember->setRoles($roles);
-        $this->boardMember->setAdherent($this);
     }
 
     public function isBoardMember(): bool
@@ -698,48 +700,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             && !empty($this->boardMember->getArea()) && !empty($this->boardMember->getRoles());
     }
 
-    public function getBoardMemberArea(): ?string
+    public function revokeBoardMember(): void
     {
-        return $this->boardMember ? $this->boardMember->getArea() : '';
-    }
-
-    public function setBoardMemberArea(?string $area): void
-    {
-        if (!$area) {
+        if (!$this->boardMember) {
             return;
         }
 
-        if (!$this->boardMember) {
-            $this->boardMember = new BoardMember();
-            $this->boardMember->setAdherent($this);
-        }
-
-        $this->boardMember->setArea($area);
-    }
-
-    /**
-     * @return Role[]|Collection|iterable
-     */
-    public function getBoardMemberRoles(): iterable
-    {
-        return $this->boardMember ? $this->boardMember->getRoles() : [];
-    }
-
-    /**
-     * @param Role[]|Collection $roles
-     */
-    public function setBoardMemberRoles(iterable $roles): void
-    {
-        if (0 === $roles->count()) {
-            return;
-        }
-
-        if (!$this->boardMember) {
-            $this->boardMember = new BoardMember();
-            $this->boardMember->setAdherent($this);
-        }
-
-        $this->boardMember->setRoles($roles);
+        $this->boardMember->revoke();
+        $this->boardMember = null;
     }
 
     public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void

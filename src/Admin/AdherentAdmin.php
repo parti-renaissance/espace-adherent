@@ -7,6 +7,7 @@ use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
+use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -255,15 +256,16 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Région',
                     'choices' => BoardMember::AREAS_CHOICES,
                     'required' => false,
+                    'mapped' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
                 ->add('boardMemberRoles', 'sonata_type_model', [
-                        'expanded' => true,
-                        'by_reference' => false,
-                        'multiple' => true,
-                        'btn_add' => false,
-                        'class' => Role::class,
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                    'expanded' => true,
+                    'multiple' => true,
+                    'btn_add' => false,
+                    'class' => Role::class,
+                    'mapped' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
             ->end()
             ->with('Tags', ['class' => 'col-md-6'])
@@ -274,6 +276,8 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        $formMapper->getFormBuilder()->addEventSubscriber(new BoardMemberListener());
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
