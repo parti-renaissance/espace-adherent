@@ -49,10 +49,8 @@ test:
             parallel: true
         - ./bin/console doctrine:schema:create --env=test_sqlite:
             parallel: true
-        - ./bin/console doctrine:schema:drop --force --env=test_mysql:
-            parallel: true
-        - ./bin/console doctrine:schema:create --env=test_mysql:
-            parallel: true
+        - ./bin/console doctrine:migration:migrate --no-interaction --env=test_mysql
+        - ./bin/console doctrine:schema:update --dump-sql --env=test_mysql | grep "Nothing to update - your database is already in sync with the current entity metadata."
         - ./bin/console doctrine:query:sql "ALTER TABLE groups CHANGE address_country address_country VARCHAR(2) DEFAULT NULL" --env=test_mysql:
             parallel: true
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit:
