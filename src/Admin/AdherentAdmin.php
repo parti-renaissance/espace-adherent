@@ -370,6 +370,21 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('host', CallbackFilter::class, [
+                'label' => 'N\'afficher que les co-animateurs',
+                'field_type' => CheckboxType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb->leftJoin(sprintf('%s.memberships', $alias), 'mss');
+                    $qb->andWhere(sprintf('mss.privilege', $alias).' = :privilege');
+                    $qb->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST);
+
+                    return true;
+                },
+            ])
 
             ->add('tags', CallbackFilter::class, [
                 'label' => 'Tags',
