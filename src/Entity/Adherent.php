@@ -979,9 +979,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->tags;
     }
 
-    public function setTags(ArrayCollection $tags): void
+    public function setTags(iterable $tags): void
     {
-        $this->tags = $tags;
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
     }
 
     public function addTag(AdherentTag $adherentTag): void
@@ -993,6 +995,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function removeTag(AdherentTag $adherentTag): void
     {
-        $this->tags->remove($adherentTag);
+        $this->tags->removeElement($adherentTag);
     }
 }
