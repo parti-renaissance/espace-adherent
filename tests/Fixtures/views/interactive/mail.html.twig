@@ -5,7 +5,7 @@
         {% if common %}
             <li>{{ common.content|raw }}</li>
         {% endif %}
-        {% for argument in interactive.arguments %}
+        {% for argument in interactive.arguments if argument is not empty %}
             <li>{{- argument|raw }}</li>
         {% endfor %}
     </ul>
