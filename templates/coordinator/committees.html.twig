@@ -25,7 +25,7 @@
         </div>
     {% else %}
         <div class="text--body text--center">
-            Aucun comité ne repond à ce filtre
+            Aucun comité ne répond à ce filtre
         </div>
     {% endif %}
 
@@ -42,10 +42,11 @@
             </a>
         {% endif %}
 
-        <span class="text--summary">
+        {% if last_page != 0 %}
+            <span class="text--summary">
                 Page {{ current_page }} / {{ last_page }}
             </span>
-
+        {% endif %}
         {% if filters.offset + constant('PER_PAGE', filters) < filters.count %}
             <a href="{{ path('app_coordinator_committees') ~ filters.nextPageQueryString }}" class="btn btn--small">
                 Suivante

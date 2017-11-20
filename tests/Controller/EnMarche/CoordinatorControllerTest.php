@@ -104,7 +104,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_APPROVED');
 
@@ -134,7 +134,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
         $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Aucun comité ne repond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_REFUSED');
 

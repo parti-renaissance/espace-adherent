@@ -38,7 +38,7 @@
                 {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
             </td>
         {% else %}
-            <td>{{ committee.coordinatorComment }}</td>
+            <td>{{ committee.coordinatorComment|escape }}</td>
         {% endif %}
         {% if committee.isPending %}
             <td>
