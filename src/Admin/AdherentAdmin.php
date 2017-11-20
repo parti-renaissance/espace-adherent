@@ -394,7 +394,6 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $value = array_map('trim', explode(',', strtolower($value['value'])));
-                    $qb->leftJoin(sprintf('%s.tags', $alias), 't');
                     $qb->andWhere($qb->expr()->in('LOWER(t.name)', $value));
 
                     return true;
