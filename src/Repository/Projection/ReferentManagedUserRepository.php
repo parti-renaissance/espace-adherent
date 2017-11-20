@@ -107,16 +107,23 @@ class ReferentManagedUserRepository extends EntityRepository
             $qb->andWhere($idExpression);
         }
 
-        if ($queryPostalCode = $filter->getQueryPostalCode()) {
-            $queryPostalCode = array_map('trim', explode(',', $queryPostalCode));
+        if ($queryAreaCode = $filter->getQueryAreaCode()) {
+            $queryAreaCode = array_map('trim', explode(',', $queryAreaCode));
 
-            $postalCodeExpression = $qb->expr()->orX();
-            foreach ($queryPostalCode as $key => $postalCode) {
-                $postalCodeExpression->add('u.postalCode LIKE :postalCode_'.$key);
-                $qb->setParameter('postalCode_'.$key, $postalCode.'%');
+            $areaCodeExpression = $qb->expr()->orX();
+            foreach ($queryAreaCode as $key => $areaCode) {
+                if (is_numeric($areaCode)) {
+                    $areaCodeExpression->add('u.postalCode LIKE :postalCode_'.$key);
+                    $qb->setParameter('postalCode_'.$key, $areaCode.'%');
+                }
+
+                if (is_string($areaCode)) {
+                    $areaCodeExpression->add('u.country LIKE :countryCode_'.$key);
+                    $qb->setParameter('countryCode_'.$key, $areaCode.'%');
+                }
             }
 
-            $qb->andWhere($postalCodeExpression);
+            $qb->andWhere($areaCodeExpression);
         }
 
         if ($queryCity = $filter->getQueryCity()) {

@@ -70,10 +70,10 @@
 
                 <div class="b__nudge--bottom">
                     <label class="form form__label">
-                        Code postal ou numéro de département (laisser vide pour ne pas filtrer)<br />
+                        Code postal, numéro de département ou code pays (laisser vide pour ne pas filtrer)<br />
                         <input type="text"
-                               name="{{ constant('PARAMETER_QUERY_POSTAL_CODE', filter) }}"
-                               value="{{ filter.queryPostalCode }}"
+                               name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
+                               value="{{ filter.queryAreaCode }}"
                                placeholder="Saisissez un ou plusieurs départements/code postaux, séparés par des virgules (exemple : &quot;35420, 12, 75&quot;)"
                                class="form form__field form--full" />
                     </label>
