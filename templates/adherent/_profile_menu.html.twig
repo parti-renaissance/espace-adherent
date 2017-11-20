@@ -11,5 +11,15 @@
                 <a href="{{ path(target) }}">{{ link }}</a>
             </li>
         {% endfor %}
+
+        {% if is_granted('ROLE_ADHERENT') %}
+            {% for target, link in {
+                'app_summary_manager_index': 'Modifier mon profil',
+            } %}
+                <li class="{{ route == target ? 'active' }}">
+                    <a href="{{ path(target) }}">{{ link }}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
     </ul>
 </div>
