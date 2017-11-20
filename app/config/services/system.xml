@@ -134,6 +134,11 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
+        <service id="AppBundle\Security\RefreshTokenRolesListener">
+            <argument type="service" id="security.token_storage"/>
+            <tag name="kernel.event_listener" event="kernel.response"/>
+        </service>
+
         <!-- Cache -->
         <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
             <argument/>
