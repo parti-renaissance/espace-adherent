@@ -2,10 +2,10 @@
     <ul>
         {% set route = app.request.attributes.get('_route') %}
         {% for target, link in {
-            'app_adherent_profile': 'Mon compte',
+            'app_user_profile': 'Mon compte',
             'app_summary_manager_index': 'Modifier mon profil',
-            'app_adherent_edit': 'Mes informations personnelles',
-            'app_adherent_set_email_notifications': 'Notifications',
+            'app_user_edit': 'Mes informations personnelles',
+            'app_user_set_email_notifications': 'Notifications',
         } %}
             <li class="{{ route == target ? 'active' }}">
                 <a href="{{ path(target) }}">{{ link }}</a>

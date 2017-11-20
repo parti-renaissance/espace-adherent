@@ -26,6 +26,8 @@ parameters:
     app_host:                    '%env(APP_HOST)%'
     amp_host:                    '%env(AMP_HOST)%'
     legislatives_host:           '%env(LEGISLATIVES_HOST)%'
+    auth_user_profile:           '%env(AUTH_USER_PROFILE)%'
+    auth_forgot_password:        '%env(AUTH_FORGOT_PASSWORD)%'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }

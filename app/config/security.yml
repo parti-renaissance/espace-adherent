@@ -235,12 +235,8 @@ security:
                     service: "user_provider.entity"
 
     access_control:
-        - { path: '^/espace-adherent/accueil', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
+        - { path: '^/parametres/', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent/', roles: [ROLE_ADHERENT] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
