@@ -20,13 +20,13 @@
 
     {% if is_granted('ROLE_ADHERENT') %}
         <p>
-            <a href="#" class="settings__delete_account">Annuler mon adhésion</a>
+            <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Annuler mon adhésion</a>
         </p>
     {% endif %}
 
-    {% if is_granted('UNREGISTER') %}
+    {% if is_granted('UNREGISTER') and app.user.isBasicAdherent() %}
         <p>
-            <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Supprimer définitivement ce compte</a>
+            <a href="{{ path('auth_unsubscribe') }}" class="settings__delete_account">Supprimer définitivement ce compte</a>
         </p>
     {% endif %}
 {% endblock %}

@@ -33,6 +33,12 @@ auth_forgot_password:
         _controller: FrameworkBundle:Redirect:urlRedirect
         path: '%auth_forgot_password%'
 
+auth_unsubscribe:
+    path: /auth-unsubscribe
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: '%auth_unsubscribe%'
+
 #
 # Health
 #
