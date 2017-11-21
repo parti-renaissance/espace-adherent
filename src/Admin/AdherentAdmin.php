@@ -32,25 +32,6 @@ class AdherentAdmin extends AbstractAdmin
         '_sort_by' => 'registeredAt',
     ];
 
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery($context);
-        $query
-            ->addSelect('t, bm, cma, pma, m, cpm, cfi, gfi, acs')
-            ->leftJoin($query->getRootAlias().'.tags', 't')
-            ->leftJoin($query->getRootAlias().'.boardMember', 'bm')
-            ->leftJoin($query->getRootAlias().'.coordinatorManagedArea', 'cma')
-            ->leftJoin($query->getRootAlias().'.procurationManagedArea', 'pma')
-            ->leftJoin($query->getRootAlias().'.memberships', 'm')
-            ->leftJoin($query->getRootAlias().'.citizenProjectMemberships', 'cpm')
-            ->leftJoin($query->getRootAlias().'.committeeFeedItems', 'cfi')
-            ->leftJoin($query->getRootAlias().'.groupFeedItems', 'gfi')
-            ->leftJoin($query->getRootAlias().'.activitiySubscriptions', 'acs')
-        ;
-
-        return $query;
-    }
-
     public function getTemplate($name)
     {
         if ('show' === $name) {
