@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -319,6 +320,12 @@ class CitizenProject extends BaseGroup
     public function update(string $name, NullablePostAddress $address): void
     {
         $this->setName($name);
+        $this->setSubtitle($subtitle);
+        $this->category = $category;
+        $this->setAssistanceNeeded($assistanceNeeded);
+        $this->setProblemDescription($problemDescription);
+        $this->setProposedSolution($proposedSolution);
+        $this->setRequiredMeans($requiredMeans);
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;

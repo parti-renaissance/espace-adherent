@@ -20,11 +20,11 @@
     {% endblock %}
 
     <p>
-        <a href="{{ path('admin_app_citizen_project_list') }}" class="btn btn-default">
+        <a href="{{ path('admin_app_citizenproject_list') }}" class="btn btn-default">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Retour à la liste
         </a>
-        <a href="{{ path('admin_app_citizen_project_edit', {'id': citizenProject.id}) }}" class="btn btn-default">
+        <a href="{{ path('admin_app_citizenproject_edit', {'id': citizenProject.id}) }}" class="btn btn-default">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Éditer le projet citoyen
         </a>
@@ -47,7 +47,7 @@
                                 Actions
                             </th>
                         </tr>
-                        {% for membership in memberships if membership.canAdministrateGroup %}
+                        {% for membership in memberships if membership.canAdministrateCitizenProject %}
                             {% set administrator = membership.adherent %}
                             {% set token = csrf_token('citizenProject.change_privilege.' ~ administrator.id) %}
 
@@ -65,13 +65,13 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_admin_citizen_project_change_privilege', {'citizenProject': citizenProject.id, 'adherent': administrator.id, 'privilege': constant('GROUP_FOLLOWER', membership), 'token': token}) }}"
+                                    <a href="{{ path('app_admin_citizenproject_change_privilege', {citizenProject: citizenProject.id, adherent: administrator.id, privilege: constant('CITIZEN_PROJECT_FOLLOWER', membership), token: token}) }}"
                                        class="btn btn-default btn-sm">
-                                        Transformer en membre normal
+                                        Transformer en follower
                                     </a>
 
-                                    {% if administrators_count < 1 %}
-                                        <a href="{{ path('app_admin_citizen_project_change_privilege', {'citizenProject': citizenProject.id, 'adherent': administrator.id, 'privilege': constant('GROUP_ADMINISTRATOR', membership), 'token': token}) }}"
+                                    {% if administratorsCount < 1 %}
+                                        <a href="{{ path('app_admin_citizenproject_change_privilege', {citizenProject: citizenProject.id, adherent: administrator, privilege: constant('CITIZEN_PROJECT_ADMINISTRATOR', membership), token: token}) }}"
                                            class="btn btn-default btn-sm">
                                             Transformer en administrateur
                                         </a>
@@ -95,7 +95,7 @@
                                     <span class="label label-default">Membre</span>
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_admin_citizen_project_change_privilege', {citizenProject: citizenProject.id, adherent: member.id, privilege: constant('GROUP_ADMINISTRATOR', membership), token: token}) }}"
+                                    <a href="{{ path('app_admin_citizenproject_change_privilege', {citizenProject: citizenProject.id, adherent: member.id, privilege: constant('CITIZEN_PROJECT_ADMINISTRATOR', membership), token: token}) }}"
                                        class="btn btn-default btn-sm">
                                         Transformer en administrateur
                                     </a>
