@@ -9,13 +9,13 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
-use AppBundle\Entity\Group;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\Email;
@@ -36,16 +36,16 @@ use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
 use AppBundle\Repository\CitizenInitiativeRepository;
-use AppBundle\Repository\EventRegistrationRepository;
+use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\DonationRepository;
-use AppBundle\Repository\GroupRepository;
+use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\EventRegistrationRepository;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
-use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
@@ -131,9 +131,9 @@ trait TestHelperTrait
         return $this->getRepository(Committee::class);
     }
 
-    public function getGroupRepository(): GroupRepository
+    public function getCitizenProjectRepository(): CitizenProjectRepository
     {
-        return $this->getRepository(Group::class);
+        return $this->getRepository(CitizenProject::class);
     }
 
     public function getEventRepository(): EventRepository

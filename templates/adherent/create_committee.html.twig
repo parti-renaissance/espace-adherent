@@ -37,9 +37,9 @@
                         <h3>Rappel de vos informations personnelles</h3>
 
                         <div class="form__row" id="field-personal-information">
-                            <strong>Nom</strong> : {{ adherent.lastName|upper }}<br/>
-                            <strong>Prénom</strong> : {{ adherent.firstName|capitalize }}<br/>
-                            <strong>Adresse e-mail</strong> : {{ adherent.emailAddress }}<br/>
+                            <strong>Nom</strong> : {{ app.user.lastName|upper }}<br/>
+                            <strong>Prénom</strong> : {{ app.user.firstName|capitalize }}<br/>
+                            <strong>Adresse e-mail</strong> : {{ app.user.emailAddress }}<br/>
                         </div>
 
                         <p class="wrong-personal-infos">

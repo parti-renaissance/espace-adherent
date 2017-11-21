@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
@@ -10,9 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/evenements", name="app_search_events")
      * @Method("GET")
@@ -66,6 +70,17 @@ class SearchController extends Controller
             'results' => $results ?? [],
             'errors' => $errors ?? [],
         ]);
+    }
+
+    /**
+     * @Route("/projets-citoyens", name="app_search_citizen_projects")
+     * @Method("GET")
+     */
+    public function searchAction(Request $request): Response
+    {
+        $this->disableInProduction();
+
+        return new Response();
     }
 
     /**

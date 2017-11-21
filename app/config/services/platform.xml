@@ -227,24 +227,35 @@
             <tag name="security.voter"/>
         </service>
 
-        <!-- Groups -->
-        <service id="app.group.manager" class="AppBundle\Group\GroupManager">
+        <!-- Citizen projectss -->
+        <service id="app.citizen_project.manager" class="AppBundle\CitizenProject\CitizenProjectManager">
             <argument type="service" id="doctrine"/>
         </service>
 
-        <service id="app.group.authority" class="AppBundle\Group\GroupManagementAuthority">
-            <argument type="service" id="app.group.manager"/>
+        <service id="app.citizen_project.authority" class="AppBundle\CitizenProject\CitizenProjectManagementAuthority">
+            <argument type="service" id="app.citizen_project.manager"/>
             <argument type="service" id="router" />
             <argument type="service" id="app.mailer.transactional"/>
         </service>
 
-        <service id="app.group.factory" class="AppBundle\Group\GroupFactory">
+        <service id="app.citizen_project.factory" class="AppBundle\CitizenProject\CitizenProjectFactory">
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
-        <service id="app.validator.unique_group" class="AppBundle\Validator\UniqueGroupValidator">
-            <argument type="service" id="app.repository.group"/>
-            <tag name="validator.constraint_validator" alias="app.validator.unique_group"/>
+        <service id="app.validator.unique_citizen_project" class="AppBundle\Validator\UniqueCitizenProjectValidator">
+            <argument type="service" id="app.repository.citizen_project"/>
+            <tag name="validator.constraint_validator" alias="app.validator.unique_citizen_project"/>
+        </service>
+
+        <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.citizen_project.factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+        </service>
+
+        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
+            <tag name="security.voter"/>
         </service>
 
         <!-- Events -->

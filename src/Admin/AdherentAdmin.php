@@ -36,13 +36,13 @@ class AdherentAdmin extends AbstractAdmin
     {
         $query = parent::createQuery($context);
         $query
-            ->addSelect('t, bm, cma, pma, m, gm, cfi, gfi, acs')
+            ->addSelect('t, bm, cma, pma, m, cpm, cfi, gfi, acs')
             ->leftJoin($query->getRootAlias().'.tags', 't')
             ->leftJoin($query->getRootAlias().'.boardMember', 'bm')
             ->leftJoin($query->getRootAlias().'.coordinatorManagedArea', 'cma')
             ->leftJoin($query->getRootAlias().'.procurationManagedArea', 'pma')
             ->leftJoin($query->getRootAlias().'.memberships', 'm')
-            ->leftJoin($query->getRootAlias().'.groupMemberships', 'gm')
+            ->leftJoin($query->getRootAlias().'.citizenProjectMemberships', 'cpm')
             ->leftJoin($query->getRootAlias().'.committeeFeedItems', 'cfi')
             ->leftJoin($query->getRootAlias().'.groupFeedItems', 'gfi')
             ->leftJoin($query->getRootAlias().'.activitiySubscriptions', 'acs')

@@ -24,7 +24,6 @@ abstract class BaseGroup implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityTimestampableTrait;
-    use EntityPostAddressTrait;
 
     /**
      * The group name.
@@ -111,7 +110,6 @@ abstract class BaseGroup implements GeoPointInterface
         UuidInterface $creator,
         string $name,
         string $description,
-        PostAddress $address = null,
         PhoneNumber $phone = null,
         string $slug = null,
         string $status = self::PENDING,
@@ -132,7 +130,6 @@ abstract class BaseGroup implements GeoPointInterface
         $this->setName($name);
         $this->slug = $slug;
         $this->description = $description;
-        $this->postAddress = $address;
         $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
@@ -159,11 +156,6 @@ abstract class BaseGroup implements GeoPointInterface
     public function getSlug(): string
     {
         return $this->slug;
-    }
-
-    public function getPostAddress(): PostAddress
-    {
-        return $this->postAddress;
     }
 
     public function getDescription(): string
@@ -270,19 +262,5 @@ abstract class BaseGroup implements GeoPointInterface
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
-    }
-
-    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone): void
-    {
-        $this->setName($name);
-        $this->description = $description;
-
-        if (!$this->postAddress->equals($address)) {
-            $this->postAddress = $address;
-        }
-
-        if (null === $this->phone || !$this->phone->equals($phone)) {
-            $this->phone = $phone;
-        }
     }
 }

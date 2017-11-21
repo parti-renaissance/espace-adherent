@@ -82,15 +82,6 @@ class CommitteeCommand
         return $dto;
     }
 
-    public function updateCommittee(): Committee
-    {
-        if (!$this->committee) {
-            throw new \RuntimeException('A Committee instance is required.');
-        }
-
-        $this->committee->update($this);
-    }
-
     public function getCityName(): string
     {
         return $this->address->getCityName();

@@ -34,6 +34,8 @@ class Committee extends BaseGroup
     const PRE_APPROVED = 'PRE_APPROVED';
     const PRE_REFUSED = 'PRE_REFUSED';
 
+    use EntityPostAddressTrait;
+
     /**
      * The committee Facebook page URL.
      *
@@ -109,6 +111,11 @@ class Committee extends BaseGroup
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
+    }
+
+    public function getPostAddress(): PostAddress
+    {
+        return $this->postAddress;
     }
 
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
@@ -283,6 +290,20 @@ class Committee extends BaseGroup
         }
 
         return $links;
+    }
+
+    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone): void
+    {
+        $this->setName($name);
+        $this->description = $description;
+
+        if (!$this->postAddress->equals($address)) {
+            $this->postAddress = $address;
+        }
+
+        if (null === $this->phone || !$this->phone->equals($phone)) {
+            $this->phone = $phone;
+        }
     }
 
     private function createLink(string $url, string $label): Link

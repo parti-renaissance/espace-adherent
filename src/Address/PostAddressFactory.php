@@ -2,6 +2,7 @@
 
 namespace AppBundle\Address;
 
+use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 
 class PostAddressFactory
@@ -21,6 +22,23 @@ class PostAddressFactory
         }
 
         return PostAddress::createForeignAddress(
+            $address->getCountry(),
+            $address->getPostalCode(),
+            $address->getCityName(),
+            $address->getAddress()
+        );
+    }
+
+    public function createFromNullableAddress(NullableAddress $address): NullablePostAddress
+    {
+        if ($address->isFrenchAddress()) {
+            return NullablePostAddress::createFrenchAddress(
+                $address->getAddress(),
+                $address->getCity()
+            );
+        }
+
+        return NullablePostAddress::createForeignAddress(
             $address->getCountry(),
             $address->getPostalCode(),
             $address->getCityName(),

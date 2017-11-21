@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Collection\GroupMembershipCollection;
+use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -177,11 +177,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $memberships;
 
     /**
-     * @var GroupMembership[]|Collection
+     * @var CitizenProjectMembership[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="GroupMembership", mappedBy="adherent", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CitizenProjectMembership", mappedBy="adherent", cascade={"remove"})
      */
-    private $groupMemberships;
+    private $citizenProjectMemberships;
 
     /**
      * @var CommitteeFeedItem[]|Collection|iterable
@@ -191,11 +191,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $committeeFeedItems;
 
     /**
-     * @var GroupFeedItem[]|Collection|iterable
+     * @var CitizenProjectFeedItem[]|Collection|iterable
      *
-     * @ORM\OneToMany(targetEntity="GroupFeedItem", mappedBy="author", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CitizenProjectFeedItem", mappedBy="author", cascade={"remove"})
      */
-    private $groupFeedItems;
+    private $citizenProjectFeedItems;
 
     /**
      * @var ActivitySubscription[]|Collection
@@ -240,7 +240,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->legislativeCandidate = false;
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
-        $this->groupMemberships = new ArrayCollection();
+        $this->citizenProjectMemberships = new ArrayCollection();
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
@@ -579,26 +579,26 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     }
 
     /**
-     * Joins a group as a ADMINISTRATOR privileged person.
+     * Joins a citizen project as a ADMINISTRATOR privileged person.
      */
-    public function administrateGroup(Group $group, string $subscriptionDate = 'now'): GroupMembership
+    public function administrateCitizenProject(CitizenProject $citizenProject, string $subscriptionDate = 'now'): CitizenProjectMembership
     {
-        return $this->joinGroup($group, GroupMembership::GROUP_ADMINISTRATOR, $subscriptionDate);
+        return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR, $subscriptionDate);
     }
 
     /**
-     * Joins a group as a simple FOLLOWER privileged person.
+     * Joins a citizen project as a simple FOLLOWER privileged person.
      */
-    public function followGroup(Group $group, string $subscriptionDate = 'now'): GroupMembership
+    public function followCitizenProject(CitizenProject $citizenProject, string $subscriptionDate = 'now'): CitizenProjectMembership
     {
-        return $this->joinGroup($group, GroupMembership::GROUP_FOLLOWER, $subscriptionDate);
+        return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER, $subscriptionDate);
     }
 
-    private function joinGroup(Group $group, string $privilege, string $subscriptionDate): GroupMembership
+    private function joinCitizenProject(CitizenProject $citizenProject, string $privilege, string $subscriptionDate): CitizenProjectMembership
     {
-        $group->incrementMembersCount();
+        $citizenProject->incrementMembersCount();
 
-        return GroupMembership::createForAdherent($group->getUuid(), $this, $privilege, $subscriptionDate);
+        return CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
     }
 
     public function getPostAddress(): PostAddress
@@ -831,17 +831,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->memberships;
     }
 
-    final public function getGroupMemberships(): GroupMembershipCollection
+    final public function getCitizenProjectMemberships(): CitizenProjectMembershipCollection
     {
-        if ($this->groupMemberships instanceof Collection) {
-            if (!$this->groupMemberships instanceof GroupMembershipCollection) {
-                $this->groupMemberships = new GroupMembershipCollection($this->groupMemberships->toArray());
+        if ($this->citizenProjectMemberships instanceof Collection) {
+            if (!$this->citizenProjectMemberships instanceof CitizenProjectMembershipCollection) {
+                $this->citizenProjectMemberships = new CitizenProjectMembershipCollection($this->citizenProjectMemberships->toArray());
             }
         } else {
-            $this->groupMemberships = new GroupMembershipCollection($this->groupMemberships);
+            $this->citizenProjectMemberships = new CitizenProjectMembershipCollection($this->citizenProjectMemberships);
         }
 
-        return $this->groupMemberships;
+        return $this->citizenProjectMemberships;
     }
 
     public function getMembershipFor(Committee $committee): ?CommitteeMembership
@@ -855,11 +855,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return null;
     }
 
-    public function getGroupMembershipFor(Group $group): ?GroupMembership
+    public function getCitizenProjectMembershipFor(CitizenProject $citizenProject): ?CitizenProjectMembership
     {
-        foreach ($this->groupMemberships as $groupMembership) {
-            if ($groupMembership->matches($this, $group)) {
-                return $groupMembership;
+        foreach ($this->citizenProjectMemberships as $citizenProjectMembership) {
+            if ($citizenProjectMembership->matches($this, $citizenProject)) {
+                return $citizenProjectMembership;
             }
         }
 
@@ -892,16 +892,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isAdministrator(): bool
     {
-        return $this->getGroupMemberships()->countGroupAdministratorMemberships() >= 1;
+        return $this->getCitizenProjectMemberships()->countCitizenProjectAdministratorMemberships() >= 1;
     }
 
-    public function isAdministratorOf(Group $group): bool
+    public function isAdministratorOf(CitizenProject $citizenProject): bool
     {
-        if (!$membership = $this->getGroupMembershipFor($group)) {
+        if (!$membership = $this->getCitizenProjectMembershipFor($citizenProject)) {
             return false;
         }
 
-        return $membership->canAdministrateGroup();
+        return $membership->canAdministrateCitizenProject();
     }
 
     public function isSubscribedTo(self $adherent = null): bool
@@ -969,9 +969,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->committeeFeedItems;
     }
 
-    public function getGroupFeedItems(): iterable
+    public function getCitizenProjectFeedItems(): iterable
     {
-        return $this->groupFeedItems;
+        return $this->citizenProjectFeedItems;
     }
 
     public function getTags(): Collection

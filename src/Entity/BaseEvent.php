@@ -21,7 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\DiscriminatorMap({
  *     "event" = "AppBundle\Entity\Event",
  *     "citizen_initiative" = "AppBundle\Entity\CitizenInitiative",
- *     "mooc_event" = "AppBundle\Entity\MoocEvent"
+ *     "citizen_action" = "AppBundle\Entity\CitizenAction"
  * })
  *
  * @Algolia\Index
@@ -30,7 +30,7 @@ abstract class BaseEvent implements GeoPointInterface
 {
     const CITIZEN_INITIATIVE_TYPE = 'citizen_initiative';
     const EVENT_TYPE = 'event';
-    const MOOC_EVENT_TYPE = 'mooc_event';
+    const CITIZEN_ACTION_TYPE = 'citizen_action';
 
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';
