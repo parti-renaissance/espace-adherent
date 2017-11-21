@@ -5,8 +5,6 @@
 {% block canonical_url url('page_campus') %}
 
 {% block open_graph_image (url('homepage')|trim('/') ~ static_asset('pages-sharers/campus.jpg', {'q': 70}))|raw %}
-{% block open_graph_image_width 1667 %}
-{% block open_graph_image_height 873 %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
@@ -76,20 +74,20 @@
                 <div class="campus__text campus__text--center">
                     <h2>Passer à l'action</h2>
                     <p>
-                        Inscrivez-vous vite pour participer à notre première
-                        formation collective qui a pour thème "Agir près de chez
-                        moi". Départ le 20 novembre !
+                        Inscrivez-vous vite pour participer à notre première formation
+                        collective qui a pour thème "Agir près de chez moi".
                     </p>
                     <p>
-                        Ce MOOC, comme on l’appelle (« Massive Open Online Courses »),
-                        est une formation vidéo en ligne, ouverte à tous, à
-                        suivre sur 5 semaines avec des milliers d’autres citoyens
-                        qui, comme vous, souhaitent s’engager.
+                        Ce MOOC, comme on l'appelle ("Massive Open Online Courses"), est
+                        une formation vidéo en ligne, ouverte à tous, à suivre sur
+                        5 semaines avec des milliers d'autres citoyens qui,
+                        comme vous, souhaitent s'engager.
                     </p>
                     <p>
-                        À la fin de cette formation, vous aurez tous les outils et
-                        les conseils nécessaires pour que vos intuitions se transforment
-                        en vraies idées et en projets concrets sur votre territoire.
+                        À la fin de cette formation, vous aurez tous les outils
+                        et les conseils nécessaires pour que vos intuitions se
+                        transforment en vraies idées et en projets concrets
+                        sur votre territoire.
                     </p>
                     <div class="text--center">
                         <a href="{{ path('page_mooc') }}" class="btn btn--blue">

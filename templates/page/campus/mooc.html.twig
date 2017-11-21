@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'En 5 semaines, passez de l’intention à l’action' %}
-{% block meta_description 'Le MOOC "Agir près de chez moi" dure 5 semaines. Top départ le
-20 novembre : vous allez rencontrer des gens, vous allez apprendre, vous allez réfléchir, mais surtout vous allez faire.' %}
+{% block meta_description 'Le MOOC "Agir près de chez moi" dure 5 semaines. Vous allez rencontrer des gens, vous allez apprendre, vous allez réfléchir, mais surtout vous allez faire.' %}
 {% block canonical_url url('page_mooc') %}
+
+{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('pages-sharers/mooc.jpg', {'q': 70}))|raw %}
 
 {% block final_stylesheets include('bot/_stylesheet.html.twig') %}
 {% block final_javascripts include('bot/_javascript.html.twig') %}
@@ -15,15 +16,14 @@
                 En 5 semaines, passez de l’intention à l’action
             </h1>
             <p class="text--gray">
-                Le MOOC "Agir près de chez moi" dure 5 semaines. Il est ouvert à tous gratuitement, adhérent comme non-adhérent.<br/>
-                Inscrivez-vous maintenant pour le grand départ le 20 novembre !
+                Le MOOC "Agir près de chez moi" dure 5 semaines. Il est ouvert à tous gratuitement, adhérent comme non-adhérent.
                 <i class="text--small">
                     Les MOOCs "Massive Open Online Courses" sont des formations en ligne ouvertes à tous.
                 </i>
             </p>
             <div class="text--body b__nudge--bottom text--center">
                 <iframe width="375" height="211"
-                        src="https://www.youtube.com/embed/_sDPTfB0haM?rel=0&amp;showinfo=0"
+                        src="https://www.youtube.com/embed/gt6Q_UIF9_s?rel=0&amp;showinfo=0"
                         frameborder="0" allowfullscreen></iframe>
             </div>
             <a href="https://auth.en-marche.fr/oauth/v2/auth?response_type=code&client_id=cadfecad-4b9a-4e29-b9ce-514222f8d028&redirect_uri=https://360l.en-marche.fr/auth&scope=&state="
