@@ -24,6 +24,7 @@ class CitizenProjectCommandTest extends TestCase
         $citizenProjectCategory = $this->createMock(CitizenProjectCategory::class);
         $committee = $this->createMock(Committee::class);
         $assistanceNeeded = false;
+        $assistanceContent = null;
         $problemDescription = 'Problem description';
         $proposedSolution = 'Proposed solution';
         $requiredMeans = 'Required means';
@@ -36,6 +37,7 @@ class CitizenProjectCommandTest extends TestCase
             $citizenProjectCategory,
             $committee,
             $assistanceNeeded,
+            $assistanceContent,
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
@@ -53,6 +55,7 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertSame($citizenProjectCategory, $citizenProjectCommand->getCategory());
         $this->assertSame($committee, $citizenProjectCommand->getCommittee());
         $this->assertSame($assistanceNeeded, $citizenProjectCommand->isAssistanceNeeded());
+        $this->assertSame($assistanceContent, $citizenProjectCommand->getAssistanceContent());
         $this->assertSame($problemDescription, $citizenProjectCommand->getProblemDescription());
         $this->assertSame($proposedSolution, $citizenProjectCommand->getProposedSolution());
         $this->assertSame($requiredMeans, $citizenProjectCommand->getRequiredMeans());

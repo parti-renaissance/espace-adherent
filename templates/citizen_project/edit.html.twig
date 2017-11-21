@@ -1,12 +1,16 @@
 {% extends 'citizen_project/_layout.html.twig' %}
 
-{% block page_title 'Modifier mon comité' %}
+{% block page_title 'Modifier mon project citoyen' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
+            {{ js.ckeditor('citizen_project_proposed_solution') }}
+            App.runCitizenProjectCreation();
         });
     </script>
 {% endblock %}
@@ -14,14 +18,21 @@
 {% block citizen_project_content %}
     <main>
         <section class="l__wrapper--medium space--30-0">
-            <a href="{{ path('app_citizen_project_show', {'slug': citizenProject.slug}) }}"
+            <a href="{{ path('app_citizen_project_show', {'slug': citizen_project.slug}) }}"
                class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
-                Retour au comité</a>
+                Retour au projet citoyen</a>
+
+            {% if not citizen_project.isApproved %}
+                <div class="committee__waiting-for-approval">
+                    Votre project citoyen est en attente de validation par les équipes d'En Marche !
+                    Vous serez alerté(e) par e-mail quand nous l'aurons accepté.
+                </div>
+            {% endif %}
 
             <header class="space--30-0">
                 <h1 class="b__nudge--bottom-small text--medium">
-                    Modifier mon comité
+                    Modifier mon projet citoyen
                 </h1>
             </header>
 
@@ -31,7 +42,7 @@
                     <button type="submit" id="edit-citizen-project" class="btn btn--blue">
                         Enregistrer
                     </button>
-                    <a href="{{ path('app_citizen_project_show', {'slug': citizenProject.slug}) }}" class="btn">
+                    <a href="{{ path('app_citizen_project_show', {'slug': citizen_project.slug}) }}" class="btn">
                         Annuler
                     </a>
                 </div>

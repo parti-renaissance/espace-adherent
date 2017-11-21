@@ -31,9 +31,14 @@ class CitizenProjectUpdateCommandHandler
 
         $citizenProject->update(
             $command->name,
-            $command->description,
-            $this->addressFactory->createFromNullableAddress($command->getAddress()),
-            $command->getPhone()
+            $command->subtitle,
+            $command->category,
+            $command->assistanceNeeded,
+            $command->assistanceContent,
+            $command->problemDescription,
+            $command->proposedSolution,
+            $command->requiredMeans,
+            $this->addressFactory->createFromNullableAddress($command->getAddress())
         );
 
         $this->manager->persist($citizenProject);
