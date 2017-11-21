@@ -15,7 +15,7 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     /** @var Adherent */
     private $adherent;
 
-    protected function __construct(Address $address = null)
+    public function __construct(Address $address = null)
     {
         parent::__construct($address);
     }
@@ -24,7 +24,6 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     {
         $dto = new self();
         $dto->adherent = $adherent;
-        $dto->phone = $adherent->getPhone();
 
         return $dto;
     }

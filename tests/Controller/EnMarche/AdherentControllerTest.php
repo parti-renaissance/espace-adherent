@@ -467,17 +467,39 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(0)->text());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(1)->text());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(2)->text());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(3)->text());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(4)->text());
+        dump($this->client->getCrawler()->filter('.form__errors')->eq(5)->text());
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
         );
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
         );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-problem-description > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-proposed-solution > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-required-means > .form__errors > li')->text()
+        );
+//        $this->assertSame(
+//            'Cette valeur ne doit pas être vide.',
+//            $this->client->getCrawler()->filter('#citizen-project-address > .form__errors > li')->text()
+//        );
 
         $data = [];
         $data['citizen_project']['name'] = 'P';
@@ -503,13 +525,15 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $data = [];
         $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['description'] = 'Mon premier projet citoyen';
-        $data['citizen_project']['address']['address'] = 'Pilgerweg 58';
-        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
+        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['category'] = 1;
+        $data['citizen_project']['problem_descriptio'] = 'Le problème local.';
+        $data['citizen_project']['proposed_solution'] = 'Ma solution. ';
+        $data['citizen_project']['required_means'] = 'Mes actions.';
         $data['citizen_project']['address']['postalCode'] = '8802';
+        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
         $data['citizen_project']['address']['country'] = 'CH';
-        $data['citizen_project']['phone']['country'] = 'CH';
-        $data['citizen_project']['phone']['number'] = '31 359 21 11';
+        $data['citizen_project']['assistance_needed'] = 1;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
         $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);

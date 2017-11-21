@@ -24,7 +24,7 @@ class GeocodableAddressValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, GeocodableAddress::class);
         }
 
-        if (null === $address || '' === $address) {
+        if ($constraint->withAddress && (null === $address || '' === $address)) {
             return;
         }
 

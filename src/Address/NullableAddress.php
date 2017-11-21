@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertValidAddress
- * @AssertGeocodableAddress
+ * @AssertGeocodableAddress(withAddress=false)
  */
 class NullableAddress implements AddressInterface, GeocodableInterface
 {

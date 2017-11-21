@@ -18,34 +18,30 @@ class CitizenProjectFactory
 
     public function createFromArray(array $data): CitizenProject
     {
-        foreach (['name', 'description', 'created_by'] as $key) {
+        foreach (['uuid', 'name', 'subtitle', 'category', 'problem_description', 'proposed_solution', 'required_means', 'created_by'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
-        }
-
-        $phone = null;
-        if (isset($data['phone'])) {
-            $phone = $this->createPhone($data['phone']);
         }
 
         $uuid = isset($data['uuid'])
             ? Uuid::fromString($data['uuid'])
             : CitizenProject::createUuid($data['name']);
 
-        $citizenProject = CitizenProject::createSimple(
+        $citizenProject = new CitizenProject(
             $uuid,
-            $data['created_by'],
+            Uuid::fromString($data['created_by']),
             $data['name'],
-            $data['description'],
-            $data['address'] ?? null,
-            $phone,
-            $data['created_at'] ?? 'now'
+            $data['subtitle'],
+            $data['category'],
+            isset($data['assistance_needed']) ? $data['assistance_needed'] : false,
+            $data['problem_description'],
+            $data['proposed_solution'],
+            $data['required_means'],
+            isset($data['address']) ? $data['address'] : null,
+            isset($data['slug']) ? $data['slug'] : null,
+            isset($data['status']) ? $data['status'] : CitizenProject::PENDING
         );
-
-        if (isset($data['slug'])) {
-            $citizenProject->updateSlug($data['slug']);
-        }
 
         return $citizenProject;
     }
@@ -62,9 +58,13 @@ class CitizenProjectFactory
         $citizenProject = CitizenProject::createForAdherent(
             $command->getAdherent(),
             $command->name,
-            $command->description,
-            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null,
-            $command->getPhone()
+            $command->subtitle,
+            $command->category,
+            $command->assistanceNeeded,
+            $command->problemDescription,
+            $command->proposedSolution,
+            $command->requiredMeans,
+            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
         );
 
         return $citizenProject;
