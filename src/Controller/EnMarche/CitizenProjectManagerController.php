@@ -42,10 +42,11 @@ class CitizenProjectManagerController extends Controller
             ]);
         }
 
-        return $this->render('citizen_project_manager/edit.html.twig', [
+        return $this->render('citizen_project/edit.html.twig', [
             'form' => $form->createView(),
             'citizen_project' => $citizenProject,
             'citizen_project_administrators' => $this->get('app.citizen_project.manager')->getCitizenProjectAdministrators($citizenProject),
+            'citizen_project_followers' => $this->get('app.citizen_project.manager')->getCitizenProjectFollowers($citizenProject),
         ]);
     }
 }
