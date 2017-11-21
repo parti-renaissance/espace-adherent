@@ -6,10 +6,8 @@ use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectFeedItem;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CitizenProjectFeedItemRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -188,6 +186,9 @@ class CitizenProjectManager
     {
         $citizenProject->approved();
 
+        $creator = $this->getAdherentRepository()->findOneByUuid($citizenProject->getCreatedBy());
+        $this->changePrivilege($creator, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
+
         if ($flush) {
             $this->getManager()->flush();
         }
@@ -287,11 +288,6 @@ class CitizenProjectManager
     private function getCitizenProjectRepository(): CitizenProjectRepository
     {
         return $this->registry->getRepository(CitizenProject::class);
-    }
-
-    private function getCitizenProjectFeedItemRepository(): CitizenProjectFeedItemRepository
-    {
-        return $this->registry->getRepository(CitizenProjectFeedItem::class);
     }
 
     private function getCitizenProjectMembershipRepository(): CitizenProjectMembershipRepository

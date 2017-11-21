@@ -192,6 +192,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             $this->createMock(CitizenProjectCategory::class),
             $committee,
             false,
+            null,
             'Problem description',
             'Proposed solution',
             'Required means',

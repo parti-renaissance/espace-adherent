@@ -120,6 +120,7 @@ class CitizenProject extends BaseGroup
         CitizenProjectCategory $category,
         ?Committee $committee,
         bool $assistanceNeeded = false,
+        ?string $assistanceContent = null,
         string $problemDescription = '',
         string $proposedSolution = '',
         string $requiredMeans = '',
@@ -149,6 +150,7 @@ class CitizenProject extends BaseGroup
         $this->postAddress = $address;
         $this->phone = $phone;
         $this->assistanceNeeded = $assistanceNeeded;
+        $this->assistanceContent = $assistanceContent;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
@@ -177,6 +179,11 @@ class CitizenProject extends BaseGroup
     public function getGeocodableAddress(): string
     {
         return $this->postAddress ? $this->postAddress->getGeocodableAddress() : '';
+    }
+
+    public function setCategory(CitizenProjectCategory $category): void
+    {
+        $this->category = $category;
     }
 
     public function getCategory(): CitizenProjectCategory
@@ -271,7 +278,8 @@ class CitizenProject extends BaseGroup
         string $subtitle,
         CitizenProjectCategory $category,
         PhoneNumber $phone,
-        string $assistanceNeeded,
+        bool $assistanceNeeded,
+        ?string $assistanceContent,
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
@@ -287,6 +295,7 @@ class CitizenProject extends BaseGroup
             $category,
             $committee,
             $assistanceNeeded,
+            $assistanceContent,
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
@@ -316,9 +325,25 @@ class CitizenProject extends BaseGroup
         $this->refusedAt = null;
     }
 
-    public function update(string $name, NullablePostAddress $address): void
-    {
+    public function update(
+        string $name,
+        string $subtitle,
+        CitizenProjectCategory $category,
+        bool $assistanceNeeded,
+        string $assistanceContent,
+        string $problemDescription,
+        string $proposedSolution,
+        string $requiredMeans,
+        NullablePostAddress $address
+    ): void {
         $this->setName($name);
+        $this->setSubtitle($subtitle);
+        $this->setCategory($category);
+        $this->setAssistanceNeeded($assistanceNeeded);
+        $this->setAssistanceContent($assistanceContent);
+        $this->setProblemDescription($problemDescription);
+        $this->setProposedSolution($proposedSolution);
+        $this->setRequiredMeans($requiredMeans);
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;

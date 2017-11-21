@@ -35,7 +35,7 @@ class AdminCitizenProjectController extends Controller
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be approved.', $citizenProject->getId()), $exception);
         }
 
-        return $this->redirectToRoute('admin_app_citizen_project_list');
+        return $this->redirectToRoute('admin_app_citizenproject_list');
     }
 
     /**
@@ -54,7 +54,7 @@ class AdminCitizenProjectController extends Controller
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be refused.', $citizenProject->getId()), $exception);
         }
 
-        return $this->redirectToRoute('admin_app_citizen_project_list');
+        return $this->redirectToRoute('admin_app_citizenproject_list');
     }
 
     /**
@@ -90,7 +90,7 @@ class AdminCitizenProjectController extends Controller
             $this->addFlash('error', $e->getMessage());
         }
 
-        return $this->redirectToRoute('app_admin_citizen_project_members', [
+        return $this->redirectToRoute('app_admin_citizenproject_members', [
             'id' => $citizenProject->getId(),
         ]);
     }
