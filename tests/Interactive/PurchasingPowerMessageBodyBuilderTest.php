@@ -31,31 +31,40 @@ EOF;
 
         $this
             ->repository
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('findMailIntroduction')
             ->willReturn($this->createChoice(0, $introductionText));
 
         $this
             ->repository
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('findMailConclusion')
             ->willReturn($this->createChoice(0, $conclusionText));
 
         $this
             ->repository
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('findMailCommon')
             ->willReturn($this->createChoice(0, $commonText));
 
-        $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor());
+        $friendPosition = $this->createArgumentChoice(1, 'Tu n’as pas à t\'inquiéter de la hausse de la CSG, qui permet de redonner du pouvoir d\'achat aux salariés et indépendants du secteur privé.');
+        $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor($friendPosition));
 
         $this->assertSame(
             file_get_contents(__DIR__.'/../Fixtures/files/purchasing_power_mail.html'),
             $purchasingPower->messageContent
         );
+
+        $friendPosition = $this->createArgumentChoice(1, '');
+        $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor($friendPosition));
+
+        $this->assertSame(
+            file_get_contents(__DIR__.'/../Fixtures/files/purchasing_power_mail_with_empty_argument.html'),
+            $purchasingPower->messageContent
+        );
     }
 
-    private function createPurchasingPowerProcessor(): PurchasingPowerProcessor
+    private function createPurchasingPowerProcessor(PurchasingPowerChoice $friendPosition): PurchasingPowerProcessor
     {
         $purchasingPower = new PurchasingPowerProcessor();
 
@@ -67,7 +76,7 @@ EOF;
         $purchasingPower->selfFirstName = 'Sophie';
         $purchasingPower->selfLastName = 'Dupont';
         $purchasingPower->selfEmail = 'sophie.dupont@test.com';
-        $purchasingPower->friendPosition = $this->createArgumentChoice(1, 'Tu n’as pas à t\'inquiéter de la hausse de la CSG, qui permet de redonner du pouvoir d\'achat aux salariés et indépendants du secteur privé.');
+        $purchasingPower->friendPosition = $friendPosition;
         $purchasingPower->friendCases = [
             $this->createArgumentChoice(2, 'Nous sommes convaincus que le travail doit mieux payer pour tous les actifs.'),
             $this->createArgumentChoice(2, 'La protection des publics fragiles est au cœur de ce projet de loi de finances.'),
