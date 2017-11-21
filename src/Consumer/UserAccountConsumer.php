@@ -41,6 +41,10 @@ class UserAccountConsumer implements ConsumerInterface
             }
 
             switch ($key = $message->get('routing_key')) {
+                case 'user.creation':
+                    $this->logger->info('ACK user.creation message.', ['message' => $message]);
+
+                    return true;
                 case 'user.modification':
                     return $this->updateUser($key, $data);
                 case 'user.deletion':
