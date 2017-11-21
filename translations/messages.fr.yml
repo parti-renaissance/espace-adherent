@@ -74,6 +74,7 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 # CitizenProject
 #
 citizen_project.creation.success: Votre projet citoyen est en attente de validation par l'équipe de LaREM. Vous en serez informé(e) par mail. Une fois validée, vous pourrez vous organiser les citoyens qui la réjoignent.
+citizen_project.update.success: Les informations du projet citoyen ont été mises à jour avec succès.
 
 #
 # Summary

@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Exception\BadUuidRequestException;
@@ -231,6 +232,8 @@ class AdherentController extends Controller
             if ($fromType && $fromId) {
                 if ('committee' === $fromType) {
                     $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
+                } elseif ('citizen_project' === $fromType) {
+                    $from = $this->getDoctrine()->getRepository(CitizenProject::class)->findOneByUuid($fromId);
                 } else {
                     $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
                 }

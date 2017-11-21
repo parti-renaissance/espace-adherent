@@ -32,7 +32,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
         $eventFactory = $this->getEventFactory();
         $registrationFactory = $this->getEventRegistrationFactory();
 
-        $citizenAction1 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne1 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_1_UUID,
             'citizen_project' => $this->getReference('citizen-project-3'),
             'organizer' => $this->getReference('adherent-1'),
@@ -44,11 +44,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
             'capacity' => 20,
         ]);
-        $citizenAction1->setPublished(true);
-        $citizenAction1->setWasPublished(true);
-        $citizenAction1->incrementParticipantsCount();
+        $actionCitoyenne1->setPublished(true);
+        $actionCitoyenne1->setWasPublished(true);
+        $actionCitoyenne1->incrementParticipantsCount();
 
-        $citizenAction2 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne2 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_2_UUID,
             'citizen_project' => $this->getReference('citizen-project-2'),
             'organizer' => $this->getReference('adherent-2'),
@@ -60,11 +60,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+ 9 days')).' 19:00:00'),
             'capacity' => 30,
         ]);
-        $citizenAction2->setPublished(false);
-        $citizenAction2->setWasPublished(true);
-        $citizenAction2->incrementParticipantsCount();
+        $actionCitoyenne2->setPublished(false);
+        $actionCitoyenne2->setWasPublished(true);
+        $actionCitoyenne2->incrementParticipantsCount();
 
-        $citizenAction3 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne3 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_3_UUID,
             'citizen_project' => $this->getReference('citizen-project-1'),
             'organizer' => $this->getReference('adherent-3'),
@@ -76,11 +76,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 16:00:00'),
             'capacity' => 20,
         ]);
-        $citizenAction3->setPublished(true);
-        $citizenAction3->setWasPublished(true);
-        $citizenAction3->incrementParticipantsCount();
+        $actionCitoyenne3->setPublished(true);
+        $actionCitoyenne3->setWasPublished(true);
+        $actionCitoyenne3->incrementParticipantsCount();
 
-        $citizenAction4 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne4 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_4_UUID,
             'citizen_project' => $this->getReference('citizen-project-1'),
             'organizer' => $this->getReference('adherent-3'),
@@ -92,11 +92,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 15:00:00'),
             'capacity' => 20,
         ]);
-        $citizenAction4->setPublished(true);
-        $citizenAction4->setWasPublished(true);
-        $citizenAction4->incrementParticipantsCount();
+        $actionCitoyenne4->setPublished(true);
+        $actionCitoyenne4->setWasPublished(true);
+        $actionCitoyenne4->incrementParticipantsCount();
 
-        $citizenAction5 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne5 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_5_UUID,
             'citizen_project' => $this->getReference('citizen-project-3'),
             'organizer' => $this->getReference('adherent-13'),
@@ -108,11 +108,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 12:00:00'),
             'capacity' => 10,
         ]);
-        $citizenAction5->setPublished(true);
-        $citizenAction5->setWasPublished(true);
-        $citizenAction5->incrementParticipantsCount();
+        $actionCitoyenne5->setPublished(true);
+        $actionCitoyenne5->setWasPublished(true);
+        $actionCitoyenne5->incrementParticipantsCount();
 
-        $citizenAction6 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne6 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_6_UUID,
             'citizen_project' => $this->getReference('citizen-project-4'),
             'organizer' => $this->getReference('adherent-13'),
@@ -124,12 +124,12 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 18:00:00'),
             'capacity' => 5,
         ]);
-        $citizenAction6->setPublished(true);
-        $citizenAction6->setWasPublished(true);
-        $citizenAction6->cancel();
-        $citizenAction6->incrementParticipantsCount();
+        $actionCitoyenne6->setPublished(true);
+        $actionCitoyenne6->setWasPublished(true);
+        $actionCitoyenne6->cancel();
+        $actionCitoyenne6->incrementParticipantsCount();
 
-        $citizenAction7 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne7 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_7_UUID,
             'citizen_project' => $this->getReference('citizen-project-9'),
             'organizer' => $this->getReference('adherent-13'),
@@ -141,11 +141,11 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
             'capacity' => 10,
         ]);
-        $citizenAction7->setPublished(true);
-        $citizenAction7->setWasPublished(true);
-        $citizenAction7->incrementParticipantsCount(10);
+        $actionCitoyenne7->setPublished(true);
+        $actionCitoyenne7->setWasPublished(true);
+        $actionCitoyenne7->incrementParticipantsCount(10);
 
-        $citizenAction8 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne8 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_8_UUID,
             'citizen_project' => $this->getReference('citizen-project-9'),
             'organizer' => $this->getReference('adherent-13'),
@@ -158,7 +158,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 10,
         ]);
 
-        $citizenAction9 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne9 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_9_UUID,
             'citizen_project' => $this->getReference('citizen-project-2'),
             'organizer' => $this->getReference('adherent-3'),
@@ -170,30 +170,30 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 12:00:00'),
             'capacity' => 10,
         ]);
-        $citizenAction9->setPublished(true);
-        $citizenAction9->setWasPublished(true);
-        $citizenAction9->incrementParticipantsCount(2);
+        $actionCitoyenne9->setPublished(true);
+        $actionCitoyenne9->setWasPublished(true);
+        $actionCitoyenne9->incrementParticipantsCount(2);
 
-        $manager->persist($citizenAction1);
-        $manager->persist($citizenAction2);
-        $manager->persist($citizenAction3);
-        $manager->persist($citizenAction4);
-        $manager->persist($citizenAction5);
-        $manager->persist($citizenAction6);
-        $manager->persist($citizenAction7);
-        $manager->persist($citizenAction8);
-        $manager->persist($citizenAction9);
+        $manager->persist($actionCitoyenne1);
+        $manager->persist($actionCitoyenne2);
+        $manager->persist($actionCitoyenne3);
+        $manager->persist($actionCitoyenne4);
+        $manager->persist($actionCitoyenne5);
+        $manager->persist($actionCitoyenne6);
+        $manager->persist($actionCitoyenne7);
+        $manager->persist($actionCitoyenne8);
+        $manager->persist($actionCitoyenne9);
 
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction1, $this->getReference('adherent-1'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction2, $this->getReference('adherent-2'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction3, $this->getReference('adherent-3'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction4, $this->getReference('adherent-3'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction5, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction6, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction7, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction8, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction9, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($citizenAction9, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne1, $this->getReference('adherent-1'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne2, $this->getReference('adherent-2'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne3, $this->getReference('adherent-3'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-3'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne5, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne6, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne7, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne8, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
 
         $manager->flush();
     }

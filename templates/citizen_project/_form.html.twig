@@ -20,8 +20,8 @@
     }) }}
 </div>
 
-<p class="group-optional">Situez géographiquement votre groupe (facultatif)</p>
-<div class="form__row" id="group-address">
+<p class="citizen-project-optional">Situez géographiquement votre projet citoyen (facultatif)</p>
+<div class="form__row" id="citizen-project-address">
     {{ form_errors(form.address) }}
     <div class="l__row l__row--h-stretch register__form--full" id="field-address">
         {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <p class="group-optional">Téléphone (facultatif)</p>
+    <p class="citizen-project-optional">Téléphone (facultatif)</p>
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="l__col l__col--top register__form__phone register__form--third">
             {{ form_label(form.phone, 'Téléphone', { 'label_attr': {'class': 'text--gray'} }) }}

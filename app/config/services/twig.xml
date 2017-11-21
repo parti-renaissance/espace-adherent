@@ -33,6 +33,14 @@
             <tag name="twig.runtime"/>
         </service>
 
+        <service id="AppBundle\Twig\CitizenProjectExtension" />
+
+        <service id="AppBundle\Twig\CitizenProjectRuntime">
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="app.citizen_project.manager"/>
+            <tag name="twig.runtime"/>
+        </service>
+
         <service id="AppBundle\Twig\FormExtension" />
 
         <service id="AppBundle\Twig\FormRuntime">
