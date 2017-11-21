@@ -76,3 +76,4 @@ parameters:
 
     env(AUTH_USER_PROFILE): 'http://auth.enmarche.dev/espace-personnel/edit'
     env(AUTH_FORGOT_PASSWORD): 'http://auth.enmarche.dev/forgot-password'
+    env(AUTH_UNSUBSCRIBE): 'http://auth.enmarche.dev/espace-personnel/unsubscribe'

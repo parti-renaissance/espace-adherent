@@ -28,6 +28,7 @@ parameters:
     legislatives_host:           '%env(LEGISLATIVES_HOST)%'
     auth_user_profile:           '%env(AUTH_USER_PROFILE)%'
     auth_forgot_password:        '%env(AUTH_FORGOT_PASSWORD)%'
+    auth_unsubscribe:            '%env(AUTH_UNSUBSCRIBE)%'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }
