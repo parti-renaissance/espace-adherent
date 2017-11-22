@@ -129,10 +129,10 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('isBoardMember', 'boolean', [
                     'label' => 'Est membre du Conseil ?',
                 ])
-                ->add('boardMemberArea', null, [
+                ->add('boardMember.area', null, [
                     'label' => 'Région',
                 ])
-                ->add('boardMemberRoles', null, [
+                ->add('boardMember.roles', null, [
                     'label' => 'Rôles',
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
                 ])
