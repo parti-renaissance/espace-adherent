@@ -325,6 +325,6 @@ class CitizenProjectManager
 
     public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
     {
-        return $this->getAdherentRepository()->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
+        return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
     }
 }

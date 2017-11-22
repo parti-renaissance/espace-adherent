@@ -4,7 +4,6 @@ namespace AppBundle\CitizenProject;
 
 use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

@@ -11,7 +11,6 @@ use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
 {
@@ -21,19 +20,15 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private $creationNotificationProducer;
     private $manager;
     private $mailer;
-    private $urlGenerator;
 
     public function __construct(
         ProducerInterface $creationNotificationProducer,
         CitizenProjectManager $manager,
-        MailerService $mailer,
-        UrlGeneratorInterface $urlGenerator
-    )
-    {
+        MailerService $mailer
+    ) {
         $this->creationNotificationProducer = $creationNotificationProducer;
         $this->manager = $manager;
         $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function onCitizenProjectApprove(CitizenProjectWasApprovedEvent $event): void
@@ -44,38 +39,29 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     public function onCitizenProjectCreation(CitizenProjectWasCreatedEvent $event): void
     {
-        $this->sendCreatorConfirmationCreation($event->getCreator());
+        $this->sendCreatorConfirmationCreation($event->getCreator(), $event->getCitizenProject());
     }
 
-    public function sendAdherentNotificationCreation(Adherent $adherent): void
+    public function sendAdherentNotificationCreation(Adherent $adherent, CitizenProject $citizenProject): void
     {
-        /*
-         * si l'adhérent n'a pas de notification activé => return
-         * si l'adhérent a activé toutes les notifications => envoie direct
-         * si l'adherent est à une distance de notification inférieur ou égale du PC
-         */
-        $this->mailer->sendMessage(CitizenProjectCreationNotificationMessage::create($adherent));
+        $this->mailer->sendMessage(CitizenProjectCreationNotificationMessage::create($adherent, $citizenProject));
     }
 
-    public function sendCreatorApprove(Adherent $creator, CitizenProject $citizenProject): void
+    private function sendCreatorApprove(Adherent $creator, CitizenProject $citizenProject): void
     {
-        $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create(
-            $creator,
-            $citizenProject->getCityName(),
-            $this->urlGenerator->generate('app_citizen_project_show', ['slug' => $citizenProject->getSlug()])
-        ));
+        $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($creator, $citizenProject));
     }
 
-    public function sendCreatorConfirmationCreation(Adherent $creator): void
+    private function sendCreatorConfirmationCreation(Adherent $creator, CitizenProject $citizenProject): void
     {
-        $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create($creator));
+        $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create($creator, $citizenProject));
     }
 
     private function scheduleCreationNotification(CitizenProject $citizenProject): void
     {
         $this->creationNotificationProducer->publish(\GuzzleHttp\json_encode([
             'uuid' => $citizenProject->getUuid()->toString(),
-            'offset' => 0
+            'offset' => 0,
         ]));
     }
 

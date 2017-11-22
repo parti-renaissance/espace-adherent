@@ -2,12 +2,14 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Membership\AdherentEmailSubscription;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
@@ -119,6 +121,33 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
 
         $this->assertEquals(true, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
         $this->assertEquals(false, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isFollower());
+    }
+
+    public function testFindAdherentNearCitizenProjectOrAcceptAllNotification()
+    {
+        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+        $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject);
+
+        $this->assertSame(3, $adherents->count());
+
+        $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, false);
+
+        $this->assertSame(4, $adherents->count());
+
+        $adherent = $this->getAdherentRepository()->findByEmail('francis.brioul@yahoo.com');
+        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
+        $this->getManagerRegistry()->getManager()->persist($adherent);
+
+        $adherent = $this->getAdherentRepository()->findByEmail('referent@en-marche-dev.fr');
+        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
+        $this->getManagerRegistry()->getManager()->persist($adherent);
+
+        $this->getManagerRegistry()->getManager()->flush();
+        $this->getManagerRegistry()->getManager()->clear();
+
+        $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, true, CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN);
+
+        $this->assertSame(5, $adherents->count());
     }
 
     private function getCitizenProjectMock(string $uuid)
