@@ -72,7 +72,7 @@ final class PurchasingPowerProcessor
     public $friendCases = [];
 
     /**
-     * @Assert\Count(min=2, max=2, exactMessage="interactive.friend_appreciations.count", groups={"fill_appreciations"})
+     * @Assert\Count(min=1, max=2, minMessage="interactive.friend_appreciations.min", maxMessage="interactive.friend_appreciations.max", groups={"fill_appreciations"})
      * @Assert\All({
      *     @Assert\Type("AppBundle\Entity\PurchasingPowerChoice")
      * }, groups={"fill_appreciations"})
