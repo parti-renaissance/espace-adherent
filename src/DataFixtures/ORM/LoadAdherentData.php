@@ -283,6 +283,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent12->getBoardMember()->addSavedBoardMember($adherent11->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent10->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
+        $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->enableCommitteesNotifications();
         $adherent12->setLegislativeCandidate(true);
         $this->addReference('adherent-12', $adherent12);

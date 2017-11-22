@@ -199,4 +199,9 @@ class BoardMember
     {
         return $this->savedMembers->contains($boardMember);
     }
+
+    public function revoke(): void
+    {
+        $this->adherent = null;
+    }
 }
