@@ -2,17 +2,17 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManagementAuthority;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
+use AppBundle\Events;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @functional
@@ -25,22 +25,29 @@ class CitizenProjectManagementAuthorityTest extends TestCase
         $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
 
         $manager = $this->createManager($administrator);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher->expects($this->once())->method('dispatch')->with(Events::CITIZEN_PROJECT_APPROVED, new CitizenProjectWasApprovedEvent($citizenProject));
+
         // ensure citizen project is approved
         $manager->expects($this->once())->method('approveCitizenProject')->with($citizenProject);
 
-        $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->at(0))
-            ->method('sendMessage')
-            ->with($this->isInstanceOf(CitizenProjectApprovalConfirmationMessage::class));
-
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->any())->method('generate')->willReturn(sprintf(
-            '/projets-citoyens/%s',
-            'mooc-paris'
-        ));
-
-        $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $urlGenerator, $mailer);
+        $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
         $citizenProjectManagementAuthority->approve($citizenProject);
+    }
+
+    public function testRefuse()
+    {
+        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
+        $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
+
+        $manager = $this->createManager($administrator);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+
+        // ensure citizen project is approved
+        $manager->expects($this->once())->method('refuseCitizenProject')->with($citizenProject);
+
+        $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
+        $citizenProjectManagementAuthority->refuse($citizenProject);
     }
 
     private function createCitizenProject(string $uuid, string $cityName): CitizenProject
