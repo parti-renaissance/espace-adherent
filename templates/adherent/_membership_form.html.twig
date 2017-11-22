@@ -17,8 +17,11 @@
                 {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
                 {{ form_errors(form.address.city) }}
             </div>
-             <div class="register__form__zip_code register__form--mid">
+            <div class="register__form__zip_code register__form--mid">
                 {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                {% if isCreateForm is not defined or not isCreateForm %}
+                    <a href="{{ authProfileUpdateUrl }}">Changer mon code postal</a>
+                {% endif %}
             </div>
         </div>
 

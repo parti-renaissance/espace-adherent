@@ -15,11 +15,11 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
-            App.runRegistration();
+            {{ js.address(form.address, {cityAutocomplete: true}) }}
         });
     </script>
 {% endblock %}
