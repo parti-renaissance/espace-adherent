@@ -29,8 +29,8 @@ class PurchasingPowerChoice extends InteractiveChoice
     {
         return [
             self::STEP_FRIEND_PROFESSIONAL_POSITION,
-            self::STEP_FRIEND_APPRECIATIONS,
             self::STEP_FRIEND_CASES,
+            self::STEP_FRIEND_APPRECIATIONS,
         ];
     }
 }
