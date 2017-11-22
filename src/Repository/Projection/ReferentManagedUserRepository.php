@@ -43,6 +43,10 @@ class ReferentManagedUserRepository extends EntityRepository
         $qb = $this->createFilterQueryBuilder($referent, $filter);
         $qb->andWhere('u.isMailSubscriber = 1');
 
+        if ($filter) {
+            $qb->setFirstResult($filter->getOffset());
+        }
+
         return $qb->getQuery()->iterate();
     }
 

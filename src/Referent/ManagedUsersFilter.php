@@ -2,6 +2,7 @@
 
 namespace AppBundle\Referent;
 
+use AppBundle\Entity\ReferentManagedUsersMessage;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -33,35 +34,20 @@ class ManagedUsersFilter
     private $offset = 0;
     private $token = '';
 
-    public static function createFromArray(array $data): self
+    public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
         $filter = new self();
-        $filter->includeNewsletter = $data[self::PARAMETER_INCLUDE_NEWSLETTER] ?? true;
-        $filter->includeAdherentsNoCommittee = $data[self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE] ?? true;
-        $filter->includeAdherentsInCommittee = $data[self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE] ?? true;
-        $filter->includeHosts = $data[self::PARAMETER_INCLUDE_HOSTS] ?? true;
-        $filter->includeSupevisors = $data[self::PARAMETER_INCLUDE_SUPERVISORS] ?? true;
-        $filter->queryAreaCode = $data[self::PARAMETER_QUERY_AREA_CODE] ?? '';
-        $filter->queryCity = $data[self::PARAMETER_QUERY_CITY] ?? '';
-        $filter->queryId = $data[self::PARAMETER_QUERY_ID] ?? '';
-        $filter->offset = $data[self::PARAMETER_OFFSET] ?? 0;
+        $filter->includeNewsletter = $message->includeNewsletter();
+        $filter->includeAdherentsNoCommittee = $message->includeAdherentsNoCommittee();
+        $filter->includeAdherentsInCommittee = $message->includeAdherentsInCommittee();
+        $filter->includeHosts = $message->includeHosts();
+        $filter->includeSupevisors = $message->includeSupevisors();
+        $filter->queryAreaCode = $message->getQueryAreaCode();
+        $filter->queryCity = $message->getQueryCity();
+        $filter->queryId = $message->getQueryId();
+        $filter->offset = $message->getOffset();
 
         return $filter;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            self::PARAMETER_INCLUDE_NEWSLETTER => $this->includeNewsletter,
-            self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee,
-            self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee,
-            self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts,
-            self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupevisors,
-            self::PARAMETER_QUERY_AREA_CODE => $this->queryAreaCode,
-            self::PARAMETER_QUERY_CITY => $this->queryCity,
-            self::PARAMETER_QUERY_ID => $this->queryId,
-            self::PARAMETER_OFFSET => $this->offset,
-        ];
     }
 
     /**

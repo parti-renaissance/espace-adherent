@@ -2,17 +2,20 @@
 
 namespace Tests\AppBundle\Referent;
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Referent\ManagedUsersFilter;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class ManagedUsersFilterTest extends TestCase
 {
     /**
-     * @dataProvider dataProviderCreateFromArray
+     * @dataProvider dataProviderCreateFromMessage
      */
-    public function testCreateFromArray(array $data, array $expected): void
+    public function testCreateFromMessage(ReferentManagedUsersMessage $message, array $expected): void
     {
-        $filter = ManagedUsersFilter::createFromArray($data);
+        $filter = ManagedUsersFilter::createFromMessage($message);
 
         $this->assertSame($expected['includeNewsletter'], $filter->includeNewsletter());
         $this->assertSame($expected['includeAdherentsNoCommittee'], $filter->includeAdherentsNoCommittee());
@@ -26,21 +29,24 @@ class ManagedUsersFilterTest extends TestCase
         $this->assertSame($expected['token'], $filter->getToken());
     }
 
-    public function dataProviderCreateFromArray(): array
+    public function dataProviderCreateFromMessage(): array
     {
         return [
             [
-                [
-                    'n' => false,
-                    'anc' => true,
-                    'aic' => false,
-                    'h' => true,
-                    's' => false,
-                    'ac' => '06330',
-                    'city' => '',
-                    'id' => '1234',
-                    'o' => 10,
-                ],
+                new ReferentManagedUsersMessage(
+                    Uuid::uuid4(),
+                    $this->createMock(Adherent::class),
+                    'Random subject',
+                    'Here is the mail content',
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    '06330',
+                    '',
+                    '1234'
+                ),
                 [
                     'includeNewsletter' => false,
                     'includeAdherentsNoCommittee' => true,
@@ -50,22 +56,6 @@ class ManagedUsersFilterTest extends TestCase
                     'queryAreaCode' => '06330',
                     'queryCity' => '',
                     'queryId' => '1234',
-                    'offset' => 10,
-                    'token' => '',
-                ],
-            ],
-            // test default values
-            [
-                [],
-                [
-                    'includeNewsletter' => true,
-                    'includeAdherentsNoCommittee' => true,
-                    'includeAdherentsInCommittee' => true,
-                    'includeHosts' => true,
-                    'includeSupervisors' => true,
-                    'queryAreaCode' => '',
-                    'queryCity' => '',
-                    'queryId' => '',
                     'offset' => 0,
                     'token' => '',
                 ],

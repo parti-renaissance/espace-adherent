@@ -43,16 +43,16 @@
         </service>
 
         <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
-            <call method="setAdherentRepository">
-                <argument type="service" id="app.repository.adherent"/>
-            </call>
+            <argument type="service" id="app.consumer.service_locator" />
             <call method="setMailer">
                 <argument type="service" id="app.mailer.campaign"/>
             </call>
             <call method="setReferentManagedUserRepository">
                 <argument type="service" id="app.repository.referent_managed_user"/>
             </call>
-            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setReferentMessageRepository">
+                <argument type="service" id="app.repository.referent_managed_users_message"/>
+            </call>
         </service>
 
         <service id="app_abstract_consumer" class="AppBundle\Consumer\AbstractConsumer" abstract="true">

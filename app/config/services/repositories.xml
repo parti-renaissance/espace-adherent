@@ -129,5 +129,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.referent_managed_users_message" class="AppBundle\Repository\ReferentManagedUsersMessageRepository" public="false">
+            <argument>AppBundle\Entity\ReferentManagedUsersMessage</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>
