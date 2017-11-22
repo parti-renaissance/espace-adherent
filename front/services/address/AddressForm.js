@@ -1,26 +1,55 @@
 export default class AddressForm {
-    constructor(api, country, postalCode, city, cityName) {
+    constructor(api, country, postalCode, city, cityName, options = {}) {
         this._api = api;
         this._country = country;
         this._postalCode = postalCode;
         this._city = city;
         this._cityName = cityName;
+        this._options = options;
 
         this._initialCity = this._city.value;
         this._initialCityName = this._cityName.value;
+
+        this._autocomplete = null;
 
         this._state = {
             country: this._country.value,
             postalCode: this._postalCode.value.replace(' ', ''),
             cities: null,
-            loading: false
+            loading: false,
         };
     }
 
     prepare() {
-        this.resetCity();
-        this.resetSelect();
-        this.loadCities();
+        if (this.isCityAutocompleteMode()) {
+            this.initCityAutocomplete();
+        } else {
+            this.resetCity();
+            this.resetSelect();
+            this.loadCities();
+        }
+    }
+
+    initCityAutocomplete() {
+        if (null !== this._autocomplete) {
+            return;
+        }
+
+        const options = {
+            types: ['(cities)'],
+        };
+
+        if (this._state.country) {
+            options.componentRestrictions = {
+                country: this._state.country,
+            };
+        }
+
+        if ('undefined' !== typeof google) {
+            this._autocomplete = new google.maps.places.Autocomplete(this._cityName, options);
+        } else {
+            console.error('Google lib is undefined');
+        }
     }
 
     attachEvents() {
@@ -30,18 +59,38 @@ export default class AddressForm {
             this.refresh();
         };
 
+        const updateAutocomplete = () => {
+            this._autocomplete.setComponentRestrictions({
+                country: this._state.country,
+            });
+        };
+
         on(this._country, 'change', (event) => {
             this._state.country = event.target.value;
-            resetCityAndRefresh();
+            if (this._autocomplete) {
+                updateAutocomplete();
+            } else {
+                resetCityAndRefresh();
+            }
         });
 
         on(this._postalCode, 'input', (event) => {
             this._state.postalCode = event.target.value.replace(' ', '');
             resetCityAndRefresh();
         });
+
+        if (this._autocomplete) {
+            this._autocomplete.addListener('place_changed', () => {
+                this._cityName.value = this._autocomplete.getPlace().name;
+            });
+        }
     }
 
     refresh() {
+        if (this.isCityAutocompleteMode()) {
+            return;
+        }
+
         this.resetSelect();
         this.resetCity();
 
@@ -129,5 +178,9 @@ export default class AddressForm {
         opt.innerHTML = label;
 
         return opt;
+    }
+
+    isCityAutocompleteMode() {
+        return this._options.hasOwnProperty('cityAutocomplete') && true === this._options.cityAutocomplete;
     }
 }

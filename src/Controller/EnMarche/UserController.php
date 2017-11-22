@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/parametres/mon-compte")
@@ -52,6 +53,10 @@ class UserController extends Controller
 
         return $this->render('adherent/profile.html.twig', [
             'form' => $form->createView(),
+            'authProfileUpdateUrl' => $this->generateUrl('auth_user_profile', [
+                'redirect_uri' => $this->generateUrl('app_user_edit', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'client_id' => $this->getParameter('auth_client_id'),
+            ]),
         ]);
     }
 

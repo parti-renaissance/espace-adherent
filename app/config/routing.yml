@@ -24,7 +24,7 @@ auth_logout:
 auth_user_profile:
     path: /auth-user-profile
     defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
+        _controller: AppBundle:Redirecting:urlRedirect
         path: '%auth_user_profile%'
 
 auth_forgot_password:

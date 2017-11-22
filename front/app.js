@@ -50,9 +50,9 @@ class App {
         this._di.get('sharer').share(type, url, title);
     }
 
-    createAddressSelector(country, postalCode, city, cityName) {
+    createAddressSelector(country, postalCode, city, cityName, options = {}) {
         const formFactory = this._di.get('address.form_factory');
-        const form = formFactory.createAddressForm(country, postalCode, city, cityName);
+        const form = formFactory.createAddressForm(country, postalCode, city, cityName, options);
 
         form.prepare();
         form.refresh();
@@ -108,12 +108,6 @@ class App {
         System.import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
-    }
-
-    runRegistration() {
-        System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        })
     }
 
     runProcurationThanks() {
