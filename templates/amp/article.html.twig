@@ -3,6 +3,10 @@
 {% block title article.title %}
 {% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
+{% block meta %}
+    {{ include('article/_og_meta.html.twig') }}
+{% endblock %}
+
 {% block json_ld %}
     {% set image = article.media ? (homepage_url ~ (media_asset(article.media)|raw)) : default_sharer %}
     {% set image_width = article.media ? article.media.width : default_sharer_width %}
