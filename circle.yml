@@ -10,8 +10,6 @@ machine:
         DATABASE_USER: ubuntu
         DATABASE_PASSWORD: ''
         DATABASE_NAME: circle_test
-        AUTH_USER_PROFILE: 'http://example.org/user-profile'
-        AUTH_FORGOT_PASSWORD: 'http://example.org/forgot-password'
     hosts:
         enmarche.dev: 127.0.0.1
         m.enmarche.dev: 127.0.0.1
