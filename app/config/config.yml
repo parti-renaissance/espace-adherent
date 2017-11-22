@@ -247,7 +247,6 @@ old_sound_rabbit_mq:
         project_citizen_creation_notification:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
-            queue_options:    { name: 'project_citizen_creation_notification', durable: true }
 
     consumers:
         mailer_campaign:
