@@ -3,6 +3,30 @@
     letter-spacing: 0.3px;
     line-height: 1.62;
 
+    header {
+        margin-bottom: 30px;
+
+        h2 {
+            @include text--summary;
+
+            &.bigger {
+                @include text--default;
+            }
+        }
+
+        &.filtered-image:after {
+            @include classic-gradient($filter);
+        }
+
+        .list__links--svgs {
+            margin-bottom: 65px;
+
+            a {
+                color: white;
+            }
+        }
+    }
+
     h1, h2, h3 {
         @include text--large;
         font-family: $font-gillsans;
