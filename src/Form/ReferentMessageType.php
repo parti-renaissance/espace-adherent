@@ -17,10 +17,12 @@ class ReferentMessageType extends AbstractType
             ->add('subject', TextType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Entrez l\'objet de votre message'],
+                'filter_emojis' => true,
             ])
             ->add('content', TextareaType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Écrivez votre message'],
+                'filter_emojis' => true,
             ]);
     }
 
