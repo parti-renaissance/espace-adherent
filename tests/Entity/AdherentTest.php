@@ -4,9 +4,12 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\ActivityPositions;
+use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -114,6 +117,36 @@ class AdherentTest extends TestCase
 
         $adherent = $this->createAdherent('john.smith@en-marche.fr');
         $this->assertTrue(in_array('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles()));
+    }
+
+    public function testIsBasicAdherent()
+    {
+        // Basic
+        $adherent = $this->createAdherent();
+
+        $this->assertTrue($adherent->isBasicAdherent());
+
+        // Host
+        $adherent = $this->createAdherent();
+        $memberships = $adherent->getMemberships();
+
+        $membership = $this->createMock(CommitteeMembership::class);
+        $membership->expects($this->once())->method('canHostCommittee')->willReturn(true);
+        $memberships->add($membership);
+
+        $this->assertFalse($adherent->isBasicAdherent());
+
+        // Referent
+        $adherent = $this->createAdherent();
+        $adherent->setReferent(['CH', '06'], -1.6743, 48.112);
+
+        $this->assertFalse($adherent->isBasicAdherent());
+
+        // BoardMember
+        $adherent = $this->createAdherent();
+        $adherent->setBoardMember(BoardMember::AREA_ABROAD, new ArrayCollection());
+
+        $this->assertFalse($adherent->isBasicAdherent());
     }
 
     private function createAdherent($email = 'john.smith@example.org'): Adherent
