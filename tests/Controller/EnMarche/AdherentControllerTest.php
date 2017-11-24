@@ -533,7 +533,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
-        $categoryValue = $crawler->filter('#citizen_project_category option:contains("Emploi et formation professionnelle")')->attr('value');
+        $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
 
         $data = [];
         $data['citizen_project']['name'] = 'Mon projet citoyen';
