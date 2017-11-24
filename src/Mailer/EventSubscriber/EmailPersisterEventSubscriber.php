@@ -30,11 +30,14 @@ class EmailPersisterEventSubscriber implements EventSubscriberInterface
 
     public function onMailerDeliveryMessage(MailerEvent $event): void
     {
-        $email = $event->getEmail();
+        $emailTemplate = $event->getEmail();
         $message = $event->getMessage();
 
-        $this->manager->persist(Email::createFromMessage($message, $email->getHttpRequestPayload()));
+        $email = Email::createFromMessage($message, $emailTemplate->getHttpRequestPayload());
+
+        $this->manager->persist($email);
         $this->manager->flush();
+        $this->manager->detach($email);
     }
 
     public function onMailerDeliverySuccess(MailerEvent $event): void
