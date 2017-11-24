@@ -53,7 +53,7 @@ class CitizenProject extends BaseGroup
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(max=500)
      */
@@ -62,7 +62,7 @@ class CitizenProject extends BaseGroup
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(max=800)
      */
@@ -71,7 +71,7 @@ class CitizenProject extends BaseGroup
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(max=500)
      */
@@ -252,6 +252,7 @@ class CitizenProject extends BaseGroup
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
+        Committee $committee = null,
         NullablePostAddress $address = null,
         string $createdAt = 'now'
     ): self {
@@ -261,6 +262,7 @@ class CitizenProject extends BaseGroup
             $name,
             $subtitle,
             $category,
+            $committee,
             $assistanceNeeded,
             $problemDescription,
             $proposedSolution,
