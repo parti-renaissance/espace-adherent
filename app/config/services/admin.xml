@@ -474,6 +474,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.citizen_project_skill" class="AppBundle\Admin\CitizenProjectSkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Compétences" group="Projets citoyens" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenProjectSkill</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.citizen_action_category" class="AppBundle\Admin\CitizenActionCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Catégories des actions " group="Projets citoyens" />
 

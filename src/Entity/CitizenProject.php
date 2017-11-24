@@ -4,10 +4,11 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CitizenProject extends BaseGroup
 {
     use EntityNullablePostAddressTrait;
+    use SkillTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
@@ -98,14 +100,20 @@ class CitizenProject extends BaseGroup
     private $committee;
 
     /**
-     * @var UploadedFile|null
+     * @var Skill[]|Collection
      *
-     * @Assert\Image(
-     *     maxSize = "1M",
-     *     mimeTypes = {"image/jpeg", "image/png"},
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill")
+     * @ORM\JoinTable(
+     *     name="citizen_projects_skills",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="citizen_project_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="citizen_project_skill_id", referencedColumnName="id")
+     *     }
      * )
      */
-    private $image;
+    private $skills;
 
     /**
      * A cached list of the administrators (for admin).
@@ -164,6 +172,7 @@ class CitizenProject extends BaseGroup
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
+        $this->skills = new ArrayCollection();
     }
 
     public function getPostAddress(): NullablePostAddress
