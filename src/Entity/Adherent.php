@@ -755,9 +755,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->adherent;
     }
 
-    public function join()
+    public function join(): void
     {
         $this->adherent = true;
+    }
+
+    public function leave(): void
+    {
+        $this->adherent = false;
     }
 
     public function isReferent(): bool

@@ -95,34 +95,39 @@ class MembershipRequestHandler
         return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, $removeAccount = false)
     {
         $unregistrationFactory = new UnregistrationFactory();
         $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
 
         $this->manager->persist($unregistration);
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
-        $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
-        $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
+        $adherent->leave();
 
-        $this->removeAdherentMemberShips($adherent);
-        $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
-        $this->eventManager->removeOrganizerEvents($adherent);
-        $this->registrationManager->anonymizeAdherentRegistrations($adherent);
-        $this->committeeFeedManager->removeAuthorItems($adherent);
-        $this->activitySubscriptionManager->removeAdherentActivities($adherent);
+        if ($removeAccount) {
+            $summary = $this->manager->getRepository(Summary::class)->findOneForAdherent($adherent);
+            $token = $this->manager->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
 
-        if ($token) {
-            $this->manager->remove($token);
+            $this->removeAdherentMemberShips($adherent);
+            $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
+            $this->eventManager->removeOrganizerEvents($adherent);
+            $this->registrationManager->anonymizeAdherentRegistrations($adherent);
+            $this->committeeFeedManager->removeAuthorItems($adherent);
+            $this->activitySubscriptionManager->removeAdherentActivities($adherent);
+
+            if ($token) {
+                $this->manager->remove($token);
+            }
+            if ($summary) {
+                $this->manager->remove($summary);
+            }
+
+            $this->manager->remove($adherent);
         }
-        if ($summary) {
-            $this->manager->remove($summary);
-        }
-        $this->manager->remove($adherent);
+
         $this->manager->flush();
 
-        $this->mailjet->sendMessage($message);
+        $this->mailjet->sendMessage(AdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
     private function removeAdherentMemberShips(Adherent $adherent): void

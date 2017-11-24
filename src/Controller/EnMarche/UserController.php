@@ -102,8 +102,6 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.membership_request_handler')->terminateMembership($unregistrationCommand, $adherent);
-            $this->get('security.token_storage')->setToken(null);
-            $request->getSession()->invalidate();
 
             return $this->render('adherent/terminate_membership.html.twig', [
                 'unregistered' => true,

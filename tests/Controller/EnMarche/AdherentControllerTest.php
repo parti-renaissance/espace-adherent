@@ -543,9 +543,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentTerminatesMembership()
     {
-        $this->markTestSkipped('Waiting for 1757.');
-
-        /** @var Adherent $adherent */
+        /* @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
 
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
@@ -594,18 +592,19 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
-        $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
+        $this->assertSame('Votre désadhésion d\'En Marche a bien été prise en compte.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
+
+        /* @var Adherent $adherent */
+        $this->get('doctrine')->getManager()->clear();
+        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+
+        $this->assertFalse($adherent->isAdherent());
 
         $this->assertCount(1, $this->getMailjetEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
 
-        $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
-
-        /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
-
-        $this->assertNull($adherent);
+        $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
 
         /** @var Unregistration $unregistration */
         $unregistration = $this->getRepository(Unregistration::class)->findOneByUuid(LoadAdherentData::ADHERENT_13_UUID);
