@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @Route("/parametres/mon-compte")
  */
-class UserController extends Controller
+class UserController extends Controller implements NeedSyncUserInterface
 {
     const UNREGISTER_TOKEN = 'unregister_token';
 
