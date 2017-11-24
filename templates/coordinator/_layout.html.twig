@@ -1,45 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Espace coordinateur régional' %}
-{% block canonical_url url('app_coordinator_committees') %}
+{% block canonical_url url(coordinator_path) %}
 
 {% block content %}
     <main>
-        <section class="coordinator coordinator-committee-manager b__nudge--bottom-huge">
+        <section class="coordinator coordinator-area b__nudge--bottom-huge">
             <header class="hero">
                 <h1 class="">
                     {{ block('page_title') }}
                 </h1>
-                <p class="text--center">
-                    L’espace coordinateur vous permet d'apprécier les comités des
-                    zones que vous gérez. Seule l’équipe du QG sera en mesure de
-                    voir vos appréciations.
-                </p>
-                <p class="text--center">
-                    Zones gérées : {{ app.user.coordinatorManagedAreaCodesAsString }}.
-                </p>
+                {% block coordinator_area_header_description %}{% endblock %}
             </header>
 
-            <div class="l__wrapper coordinator-committee-manager__content">
-                {% set pages = [
-                    {
-                        'route': 'app_coordinator_committees',
-                        'status': constant('AppBundle\\Entity\\Committee::PENDING'),
-                        'label': 'Comités en attente'
-                    },
-                    {
-                        'route': 'app_coordinator_committees',
-                        'status': constant('AppBundle\\Entity\\Committee::PRE_APPROVED'),
-                        'label': 'Comités pré-validés'
-                    },
-                    {
-                        'route': 'app_coordinator_committees',
-                        'status': constant('AppBundle\\Entity\\Committee::PRE_REFUSED'),
-                        'label': 'Comités pré-refusés'
-                    }
-                ] %}
-
-                <ul class="list__links list__links--row coordinator-committee-manager__tabs b__nudge--top b__nudge--bottom">
+            <div class="l__wrapper coordinator-area__content">
+                <ul class="list__links list__links--row coordinator-area__tabs b__nudge--top b__nudge--bottom">
                     {% for page in pages %}
                         <li>
                             <a class="btn btn--small {{ app.request.query.has('s') and app.request.query.get('s') == page.status ? 'btn--black' : '' }}"
@@ -51,6 +26,33 @@
                 </ul>
 
                 {% block coordinator_content %}{% endblock %}
+
+                <div class="text--center text--gray">
+                    {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+                    {% set last_page = (filter.count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+
+                    {% if filter.offset > 0 %}
+                        <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
+                            Première
+                        </a>
+                        <a href="{{ path(coordinator_path) ~ filter.previousPageQueryString }}" class="btn btn--small">
+                            Précédente
+                        </a>
+                    {% endif %}
+
+                    {% if last_page != 0 %}
+                        <span class="text--summary">Page {{ current_page }} / {{ last_page }}</span>
+                    {% endif %}
+
+                    {% if filter.offset + constant('PER_PAGE', filter) < filter.count %}
+                        <a href="{{ path(coordinator_path) ~ filter.nextPageQueryString }}" class="btn btn--small">
+                            Suivante
+                        </a>
+                        <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
+                            Dernière
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </section>
     </main>

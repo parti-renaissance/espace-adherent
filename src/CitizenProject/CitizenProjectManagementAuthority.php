@@ -29,4 +29,14 @@ class CitizenProjectManagementAuthority
     {
         $this->manager->refuseCitizenProject($citizenProject);
     }
+
+    public function preRefuse(CitizenProject $citizenProject): void
+    {
+        $this->manager->preRefuseCitizenProject($citizenProject);
+    }
+
+    public function preApprove(CitizenProject $project): void
+    {
+        $this->manager->preApproveCitizenProject($project);
+    }
 }

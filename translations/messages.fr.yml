@@ -5,6 +5,9 @@ common.gender.mister: Monsieur
 common.gender.miss: Madame
 common.email_address: Adresse email
 common.zip_code: Code postal
+common.show_more: Voir plus
+common.show_less: Voir moins
+common.sector: Secteur
 
 #
 # Adherent
@@ -245,3 +248,11 @@ citizen_project.committees: Comité en soutien|Comités en soutien"
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
+
+#
+# Coordinator
+#
+coordinator.sector.committee: Secteur - Comités
+coordinator.sector.citizen_project: Secteur - Projets citoyens
+coordinator.label.codes: Codes des zones gérées
+coordinator.placeholder.sector: Veuillez choisir un secteur
