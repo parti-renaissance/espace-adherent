@@ -107,7 +107,7 @@ class UserAccountConsumer implements ConsumerInterface
             $unregistrationCommand->setReasons(['auth_account_remove']);
             $unregistrationCommand->setComment('none');
 
-            $this->membershipRequestHandler->terminateMembership($unregistrationCommand, $dbUser);
+            $this->membershipRequestHandler->terminateMembership($unregistrationCommand, $dbUser, true);
         } catch (\Exception $e) {
             $this->logger->error(
                 sprintf('[%s] Unable to remove Adherent (%s) account data.', $key, $data['uuid']),
