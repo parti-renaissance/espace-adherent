@@ -1,0 +1,41 @@
+{% extends 'coordinator/_layout.html.twig' %}
+
+{% set coordinator_path = 'app_coordinator_citizen_project' %}
+
+{% set pages = [
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\CitizenProject::PENDING'),
+        'label': 'Projet en attente'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\CitizenProject::PRE_APPROVED'),
+        'label': 'Projet pré-validés'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\CitizenProject::PRE_REFUSED'),
+        'label': 'Projet pré-refusés'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\CitizenProject::APPROVED'),
+        'label': 'Projet lancés'
+    }
+] %}
+
+{% block coordinator_content %}
+
+    {% if results|length %}
+        <div class="datagrid text--summary">
+            <div class="b__nudge--bottom-larger">
+                {{ include('coordinator/_citizen_project_list.html.twig') }}
+            </div>
+        </div>
+    {% else %}
+        <div class="text--body text--center">
+            Aucun projet ne répond à ce filtre
+        </div>
+    {% endif %}
+{% endblock %}
