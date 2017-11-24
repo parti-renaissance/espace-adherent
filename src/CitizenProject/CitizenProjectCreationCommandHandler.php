@@ -39,7 +39,5 @@ class CitizenProjectCreationCommandHandler
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::CITIZEN_PROJECT_CREATED, new CitizenProjectWasCreatedEvent($citizenProject, $adherent));
-
-        $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create($adherent));
     }
 }
