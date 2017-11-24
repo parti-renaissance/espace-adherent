@@ -47,7 +47,8 @@ class CitizenProjectFactory
             $data['required_means'],
             $phone,
             $data['slug'] ?? null,
-            $data['status'] ?? CitizenProject::PENDING
+            $data['status'] ?? CitizenProject::PENDING,
+            $data['skills'] ?? null
         );
 
         return $citizenProject;

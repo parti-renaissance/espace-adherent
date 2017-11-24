@@ -219,6 +219,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         return [
             LoadAdherentData::class,
             LoadCitizenProjectCategoryData::class,
+            LoadCitizenProjectSkillData::class,
         ];
     }
 }

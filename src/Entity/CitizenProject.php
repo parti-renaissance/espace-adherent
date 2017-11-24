@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -31,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CitizenProject extends BaseGroup
 {
     use EntityPostAddressTrait;
+    use SkillTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
@@ -91,6 +94,22 @@ class CitizenProject extends BaseGroup
     private $committee;
 
     /**
+     * @var Skill[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill", inversedBy="citizen_projects", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="citizen_projects_skills",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="citizen_project_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="citizen_project_skill_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private $skills;
+
+    /**
      * @var UploadedFile|null
      *
      * @Assert\Image(
@@ -122,7 +141,8 @@ class CitizenProject extends BaseGroup
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
-        int $membersCount = 0
+        int $membersCount = 0,
+        ?array $skills = []
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTimeImmutable($approvedAt);
@@ -150,6 +170,7 @@ class CitizenProject extends BaseGroup
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
+        $this->skills = new ArrayCollection();
     }
 
     public function getPostAddress(): PostAddress
