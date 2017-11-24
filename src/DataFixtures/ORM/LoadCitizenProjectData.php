@@ -43,6 +43,10 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-10-12 12:25:54',
             'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
         ]);
+
+        $citizenProject1->addSkill($this->getReference('cps001'));
+        $citizenProject1->addSkill($this->getReference('cps003'));
+
         $citizenProject1->approved('2017-10-12 15:54:18');
         $this->addReference('citizen-project-1', $citizenProject1);
 
@@ -113,7 +117,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'uuid' => self::CITIZEN_PROJECT_6_UUID,
             'name' => 'Formation en ligne ouverte à tous',
             'subtitle' => 'Équipe de la formation en ligne ouverte à tous',
-            'category' => $this->getReference('cpc006'),
+            'category' => $this->getReference('cpc005'),
             'problem_description' => 'Problème 6',
             'proposed_solution' => 'Solution 6',
             'required_means' => 'Les moyens 6',
@@ -219,6 +223,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         return [
             LoadAdherentData::class,
             LoadCitizenProjectCategoryData::class,
+            LoadCitizenProjectSkillData::class,
         ];
     }
 }

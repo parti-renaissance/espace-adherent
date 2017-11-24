@@ -48,7 +48,8 @@ class CitizenProjectFactory
             $phone,
             $data['address'],
             $data['slug'] ?? null,
-            $data['status'] ?? CitizenProject::PENDING
+            $data['status'] ?? CitizenProject::PENDING,
+            $data['skills'] ?? null
         );
 
         return $citizenProject;
