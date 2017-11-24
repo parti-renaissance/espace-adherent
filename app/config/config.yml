@@ -244,6 +244,11 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'enmarche_sync_user_create', type: direct }
             queue_options:    { name: 'enmarche_sync_user_create', durable: true }
 
+        project_citizen_creation_notification:
+            connection: default
+            exchange_options: { name: 'project_citizen_creation_notification', type: direct }
+            queue_options:    { name: 'project_citizen_creation_notification', durable: true }
+
     consumers:
         mailer_campaign:
             connection:        default
@@ -264,4 +269,11 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'referent-message-dispatcher', type: direct }
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        project_citizen_creation_notification:
+            connection:        default
+            exchange_options:  { name: 'project_citizen_creation_notification', type: direct }
+            queue_options:     { name: 'project_citizen_creation_notification', durable: false }
+            callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }

@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectApprovalConfirmationMessage extends Message
 {
-    public static function create(Adherent $administrator): self
+    public static function create(Adherent $administrator, string $cityName, string $url): self
     {
         $message = new self(
             Uuid::uuid4(),
