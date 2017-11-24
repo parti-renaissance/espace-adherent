@@ -3,16 +3,20 @@
 namespace AppBundle\Repository;
 
 use AppBundle\BoardMember\BoardMemberFilter;
+use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Referent\ManagedAreaUtils;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -289,6 +293,25 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         }
 
         return new AdherentCollection($qb->getQuery()->getResult());
+    }
+
+    public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
+    {
+        $qb = $this
+            ->createNearbyQueryBuilder(new Coordinates($citizenProject->getLatitude(), $citizenProject->getLongitude()))
+            ->andWhere($this->getNearbyExpression().' <= :distance_max')
+            ->setParameter('distance_max', $radius);
+
+        if ($excludeSupervisor) {
+            $qb->leftJoin('n.citizenProjectMembership', 'cpm')
+                ->andWhere('cpm.privilege = :privilege')
+                ->setParameter('privilege', CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER);
+        }
+
+        $qb->setFirstResult($offset)
+            ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE);
+
+        return new Paginator($qb);
     }
 
     public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
