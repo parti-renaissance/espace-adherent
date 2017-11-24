@@ -1,7 +1,11 @@
 {% if citizenProject.isRefused %}
     <span class="label label-danger">Refusé</span>
+{% elseif citizenProject.isPreRefused %}
+    <span class="label label-danger"><i class="fa fa-times"></i></span>
 {% elseif citizenProject.isApproved %}
     <span class="label label-success">Accepté</span>
+{% elseif citizenProject.isPreApproved %}
+    <span class="label label-success"><i class="fa fa-check-circle"></i></span>
 {% else %}
     <span class="label label-primary">En attente</span>
 {% endif %}

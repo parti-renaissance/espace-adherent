@@ -1,5 +1,36 @@
 {% extends 'coordinator/_layout.html.twig' %}
 
+{% set coordinator_path = 'app_coordinator_committees' %}
+
+{% set pages = [
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PENDING'),
+        'label': 'Comités en attente'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PRE_APPROVED'),
+        'label': 'Comités pré-validés'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PRE_REFUSED'),
+        'label': 'Comités pré-refusés'
+    }
+] %}
+
+{% block coordinator_area_header_description %}
+    <p class="text--center">
+        L’espace coordinateur vous permet d'apprécier les comités des
+        zones que vous gérez. Seule l’équipe du QG sera en mesure de
+        voir vos appréciations.
+    </p>
+    <p class="text--center">
+        Zones gérées : {{ app.user.coordinatorManagedAreaCodesAsString }}.
+    </p>
+{% endblock %}
+
 {% block coordinator_content %}
 
     {% if results|length %}
@@ -28,32 +59,4 @@
             Aucun comité ne répond à ce filtre
         </div>
     {% endif %}
-
-    <div class="text--center text--gray">
-        {% set current_page = (filters.offset / constant('PER_PAGE', filters))|round(0, 'ceil') + 1 %}
-        {% set last_page = (filters.count / constant('PER_PAGE', filters))|round(0, 'ceil') %}
-
-        {% if filters.offset > 0 %}
-            <a href="{{ path('app_coordinator_committees') ~ filters.queryStringForOffset(0) }}" class="btn btn--small">
-                Première
-            </a>
-            <a href="{{ path('app_coordinator_committees') ~ filters.previousPageQueryString }}" class="btn btn--small">
-                Précédente
-            </a>
-        {% endif %}
-
-        {% if last_page != 0 %}
-            <span class="text--summary">
-                Page {{ current_page }} / {{ last_page }}
-            </span>
-        {% endif %}
-        {% if filters.offset + constant('PER_PAGE', filters) < filters.count %}
-            <a href="{{ path('app_coordinator_committees') ~ filters.nextPageQueryString }}" class="btn btn--small">
-                Suivante
-            </a>
-            <a href="{{ path('app_coordinator_committees') ~ filters.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filters)) }}" class="btn btn--small">
-                Dernière
-            </a>
-        {% endif %}
-    </div>
 {% endblock %}

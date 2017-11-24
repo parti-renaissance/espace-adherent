@@ -77,7 +77,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->addSelect('cpm')
             ->addSelect('bm')
             ->leftJoin('a.procurationManagedArea', 'pma')
-            ->leftJoin('a.coordinatorManagedArea', 'cma')
+            ->leftJoin('a.coordinatorManagedAreas', 'cma')
             ->leftJoin('a.memberships', 'cm')
             ->leftJoin('a.citizenProjectMemberships', 'cpm')
             ->leftJoin('a.boardMember', 'bm')
@@ -386,7 +386,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
             ->leftJoin('a.procurationManagedArea', 'ap')
-            ->leftJoin('a.coordinatorManagedArea', 'ac')
+            ->leftJoin('a.coordinatorManagedAreas', 'ac')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
         ;

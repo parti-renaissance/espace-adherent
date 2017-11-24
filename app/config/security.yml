@@ -204,6 +204,11 @@ security:
             - ROLE_ADMIN_REFERENTS_AREAS
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
 
+        ROLE_COORDINATOR_CITIZEN_PROJECT:
+            - ROLE_COORDINATOR
+        ROLE_COORDINATOR_COMMITTEE:
+            - ROLE_COORDINATOR
+
     access_decision_manager:
         strategy: unanimous
 
@@ -261,13 +266,13 @@ security:
                 path: app_adherent_logout
                 target: homepage
 
-
     access_control:
         - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
+        - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }

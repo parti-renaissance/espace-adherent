@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Coordinator\Filter\CitizenProjectFilter;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseGroup;
 use AppBundle\Entity\CitizenProject;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -62,5 +64,21 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findManagedByCoordinator(Adherent $coordinator, CitizenProjectFilter $filter): array
+    {
+        if (!$coordinator->isCoordinatorCitizenProjectSector()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('cp')
+            ->orderBy('cp.name', 'ASC')
+            ->orderBy('cp.createdAt', 'DESC');
+
+        $filter->setCoordinator($coordinator);
+        $filter->apply($qb, 'cp');
+
+        return $qb->getQuery()->getResult();
     }
 }

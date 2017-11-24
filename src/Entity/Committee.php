@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
-use AppBundle\Exception\CommitteeAlreadyTreatedException;
 use AppBundle\ValueObject\Link;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -29,12 +28,10 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee extends BaseGroup
+class Committee extends BaseGroup implements CoordinatorAreaInterface
 {
-    const PRE_APPROVED = 'PRE_APPROVED';
-    const PRE_REFUSED = 'PRE_REFUSED';
-
     use EntityPostAddressTrait;
+    use CoordinatorAreaTrait;
 
     /**
      * The group description.
@@ -74,18 +71,9 @@ class Committee extends BaseGroup
     private $adminComment;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $coordinatorComment;
-
-    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
-
-    public $creator;
 
     public function __construct(
         UuidInterface $uuid,
@@ -187,38 +175,6 @@ class Committee extends BaseGroup
         $this->adminComment = $adminComment;
     }
 
-    public function getCoordinatorComment(): ?string
-    {
-        return $this->coordinatorComment;
-    }
-
-    public function setCoordinatorComment(string $coordinatorComment = null): void
-    {
-        $this->coordinatorComment = $coordinatorComment;
-    }
-
-    public function isPreApproved(): bool
-    {
-        return self::PRE_APPROVED === $this->status;
-    }
-
-    public function isPreRefused(): bool
-    {
-        return self::PRE_REFUSED === $this->status;
-    }
-
-    /**
-     * Marks this committee as pre-approved.
-     */
-    public function preApproved()
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CommitteeAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_APPROVED;
-    }
-
     /**
      * Marks this committee as approved.
      *
@@ -233,18 +189,6 @@ class Committee extends BaseGroup
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
         $this->refusedAt = null;
-    }
-
-    /**
-     * Marks this committee as pre-refused.
-     */
-    public function preRefused()
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CommitteeAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_REFUSED;
     }
 
     public function setSocialNetworks(
@@ -270,16 +214,6 @@ class Committee extends BaseGroup
     public function setGooglePlusPageUrl($googlePlusPageUrl)
     {
         $this->googlePlusPageUrl = $googlePlusPageUrl;
-    }
-
-    public function setCreator(?Adherent $creator): void
-    {
-        $this->creator = $creator;
-    }
-
-    public function getCreator(): ?Adherent
-    {
-        return $this->creator;
     }
 
     /**

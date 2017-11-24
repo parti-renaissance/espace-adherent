@@ -70,8 +70,8 @@ class CoordinatorControllerTest extends SqliteWebTestCase
             trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->text()));
 
         $data = [];
-        $data['coordinator_committee']['coordinatorComment'] = 'test';
-        $data['coordinator_committee']['accept'] = null;
+        $data['coordinator_area']['coordinatorComment'] = 'test';
+        $data['coordinator_area']['accept'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -93,20 +93,20 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
 
         $data = [];
-        $data['coordinator_committee']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
-        $data['coordinator_committee']['accept'] = null;
+        $data['coordinator_area']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
+        $data['coordinator_area']['accept'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
-        $this->assertClientIsRedirectedTo('/espace-coordinateur/comites', $this->client);
-        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo('/espace-coordinateur/comites/list', $this->client);
+        $crawler = $this->client->followRedirect();
 
-        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
-        $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertSame(0, $crawler->filter('#committee-list .coordinator__item .form__error')->count());
+        $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $crawler->filter('#notice-flashes > .flash__inner')->text());
+        $this->assertContains('Aucun comité ne répond à ce filtre', $crawler->filter('.coordinator-area__content')->text());
 
-        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_APPROVED');
+        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_APPROVED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
@@ -123,20 +123,20 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
 
         $data = [];
-        $data['coordinator_committee']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
-        $data['coordinator_committee']['refuse'] = null;
+        $data['coordinator_area']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
+        $data['coordinator_area']['refuse'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-refuser')->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
-        $this->assertClientIsRedirectedTo('/espace-coordinateur/comites', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-coordinateur/comites/list', $this->client);
         $this->client->followRedirect();
 
         $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
         $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
-        $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-committee-manager__content')->text());
+        $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-area__content')->text());
 
-        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites?s=PRE_REFUSED');
+        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_REFUSED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
@@ -146,7 +146,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     public function providePages()
     {
         return [
-            ['/espace-coordinateur/comites'],
+            ['/espace-coordinateur/comites/list'],
         ];
     }
 
