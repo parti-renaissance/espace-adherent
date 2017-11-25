@@ -7,20 +7,20 @@ use Doctrine\Common\Collections\Collection;
 
 trait SkillTrait
 {
-    public function addSkill(Skill $skill): void
+    public function addSkill(BaseSkill $skill): void
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
         }
     }
 
-    public function replaceSkill(Skill $actual, Skill $new): void
+    public function replaceSkill(BaseSkill $actual, BaseSkill $new): void
     {
         $this->removeSkill($actual);
         $this->addSkill($new);
     }
 
-    public function removeSkill(Skill $skill): void
+    public function removeSkill(BaseSkill $skill): void
     {
         if ($this->skills->contains($skill)) {
             $this->skills->removeElement($skill);
