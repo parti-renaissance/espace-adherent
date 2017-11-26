@@ -9,7 +9,7 @@ body {
 
     font-size: 16px;
     line-height: 24px;
-    font-family: $font-gillsans;
+    font-family: $font-roboto;
 
     // Sets the default color in case the visitor has changed them
     background-color: $defaultBackgroundColor;
@@ -66,6 +66,11 @@ a {
         }
     }
 
+    &.link--brick {
+        color: $brick;
+        border-color: transparent;
+    }
+
     &.link--newblue { // temporary until we update our color palette
         color: $newblue;
         border-color: transparent;
@@ -84,6 +89,7 @@ a {
 h1, h2, h3, h4 {
     margin: 0;
     font-weight: 700;
+    font-family: $font-gillsans;
 }
 
 ul, li {
