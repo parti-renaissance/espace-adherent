@@ -8,12 +8,14 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Summary;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
+use AppBundle\Summary\SummaryManager;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -173,6 +175,19 @@ class AdherentController extends Controller
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
+    public function profilPictureAction(): Response
+    {
+        $summary = null;
+
+        if ($this->getUser() instanceof Adherent && $summary = $this->getDoctrine()->getRepository(Summary::class)->findOneForAdherent($this->getUser())) {
+            $this->get(SummaryManager::class)->setUrlProfilePicture($summary);
+        }
+
+        return $this->render('adherent/_profil_picture.html.twig', [
+            'urlProfilePicture' => $summary ? $summary->getUrlProfilePicture() : false,
         ]);
     }
 }

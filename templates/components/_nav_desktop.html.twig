@@ -73,9 +73,9 @@
                         Administration
                     </a>
                 {% else %}
-                    {% if app.user %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <a href="{{ path('app_user_profile') }}" class="icon--with-text text--medium-small nav__user__name">
-                            {{ include('components/user.html.twig') }}
+                            {{ render(controller('AppBundle:EnMarche/Adherent:profilPicture')) }}
                         </a>
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}
