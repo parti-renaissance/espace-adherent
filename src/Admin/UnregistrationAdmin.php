@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -39,6 +40,11 @@ class UnregistrationAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
     }
 
     protected function configureListFields(ListMapper $listMapper)

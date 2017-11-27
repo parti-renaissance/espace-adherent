@@ -17,7 +17,7 @@ class MissionTypeAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->add('name', null, [
@@ -26,7 +26,7 @@ class MissionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('name', TextType::class, [
