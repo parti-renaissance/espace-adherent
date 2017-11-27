@@ -18,7 +18,7 @@ class CitizenProjectFactory
 
     public function createFromArray(array $data): CitizenProject
     {
-        foreach (['uuid', 'name', 'subtitle', 'category', 'problem_description', 'proposed_solution', 'required_means', 'created_by'] as $key) {
+        foreach (['uuid', 'name', 'subtitle', 'category', 'address', 'problem_description', 'proposed_solution', 'required_means', 'created_by'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
@@ -28,20 +28,26 @@ class CitizenProjectFactory
             ? Uuid::fromString($data['uuid'])
             : CitizenProject::createUuid($data['name']);
 
+        $phone = null;
+        if (isset($data['phone'])) {
+            $phone = $this->createPhone($data['phone']);
+        }
+
         $citizenProject = new CitizenProject(
             $uuid,
             Uuid::fromString($data['created_by']),
             $data['name'],
             $data['subtitle'],
             $data['category'],
+            $data['address'],
             $data['committee'] ?? null,
-            isset($data['assistance_needed']) ? $data['assistance_needed'] : false,
+            $data['assistance_needed'] ?? false,
             $data['problem_description'],
             $data['proposed_solution'],
             $data['required_means'],
-            isset($data['address']) ? $data['address'] : null,
-            isset($data['slug']) ? $data['slug'] : null,
-            isset($data['status']) ? $data['status'] : CitizenProject::PENDING
+            $phone,
+            $data['slug'] ?? null,
+            $data['status'] ?? CitizenProject::PENDING
         );
 
         return $citizenProject;
@@ -61,12 +67,13 @@ class CitizenProjectFactory
             $command->name,
             $command->subtitle,
             $command->category,
+            $command->getPhone(),
             $command->assistanceNeeded,
             $command->problemDescription,
             $command->proposedSolution,
             $command->requiredMeans,
             $command->getCommittee(),
-            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
+            $command->getAddress() ? $this->addressFactory->createFromAddress($command->getAddress()) : null
         );
 
         return $citizenProject;

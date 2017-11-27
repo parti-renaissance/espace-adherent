@@ -2,11 +2,13 @@
 
 namespace AppBundle\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
+use AppBundle\Address\Address;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,27 +27,32 @@ class CitizenProjectCommand
     public $name;
 
     /**
-     * The citizen project address.
-     *
-     * @var NullableAddress
-     *
-     * @Assert\Valid
-     */
-    public $address;
-
-    public $category;
-
-    private $committee;
-
-    /**
      * @Assert\NotBlank
      * @Assert\Length(min=2, max=60)
      */
     public $subtitle;
 
-    public $assistanceNeeded = false;
+    /**
+     * The citizen project address.
+     *
+     * @var Address
+     *
+     * @Assert\NotBlank
+     * @Assert\Valid
+     */
+    public $address;
 
-    public $skills;
+    /**
+     * @Assert\NotBlank(message="common.phone_number.required")
+     * @AssertPhoneNumber(defaultRegion="FR")
+     */
+    protected $phone;
+
+    public $category;
+
+    private $committee;
+
+    public $assistanceNeeded = false;
 
     /**
      * @Assert\NotBlank
@@ -65,20 +72,20 @@ class CitizenProjectCommand
      */
     public $requiredMeans;
 
-    public function __construct(NullableAddress $address = null)
+    public function __construct(Address $address = null)
     {
         $this->address = $address;
     }
 
     public static function createFromCitizenProject(CitizenProject $citizenProject): self
     {
-        $address = $citizenProject->getPostAddress() ? NullableAddress::createFromAddress($citizenProject->getPostAddress()) : null;
+        $address = $citizenProject->getPostAddress() ? Address::createFromAddress($citizenProject->getPostAddress()) : null;
         $dto = new self($address);
         $dto->name = $citizenProject->getName();
         $dto->subtitle = $citizenProject->getSubtitle();
         $dto->category = $citizenProject->getCategory();
+        $dto->phone = $citizenProject->getPhone();
         $dto->committee = $citizenProject->getCommittee();
-        $dto->skills = $citizenProject->getSkills();
         $dto->problemDescription = $citizenProject->getProblemDescription();
         $dto->proposedSolution = $citizenProject->getProposedSolution();
         $dto->requiredMeans = $citizenProject->getRequiredMeans();
@@ -90,6 +97,16 @@ class CitizenProjectCommand
     public function getCityName(): string
     {
         return $this->address->getCityName();
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function getCitizenProject(): ?CitizenProject
@@ -107,12 +124,12 @@ class CitizenProjectCommand
         return $this->citizenProject->getSlug();
     }
 
-    public function setAddress(NullableAddress $address = null): void
+    public function setAddress(Address $address = null): void
     {
         $this->address = $address;
     }
 
-    public function getAddress(): ?NullableAddress
+    public function getAddress(): ?Address
     {
         return $this->address;
     }

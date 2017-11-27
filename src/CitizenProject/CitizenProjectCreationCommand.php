@@ -2,7 +2,6 @@
 
 namespace AppBundle\CitizenProject;
 
-use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
@@ -15,15 +14,11 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     /** @var Adherent */
     private $adherent;
 
-    public function __construct(Address $address = null)
-    {
-        parent::__construct($address);
-    }
-
     public static function createFromAdherent(Adherent $adherent): self
     {
         $dto = new self();
         $dto->adherent = $adherent;
+        $dto->phone = $adherent->getPhone();
 
         return $dto;
     }

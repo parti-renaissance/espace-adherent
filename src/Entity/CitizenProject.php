@@ -4,9 +4,8 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,8 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CitizenProject extends BaseGroup
 {
-    use EntityNullablePostAddressTrait;
-    use SkillTrait;
+    use EntityPostAddressTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
@@ -48,7 +46,10 @@ class CitizenProject extends BaseGroup
      */
     protected $subtitle;
 
-    private $skills;
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    private $phone;
 
     /**
      * @var string|null
@@ -110,12 +111,13 @@ class CitizenProject extends BaseGroup
         string $name,
         string $subtitle,
         CitizenProjectCategory $category,
+        PostAddress $address,
         ?Committee $committee,
         bool $assistanceNeeded = false,
         string $problemDescription = '',
         string $proposedSolution = '',
         string $requiredMeans = '',
-        NullablePostAddress $address = null,
+        PhoneNumber $phone = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -138,19 +140,19 @@ class CitizenProject extends BaseGroup
         $this->category = $category;
         $this->subtitle = $subtitle;
         $this->postAddress = $address;
+        $this->phone = $phone;
         $this->assistanceNeeded = $assistanceNeeded;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
-        $this->skills = new ArrayCollection();
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
     }
 
-    public function getPostAddress(): NullablePostAddress
+    public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
     }
@@ -173,6 +175,16 @@ class CitizenProject extends BaseGroup
     public function getCategory(): CitizenProjectCategory
     {
         return $this->category;
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function getCommittee(): ?Committee
@@ -230,30 +242,18 @@ class CitizenProject extends BaseGroup
         return $this->requiredMeans;
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, NullablePostAddress $address = null, string $createdAt = 'now'): self
-    {
-        $citizenProject = new self(
-            $uuid,
-            Uuid::fromString($creatorUuid),
-            $name,
-            $address
-        );
-        $citizenProject->createdAt = new \DateTime($createdAt);
-
-        return $citizenProject;
-    }
-
     public static function createForAdherent(
         Adherent $adherent,
         string $name,
         string $subtitle,
         CitizenProjectCategory $category,
+        PhoneNumber $phone,
         string $assistanceNeeded,
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
         Committee $committee = null,
-        NullablePostAddress $address = null,
+        PostAddress $address = null,
         string $createdAt = 'now'
     ): self {
         $citizenProject = new self(
@@ -267,7 +267,8 @@ class CitizenProject extends BaseGroup
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
-            $address
+            $address,
+            $phone
         );
 
         $citizenProject->createdAt = new \DateTime($createdAt);
@@ -292,7 +293,7 @@ class CitizenProject extends BaseGroup
         $this->refusedAt = null;
     }
 
-    public function update(string $name, NullablePostAddress $address): void
+    public function update(string $name, PostAddress $address): void
     {
         $this->setName($name);
 

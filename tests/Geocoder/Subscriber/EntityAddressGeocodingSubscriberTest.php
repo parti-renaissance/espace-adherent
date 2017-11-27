@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Geocoder\Subscriber;
 
 use AppBundle\Committee\CommitteeWasCreatedEvent;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\NullablePostAddress;
@@ -179,16 +180,22 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         return $committee;
     }
 
-    private function createCitizenProject(string $address = null): CitizenProject
-    {
+    private function createCitizenProject(
+        string $address = null,
+        Committee $committee = null
+    ): CitizenProject {
         $citizenProject = new CitizenProject(
             Uuid::fromString('7eaa4d91-aec7-4b0d-b6f6-50ff6d77c082'),
             Uuid::fromString('6c77b5f9-52e8-4502-85fd-1f2316c2764b'),
             'Projet citoyen à Lyon',
             'Le projet citoyen à Lyon village',
-            $address ? NullablePostAddress::createFrenchAddress($address, '69001-69381') : null,
-            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('040708050&'),
-            '69001-projet-citoyen-lyon'
+            $this->createMock(CitizenProjectCategory::class),
+            $committee,
+            false,
+            'Problem description',
+            'Proposed solution',
+            'Required means',
+            $address ? NullablePostAddress::createFrenchAddress($address, '69001-69381') : null
         );
 
         return $citizenProject;
