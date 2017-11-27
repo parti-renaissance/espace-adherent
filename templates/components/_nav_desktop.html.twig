@@ -59,7 +59,12 @@
                 <a href="{{ path('app_documents_index') }}">Mon kit</a>
             </li>
         {% endif %}
-        {% if not enable_canary %}
+        {% if not app.user %}
+            <li>
+                <a href="{{ path('donation_index') }}">Donner</a>
+            </li>
+        {% endif %}
+        {% if app.user and enable_canary %}
             <li>
                 <a href="{{ path('donation_index') }}">Donner</a>
             </li>
@@ -190,7 +195,7 @@
                     </li>
                 {% endif %}
             {% endif %}
-            {% if enable_canary %}
+            {% if enable_canary and app.user %}
                 <li>
                     <a class="btn btn--brick" href="{{ path('donation_index') }}">Donner</a>
                 </li>
