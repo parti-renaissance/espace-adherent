@@ -1,4 +1,4 @@
-<nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop">
+<nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop space--20-0">
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
         {% if not app.user %}
             <li>
@@ -59,9 +59,11 @@
                 <a href="{{ path('app_documents_index') }}">Mon kit</a>
             </li>
         {% endif %}
-        <li>
-            <a href="{{ path('donation_index') }}">Donner</a>
-        </li>
+        {% if not enable_canary %}
+            <li>
+                <a href="{{ path('donation_index') }}">Donner</a>
+            </li>
+        {% endif %}
 
         <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
             <a href="javascript:void(0)" class="je-cherche">
@@ -78,7 +80,7 @@
                     </a>
                 {% else %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ path('app_user_profile') }}" class="icon--with-text text--medium-small nav__user__name">
+                        <a href="{{ path('app_user_profile') }}" class="icon--with-text text--medium-small nav__user__photo">
                             {{ render(controller('AppBundle:EnMarche/Adherent:profilPicture')) }}
                         </a>
                     {% endif %}
@@ -87,85 +89,112 @@
                             <span class="nav__user__caret--outer"></span>
                             <span class="nav__user__caret--inner"></span>
                         </div>
-                        <div class="nav__user__menu">
+                        <div class="nav__user__menu" style="display: block">
                             <ul class="nav__user__menu__account">
-                                <li class="text--bold">{{ app.user }}</li>
-                                <li class="text--small text--gray">
-                                    {% if not is_granted('ROLE_ADHERENT') %}
-                                        Non-adhérent(e)
-                                    {% elseif is_granted('ROLE_REFERENT') %}
-                                        {% if app.user.isFemale %}Référente{% else %}Référent{% endif %}
-                                    {% elseif app.user.isHost %}
-                                        {% if app.user.isFemale %}Animatrice{% else %}Animateur{% endif %}
-                                    {% elseif is_granted('ROLE_ADHERENT') %}
-                                        {% if app.user.isFemale %}Adhérente{% else %}Adhérent{% endif %}
-                                    {% endif %}
+                                <li>
+                                    <ul>
+                                        <li class="nav__user__menu__name">{{ app.user }}</li>
+                                        <li class="text--small text--gray">
+                                            {% if not is_granted('ROLE_ADHERENT') %}
+                                                Non-adhérent(e)
+                                            {% elseif is_granted('ROLE_REFERENT') %}
+                                                {% if app.user.isFemale %}Référente{% else %}Référent{% endif %}
+                                            {% elseif app.user.isHost %}
+                                                {% if app.user.isFemale %}Animatrice{% else %}Animateur{% endif %}
+                                            {% elseif is_granted('ROLE_ADHERENT') %}
+                                                {% if app.user.isFemale %}Adhérente{% else %}Adhérent{% endif %}
+                                            {% endif %}
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="nav__user__menu__separator"></li>
                                 <li>
-                                    {% set url = is_granted('ROLE_USER') ? path('app_user_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) %}
-                                    <a href="{{ url }}">Profil</a>
+                                    <ul>
+                                        <li>
+                                            {# @TODO change route name when PR will be merge #}
+                                            {% set url = is_granted('ROLE_USER') ? path('app_summary_manager_index') : path('hwi_oauth_service_redirect', {service: 'auth'}) %}
+                                            <a href="{{ url }}">Profil</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_adherent_events') }}">Mes activités</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_create_citizen_initiative') }}">Créer un projet</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="{{ path('app_adherent_events') }}">Mes activités</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('app_create_citizen_initiative') }}">Créer un projet</a>
-                                </li>
-                                {% if is_granted('ROLE_ADHERENT') and is_granted('CREATE_COMMITTEE') %}
-                                    <li class="nav__user__menu__separator"></li>
-                                    <li>
-                                        <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
-                                    </li>
-                                {% endif %}
-                                {% if app.user and not is_granted('ROLE_ADHERENT') %}
-                                    <li class="nav__user__menu__separator"></li>
-                                    <li>
-                                        <a href="{{ path('app_register_fully') }}">Devenir adhérent(e)</a>
-                                    </li>
-                                {% endif %}
                                 <li class="nav__user__menu__separator"></li>
                                 <li>
-                                    {# @TODO change route name when PR will be merge #}
-                                    <a class="text--gray" href="{{ path('homepage') }}">Notifications</a>
+                                    <ul>
+                                        {% if is_granted('ROLE_ADHERENT') and is_granted('CREATE_COMMITTEE') %}
+                                            <li>
+                                                <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if app.user and not is_granted('ROLE_ADHERENT') %}
+                                            <li class="nav__user__menu__separator"></li>
+                                            <li>
+                                                <a href="{{ path('app_register_fully') }}">Devenir adhérent(e)</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </li>
+                                <li class="nav__user__menu__separator"></li>
                                 <li>
-                                    {# @TODO change route name when PR will be merge #}
-                                    <a class="text--gray" href="{{ path('homepage') }}">Paramètres</a>
+                                    <ul>
+                                        <li>
+                                            {# @TODO change route name when PR will be merge #}
+                                            <a class="text--gray" href="{{ path('homepage') }}">Notifications</a>
+                                        </li>
+                                        <li>
+                                            {# @TODO change route name when PR will be merge #}
+                                            {% set url = is_granted('ROLE_USER') ? path('app_user_profile') : path('hwi_oauth_service_redirect', {service: 'auth'}) %}
+                                            <a class="text--gray" href="{{ url }}">Paramètres</a>
+                                        </li>
+                                        <li>
+                                            <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
+                                        </li>
+                                        <li>
+                                            <a class="text--gray" href="{{ path('auth_logout') }}">Déconnexion</a>
+                                        </li>
+                                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_admin_impersonation_exit') }}">
+                                                    Quitter l'impersonnification
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
-                                </li>
-                                <li>
-                                    <a class="text--gray" href="{{ path('auth_logout') }}">Déconnexion</a>
-                                </li>
-                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                    <li class="text--small">
-                                        <a href="{{ path('app_admin_impersonation_exit') }}">
-                                            Quitter l'impersonnification
-                                        </a>
-                                    </li>
-                                {% endif %}
                             </ul>
                         </div>
                     {% endif %}
-                    {% endif %}
                 {% endif %}
-            </div>
+            {% endif %}
+        </div>
+        <ul class="l__row">
             {% if (not app.user) %}
-            <ul class="l__row">
                 <li class="b__nudge--right">
                     <a href="{{ path('hwi_oauth_service_redirect', {service: 'auth'}) }}" class="text--small link--brick">Connexion</a>
                 </li>
                 <li>
                     <a href="{{ auth_register_url }}" class="btn btn--brick-hollow">Inscription</a>
                 </li>
-            </ul>
             {% endif %}
-            {% if app.user %}
+            {% if app.user and not enable_canary %}
                 {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADHERENT') %}
-                    <a class="btn btn--brick" href="{{ path('app_create_citizen_initiative') }}">Créer un projet</a>
+                    <li>
+                        <a class="btn btn--brick" href="{{ path('app_create_citizen_initiative') }}">
+                            Créer un projet
+                        </a>
+                    </li>
                 {% endif %}
             {% endif %}
+            {% if enable_canary %}
+                <li>
+                    <a class="btn btn--brick" href="{{ path('donation_index') }}">Donner</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
