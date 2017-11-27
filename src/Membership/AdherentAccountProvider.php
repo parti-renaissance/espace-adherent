@@ -10,18 +10,22 @@ use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Psr\Log\LoggerInterface;
 
 class AdherentAccountProvider
 {
     private $httpClient;
     private $accessTokenManager;
+    private $logger;
 
     public function __construct(
         AccessTokenManager $accessTokenManager,
-        ClientInterface $httpClient
+        ClientInterface $httpClient,
+        LoggerInterface $logger
     ) {
         $this->accessTokenManager = $accessTokenManager;
         $this->httpClient = $httpClient;
+        $this->logger = $logger;
     }
 
     public function getUser(string $iri): AdherentAccountData
@@ -34,10 +38,14 @@ class AdherentAccountProvider
                 ],
             ]);
         } catch (GuzzleException $e) {
+            $this->logger->info('Unable to retrieve user account data.', ['exception' => $e]);
+
             throw new ApiException('Unable to retrieve user account data.', $e);
         }
 
         if (200 !== $response->getStatusCode()) {
+            $this->logger->info('Unable to retrieve user account data.', ['response' => $response]);
+
             throw new ApiException('Unable to retrieve user account data.');
         }
 

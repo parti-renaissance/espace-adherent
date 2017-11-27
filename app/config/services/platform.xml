@@ -115,6 +115,7 @@
         <service id="app.membership.adherent_account_provider" class="AppBundle\Membership\AdherentAccountProvider">
             <argument type="service" id="app.api.access_token_manager"/>
             <argument type="service" id="csa_guzzle.client.api"/>
+            <argument type="service" id="logger"/>
         </service>
 
         <service id="AppBundle\Form\MemberInterestsChoiceType">
