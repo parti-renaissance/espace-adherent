@@ -16,6 +16,7 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\InteractiveInvitation;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\Email;
@@ -25,8 +26,7 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\Projection\ReferentManagedUser;
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Entity\PurchasingPowerInvitation;
+use AppBundle\Entity\InteractiveChoice;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
@@ -51,8 +51,8 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
-use AppBundle\Repository\PurchasingPowerInvitationRepository;
+use AppBundle\Repository\InteractiveChoiceRepository;
+use AppBundle\Repository\InteractiveInvitationRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -226,14 +226,14 @@ trait TestHelperTrait
         return $this->getRepository(TonMacronFriendInvitation::class);
     }
 
-    public function getPurchasingPowerChoiceRepository(): PurchasingPowerChoiceRepository
+    public function getInteractiveChoiceRepository(): InteractiveChoiceRepository
     {
-        return $this->getRepository(PurchasingPowerChoice::class);
+        return $this->getRepository(InteractiveChoice::class);
     }
 
-    public function getPurchasingPowerInvitationRepository(): PurchasingPowerInvitationRepository
+    public function getInteractiveInvitationRepository(): InteractiveInvitationRepository
     {
-        return $this->getRepository(PurchasingPowerInvitation::class);
+        return $this->getRepository(InteractiveInvitation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

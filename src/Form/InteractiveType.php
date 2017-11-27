@@ -2,8 +2,8 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Interactive\PurchasingPowerProcessor;
+use AppBundle\Entity\InteractiveChoice;
+use AppBundle\Interactive\InteractiveProcessor;
 use AppBundle\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,12 +15,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchasingPowerType extends AbstractType
+class InteractiveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch ($options['transition']) {
-            case PurchasingPowerProcessor::TRANSITION_FILL_INFO:
+            case InteractiveProcessor::TRANSITION_FILL_INFO:
                 $builder
                     ->add('friendFirstName', TextType::class, [
                         'label' => false,
@@ -39,39 +39,42 @@ class PurchasingPowerType extends AbstractType
                             'interactive.form.female' => Genders::FEMALE,
                         ],
                     ])
-                    ->add('friendPosition', PurchasingPowerChoiceEntityType::class, [
+                    ->add('friendPosition', InteractiveChoiceEntityType::class, [
                         'placeholder' => 'interactive.form.friend_position',
-                        'step' => PurchasingPowerChoice::STEP_FRIEND_PROFESSIONAL_POSITION,
+                        'step' => InteractiveChoice::STEP_FRIEND_PROFESSIONAL_POSITION,
+                        'interactive' => $options['interactive'],
                     ])
                 ;
-                $this->addSubmitButton($builder, PurchasingPowerProcessor::TRANSITION_FILL_INFO);
+                $this->addSubmitButton($builder, InteractiveProcessor::TRANSITION_FILL_INFO);
 
                 break;
-            case PurchasingPowerProcessor::TRANSITION_FILL_CASES:
+            case InteractiveProcessor::TRANSITION_FILL_CASES:
                 $builder
-                    ->add('friendCases', PurchasingPowerChoiceEntityType::class, [
-                        'step' => PurchasingPowerChoice::STEP_FRIEND_CASES,
+                    ->add('friendCases', InteractiveChoiceEntityType::class, [
+                        'step' => InteractiveChoice::STEP_FRIEND_CASES,
                         'expanded' => true,
                         'multiple' => true,
                         'error_bubbling' => true,
+                        'interactive' => $options['interactive'],
                     ])
                 ;
-                $this->addSubmitButton($builder, PurchasingPowerProcessor::TRANSITION_FILL_CASES);
+                $this->addSubmitButton($builder, InteractiveProcessor::TRANSITION_FILL_CASES);
 
                 break;
-            case PurchasingPowerProcessor::TRANSITION_FILL_APPRECIATIONS:
+            case InteractiveProcessor::TRANSITION_FILL_APPRECIATIONS:
                 $builder
-                    ->add('friendAppreciations', PurchasingPowerChoiceEntityType::class, [
-                        'step' => PurchasingPowerChoice::STEP_FRIEND_APPRECIATIONS,
+                    ->add('friendAppreciations', InteractiveChoiceEntityType::class, [
+                        'step' => InteractiveChoice::STEP_FRIEND_APPRECIATIONS,
                         'expanded' => true,
                         'multiple' => true,
                         'error_bubbling' => true,
+                        'interactive' => $options['interactive'],
                     ])
                 ;
-                $this->addSubmitButton($builder, PurchasingPowerProcessor::TRANSITION_FILL_APPRECIATIONS);
+                $this->addSubmitButton($builder, InteractiveProcessor::TRANSITION_FILL_APPRECIATIONS);
 
                 break;
-            case PurchasingPowerProcessor::TRANSITION_SEND:
+            case InteractiveProcessor::TRANSITION_SEND:
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
@@ -96,7 +99,7 @@ class PurchasingPowerType extends AbstractType
                         'label' => false,
                     ])
                 ;
-                $this->addSubmitButton($builder, PurchasingPowerProcessor::TRANSITION_SEND);
+                $this->addSubmitButton($builder, InteractiveProcessor::TRANSITION_SEND);
 
                 break;
         }
@@ -106,13 +109,14 @@ class PurchasingPowerType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => PurchasingPowerProcessor::class,
+                'data_class' => InteractiveProcessor::class,
                 'validation_groups' => function (Options $options) {
                     return $options['transition'];
                 },
             ])
             ->setRequired('transition')
-            ->setAllowedValues('transition', PurchasingPowerProcessor::TRANSITIONS)
+            ->setRequired('interactive')
+            ->setAllowedValues('transition', InteractiveProcessor::TRANSITIONS)
         ;
     }
 

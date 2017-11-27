@@ -2,13 +2,13 @@
 
 namespace AppBundle\Interactive;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Entity\PurchasingPowerInvitation;
+use AppBundle\Entity\InteractiveChoice;
+use AppBundle\Entity\InteractiveInvitation;
 
 class PurchasingPowerSerializer
 {
     /**
-     * @param PurchasingPowerChoice[] $choices
+     * @param InteractiveChoice[] $choices
      *
      * @return string
      */
@@ -39,7 +39,7 @@ class PurchasingPowerSerializer
     }
 
     /**
-     * @param PurchasingPowerInvitation[] $invitations
+     * @param InteractiveInvitation[] $invitations
      *
      * @return string
      */

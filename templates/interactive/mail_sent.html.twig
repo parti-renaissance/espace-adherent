@@ -28,7 +28,7 @@
             </div>
 
             <div class="b__nudge--bottom-huge">
-                <a href="{{ path('app_purchasing_power_restart') }}" class="btn btn--blue">
+                <a href="{{ path('app_interactive_restart', {'slug': slug}) }}" class="btn btn--blue">
                     Recommencer pour un(e) autre ami(e)
                 </a>
             </div>
@@ -39,17 +39,17 @@
             <ul class="space--20-0">
                 <li role="button" aria-label="Partagez sur Facebook"
                     class="btn btn--social btn--facebook"
-                    onclick="App.share('facebook', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('facebook', '{{ path('app_interactive', {'slug': slug}) }}', '')">
                     <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
                 <li role="button" aria-label="Partagez via Twitter"
                     class="btn btn--social btn--twitter"
-                    onclick="App.share('twitter', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('twitter', '{{ path('app_interactive', {'slug': slug}) }}', '')">
                     <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
                 <li role="button" aria-label="Partagez via email"
                     class="btn btn--social btn--email"
-                    onclick="App.share('email', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('email', '{{ path('app_interactive', {'slug': slug}) }}', '')">
                     <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                 </li>
             </ul>

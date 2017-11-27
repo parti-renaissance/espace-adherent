@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
+use AppBundle\Entity\InteractiveChoice;
+use AppBundle\Repository\InteractiveChoiceRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -14,7 +14,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 class PurchasingPowerChoiceRepositoryTest extends SqliteWebTestCase
 {
     /**
-     * @var PurchasingPowerChoiceRepository
+     * @var InteractiveChoiceRepository
      */
     private $repository;
 
@@ -24,17 +24,17 @@ class PurchasingPowerChoiceRepositoryTest extends SqliteWebTestCase
     {
         $introduction = $this->repository->findMailIntroduction();
 
-        $this->assertInstanceOf(PurchasingPowerChoice::class, $introduction);
+        $this->assertInstanceOf(InteractiveChoice::class, $introduction);
         $this->assertSame('28ceb6d3-ec64-4a58-99a4-71357600d07c', $introduction->getUuid()->toString());
 
         $conclusion = $this->repository->findMailConclusion();
 
-        $this->assertInstanceOf(PurchasingPowerChoice::class, $conclusion);
+        $this->assertInstanceOf(InteractiveChoice::class, $conclusion);
         $this->assertSame('3d735d18-348c-4d02-8046-7976f86e5ecc', $conclusion->getUuid()->toString());
 
         $common = $this->repository->findMailCommon();
 
-        $this->assertInstanceOf(PurchasingPowerChoice::class, $common);
+        $this->assertInstanceOf(InteractiveChoice::class, $common);
         $this->assertSame('a642dbc7-aba5-49e4-877a-06bc1ef23168', $common->getUuid()->toString());
     }
 
@@ -47,7 +47,7 @@ class PurchasingPowerChoiceRepositoryTest extends SqliteWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->repository = $this->getPurchasingPowerChoiceRepository();
+        $this->repository = $this->getInteractiveChoiceRepository();
     }
 
     protected function tearDown()

@@ -2,22 +2,22 @@
 
 namespace AppBundle\Interactive;
 
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
+use AppBundle\Repository\InteractiveChoiceRepository;
 
-class PurchasingPowerMessageBodyBuilder
+class InteractiveMessageBodyBuilder
 {
     private $twig;
     private $repository;
 
     public function __construct(
         \Twig_Environment $twig,
-        PurchasingPowerChoiceRepository $repository
+        InteractiveChoiceRepository $repository
     ) {
         $this->twig = $twig;
         $this->repository = $repository;
     }
 
-    public function buildMessageBody(PurchasingPowerProcessor $invitation): void
+    public function buildMessageBody(InteractiveProcessor $invitation): void
     {
         $invitation->messageContent = $this->twig->render('interactive/mail.html.twig', [
             'introduction' => $this->repository->findMailIntroduction(),

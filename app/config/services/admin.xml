@@ -488,13 +488,13 @@
             <argument />
         </service>
 
-        <service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Interactifs" />
+        <!--<service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">-->
+            <!--<tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Interactifs" />-->
 
-            <argument />
-            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
-            <argument />
-        </service>
+            <!--<argument />-->
+            <!--<argument>AppBundle\Entity\PurchasingPowerChoice</argument>-->
+            <!--<argument />-->
+        <!--</service>-->
 
         <service id="app.admin.purchasing_power_invitation" class="AppBundle\Admin\PurchasingPowerInvitationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Invitations" group="Interactifs" />
@@ -503,6 +503,15 @@
             <argument>AppBundle\Entity\PurchasingPowerInvitation</argument>
             <argument />
         </service>
+
+        <service id="app.admin.interactive" class="AppBundle\Admin\InteractiveAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Interactifs" group="Interactifs" />
+
+            <argument />
+            <argument>AppBundle\Entity\Interactive</argument>
+            <argument />
+        </service>
+
 
         <!--
         ######################################################

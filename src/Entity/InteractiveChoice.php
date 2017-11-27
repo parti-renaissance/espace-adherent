@@ -2,85 +2,35 @@
 
 namespace AppBundle\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="interactive_choices", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="interactive_choices_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="interactive_choices_content_key_unique", columns="content_key")
- * })
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "purchasing_power" = "AppBundle\Entity\PurchasingPowerChoice",
- * })
- * @Algolia\Index(autoIndex=false)
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InteractiveChoiceRepository")
  */
-abstract class InteractiveChoice
+class InteractiveChoice extends AbstractInteractiveChoice
 {
-    use EntityIdentityTrait;
-    use EntityCrudTrait;
+    const MAIL_INTRODUCTION_KEY = 'S00C01';
+    const MAIL_CONCLUSION_KEY = 'S00C02';
+    const MAIL_COMMON_KEY = 'S00C03';
 
-    /**
-     * @ORM\Column(type="smallint", length=1, options={"unsigned": true})
-     */
-    protected $step;
+    const STEP_NOT_VISIBLE = 'interactive.not_visible';
+    const STEP_FRIEND_PROFESSIONAL_POSITION = 'interactive.friend_professional_position';
+    const STEP_FRIEND_CASES = 'interactive.friend_cases';
+    const STEP_FRIEND_APPRECIATIONS = 'interactive.friend_appreciations';
 
-    /**
-     * @ORM\Column(length=30)
-     */
-    protected $contentKey;
+    const STEPS = [
+        self::STEP_NOT_VISIBLE => 0,
+        self::STEP_FRIEND_PROFESSIONAL_POSITION => 1,
+        self::STEP_FRIEND_CASES => 2,
+        self::STEP_FRIEND_APPRECIATIONS => 3,
+    ];
 
-    /**
-     * @ORM\Column(length=100)
-     */
-    protected $label;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    protected $content;
-
-    public function __construct(UuidInterface $uuid = null, string $step = null, string $contentKey = null, string $label = null, string $content = null)
+    public static function getStepsOrderForEmail(): array
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->step = $step;
-        $this->contentKey = $contentKey;
-        $this->label = $label;
-        $this->content = $content;
-    }
-
-    public function __toString(): string
-    {
-        return $this->label ?: '';
-    }
-
-    public function getStep(): ?string
-    {
-        return $this->step;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function getContentKey(): ?string
-    {
-        return $this->contentKey;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
+        return [
+            self::STEP_FRIEND_PROFESSIONAL_POSITION,
+            self::STEP_FRIEND_CASES,
+            self::STEP_FRIEND_APPRECIATIONS,
+        ];
     }
 }

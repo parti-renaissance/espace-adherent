@@ -27,7 +27,7 @@
         </div>
 
         <div class="text--center b__nudge--top-large">
-            <a href="{{ path('app_purchasing_power_restart') }}" class="btn">Recommencer</a>
+            <a href="{{ path('app_interactive_restart', {'slug': slug}) }}" class="btn">Recommencer</a>
             {{ form_widget(interactive_form.fill_appreciations, {'attr': {'class': 'btn btn--blue'}}) }}
         </div>
 

@@ -54,8 +54,8 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.purchasing_power_choice_repository" class="AppBundle\Repository\PurchasingPowerChoiceRepository" public="false">
-            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
+        <service id="app.repository.interactive_choice_repository" class="AppBundle\Repository\InteractiveChoiceRepository" public="false">
+            <argument>AppBundle\Entity\InteractiveChoice</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 

@@ -2,14 +2,14 @@
 
 namespace Tests\AppBundle\Interactive;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
-use AppBundle\Interactive\PurchasingPowerProcessor;
-use AppBundle\Interactive\PurchasingPowerMessageBodyBuilder;
+use AppBundle\Entity\InteractiveChoice;
+use AppBundle\Interactive\InteractiveProcessor;
+use AppBundle\Repository\InteractiveChoiceRepository;
+use AppBundle\Interactive\InteractiveMessageBodyBuilder;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class PurchasingPowerMessageBodyBuilderTest extends TestCase
+class InteractiveMessageBodyBuilderTest extends TestCase
 {
     private $repository;
 
@@ -48,55 +48,55 @@ EOF;
             ->willReturn($this->createChoice(0, $commonText));
 
         $friendPosition = $this->createArgumentChoice(1, 'Tu n’as pas à t\'inquiéter de la hausse de la CSG, qui permet de redonner du pouvoir d\'achat aux salariés et indépendants du secteur privé.');
-        $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor($friendPosition));
+        $this->createBuilder()->buildMessageBody($interactive = $this->createInteracticeProcessor($friendPosition));
 
         $this->assertSame(
             file_get_contents(__DIR__.'/../Fixtures/files/purchasing_power_mail.html'),
-            $purchasingPower->messageContent
+            $interactive->messageContent
         );
 
         $friendPosition = $this->createArgumentChoice(1, '');
-        $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor($friendPosition));
+        $this->createBuilder()->buildMessageBody($interactive = $this->createInteracticeProcessor($friendPosition));
 
         $this->assertSame(
             file_get_contents(__DIR__.'/../Fixtures/files/purchasing_power_mail_with_empty_argument.html'),
-            $purchasingPower->messageContent
+            $interactive->messageContent
         );
     }
 
-    private function createPurchasingPowerProcessor(PurchasingPowerChoice $friendPosition): PurchasingPowerProcessor
+    private function createInteracticeProcessor(InteractiveChoice $friendPosition): InteractiveProcessor
     {
-        $purchasingPower = new PurchasingPowerProcessor();
+        $interactive = new InteractiveProcessor();
 
-        $purchasingPower->friendFirstName = 'Mylène';
-        $purchasingPower->friendAge = 26;
-        $purchasingPower->friendGender = 'female';
-        $purchasingPower->friendEmail = 'mylene@test.com';
-        $purchasingPower->messageSubject = 'Pourquoi le premier budget du quinquennat est juste, équilibré et profite à tous.';
-        $purchasingPower->selfFirstName = 'Sophie';
-        $purchasingPower->selfLastName = 'Dupont';
-        $purchasingPower->selfEmail = 'sophie.dupont@test.com';
-        $purchasingPower->friendPosition = $friendPosition;
-        $purchasingPower->friendCases = [
+        $interactive->friendFirstName = 'Mylène';
+        $interactive->friendAge = 26;
+        $interactive->friendGender = 'female';
+        $interactive->friendEmail = 'mylene@test.com';
+        $interactive->messageSubject = 'Pourquoi le premier budget du quinquennat est juste, équilibré et profite à tous.';
+        $interactive->selfFirstName = 'Sophie';
+        $interactive->selfLastName = 'Dupont';
+        $interactive->selfEmail = 'sophie.dupont@test.com';
+        $interactive->friendPosition = $friendPosition;
+        $interactive->friendCases = [
             $this->createArgumentChoice(2, 'Nous sommes convaincus que le travail doit mieux payer pour tous les actifs.'),
             $this->createArgumentChoice(2, 'La protection des publics fragiles est au cœur de ce projet de loi de finances.'),
         ];
-        $purchasingPower->friendAppreciations = [
+        $interactive->friendAppreciations = [
             $this->createArgumentChoice(3, 'Une prime pour l’achat d’un véhicule moins polluant est créée.'),
             $this->createArgumentChoice(3, 'Bon à savoir pour ton projet entrepreneurial : dès 2019, les créateurs d\'une microentreprise aurant droit à une "année blanche" sur leurs cotisations sociales.'),
         ];
 
-        return $purchasingPower;
+        return $interactive;
     }
 
-    private function createArgumentChoice(int $step, string $measure): PurchasingPowerChoice
+    private function createArgumentChoice(int $step, string $measure): InteractiveChoice
     {
         return $this->createChoice($step, $measure);
     }
 
-    private function createChoice(int $step, string $content): PurchasingPowerChoice
+    private function createChoice(int $step, string $content): InteractiveChoice
     {
-        return new PurchasingPowerChoice(
+        return new InteractiveChoice(
             $uuid = Uuid::uuid4(),
             $step,
             $uuid->getLeastSignificantBitsHex(),
@@ -105,9 +105,9 @@ EOF;
         );
     }
 
-    private function createBuilder(): PurchasingPowerMessageBodyBuilder
+    private function createBuilder(): InteractiveMessageBodyBuilder
     {
-        return new PurchasingPowerMessageBodyBuilder(
+        return new InteractiveMessageBodyBuilder(
             new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/views')),
             $this->repository
         );
@@ -117,7 +117,7 @@ EOF;
     {
         parent::setUp();
 
-        $this->repository = $this->createMock(PurchasingPowerChoiceRepository::class);
+        $this->repository = $this->createMock(InteractiveChoiceRepository::class);
     }
 
     protected function tearDown()

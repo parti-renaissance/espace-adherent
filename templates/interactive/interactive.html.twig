@@ -1,13 +1,13 @@
 {% extends 'interactive/_layout.html.twig' %}
 
 {% block javascripts %}
-    {% if transition is constant('AppBundle\\Interactive\\PurchasingPowerProcessor::TRANSITION_SEND') %}
+    {% if transition is constant('AppBundle\\Interactive\\InteractiveProcessor::TRANSITION_SEND') %}
         {% import 'javascript.js.twig' as js %}
 
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
         <script type="text/javascript">
-            {{ js.ckeditor('purchasing_power_messageContent', 500) }}
+            {{ js.ckeditor('interactive_messageContent', 500) }}
         </script>
     {% endif %}
 {% endblock %}

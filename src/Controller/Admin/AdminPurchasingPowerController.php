@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\InteractiveChoice;
 use AppBundle\Entity\PurchasingPowerInvitation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,7 +26,7 @@ class AdminPurchasingPowerController extends Controller
      */
     public function exportChoicesAction(): Response
     {
-        $choices = $this->getDoctrine()->getRepository(PurchasingPowerChoice::class)->findAll();
+        $choices = $this->getDoctrine()->getRepository(InteractiveChoice::class)->findAll();
         $exported = $this->get('app.purchasing_power.serializer.serializer')->serializeChoices($choices);
 
         return new Response($exported, 200, [

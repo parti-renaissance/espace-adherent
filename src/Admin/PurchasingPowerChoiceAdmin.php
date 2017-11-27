@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\InteractiveChoice;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -50,7 +50,7 @@ class PurchasingPowerChoiceAdmin extends AbstractAdmin
             ])
             ->add('step', ChoiceType::class, [
                 'label' => 'Étape',
-                'choices' => PurchasingPowerChoice::STEPS,
+                'choices' => InteractiveChoice::STEPS,
                 'choice_translation_domain' => 'forms',
             ])
         ;

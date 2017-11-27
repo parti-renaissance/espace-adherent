@@ -4,12 +4,12 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\InteractiveChoice;
+use AppBundle\Interactive\InteractiveProcessor;
 use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
-use AppBundle\Repository\PurchasingPowerInvitationRepository;
-use AppBundle\Interactive\PurchasingPowerProcessor;
-use AppBundle\Interactive\PurchasingPowerProcessorHandler;
+use AppBundle\Repository\InteractiveChoiceRepository;
+use AppBundle\Repository\InteractiveInvitationRepository;
+use AppBundle\Interactive\InteractiveProcessorHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,58 +23,60 @@ class InteractiveControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    const PURCHASING_POWER_PATH = '/ton-pouvoir-achat';
-    const PURCHASING_POWER_RESTART_PATH = '/ton-pouvoir-achat/recommencer';
-    const PURCHASING_POWER_SENT_PATH = '/ton-pouvoir-achat/%s/merci';
+    const PURCHASING_POWER_PATH = '/interactif/ton-pouvoir-achat';
+    const PURCHASING_POWER_RESTART_PATH = '/interactif/ton-pouvoir-achat/recommencer';
+    const PURCHASING_POWER_SENT_PATH = '/interactif/ton-pouvoir-achat/%s/merci';
 
-    /* @var PurchasingPowerChoiceRepository */
-    private $PurchasingPowerChoiceRepository;
+    /* @var InteractiveChoiceRepository */
+    private $purchasingPowerChoiceRepository;
 
-    /* @var PurchasingPowerInvitationRepository */
-    private $PurchasingPowerInvitationRepository;
+    /* @var InteractiveInvitationRepository */
+    private $purchasingPowerInvitationRepository;
 
     /* @var EmailRepository */
     private $emailRepository;
 
-    public function testPurchasingPowerAction()
+    public function testInteractiveAction()
     {
         $this->assertCount(0, $this->emailRepository->findAll());
 
-        $purchasingPower = new PurchasingPowerProcessor();
-
         $crawler = $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_PATH);
 
-        $this->assertEquals($purchasingPower, $this->getCurrentPurchasingPower());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('button[name="purchasing_power[fill_info]"]'));
+        $this->assertEmpty($this->getCurrentInteractive()->friendFirstName);
+        $this->assertEmpty($this->getCurrentInteractive()->friendAge);
+        $this->assertEmpty($this->getCurrentInteractive()->friendGender);
+        $this->assertEmpty($this->getCurrentInteractive()->friendPosition);
 
-        $this->client->submit($crawler->filter('form[name="purchasing_power"]')->form([
-            'purchasing_power[friendFirstName]' => $purchasingPower->friendFirstName = 'Mylène',
-            'purchasing_power[friendAge]' => '26',
-            'purchasing_power[friendGender]' => $purchasingPower->friendGender = 'female',
-            'purchasing_power[friendPosition]' => '5',
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('button[name="interactive[fill_info]"]'));
+
+        $this->client->submit($crawler->filter('form[name="interactive"]')->form([
+            'interactive[friendFirstName]' => 'Mylène',
+            'interactive[friendAge]' => '26',
+            'interactive[friendGender]' => 'female',
+            'interactive[friendPosition]' => '5',
         ]));
 
-        $purchasingPower->friendAge = 26;
-        $purchasingPower->friendPosition = $this->getChoice(5);
-        $purchasingPower->marking = PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES;
-
-        $this->assertEquals($purchasingPower, $this->getCurrentPurchasingPower());
+        $this->assertSame('Mylène', $this->getCurrentInteractive()->friendFirstName);
+        $this->assertSame(26, $this->getCurrentInteractive()->friendAge);
+        $this->assertSame('female', $this->getCurrentInteractive()->friendGender);
+        $this->assertInstanceOf(InteractiveChoice::class, $this->getCurrentInteractive()->friendPosition);
+        $this->assertEquals('Salarié de la fonction publique', $this->getCurrentInteractive()->friendPosition->getLabel());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::PURCHASING_POWER_PATH, $this->client);
     }
 
-    public function testRestartPurchasingPowerAction()
+    public function testRestartInteractiveAction()
     {
         $crawler = $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_PATH);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->filter('form[name="purchasing_power"]')->form([
-            'purchasing_power[friendFirstName]' => 'Mylène',
-            'purchasing_power[friendAge]' => '26',
-            'purchasing_power[friendGender]' => 'female',
-            'purchasing_power[friendPosition]' => '5',
+        $this->client->submit($crawler->filter('form[name="interactive"]')->form([
+            'interactive[friendFirstName]' => 'Mylène',
+            'interactive[friendAge]' => '26',
+            'interactive[friendGender]' => 'female',
+            'interactive[friendPosition]' => '5',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -83,7 +85,7 @@ class InteractiveControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
         $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_RESTART_PATH);
 
-        $this->assertNull($this->client->getRequest()->getSession()->get(PurchasingPowerProcessorHandler::SESSION_KEY));
+        $this->assertNull($this->client->getRequest()->getSession()->get(InteractiveProcessorHandler::SESSION_KEY));
     }
 
     protected function setUp()
@@ -95,8 +97,8 @@ class InteractiveControllerTest extends SqliteWebTestCase
             LoadPurchasingPowerData::class,
         ]);
 
-        $this->PurchasingPowerChoiceRepository = $this->getPurchasingPowerChoiceRepository();
-        $this->PurchasingPowerInvitationRepository = $this->getPurchasingPowerInvitationRepository();
+        $this->purchasingPowerChoiceRepository = $this->getInteractiveChoiceRepository();
+        $this->purchasingPowerInvitationRepository = $this->getInteractiveInvitationRepository();
         $this->emailRepository = $this->getEmailRepository();
     }
 
@@ -105,35 +107,35 @@ class InteractiveControllerTest extends SqliteWebTestCase
         $this->kill();
 
         $this->emailRepository = null;
-        $this->PurchasingPowerInvitationRepository = null;
-        $this->PurchasingPowerChoiceRepository = null;
+        $this->purchasingPowerInvitationRepository = null;
+        $this->purchasingPowerChoiceRepository = null;
 
         parent::tearDown();
     }
 
-    private function getPurchasingPowerInvitationHandler(): PurchasingPowerProcessorHandler
+    private function getInteractiveInvitationHandler(): InteractiveProcessorHandler
     {
-        return $this->container->get('app.interactive.purchasing_power_processor_handler');
+        return $this->container->get('app.interactive.interactive_processor_handler');
     }
 
-    private function getCurrentPurchasingPower(): PurchasingPowerProcessor
+    private function getCurrentInteractive(): InteractiveProcessor
     {
-        return $this->getPurchasingPowerInvitationHandler()->start($this->client->getRequest()->getSession());
+        return $this->getInteractiveInvitationHandler()->start($this->client->getRequest()->getSession());
     }
 
-    private function getChoice(int $id): ?PurchasingPowerChoice
+    private function getChoice(int $id): ?InteractiveChoice
     {
-        return $this->PurchasingPowerChoiceRepository->find($id);
+        return $this->purchasingPowerChoiceRepository->find($id);
     }
 
     /**
      * @param int[] $ids
      *
-     * @return PurchasingPowerChoice[]|ArrayCollection|array
+     * @return InteractiveChoice[]|ArrayCollection|array
      */
     private function getChoices(array $ids, bool $asCollection = false): iterable
     {
-        $choices = $this->PurchasingPowerChoiceRepository->findBy(['id' => $ids]);
+        $choices = $this->purchasingPowerChoiceRepository->findBy(['id' => $ids]);
 
         return $asCollection ? new ArrayCollection($choices) : $choices;
     }

@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\PurchasingPowerInvitation;
-use AppBundle\Form\PurchasingPowerType;
+use AppBundle\Entity\Interactive;
+use AppBundle\Entity\InteractiveInvitation;
+use AppBundle\Form\InteractiveType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,55 +15,67 @@ use Symfony\Component\HttpFoundation\Response;
 class InteractiveController extends Controller
 {
     /**
-     * @Route("/ton-pouvoir-achat", name="app_purchasing_power")
+     * @Route("/interactif/{slug}", name="app_interactive")
      * @Method("GET|POST")
      */
-    public function purchasingPowerAction(Request $request): Response
+    public function interactiveAction(Request $request, Interactive $interactive): Response
     {
         $session = $request->getSession();
-        $handler = $this->get('app.interactive.purchasing_power_processor_handler');
-        $purchasingPower = $handler->start($session);
-        $transition = $handler->getCurrentTransition($purchasingPower);
+        $handler = $this->get('app.interactive.interactive_processor_handler');
+        $interactiveInvitation = $handler->start($session);
+        $transition = $handler->getCurrentTransition($interactiveInvitation);
 
-        $form = $this->createForm(PurchasingPowerType::class, $purchasingPower, ['transition' => $transition]);
+        $form = $this->createForm(InteractiveType::class, $interactiveInvitation, [
+            'transition' => $transition,
+            'interactive' => $interactive,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($purchasingPowerLog = $this->get('app.interactive.purchasing_power_processor_handler')->process($session, $purchasingPower)) {
-                return $this->redirectToRoute('app_purchasing_power_mail_sent', [
-                    'uuid' => $purchasingPowerLog->getUuid()->toString(),
+            if ($interactiveInvitationLog = $this->get('app.interactive.interactive_processor_handler')->process($session, $interactiveInvitation)) {
+                return $this->redirectToRoute('app_interactive_mail_sent', [
+                    'slug' => $interactive->getSlug(),
+                    'uuid' => $interactiveInvitationLog->getUuid()->toString(),
                 ]);
             }
 
-            return $this->redirectToRoute('app_purchasing_power');
+            return $this->redirectToRoute('app_interactive', [
+                'slug' => $interactive->getSlug(),
+            ]);
         }
 
-        return $this->render('interactive/purchasing_power.html.twig', [
-            'interactive' => $purchasingPower,
+        return $this->render('interactive/interactive.html.twig', [
+            'interactive' => $interactiveInvitation,
             'interactive_form' => $form->createView(),
             'transition' => $transition,
+            'slug' => $interactive->getSlug(),
         ]);
     }
 
     /**
-     * @Route("/ton-pouvoir-achat/recommencer", name="app_purchasing_power_restart")
+     * @Route("/interactif/{slug}/recommencer", name="app_interactive_restart")
      * @Method("GET")
      */
-    public function restartPurchasingPowerAction(Request $request): Response
+    public function restartInteractiveAction(Interactive $interactive, Request $request): Response
     {
-        $this->get('app.interactive.purchasing_power_processor_handler')->terminate($request->getSession());
+        $this->get('app.interactive.interactive_processor_handler')->terminate($request->getSession());
 
-        return $this->redirectToRoute('app_purchasing_power');
+        return $this->redirectToRoute('app_interactive', [
+            'slug' => $interactive->getSlug(),
+        ]);
     }
 
     /**
-     * @Route("/ton-pouvoir-achat/{uuid}/merci", name="app_purchasing_power_mail_sent")
+     * @Route("/interactif/{slug}/{uuid}/merci", name="app_interactive_mail_sent")
+     * @ParamConverter("interactive", options={"mapping": {"slug":"slug"}})
+     * @ParamConverter("interactiveInvitation", options={"mapping": {"uuid":"uuid"}})
      * @Method("GET")
      */
-    public function mailSentAction(PurchasingPowerInvitation $purchasingPower): Response
+    public function mailSentAction(Interactive $interactive, InteractiveInvitation $interactiveInvitation, Request $request): Response
     {
         return $this->render('interactive/mail_sent.html.twig', [
-            'interactive' => $purchasingPower,
+            'interactive' => $interactiveInvitation,
+            'slug' => $interactive->getSlug(),
         ]);
     }
 }
