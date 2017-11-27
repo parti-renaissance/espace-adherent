@@ -18,7 +18,7 @@ class EventCategoryAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('name', TextType::class, [
@@ -34,7 +34,7 @@ class EventCategoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('name', null, [

@@ -8,6 +8,7 @@ use AppBundle\Repository\SkillRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -54,6 +55,11 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
         return ['admin/citizen_initiative/admin.theme.html.twig'];
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -70,7 +76,7 @@ class CitizenInitiativeAskingHelpAdmin extends AbstractAdmin
         $formMapper->getFormBuilder()->addEventSubscriber(new SkillListener($this->skillRepository));
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('name', null, [

@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class EmailAdmin extends AbstractAdmin
@@ -15,6 +16,11 @@ class EmailAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+    }
 
     protected function configureShowFields(ShowMapper $show)
     {

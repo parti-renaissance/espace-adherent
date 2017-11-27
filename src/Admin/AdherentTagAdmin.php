@@ -17,7 +17,7 @@ class AdherentTagAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->add('name', null, [
@@ -26,7 +26,7 @@ class AdherentTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('name', TextType::class, [
@@ -35,7 +35,7 @@ class AdherentTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('name', null, [
