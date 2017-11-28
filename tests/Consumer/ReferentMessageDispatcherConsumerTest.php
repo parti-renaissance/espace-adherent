@@ -179,7 +179,6 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentMessageRepository')->willReturn($referentMessageRepository);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getManager')->willReturn($this->entityManager);
-        $this->entityManager->expects($this->once())->method('clear');
 
         $this->expectOutputString(
             $uuid.' | Dispatching message from hello@world.com'.PHP_EOL

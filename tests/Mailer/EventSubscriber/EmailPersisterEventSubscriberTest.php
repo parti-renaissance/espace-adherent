@@ -24,8 +24,9 @@ class EmailPersisterEventSubscriberTest extends TestCase
 
     public function testOnMailerDeliveryMessage()
     {
-        $this->manager->expects($this->exactly(1))->method('persist');
+        $this->manager->expects($this->once())->method('persist');
         $this->manager->expects($this->once())->method('flush');
+        $this->manager->expects($this->once())->method('detach');
 
         $adherents[] = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
         $adherents[] = $this->createAdherentMock('johana156@gmail.com', 'Johana', 'Durand');

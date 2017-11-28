@@ -65,8 +65,6 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
 
                     $i = 0;
                     $chunk = [];
-
-                    $this->getManager()->clear();
                 }
             }
 
