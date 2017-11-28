@@ -39,13 +39,13 @@ class CitizenProjectFactory
             $data['name'],
             $data['subtitle'],
             $data['category'],
-            $data['address'],
             $data['committee'] ?? null,
             $data['assistance_needed'] ?? false,
             $data['problem_description'],
             $data['proposed_solution'],
             $data['required_means'],
             $phone,
+            $data['address'],
             $data['slug'] ?? null,
             $data['status'] ?? CitizenProject::PENDING
         );
@@ -73,7 +73,7 @@ class CitizenProjectFactory
             $command->proposedSolution,
             $command->requiredMeans,
             $command->getCommittee(),
-            $command->getAddress() ? $this->addressFactory->createFromAddress($command->getAddress()) : null
+            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
         );
 
         return $citizenProject;

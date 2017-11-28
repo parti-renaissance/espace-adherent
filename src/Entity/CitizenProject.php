@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CitizenProject extends BaseGroup
 {
-    use EntityPostAddressTrait;
+    use EntityNullablePostAddressTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
@@ -84,6 +84,13 @@ class CitizenProject extends BaseGroup
     private $assistanceNeeded = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $assistanceContent;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      *
      * @Algolia\Attribute
@@ -111,13 +118,13 @@ class CitizenProject extends BaseGroup
         string $name,
         string $subtitle,
         CitizenProjectCategory $category,
-        PostAddress $address,
         ?Committee $committee,
         bool $assistanceNeeded = false,
         string $problemDescription = '',
         string $proposedSolution = '',
         string $requiredMeans = '',
         PhoneNumber $phone = null,
+        NullablePostAddress $address = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -207,6 +214,22 @@ class CitizenProject extends BaseGroup
         return $this->assistanceNeeded;
     }
 
+    /**
+     * @return string
+     */
+    public function getAssistanceContent(): ?string
+    {
+        return $this->assistanceContent;
+    }
+
+    /**
+     * @param string $assistanceContent
+     */
+    public function setAssistanceContent(?string $assistanceContent): void
+    {
+        $this->assistanceContent = $assistanceContent;
+    }
+
     public function setAssistanceNeeded(bool $assistanceNeeded): void
     {
         $this->assistanceNeeded = $assistanceNeeded;
@@ -253,7 +276,7 @@ class CitizenProject extends BaseGroup
         string $proposedSolution,
         string $requiredMeans,
         Committee $committee = null,
-        PostAddress $address = null,
+        NullablePostAddress $address = null,
         string $createdAt = 'now'
     ): self {
         $citizenProject = new self(
@@ -267,8 +290,8 @@ class CitizenProject extends BaseGroup
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
-            $address,
-            $phone
+            $phone,
+            $address
         );
 
         $citizenProject->createdAt = new \DateTime($createdAt);
@@ -293,7 +316,7 @@ class CitizenProject extends BaseGroup
         $this->refusedAt = null;
     }
 
-    public function update(string $name, PostAddress $address): void
+    public function update(string $name, NullablePostAddress $address): void
     {
         $this->setName($name);
 

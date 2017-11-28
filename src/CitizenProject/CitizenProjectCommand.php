@@ -2,7 +2,7 @@
 
 namespace AppBundle\CitizenProject;
 
-use AppBundle\Address\Address;
+use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\Committee;
@@ -35,7 +35,7 @@ class CitizenProjectCommand
     /**
      * The citizen project address.
      *
-     * @var Address
+     * @var NullableAddress
      *
      * @Assert\NotBlank
      * @Assert\Valid
@@ -72,14 +72,19 @@ class CitizenProjectCommand
      */
     public $requiredMeans;
 
-    public function __construct(Address $address = null)
+    /**
+     * @var string
+     */
+    public $assistanceContent;
+
+    public function __construct(NullableAddress $address = null)
     {
         $this->address = $address;
     }
 
     public static function createFromCitizenProject(CitizenProject $citizenProject): self
     {
-        $address = $citizenProject->getPostAddress() ? Address::createFromAddress($citizenProject->getPostAddress()) : null;
+        $address = $citizenProject->getPostAddress() ? NullableAddress::createFromAddress($citizenProject->getPostAddress()) : null;
         $dto = new self($address);
         $dto->name = $citizenProject->getName();
         $dto->subtitle = $citizenProject->getSubtitle();
@@ -124,12 +129,12 @@ class CitizenProjectCommand
         return $this->citizenProject->getSlug();
     }
 
-    public function setAddress(Address $address = null): void
+    public function setAddress(NullableAddress $address = null): void
     {
         $this->address = $address;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): ?NullableAddress
     {
         return $this->address;
     }
@@ -167,5 +172,10 @@ class CitizenProjectCommand
     public function getRequiredMeans(): ?string
     {
         return $this->requiredMeans;
+    }
+
+    public function setCitizenProject(CitizenProject $citizenProject): void
+    {
+        $this->citizenProject = $citizenProject;
     }
 }

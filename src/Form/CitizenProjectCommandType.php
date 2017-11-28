@@ -39,24 +39,28 @@ class CitizenProjectCommandType extends AbstractType
                 'filter_emojis' => true,
                 'purify_html' => true,
             ])
-            ->add('address', NullableAddressType::class, [
-                'required' => false,
-            ])
+            ->add('address', NullableAddressType::class)
             ->add('assistance_needed', CheckboxType::class, [
                 'property_path' => 'assistanceNeeded',
                 'required' => false,
             ])
+            ->add('assistance_content', TextareaType::class, [
+                'required' => false,
+                'property_path' => 'assistanceContent',
+                'purify_html' => true,
+                'filter_emojis' => true,
+            ]);
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CitizenProjectCommand::class,
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'citizen_project';
     }

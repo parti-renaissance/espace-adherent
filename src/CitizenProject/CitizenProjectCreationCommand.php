@@ -3,7 +3,6 @@
 namespace AppBundle\CitizenProject;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
 
 /**
@@ -26,10 +25,5 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     public function getAdherent(): Adherent
     {
         return $this->adherent;
-    }
-
-    public function setCitizenProject(CitizenProject $citizenProject): void
-    {
-        $this->citizenProject = $citizenProject;
     }
 }

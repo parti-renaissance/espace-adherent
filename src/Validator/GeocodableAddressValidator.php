@@ -49,6 +49,7 @@ class GeocodableAddressValidator extends ConstraintValidator
         try {
             $this->geocoder->geocode($address);
         } catch (GeocodingException $exception) {
+            dump($exception);
             $result = false;
         }
 

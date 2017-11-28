@@ -39,8 +39,8 @@ class CitizenProjectCommandTest extends TestCase
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
-            NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
+            NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             '69001-en-marche-lyon'
         );
 
