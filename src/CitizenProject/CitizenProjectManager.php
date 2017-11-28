@@ -14,6 +14,7 @@ use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CitizenProjectManager
 {
@@ -320,5 +321,10 @@ class CitizenProjectManager
         $citizenProjectMembership->setPrivilege($privilege);
 
         $this->getManager()->flush();
+    }
+
+    public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
+    {
+        return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
     }
 }

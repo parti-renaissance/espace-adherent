@@ -38,6 +38,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
+    const DISABLED_CITIZEN_PROJECT_EMAIL = -1;
+    const CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE = 10;
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -124,6 +126,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      * @ORM\Column(type="boolean")
      */
     private $localHostEmailsSubscription = true;
+
+    /**
+     * @ORM\Column(type="integer", options={"default"=10})
+     */
+    private $citizenProjectCreationEmailSubscriptionRadius = self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -412,6 +419,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->localHostEmailsSubscription) {
             $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
+        }
+
+        if ($this->hasCitizenProjectCreationEmailSubscription()) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION;
         }
 
         return $subscriptions;
@@ -964,5 +975,20 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function removeTag(AdherentTag $adherentTag): void
     {
         $this->tags->removeElement($adherentTag);
+    }
+
+    public function getCitizenProjectCreationEmailSubscriptionRadius(): int
+    {
+        return $this->citizenProjectCreationEmailSubscriptionRadius;
+    }
+
+    public function setCitizenProjectCreationEmailSubscriptionRadius(int $citizenProjectCreationEmailSubscriptionRadius): void
+    {
+        $this->citizenProjectCreationEmailSubscriptionRadius = $citizenProjectCreationEmailSubscriptionRadius;
+    }
+
+    public function hasCitizenProjectCreationEmailSubscription(): bool
+    {
+        return self::DISABLED_CITIZEN_PROJECT_EMAIL !== $this->getCitizenProjectCreationEmailSubscriptionRadius();
     }
 }

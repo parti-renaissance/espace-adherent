@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Ramsey\Uuid\Uuid;
 
-class CitizenProjectCreationConfirmationMessage extends Message
+class CitizenProjectCreationNotificationMessage extends Message
 {
     public static function create(Adherent $adherent, CitizenProject $citizenProject): self
     {
@@ -15,7 +15,7 @@ class CitizenProjectCreationConfirmationMessage extends Message
             '244426',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Nous avons bien reçu votre demande de création de projet citoyen !'
+            'Un nouveau projet citoyen près de chez vous !'
         );
 
         $message->setVar('target_firstname', self::escape($adherent->getFirstName()));

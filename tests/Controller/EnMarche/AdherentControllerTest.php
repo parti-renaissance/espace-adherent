@@ -392,13 +392,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
         $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
 
-        $this->assertCount(3, $subscriptions);
+        $this->assertCount(4, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -422,17 +423,21 @@ class AdherentControllerTest extends MysqlWebTestCase
                 'emails_subscriptions' => [
                     AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
                     AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                    false,
+                    false,
                 ],
             ],
         ]);
 
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/preferences-des-emails', $this->client);
 
+        $this->manager->clear();
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
         $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }
 
     public function testAnonymousUserCannotCreateCitizenProject()
