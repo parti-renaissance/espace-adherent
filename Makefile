@@ -1,6 +1,6 @@
 FIG=docker-compose
-RUN=$(FIG) run --rm app
-EXEC=$(FIG) exec app
+RUN?=$(FIG) run --rm app
+EXEC?=$(FIG) exec app
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
