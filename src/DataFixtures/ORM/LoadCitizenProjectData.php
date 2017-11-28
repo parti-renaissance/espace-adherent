@@ -3,7 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\CitizenProject\CitizenProjectFactory;
-use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -41,7 +41,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2017-10-12 12:25:54',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
         ]);
         $citizenProject1->approved('2017-10-12 15:54:18');
         $this->addReference('citizen-project-1', $citizenProject1);
@@ -57,7 +57,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $this->addReference('citizen-project-2', $citizenProject2);
 
@@ -72,7 +72,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-26 16:08:24',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject3->approved('2017-10-27 10:18:33');
         $this->addReference('citizen-project-3', $citizenProject3);
@@ -88,7 +88,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-09-19 07:36:55',
             'name' => 'Massive Open Online Course',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject4->approved();
         $this->addReference('citizen-project-4', $citizenProject4);
@@ -104,7 +104,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
-            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
+            'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
         ]);
         $citizenProject5->approved();
         $this->addReference('citizen-project-5', $citizenProject5);
@@ -120,7 +120,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject6->approved('2017-10-19 09:17:24');
         $this->addReference('citizen-project-6', $citizenProject6);
@@ -136,7 +136,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_10_UUID,
             'created_at' => '2017-09-18 09:14:45',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject7->approved('2017-03-19 13:43:26');
         $this->addReference('citizen-project-7', $citizenProject7);
@@ -152,7 +152,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2017-10-10 17:34:18',
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject8->approved('2017-10-10 18:23:18');
         $this->addReference('citizen-project-8', $citizenProject8);
@@ -168,7 +168,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-10-09 12:16:22',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
         ]);
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);

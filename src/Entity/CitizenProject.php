@@ -159,7 +159,7 @@ class CitizenProject extends BaseGroup
         $this->requiredMeans = $requiredMeans;
     }
 
-    public function getPostAddress(): PostAddress
+    public function getPostAddress(): NullablePostAddress
     {
         return $this->postAddress;
     }

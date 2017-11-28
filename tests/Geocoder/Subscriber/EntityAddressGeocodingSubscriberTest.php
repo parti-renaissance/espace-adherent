@@ -195,6 +195,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             'Problem description',
             'Proposed solution',
             'Required means',
+            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             $address ? NullablePostAddress::createFrenchAddress($address, '69001-69381') : null
         );
 
