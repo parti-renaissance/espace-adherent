@@ -9,6 +9,7 @@ use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -53,7 +54,12 @@ class CitizenInitiativeAdmin extends AbstractAdmin
         $this->manager->checkPublicationCitizenInitiative($object);
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->with('Initiative citoyenne', array('class' => 'col-md-7'))
@@ -185,7 +191,7 @@ class CitizenInitiativeAdmin extends AbstractAdmin
             ->end();
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('name', null, [

@@ -10,6 +10,7 @@ use AppBundle\Summary\JobLocation;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -33,6 +34,11 @@ class SummaryAdmin extends AbstractAdmin
     public function setInterestChoices(array $interests)
     {
         $this->interests = $interests;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

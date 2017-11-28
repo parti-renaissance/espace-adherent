@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class PurchasingPowerInvitationAdmin extends AbstractAdmin
@@ -22,6 +23,11 @@ class PurchasingPowerInvitationAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
     }
 
     protected function configureListFields(ListMapper $listMapper)
