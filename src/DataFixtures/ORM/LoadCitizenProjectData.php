@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\NullablePostAddress;
 use AppBundle\CitizenProject\CitizenProjectFactory;
+use AppBundle\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -32,11 +32,15 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
 
         $citizenProject1 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_1_UUID,
+            'name' => 'Le projet citoyen à Paris 8',
+            'subtitle' => 'Le projet citoyen des habitants du 8ème arrondissement de Paris.',
+            'category' => $this->getReference('cpc001'),
+            'problem_description' => 'Problème 1',
+            'proposed_solution' => 'Solution 1',
+            'required_means' => 'Les moyens 1',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2017-10-12 12:25:54',
-            'name' => 'Le projet citoyen à Paris 8',
-            'slug' => 'projet-citoyen-a-paris-8',
-            'description' => 'Le projet citoyen des habitants du 8ème arrondissement de Paris.',
             'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
         ]);
         $citizenProject1->approved('2017-10-12 15:54:18');
@@ -44,87 +48,127 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
 
         $citizenProject2 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_2_UUID,
+            'name' => 'Le projet citoyen à Marseille',
+            'subtitle' => 'Le projet citoyen à Marseille !',
+            'category' => $this->getReference('cpc002'),
+            'problem_description' => 'Problème 2',
+            'proposed_solution' => 'Solution 2',
+            'required_means' => 'Les moyens 2',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
-            'name' => 'Le projet citoyen à Marseille',
-            'description' => 'Le projet citoyen à Marseille !',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
-            'phone' => '33 673643424',
         ]);
         $this->addReference('citizen-project-2', $citizenProject2);
 
         $citizenProject3 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_3_UUID,
+            'name' => 'Le projet citoyen à Dammarie-les-Lys',
+            'subtitle' => 'Le projet citoyen sans adresse et téléphone',
+            'category' => $this->getReference('cpc003'),
+            'problem_description' => 'Problème 3',
+            'proposed_solution' => 'Solution 3',
+            'required_means' => 'Les moyens 3',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-26 16:08:24',
-            'name' => 'Le projet citoyen à Dammarie-les-Lys',
-            'slug' => 'projet-citoyen-a-dammarie-les-lys',
-            'description' => 'Le projet citoyen sans adresse et téléphone',
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject3->approved('2017-10-27 10:18:33');
         $this->addReference('citizen-project-3', $citizenProject3);
 
         $citizenProject4 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_4_UUID,
+            'subtitle' => 'Encore un projet citoyen',
+            'category' => $this->getReference('cpc004'),
+            'problem_description' => 'Problème 4',
+            'proposed_solution' => 'Solution 4',
+            'required_means' => 'Les moyens 4',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-09-19 07:36:55',
             'name' => 'Massive Open Online Course',
-            'description' => 'Encore un projet citoyen',
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject4->approved();
         $this->addReference('citizen-project-4', $citizenProject4);
 
         $citizenProject5 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_5_UUID,
+            'name' => 'Formation en ligne ouverte à tous à Évry',
+            'subtitle' => 'Équipe de la formation en ligne ouverte à tous à Évry',
+            'category' => $this->getReference('cpc005'),
+            'problem_description' => 'Problème 5',
+            'proposed_solution' => 'Solution 5',
+            'required_means' => 'Les moyens 5',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
-            'name' => 'Formation en ligne ouverte à tous à Évry',
-            'description' => 'Équipe de la formation en ligne ouverte à tous à Évry',
             'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
-            'phone' => '33 673654349',
         ]);
         $citizenProject5->approved();
         $this->addReference('citizen-project-5', $citizenProject5);
 
         $citizenProject6 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_6_UUID,
+            'name' => 'Formation en ligne ouverte à tous',
+            'subtitle' => 'Équipe de la formation en ligne ouverte à tous',
+            'category' => $this->getReference('cpc006'),
+            'problem_description' => 'Problème 6',
+            'proposed_solution' => 'Solution 6',
+            'required_means' => 'Les moyens 6',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
-            'name' => 'Formation en ligne ouverte à tous',
-            'description' => 'Équipe de la formation en ligne ouverte à tous',
-            'phone' => '33 234823644',
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject6->approved('2017-10-19 09:17:24');
         $this->addReference('citizen-project-6', $citizenProject6);
 
         $citizenProject7 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_7_UUID,
+            'name' => 'Projet citoyen à Berlin',
+            'subtitle' => 'Projet citoyen de nos partenaires Allemands.',
+            'category' => $this->getReference('cpc001'),
+            'problem_description' => 'Problème 7',
+            'proposed_solution' => 'Solution 7',
+            'required_means' => 'Les moyens 7',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_10_UUID,
             'created_at' => '2017-09-18 09:14:45',
-            'name' => 'Projet citoyen à Berlin',
-            'description' => 'Projet citoyen de nos partenaires Allemands.',
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject7->approved('2017-03-19 13:43:26');
         $this->addReference('citizen-project-7', $citizenProject7);
 
         $citizenProject8 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_8_UUID,
+            'name' => 'En Marche - Projet citoyen',
+            'subtitle' => 'Projet citoyen.',
+            'category' => $this->getReference('cpc002'),
+            'problem_description' => 'Problème 8',
+            'proposed_solution' => 'Solution 8',
+            'required_means' => 'Les moyens 8',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2017-10-10 17:34:18',
-            'name' => 'En Marche - Projet citoyen',
-            'description' => 'Projet citoyen.',
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
         $citizenProject8->approved('2017-10-10 18:23:18');
         $this->addReference('citizen-project-8', $citizenProject8);
 
         $citizenProject9 = $citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_9_UUID,
+            'name' => 'Projet citoyen à New York City',
+            'subtitle' => 'Projet citoyen à New York City.',
+            'category' => $this->getReference('cpc003'),
+            'problem_description' => 'Problème 3',
+            'proposed_solution' => 'Solution 3',
+            'required_means' => 'Les moyens 3',
+            'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-10-09 12:16:22',
-            'name' => 'Projet citoyen à New York City',
-            'description' => 'Projet citoyen à New York City.',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
-            'phone' => '1 2123150100',
         ]);
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);
@@ -174,6 +218,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
     {
         return [
             LoadAdherentData::class,
+            LoadCitizenProjectCategoryData::class,
         ];
     }
 }

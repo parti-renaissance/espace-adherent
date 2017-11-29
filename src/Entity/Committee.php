@@ -37,6 +37,20 @@ class Committee extends BaseGroup
     use EntityPostAddressTrait;
 
     /**
+     * The group description.
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Algolia\Attribute
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    private $phone;
+
+    /**
      * The committee Facebook page URL.
      *
      * @ORM\Column(nullable=true)
@@ -146,6 +160,21 @@ class Committee extends BaseGroup
         $committee->createdAt = new \DateTime($createdAt);
 
         return $committee;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function getFacebookPageUrl(): ?string

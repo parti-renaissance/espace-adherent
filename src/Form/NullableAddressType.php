@@ -21,7 +21,6 @@ class NullableAddressType extends AbstractType
             ])
             ->add('city', HiddenType::class, [
                 'required' => false,
-                'error_bubbling' => true,
             ])
             ->add('cityName', TextType::class, [
                 'required' => false,
@@ -32,7 +31,6 @@ class NullableAddressType extends AbstractType
         ;
 
         $field = $builder->create('postalCode', TextType::class, [
-            'error_bubbling' => true,
             'required' => false,
         ]);
 
