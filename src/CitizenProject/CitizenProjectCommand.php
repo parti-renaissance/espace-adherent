@@ -6,6 +6,7 @@ use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectSkill;
+use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,6 +54,10 @@ class CitizenProjectCommand
 
     public $category;
 
+    public $committeeSupports;
+
+    private $committees;
+
     public $assistanceNeeded = false;
 
     /**
@@ -78,14 +83,14 @@ class CitizenProjectCommand
      */
     public $assistanceContent;
 
-    private $committee;
-
     public $skills;
 
     public function __construct(NullableAddress $address = null)
     {
         $this->address = $address;
         $this->skills = new ArrayCollection();
+        $this->committeeSupports = new ArrayCollection();
+        $this->committees = new ArrayCollection();
     }
 
     public static function createFromCitizenProject(CitizenProject $citizenProject): self
@@ -96,7 +101,7 @@ class CitizenProjectCommand
         $dto->subtitle = $citizenProject->getSubtitle();
         $dto->category = $citizenProject->getCategory();
         $dto->phone = $citizenProject->getPhone();
-        $dto->committee = $citizenProject->getCommittee();
+        $dto->committeeSupports = $citizenProject->getCommitteeSupports();
         $dto->problemDescription = $citizenProject->getProblemDescription();
         $dto->proposedSolution = $citizenProject->getProposedSolution();
         $dto->requiredMeans = $citizenProject->getRequiredMeans();
@@ -104,6 +109,11 @@ class CitizenProjectCommand
         $dto->assistanceContent = $citizenProject->getAssistanceContent();
         $dto->citizenProject = $citizenProject;
         $dto->skills = $citizenProject->getSkills();
+
+        /** @var CitizenProjectCommitteeSupport $committeeSupport */
+        foreach ($dto->committeeSupports as $committeeSupport) {
+            $dto->addCommittee($committeeSupport->getCommittee());
+        }
 
         return $dto;
     }
@@ -153,9 +163,14 @@ class CitizenProjectCommand
         return $this->category;
     }
 
-    public function getCommittee(): ?Committee
+    public function getCommitteeSupports(): Collection
     {
-        return $this->committee;
+        return $this->committeeSupports;
+    }
+
+    public function setCommitteeSupports(Collection $committeeSupports): void
+    {
+        $this->committeeSupports = $committeeSupports;
     }
 
     public function getSubtitle(): ?string
@@ -210,6 +225,23 @@ class CitizenProjectCommand
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
+        }
+    }
+
+    public function getCommittees(): Collection
+    {
+        return $this->committees;
+    }
+
+    public function setCommittees(iterable $committees): void
+    {
+        $this->committees = $committees;
+    }
+
+    public function addCommittee(Committee $committee): void
+    {
+        if (!$this->committees->contains($committee)) {
+            $this->committees->add($committee);
         }
     }
 }

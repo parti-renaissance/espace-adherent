@@ -62,12 +62,14 @@
     </div>
 
     <div class="citizen_project__card">
-        <h3 class="svg--black">{{ 'citizen_project.committees'|transchoice(citizen_project.committee|length) }}</h3>
+        <h3 class="svg--black">{{ 'citizen_project.committees'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</h3>
         <ul>
-            {% for committee in citizen_project.committee %}
-                <li class="text--body">
-                    {{ committee }}
-                </li>
+            {% for committeeSupport in citizen_project.committeeSupports %}
+                {% if committeeSupport.isApprove %}
+                    <li class="text--body">
+                        {{ committeeSupport.committee }}
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
         <a href="#">Notre comité souhaite aussi soutenir ce projet</a>

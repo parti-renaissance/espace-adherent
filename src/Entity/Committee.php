@@ -5,10 +5,12 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\ValueObject\Link;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Sabre\DAV\Collection;
 
 /**
  * This entity represents a committee group.
@@ -71,6 +73,13 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     private $adminComment;
 
     /**
+     * @var CitizenProjectCommitteeSupport|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
+     */
+    private $citizenProjectSupports;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -86,7 +95,8 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
-        int $membersCount = 0
+        int $membersCount = 0,
+        array $citizenProjects = []
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTime($approvedAt);
@@ -108,6 +118,11 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
+        $this->citizenProjectSupports = new ArrayCollection();
+
+        foreach ($citizenProjects as $citizenProject) {
+            $this->addSupportOnCitizenProject($citizenProject);
+        }
     }
 
     public function getPostAddress(): PostAddress
@@ -257,5 +272,39 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     private function createLink(string $url, string $label): Link
     {
         return new Link($url, $label);
+    }
+
+    public function getCitizenProjectSupports(): Collection
+    {
+        return $this->citizenProjectSupports;
+    }
+
+    public function setSupportOnCitizenProjects(iterable $citizenProjects): void
+    {
+        foreach ($citizenProjects as $citizenProject) {
+            $this->addSupportOnCitizenProject($citizenProject);
+        }
+    }
+
+    public function addSupportOnCitizenProject(CitizenProject $citizenProject): void
+    {
+        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
+            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
+                return;
+            }
+        }
+
+        $this->citizenProjectSupports->add(new CitizenProjectCommitteeSupport($citizenProject, $this, CitizenProjectCommitteeSupport::APPROVED, 'now', 'now'));
+    }
+
+    public function removeSupportOnCitizenProject(CitizenProject $citizenProject): void
+    {
+        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
+            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
+                $this->citizenProjectSupports->removeElement($citizenProjectSupport);
+
+                return;
+            }
+        }
     }
 }

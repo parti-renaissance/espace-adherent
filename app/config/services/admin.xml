@@ -540,5 +540,7 @@
 
         <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer"/>
 
+        <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
+
     </services>
 </container>
