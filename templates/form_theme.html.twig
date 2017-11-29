@@ -112,3 +112,13 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block _citizen_project_committees_entry_row %}
+    {% spaceless %}
+        <div class="summary-committee">
+            <span class="committee-remove">X</span>
+            <span class="committee-value">&nbsp;{% if value is not empty %}{{ value['name'] }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value['uuid'] }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}

@@ -7,6 +7,7 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer;
+use AppBundle\Form\DataTransformer\CommitteeTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -20,10 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CitizenProjectCommandType extends AbstractType
 {
     private $citizenProjectSkillTransformer;
+    private $committeeTransformer;
 
-    public function __construct(CitizenProjectSkillTransformer $citizenProjectSkillTransformer)
+    public function __construct(CitizenProjectSkillTransformer $citizenProjectSkillTransformer, CommitteeTransformer $committeeTransformer)
     {
         $this->citizenProjectSkillTransformer = $citizenProjectSkillTransformer;
+        $this->committeeTransformer = $committeeTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -84,11 +87,35 @@ class CitizenProjectCommandType extends AbstractType
             ])
             ->addEventListener(
                 FormEvents::PRE_SET_DATA, [$this, 'preSetData']
-            )
-        ;
+            );
 
         $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
         $builder->get('address')->remove('address');
+
+        $citizenProject = $builder->getData()->getCitizenProject();
+
+        if (!$citizenProject instanceof CitizenProject || !$citizenProject->isApproved()) {
+            $builder
+                ->add('committees', CollectionType::class, [
+                    'required' => false,
+                    'entry_type' => TextType::class,
+                    'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+                ->add('committees_search', TextType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'filter_emojis' => true,
+                    'attr' => [
+                        'placeholder' => 'Vous avez déjà le soutient d\'un comité local ? Indiquez son nom : (Optionnel)',
+                    ],
+                ])
+            ;
+
+            $builder->get('committees')->addModelTransformer($this->committeeTransformer);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

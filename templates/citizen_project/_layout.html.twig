@@ -10,7 +10,7 @@
                     <div class="text--uppercase text--small b__nudge--bottom-tiny">
                         <strong class="text--body">Projet citoyen</strong>
                         <a href="#" class="btn btn--small btn--yellow btn--no-border">No coups de coeur</a>
-                        <a href="#" class="btn btn--small btn--yellow btn--no-border">{{ 'citizen_project.committees_count'|transchoice(citizen_project.committee|length) }}</a>
+                        <a href="#" class="btn btn--small btn--yellow btn--no-border">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</a>
                         <a href="#" class="btn btn--small btn--yellow btn--no-border">Bouge ton quartier</a>
                     </div>
                     <h2 class="text--large">
