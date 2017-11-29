@@ -28,7 +28,7 @@ class CitizenProjectCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=2, max=60)
+     * @Assert\Length(min=5, max=60)
      */
     public $subtitle;
 
