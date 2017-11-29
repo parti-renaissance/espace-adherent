@@ -49,7 +49,7 @@ class CitizenProjectCommandType extends AbstractType
                 'property_path' => 'assistanceContent',
                 'purify_html' => true,
                 'filter_emojis' => true,
-            ]);
+            ])
         ;
     }
 

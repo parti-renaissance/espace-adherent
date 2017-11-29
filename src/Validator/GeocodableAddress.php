@@ -16,7 +16,6 @@ class GeocodableAddress extends Constraint
 
     public $message = 'common.address.not_geocodable';
     public $service = 'app.validator.geocodable_address';
-    public $withAddress = true;
 
     public function validatedBy()
     {
