@@ -538,5 +538,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service public="false" autowire="true" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
+
     </services>
 </container>
