@@ -184,13 +184,17 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         string $address = null,
         Committee $committee = null
     ): CitizenProject {
+        if (null === $committee) {
+            $committee = $this->createCommittee('63 rue Saint Anne');
+        }
+
         $citizenProject = new CitizenProject(
             Uuid::fromString('7eaa4d91-aec7-4b0d-b6f6-50ff6d77c082'),
             Uuid::fromString('6c77b5f9-52e8-4502-85fd-1f2316c2764b'),
             'Projet citoyen à Lyon',
             'Le projet citoyen à Lyon village',
             $this->createMock(CitizenProjectCategory::class),
-            $committee,
+            [$committee],
             false,
             null,
             'Problem description',
