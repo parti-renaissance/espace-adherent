@@ -24,7 +24,7 @@ class Address implements AddressInterface, GeocodableInterface
     private $address;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="common.postal_code.not_blank")
      * @Assert\Length(max=15)
      */
     private $postalCode;
@@ -40,7 +40,7 @@ class Address implements AddressInterface, GeocodableInterface
     private $cityName;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="common.country.not_blank")
      * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $country;

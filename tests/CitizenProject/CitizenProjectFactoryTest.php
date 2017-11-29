@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
+use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
@@ -19,8 +20,13 @@ class CitizenProjectFactoryTest extends TestCase
         $email = 'jean.dupont@example.com';
         $uuid = Adherent::createUuid($email);
         $name = 'Projet citoyen à Lyon 1er Lyon 1er';
-        $description = 'le projet citoyen à Lyon 1er';
+        $subtitle = 'le projet citoyen à Lyon 1er';
         $address = NullableAddress::createFromAddress(NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
+
+        $assistanceNeeded = false;
+        $problemDescription = 'Problem description';
+        $proposedSolution = 'Proposed solution';
+        $requiredMeans = 'Required means';
 
         $adherent = new Adherent(
             $uuid,
@@ -38,7 +44,12 @@ class CitizenProjectFactoryTest extends TestCase
         $command->setAddress($address);
         $command->setPhone((new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080901'));
         $command->name = $name;
-        $command->description = $description;
+        $command->subtitle = $subtitle;
+        $command->category = $this->createMock(CitizenProjectCategory::class);
+        $command->assistanceNeeded = false;
+        $command->problemDescription = $problemDescription;
+        $command->proposedSolution = $proposedSolution;
+        $command->requiredMeans = $requiredMeans;
 
         $citizenProjectFactory = new CitizenProjectFactory();
         $citizenProject = $citizenProjectFactory->createFromCitizenProjectCreationCommand($command);
@@ -46,7 +57,7 @@ class CitizenProjectFactoryTest extends TestCase
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
         $this->assertSame($address->getAddress(), $citizenProject->getAddress());
         $this->assertSame($name, $citizenProject->getName());
-        $this->assertSame($description, $citizenProject->getDescription());
+        $this->assertSame($subtitle, $citizenProject->getSubtitle());
         $this->assertSame($adherent->getUuid()->toString(), $citizenProject->getCreatedBy());
     }
 }

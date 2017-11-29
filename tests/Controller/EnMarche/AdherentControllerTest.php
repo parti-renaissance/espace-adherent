@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
@@ -467,76 +468,93 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $errors = $this->client->getCrawler()->filter('.form__errors');
+
+        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
+
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
         );
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-problem-description > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-proposed-solution > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-required-means > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
+            $this->client->getCrawler()->filter('#citizen-project-address > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Veuillez renseigner un code postal.',
+            $this->client->getCrawler()->filter('#citizen-project-address #field-postal-code-city > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#citizen-project-address #field-country > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Le numéro de téléphone est obligatoire.',
+            $this->client->getCrawler()->filter('#create-citizen-project-form > .form__errors > li')->text()
         );
 
         $data = [];
         $data['citizen_project']['name'] = 'P';
-        $data['citizen_project']['description'] = 'test';
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $data['citizen_project']['subtitle'] = 'test';
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 2 caractères.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
         );
         $this->assertSame(
-            'Votre texte de description est trop court. Il doit compter 5 caractères minimum.',
-            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+            'Vous devez saisir au moins 5 caractères.',
+            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
         );
     }
 
     public function testCreateCitizenProjectSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
+
+        $categoryValue = $crawler->filter('#citizen_project_category option:contains("Emploi et formation professionnelle")')->attr('value');
 
         $data = [];
         $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['description'] = 'Mon premier projet citoyen';
-        $data['citizen_project']['address']['address'] = 'Pilgerweg 58';
-        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
+        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['category'] = $categoryValue;
+        $data['citizen_project']['problem_description'] = 'Le problème local.';
+        $data['citizen_project']['proposed_solution'] = 'Ma solution. ';
+        $data['citizen_project']['required_means'] = 'Mes actions.';
         $data['citizen_project']['address']['postalCode'] = '8802';
+        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
         $data['citizen_project']['address']['country'] = 'CH';
-        $data['citizen_project']['phone']['country'] = 'CH';
-        $data['citizen_project']['phone']['number'] = '31 359 21 11';
+        $data['citizen_project']['assistance_needed'] = 1;
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
+
         $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
-    }
-
-    public function testCreateCitizenProjectWithoutAddressAndPhoneSuccessful()
-    {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $data = [];
-        $data['citizen_project']['name'] = 'Mon équipe';
-        $data['citizen_project']['description'] = 'Ma première équipe';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon équipe']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
     /**
@@ -844,6 +862,7 @@ class AdherentControllerTest extends MysqlWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadCitizenProjectData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();

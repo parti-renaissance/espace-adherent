@@ -4,9 +4,14 @@
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
+            {{ js.ckeditor('citizen_project_proposed_solution') }}
+            App.runCitizenProjectCreation();
         });
     </script>
 {% endblock %}
@@ -20,44 +25,40 @@
 
             <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
                 <h1 class="b__nudge--bottom-small text--large">
-                    Je crée mon projet citoyen !
+                    Lancez votre projet citoyen !
                 </h1>
                 <p class="text--body">
-                    En créant votre projet citoyen, vous pourrez réunir des citoyens pour débattre et partager autour
-                    de sujets qui vous intéressent !
-                </p>
-                <p class="text--body">
-                    Consultez la <a href="{{ path('app_citizen_project_help') }}">FAQ</a> pour en savoir plus.
+                    Ce projet visera à améliorer concrètement votre quotidien - en réunissant la force et les comptétences de toutes et tous.
                 </p>
             </header>
+            <div>
+                <div class="citizen-project__help">
+                    <p class="text--body">
+                        Tout projet citoyen doit adhérer à <a href="{{ path('app_citizen_project_help') }}">notre charte</a>.
+                    </p>
+                    <p class="text--body">
+                        Des questions ? Dirigez vous vers <a href="{{ path('app_citizen_project_help') }}">la FAQ</a>.
+                    </p>
+                </div>
 
-            <div class="citizen-project__form">
-                <form method="post" id="create-citizen-project-form" class="form citizen-project-form">
-                    {{ include('citizen_project/_form.html.twig') }}
+                <div class="citizen-project__form">
+                    <form method="post" id="create-citizen-project-form" class="form citizen-project-form">
+                        {{ include('citizen_project/_form.html.twig') }}
 
-                    <div class="space--20-30">
-                        <h3>Rappel de vos informations personnelles</h3>
-
-                        <div class="form__row" id="field-personal-information">
-                            <strong>Nom</strong> : {{ app.user.lastName|upper }}<br/>
-                            <strong>Prénom</strong> : {{ app.user.firstName|capitalize }}<br/>
-                            <strong>Adresse e-mail</strong> : {{ app.user.emailAddress }}<br/>
+                        <div class="form__row" id="field-personal-phone">
+                            <label class="text--bold form form__label">Vérifier mes informations</label>
+                            <p>Mon numéro de téléphone : {{ app.user.phone }} <a href="{{ path('app_adherent_profile') }}">Modifier</a></p>
+                            <p>Nous vous contacterons sur ce numéro - il sera mis à disposition de nos équipe NON QG</p>
                         </div>
 
-                        <p class="wrong-personal-infos">
-                            Ces informations ne sont pas justes ?
-                            <a href="{{ path('app_adherent_profile') }}">Éditez-les</a>.
-                        </p>
-                    </div>
-
-                    <div class="text--center">
-                        <button type="submit" class="btn btn--blue btn--medium" id="create-my-citizen-project">
-                            Créer un projet citoyen
-                        </button>
-                    </div>
-
-                    {{ form_rest(form) }}
-                </form>
+                        <div class="text--center">
+                            <button type="submit" class="btn btn--blue btn--medium" id="create-my-citizen-project">
+                                Proposer mon projet
+                            </button>
+                        </div>
+                        {{ form_widget(form._token) }}
+                    </form>
+                </div>
             </div>
         </section>
     </main>

@@ -6,6 +6,7 @@ use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\Address as AssertValidAddress;
 use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,6 +23,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
     private $address;
 
     /**
+     * @Assert\NotBlank(message="common.postal_code.not_blank")
      * @Assert\Length(max=15)
      */
     private $postalCode;
@@ -36,6 +38,10 @@ class NullableAddress implements AddressInterface, GeocodableInterface
      */
     private $cityName;
 
+    /**
+     * @Assert\NotBlank(message="common.country.not_blank")
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     */
     private $country;
 
     public function __construct()

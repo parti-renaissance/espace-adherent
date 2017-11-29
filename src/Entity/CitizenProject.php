@@ -6,8 +6,9 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This entity represents a citizen project.
@@ -32,6 +33,81 @@ class CitizenProject extends BaseGroup
     use EntityNullablePostAddressTrait;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
+     *
+     * @Algolia\Attribute
+     */
+    private $category;
+
+    /**
+     * @ORM\Column
+     *
+     * @Algolia\Attribute
+     */
+    protected $subtitle;
+
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=500)
+     */
+    private $problemDescription;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=800)
+     */
+    private $proposedSolution;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=500)
+     */
+    private $requiredMeans;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $assistanceNeeded = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $assistanceContent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @Algolia\Attribute
+     */
+    private $committee;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     maxSize = "1M",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     * )
+     */
+    private $image;
+
+    /**
      * A cached list of the administrators (for admin).
      */
     public $administrators = [];
@@ -40,9 +116,15 @@ class CitizenProject extends BaseGroup
         UuidInterface $uuid,
         UuidInterface $creator,
         string $name,
-        string $description,
-        NullablePostAddress $address = null,
+        string $subtitle,
+        CitizenProjectCategory $category,
+        ?Committee $committee,
+        bool $assistanceNeeded = false,
+        string $problemDescription = '',
+        string $proposedSolution = '',
+        string $requiredMeans = '',
         PhoneNumber $phone = null,
+        NullablePostAddress $address = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -59,16 +141,22 @@ class CitizenProject extends BaseGroup
 
         $this->uuid = $uuid;
         $this->createdBy = $creator;
+        $this->committee = $committee;
         $this->setName($name);
         $this->slug = $slug;
-        $this->description = $description;
+        $this->category = $category;
+        $this->subtitle = $subtitle;
         $this->postAddress = $address;
         $this->phone = $phone;
+        $this->assistanceNeeded = $assistanceNeeded;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
+        $this->problemDescription = $problemDescription;
+        $this->proposedSolution = $proposedSolution;
+        $this->requiredMeans = $requiredMeans;
     }
 
     public function getPostAddress(): NullablePostAddress
@@ -91,32 +179,123 @@ class CitizenProject extends BaseGroup
         return $this->postAddress ? $this->postAddress->getGeocodableAddress() : '';
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, NullablePostAddress $address = null, PhoneNumber $phone = null, string $createdAt = 'now'): self
+    public function getCategory(): CitizenProjectCategory
     {
-        $citizenProject = new self(
-            $uuid,
-            Uuid::fromString($creatorUuid),
-            $name,
-            $description,
-            $address,
-            $phone
-        );
-        $citizenProject->createdAt = new \DateTime($createdAt);
-
-        return $citizenProject;
+        return $this->category;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, NullablePostAddress $address = null, PhoneNumber $phone = null, string $createdAt = 'now'): self
+    public function setPhone(PhoneNumber $phone = null): void
     {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setSubtitle(string $subtitle)
+    {
+        $this->subtitle = $subtitle;
+    }
+
+    public function getSubtitle(): string
+    {
+        return $this->subtitle;
+    }
+
+    public function isAssistanceNeeded(): bool
+    {
+        return $this->assistanceNeeded;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssistanceContent(): ?string
+    {
+        return $this->assistanceContent;
+    }
+
+    /**
+     * @param string $assistanceContent
+     */
+    public function setAssistanceContent(?string $assistanceContent): void
+    {
+        $this->assistanceContent = $assistanceContent;
+    }
+
+    public function setAssistanceNeeded(bool $assistanceNeeded): void
+    {
+        $this->assistanceNeeded = $assistanceNeeded;
+    }
+
+    public function setProblemDescription(?string $problemDescription): void
+    {
+        $this->problemDescription = $problemDescription;
+    }
+
+    public function getProblemDescription(): ?string
+    {
+        return $this->problemDescription;
+    }
+
+    public function setProposedSolution(?string $proposedSolution): void
+    {
+        $this->proposedSolution = $proposedSolution;
+    }
+
+    public function getProposedSolution(): ?string
+    {
+        return $this->proposedSolution;
+    }
+
+    public function setRequiredMeans(?string $requiredMeans): void
+    {
+        $this->requiredMeans = $requiredMeans;
+    }
+
+    public function getRequiredMeans(): ?string
+    {
+        return $this->requiredMeans;
+    }
+
+    public static function createForAdherent(
+        Adherent $adherent,
+        string $name,
+        string $subtitle,
+        CitizenProjectCategory $category,
+        PhoneNumber $phone,
+        string $assistanceNeeded,
+        string $problemDescription,
+        string $proposedSolution,
+        string $requiredMeans,
+        Committee $committee = null,
+        NullablePostAddress $address = null,
+        string $createdAt = 'now'
+    ): self {
         $citizenProject = new self(
             self::createUuid($name),
             clone $adherent->getUuid(),
             $name,
-            $description,
-            $address,
-            $phone
+            $subtitle,
+            $category,
+            $committee,
+            $assistanceNeeded,
+            $problemDescription,
+            $proposedSolution,
+            $requiredMeans,
+            $phone,
+            $address
         );
+
         $citizenProject->createdAt = new \DateTime($createdAt);
+        $citizenProject->status = self::PENDING;
 
         return $citizenProject;
     }
@@ -137,17 +316,12 @@ class CitizenProject extends BaseGroup
         $this->refusedAt = null;
     }
 
-    public function update(string $name, string $description, NullablePostAddress $address, PhoneNumber $phone): void
+    public function update(string $name, NullablePostAddress $address): void
     {
         $this->setName($name);
-        $this->description = $description;
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;
-        }
-
-        if (null === $this->phone || !$this->phone->equals($phone)) {
-            $this->phone = $phone;
         }
     }
 }

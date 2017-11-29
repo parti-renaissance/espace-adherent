@@ -201,7 +201,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      *
      * @ORM\OneToMany(targetEntity="ActivitySubscription", mappedBy="followingAdherent", cascade={"remove"})
      */
-    private $activitiySubscriptions;
+    private $activitySubscriptions;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
@@ -879,7 +879,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getActivitySubscriptionTo(self $followed): ?ActivitySubscription
     {
-        foreach ($this->activitiySubscriptions as $subscription) {
+        foreach ($this->activitySubscriptions as $subscription) {
             if ($subscription->matches($this, $followed) && $subscription->isSubscribed()) {
                 return $subscription;
             }
