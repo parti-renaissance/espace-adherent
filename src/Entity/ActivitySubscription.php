@@ -30,7 +30,7 @@ class ActivitySubscription
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="activitiySubscriptions")
+     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="activitySubscriptions")
      */
     private $followingAdherent;
 

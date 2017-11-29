@@ -17,7 +17,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CitizenProjectAdmin extends AbstractAdmin
@@ -73,19 +72,8 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('description', TextareaType::class, [
-                    'filter_emojis' => true,
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
-                ])
                 ->add('slug', null, [
                     'label' => 'Slug',
-                ])
-                ->add('phone', null, [
-                    'label' => 'Téléphone',
-                    'template' => 'admin/adherent/show_phone.html.twig',
                 ])
                 ->add('status', null, [
                     'label' => 'Statut',
@@ -129,12 +117,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->with('Projet citoyen', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
-                ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
@@ -315,10 +297,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
-            ])
-            ->add('phone', null, [
-                'label' => 'Téléphone',
-                'template' => 'admin/adherent/list_phone.html.twig',
             ])
             ->add('membersCounts', null, [
                 'label' => 'Membres',

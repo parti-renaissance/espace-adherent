@@ -13,7 +13,7 @@ use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @citizenProject functional
+ * @group functional
  */
 class CitizenProjectManagerTest extends MysqlWebTestCase
 {
