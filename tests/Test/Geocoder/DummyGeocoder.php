@@ -17,6 +17,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 47.3222,
             'lon' => 8.5438,
         ],
+        '8802 kilchberg, ch' => [
+            'lat' => 47.3222,
+            'lon' => 8.5438,
+        ],
         '6 rue neyret, 69001 lyon 1er, fr' => [
             'lat' => 45.7713288,
             'lon' => 4.8288758,

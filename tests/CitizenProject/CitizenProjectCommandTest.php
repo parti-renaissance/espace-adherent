@@ -2,6 +2,9 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\Address\NullableAddress;
+use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
@@ -16,16 +19,28 @@ class CitizenProjectCommandTest extends TestCase
     public function testCreateCitizenProjectCommandFromCitizenProject()
     {
         $name = 'Projet citoyen à Lyon 1er';
-        $description = 'Le projet citoyen à Lyon 1er';
+        $subtitle = 'Le projet citoyen à Lyon 1er';
         $uuid = CitizenProject::createUuid($name);
+        $citizenProjectCategory = $this->createMock(CitizenProjectCategory::class);
+        $committee = $this->createMock(Committee::class);
+        $assistanceNeeded = false;
+        $problemDescription = 'Problem description';
+        $proposedSolution = 'Proposed solution';
+        $requiredMeans = 'Required means';
 
         $citizenProject = new CitizenProject(
             $uuid,
             Uuid::fromString(self::CREATOR_UUID),
             $name,
-            $description,
-            NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
+            $subtitle,
+            $citizenProjectCategory,
+            $committee,
+            $assistanceNeeded,
+            $problemDescription,
+            $proposedSolution,
+            $requiredMeans,
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
+            NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             '69001-en-marche-lyon'
         );
 
@@ -35,6 +50,12 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertSame($uuid, $citizenProjectCommand->getCitizenProjectUuid());
         $this->assertSame($citizenProject, $citizenProjectCommand->getCitizenProject());
         $this->assertSame($name, $citizenProjectCommand->name);
-        $this->assertSame($description, $citizenProjectCommand->description);
+        $this->assertSame($citizenProjectCategory, $citizenProjectCommand->getCategory());
+        $this->assertSame($committee, $citizenProjectCommand->getCommittee());
+        $this->assertSame($assistanceNeeded, $citizenProjectCommand->isAssistanceNeeded());
+        $this->assertSame($problemDescription, $citizenProjectCommand->getProblemDescription());
+        $this->assertSame($proposedSolution, $citizenProjectCommand->getProposedSolution());
+        $this->assertSame($requiredMeans, $citizenProjectCommand->getRequiredMeans());
+        $this->assertInstanceOf(NullableAddress::class, $citizenProjectCommand->getAddress());
     }
 }

@@ -308,7 +308,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         $qb = $this
             ->createQueryBuilder('a')
-            ->leftJoin('a.activitiySubscriptions', 's')
+            ->leftJoin('a.activitySubscriptions', 's')
             ->where('s.followedAdherent = :followed')
             ->andWhere('(s.unsubscribedAt IS NULL OR s.subscribedAt > s.unsubscribedAt)')
             ->setParameters([
