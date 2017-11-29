@@ -35,7 +35,7 @@ class AdminCitizenProjectController extends Controller
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be approved.', $citizenProject->getId()), $exception);
         }
 
-        return $this->redirectToRoute('admin_app_citizen_project_list');
+        return $this->redirectToRoute('admin_app_citizenproject_list');
     }
 
     /**
@@ -54,7 +54,7 @@ class AdminCitizenProjectController extends Controller
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be refused.', $citizenProject->getId()), $exception);
         }
 
-        return $this->redirectToRoute('admin_app_citizen_project_list');
+        return $this->redirectToRoute('admin_app_citizenproject_list');
     }
 
     /**
@@ -67,14 +67,14 @@ class AdminCitizenProjectController extends Controller
         $manager = $this->get('app.citizen_project.manager');
 
         return $this->render('admin/citizen_project/members.html.twig', [
-            'citizen_project' => $citizenProject,
+            'citizenProject' => $citizenProject,
             'memberships' => $memberships = $manager->getCitizenProjectMemberships($citizenProject),
-            'administrators_count' => $memberships->countCitizenProjectAdministratorMemberships(),
+            'administratorsCount' => $memberships->countCitizenProjectAdministratorMemberships(),
         ]);
     }
 
     /**
-     * @Route("/{citizen_project}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
+     * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
@@ -90,7 +90,7 @@ class AdminCitizenProjectController extends Controller
             $this->addFlash('error', $e->getMessage());
         }
 
-        return $this->redirectToRoute('app_admin_citizen_project_members', [
+        return $this->redirectToRoute('app_admin_citizenproject_members', [
             'id' => $citizenProject->getId(),
         ]);
     }

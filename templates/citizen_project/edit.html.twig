@@ -1,6 +1,6 @@
 {% extends 'citizen_project/_layout.html.twig' %}
 
-{% block page_title 'Modifier mon comité' %}
+{% block page_title 'Modifier mon project citoyen' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
@@ -17,11 +17,18 @@
             <a href="{{ path('app_citizen_project_show', {'slug': citizenProject.slug}) }}"
                class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
-                Retour au comité</a>
+                Retour au projet citoyen</a>
+
+            {% if not citizenProject.isApproved %}
+                <div class="committee__waiting-for-approval">
+                    Votre project citoyen est en attente de validation par les équipes d'En Marche !
+                    Vous serez alerté(e) par e-mail quand nous l'aurons accepté.
+                </div>
+            {% endif %}
 
             <header class="space--30-0">
                 <h1 class="b__nudge--bottom-small text--medium">
-                    Modifier mon comité
+                    Modifier mon projet citoyen
                 </h1>
             </header>
 

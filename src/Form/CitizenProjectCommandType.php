@@ -3,12 +3,15 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenProject\CitizenProjectCommand;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenProjectCommandType extends AbstractType
@@ -50,6 +53,9 @@ class CitizenProjectCommandType extends AbstractType
                 'purify_html' => true,
                 'filter_emojis' => true,
             ])
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA, [$this, 'preSetData']
+            )
         ;
     }
 
@@ -63,5 +69,20 @@ class CitizenProjectCommandType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'citizen_project';
+    }
+
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+        $citizenProject = $data->getCitizenProject();
+
+        /* @var CitizenProject $citizenProject */
+        if (null !== $citizenProject && $citizenProject->isApproved()) {
+            $form->add('name', TextType::class, [
+                'filter_emojis' => true,
+                'disabled' => true,
+            ]);
+        }
     }
 }
