@@ -102,7 +102,7 @@
         Je solicite un accompagnement personalisé de la part d'En Marche
     </label>
 </div>
-<div class="form__row">
+<div class="form__row hidden">
     {{ form_errors(form.assistance_content) }}
     {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle m\'aider ?', {'label_attr': { class: 'text--bold' }}) }}
     {{ form_widget(form.assistance_content, {

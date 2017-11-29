@@ -11,6 +11,7 @@
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
             {{ js.ckeditor('citizen_project_proposed_solution') }}
+            App.runCitizenProjectCreation();
         });
     </script>
 {% endblock %}
