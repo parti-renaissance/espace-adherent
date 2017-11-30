@@ -324,4 +324,14 @@ class CitizenProject extends BaseGroup
             $this->postAddress = $address;
         }
     }
+
+    public function getCitizenProjectSkills(): array
+    {
+        // hardcode temporary to test the show view
+        return [
+            'Toutes les bonnes volontés',
+            'Expert web',
+            'Professeur de maths',
+        ];
+    }
 }

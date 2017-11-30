@@ -26,7 +26,13 @@ class CitizenProjectController extends Controller
     {
         $this->disableInProduction();
 
-        return new Response();
+        $citizenProjectManager = $this->get('app.citizen_project.manager');
+
+        return $this->render('citizen_project/show.html.twig', [
+            'citizen_project' => $citizenProject,
+            'citizen_project_administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'citizen_project_followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+        ]);
     }
 
     /**
