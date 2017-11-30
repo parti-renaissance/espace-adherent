@@ -310,6 +310,10 @@ $text--size-extra-large: 48px;
         @include text--blue;
     }
 
+    &--blue--dark {
+        color: $blue--dark;
+    }
+
     &--green {
         color: $green;
     }
@@ -331,6 +335,9 @@ $text--size-extra-large: 48px;
     &--white {
         color: white;
         border-color: white;
+    }
+    &--blue--dark {
+        color: $blue--dark;
     }
 }
 

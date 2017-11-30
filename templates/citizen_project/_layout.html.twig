@@ -1,41 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% set is_administrator = is_administrator(citizenProject) %}
+{% set is_administrator = is_administrator(citizen_project) %}
 
 {% block content %}
     <main class="citizen_project">
-        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col b__nudge--bottom-small">
-            <a href="{{ path('app_search_citizen_projects') }}" class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des comités</a>
-        </div>
-
-        <header class="background--blue space--60-0">
-            <div class="l__wrapper--medium l__row l__row--h-stretch l__mobile--col">
-                <div class="text--white citizen_project__header__titles">
+        <header class="background--pink-light space--60-0">
+            <div class="l__wrapper l__row l__row--h-stretch l__mobile--col">
+                <div class="text--blue--dark citizen_project__header__titles">
                     <div class="text--uppercase text--small b__nudge--bottom-tiny">
-                        Comité local {% if is_administrator %}n°{{ citizenProject.id }}{% endif %}
+                        <strong class="text--body">Projet citoyen</strong>
+                        <a href="#" class="btn btn--small btn--yellow btn--no-border">No coups de coeur</a>
+                        <a href="#" class="btn btn--small btn--yellow btn--no-border">{{ 'citizen_project.committees_count'|transchoice(citizen_project.committee|length) }}</a>
+                        <a href="#" class="btn btn--small btn--yellow btn--no-border">Bouge ton quartier</a>
                     </div>
                     <h2 class="text--large">
-                        {{ include('components/location-pin.html.twig') }}
-                        <span id="citizen-project-name" class="citizen_project__name">{{ citizenProject.name }}</span>
+                        <span id="citizen-project-name" class="citizen_project__name">{{ citizen_project.name }} : {{ citizen_project.subtitle }}</span>
                     </h2>
-                </div>
+                    <h2 class="text--small">
+                        {% if citizen_project.isApproved %}
+                            {% if not user_is_adherent %}
+                                <button type="button" class="btn btn--blue" disabled="disabled">Rejoindre ce projet</button>
 
-                <div class="l__col">
-                    {% block citizen_project_lcol %}{% endblock %}
+                                <a href="{{ path('app_adherent_login') }}">Connectez-vous</a>
+                                ou
+                                <a href="{{ path('app_membership_register') }}">adhérez</a>
+                                pour suivre ce projet citoyen
+                                <br />
+                            {% elseif can_follow_citizen_project(citizen_project) %}
+                                <button type="button" class="btn btn--blue">Rejoindre ce projet</button>
+                            {% elseif can_unfollow_citizen_project(citizen_project) %}
+                                <button type="button" class="btn btn--blue">Quitter projet citoyen</button>
+                            {% elseif is_administrator %}
+                                <button type="button" class="btn btn--blue" disabled="disabled">Quitter projet citoyen</button>
+                                <p>En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.</p>
+                            {% endif %}
+
+                            <a href="#" class="link--blue--dark link--no-decor">Signaler un abus</a>
+                            <a href="#" class="link--blue--dark link--no-decor">Inviter un amis</a>
+                            <a href="#" class="link--blue--dark link--no-decor">partager</a>
+                        {% endif %}
+                    </h2>
                 </div>
             </div>
         </header>
 
         <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
-            <div class="citizen_project__main l__wrapper--main l__wrapper--main-left">
+            <div class="l__wrapper--main l__wrapper--main-left">
                 {% block citizen_project_content %}{% endblock %}
             </div>
 
             {{ include('citizen_project/_sidebar.html.twig') }}
-
         </div>
-
     </main>
 {% endblock %}
