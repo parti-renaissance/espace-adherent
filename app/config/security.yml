@@ -255,7 +255,6 @@ security:
                 path: app_adherent_logout
                 target: homepage
 
-
     access_control:
         - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }

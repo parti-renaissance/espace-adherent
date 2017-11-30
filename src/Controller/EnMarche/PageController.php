@@ -156,15 +156,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/bot", name="page_bot")
-     * @Method("GET")
-     */
-    public function botAction()
-    {
-        return $this->render('bot/page.html.twig');
-    }
-
-    /**
      * @Route("/elles-marchent", defaults={"_enable_campaign_silence"=true}, name="page_elles_marchent")
      * @Method("GET")
      */
