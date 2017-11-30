@@ -234,6 +234,14 @@ interactive.form.friend_email: E-mail de votre ami
 interactive.form.submit_send: Envoyer
 
 #
+# Citizen Project
+#
+citizen_project.administrators_count: "%count% porteur d'initiative|%count% porteurs d'initiative"
+citizen_project.followers_count: "%count% acteur|%count% acteurs"
+citizen_project.committees_count: "%count% comité en soutien|%count% comités en soutien"
+citizen_project.committees: Comité en soutien|Comités en soutien"
+
+#
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
