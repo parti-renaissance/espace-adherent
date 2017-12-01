@@ -112,6 +112,11 @@ class CitizenProject extends BaseGroup
      */
     public $administrators = [];
 
+    /**
+     * @var Adherent|null
+     */
+    private $creator;
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -304,6 +309,8 @@ class CitizenProject extends BaseGroup
      * Marks this citizen project as approved.
      *
      * @param string $timestamp
+     *
+     * @throws \AppBundle\Exception\CitizenProjectAlreadyApprovedException
      */
     public function approved(string $timestamp = 'now'): void
     {
@@ -333,5 +340,15 @@ class CitizenProject extends BaseGroup
             'Expert web',
             'Professeur de maths',
         ];
+    }
+
+    public function setCreator(?Adherent $creator): void
+    {
+        $this->creator = $creator;
+    }
+
+    public function getCreator(): ?Adherent
+    {
+        return $this->creator;
     }
 }
