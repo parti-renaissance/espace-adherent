@@ -3,13 +3,16 @@
 namespace AppBundle\Admin;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -68,7 +71,7 @@ class CitizenProjectAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Projet citoyen', array('class' => 'col-md-7'))
+            ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -88,7 +91,7 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'label' => 'Date de refus',
                 ])
             ->end()
-            ->with('Adresse', array('class' => 'col-md-5'))
+            ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
                 ])
@@ -114,7 +117,7 @@ class CitizenProjectAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Projet citoyen', array('class' => 'col-md-7'))
+            ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -122,7 +125,7 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'label' => 'Slug',
                 ])
             ->end()
-            ->with('Localisation', array('class' => 'col-md-5'))
+            ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.latitude', null, [
                     'required' => false,
                     'empty_data' => null,
@@ -138,6 +141,11 @@ class CitizenProjectAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $citizenProjectMembershipRepository = $this->citizenProjectMembershipRepository;
@@ -265,6 +273,10 @@ class CitizenProjectAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('assistanceNeeded', null, [
+                'label' => 'Demande d\'accompagnement',
+                'show_filter' => true,
+            ])
             ->add('status', null, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -277,9 +289,72 @@ class CitizenProjectAdmin extends AbstractAdmin
                     ],
                 ],
             ])
+            ->add('creatorFirstName', CallbackFilter::class, [
+                'label' => 'Prénom du créateur',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /* @var ProxyQuery|QueryBuilder $qb */
+                    $qb
+                        ->leftJoin(Adherent::class, 'creator', Join::WITH, sprintf('creator.uuid=%s.createdBy', $alias))
+                        ->andWhere('LOWER(creator.firstName) LIKE :firstName ')
+                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value['value'])));
+
+                    return true;
+                },
+            ])
+            ->add('creatorLastName', CallbackFilter::class, [
+                'label' => 'Nom du créateur',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /** @var ProxyQuery|QueryBuilder $qb */
+                    if (!in_array('creator', $qb->getAllAliases(), true)) {
+                        $qb->leftJoin(Adherent::class, 'creator', Join::WITH, sprintf('creator.uuid=%s.createdBy', $alias));
+                    }
+
+                    $qb->andWhere('LOWER(creator.lastName) LIKE :lastName')
+                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value['value'])));
+
+                    return true;
+                },
+            ])
+            ->add('creatorEmailAddress', CallbackFilter::class, [
+                'label' => 'Email du créateur',
+                'show_filter' => true,
+                'field_type' => EmailType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    /** @var ProxyQuery|QueryBuilder $qb */
+                    if (!in_array('creator', $qb->getAllAliases(), true)) {
+                        $qb->leftJoin(Adherent::class, 'creator', Join::WITH, sprintf('creator.uuid=%s.createdBy', $alias));
+                    }
+
+                    $qb->andWhere('creator.emailAddress=:emailAddress')
+                        ->setParameter('emailAddress', mb_strtolower($value['value']));
+
+                    return true;
+                },
+            ])
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -289,24 +364,24 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('postAddress.postalCode', null, [
-                'label' => 'Code postal',
+            ->add('createdAt', null, [
+                'label' => 'Date de création',
             ])
-            ->add('postAddress.cityName', null, [
-                'label' => 'Ville',
+            ->add('category', null, [
+                'label' => 'Catégorie(s)',
             ])
-            ->add('postAddress.country', null, [
-                'label' => 'Pays',
+            ->add('administrators', TextType::class, [
+                'label' => 'Organisateur(s)/Co-Organisateur(s)',
+                'template' => 'admin/citizen_project/list_administrators.html.twig',
             ])
             ->add('membersCounts', null, [
                 'label' => 'Membres',
             ])
-            ->add('createdAt', null, [
-                'label' => 'Date de création',
+            ->add('postAddress.cityName', null, [
+                'label' => 'Ville',
             ])
-            ->add('administrators', TextType::class, [
-                'label' => 'Administrateur(s)',
-                'template' => 'admin/citizen_project/list_administrators.html.twig',
+            ->add('assistanceNeeded', null, [
+                'label' => 'Demande d\'accompagnement',
             ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
@@ -315,6 +390,22 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'template' => 'admin/citizen_project/list_actions.html.twig',
+            ])
+            ->add('creator', null, [
+                'label' => 'Créateur',
+                'template' => 'admin/citizen_project/list_creator.html.twig',
+            ])
+            ->add('postAddress.country', null, [
+                'label' => 'Pays',
+            ])
+            ->add('postAddress.postalCode', null, [
+                'label' => 'Code postal',
+            ])
+            ->add('problemDescription', null, [
+                'label' => 'Problème local adressé',
+            ])
+            ->add('proposedSolution', null, [
+                'label' => 'Réponse au problème',
             ])
         ;
     }
