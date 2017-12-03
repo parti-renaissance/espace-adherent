@@ -4,6 +4,7 @@ namespace AppBundle\Referent;
 
 use AppBundle\Entity\ReferentManagedUsersMessage;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Provides a way to handle the search parameters.
@@ -28,9 +29,25 @@ class ManagedUsersFilter
     private $includeAdherentsInCommittee = true;
     private $includeHosts = true;
     private $includeSupevisors = true;
+
+    /**
+     * @Assert\NotNull
+     */
     private $queryAreaCode = '';
+
+    /**
+     * @Assert\NotNull
+     */
     private $queryCity = '';
+
+    /**
+     * @Assert\NotNull
+     */
     private $queryId = '';
+
+    /**
+     * @Assert\NotNull
+     */
     private $offset = 0;
     private $token = '';
 

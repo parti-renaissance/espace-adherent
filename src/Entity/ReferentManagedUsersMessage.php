@@ -62,17 +62,17 @@ class ReferentManagedUsersMessage
     private $includeSupevisors;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="text")
      */
     private $queryAreaCode;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="text")
      */
     private $queryCity;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="text")
      */
     private $queryId;
 
