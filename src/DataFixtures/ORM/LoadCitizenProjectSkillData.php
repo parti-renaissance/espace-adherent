@@ -12,7 +12,7 @@ class LoadCitizenProjectSkillData extends AbstractFixture implements FixtureInte
     const SKILLS = [
         'CPS001' => 'Paysage',
         'CPS002' => 'Jardinage / Botanique',
-        'CPS003' => 'Gestion des parcs nationaux 	',
+        'CPS003' => 'Gestion des parcs nationaux',
         'CPS004' => 'Isolation thermique et acoustique',
         'CPS005' => 'Horticulture',
         'CPS006' => 'Gestion des déchets',
