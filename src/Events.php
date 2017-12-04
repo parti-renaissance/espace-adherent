@@ -15,6 +15,7 @@ final class Events
     const CITIZEN_INITIATIVE_CANCELLED = 'citizen_initiativecancelled';
     const CITIZEN_PROJECT_CREATED = 'citizen_project_created';
     const CITIZEN_PROJECT_UPDATED = 'citizen_project_updated';
+    const CITIZEN_PROJECT_APPROVED = 'citizen_project_approved';
 
     private function __construct()
     {

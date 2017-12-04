@@ -235,8 +235,7 @@
 
         <service id="app.citizen_project.authority" class="AppBundle\CitizenProject\CitizenProjectManagementAuthority">
             <argument type="service" id="app.citizen_project.manager"/>
-            <argument type="service" id="router" />
-            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="app.citizen_project.factory" class="AppBundle\CitizenProject\CitizenProjectFactory">
@@ -252,7 +251,6 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
         </service>
 
         <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
@@ -284,6 +282,13 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+        </service>
+
+        <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
+            <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
+            <argument type="service" id="app.citizen_project.manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- Events -->
