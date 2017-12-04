@@ -5,39 +5,39 @@ namespace AppBundle\BoardMember;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Repository\AdherentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use AppBundle\Repository\BoardMember\RoleRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class BoardMemberManager
 {
-    private $manager;
+    private $adherentRepository;
+    private $roleRepository;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(AdherentRepository $adherentRepository, RoleRepository $roleRepository)
     {
-        $this->manager = $manager;
+        $this->adherentRepository = $adherentRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     public function searchMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
-        return $this->getAdherentRepository()->searchBoardMembers($filter, $excludedMember);
+        return $this->adherentRepository->searchBoardMembers($filter, $excludedMember);
     }
 
     public function paginateMembers(BoardMemberFilter $filter, Adherent $excludedMember): Paginator
     {
-        return $this->getAdherentRepository()->paginateBoardMembers($filter, $excludedMember);
+        return $this->adherentRepository->paginateBoardMembers($filter, $excludedMember);
     }
 
     public function findSavedMembers(Adherent $member): AdherentCollection
     {
-        return $this->getAdherentRepository()->findSavedBoardMember($member->getBoardMember());
+        return $this->adherentRepository->findSavedBoardMember($member->getBoardMember());
     }
 
     public function findRoles(): array
     {
-        return $this->getRoleRepository()->findAll();
+        return $this->roleRepository->findAll();
     }
 
     public function getStatistics(AdherentCollection $savedBoardMembers): array
@@ -74,20 +74,5 @@ class BoardMemberManager
         }
 
         return $statistics;
-    }
-
-    private function getAdherentRepository(): AdherentRepository
-    {
-        return $this->manager->getRepository(Adherent::class);
-    }
-
-    public function getBoardMemberRepository(): ObjectRepository
-    {
-        return $this->manager->getRepository(BoardMember::class);
-    }
-
-    private function getRoleRepository(): ObjectRepository
-    {
-        return $this->manager->getRepository(Role::class);
     }
 }

@@ -92,7 +92,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
         $boardMembers = $this->repository->searchBoardMembers($filter, $excludedMember);
 
-        $this->assertCount(count($results), $boardMembers);
+        $this->assertSameSize($results, $boardMembers);
 
         foreach ($boardMembers as $key => $adherent) {
             $this->assertSame($results[$key], $adherent->getEmailAddress());
@@ -110,7 +110,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
         $boardMembers = $this->repository->paginateBoardMembers($filter, $excludedMember);
 
         $this->assertInstanceOf(Paginator::class, $boardMembers);
-        $this->assertCount(count($results), $boardMembers);
+        $this->assertSameSize($results, $boardMembers);
 
         foreach ($boardMembers as $key => $adherent) {
             $this->assertSame($results[$key], $adherent->getEmailAddress());

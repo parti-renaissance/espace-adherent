@@ -134,5 +134,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.board_member_role" class="AppBundle\Repository\BoardMember\RoleRepository" public="false">
+            <argument>AppBundle\Entity\BoardMember\Role</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

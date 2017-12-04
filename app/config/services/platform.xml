@@ -403,7 +403,8 @@
 
         <!-- BoardMember -->
         <service id="app.board_member.manager" class="AppBundle\BoardMember\BoardMemberManager">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.repository.adherent" />
+            <argument type="service" id="app.repository.board_member_role" />
         </service>
 
         <service id="app.board_member.message_notifier" class="AppBundle\BoardMember\BoardMemberMessageNotifier">
