@@ -5,6 +5,7 @@ namespace AppBundle\Membership;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Adherent;
 use libphonenumber\PhoneNumber;
+use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -12,13 +13,16 @@ class AdherentFactory
 {
     private $encoders;
     private $addressFactory;
+    private $producer;
 
     public function __construct(
         EncoderFactoryInterface $encoders,
-        PostAddressFactory $addressFactory = null
+        PostAddressFactory $addressFactory = null,
+        ProducerInterface $producer = null
     ) {
         $this->encoders = $encoders;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
+        $this->producer = $producer;
     }
 
     public function createFromAPIResponse(array $data): Adherent
@@ -41,14 +45,14 @@ class AdherentFactory
         );
     }
 
-    public function createFromArray(array $data, bool $enabled = false): Adherent
+    public function createFromArray(array $data, bool $enabled = false, bool $syncWithAuth = false): Adherent
     {
         $phone = null;
         if (isset($data['phone'])) {
             $phone = $this->createPhone($data['phone']);
         }
 
-        return new Adherent(
+        $adherent = new Adherent(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             isset($data['gender']) ? $data['gender'] : null,
@@ -65,6 +69,12 @@ class AdherentFactory
             isset($data['isAdherent']) ? $data['isAdherent'] : true,
             isset($data['password']) ? $this->encodePassword($data['password']) : null
         );
+
+        if ($syncWithAuth) {
+            $this->syncWithAuth($adherent, isset($data['password']) ? $data['password'] : 'enmarche');
+        }
+
+        return $adherent;
     }
 
     /**
@@ -106,5 +116,24 @@ class AdherentFactory
         $encoder = $this->encoders->getEncoder(Adherent::class);
 
         return $encoder->encodePassword($password, null);
+    }
+
+    private function syncWithAuth(Adherent $adherent, string $password): void
+    {
+        if (null === $this->producer) {
+            return;
+        }
+
+        $message = [
+            'uuid' => $adherent->getUuid()->toString(),
+            'emailAddress' => $adherent->getEmailAddress(),
+            'firstName' => $adherent->getFirstName(),
+            'lastName' => $adherent->getLastName(),
+            'zipCode' => $adherent->getPostalCode(),
+            'plainPassword' => $password,
+            'isConfirmed' => true,
+        ];
+
+        $this->producer->publish(\GuzzleHttp\json_encode($message));
     }
 }

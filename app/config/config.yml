@@ -260,6 +260,12 @@ old_sound_rabbit_mq:
             exchange_options:  { name: broadcast_retry, type: topic }
             queue_options:     { name: enmarche_broadcast_retry, routing_keys: ['#'] arguments: {'x-dead-letter-exchange': ['S', 'broadcast'], 'x-message-ttl': ['I', 360000] } }
 
+        # Use on fixtures load to sync with the auth and api project
+        enmarche_sync_user_create:
+            connection: default
+            exchange_options: { name: 'enmarche_sync_user_create', type: direct }
+            queue_options:    { name: 'enmarche_sync_user_create', durable: true }
+
     consumers:
         mailjet_campaign:
             connection:        default

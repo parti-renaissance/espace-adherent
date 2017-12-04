@@ -1,12 +1,12 @@
 parameters:
-    env(DATABASE_HOST):         db
+    env(DATABASE_HOST):         enmarche_db
     env(DATABASE_PORT):         3306
     env(DATABASE_SOCKET):       ~
     env(DATABASE_NAME):         enmarche
     env(DATABASE_USER):         root
     env(DATABASE_PASSWORD):     root
 
-    env(REDIS_HOST):            redis
+    env(REDIS_HOST):            enmarche_redis
 
     env(RABBITMQ_HOST):         rabbitmq
     env(RABBITMQ_PORT):         5672

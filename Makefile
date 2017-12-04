@@ -4,8 +4,8 @@ $(shell test -f ./rabbitmq.mk || cp ./rabbitmq.mk.dist ./rabbitmq.mk)
 include rabbitmq.mk
 
 FIG=docker-compose
-RUN=$(FIG) run --rm app
-EXEC=$(FIG) exec app
+RUN=$(FIG) run --rm enmarche.dev
+EXEC=$(FIG) exec enmarche.dev
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
@@ -56,7 +56,7 @@ rabbitmq-fabric:
 
 db:             ## Reset the database and load fixtures
 db: vendor
-	$(RUN) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MySQL
+	$(RUN) php -r "for(;;){if(@fsockopen('enmarche_db',3306)){break;}}" # Wait for MySQL
 	$(RUN) $(CONSOLE) doctrine:database:drop --force --if-exists
 	$(RUN) $(CONSOLE) doctrine:database:create --if-not-exists
 	$(RUN) $(CONSOLE) doctrine:migrations:migrate -n
@@ -163,10 +163,11 @@ deps: vendor web/built
 # Internal rules
 
 build:
-	$(FIG) build
+	$(FIG) pull
+	$(FIG) build --pull --force-rm
 
 up:
-	$(FIG) up -d
+	$(FIG) up -d --remove-orphans
 
 perm:
 	-$(EXEC) chmod -R 777 var

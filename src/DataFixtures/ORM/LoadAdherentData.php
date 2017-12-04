@@ -63,7 +63,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'last_name' => 'Dufour',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
-        ]);
+        ], false, true);
         $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $adherentFactory->createFromArray([
@@ -77,7 +77,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'retired',
             'phone' => '33 0111223344',
             'registered_at' => '2016-11-16 20:45:33',
-        ]);
+        ], false, true);
         $adherent2->disableCommitteesNotifications();
         $this->addReference('adherent-2', $adherent2);
 
@@ -92,7 +92,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'retired',
             'phone' => '33 187264236',
             'registered_at' => '2017-01-03 08:47:54',
-        ]);
+        ], false, true);
         $adherent3->enableCommitteesNotifications();
         $this->addReference('adherent-3', $adherent3);
 
@@ -107,7 +107,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'student',
             'phone' => '33 727363643',
             'registered_at' => '2017-01-18 13:15:28',
-        ]);
+        ], false, true);
         $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
@@ -125,7 +125,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'unemployed',
             'phone' => '33 138764334',
             'registered_at' => '2017-01-08 05:55:43',
-        ]);
+        ], false, true);
         $adherent5->enableCommitteesNotifications();
         $this->addReference('adherent-5', $adherent5);
 
@@ -140,7 +140,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673643424',
             'registered_at' => '2017-01-16 18:33:22',
-        ]);
+        ], false, true);
         $adherent6->enableCommitteesNotifications();
         $this->addReference('adherent-6', $adherent6);
 
@@ -155,7 +155,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
-        ]);
+        ], false, true);
         $adherent7->enableCommitteesNotifications();
         $this->addReference('adherent-7', $adherent7);
 
@@ -170,7 +170,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
-        ]);
+        ], false, true);
         $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
@@ -188,7 +188,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 665859053',
             'registered_at' => '2017-09-20 15:31:21',
-        ]);
+        ], false, true);
         $coordinateur->setCoordinatorManagedAreaCodesAsString('FR');
 
         $adherent9 = $adherentFactory->createFromArray([
@@ -202,7 +202,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '33 234823644',
             'registered_at' => '2017-02-16 17:12:08',
-        ]);
+        ], false, true);
         $adherent9->setLegislativeCandidate(true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
@@ -221,7 +221,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'student',
             'phone' => '49 2211653540',
             'registered_at' => '2017-02-23 13:56:12',
-        ]);
+        ], false, true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
@@ -239,7 +239,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '65 66888868',
             'registered_at' => '2017-04-10 14:08:12',
-        ]);
+        ], false, true);
         $adherent11->enableCommitteesNotifications();
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
@@ -257,7 +257,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'position' => 'employed',
             'phone' => '1 2123150100',
             'registered_at' => '2017-04-09 06:20:38',
-        ]);
+        ], false, true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent12->setBoardMember(BoardMember::AREA_ABROAD, $roles);
@@ -276,7 +276,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'last_name' => 'VASSEUR',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
-        ]);
+        ], false, true);
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $adherentFactory->createFromArray([
@@ -287,7 +287,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'last_name' => 'SCHMIDT',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
-        ]);
+        ], false, true);
         $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent
@@ -301,7 +301,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1982-05-12',
             'registered_at' => '2017-04-09 06:20:38',
-        ]);
+        ], false, true);
         $adherent15->setStatus(Adherent::ENABLED);
         $this->addReference('adherent-15', $adherent15);
 
@@ -312,7 +312,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'last_name' => 'Bar',
             'address' => PostAddress::createForeignAddress(null, '8057', null, null),
             'isAdherent' => false,
-        ], true);
+        ], true, true);
         $this->addReference('adherent-16', $adherent14);
 
         // Create adherents accounts activation keys
