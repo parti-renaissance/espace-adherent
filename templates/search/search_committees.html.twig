@@ -1,0 +1,43 @@
+{% extends 'search/search.html.twig' %}
+
+{% block page_title 'Comités' %}
+{% block canonical_url url('app_search_committees') %}
+
+{% block content %}
+<main class="search">
+    <header class="l__wrapper space--60-0 text--center">
+        <h1 class="text--large search-title">{% block search_title 'Comités' %}</h1>
+        <h2 class="text--body text--normal">{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</h2>
+    </header>
+
+    <div class="l__wrapper">
+        <div class="search__bar--outer l__hide--on-mobile">
+            <a href="{% block button_link %}{{ path('map_committees') }}{% endblock %}"
+               class="search__bar__map-link link--no-decor text--body">
+               <i class="fa fa-map-marker"></i>
+                Voir la carte des {% block button_label %}comités{% endblock %}
+            </a>
+        </div>
+
+        <ul class="search__bar__toggle">
+            {% set currentRoute = app.request.attributes.get('_route') %}
+            <li class="{{ currentRoute == 'app_search_events' ? 'active' }}">
+                <a href="{{ path('app_search_events') }}" class="link--no-decor">Événements</a>
+            </li>
+            <li class="{{ currentRoute == 'app_search_committees' ? 'active' }}">
+                <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
+            </li>
+        </ul>
+        {{ include('search/_filters.html.twig', {'type': search.type }) }}
+        {% set currentRoute = app.request.attributes.get('_route') %}
+
+        <div class="search__results {{ currentRoute }}" id="search-results">
+            {{ include('search/results.html.twig') }}
+        </div>
+    </div>
+
+    <div class="l__wrapper text--center b__nudge--bottom-huge">
+        <button role="button" class="btn" id="search-more">Afficher plus</button>
+    </div>
+</main>
+{% endblock %}

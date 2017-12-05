@@ -1,14 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Comités' %}
-{% block canonical_url url('app_search_committees') %}
-
 {% block javascripts %}
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
             var page = 1;
-            var limit = {{ search_max_results|default(30) }};
+            var limit = {{ search.maxResults }};
             var moreButton = dom('#search-more');
             var query = dom("[name='q']");
             var radius = dom("[name='r']");
@@ -46,17 +43,22 @@
                 var eventCategory = {value: null};
             }
 
+            var waitQueue;
             function fetchResults() {
-                di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
-                    if (response instanceof XMLHttpRequest) {
-                        hide(moreButton);
-                        dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
+                // setTimeout avoids sending all HTTP request while the user is typing
+                clearTimeout(waitQueue);
+                waitQueue = setTimeout(function() {
+                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
+                        if (response instanceof XMLHttpRequest) {
+                            hide(moreButton);
+                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
 
-                        return;
-                    }
+                            return;
+                        }
 
-                    dom('#search-results').innerHTML = response;
-                });
+                        dom('#search-results').innerHTML = response;
+                    });
+                }, 200);
             }
 
             autocomplete = new google.maps.places.Autocomplete(city, {
@@ -64,33 +66,4 @@
             });
         });
     </script>
-{% endblock %}
-
-{% block content %}
-<main class="search">
-    <header class="l__wrapper space--60-0 text--center">
-        <h1 class="text--large search-title">{% block search_title 'Comités' %}</h1>
-        <h2 class="text--body text--normal">{% block search_subtitle %}Recherchez les comités En Marche ! proches de chez vous.{% endblock %}</h2>
-    </header>
-
-    <div class="l__wrapper">
-        <div class="search__bar--outer l__hide--on-mobile">
-            <a href="{% block button_link %}{{ path('map_committees') }}{% endblock %}"
-               class="search__bar__map-link link--no-decor text--body">
-               <i class="fa fa-map-marker"></i>
-                Voir la carte des {% block button_label %}comités{% endblock %}
-            </a>
-        </div>
-        {{ include('search/_filters.html.twig', {'type': search_type|default(constant('TYPE_COMMITTEES', search)) }) }}
-        {% set currentRoute = app.request.attributes.get('_route') %}
-
-        <div class="search__results {{ currentRoute }}" id="search-results">
-            {{ include('search/results.html.twig') }}
-        </div>
-    </div>
-
-    <div class="l__wrapper text--center b__nudge--bottom-huge">
-        <button role="button" class="btn" id="search-more">Afficher plus</button>
-    </div>
-</main>
 {% endblock %}
