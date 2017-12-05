@@ -1,0 +1,22 @@
+{% for citizen_project in results %}
+    <a href="{{ path('app_citizen_project_show', {'slug': citizen_project.slug}) }}" class="search__citizen_project__box">
+        <div class="search__results__meta">
+            <h2 class="text--medium text--normal">
+                {{ citizen_project.name }}
+            </h2>
+            <div class="text--body text--bold">{{ citizen_project.cityName }}</div>
+        </div>
+
+        <p>{{ citizen_project.getProblemDescription }}</p>
+
+        <p>Par {{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</p>
+
+        Nous recherchons :
+        <ul>
+            {% for skill in citizen_project.citizenProjectSkills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+            <li></li>
+        </ul>
+    </a>
+{% endfor %}

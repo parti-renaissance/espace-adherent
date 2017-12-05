@@ -27,7 +27,7 @@ class MapController extends Controller
         ]);
     }
 
-    // Unlike the other actions of this class the route of this action is defined in the config to prevent an override.
+    // Unlike the other actions of this class the route of this action is defined in the config to prevent another route to match his path
     public function eventsAction()
     {
         $doctrine = $this->getDoctrine();
