@@ -1,6 +1,6 @@
 // Base colors
 $defaultBackgroundColor : white;
-$defaultTextColor : black;
+$defaultTextColor : #444;
 
 // Colors
 $pink: #FF3680;
@@ -10,14 +10,18 @@ $green-hover: #4CD7A5;
 $blue: #01B2FB;
 $blue--light: rgba(0, 178, 251, 0.15);
 $blue-hover: #009FE1;
-$newblue: #005be2; // temporary until we fully update our color palette
-$newblue--hover: #024fc1;
-$newgreen: #00e28c;
 $yellow: #edf861;
 $yellow-hover: #c4d02a;
 $orange: #ff7822;
 $error: #EE324A;
 $success: $green;
+
+// New colors
+// temporary until we fully update our color palette
+$brick: #FF6955;
+$newblue: #005be2;
+$newblue--hover: #024fc1;
+$newgreen: #00e28c;
 
 // Grays
 $darker: #222;

@@ -116,6 +116,7 @@ $text--size-extra-large: 48px;
 }
 
 @mixin text--logo {
+    font-family: $font-gillsans;
     @include text--bold;
     font-size: $text--size-medium--large;
     font-style: italic;
@@ -354,8 +355,6 @@ $text--size-extra-large: 48px;
         display: flex;
 
         li {
-            letter-spacing: 0.3px;
-            font-family: $font-roboto;
             font-size: $text--size-small;
 
             h4 {
@@ -474,9 +473,6 @@ $text--size-extra-large: 48px;
 
     &__links--nav {
         li {
-            font-family: $font-gillsans;
-            font-size: $text--size-medium--small;
-
             h1 {
                 @include text--logo;
             }

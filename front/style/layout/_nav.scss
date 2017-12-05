@@ -97,8 +97,20 @@
             }
         }
 
-        &__name {
+        &__photo {
             padding: 20px 0;
+
+            > div {
+                height: 38px;
+                width: 38px;
+                overflow: hidden;
+                border-radius: 50px;
+                margin-right: 15px;
+
+                img {
+                    width: 38px;
+                }
+            }
         }
 
         &__menu {
@@ -165,8 +177,16 @@
             }
 
             &__account {
-                padding: 20px 25px;
-                font-family: $font-roboto;
+                padding: 20px 0;
+
+                li > ul {
+                    padding: 0 25px;
+                }
+            }
+
+            &__name {
+                @include text--medium-small;
+                font-weight: bold;
             }
 
             &__separator {

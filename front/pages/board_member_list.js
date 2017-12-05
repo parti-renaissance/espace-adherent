@@ -17,7 +17,7 @@ export default (api) => {
             element.innerHTML = 'Profil sauvegardé';
             reloadIfNeeded(element);
             element.className = element.className.replace('btn-add-member-list',
-            'btn-remove-member-list newbtn--green');
+            'btn-remove-member-list btn--green');
         }).catch((err) => {
             element.innerHTML = 'Sauvegarder ce profil';
             window.alert('Nous n\'arrivons pas à ajouter cette personne à votre liste.\n' +
@@ -32,7 +32,7 @@ export default (api) => {
 
         api.deleteBoardMemberOnList(element.dataset.memberid).then((response) => {
             element.className = element.className.replace('btn-remove-member-list' +
-            'newbtn--green', 'btn-add-member-list');
+            'btn--green', 'btn-add-member-list');
             reloadIfNeeded(element);
             element.innerHTML = 'Sauvegarder ce profil';
         }).catch((err) => {
@@ -43,7 +43,7 @@ export default (api) => {
     }
 
     document.body.addEventListener('click', (event) => {
-        if (event.target.className.includes('newbtn--green')) {
+        if (event.target.className.includes('btn--green')) {
             removeMemberToList(event);
         }
     });
