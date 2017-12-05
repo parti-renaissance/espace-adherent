@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
@@ -18,6 +19,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -123,6 +125,11 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
+                ])
+                ->add('skills', EntityType::class, [
+                    'class' => CitizenProjectSkill::class,
+                    'label' => 'Compétences',
+                    'multiple' => true,
                 ])
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
