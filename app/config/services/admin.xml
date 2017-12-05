@@ -538,5 +538,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer"/>
+
     </services>
 </container>

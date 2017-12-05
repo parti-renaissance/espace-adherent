@@ -39,7 +39,8 @@ class CitizenProjectUpdateCommandHandler
             $command->proposedSolution,
             $command->requiredMeans,
             $this->addressFactory->createFromNullableAddress($command->getAddress()),
-            $command->phone
+            $command->phone,
+            $command->getSkills()
         );
 
         $this->manager->persist($citizenProject);

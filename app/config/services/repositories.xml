@@ -134,5 +134,10 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="AppBundle\Repository\CitizenProjectSkillRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProjectSkill</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
     </services>
 </container>

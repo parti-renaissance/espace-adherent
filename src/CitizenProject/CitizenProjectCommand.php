@@ -5,8 +5,11 @@ namespace AppBundle\CitizenProject;
 use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -77,9 +80,12 @@ class CitizenProjectCommand
 
     private $committee;
 
+    public $skills;
+
     public function __construct(NullableAddress $address = null)
     {
         $this->address = $address;
+        $this->skills = new ArrayCollection();
     }
 
     public static function createFromCitizenProject(CitizenProject $citizenProject): self
@@ -97,6 +103,7 @@ class CitizenProjectCommand
         $dto->assistanceNeeded = $citizenProject->isAssistanceNeeded();
         $dto->assistanceContent = $citizenProject->getAssistanceContent();
         $dto->citizenProject = $citizenProject;
+        $dto->skills = $citizenProject->getSkills();
 
         return $dto;
     }
@@ -184,5 +191,25 @@ class CitizenProjectCommand
     public function setCitizenProject(CitizenProject $citizenProject): void
     {
         $this->citizenProject = $citizenProject;
+    }
+
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function setSkills(iterable $skills): void
+    {
+        $this->skills->clear();
+        foreach ($skills as $skill) {
+            $this->addSkill($skill);
+        }
+    }
+
+    public function addSkill(CitizenProjectSkill $skill): void
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+        }
     }
 }
