@@ -6,8 +6,10 @@ use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenProjectCommandType extends AbstractType
 {
+    private $citizenProjectSkillTransformer;
+
+    public function __construct(CitizenProjectSkillTransformer $citizenProjectSkillTransformer)
+    {
+        $this->citizenProjectSkillTransformer = $citizenProjectSkillTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -57,11 +66,28 @@ class CitizenProjectCommandType extends AbstractType
                 'purify_html' => true,
                 'filter_emojis' => true,
             ])
+            ->add('skills', CollectionType::class, [
+                'required' => false,
+                'entry_type' => TextType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('skills_search', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'filter_emojis' => true,
+                'attr' => [
+                    'placeholder' => 'Ajouter des compétences',
+                ],
+            ])
             ->addEventListener(
                 FormEvents::PRE_SET_DATA, [$this, 'preSetData']
             )
         ;
 
+        $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
         $builder->get('address')->remove('address');
     }
 

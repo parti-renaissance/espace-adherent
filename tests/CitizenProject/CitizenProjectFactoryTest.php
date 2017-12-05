@@ -4,6 +4,7 @@ namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
@@ -27,6 +28,7 @@ class CitizenProjectFactoryTest extends TestCase
         $problemDescription = 'Problem description';
         $proposedSolution = 'Proposed solution';
         $requiredMeans = 'Required means';
+        $skill = $this->createMock(CitizenProjectSkill::class);
 
         $adherent = new Adherent(
             $uuid,
@@ -51,6 +53,7 @@ class CitizenProjectFactoryTest extends TestCase
         $command->problemDescription = $problemDescription;
         $command->proposedSolution = $proposedSolution;
         $command->requiredMeans = $requiredMeans;
+        $command->setSkills([$skill]);
 
         $citizenProjectFactory = new CitizenProjectFactory();
         $citizenProject = $citizenProjectFactory->createFromCitizenProjectCreationCommand($command);
@@ -65,5 +68,6 @@ class CitizenProjectFactoryTest extends TestCase
         $this->assertSame($problemDescription, $citizenProject->getProblemDescription());
         $this->assertSame($proposedSolution, $citizenProject->getProposedSolution());
         $this->assertSame($requiredMeans, $citizenProject->getRequiredMeans());
+        $this->assertSame([$skill], $citizenProject->getSkills()->toArray());
     }
 }

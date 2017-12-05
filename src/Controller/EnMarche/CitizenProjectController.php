@@ -4,10 +4,14 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectCategorySkill;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -44,5 +48,35 @@ class CitizenProjectController extends Controller
         $this->disableInProduction();
 
         return new Response();
+    }
+
+    /**
+     * @Route("/skills/autocompletion",
+     *     name="app_citizen_project_skills_autocomplete",
+     *     condition="request.isXmlHttpRequest() and request.query.get('category') and request.query.get('term')"
+     * )
+     * @Method("GET")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function skillsAutocompleteAction(Request $request)
+    {
+        if (!$category = $this->getDoctrine()->getRepository(CitizenProjectCategory::class)->find($request->query->get('category'))) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
+        }
+
+        $citizenProjectCategorySkills = $this
+            ->getDoctrine()
+            ->getRepository(CitizenProjectCategorySkill::class)
+            ->findByCitizenProjectCategoryAndTerm($category, $request->query->get('term', ''));
+
+        /** @var CitizenProjectCategorySkill[] $citizenProjectCategorySkills */
+        foreach ($citizenProjectCategorySkills as $citizenProjectCategorySkill) {
+            $result[] = [
+                'id' => $citizenProjectCategorySkill->getSkill()->getId(),
+                'name' => $citizenProjectCategorySkill->getSkill()->getName(),
+            ];
+        }
+
+        return new JsonResponse($result ?? []);
     }
 }
