@@ -427,14 +427,40 @@
         </service>
 
         <!-- Search -->
-        <service id="app.search.search_results_filter" class="AppBundle\Search\SearchParametersFilter">
+        <service id="AppBundle\Search\SearchParametersFilter" shared="false">
             <argument type="service" id="app.geocoder"/>
             <argument type="service" id="cache.app"/>
+
+            <call method="setMaxResults">
+                <argument>%search_max_results%</argument>
+            </call>
         </service>
 
-        <service id="app.search.search_results_provider" class="AppBundle\Search\SearchResultsProvider">
+        <service id="AppBundle\Search\SearchResultsProvidersManager">
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CommitteeSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\EventSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CitizenProjectSearchResultsProvider"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Search\CommitteeSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.committee"/>
+        </service>
+
+        <service id="AppBundle\Search\EventSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.event"/>
+        </service>
+
+        <service id="AppBundle\Search\CitizenProjectSearchResultsProvider" public="false">
+            <argument type="service" id="app.repository.citizen_project"/>
+            <argument type="service" id="app.citizen_project.manager"/>
         </service>
 
         <!-- Donation Frequency -->

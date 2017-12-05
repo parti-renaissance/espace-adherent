@@ -131,6 +131,26 @@ class CitizenProjectManager
         return $this->getAdherentRepository()->findOneByUuid($citizenProject->getCreatedBy());
     }
 
+    /**
+     * @param CitizenProject[] $citizenProjects
+     */
+    public function injectCitizenProjectCreator(array $citizenProjects): void
+    {
+        foreach ($citizenProjects as $citizenProject) {
+            $citizenProject->setCreator($this->getCitizenProjectCreator($citizenProject));
+        }
+    }
+
+    /**
+     * @param CitizenProject[] $citizenProjects
+     */
+    public function injectCitizenProjectAdministrators(array $citizenProjects): void
+    {
+        foreach ($citizenProjects as $citizenProject) {
+            $citizenProject->setAdministrators($this->getCitizenProjectAdministrators($citizenProject));
+        }
+    }
+
     public function getCitizenProjectMembers(CitizenProject $citizenProject): AdherentCollection
     {
         return $this->getCitizenProjectMembershipRepository()->findMembers($citizenProject->getUuid());

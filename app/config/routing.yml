@@ -50,7 +50,7 @@ lexik_paybox:
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
 
-# This route must be loaded first to prevent an override
+# This route must be loaded first to prevent another route to match his path
 map_events:
     host:    "%app_host%"
     path:    /evenements/la-carte
