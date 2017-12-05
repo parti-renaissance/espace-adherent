@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block meta %}
+    {{ include('article/_og_meta.html.twig') }}
+{% endblock %}
+
 {% block page_title article.title %}
 {% block meta_description article.description %}
 {% block meta_twitter_description article.twitterDescription ?: article.description %}
