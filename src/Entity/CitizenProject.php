@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -116,8 +117,10 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
 
     /**
      * A cached list of the administrators (for admin).
+     *
+     * @var AdherentCollection|null
      */
-    public $administrators = [];
+    private $administrators;
 
     /**
      * @var Adherent|null
@@ -504,5 +507,18 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function removeSkill(CitizenProjectSkill $citizenProjectSkill): void
     {
         $this->skills->removeElement($citizenProjectSkill);
+    }
+
+    /**
+     * @return AdherentCollection
+     */
+    public function getAdministrators(): ?AdherentCollection
+    {
+        return $this->administrators;
+    }
+
+    public function setAdministrators(AdherentCollection $administrators): void
+    {
+        $this->administrators = $administrators;
     }
 }

@@ -26,13 +26,11 @@ class CitizenProjectDatagrid implements DatagridInterface
     public function getResults()
     {
         if (!$this->cachedResults) {
-            /** @var CitizenProject[] $results */
+            /* @var CitizenProject[] $results */
             $results = $this->decorated->getResults();
 
-            foreach ($results as $result) {
-                $result->administrators = $this->manager->getCitizenProjectAdministrators($result);
-                $result->setCreator($this->manager->getCitizenProjectCreator($result));
-            }
+            $this->manager->injectCitizenProjectAdministrators($results);
+            $this->manager->injectCitizenProjectCreator($results);
 
             $this->cachedResults = $results;
         }
