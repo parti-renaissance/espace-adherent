@@ -4,10 +4,12 @@ namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
+use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -28,6 +30,7 @@ class CitizenProjectCommandTest extends TestCase
         $problemDescription = 'Problem description';
         $proposedSolution = 'Proposed solution';
         $requiredMeans = 'Required means';
+        $skill = $this->createMock(CitizenProjectSkill::class);
 
         $citizenProject = new CitizenProject(
             $uuid,
@@ -45,6 +48,7 @@ class CitizenProjectCommandTest extends TestCase
             NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             '69001-en-marche-lyon'
         );
+        $citizenProject->setSkills([$skill]);
 
         $citizenProjectCommand = CitizenProjectCommand::createFromCitizenProject($citizenProject);
 
@@ -59,6 +63,8 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertSame($problemDescription, $citizenProjectCommand->getProblemDescription());
         $this->assertSame($proposedSolution, $citizenProjectCommand->getProposedSolution());
         $this->assertSame($requiredMeans, $citizenProjectCommand->getRequiredMeans());
+        $this->assertInstanceOf(Collection::class, $citizenProject->getSkills());
+        $this->assertCount(1, $citizenProjectCommand->getSkills());
         $this->assertInstanceOf(NullableAddress::class, $citizenProjectCommand->getAddress());
     }
 }

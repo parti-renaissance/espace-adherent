@@ -72,6 +72,15 @@
     }) }}
 </div>
 
+<div class="form__row" id="field-skills">
+    {{ form_errors(form.skills) }}
+    {{ form_label(form.skills_search, 'Ce projet à besoin de : (Optionnel)', {'label_attr': { class: 'text--bold' }}) }}
+    <div>
+        {{ form_widget(form.skills_search, { attr: { style: 'margin-bottom: 10px', class: 'form--full' } }) }}
+        {{ form_widget(form.skills, { attr: { class: 'citizen_initiative__skills' } }) }}
+    </div>
+</div>
+
 <div class="form__row" id="citizen-project-address">
     {{ form_errors(form.address) }}
     {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {'label_attr': { class: 'text--bold' }}) }}

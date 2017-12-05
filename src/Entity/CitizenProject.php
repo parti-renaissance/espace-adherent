@@ -98,7 +98,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="citizen_projects_skills",
      *     joinColumns={
@@ -337,7 +337,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $proposedSolution,
         string $requiredMeans,
         NullablePostAddress $address,
-        PhoneNumber $phone
+        PhoneNumber $phone,
+        iterable $skills
     ): void {
         $this->setName($name);
         $this->setSubtitle($subtitle);
@@ -347,6 +348,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         $this->setProblemDescription($problemDescription);
         $this->setProposedSolution($proposedSolution);
         $this->setRequiredMeans($requiredMeans);
+        $this->setSkills($skills);
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;
@@ -375,5 +377,36 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function getCreator(): ?Adherent
     {
         return $this->creator;
+    }
+
+    /**
+     * @return CitizenProjectSkill[]|Collection
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function setSkills(iterable $skills): void
+    {
+        $this->skills = new ArrayCollection();
+        foreach ($skills as $skill) {
+            if (!$skill instanceof CitizenProjectSkill) {
+                throw new \InvalidArgumentException('Invalid argument type, require CitizenProjectSkill');
+            }
+            $this->addSkill($skill);
+        }
+    }
+
+    public function addSkill(CitizenProjectSkill $citizenProjectSkill): void
+    {
+        if (!$this->skills->contains($citizenProjectSkill)) {
+            $this->skills->add($citizenProjectSkill);
+        }
+    }
+
+    public function removeSkill(CitizenProjectSkill $citizenProjectSkill): void
+    {
+        $this->skills->removeElement($citizenProjectSkill);
     }
 }
