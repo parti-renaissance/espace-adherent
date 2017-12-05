@@ -102,3 +102,13 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block _citizen_project_skills_entry_row %}
+    {% spaceless %}
+        <div class="summary-skill">
+            <span class="skill-remove">X</span>
+            <span class="skill-value">&nbsp;{% if value is not empty %}{{ value['name'] }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value['id'] }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}

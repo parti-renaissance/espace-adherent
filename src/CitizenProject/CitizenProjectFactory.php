@@ -79,6 +79,8 @@ class CitizenProjectFactory
             $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
         );
 
+        $citizenProject->setSkills($command->getSkills());
+
         return $citizenProject;
     }
 
