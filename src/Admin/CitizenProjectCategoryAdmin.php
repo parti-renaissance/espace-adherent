@@ -3,7 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\BaseEventCategory;
-use AppBundle\Form\CategorySkillType;
+use AppBundle\Form\CitizenProjectCategorySkillType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -35,7 +35,7 @@ class CitizenProjectCategoryAdmin extends AbstractAdmin
             ])
             ->add('categorySkills', CollectionType::class, [
                 'label' => 'Liste des compétences',
-                'entry_type' => CategorySkillType::class,
+                'entry_type' => CitizenProjectCategorySkillType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
