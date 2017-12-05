@@ -104,6 +104,7 @@
         <service id="app.membership.adherent_factory" class="AppBundle\Membership\AdherentFactory">
             <argument type="service" id="security.encoder_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer"/>
         </service>
 
         <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
