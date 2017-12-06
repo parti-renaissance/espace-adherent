@@ -1,0 +1,55 @@
+{% extends 'citizen_project/_layout.html.twig' %}
+
+{% block page_title 'Acteurs du projet citoyen' %}
+
+{% block citizen_project_content %}
+    {% set is_host = is_administrator(citizen_project) %}
+    <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+        <div class="committee__main l__wrapper--main l__wrapper--main-left">
+            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+               class="back-to-list icon--with-text text--summary space--20-0">
+                {{ include('components/caret--left.html.twig') }}
+                Retour au projet citoyen
+            </a>
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">
+                    Liste des acteurs
+                </h1>
+            </header>
+            <table class="committee__members__list" cellpadding="10">
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Age</th>
+                    <th>CP</th>
+                    <th>Ville</th>
+                    <th>Rôle</th>
+                    <th>Adhésion</th>
+                </tr>
+                {% for actor in actors %}
+                    {% set member = actor.adherent %}
+                    {% set is_promotable_host = actor.promotableAdministrator %}
+                    <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
+                        <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                        <td class="member-last-name">
+                            {{ not is_host ? member.lastNameInitial|upper : member.lastName}}
+                        </td>
+                        <td class="member-age">{{ member.age }}</td>
+                        <td class="member-postal-code">{{ member.postalCode }}</td>
+                        <td class="member-city-name">{{ member.cityName }}</td>
+                        <td>
+                            {% if not is_promotable_host %}
+                                Porteur du projet
+                            {% else %}
+                                Membre
+                            {% endif %}
+                        </td>
+                        <td class="member-subscription-date">
+                            {{- actor.subscriptionDate|date('d/m/Y') -}}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
