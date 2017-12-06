@@ -454,7 +454,7 @@
             <argument />
             <argument>AppBundle\Entity\CitizenProject</argument>
             <argument />
-            <argument type="service" id="app.citizen_project.manager" />
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager" />
             <argument type="service" id="app.repository.citizen_project_membership" />
         </service>
 

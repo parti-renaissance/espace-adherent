@@ -2,6 +2,10 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\CitizenProject\CitizenProjectCommentCommand;
+use AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler;
+use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
@@ -9,6 +13,7 @@ use AppBundle\Entity\CitizenProjectCategorySkill;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
+use AppBundle\Form\CitizenProjectCommentCommandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -30,17 +35,33 @@ class CitizenProjectController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function showAction(CitizenProject $citizenProject): Response
+    public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
         $this->disableInProduction();
 
-        $citizenProjectManager = $this->get('app.citizen_project.manager');
+        $form = null;
+
+        if ($this->isGranted(CitizenProjectPermissions::COMMENT, $citizenProject)) {
+            $commentCommand = new CitizenProjectCommentCommand($citizenProject, $this->getUser());
+            $form = $this->createForm(CitizenProjectCommentCommandType::class, $commentCommand)
+                ->handleRequest($request)
+            ;
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->get(CitizenProjectCommentCreationCommandHandler::class)->handle($commentCommand);
+                $this->addFlash('info', 'Ton commentaire a été ajoutée');
+
+                return $this->redirectToRoute('app_citizen_project_show', ['slug' => $citizenProject->getSlug()]);
+            }
+        }
 
         return $this->render('citizen_project/show.html.twig', [
             'citizen_project' => $citizenProject,
-            'citizen_project_administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'citizen_project_followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
+            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+            'comments' => $citizenProjectManager->getCitizenProjectComments($citizenProject),
+            'form' => $form ? $form->createView() : null,
         ]);
     }
 
@@ -119,14 +140,13 @@ class CitizenProjectController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Method("GET|POST")
      */
-    public function committeeSupportAction(Request $request, CitizenProject $citizenProject): Response
+    public function committeeSupportAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
         $user = $this->getUser();
         if (!$user->isSupervisor()) {
             throw $this->createAccessDeniedException();
         }
 
-        $citizenProjectManager = $this->get('app.citizen_project.manager');
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
 
