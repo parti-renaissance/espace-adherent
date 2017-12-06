@@ -16,6 +16,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CitizenProjectManager
 {
+    const STATUS_NOT_ALLOWED_TO_CREATE = [
+        CitizenProject::PENDING,
+        CitizenProject::REFUSED,
+    ];
+
     private $registry;
 
     public function __construct(ManagerRegistry $registry)
@@ -322,5 +327,10 @@ class CitizenProjectManager
     public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
     {
         return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
+    }
+
+    public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
+    {
+        return $this->getCitizenProjectRepository()->hasCitizenProjectInStatus($adherent, $status);
     }
 }

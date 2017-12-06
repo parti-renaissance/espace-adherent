@@ -257,14 +257,8 @@
             <tag name="security.voter"/>
         </service>
 
-        <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.citizen_project.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
+        <service id="app.voter.create_citizen_project_voter" class="AppBundle\CitizenProject\Voter\CreateCitizenProjectVoter" public="false">
+            <argument type="service" id="app.citizen_project.manager"/>
             <tag name="security.voter"/>
         </service>
 
