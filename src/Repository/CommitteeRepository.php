@@ -30,7 +30,8 @@ class CommitteeRepository extends EntityRepository
             ->where('c.status = :approved')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -314,5 +315,15 @@ class CommitteeRepository extends EntityRepository
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    public function findByPartialName(string $search, int $limit = 10): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.canonicalName LIKE :search')
+            ->setParameter('search', '%'.strtolower($search).'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 }

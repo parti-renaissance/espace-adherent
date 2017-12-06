@@ -38,7 +38,8 @@ class CitizenProjectUpdateCommandHandler
             $command->problemDescription,
             $command->proposedSolution,
             $command->requiredMeans,
-            $this->addressFactory->createFromNullableAddress($command->getAddress())
+            $this->addressFactory->createFromNullableAddress($command->getAddress()),
+            $command->committees
         );
 
         $this->manager->persist($citizenProject);

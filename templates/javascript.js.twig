@@ -102,3 +102,106 @@ $(document).ready(function() {
     removeSkill();
 });
 {% endmacro %}
+
+{% macro committee(idCommitteesListField, idCommitteeSearchField ,urlSearch) %}
+$(document).ready(function() {
+    var committeeList = $('{{ idCommitteesListField|raw }}');
+    var removeCommittee = function () {
+        var btn = $('.committee-remove');
+
+        btn.unbind('click');
+        btn.click(function () {
+            $(this).parent().remove();
+        });
+    };
+
+    var addCommittee = function (item) {
+        var committee = item.value,
+            label = item.label;
+
+        if (committee.length > 0) {
+            var committeeCount = 0;
+            $('.summary-committee > input[type=hidden]').each(function () {
+                committeeCount = Math.max(this.id.replace(/[^0-9]/g, ''), committeeCount);
+            });
+            committeeCount++;
+
+            var newCommitteeWidget = committeeList.attr('data-prototype'),
+                committeeWidgetId = '#'+committeeList.attr('id')+'_'+committeeCount;
+            newCommitteeWidget = newCommitteeWidget.replace(/__name__/g, committeeCount);
+
+            $(newCommitteeWidget).appendTo(committeeList);
+            $(committeeWidgetId).val(committee);
+            $(committeeWidgetId).parent().find('.committee-value').text(' ' + label);
+
+            $('{{ idCommitteeSearchField|raw }}').val('');
+            removeCommittee();
+        }
+    };
+
+    // Prevent submitting form by pressing enter
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    var input = $('{{ idCommitteeSearchField|raw }}');
+
+    // Add committee autocomplete
+    input.autocomplete({
+        source: function(request, response) {
+            var term = request.term.trim();
+            if (term.length > 0) {
+                $.get("{{ urlSearch|raw }}?term=" + term, function(data) {
+                    var array = $.map(data, function(m) {
+                        return {
+                            label: m.name,
+                            value: m.uuid
+                        };
+                    });
+                    response(array);
+                });
+            } else {
+                response([]);
+            }
+        },
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {
+            },
+        },
+        select: function (e, ui) {
+            addCommittee(ui.item);
+
+            return false;
+        },
+        change: function (ev, ui) {
+            if (!ui.item) {
+                input.val('');
+            }
+
+            return false;
+        }
+    });
+
+    // Add committee by pressing Enter
+    input.keyup(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            addCommittee($(this));
+        }
+    });
+
+    removeCommittee();
+    // Prevent submitting form by pressing enter
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+});
+{% endmacro %}
