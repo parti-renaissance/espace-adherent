@@ -19,6 +19,7 @@ class CitizenProjectExtension extends AbstractExtension
             new TwigFunction('can_see_citizen_project', [CitizenProjectRuntime::class, 'canSeeCitizenProject']),
             new TwigFunction('can_comment_citizen_project', [CitizenProjectRuntime::class, 'canCommentCitizenProject']),
             new TwigFunction('can_see_comment_citizen_project', [CitizenProjectRuntime::class, 'canSeeCommentCitizenProject']),
+            new TwigFunction('citizen_project_color_status', [CitizenProjectRuntime::class, 'getCitizenProjectColorStatus']),
         ];
     }
 }

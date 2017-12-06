@@ -115,4 +115,18 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->getResult()
         ;
     }
+
+    public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
+    {
+        $nb = $this->createQueryBuilder('cp')
+            ->select('COUNT(cp) AS nb')
+            ->where('cp.createdBy = :creator')
+            ->andWhere('cp.status IN (:status)')
+            ->setParameter('creator', $adherent->getUuid()->toString())
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $nb > 0;
+    }
 }

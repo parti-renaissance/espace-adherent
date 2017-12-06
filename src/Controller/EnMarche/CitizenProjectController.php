@@ -181,4 +181,22 @@ class CitizenProjectController extends Controller
             'citizen_project' => $citizenProject,
         ]);
     }
+
+    /**
+     * @Route("/{slug}/acteurs", name="app_citizen_project_members_list_show")
+     * @Method("GET")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function listActorsAction(CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('citizen_project/list_actors.html.twig', [
+            'citizen_project' => $citizenProject,
+            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
+            'actors' => $citizenProjectManager->getCitizenProjectMemberships($citizenProject),
+        ]);
+    }
 }
