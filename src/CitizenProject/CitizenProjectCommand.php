@@ -46,11 +46,9 @@ class CitizenProjectCommand
      * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber(defaultRegion="FR")
      */
-    protected $phone;
+    public $phone;
 
     public $category;
-
-    private $committee;
 
     public $assistanceNeeded = false;
 
@@ -76,6 +74,8 @@ class CitizenProjectCommand
      * @var string
      */
     public $assistanceContent;
+
+    private $committee;
 
     public function __construct(NullableAddress $address = null)
     {

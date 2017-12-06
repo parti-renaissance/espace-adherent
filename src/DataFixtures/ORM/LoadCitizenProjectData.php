@@ -62,6 +62,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'phone' => '33 673643424',
         ]);
         $this->addReference('citizen-project-2', $citizenProject2);
 
@@ -109,6 +110,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
             'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
+            'phone' => '33 673654349',
         ]);
         $citizenProject5->approved();
         $this->addReference('citizen-project-5', $citizenProject5);
@@ -125,6 +127,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'phone' => '33 234823644',
         ]);
         $citizenProject6->approved('2017-10-19 09:17:24');
         $this->addReference('citizen-project-6', $citizenProject6);
@@ -173,6 +176,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-10-09 12:16:22',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'phone' => '1 2123150100',
         ]);
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);

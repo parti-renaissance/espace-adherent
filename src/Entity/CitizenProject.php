@@ -49,11 +49,6 @@ class CitizenProject extends BaseGroup
     protected $subtitle;
 
     /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     */
-    private $phone;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
@@ -205,16 +200,6 @@ class CitizenProject extends BaseGroup
         return $this->category;
     }
 
-    public function setPhone(PhoneNumber $phone = null): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
     public function getCommittee(): ?Committee
     {
         return $this->committee;
@@ -350,7 +335,8 @@ class CitizenProject extends BaseGroup
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
-        NullablePostAddress $address
+        NullablePostAddress $address,
+        PhoneNumber $phone
     ): void {
         $this->setName($name);
         $this->setSubtitle($subtitle);
@@ -363,6 +349,10 @@ class CitizenProject extends BaseGroup
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;
+        }
+
+        if (!$this->phone->equals($phone)) {
+            $this->phone = $phone;
         }
     }
 
