@@ -7,8 +7,13 @@ use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Entity\Committee;
+use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
+use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -341,6 +346,11 @@ class CitizenProjectManager
         return $this->registry->getRepository(Adherent::class);
     }
 
+    private function getCitizenProjectCommitteeSupportRepository(): CitizenProjectCommitteeSupportRepository
+    {
+        return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
+    }
+
     public function countApprovedCitizenProjects(): int
     {
         return $this->getCitizenProjectRepository()->countApprovedCitizenProjects();
@@ -362,5 +372,30 @@ class CitizenProjectManager
     public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
     {
         return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
+    }
+
+    public function approveCommitteeSupport(Committee $committee, CitizenProject $citizenProject, bool $flush = true): void
+    {
+        if (!$citizenProject->isApproved()) {
+            throw new CitizenProjectNotApprovedException($citizenProject);
+        }
+
+        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findByCommittee($committee)) {
+            $committeeSupport = new CitizenProjectCommitteeSupport($citizenProject, $committee);
+        }
+
+        if ($committeeSupport->isApproved()) {
+            throw new CitizenProjectCommitteeSupportAlreadySupportException(
+                $committeeSupport->getCommittee(),
+                $committeeSupport->getCitizenProject()
+            );
+        }
+
+        $committeeSupport->approve();
+
+        if ($flush) {
+            $this->getManager()->persist($committeeSupport);
+            $this->getManager()->flush();
+        }
     }
 }

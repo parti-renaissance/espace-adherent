@@ -174,6 +174,11 @@ class CommitteeMembershipRepository extends EntityRepository
         return $this->findPriviledgedMemberships($committeeUuid, [CommitteeMembership::COMMITTEE_HOST]);
     }
 
+    public function findSupervisor(string $committeeUuid): ?Adherent
+    {
+        return $this->findPriviledgedMembers($committeeUuid, CommitteeMembership::COMMITTEE_SUPERVISOR())->get(0);
+    }
+
     /**
      * Returns the list of all hosts memberships of a committee.
      *

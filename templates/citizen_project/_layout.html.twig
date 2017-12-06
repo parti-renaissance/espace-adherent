@@ -49,7 +49,9 @@
                 {% block citizen_project_content %}{% endblock %}
             </div>
 
-            {{ include('citizen_project/_sidebar.html.twig') }}
+            {% block citizen_project_sidebar %}
+                {{ include('citizen_project/_sidebar.html.twig') }}
+            {% endblock %}
         </div>
     </main>
 {% endblock %}
