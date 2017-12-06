@@ -10,6 +10,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CitizenProjectRuntime
 {
+    const COLOR_STATUS_PENDING = 'bullet--pending';
+    const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
+
     private $authorizationChecker;
     private $citizenProjectManager;
 
@@ -59,5 +62,18 @@ class CitizenProjectRuntime
     public function canSeeCommentCitizenProject(CitizenProject $citizenProject): bool
     {
         return $this->authorizationChecker->isGranted(CitizenProjectPermissions::SHOW_COMMENT, $citizenProject);
+    }
+
+    public function getCitizenProjectColorStatus(Adherent $adherent, CitizenProject $citizenProject): string
+    {
+        if ($citizenProject->isPending()) {
+            return self::COLOR_STATUS_PENDING;
+        }
+
+        if ($adherent->isAdministratorOf($citizenProject)) {
+            return self::COLOR_STATUS_ADMINISTRATOR;
+        }
+
+        return '';
     }
 }
