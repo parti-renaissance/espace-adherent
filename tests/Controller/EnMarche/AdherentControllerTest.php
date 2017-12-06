@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
@@ -800,8 +801,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
-
         $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
+
+        $this->assertCount(2, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
         $reasons = $this->client->getContainer()->getParameter('adherent_unregistration_reasons');
@@ -845,6 +847,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
+        $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
     }
 
     protected function setUp()
@@ -858,6 +861,7 @@ class AdherentControllerTest extends MysqlWebTestCase
             LoadEventCategoryData::class,
             LoadEventData::class,
             LoadCitizenProjectData::class,
+            LoadCitizenProjectCommentData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();

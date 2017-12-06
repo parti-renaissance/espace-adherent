@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\Coordinator;
 
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Coordinator\Filter\AbstractCoordinatorAreaFilter;
 use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\CitizenProject;
@@ -33,7 +34,7 @@ class CoordinatorCitizenProjectController extends Controller
             throw new BadRequestHttpException('Unexpected Citizen Project status in the query string.', $e);
         }
 
-        $results = $this->get('app.citizen_project.manager')->getCoordinatorCitizenProjects($this->getUser(), $filter);
+        $results = $this->get(CitizenProjectManager::class)->getCoordinatorCitizenProjects($this->getUser(), $filter);
 
         $forms = [];
         $citizenProjectStatus = $filter->getStatus();

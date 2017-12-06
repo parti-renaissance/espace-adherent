@@ -75,9 +75,32 @@
         </div>
 
         <section>
-            <h2 class=" space--20-0 b__nudge--top-40">À venir</h2>
+            <h2 class="space--20-0 b__nudge--top-40">À venir</h2>
 
-            <h2 class=" space--20-0 b__nudge--top-40">Discussion</h2>
+            {% if can_see_comment_citizen_project(citizen_project) %}
+                <div class="citizen-project-comments">
+                    <h2 class="space--20-0 b__nudge--top-40">Discussions</h2>
+
+                    {% if can_comment_citizen_project(citizen_project) %}
+                        {{ form_start(form) }}
+                            {{ form_errors(form.content) }}
+                            {{ form_widget(form.content) }}
+                            <button>Publier</button>
+                        {{ form_end(form) }}
+
+                        <div class="text--body b__nudge--bottom-small">
+                            Restez courtois et respectueux.
+                        </div>
+                    {% endif %}
+
+                    {% for comment in comments %}
+                        <div class="citizen-project-comment">
+                            {{ comment.authorFullName }} ({{ comment.createdAt|ago|capitalize }})
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <h2 class=" space--20-0 b__nudge--top-40">Fichiers</h2>
 
