@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -82,6 +83,11 @@ abstract class BaseGroup implements GeoPointInterface
     protected $createdBy;
 
     /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    protected $phone;
+
+    /**
      * The cached number of members (followers and hosts/administrators).
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
@@ -95,6 +101,7 @@ abstract class BaseGroup implements GeoPointInterface
         UuidInterface $creator,
         string $name,
         string $slug = null,
+        PhoneNumber $phone = null,
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
@@ -112,6 +119,7 @@ abstract class BaseGroup implements GeoPointInterface
         $this->createdBy = $creator;
         $this->setName($name);
         $this->slug = $slug;
+        $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
@@ -137,6 +145,16 @@ abstract class BaseGroup implements GeoPointInterface
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function isWaitingForApproval(): bool
