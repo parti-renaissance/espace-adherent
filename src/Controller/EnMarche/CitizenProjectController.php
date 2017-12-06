@@ -7,10 +7,13 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
 use AppBundle\Entity\Committee;
+use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
+use AppBundle\Exception\CitizenProjectNotApprovedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +40,7 @@ class CitizenProjectController extends Controller
             'citizen_project' => $citizenProject,
             'citizen_project_administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
             'citizen_project_followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
         ]);
     }
 
@@ -108,5 +112,53 @@ class CitizenProjectController extends Controller
         }
 
         return new JsonResponse($result ?? []);
+    }
+
+    /**
+     * @Route("/mon-comite-soutien/{slug}", name="app_citizen_project_committee_support")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Method("GET|POST")
+     */
+    public function committeeSupportAction(Request $request, CitizenProject $citizenProject): Response
+    {
+        $user = $this->getUser();
+        if (!$user->isSupervisor()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $citizenProjectManager = $this->get('app.citizen_project.manager');
+        $form = $this->createForm(FormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $committeeUuid = $user->getMemberships()->getCommitteeSupervisorMemberships()->last()->getCommitteeUuid();
+
+            try {
+                $citizenProjectManager->approveCommitteeSupport(
+                    $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($committeeUuid),
+                    $citizenProject
+                );
+                $flashMessage = sprintf('Votre comité soutient maintenant le projet citoyen %s', $citizenProject->getName());
+            } catch (CitizenProjectCommitteeSupportAlreadySupportException $committeeSupportAlreadySupportException) {
+                $flashMessage = sprintf(
+                    'Votre comité %s soutient déjà le projet citoyen %s',
+                    $committeeSupportAlreadySupportException->getCommittee()->getName(),
+                    $committeeSupportAlreadySupportException->getCitizenProject()->getName()
+                );
+            } catch (CitizenProjectNotApprovedException $approvedException) {
+                throw $this->createAccessDeniedException();
+            }
+
+            $this->addFlash('info', $flashMessage);
+
+            return $this->redirectToRoute('app_citizen_project_show', [
+                'slug' => $citizenProject->getSlug(),
+            ]);
+        }
+
+        return $this->render('citizen_project/committee_confirm_support.html.twig', [
+            'form' => $form->createView(),
+            'citizen_project' => $citizenProject,
+        ]);
     }
 }

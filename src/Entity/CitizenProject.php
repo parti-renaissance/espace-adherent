@@ -91,7 +91,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     /**
      * @var CitizenProjectCommitteeSupport[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", mappedBy="citizenProject", orphanRemoval=true,
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", fetch="EAGER", mappedBy="citizenProject", orphanRemoval=true,
      *      cascade={"persist"})
      *
      * @Algolia\Attribute
@@ -215,6 +215,9 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         return $this->phone;
     }
 
+    /**
+     * @return CitizenProjectCommitteeSupport[]|Collection
+     */
     public function getCommitteeSupports(): Collection
     {
         return $this->committeeSupports;
@@ -224,6 +227,16 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     {
         return $this->committeeSupports->filter(function (CitizenProjectCommitteeSupport $c) {
             return $c->isApproved();
+        });
+    }
+
+    /**
+     * @return CitizenProjectCommitteeSupport[]|Collection
+     */
+    public function getPendingCommitteeSupports(): Collection
+    {
+        return $this->committeeSupports->filter(function (CitizenProjectCommitteeSupport $c) {
+            return $c->isPending();
         });
     }
 
@@ -242,7 +255,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function addCommitteeOnSupport(Committee $committee): void
     {
         foreach ($this->committeeSupports as $committeeSupport) {
-            if ($committee === $committeeSupport->getCommittee()) {
+            if ($committee->getId() === $committeeSupport->getCommittee()->getId()) {
                 return;
             }
         }
@@ -253,7 +266,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function removeCommitteeSupport(Committee $committee): void
     {
         foreach ($this->committeeSupports as $committeeSupport) {
-            if ($committee === $committeeSupport->getCommittee()) {
+            if ($committee->getId() === $committeeSupport->getCommittee()->getId()) {
                 $this->committeeSupports->removeElement($committeeSupport);
 
                 return;
