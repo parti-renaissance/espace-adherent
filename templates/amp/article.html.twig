@@ -63,27 +63,27 @@
 
     <main class="b__nudge--bottom">
         <section class="content b__nudge--bottom-huge">
-            <header class="b__nudge--top l__wrapper--slim">
-                <h1 class="text--large b__nudge--bottom-small">
-                    {{ article.title }}
-                </h1>
-                <h2 class="text--gray bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
-            </header>
-
-            {% if article.media and article.displayMedia %}
-                <amp-img src="{{ media_asset(article.media, {'q': 70}) }}"
-                         width="{{ article.media.width }}"
-                         height="{{ article.media.height }}"
-                         layout="responsive">
-                    <noscript>
-                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
-                             width="{{ article.media.width }}"
-                             height="{{ article.media.height }}" />
-                    </noscript>
-                </amp-img>
-            {% endif %}
-
             <article class="l__wrapper--slim">
+                <header class="b__nudge--top l__wrapper--slim">
+                    <h1 class="text--large b__nudge--bottom-small">
+                        {{ article.title }}
+                    </h1>
+                    <h2 class="text--gray bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+                </header>
+
+                {% if article.media and article.displayMedia %}
+                    <amp-img src="{{ media_asset(article.media, {'q': 70}) }}"
+                             width="{{ article.media.width }}"
+                             height="{{ article.media.height }}"
+                             layout="responsive">
+                        <noscript>
+                            <img src="{{ media_asset(article.media, {'q': 70}) }}"
+                                 width="{{ article.media.width }}"
+                                 height="{{ article.media.height }}" />
+                        </noscript>
+                    </amp-img>
+                {% endif %}
+                
                 {{ article.ampContent|raw }}
             </article>
         </section>
