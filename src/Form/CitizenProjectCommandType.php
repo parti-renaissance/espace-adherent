@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -46,6 +47,9 @@ class CitizenProjectCommandType extends AbstractType
             ->add('assistance_needed', CheckboxType::class, [
                 'property_path' => 'assistanceNeeded',
                 'required' => false,
+            ])
+            ->add('phone', PhoneNumberType::class, [
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
             ->add('assistance_content', TextareaType::class, [
                 'required' => false,

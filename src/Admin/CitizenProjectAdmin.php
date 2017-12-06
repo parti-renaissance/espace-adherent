@@ -113,6 +113,12 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'label' => 'Longitude',
                 ])
             ->end()
+            ->with('Téléphone', ['class' => 'col-md-5'])
+                ->add('phone', null, [
+                    'label' => 'Téléphone',
+                    'template' => 'admin/adherent/show_phone.html.twig',
+                ])
+            ->end()
         ;
     }
 
@@ -407,6 +413,10 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('postAddress.postalCode', null, [
                 'label' => 'Code postal',
+            ])
+            ->add('phone', null, [
+                'label' => 'Téléphone',
+                'template' => 'admin/adherent/list_phone.html.twig',
             ])
             ->add('problemDescription', null, [
                 'label' => 'Problème local adressé',
