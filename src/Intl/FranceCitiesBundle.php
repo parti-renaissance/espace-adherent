@@ -53,7 +53,7 @@ class FranceCitiesBundle
         '988' => 'NC', // Nouvelle Calédonie
     ];
 
-    public static $cities =[
+    public static $cities = [
             '01000' => [
                 '1053' => 'Bourg-en-Bresse',
                 '1344' => 'Saint-Denis-lès-Bourg',

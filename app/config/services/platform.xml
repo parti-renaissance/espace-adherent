@@ -79,6 +79,7 @@
             <argument type="service" id="AppBundle\Event\EventManager"/>
             <argument type="service" id="app.committee.feed_manager"/>
             <argument type="service" id="app.activity_subscription.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -229,12 +230,8 @@
         </service>
 
         <!-- Citizen projectss -->
-        <service id="app.citizen_project.manager" class="AppBundle\CitizenProject\CitizenProjectManager">
-            <argument type="service" id="doctrine"/>
-        </service>
-
         <service id="app.citizen_project.authority" class="AppBundle\CitizenProject\CitizenProjectManagementAuthority">
-            <argument type="service" id="app.citizen_project.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
 
@@ -251,31 +248,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
-
-        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.citizen_project.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="app.voter.administrate_citizen_project_voter" class="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter" public="false">
-            <argument type="service" id="app.citizen_project.manager"/>
-            <tag name="security.voter" priority="-1000"/>
-        </service>
-
-        <service id="app.voter.follow_citizen_project_voter" class="AppBundle\CitizenProject\Voter\FollowCitizenProjectVoter" public="false">
-            <argument type="service" id="app.citizen_project.manager"/>
-            <tag name="security.voter"/>
         </service>
 
         <service id="app.citizen_project.update_handler" class="AppBundle\CitizenProject\CitizenProjectUpdateCommandHandler">
@@ -286,7 +259,7 @@
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
             <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
-            <argument type="service" id="app.citizen_project.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="router"/>
@@ -391,10 +364,6 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
         <!-- CitizenActions -->
         <service id="AppBundle\CitizenAction\CitizenActionManager">
             <argument type="service" id="app.repository.citizen_action"/>
@@ -462,7 +431,7 @@
 
         <service id="AppBundle\Search\CitizenProjectSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.citizen_project"/>
-            <argument type="service" id="app.citizen_project.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <!-- Donation Frequency -->

@@ -37,7 +37,7 @@
 
         <service id="AppBundle\Twig\CitizenProjectRuntime">
             <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="app.citizen_project.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <tag name="twig.runtime"/>
         </service>
 

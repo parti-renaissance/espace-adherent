@@ -9,10 +9,10 @@
     </div>
 
     <div class="citizen_project__card">
-        <h3>{{ 'citizen_project.administrators_count'|transchoice(citizen_project_administrators|length) }}</h3>
+        <h3>{{ 'citizen_project.administrators_count'|transchoice(administrators|length) }}</h3>
 
         <ul>
-            {% for administrator in citizen_project_administrators %}
+            {% for administrator in administrators %}
                 <li class="text--body">
                     {{ administrator }}
                     {% if is_administrator and app.user.equals(administrator) %}
@@ -29,9 +29,9 @@
     </div>
 
     <div class="citizen_project__card">
-        <h3>{{ 'citizen_project.followers_count'|transchoice(citizen_project_followers|length) }}</h3>
+        <h3>{{ 'citizen_project.followers_count'|transchoice(followers|length) }}</h3>
         <ul>
-            {% for follower in citizen_project_followers|slice(0, 11) %}
+            {% for follower in followers|slice(0, 11) %}
                 <li class="text--body">
                     {{ follower }}
                     {% if user_is_adherent and app.user.equals(follower) %}

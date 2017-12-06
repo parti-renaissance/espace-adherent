@@ -59,7 +59,7 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
         $progress = new ProgressBar($output, $totalCount);
         $progress->setFormat('debug');
 
-        for ($i = 0; ; ++$i) {
+        for ($i = 0;; ++$i) {
             $requests = $procurationRequestRepository->findRemindersBatchToSend($i * self::PER_PAGE, self::PER_PAGE);
 
             if (empty($requests)) {

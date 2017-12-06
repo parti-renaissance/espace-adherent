@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenProject\CitizenProjectCommand;
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\CitizenProjectCommandType;
@@ -25,7 +26,7 @@ class CitizenProjectManagerController extends Controller
      * @Route("/editer", name="app_citizen_project_manager_edit")
      * @Method("GET|POST")
      */
-    public function editAction(Request $request, CitizenProject $citizenProject): Response
+    public function editAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
         $this->disableInProduction();
 
@@ -45,8 +46,8 @@ class CitizenProjectManagerController extends Controller
         return $this->render('citizen_project/edit.html.twig', [
             'form' => $form->createView(),
             'citizen_project' => $citizenProject,
-            'citizen_project_administrators' => $this->get('app.citizen_project.manager')->getCitizenProjectAdministrators($citizenProject),
-            'citizen_project_followers' => $this->get('app.citizen_project.manager')->getCitizenProjectFollowers($citizenProject),
+            'administrators' => $manager->getCitizenProjectAdministrators($citizenProject),
+            'followers' => $manager->getCitizenProjectFollowers($citizenProject),
         ]);
     }
 }

@@ -61,7 +61,7 @@ test:
         - case $CIRCLE_NODE_INDEX in 0) ./vendor/bin/phpunit --group $GROUP1 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 1) ./vendor/bin/phpunit --group $GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 2) ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
             parallel: true
             environment:
-                GROUP1: adherent,amp,article,boardMember,citizenInitiative,citizenInitiativeManager,referent,summary
+                GROUP1: adherent,amp,article,boardMember,citizenInitiative,citizenInitiativeManager,citizenProject,referent,summary
                 GROUP2: committee,committeeManager,coordinator,documents,donation,eventManager,explainer,facebook,home,invitation,legislatives,jeMarche,map,membership
 
         # Try to build production JS
