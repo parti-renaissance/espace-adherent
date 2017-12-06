@@ -134,9 +134,17 @@
                 }
             }
 
-            &__comites {
-                padding: 20px 25px;
-                background: $gray--light;
+            &__items {
+
+                &.committees {
+                    padding: 20px 25px;
+                    background: $gray--light;
+                }
+
+                &.citizen_projects {
+                    padding: 20px 25px;
+                    background: $gray--lighter;
+                }
 
                 li {
                     &.bullet:before {
@@ -153,6 +161,10 @@
 
                     &.bullet--own:before {
                         background-color: $blue;
+                    }
+
+                    &.bullet--pending:before {
+                        background-color: $orange;
                     }
 
                     a {

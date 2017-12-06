@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,6 +49,7 @@ class CitizenProjectManagerController extends Controller
             'citizen_project' => $citizenProject,
             'administrators' => $manager->getCitizenProjectAdministrators($citizenProject),
             'followers' => $manager->getCitizenProjectFollowers($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
         ]);
     }
 }
