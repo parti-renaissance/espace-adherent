@@ -12,7 +12,6 @@
 			<tag name="controller.service_arguments" />
 		</prototype>
 
-		<service id="AppBundle\CitizenProject\CitizenProjectManager" />
 		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
 
 		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">

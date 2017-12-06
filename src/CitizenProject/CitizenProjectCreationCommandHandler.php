@@ -9,23 +9,30 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CitizenProjectCreationCommandHandler
 {
     private $dispatcher;
+
     private $factory;
+
     private $manager;
+
+    private $citizenProjectManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CitizenProjectFactory $factory,
-        ObjectManager $manager
+        ObjectManager $manager,
+        CitizenProjectManager $citizenProjectManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
+        $this->citizenProjectManager = $citizenProjectManager;
     }
 
     public function handle(CitizenProjectCreationCommand $command): void
     {
         $adherent = $command->getAdherent();
         $citizenProject = $this->factory->createFromCitizenProjectCreationCommand($command);
+        $this->citizenProjectManager->addImage($citizenProject);
 
         $command->setCitizenProject($citizenProject);
 

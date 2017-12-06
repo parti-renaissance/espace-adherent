@@ -25,6 +25,38 @@ CKEDITOR.replace('{{ element }}', {
     ]
 });
 {% endmacro %}
+
+{% macro simpleCkeditor(element, height) %}
+CKEDITOR.replace('{{ element }}', {
+    extraPlugins : 'confighelper',
+    removePlugins: 'elementspath',
+    height: {{ height|default(200) }},
+    resize_enabled: false,
+    toolbar: [
+        { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+        { name: 'paragraph', items: [ 'BulletedList' ] },
+        { name: 'links', items: [ 'Link', 'Unlink' ] }
+    ]
+});
+
+var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
+var text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+$('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+
+CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
+    this.document.on("keyup", function(event) {
+        text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+        $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+        if (text_length_{{ element }} > maxlength_{{ element }}) {
+            $('#{{ element }}_counter').addClass('form__error');
+        } else {
+            $('#{{ element }}_counter').removeClass('form__error');
+        }
+    });
+});
+
+{% endmacro %}
+
 {% macro skills(idSkillsField, idSkillSearch, urlSearch) %}
 $(document).ready(function() {
     var skillList = $('{{ idSkillsField|raw }}');
