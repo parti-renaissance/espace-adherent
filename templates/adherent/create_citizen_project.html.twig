@@ -12,7 +12,7 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
-            {{ js.ckeditor('citizen_project_proposed_solution') }}
+            {{ js.simpleCkeditor('citizen_project_proposed_solution') }}
             App.runCitizenProjectCreation();
             {{ js.citizenProjectSkills('#citizen_project_skills', '#citizen_project_skills_search', path('app_citizen_project_skills_autocomplete')) }}
             {{ js.committee('#citizen_project_committees', '#citizen_project_committees_search', path('app_citizen_project_committee_autocomplete')) }}
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="citizen-project__form">
-                    <form method="post" id="create-citizen-project-form" class="form citizen-project-form">
+                    {{ form_start(form, {attr: {'id': 'create-citizen-project-form', 'class': 'form citizen-project-for'}}) }}
                         {{ include('citizen_project/_form.html.twig') }}
 
                         <div class="form__row" id="field-personal-phone">
@@ -83,8 +83,7 @@
                             </button>
                         </div>
                         {{ form_widget(form._token) }}
-                    </form>
-
+                    {{ form_end(form) }}
                     <p>
                         Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par La République En Marche pour le référencement de Projets Citoyens et la mise en relation entre Adhérents et Utilisateurs du site <a href="https://en-marche.fr">https://en-marche.fr/</a>.
                         Elles sont conservées pendant toute la durée de référencement du Projet Citoyen, et au-delà de cette durée dès lors qu’une disposition légale ou règlementaire le prévoit. Ces données sont destinées aux services digitaux de La République En Marche, aux équipes locales de bénévoles de l’association et aux adhérents de La République En Marche désireux de participer à un Projet Citoyen.

@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * This entity represents a citizen project.
@@ -54,8 +54,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=500)
      */
     private $problemDescription;
 
@@ -63,8 +61,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=800)
      */
     private $proposedSolution;
 
@@ -72,8 +68,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=500)
      */
     private $requiredMeans;
 
@@ -126,6 +120,20 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @var Adherent|null
      */
     private $creator;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $imageUploaded = false;
+
+    private $urlImage = '#';
+
+    /**
+     * @var UploadedFile|null
+     */
+    private $image;
 
     public function __construct(
         UuidInterface $uuid,
@@ -341,6 +349,41 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function getRequiredMeans(): ?string
     {
         return $this->requiredMeans;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/citizen_projects/%s.jpg', $this->getUuid());
+    }
+
+    public function setUrlimage(string $url): void
+    {
+        $this->urlImage = $url;
+    }
+
+    public function getUrlImage(): string
+    {
+        return $this->urlImage;
+    }
+
+    public function getImage(): ?UploadedFile
+    {
+        return $this->image;
+    }
+
+    public function setImage(?UploadedFile $image): void
+    {
+        $this->image = $image;
+    }
+
+    public function hasImageUploaded(): bool
+    {
+        return $this->imageUploaded;
+    }
+
+    public function setImageUploaded(bool $imageUploaded): void
+    {
+        $this->imageUploaded = $imageUploaded;
     }
 
     public static function createForAdherent(
