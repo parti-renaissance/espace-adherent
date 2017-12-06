@@ -16,6 +16,7 @@ use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
+ * @group citizenProject
  */
 class CitizenProjectManagerTest extends MysqlWebTestCase
 {
@@ -73,8 +74,8 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         // Without any fixed limit.
         $this->assertCount(8, $citizenProjects = $this->citizenProjectManager->getAdherentCitizenProjects($adherent));
         $this->assertSame('Le projet citoyen à Paris 8', (string) $citizenProjects[0]);
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', (string) $citizenProjects[1]);
-        $this->assertSame('Projet citoyen à New York City', (string) $citizenProjects[2]);
+        $this->assertSame('Projet citoyen à New York City', (string) $citizenProjects[1]);
+        $this->assertSame('Formation en ligne ouverte à tous à Évry', (string) $citizenProjects[2]);
         $this->assertSame('Le projet citoyen à Dammarie-les-Lys', (string) $citizenProjects[3]);
         $this->assertSame('Massive Open Online Course', (string) $citizenProjects[4]);
         $this->assertSame('Formation en ligne ouverte à tous', (string) $citizenProjects[5]);

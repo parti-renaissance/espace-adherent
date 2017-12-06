@@ -18,9 +18,6 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @group functional
- */
 class CitizenProjectMessageNotifierTest extends TestCase
 {
     public function testOnCitizenProjectApprove()

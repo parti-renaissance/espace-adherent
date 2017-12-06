@@ -8,6 +8,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
+use AppBundle\Entity\CitizenProjectComment;
+use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
@@ -180,6 +182,11 @@ class CitizenProjectManager
         }
 
         return $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject->getUuid());
+    }
+
+    public function getCitizenProjectComments(CitizenProject $citizenProject): array
+    {
+        return $this->getCitizenProjectCommentRepository()->findForProject($citizenProject);
     }
 
     /**
@@ -371,6 +378,11 @@ class CitizenProjectManager
         return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
     }
 
+    private function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
+    {
+        return $this->registry->getRepository(CitizenProjectComment::class);
+    }
+
     public function countApprovedCitizenProjects(): int
     {
         return $this->getCitizenProjectRepository()->countApprovedCitizenProjects();
@@ -417,5 +429,10 @@ class CitizenProjectManager
             $this->getManager()->persist($committeeSupport);
             $this->getManager()->flush();
         }
+    }
+
+    public function removeAuthorItems(Adherent $adherent)
+    {
+        $this->getCitizenProjectCommentRepository()->removeForAuthor($adherent);
     }
 }

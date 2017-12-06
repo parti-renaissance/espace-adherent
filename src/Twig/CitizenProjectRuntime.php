@@ -15,7 +15,7 @@ class CitizenProjectRuntime
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CitizenProjectManager $citizenProjectManager = null
+        CitizenProjectManager $citizenProjectManager
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->citizenProjectManager = $citizenProjectManager;
@@ -23,19 +23,11 @@ class CitizenProjectRuntime
 
     public function isPromotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
     {
-        if (!$this->citizenProjectManager) {
-            return false;
-        }
-
         return $this->citizenProjectManager->isPromotableAdministrator($adherent, $citizenProject);
     }
 
     public function isDemotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
     {
-        if (!$this->citizenProjectManager) {
-            return false;
-        }
-
         return $this->citizenProjectManager->isDemotableAdministrator($adherent, $citizenProject);
     }
 
@@ -57,5 +49,15 @@ class CitizenProjectRuntime
     public function canSeeCitizenProject(CitizenProject $citizenProject): bool
     {
         return $this->authorizationChecker->isGranted(CitizenProjectPermissions::SHOW, $citizenProject);
+    }
+
+    public function canCommentCitizenProject(CitizenProject $citizenProject): bool
+    {
+        return $this->authorizationChecker->isGranted(CitizenProjectPermissions::COMMENT, $citizenProject);
+    }
+
+    public function canSeeCommentCitizenProject(CitizenProject $citizenProject): bool
+    {
+        return $this->authorizationChecker->isGranted(CitizenProjectPermissions::SHOW_COMMENT, $citizenProject);
     }
 }
