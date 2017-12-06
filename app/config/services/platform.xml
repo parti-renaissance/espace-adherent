@@ -288,6 +288,8 @@
             <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
             <argument type="service" id="app.citizen_project.manager"/>
             <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 

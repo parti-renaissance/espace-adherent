@@ -11,7 +11,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
  * @ORM\Table(
  *   name="citizen_project_committee_supports"
  * )
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectCommitteeSupportRepository")
  * @Algolia\Index(autoIndex=false)
  */
 class CitizenProjectCommitteeSupport
@@ -32,7 +32,7 @@ class CitizenProjectCommitteeSupport
     private $citizenProject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee", inversedBy="citizenProjectSupports", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee", fetch="EAGER", inversedBy="citizenProjectSupports", cascade={"persist"})
      */
     private $committee;
 
@@ -97,5 +97,10 @@ class CitizenProjectCommitteeSupport
     {
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
+    }
+
+    public function getCitizenProject(): CitizenProject
+    {
+        return $this->citizenProject;
     }
 }
