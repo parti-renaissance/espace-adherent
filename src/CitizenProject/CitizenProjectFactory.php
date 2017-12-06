@@ -80,6 +80,7 @@ class CitizenProjectFactory
         );
 
         $citizenProject->setSkills($command->getSkills());
+        $citizenProject->setImage($command->getImage());
 
         return $citizenProject;
     }

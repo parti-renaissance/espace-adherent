@@ -18,9 +18,11 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
 {
@@ -29,11 +31,27 @@ class CitizenProjectManager
         CitizenProject::REFUSED,
     ];
 
-    private $registry;
+    /**
+     * @var Filesystem
+     */
+    private $storage;
 
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var Server
+     */
+    private $glide;
+
+    private $entityManager;
+
+    public function __construct(ObjectManager $entityManager, Filesystem $storage)
     {
-        $this->registry = $registry;
+        $this->entityManager = $entityManager;
+        $this->storage = $storage;
+    }
+    
+    public function setGlide(Server $glide): void
+    {
+        $this->glide = $glide;
     }
 
     public function isPromotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
@@ -360,32 +378,32 @@ class CitizenProjectManager
 
     private function getManager(): ObjectManager
     {
-        return $this->registry->getManager();
+        return $this->entityManager->getManager();
     }
 
     private function getCitizenProjectRepository(): CitizenProjectRepository
     {
-        return $this->registry->getRepository(CitizenProject::class);
+        return $this->entityManager->getRepository(CitizenProject::class);
     }
 
     private function getCitizenProjectMembershipRepository(): CitizenProjectMembershipRepository
     {
-        return $this->registry->getRepository(CitizenProjectMembership::class);
+        return $this->entityManager->getRepository(CitizenProjectMembership::class);
     }
 
     private function getAdherentRepository(): AdherentRepository
     {
-        return $this->registry->getRepository(Adherent::class);
+        return $this->entityManager->getRepository(Adherent::class);
     }
 
     private function getCitizenProjectCommitteeSupportRepository(): CitizenProjectCommitteeSupportRepository
     {
-        return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
+        return $this->entityManager->getRepository(CitizenProjectCommitteeSupport::class);
     }
 
     private function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
     {
-        return $this->registry->getRepository(CitizenProjectComment::class);
+        return $this->entityManager->getRepository(CitizenProjectComment::class);
     }
 
     public function countApprovedCitizenProjects(): int
@@ -444,5 +462,16 @@ class CitizenProjectManager
     public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
     {
         return $this->getCitizenProjectRepository()->hasCitizenProjectInStatus($adherent, $status);
+    }
+
+    public function addImage(CitizenProject $citizenProject): void
+    {
+        // Save citizen project image to cloud storage
+        if ($citizenProject->getImage() instanceof UploadedFile) {
+            $pathImage = $citizenProject->getImagePath();
+            $this->storage->put($pathImage, file_get_contents($citizenProject->getImage()->getPathname()));
+            $this->glide->deleteCache($pathImage);
+            $citizenProject->setImageUploaded(true);
+        }
     }
 }

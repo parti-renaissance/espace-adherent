@@ -226,6 +226,14 @@
         </service>
 
         <!-- Citizen projects -->
+        <service id="AppBundle\CitizenProject\CitizenProjectManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.storage" />
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
         <service id="app.citizen_project.authority" class="AppBundle\CitizenProject\CitizenProjectManagementAuthority">
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="event_dispatcher"/>
@@ -244,12 +252,14 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.citizen_project.update_handler" class="AppBundle\CitizenProject\CitizenProjectUpdateCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
@@ -362,10 +372,6 @@
             <argument type="service" id="router" />
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
-            <tag name="security.voter"/>
         </service>
 
         <!-- CitizenActions -->
