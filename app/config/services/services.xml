@@ -38,5 +38,9 @@
 		<service id="AppBundle\Report\ReportManager" />
 		<service id="AppBundle\Form\ReportCommandType"/>
 		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
+
+		<!-- Timeline -->
+		<service id="AppBundle\Command\ImportTimelineCommand" />
+		<service id="AppBundle\Timeline\TimelineFactory" />
 	</services>
 </container>
