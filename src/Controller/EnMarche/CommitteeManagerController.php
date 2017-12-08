@@ -74,7 +74,7 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_event_show', [
-                'slug' => (string) $command->getEvent()->getSlug(),
+                'slug' => $event->getSlug(),
             ]);
         }
 

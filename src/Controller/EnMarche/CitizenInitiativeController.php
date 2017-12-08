@@ -57,7 +57,7 @@ class CitizenInitiativeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function createCitizenInitiativeAction(Request $request, ?CitizenInitiativeCommand $command): Response
+    public function createCitizenInitiativeAction(Request $request): Response
     {
         $command = new CitizenInitiativeCommand($this->getUser());
         $form = $this->createForm(CitizenInitiativeType::class, $command)->handleRequest($request);
