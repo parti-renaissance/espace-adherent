@@ -35,7 +35,7 @@
                         <li class="text--small">
                             <a href="{{ path('app_create_citizen_initiative') }}">Créer une initiative</a>
                         </li>
-                        {% if enable_canary %}
+                        {% if is_granted('CREATE_CITIZEN_PROJECT') %}
                             <li class="text--small">
                                 <a href="{{ path('app_adherent_create_citizen_project') }}">Créer un projet citoyen</a>
                             </li>

@@ -176,7 +176,7 @@ class AdherentController extends Controller
      *
      * @Route("/creer-mon-projet-citoyen", name="app_adherent_create_citizen_project")
      * @Method("GET|POST")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('CREATE_CITIZEN_PROJECT')")
      */
     public function createCitizenProjectAction(Request $request): Response
     {
@@ -284,6 +284,14 @@ class AdherentController extends Controller
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
+    public function listMyCitizenProjectsAction(): Response
+    {
+        return $this->render('adherent/list_my_citizen_projects.html.twig', [
+            'citizen_projects' => $this->get('app.citizen_project.manager')
+                ->getAdherentCitizenProjects($this->getUser()),
         ]);
     }
 

@@ -58,4 +58,21 @@ class CitizenProjectRuntime
     {
         return $this->authorizationChecker->isGranted(CitizenProjectPermissions::SHOW, $citizenProject);
     }
+
+    public function getCitizenProjectColorStatus(Adherent $adherent, CitizenProject $citizenProject): string
+    {
+        if (!$adherent || !$citizenProject) {
+            return '';
+        }
+
+        if ($citizenProject->isPending()) {
+            return 'bullet--pending';
+        }
+
+        if ($adherent->isAdministratorOf($citizenProject)) {
+            return 'bullet--own';
+        }
+
+        return '';
+    }
 }

@@ -1,8 +1,9 @@
 <aside class="citizen_project__aside l__wrapper--aside">
+
     <div class="citizen_project__card">
-        <h3>Nous recherchons</h3>
+        <h3>Nous recherchons...</h3>
         <ul>
-            {% for skill in citizen_project.citizenProjectSkills  %}
+            {% for skill in citizen_project.skills  %}
                 <li>{{skill}}</li>
             {% endfor %}
         </ul>
@@ -10,19 +11,13 @@
 
     <div class="citizen_project__card">
         <h3>{{ 'citizen_project.administrators_count'|transchoice(citizen_project_administrators|length) }}</h3>
-
         <ul>
             {% for administrator in citizen_project_administrators %}
                 <li class="text--body">
-                    {{ administrator }}
-                    {% if is_administrator and app.user.equals(administrator) %}
-                        (vous)
-                    {% else %}
-                        <a href="{{ path('app_adherent_contact', {'uuid': administrator.uuid, 'from': 'citizen_project', 'id': citizen_project.uuid.toString}) }}"
-                           class="link--no-decor text--blue text--normal text--summary">
-                            Contacter
-                        </a>
-                    {% endif %}
+                    <a class="card" href=""
+                       title="{{ is_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
+                        {{ include('components/user.html.twig') }}
+                    </a>
                 </li>
             {% endfor %}
         </ul>
@@ -33,10 +28,7 @@
         <ul>
             {% for follower in citizen_project_followers|slice(0, 11) %}
                 <li class="text--body">
-                    {{ follower }}
-                    {% if user_is_adherent and app.user.equals(follower) %}
-                        (vous)
-                    {% endif %}
+                    <a class="card" href="" title="{{ follower }}">{{ include('components/user.html.twig') }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -44,21 +36,22 @@
     </div>
 
     <div class="citizen_project__card">
-        <h3 class="svg--black">Thèmes</h3>
-
+        <h3 class="svg--black">Catégorie</h3>
         <ul>
-            {% for category in citizen_project.category %}
-                <li class="text--body">
-                    {{ category }}
-                </li>
-            {% endfor %}
+            {{ citizen_project.category.name }}
         </ul>
     </div>
 
     <div class="citizen_project__card">
         <h3 class="svg--black">Localisé autour de</h3>
-        <div class="text--summary">{{ citizen_project.cityName }}</div>
-        <a href="#">Voir carte &gt;</a>
+
+        <span>{{ citizen_project.cityName }}</span>
+
+        {% if citizen_project.latitude and citizen_project.longitude %}
+            <img src="{{ path('map_url', { latitude: citizen_project.latitude, longitude: citizen_project.longitude }) }}"
+                 title="Carte d'accès au projet citoyen {{ citizen_project.name }}"
+                 alt="{{ citizen_project.cityName }}" />
+        {% endif %}
     </div>
 
     <div class="citizen_project__card">
