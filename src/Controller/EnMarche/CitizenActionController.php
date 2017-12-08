@@ -24,6 +24,8 @@ class CitizenActionController extends Controller
      */
     public function showAction(CitizenAction $action): Response
     {
-        return new Response();
+        return $this->render('citizen_action/show.html.twig', [
+            'citizen_action' => $action,
+        ]);
     }
 }
