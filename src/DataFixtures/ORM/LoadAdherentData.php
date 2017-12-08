@@ -3,10 +3,12 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Committee\CommitteeFactory;
+use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
@@ -204,7 +206,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '33 665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
-        $coordinateur->setCoordinatorManagedAreaCodesAsString('FR');
+        $coordinateur->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,

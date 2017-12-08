@@ -185,7 +185,11 @@
                                         {% endif %}
                                         {% if is_granted('ROLE_COORDINATOR') %}
                                             <li class="text--small">
-                                                <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\Committee::PENDING') }) }}">Espace coordinateur régional</a>
+                                                {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
+                                                    <a href="{{ path('app_coordinator_citizen_project') }}">Espace coordinateur régional</a>
+                                                {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+                                                    <a href="{{ path('app_coordinator_committees') }}">Espace coordinateur régional</a>
+                                                {% endif %}
                                             </li>
                                         {% endif %}
                                         {% if is_granted('ROLE_PROCURATION_MANAGER') %}

@@ -477,7 +477,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $errors = $this->client->getCrawler()->filter('.form__errors');
 
-        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $errors->count());
 
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
@@ -500,18 +500,6 @@ class AdherentControllerTest extends MysqlWebTestCase
             $this->client->getCrawler()->filter('#field-required-means > .form__errors > li')->text()
         );
         $this->assertSame(
-            'Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
-            $this->client->getCrawler()->filter('#citizen-project-address > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Veuillez renseigner un code postal.',
-            $this->client->getCrawler()->filter('#citizen-project-address #field-postal-code-city > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#citizen-project-address #field-country > .form__errors > li')->text()
-        );
-        $this->assertSame(
             'Le numéro de téléphone est obligatoire.',
             $this->client->getCrawler()->filter('#citizen-project-phone > .form__errors > li')->text()
         );
@@ -521,7 +509,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $data['citizen_project']['subtitle'] = 'test';
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 2 caractères.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
@@ -545,7 +533,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
         $data['citizen_project']['category'] = $categoryValue;
         $data['citizen_project']['problem_description'] = 'Le problème local.';
-        $data['citizen_project']['proposed_solution'] = 'Ma solution. ';
+        $data['citizen_project']['proposed_solution'] = 'Ma solution.';
         $data['citizen_project']['required_means'] = 'Mes actions.';
         $data['citizen_project']['address']['postalCode'] = '8802';
         $data['citizen_project']['address']['cityName'] = 'Kilchberg';
