@@ -3,14 +3,13 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
+use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Form\EventListener\SkillListener;
 use AppBundle\Repository\SkillRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,26 +23,14 @@ class CitizenInitiativeType extends AbstractType
         $this->skillRepository = $skillRepository;
     }
 
+    public function getParent()
+    {
+        return BaseEventCommandType::class;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('category', CitizenInitiativeCategoryType::class)
-            ->add('description', TextareaType::class, [
-                'filter_emojis' => true,
-                'purify_html' => true,
-            ])
-            ->add('address', AddressType::class)
-            ->add('beginAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
-            ->add('finishAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
             ->add('interests', MemberInterestsChoiceType::class)
             ->add('expert_assistance_needed', ChoiceType::class, [
                 'expanded' => true,
@@ -81,24 +68,18 @@ class CitizenInitiativeType extends AbstractType
                 'purify_html' => true,
                 'required' => false,
             ])
+            ->remove('capacity')
+            ->addEventSubscriber(new SkillListener($this->skillRepository))
         ;
-
-        $builder->addEventSubscriber(new SkillListener($this->skillRepository));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $years = range((int) date('Y'), (int) date('Y') + 5);
-
-        $resolver->setDefaults([
-            'data_class' => CitizenInitiativeCommand::class,
-            'years' => array_combine($years, $years),
-            'minutes' => [
-                '00' => '0',
-                '15' => '15',
-                '30' => '30',
-                '45' => '45',
-            ],
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => CitizenInitiativeCommand::class,
+                'event_category_class' => CitizenInitiativeCategory::class,
+            ])
+        ;
     }
 }

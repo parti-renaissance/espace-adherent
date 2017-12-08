@@ -80,6 +80,12 @@ citizen_project.creation.success: Votre projet citoyen est en attente de validat
 citizen_project.update.success: Les informations du projet citoyen ont été mises à jour avec succès.
 
 #
+# CitizenAction
+#
+citizen_action.creation.success: Votre action citoyenne a bien été crée.
+citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
+
+#
 # Summary
 #
 summary.handle_experience.success: L'expérience a bien été sauvegardée.

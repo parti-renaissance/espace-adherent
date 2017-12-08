@@ -244,4 +244,9 @@ class CitizenProjectCommand
             $this->committees->add($committee);
         }
     }
+
+    public function isCitizenProjectApproved(): bool
+    {
+        return $this->citizenProject && $this->citizenProject->isApproved();
+    }
 }

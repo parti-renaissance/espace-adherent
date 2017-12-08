@@ -15,7 +15,7 @@ class CitizenActionRepository extends EventRepository
         return $this
             ->createQueryBuilder('e')
             ->select('e', 'c', 'o')
-            ->leftJoin('e.citizenActionCategory', 'c')
+            ->leftJoin('e.category', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
             ->setParameter('slug', $slug)

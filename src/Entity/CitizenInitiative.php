@@ -83,6 +83,13 @@ class CitizenInitiative extends BaseEvent
      */
     private $place;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="CitizenInitiativeCategory")
+     *
+     * @Algolia\Attribute
+     */
+    protected $category;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $organizer,
