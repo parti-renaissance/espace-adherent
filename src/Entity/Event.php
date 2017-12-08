@@ -8,23 +8,24 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ *
  * @Algolia\Index
  */
 class Event extends BaseEvent
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
+     *
+     * @Algolia\Attribute
+     */
+    protected $category;
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      *
      * @Algolia\Attribute
      */
     private $committee;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
-     *
-     * @Algolia\Attribute
-     */
-    private $category;
 
     private $type;
 
