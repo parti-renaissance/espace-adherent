@@ -7,11 +7,14 @@
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
             {{ js.ckeditor('citizen_project_proposed_solution') }}
             App.runCitizenProjectCreation();
+            {{ js.citizenProjectSkills('#citizen_project_skills', '#citizen_project_skills_search', path('app_citizen_project_skills_autocomplete')) }}
         });
     </script>
 {% endblock %}

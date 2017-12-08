@@ -271,5 +271,8 @@
         <service id="AppBundle\Migration\CitizenProjectCategorySkillMigration">
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
+
+        <service public="false" autoconfigure="true" autowire="true" id="AppBundle\Form\CitizenProjectCommandType"/>
+
     </services>
 </container>
