@@ -195,6 +195,18 @@ class EventFactory
         );
     }
 
+    public function updateFromCitizenActionCommand(CitizenActionCommand $command, CitizenAction $action): void
+    {
+        $action->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt()
+        );
+    }
+
     private function createPostAddress(Address $address): PostAddress
     {
         return $this->addressFactory->createFromAddress($address);
