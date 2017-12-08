@@ -513,7 +513,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         );
         $this->assertSame(
             'Le numéro de téléphone est obligatoire.',
-            $this->client->getCrawler()->filter('#create-citizen-project-form > .form__errors > li')->text()
+            $this->client->getCrawler()->filter('#citizen-project-phone > .form__errors > li')->text()
         );
 
         $data = [];
@@ -550,6 +550,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $data['citizen_project']['address']['postalCode'] = '8802';
         $data['citizen_project']['address']['cityName'] = 'Kilchberg';
         $data['citizen_project']['address']['country'] = 'CH';
+        $data['citizen_project']['phone']['country'] = 'CH';
+        $data['citizen_project']['phone']['number'] = '31 359 21 11';
         $data['citizen_project']['assistance_needed'] = 1;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
