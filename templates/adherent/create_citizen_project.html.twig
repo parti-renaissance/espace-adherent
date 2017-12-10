@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Je crée mon projet citoyen !' %}
+{% block page_title 'Lancez votre projet citoyen !' %}
+{% block banner '' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
@@ -21,68 +22,64 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="l__wrapper--medium b__nudge--bottom-huge">
-            <a href="{{ path('app_search_citizen_projects') }}" class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des projets citoyens</a>
-
-            <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
+    <main class="citizen-projects__create">
+        <section class="b__nudge--bottom-huge l__wrapper--600">
+            <header class="space--60-0">
                 <h1 class="b__nudge--bottom-small text--large">
                     Lancez votre projet citoyen !
                 </h1>
                 <p class="text--body">
-                    Ce projet visera à améliorer concrètement votre quotidien - en réunissant la force et les comptétences de toutes et tous.
+                    Ce projet visera à améliorer concrètement votre quotidien — en réunissant la force et les compétences de toutes et tous.
                 </p>
+                <div class="text--summary">
+                    Tout projet citoyen doit adhérer à <a href="{{ path('app_citizen_project_help') }}">notre charte</a>.
+                    Des questions ? Consultez la <a href="{{ url_help_en_marche }}/category/702-projets-citoyens">FAQ</a>.
+                </div>
             </header>
             <div>
-                <div class="citizen-project__help">
-                    <p class="text--body">
-                        Tout projet citoyen doit adhérer à <a href="{{ path('app_citizen_project_help') }}">notre charte</a>.
-                    </p>
-                    <p class="text--body">
-                        Des questions ? Dirigez vous vers <a href="{{ url_help_en_marche }}/category/702-projets-citoyens">la FAQ</a>.
-                    </p>
-                </div>
-
                 <div class="citizen-project__form">
                     {{ form_start(form, {attr: {'id': 'create-citizen-project-form', 'class': 'form citizen-project-for'}}) }}
                         {{ include('citizen_project/_form.html.twig') }}
 
-                        <div class="form__row" id="field-personal-phone">
-                            <label class="text--bold form form__label">Vérifier mes informations</label>
-                            <p>Mon e-email : {{ app.user.emailAddress }}</p>
-                            <a href="{{ path('app_adherent_profile') }}">Modifier</a>
+                        <div class="form__new" id="field-personal-phone">
+                            <label class="label__header--large">Vérifier mes informations</label>
+                            <div>Mon e-mail : {{ app.user.emailAddress }}</div>
+                            <a href="{{ path('app_adherent_profile') }}" class="link--blue">Modifier</a>
                         </div>
 
                         {% if form.cgu is defined %}
-                            <div class="form__row">
-                                {{ form_widget(form.cgu) }}
-                                {% block _form_cgu_label %}
-                                    <label class="form form__label" for="citizen_project_cgu"><span>Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et email) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.<sup>*</sup></span></label>
-                                {% endblock %}
+                            <div class="form__new form__new__checkbox">
+                                <div>
+                                    {{ form_widget(form.cgu) }}
+                                    {% block _form_cgu_label %}
+                                        <label for="citizen_project_cgu">Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et e-mail) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.</label>
+                                    {% endblock %}
+                                </div>
                                 {{ form_errors(form.cgu) }}
                             </div>
                         {% endif %}
 
                         {% if form.data_processing is defined %}
-                            <div class="form__row">
-                                {{ form_widget(form.data_processing) }}
-                                {% block _form_data_processing_label %}
-                                    <label class="form form__label" for="citizen_project_data_processing"><span>J’adhère aux <a href="#" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="#" target="_blank">Charte des Projets Citoyens</a><sup>*</sup></span></label>
-                                {% endblock %}
+                            <div class="form__new form__new__checkbox">
+                                <div>
+                                    {{ form_widget(form.data_processing) }}
+                                    {% block _form_data_processing_label %}
+                                        <label for="citizen_project_data_processing">J’adhère aux <a href="#" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="#" target="_blank">Charte des Projets Citoyens</a></label>
+                                    {% endblock %}
+                                </div>
                                 {{ form_errors(form.data_processing) }}
                             </div>
                         {% endif %}
 
                         <div class="text--center">
-                            <button type="submit" class="btn btn--blue btn--medium" id="create-my-citizen-project">
+                            <button type="submit" class="newbtn" id="create-my-citizen-project">
                                 Proposer mon projet
+                                {{ include('components/arrow--right.html.twig') }}
                             </button>
                         </div>
                         {{ form_widget(form._token) }}
                     {{ form_end(form) }}
-                    <p>
+                    <p class="text--gray text--summary text--small b__nudge--top">
                         Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par La République En Marche pour le référencement de Projets Citoyens et la mise en relation entre Adhérents et Utilisateurs du site <a href="https://en-marche.fr">https://en-marche.fr/</a>.
                         Elles sont conservées pendant toute la durée de référencement du Projet Citoyen, et au-delà de cette durée dès lors qu’une disposition légale ou règlementaire le prévoit. Ces données sont destinées aux services digitaux de La République En Marche, aux équipes locales de bénévoles de l’association et aux adhérents de La République En Marche désireux de participer à un Projet Citoyen.
                         Conformément à la loi Informatique et Libertés, vous pouvez exercer vos droits d’opposition, d'accès, de rectification et de suppression des données vous concernant et d’opposition au traitement de données en adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse suivante : projetscitoyens@en-marche.fr.
