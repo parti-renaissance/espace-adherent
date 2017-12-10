@@ -1,0 +1,46 @@
+.citizen-projects {
+    &__create {
+        background: $gray--white;
+
+        .form__new {
+            margin-bottom: 40px;
+
+            input,
+            textarea,
+            select {
+                padding: 17px 20px;
+                font-size: 20px;
+                line-height: 1.25;
+            }
+
+            select {
+                -webkit-appearance: none;
+                background-color: white;
+                background: no-repeat url('/images/icons/chevron-down.svg') right 15px center;
+                background-size: 34px;
+            }
+
+            input[type="file"] {
+                border: 1px dashed #ddd;
+                background-color: white;
+                position: relative;
+                padding: 50px 20px;
+                font-size: 16px;
+            }
+        }
+
+        .newbtn svg {
+            margin-left: 6px;
+            height: 32px;
+            width: 32px;
+        }
+
+        small {
+            font-family: $font-roboto;
+            @include text--small;
+            margin-top: 8px;
+            color: $dark;
+            display: block;
+        }
+    }
+}
