@@ -549,6 +549,7 @@ input[type=date]::-webkit-inner-spin-button {
     font-family: $font-roboto;
     padding: 0;
     text-align: left;
+    position: relative;
 
     label,
     legend {
@@ -559,10 +560,33 @@ input[type=date]::-webkit-inner-spin-button {
             display: inline-block;
             font-weight: bold;
         }
+
+        &.label__header--large {
+            font-family: $font-gillsans;
+            @include text--medium-small;
+            margin-bottom: 8px;
+            font-weight: bold;
+            display: inline-block;
+
+            span {
+                color: $gray;
+                font-style: italic;
+                font-weight: normal;
+                font-family: $font-roboto;
+                @include text--default;
+            }
+        }
+    }
+
+    .character-count {
+        margin-top: -40px;
+        position: absolute;
+        right: 20px;
     }
 
     input,
-    textarea {
+    textarea,
+    select {
         @include text--default;
         font-family: $font-roboto;
         border-radius: 3px;
@@ -621,7 +645,7 @@ input[type=date]::-webkit-inner-spin-button {
         }
 
         input[type="checkbox"] {
-            width: 60px;
+            width: 20px;
         }
 
         label {
