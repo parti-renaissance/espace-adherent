@@ -134,7 +134,7 @@ class CitizenProjectCommandType extends AbstractType
                     'required' => false,
                     'filter_emojis' => true,
                     'attr' => [
-                        'placeholder' => 'Vous avez déjà le soutient d\'un comité local ? Indiquez son nom : (Optionnel)',
+                        'placeholder' => 'Ajoutez ce comité local',
                     ],
                 ]);
 
