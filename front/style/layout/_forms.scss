@@ -562,7 +562,8 @@ input[type=date]::-webkit-inner-spin-button {
     }
 
     input,
-    textarea {
+    textarea,
+    select {
         @include text--default;
         font-family: $font-roboto;
         border-radius: 3px;

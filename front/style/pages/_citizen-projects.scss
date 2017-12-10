@@ -1,0 +1,29 @@
+.citizen-projects {
+    &__create {
+        background: $gray--white;
+
+        h3 {
+            font-family: $font-gillsans;
+            @include text--medium-small;
+            margin-bottom: 8px;
+        }
+
+        .form__new {
+            margin-bottom: 40px;
+
+            input,
+            textarea {
+                padding: 17px 20px;
+                font-size: 20px;
+            }
+        }
+
+        small {
+            font-family: $font-roboto;
+            @include text--small;
+            margin-top: 8px;
+            color: $dark;
+            display: block;
+        }
+    }
+}

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Je crée mon projet citoyen !' %}
+{% block page_title 'Lancez votre projet citoyen !' %}
+{% block banner '' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
@@ -12,23 +13,19 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="l__wrapper--medium b__nudge--bottom-huge">
-            <a href="{{ path('app_search_citizen_projects') }}" class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des projets citoyens</a>
-
-            <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
+    <main class="citizen-projects__create">
+        <section class="b__nudge--bottom-huge l__wrapper--600">
+            <header class="space--60-0">
                 <h1 class="b__nudge--bottom-small text--large">
-                    Je crée mon projet citoyen !
+                    Lancez votre projet citoyen !
                 </h1>
                 <p class="text--body">
-                    En créant votre projet citoyen, vous pourrez réunir des citoyens pour débattre et partager autour
-                    de sujets qui vous intéressent !
+                    Ce projet visera à améliorer concrètement votre quotidien — en réunissant la force et les compétences de toutes et tous.
                 </p>
-                <p class="text--body">
-                    Consultez la <a href="{{ path('app_citizen_project_help') }}">FAQ</a> pour en savoir plus.
-                </p>
+                <div class="text--summary">
+                    Tout projet citoyen doit adhérer à <a href="#">notre charte</a>.
+                    Des questions ? Consultez la <a href="{{ path('app_citizen_project_help') }}">FAQ</a>.
+                </div>
             </header>
 
             <div class="citizen-project__form">
