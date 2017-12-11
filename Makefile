@@ -2,9 +2,11 @@ FIG=docker-compose
 RUN=$(FIG) run --rm app
 EXEC=$(FIG) exec app
 CONSOLE=bin/console
+PHPCSFIXER?=docker run --rm -it -v "$$(pwd):/srv" -u "$$(id -u):$$(id -g)" blazarecki/php-cs-fixer php -d memory_limit=1024m /usr/local/bin/php-cs-fixer
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt lj build up perm deps cc
+.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
+.PHONY: lj build up perm deps cc phpcs phpcsfix
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -32,6 +34,7 @@ clear: perm
 	-$(EXEC) $(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
 	rm -rf web/built
+	rm var/.php_cs.cache
 
 clean:          ## Clear and remove dependencies
 clean: clear
@@ -121,8 +124,8 @@ tj:             ## Run the Javascript tests
 tj: node_modules
 	$(EXEC) yarn test
 
-lint:           ## Run lint on Twig, YAML and Javascript files
-lint: ls ly lt lj
+lint:           ## Run lint on Twig, YAML, PHP and Javascript files
+lint: ls ly lt lj phpcs
 
 ls:             ## Lint Symfony (Twig and YAML) files
 ls: ly lt
@@ -140,6 +143,14 @@ lj: node_modules
 ljfix:          ## Lint and try to fix the Javascript to follow the convention
 ljfix: node_modules
 	$(RUN) yarn lint -- --fix
+
+phpcs:          ## Lint PHP code
+phpcs:
+	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v
+
+phpcsfix:       ## Lint and fix PHP code to follow the convention
+phpcsfix:
+	$(PHPCSFIXER) fix
 
 
 ##

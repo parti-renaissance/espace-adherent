@@ -1,0 +1,18 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__.'/src')
+    ->in(__DIR__.'/tests')
+    ->in(__DIR__.'/app')
+    ->exclude(__DIR__.'app/data')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        'no_unneeded_final_method' => false,
+        'concat_space' => ["spacing" => "none"],
+    ])
+    ->setFinder($finder)
+    ->setCacheFile(__DIR__.'/var/.php_cs.cache')
+;
