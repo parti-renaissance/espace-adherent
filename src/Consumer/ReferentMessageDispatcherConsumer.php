@@ -82,27 +82,15 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
 
     public function sendMessage(ReferentManagedUsersMessage $savedMessage, ReferentMessage $message, array $recipients, int $count)
     {
-        $connection = $this->getManager()->getConnection();
-        $connection->beginTransaction();
+        $delivered = $this->getMailer()->sendMessage(Message::createFromModel($message, $recipients));
 
-        try {
-            $delivered = $this->getMailer()->sendMessage(Message::createFromModel($message, $recipients));
+        if ($delivered) {
+            $this->writeln(
+                $savedMessage->getUuid()->toString(),
+                'Message from '.$message->getFrom()->getEmailAddress().' dispatched ('.$count.')'
+            );
 
-            if ($delivered) {
-                $this->writeln(
-                    $savedMessage->getUuid()->toString(),
-                    'Message from '.$message->getFrom()->getEmailAddress().' dispatched ('.$count.')'
-                );
-
-                $this->getReferentMessageRepository()->incrementOffset($savedMessage, count($recipients));
-            }
-
-            $connection->commit();
-        } catch (\Throwable $error) {
-            $connection->rollback();
-            $this->getManager()->close();
-
-            throw $error;
+            $this->getReferentMessageRepository()->incrementOffset($savedMessage, count($recipients));
         }
     }
 
