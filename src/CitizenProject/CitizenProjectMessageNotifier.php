@@ -2,6 +2,7 @@
 
 namespace AppBundle\CitizenProject;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
@@ -9,8 +10,10 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
+use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
 {
@@ -20,21 +23,28 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private $creationNotificationProducer;
     private $manager;
     private $mailer;
+    private $committeeManager;
+    private $router;
 
     public function __construct(
         ProducerInterface $creationNotificationProducer,
         CitizenProjectManager $manager,
-        MailerService $mailer
+        MailerService $mailer,
+        CommitteeManager $committeeManager,
+        RouterInterface $router
     ) {
         $this->creationNotificationProducer = $creationNotificationProducer;
         $this->manager = $manager;
         $this->mailer = $mailer;
+        $this->committeeManager = $committeeManager;
+        $this->router = $router;
     }
 
     public function onCitizenProjectApprove(CitizenProjectWasApprovedEvent $event): void
     {
         $this->scheduleCreationNotification($event->getCitizenProject());
-        $this->sendCreatorApprove($this->manager->getCitizenProjectCreator($event->getCitizenProject()), $event->getCitizenProject());
+        $this->sendCreatorApprove($event->getCitizenProject());
+        $this->sendAskCommitteeSupport($event->getCitizenProject());
     }
 
     public function onCitizenProjectCreation(CitizenProjectWasCreatedEvent $event): void
@@ -47,9 +57,9 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->mailer->sendMessage(CitizenProjectCreationNotificationMessage::create($adherent, $citizenProject, $creator));
     }
 
-    private function sendCreatorApprove(Adherent $creator, CitizenProject $citizenProject): void
+    private function sendCreatorApprove(CitizenProject $citizenProject): void
     {
-        $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($creator, $citizenProject));
+        $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($citizenProject));
     }
 
     private function sendCreatorConfirmationCreation(Adherent $creator, CitizenProject $citizenProject): void
@@ -63,6 +73,21 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
             'uuid' => $citizenProject->getUuid()->toString(),
             'offset' => 0,
         ]));
+    }
+
+    private function sendAskCommitteeSupport(CitizenProject $citizenProject): void
+    {
+        foreach ($citizenProject->getPendingCommitteeSupports() as $committeeSupport) {
+            $this->mailer->sendMessage(
+                CitizenProjectRequestCommitteeSupportMessage::create(
+                    $citizenProject,
+                    $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee()),
+                    $this->router->generate('app_citizen_project_committee_support', [
+                        'slug' => $citizenProject->getSlug(),
+                    ])
+                )
+            );
+        }
     }
 
     public static function getSubscribedEvents()

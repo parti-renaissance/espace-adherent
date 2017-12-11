@@ -478,4 +478,9 @@ class CommitteeManager
     {
         return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
     }
+
+    public function getCommitteeSupervisor(Committee $committee): ?Adherent
+    {
+        return $this->getMembershipRepository()->findSupervisor($committee->getUuid()->toString());
+    }
 }
