@@ -22,6 +22,8 @@ class ReferentMessage
 
     /**
      * @var ManagedUsersFilter
+     *
+     * @Assert\Valid
      */
     private $filter;
 
