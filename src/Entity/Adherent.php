@@ -198,13 +198,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $committeeFeedItems;
 
     /**
-     * @var CitizenProjectFeedItem[]|Collection|iterable
-     *
-     * @ORM\OneToMany(targetEntity="CitizenProjectFeedItem", mappedBy="author", cascade={"remove"})
-     */
-    private $citizenProjectFeedItems;
-
-    /**
      * @var ActivitySubscription[]|Collection
      *
      * @ORM\OneToMany(targetEntity="ActivitySubscription", mappedBy="followingAdherent", cascade={"remove"})
@@ -614,7 +607,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         $citizenProject->incrementMembersCount();
 
-        return CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
+        $memberShip = CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
+
+        $this->citizenProjectMemberships->add($memberShip);
+
+        return $memberShip;
     }
 
     public function getPostAddress(): PostAddress
@@ -937,11 +934,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getCommitteeFeedItems(): iterable
     {
         return $this->committeeFeedItems;
-    }
-
-    public function getCitizenProjectFeedItems(): iterable
-    {
-        return $this->citizenProjectFeedItems;
     }
 
     public function getTags(): Collection

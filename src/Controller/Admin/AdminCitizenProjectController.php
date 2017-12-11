@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Exception\BaseGroupException;
@@ -62,10 +63,8 @@ class AdminCitizenProjectController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
-    public function membersAction(CitizenProject $citizenProject): Response
+    public function membersAction(CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
-        $manager = $this->get('app.citizen_project.manager');
-
         return $this->render('admin/citizen_project/members.html.twig', [
             'citizen_project' => $citizenProject,
             'memberships' => $memberships = $manager->getCitizenProjectMemberships($citizenProject),
@@ -78,14 +77,14 @@ class AdminCitizenProjectController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
-    public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege): Response
+    public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege, CitizenProjectManager $manager): Response
     {
         if (!$this->isCsrfTokenValid(sprintf('citizen_project.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
         try {
-            $this->get('app.citizen_project.manager')->changePrivilege($adherent, $citizenProject, $privilege);
+            $manager->changePrivilege($adherent, $citizenProject, $privilege);
         } catch (CitizenProjectMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }

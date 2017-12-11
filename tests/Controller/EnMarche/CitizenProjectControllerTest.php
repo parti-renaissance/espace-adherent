@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
@@ -12,10 +13,88 @@ use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
+ * @group citizenProject
  */
 class CitizenProjectControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
+
+    public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertFalse($this->seeCommentSection());
+    }
+
+    public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
+    }
+
+    public function testAdherentCannotSeeUnapprovedCitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    public function testAdministratorCanSeeUnapprovedCitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertFalse($this->seeCommentSection());
+    }
+
+    public function testAdministratorCanSeeACitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeCommentSection());
+        $this->assertSeeComments([
+            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
+            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
+        ]);
+    }
+
+    public function testFollowerCanSeeACitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeCommentSection());
+        $this->assertSeeComments([
+            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
+            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
+        ]);
+    }
+
+     /**
+     * @depends testAdministratorCanSeeACitizenProject
+     * @depends testFollowerCanSeeACitizenProject
+     */
+    public function testFollowerCanAddCommentToCitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Publier')->form([
+                'citizen_project_comment_command[content]' => 'Commentaire Test',
+            ])
+        );
+
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeCommentSection());
+        $this->assertSeeComments([
+            ['Mirabeau', 'Commentaire Test'],
+            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
+            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
+        ]);
+    }
 
     public function testAjaxSearchCommittee()
     {
@@ -40,34 +119,6 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
-    }
-
-    public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
-    public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
-        $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
-    }
-
-    public function testUnapprovedCitizenProjectIsViewableByAdministrator(): void
-    {
-        $url = '/projets-citoyens/le-projet-citoyen-a-marseille';
-
-        // Adherent
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $this->client->request(Request::METHOD_GET, $url);
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
-        $this->logout($this->client);
-
-        // Administrator
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $this->client->request(Request::METHOD_GET, $url);
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testCommitteeSupportCitizenProject()
@@ -149,6 +200,26 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         ), trim($flash->text()));
     }
 
+    private function assertSeeComments(array $comments)
+    {
+        foreach ($comments as $position => $comment) {
+            list($author, $text) = $comment;
+            $this->assertSeeComment($position, $author, $text);
+        }
+    }
+
+    private function assertSeeComment(int $position, string $author, string $text)
+    {
+        $crawler = $this->client->getCrawler();
+        $this->assertContains($author, $crawler->filter('.citizen-project-comment')->eq($position)->text());
+        $this->assertContains($text, $crawler->filter('.citizen-project-comment p')->eq($position)->text());
+    }
+
+    private function seeCommentSection(): bool
+    {
+        return 1 === count($this->client->getCrawler()->filter('.citizen-project-comments'));
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -156,6 +227,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadCitizenProjectData::class,
+            LoadCitizenProjectCommentData::class,
         ]);
     }
 

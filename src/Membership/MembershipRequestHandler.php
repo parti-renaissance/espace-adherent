@@ -5,6 +5,7 @@ namespace AppBundle\Membership;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
 use AppBundle\CitizenInitiative\CitizenInitiativeManager;
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Entity\Adherent;
@@ -36,6 +37,7 @@ class MembershipRequestHandler
     private $eventManager;
     private $committeeFeedManager;
     private $activitySubscriptionManager;
+    private $citizenProjectManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -50,7 +52,8 @@ class MembershipRequestHandler
         CitizenActionManager $citizenActionManager,
         EventManager $eventManager,
         CommitteeFeedManager $committeeFeedManager,
-        ActivitySubscriptionManager $activitySubscriptionManager
+        ActivitySubscriptionManager $activitySubscriptionManager,
+        CitizenProjectManager $citizenProjectManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -65,6 +68,7 @@ class MembershipRequestHandler
         $this->committeeFeedManager = $committeeFeedManager;
         $this->eventManager = $eventManager;
         $this->activitySubscriptionManager = $activitySubscriptionManager;
+        $this->citizenProjectManager = $citizenProjectManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -119,6 +123,7 @@ class MembershipRequestHandler
         $this->registrationManager->anonymizeAdherentRegistrations($adherent);
         $this->committeeFeedManager->removeAuthorItems($adherent);
         $this->activitySubscriptionManager->removeAdherentActivities($adherent);
+        $this->citizenProjectManager->removeAuthorItems($adherent);
 
         if ($token) {
             $this->manager->remove($token);
