@@ -41,7 +41,7 @@
                         Tout projet citoyen doit adhérer à <a href="{{ path('app_citizen_project_help') }}">notre charte</a>.
                     </p>
                     <p class="text--body">
-                        Des questions ? Dirigez vous vers <a href="{{ path('app_citizen_project_help') }}">la FAQ</a>.
+                        Des questions ? Dirigez vous vers <a href="{{ url_help_en_marche }}/category/702-projets-citoyens">la FAQ</a>.
                     </p>
                 </div>
 
@@ -57,6 +57,26 @@
                             <p>Nous vous contacterons sur ce numéro - il sera mis à disposition de nos équipe NON QG</p>
                         </div>
 
+                        {% if form.cgu is defined %}
+                            <div class="form__row">
+                                {{ form_widget(form.cgu) }}
+                                {% block _form_cgu_label %}
+                                    <label class="form form__label" for="citizen_project_cgu"><span>Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et email) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.<sup>*</sup></span></label>
+                                {% endblock %}
+                                {{ form_errors(form.cgu) }}
+                            </div>
+                        {% endif %}
+
+                        {% if form.data_processing is defined %}
+                            <div class="form__row">
+                                {{ form_widget(form.data_processing) }}
+                                {% block _form_data_processing_label %}
+                                    <label class="form form__label" for="citizen_project_data_processing"><span>J’adhère aux <a href="#" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="#" target="_blank">Charte des Projets Citoyens</a><sup>*</sup></span></label>
+                                {% endblock %}
+                                {{ form_errors(form.data_processing) }}
+                            </div>
+                        {% endif %}
+
                         <div class="text--center">
                             <button type="submit" class="btn btn--blue btn--medium" id="create-my-citizen-project">
                                 Proposer mon projet
@@ -64,6 +84,12 @@
                         </div>
                         {{ form_widget(form._token) }}
                     </form>
+
+                    <p>
+                        Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par La République En Marche pour le référencement de Projets Citoyens et la mise en relation entre Adhérents et Utilisateurs du site <a href="https://en-marche.fr">https://en-marche.fr/</a>.
+                        Elles sont conservées pendant toute la durée de référencement du Projet Citoyen, et au-delà de cette durée dès lors qu’une disposition légale ou règlementaire le prévoit. Ces données sont destinées aux services digitaux de La République En Marche, aux équipes locales de bénévoles de l’association et aux adhérents de La République En Marche désireux de participer à un Projet Citoyen.
+                        Conformément à la loi Informatique et Libertés, vous pouvez exercer vos droits d’opposition, d'accès, de rectification et de suppression des données vous concernant et d’opposition au traitement de données en adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse suivante : projetscitoyens@en-marche.fr.
+                    </p>
                 </div>
             </div>
         </section>

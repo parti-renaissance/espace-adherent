@@ -6,7 +6,7 @@
     {{ form_widget(form.name, {
         'attr': {
             'class': 'form--full',
-            'placeholder': 'Le titre court et descriptif de mon projet',
+            'placeholder': 'Le titre court et accrocheur de mon projet',
         }
     }) }}
     <p>Ex. "Un stage pour tous"</p>
@@ -63,11 +63,11 @@
 
 <div class="form__row" id="field-required-means">
     {{ form_errors(form.required_means) }}
-    {{ form_label(form.required_means, 'Quelle est votre feuille de route ? Par quoi allez-vous commencer ? Comment comptez-vous vous y prendre ?', {'label_attr': { class: 'text--bold' }}) }}
+    {{ form_label(form.required_means, 'Quelle est votre feuille de route ?', {'label_attr': { class: 'text--bold' }}) }}
     {{ form_widget(form.required_means, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Indiquez votre calendrier prévisionnel : date de la première action envisagée, principales étapes de votre projet.',
+            'placeholder': 'Indiquez votre calendrier prévisionnel : date de la première action envisagée, principales étapes de votre projet',
         }
     }) }}
 </div>
@@ -130,7 +130,7 @@
     {{ form_errors(form.assistance_needed) }}
     {{ form_widget(form.assistance_needed) }}
     <label for="{{ form.assistance_needed.vars.id }}">
-        Je solicite un accompagnement personalisé de la part d'En Marche
+        Je solicite un accompagnement personalisé de l'équipe des projets citoyens
     </label>
 </div>
 <div class="form__row">
