@@ -6,6 +6,7 @@ use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseGroup;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Search\SearchParametersFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class CitizenProjectRepository extends BaseGroupRepository
@@ -80,5 +81,38 @@ class CitizenProjectRepository extends BaseGroupRepository
         $filter->apply($qb, 'cp');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return CitizenProject[]
+     */
+    public function searchAll(SearchParametersFilter $search): iterable
+    {
+        if (SearchParametersFilter::TYPE_CITIZEN_PROJECTS !== $search->getType()) {
+            throw new \LogicException(sprintf('Only %s is supported', SearchParametersFilter::TYPE_CITIZEN_PROJECTS));
+        }
+
+        if ($coordinates = $search->getCityCoordinates()) {
+            $qb = $this
+                ->createNearbyQueryBuilder($coordinates)
+                ->andWhere($this->getNearbyExpression().' < :distance_max')
+                ->setParameter('distance_max', $search->getRadius());
+        } else {
+            $qb = $this->createQueryBuilder('n');
+        }
+
+        if (!empty($query = $search->getQuery())) {
+            $qb->andWhere('n.name like :query');
+            $qb->setParameter('query', "%$query%");
+        }
+
+        return $qb
+            ->andWhere('n.status = :status')
+            ->setParameter('status', CitizenProject::APPROVED)
+            ->setFirstResult($search->getOffset())
+            ->setMaxResults($search->getMaxResults())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

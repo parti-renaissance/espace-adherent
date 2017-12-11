@@ -30,6 +30,7 @@ class SearchControllerTest extends MysqlWebTestCase
         yield 'No criteria' => [[]];
         yield 'Search committees' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_COMMITTEES]];
         yield 'Search events' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_EVENTS]];
+        yield 'Search citizen projects' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_CITIZEN_PROJECTS]];
     }
 
     protected function setUp()
