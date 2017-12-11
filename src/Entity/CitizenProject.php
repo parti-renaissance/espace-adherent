@@ -90,11 +90,14 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     private $assistanceContent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @var CitizenProjectCommitteeSupport[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", fetch="EAGER", mappedBy="citizenProject", orphanRemoval=true,
+     *      cascade={"persist"})
      *
      * @Algolia\Attribute
      */
-    private $committee;
+    private $committeeSupports;
 
     /**
      * @var Skill[]|Collection
@@ -130,7 +133,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $name,
         string $subtitle,
         CitizenProjectCategory $category,
-        ?Committee $committee,
+        array $committees = [],
         bool $assistanceNeeded = false,
         string $assistanceContent = null,
         string $problemDescription = '',
@@ -154,7 +157,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
 
         $this->uuid = $uuid;
         $this->createdBy = $creator;
-        $this->committee = $committee;
         $this->setName($name);
         $this->slug = $slug;
         $this->category = $category;
@@ -172,6 +174,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
         $this->skills = new ArrayCollection();
+        $this->committeeSupports = new ArrayCollection();
+        $this->setCommitteesOnSupport($committees);
     }
 
     public function getPostAddress(): NullablePostAddress
@@ -204,9 +208,73 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         return $this->category;
     }
 
-    public function getCommittee(): ?Committee
+    public function setPhone(PhoneNumber $phone = null): void
     {
-        return $this->committee;
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @return CitizenProjectCommitteeSupport[]|Collection
+     */
+    public function getCommitteeSupports(): Collection
+    {
+        return $this->committeeSupports;
+    }
+
+    public function getApprovedCommitteeSupports(): Collection
+    {
+        return $this->committeeSupports->filter(function (CitizenProjectCommitteeSupport $c) {
+            return $c->isApproved();
+        });
+    }
+
+    /**
+     * @return CitizenProjectCommitteeSupport[]|Collection
+     */
+    public function getPendingCommitteeSupports(): Collection
+    {
+        return $this->committeeSupports->filter(function (CitizenProjectCommitteeSupport $c) {
+            return $c->isPending();
+        });
+    }
+
+    public function setCommitteeSupports(Collection $committeeSupports): void
+    {
+        $this->committeeSupports = $committeeSupports;
+    }
+
+    public function setCommitteesOnSupport(iterable $committees): void
+    {
+        foreach ($committees as $committee) {
+            $this->addCommitteeOnSupport($committee);
+        }
+    }
+
+    public function addCommitteeOnSupport(Committee $committee): void
+    {
+        foreach ($this->committeeSupports as $committeeSupport) {
+            if ($committee->getId() === $committeeSupport->getCommittee()->getId()) {
+                return;
+            }
+        }
+
+        $this->committeeSupports->add(new CitizenProjectCommitteeSupport($this, $committee));
+    }
+
+    public function removeCommitteeSupport(Committee $committee): void
+    {
+        foreach ($this->committeeSupports as $committeeSupport) {
+            if ($committee->getId() === $committeeSupport->getCommittee()->getId()) {
+                $this->committeeSupports->removeElement($committeeSupport);
+
+                return;
+            }
+        }
     }
 
     public function setSubtitle(string $subtitle)
@@ -286,7 +354,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
-        Committee $committee = null,
+        array $committees = [],
         NullablePostAddress $address = null,
         string $createdAt = 'now'
     ): self {
@@ -296,7 +364,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
             $name,
             $subtitle,
             $category,
-            $committee,
+            $committees,
             $assistanceNeeded,
             $assistanceContent,
             $problemDescription,
@@ -341,7 +409,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $requiredMeans,
         NullablePostAddress $address,
         PhoneNumber $phone,
-        iterable $skills
+        iterable $skills,
+        iterable $committees
     ): void {
         $this->setName($name);
         $this->setSubtitle($subtitle);
@@ -359,6 +428,33 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
 
         if (!$this->phone->equals($phone)) {
             $this->phone = $phone;
+        }
+
+        if ($this->isPending()) {
+            $committeeIdsSubmit = [];
+            $committeeIdsAlreadySupport = [];
+            foreach ($committees as $committee) {
+                $committeeIdsSubmit[] = $committee->getId();
+            }
+
+            foreach ($this->getCommitteeSupports() as $committeeSupport) {
+                $committeeIdsAlreadySupport[] = $committeeSupport->getCommittee()->getId();
+            }
+
+            $committeeIdsToBeDissociate = array_diff($committeeIdsAlreadySupport, $committeeIdsSubmit);
+            $committeeIdsToBeAssociate = array_diff($committeeIdsSubmit, $committeeIdsAlreadySupport);
+
+            foreach ($this->getCommitteeSupports() as $committeeSupport) {
+                if (in_array($committeeSupport->getCommittee()->getId(), $committeeIdsToBeDissociate)) {
+                    $this->removeCommitteeSupport($committeeSupport->getCommittee());
+                }
+            }
+
+            foreach ($committees as $committee) {
+                if (in_array($committee->getId(), $committeeIdsToBeAssociate)) {
+                    $this->addCommitteeOnSupport($committee);
+                }
+            }
         }
     }
 

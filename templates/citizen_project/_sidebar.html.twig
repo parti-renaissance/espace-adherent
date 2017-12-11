@@ -61,15 +61,24 @@
         <a href="#">Voir carte &gt;</a>
     </div>
 
-    <div class="citizen_project__card">
-        <h3 class="svg--black">{{ 'citizen_project.committees'|transchoice(citizen_project.committee|length) }}</h3>
+    <div class="citizen_project__card" id="support-committee">
+        <h3 class="svg--black">{{ 'citizen_project.committees'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</h3>
         <ul>
-            {% for committee in citizen_project.committee %}
+            {% for committeeSupport in citizen_project.approvedCommitteeSupports %}
                 <li class="text--body">
-                    {{ committee }}
+                    {{ committeeSupport.committee }}
                 </li>
             {% endfor %}
         </ul>
-        <a href="#">Notre comité souhaite aussi soutenir ce projet</a>
+        {% if is_granted('ROLE_SUPERVISOR') %}
+            <form method="post" id="committee-confirm-support-form" class="form citizen-project-form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
+                {{ form_widget(form_committee_support) }}
+                <div>
+                    <button type="submit" id="committee-confirm-support" class="btn btn--blue">
+                        Notre comité souhaite aussi soutenir ce projet
+                    </button>
+                </div>
+            </form>
+        {% endif %}
     </div>
 </aside>

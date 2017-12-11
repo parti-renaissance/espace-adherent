@@ -38,7 +38,7 @@ class CitizenProjectCommandTest extends TestCase
             $name,
             $subtitle,
             $citizenProjectCategory,
-            $committee,
+            [$committee],
             $assistanceNeeded,
             $assistanceContent,
             $problemDescription,
@@ -57,7 +57,7 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertSame($citizenProject, $citizenProjectCommand->getCitizenProject());
         $this->assertSame($name, $citizenProjectCommand->name);
         $this->assertSame($citizenProjectCategory, $citizenProjectCommand->getCategory());
-        $this->assertSame($committee, $citizenProjectCommand->getCommittee());
+        $this->assertCount(1, $citizenProjectCommand->getCommitteeSupports()->toArray());
         $this->assertSame($assistanceNeeded, $citizenProjectCommand->isAssistanceNeeded());
         $this->assertSame($assistanceContent, $citizenProjectCommand->getAssistanceContent());
         $this->assertSame($problemDescription, $citizenProjectCommand->getProblemDescription());
