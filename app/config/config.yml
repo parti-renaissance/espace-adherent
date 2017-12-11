@@ -71,6 +71,7 @@ twig:
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
+        url_help_en_marche:     "https://aide.en-marche.fr"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
