@@ -258,7 +258,8 @@ security:
 
             switch_user:
                 provider: auth
-            logout: ~
+            logout:
+                success_handler: AppBundle\Security\LogoutSuccessHandler
             oauth:
                 resource_owners:
                     auth: "/login/check-auth"

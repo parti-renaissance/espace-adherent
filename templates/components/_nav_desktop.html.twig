@@ -116,6 +116,9 @@
                                 <li class="text--small">
                                     <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
                                 </li>
+                                <li>
+                                    <a class="text--gray" href="{{ path('logout') }}">Déconnexion</a>
+                                </li>
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                     <li class="text--small">
                                         <a href="{{ path('app_admin_impersonation_exit') }}">

@@ -13,11 +13,11 @@ hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
 
-auth_login_check:
+login_check:
     path: /login/check-auth
     methods: [GET]
 
-auth_logout:
+logout:
     path: /logout
     methods: [GET]
 
