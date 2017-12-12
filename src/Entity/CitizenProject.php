@@ -426,7 +426,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
             $this->postAddress = $address;
         }
 
-        if (!$this->phone->equals($phone)) {
+        if (null === $this->phone || !$this->phone->equals($phone)) {
             $this->phone = $phone;
         }
 

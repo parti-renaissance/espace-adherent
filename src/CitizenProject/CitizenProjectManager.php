@@ -24,6 +24,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CitizenProjectManager
 {
+    public const STATUS_NOT_ALLOWED_TO_CREATE = [
+        CitizenProject::PENDING,
+        CitizenProject::REFUSED,
+    ];
+
     private $registry;
 
     public function __construct(ManagerRegistry $registry)
@@ -434,5 +439,10 @@ class CitizenProjectManager
     public function removeAuthorItems(Adherent $adherent)
     {
         $this->getCitizenProjectCommentRepository()->removeForAuthor($adherent);
+    }
+
+    public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
+    {
+        return $this->getCitizenProjectRepository()->hasCitizenProjectInStatus($adherent, $status);
     }
 }
