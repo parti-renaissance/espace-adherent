@@ -273,5 +273,9 @@
 
             <tag name="kernel.event_subscriber" />
         </service>
+
+        <service id="AppBundle\Security\LogoutSuccessHandler">
+            <argument>%auth_logout%</argument>
+        </service>
     </services>
 </container>
