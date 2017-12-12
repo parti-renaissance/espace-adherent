@@ -44,6 +44,9 @@ test:
         - yarn lint
         - yarn test
 
+        # Lint PHP
+        - make phpcs
+
         # Prepare PHP tests
         - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users:
             parallel: true
