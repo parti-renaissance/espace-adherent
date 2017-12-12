@@ -176,7 +176,7 @@ class CommitteeMembershipRepository extends EntityRepository
 
     public function findSupervisor(string $committeeUuid): ?Adherent
     {
-        return $this->findPriviledgedMembers($committeeUuid, CommitteeMembership::COMMITTEE_SUPERVISOR())->get(0);
+        return $this->findPriviledgedMembers($committeeUuid, [CommitteeMembership::COMMITTEE_SUPERVISOR])->get(0);
     }
 
     /**
