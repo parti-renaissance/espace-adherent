@@ -18,7 +18,7 @@
         <span class="settings__username"><a href="{{ path('auth_forgot_password') }}">Modifier mon mot de passe</a></span><br/>
     </div>
 
-    {% if is_granted('ROLE_ADHERENT') %}
+    {% if not is_granted('ROLE_REFERENT') and not is_granted('ROLE_ADMINISTRATOR') %}
         <p>
             <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Annuler mon adhésion</a>
         </p>
