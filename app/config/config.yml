@@ -28,6 +28,7 @@ parameters:
     legislatives_host:           '%env(LEGISLATIVES_HOST)%'
     auth_user_profile:           '%env(AUTH_API_URL)%/espace-personnel/edit'
     auth_forgot_password:        '%env(AUTH_API_URL)%/forgot-password'
+    auth_logout:                 '%env(AUTH_API_URL)%/logout'
     auth_unsubscribe:            '%env(AUTH_API_URL)%/espace-personnel/unsubscribe'
     auth_client_id:              '%env(AUTH_CLIENT_ID)%'
 
