@@ -35,7 +35,7 @@ class AdherentFactory
             $data['lastName'],
             null,
             null,
-            $this->addressFactory->createFlexible(null, $data['zipCode'], null, null),
+            $this->addressFactory->createFlexible($data['country'], $data['zipCode'], null, null),
             null,
             Adherent::ENABLED,
             'now',

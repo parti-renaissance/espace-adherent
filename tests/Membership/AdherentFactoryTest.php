@@ -87,6 +87,7 @@ class AdherentFactoryTest extends TestCase
             'firstName' => 'Carl',
             'lastName' => 'Mirabeau',
             'zipCode' => '73100',
+            'country' => 'FR',
         ];
 
         $factory = $this->createFactory();
@@ -98,7 +99,6 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getSalt());
         $this->assertNull($adherent->getPassword());
         $this->assertNull($adherent->getGender());
-        $this->assertNull($adherent->getCountry());
         $this->assertNull($adherent->getAddress());
         $this->assertNull($adherent->getCity());
         $this->assertNull($adherent->getBirthdate());
@@ -109,6 +109,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame('Carl', $adherent->getFirstName());
         $this->assertSame('Mirabeau', $adherent->getLastName());
         $this->assertSame('73100', $adherent->getPostalCode());
+        $this->assertSame('FR', $adherent->getCountry());
     }
 
     private function createFactory()
