@@ -71,7 +71,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         ]);
     }
 
-     /**
+    /**
      * @depends testAdministratorCanSeeACitizenProject
      * @depends testFollowerCanSeeACitizenProject
      */
