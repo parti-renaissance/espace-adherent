@@ -79,6 +79,11 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         $this->updateGeocodableEntity($actionEvent->getCitizenAction());
     }
 
+    public function onCitizenActionUpdated(CitizenActionEvent $actionEvent): void
+    {
+        $this->updateGeocodableEntity($actionEvent->getCitizenAction());
+    }
+
     public function onCitizenInitiativeCreated(CitizenInitiativeCreatedEvent $initiative): void
     {
         $this->updateGeocodableEntity($initiative->getCitizenInitiative());
@@ -114,6 +119,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             Events::EVENT_CREATED => ['onEventCreated', -256],
             Events::EVENT_UPDATED => ['onEventUpdated', -256],
             Events::CITIZEN_ACTION_CREATED => ['onCitizenActionCreated', -256],
+            Events::CITIZEN_ACTION_UPDATED => ['onCitizenActionUpdated', -256],
             Events::CITIZEN_INITIATIVE_CREATED => ['onCitizenInitiativeCreated', -256],
             Events::CITIZEN_INITIATIVE_UPDATED => ['onCitizenInitiativeUpdated', -256],
             Events::CITIZEN_PROJECT_CREATED => ['onCitizenProjectCreated', -256],
