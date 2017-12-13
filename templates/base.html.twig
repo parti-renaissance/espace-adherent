@@ -26,7 +26,9 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
         <meta name="referrer" content="origin">
-        {% block meta '' %}
+        {% block meta %}
+            <meta property="og:type" content="{% block open_graph_type 'website' %}" />
+        {% endblock %}
 
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
         <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
@@ -42,7 +44,6 @@
         {% block amp_link '' %}
 
         <meta property="og:site_name" content="En Marche !" />
-        <meta property="og:type" content="{% block open_graph_type 'website' %}" />
         <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
         <meta property="og:title" content="{% block open_graph_title block('title') %}" />
         <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
