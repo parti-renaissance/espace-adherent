@@ -284,6 +284,7 @@
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
+        <service alias="app.event.registration_handler" id="AppBundle\Event\EventRegistrationCommandHandler" />
 
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
@@ -367,6 +368,12 @@
         <service id="AppBundle\CitizenAction\CitizenActionManager">
             <argument type="service" id="app.repository.citizen_action"/>
         </service>
+
+        <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+
+        <service autoconfigure="true" id="AppBundle\CitizenAction\Voter\OrganizerCitizenActionVoter" />
 
         <!-- Referents -->
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">

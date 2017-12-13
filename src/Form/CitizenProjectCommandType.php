@@ -96,6 +96,7 @@ class CitizenProjectCommandType extends AbstractType
         $builder->get('address')->remove('address');
 
         $command = $builder->getData();
+
         if (!$command instanceof CitizenProjectCommand) {
             throw new InvalidConfigurationException('A pre set data is required in '.__CLASS__);
         }
@@ -119,25 +120,23 @@ class CitizenProjectCommandType extends AbstractType
                     'attr' => [
                         'placeholder' => 'Vous avez déjà le soutient d\'un comité local ? Indiquez son nom : (Optionnel)',
                     ],
-                ])
-            ;
+                ]);
 
             $builder->get('committees')->addModelTransformer($this->committeeTransformer);
         }
 
-        if ($citizenProject instanceof CitizenProject && $citizenProject->isApproved()) {
-            $builder->add('name', TextType::class, [
-                'filter_emojis' => true,
-                'disabled' => true,
-            ]);
+        if ($command instanceof CitizenProjectCommand && $command->isCitizenProjectApproved()) {
+            $builder->get('name')->setDisabled(true);
         }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => CitizenProjectCommand::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => CitizenProjectCommand::class,
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

@@ -1,0 +1,19 @@
+{% extends 'events/show.html.twig' %}
+
+{% block page_title citizen_action.name %}
+{% block canonical_url url('app_citizen_action_show', { slug: citizen_action.slug }) %}
+
+{% block json_ld %}
+    {% set event = citizen_action %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set event = citizen_action %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {% set event = citizen_action %}
+    {{ parent() }}
+{% endblock %}

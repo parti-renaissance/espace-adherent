@@ -50,6 +50,8 @@ abstract class BaseEvent implements GeoPointInterface
     use EntityTimestampableTrait;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(length=100)
      *
      * @Algolia\Attribute
@@ -59,6 +61,8 @@ abstract class BaseEvent implements GeoPointInterface
     /**
      * The event canonical name.
      *
+     * @var string|null
+     *
      * @ORM\Column(length=100)
      *
      * @Algolia\Attribute
@@ -66,6 +70,8 @@ abstract class BaseEvent implements GeoPointInterface
     protected $canonicalName;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(length=130)
      * @Gedmo\Slug(fields={"beginAt", "canonicalName"}, dateFormat="Y-m-d")
      *
@@ -74,6 +80,8 @@ abstract class BaseEvent implements GeoPointInterface
     protected $slug;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(type="text")
      *
      * @Algolia\Attribute
@@ -81,17 +89,21 @@ abstract class BaseEvent implements GeoPointInterface
     protected $description;
 
     /**
+     * @var \DateTimeInterface|null
+     *
      * @ORM\Column(type="datetime")
      */
     protected $beginAt;
 
     /**
+     * @var \DateTimeInterface|null
+     *
      * @ORM\Column(type="datetime")
      */
     protected $finishAt;
 
     /**
-     * The adherent UUID who created this committee event/citizen's initiative.
+     * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="RESTRICT")
@@ -99,11 +111,15 @@ abstract class BaseEvent implements GeoPointInterface
     protected $organizer;
 
     /**
+     * @var int|null
+     *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     protected $participantsCount;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(length=20)
      */
     protected $status;
@@ -116,9 +132,18 @@ abstract class BaseEvent implements GeoPointInterface
     protected $published = true;
 
     /**
+     * @var int|null
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $capacity;
+
+    /**
+     * Mapping to be defined in child classes.
+     *
+     * @var BaseEventCategory|null
+     */
+    protected $category;
 
     public function __toString(): string
     {
@@ -224,7 +249,7 @@ abstract class BaseEvent implements GeoPointInterface
         // event is finished in all timezones of this country, then the method
         // can return true.
         foreach (\DateTimeZone::listIdentifiers(\DateTimeZone::PER_COUNTRY, $country) as $timezone) {
-            $finishAt = new \DateTime($this->finishAt->format('Y-m-d H:i'), $timezone = new \DateTimeZone($timezone));
+            $finishAt = new \DateTimeImmutable($this->finishAt->format('Y-m-d H:i'), $timezone = new \DateTimeZone($timezone));
             if (false === $finishAt < new \DateTime('now', $timezone)) {
                 return false;
             }
@@ -316,6 +341,6 @@ abstract class BaseEvent implements GeoPointInterface
 
     public function equals(self $other): bool
     {
-        return $this->uuid->equals($other->getUuid());
+        return $this->uuid->equals($other->uuid);
     }
 }

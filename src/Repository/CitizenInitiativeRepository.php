@@ -19,7 +19,7 @@ class CitizenInitiativeRepository extends EventRepository
             ->setParameter('slug', $slug)
             ->andWhere('e.published = :published')
             ->setParameter('published', true)
-            ;
+        ;
     }
 
     public function countSitemapCitizenInitiatives(): int
@@ -28,7 +28,8 @@ class CitizenInitiativeRepository extends EventRepository
             ->createSitemapQueryBuilder()
             ->select('COUNT(ci) AS nb')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -43,7 +44,8 @@ class CitizenInitiativeRepository extends EventRepository
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage)
             ->getQuery()
-            ->getArrayResult();
+            ->getArrayResult()
+        ;
     }
 
     private function createSitemapQueryBuilder(): QueryBuilder

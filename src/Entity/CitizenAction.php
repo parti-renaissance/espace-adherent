@@ -12,25 +12,18 @@ use Ramsey\Uuid\UuidInterface;
 class CitizenAction extends BaseEvent
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProject")
+     * @ORM\ManyToOne(targetEntity="CitizenActionCategory")
+     *
+     * @Algolia\Attribute
+     */
+    protected $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CitizenProject")
      *
      * @Algolia\Attribute
      */
     private $citizenProject;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenActionCategory")
-     *
-     * @Algolia\Attribute
-     */
-    private $citizenActionCategory;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $wasPublished = false;
 
     public function __construct(
         UuidInterface $uuid,
@@ -42,7 +35,6 @@ class CitizenAction extends BaseEvent
         PostAddress $address,
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
-        int $capacity = null,
         int $participantsCount = 0
     ) {
         $this->uuid = $uuid;
@@ -52,9 +44,9 @@ class CitizenAction extends BaseEvent
         $this->category = $category;
         $this->description = $description;
         $this->postAddress = $address;
-        $this->capacity = $capacity;
         $this->participantsCount = $participantsCount;
-        $this->beginAt = $beginAt;
+        // We need a \DateTime object for now to work with Gedmo sluggable
+        $this->beginAt = $beginAt instanceof \DateTimeImmutable ? new \DateTime($beginAt->format(\DATE_ATOM)) : $beginAt;
         $this->finishAt = $finishAt;
         $this->status = self::STATUS_SCHEDULED;
     }
@@ -70,14 +62,12 @@ class CitizenAction extends BaseEvent
         string $description,
         PostAddress $address,
         string $beginAt,
-        string $finishAt,
-        int $capacity = null
+        string $finishAt
     ) {
         $this->setName($name);
         $this->category = $category;
-        $this->capacity = $capacity;
-        $this->beginAt = new \DateTime($beginAt);
-        $this->finishAt = new \DateTime($finishAt);
+        $this->beginAt = new \DateTime($beginAt); // mutable for now due to Gedmo sluggable
+        $this->finishAt = new \DateTimeImmutable($finishAt);
         $this->description = $description;
 
         if (!$this->postAddress->equals($address)) {
@@ -107,7 +97,7 @@ class CitizenAction extends BaseEvent
         return $this->citizenActionCategory;
     }
 
-    public function setCitizenActioneCategory(CitizenActionCategory $category): self
+    public function setCitizenActionCategory(CitizenActionCategory $category): self
     {
         $this->citizenActionCategory = $category;
 
@@ -117,17 +107,5 @@ class CitizenAction extends BaseEvent
     public function getType(): string
     {
         return self::CITIZEN_ACTION_TYPE;
-    }
-
-    public function wasPublished(): bool
-    {
-        return true === $this->wasPublished;
-    }
-
-    public function setWasPublished(bool $wasPublished): self
-    {
-        $this->wasPublished = $wasPublished;
-
-        return $this;
     }
 }
