@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
@@ -327,7 +328,8 @@ WHERE (events.address_latitude IS NOT NULL
     AND events.published = :published
     AND events.status = :scheduled) 
     __filter_query__ 
-    __filter_category__ 
+    __filter_category__
+    __filter_type__ 
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
 OFFSET :first_result
@@ -339,15 +341,21 @@ SQL;
             $filterQuery = '';
         }
 
-        if ($category = $search->getEventCategory()) {
+        if ($category = $search->getEventCategory() && SearchParametersFilter::TYPE_CITIZEN_ACTIONS !== $search->getEventCategory()) {
             $filterCategory = 'AND events.category_id = :category';
         } else {
             $filterCategory = '';
         }
 
+        if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
+            $type = 'AND events.type = :type';
+        } else {
+            $type = 'AND events.type != :type';
+        }
+
         $sql = preg_replace(
-            ['/__filter_query__/', '/__filter_category__/'],
-            [$filterQuery, $filterCategory],
+            ['/__filter_query__/', '/__filter_category__/', '/__filter_type__/'],
+            [$filterQuery, $filterCategory, $type],
             $sql
         );
 
@@ -367,6 +375,7 @@ SQL;
             $query->setParameter('category', $category);
         }
 
+        $query->setParameter('type', CitizenAction::CITIZEN_ACTION_TYPE);
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
