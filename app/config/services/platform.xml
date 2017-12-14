@@ -261,6 +261,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler">
+            <argument type="service" id="app.mailer.campaign" />
+        </service>
+
         <!-- Events -->
         <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
 

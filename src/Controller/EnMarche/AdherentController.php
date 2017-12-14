@@ -259,6 +259,12 @@ class AdherentController extends Controller
                     ]);
                 }
 
+                if ($from instanceof CitizenProject) {
+                    return $this->redirectToRoute('app_citizen_project_show', [
+                        'slug' => $from->getSlug(),
+                    ]);
+                }
+
                 if ($from instanceof Event) {
                     return $this->redirectToRoute('app_event_show', [
                         'slug' => $from->getSlug(),

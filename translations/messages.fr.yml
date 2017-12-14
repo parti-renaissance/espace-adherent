@@ -78,6 +78,9 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 #
 citizen_project.creation.success: Votre projet citoyen est en attente de validation par nos équipes, qui vérifient qu'il entre bien en adéquation avec la Charte des Projets Citoyens.
 citizen_project.update.success: Les informations du projet citoyen ont été mises à jour avec succès.
+citizen_project.contact_actors.none: Vous n'avez sélectionné aucun acteur à contacter.
+citizen_project.contact_actors.success: Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.
+citizen_project.actors_count: '%count% acteur|%count% acteurs'
 
 #
 # CitizenAction
