@@ -78,10 +78,14 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private function sendAskCommitteeSupport(CitizenProject $citizenProject): void
     {
         foreach ($citizenProject->getPendingCommitteeSupports() as $committeeSupport) {
+            if (!$committeeHost = $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee())) {
+                continue;
+            }
+
             $this->mailer->sendMessage(
                 CitizenProjectRequestCommitteeSupportMessage::create(
                     $citizenProject,
-                    $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee()),
+                    $committeeHost,
                     $this->router->generate('app_citizen_project_committee_support', [
                         'slug' => $citizenProject->getSlug(),
                     ])

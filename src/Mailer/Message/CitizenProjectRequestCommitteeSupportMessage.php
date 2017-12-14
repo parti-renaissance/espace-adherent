@@ -8,14 +8,14 @@ use Ramsey\Uuid\Uuid;
 
 class CitizenProjectRequestCommitteeSupportMessage extends Message
 {
-    public static function create(CitizenProject $citizenProject, ?Adherent $committeeHost, string $validationUrl): self
+    public static function create(CitizenProject $citizenProject, Adherent $committeeHost, string $validationUrl): self
     {
         $message = new self(
             Uuid::uuid4(),
             '263222',
             $committeeHost->getEmailAddress(),
             $committeeHost->getFullName(),
-            'Un projet citoyen se lance près de chez vous !'
+            'Un projet citoyen a besoin du soutien de votre comité !'
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');

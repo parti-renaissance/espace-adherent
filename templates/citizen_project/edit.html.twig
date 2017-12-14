@@ -43,6 +43,25 @@
             <form method="post" id="edit-citizen-project-form" class="form citizen-project-form">
                 {{ include('citizen_project/_form.html.twig') }}
                 <div>
+                    {% if form.cgu is defined %}
+                        <div class="form__row">
+                            {{ form_widget(form.cgu) }}
+                            {% block _form_cgu_label %}
+                                <label class="form form__label" for="citizen_project_cgu"><span>Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et email) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.<sup>*</sup></span></label>
+                            {% endblock %}
+                            {{ form_errors(form.cgu) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.data_processing is defined %}
+                        <div class="form__row">
+                            {{ form_widget(form.data_processing) }}
+                            {% block _form_data_processing_label %}
+                                <label class="form form__label" for="citizen_project_data_processing"><span>J’adhère aux <a href="#" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="#" target="_blank">Charte des Projets Citoyens</a><sup>*</sup></span></label>
+                            {% endblock %}
+                            {{ form_errors(form.data_processing) }}
+                        </div>
+                    {% endif %}
                     <button type="submit" id="edit-citizen-project" class="btn btn--blue">
                         Enregistrer
                     </button>
