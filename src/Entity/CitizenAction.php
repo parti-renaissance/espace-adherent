@@ -82,24 +82,12 @@ class CitizenAction extends BaseEvent
 
     public function getCategory(): CitizenActionCategory
     {
-        return $this->citizenActionCategory;
+        return $this->category;
     }
 
     public function setCategory(CitizenActionCategory $category): self
     {
-        $this->citizenActionCategory = $category;
-
-        return $this;
-    }
-
-    public function getCitizenActionCategory(): CitizenActionCategory
-    {
-        return $this->citizenActionCategory;
-    }
-
-    public function setCitizenActionCategory(CitizenActionCategory $category): self
-    {
-        $this->citizenActionCategory = $category;
+        $this->category = $category;
 
         return $this;
     }
