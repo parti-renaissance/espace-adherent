@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -200,6 +201,70 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         ), trim($flash->text()));
     }
 
+    public function testCitizenProjectContactActors()
+    {
+        // Authenticate as the administrator (host)
+        $crawler = $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld', 'politique2017');
+        $crawler = $this->client->click($crawler->selectLink('En Marche - Projet citoyen')->link());
+        $crawler = $this->client->click($crawler->selectLink('Tous >')->link());
+
+        $token = $crawler->filter('#members-contact-token')->attr('value');
+        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
+
+        $actorsListUrl = $this->client->getRequest()->getPathInfo();
+        $contactUrl = $actorsListUrl.'/contact';
+
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $token,
+            'contacts' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Try to post with an empty message
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'message' => ' ',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('.form__errors > .form__error')->text());
+
+        $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'message' => 'Bonsoir à tous.',
+        ]);
+
+        $this->assertClientIsRedirectedTo($actorsListUrl, $this->client);
+        $crawler = $this->client->followRedirect();
+        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
+
+        // Try to illegally contact an adherent, adds an adherent not linked with this citizen project
+        $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
+
+        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $token,
+            'contacts' => json_encode($uuids),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        // The protection filter should be remove the illegal adherent
+        $this->assertCount(1, json_decode($crawler->filter('input[name="contacts"]')->attr('value'), true));
+
+        // Force the contact form with the foreign uuid
+        $this->client->request(Request::METHOD_POST, $contactUrl, [
+            'token' => $crawler->filter('input[name="token"]')->attr('value'),
+            'contacts' => json_encode($uuids),
+            'message' => 'Bonsoir à tous.',
+        ]);
+
+        $this->assertClientIsRedirectedTo($actorsListUrl, $this->client);
+        $crawler = $this->client->followRedirect();
+        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
+    }
+
     private function assertSeeComments(array $comments)
     {
         foreach ($comments as $position => $comment) {
@@ -218,6 +283,17 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     private function seeCommentSection(): bool
     {
         return 1 === count($this->client->getCrawler()->filter('.citizen-project-comments'));
+    }
+
+    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
+    {
+        $flash = $crawler->filter('#notice-flashes');
+
+        if ($message) {
+            $this->assertSame($message, trim($flash->text()));
+        }
+
+        return 1 === count($flash);
     }
 
     protected function setUp()
