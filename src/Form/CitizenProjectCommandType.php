@@ -82,6 +82,7 @@ class CitizenProjectCommandType extends AbstractType
                 'property_path' => 'assistanceContent',
                 'purify_html' => true,
                 'filter_emojis' => true,
+                'attr' => ['maxlength' => 300],
             ])
             ->add('skills', CollectionType::class, [
                 'required' => false,

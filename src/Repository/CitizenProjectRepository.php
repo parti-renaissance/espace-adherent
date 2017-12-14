@@ -8,6 +8,7 @@ use AppBundle\Entity\BaseGroup;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectRepository extends BaseGroupRepository
 {
@@ -128,5 +129,21 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->getSingleScalarResult();
 
         return $nb > 0;
+    }
+
+    public function findCitizenProjectUuidByCreatorUuids(array $creatorsUuid): array
+    {
+        $qb = $this->createQueryBuilder('cp');
+
+        $query = $qb
+            ->select('cp.uuid')
+            ->where('cp.createdBy IN (:creatorsUuid)')
+            ->setParameter('creatorsUuid', $creatorsUuid)
+            ->getQuery()
+        ;
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 }

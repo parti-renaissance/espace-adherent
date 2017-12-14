@@ -2,13 +2,26 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\CitizenAction;
+use AppBundle\Entity\CitizenProject;
 use Doctrine\ORM\QueryBuilder;
 
 class CitizenActionRepository extends EventRepository
 {
-    const TYPE_PAST = 'past';
-    const TYPE_UPCOMING = 'upcoming';
-    const TYPE_ALL = 'all';
+    public function findNextCitizenActionForCitizenProject(CitizenProject $citizenProject): ?CitizenAction
+    {
+        return $this
+            ->createQueryBuilder('action')
+            ->where('action.citizenProject = :citizenProject')
+            ->setParameter('citizenProject', $citizenProject)
+            ->andWhere('action.beginAt > :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('action.beginAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
     protected function createSlugQueryBuilder(string $slug): QueryBuilder
     {
