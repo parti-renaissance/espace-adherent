@@ -116,6 +116,11 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     private $skills;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $matchedSkills = false;
+
+    /**
      * A cached list of the administrators (for admin).
      *
      * @var AdherentCollection|null
@@ -520,5 +525,15 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function setAdministrators(AdherentCollection $administrators): void
     {
         $this->administrators = $administrators;
+    }
+
+    public function getMatchedSkills(): bool
+    {
+        return $this->matchedSkills;
+    }
+
+    public function setMatchedSkills(bool $matchedSkills): void
+    {
+        $this->matchedSkills = $matchedSkills;
     }
 }
