@@ -54,7 +54,7 @@ class CitizenActionAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('citizenActionCategory', null, [
+                ->add('category', null, [
                     'label' => 'Catégorie',
                 ])
                 ->add('citizenProject', null, [
@@ -128,7 +128,7 @@ class CitizenActionAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('citizenActionCategory', CitizenActionCategoryType::class, [
+                ->add('category', CitizenActionCategoryType::class, [
                     'label' => 'Catégorie',
                 ])
                 ->add('beginAt', null, [
@@ -182,7 +182,7 @@ class CitizenActionAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('citizenActionCategory', null, [
+            ->add('category', null, [
                 'label' => 'Catégorie',
                 'field_type' => CitizenActionCategoryType::class,
                 'show_filter' => true,
@@ -269,7 +269,7 @@ class CitizenActionAdmin extends AbstractAdmin
             ->add('participantsCount', null, [
                 'label' => 'Inscrits',
             ])
-            ->add('citizenActionCategory', null, [
+            ->add('category', null, [
                 'label' => 'Catégorie',
             ])
             ->add('status', null, [
