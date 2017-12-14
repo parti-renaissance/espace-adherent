@@ -42,7 +42,7 @@
             <ul>
                 {% for follower in followers|slice(0, 11) %}
                     <li class="text--body">
-                        <span class="card" title="{{ app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
+                        <span class="card" title="{{ not user_is_admin and app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
                     </li>
                 {% endfor %}
             </ul>

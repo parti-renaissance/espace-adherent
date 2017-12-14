@@ -51,10 +51,8 @@
 
                         <div class="form__row" id="field-personal-phone">
                             <label class="text--bold form form__label">Vérifier mes informations</label>
-                            <p>Mon numéro de téléphone : {{ app.user.phone ? app.user.phone|phone_number_format : null }}</p>
                             <p>Mon e-email : {{ app.user.emailAddress }}</p>
                             <a href="{{ path('app_adherent_profile') }}">Modifier</a>
-                            <p>Nous vous contacterons sur ce numéro - il sera mis à disposition de nos équipe NON QG</p>
                         </div>
 
                         {% if form.cgu is defined %}

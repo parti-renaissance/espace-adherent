@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
+/**
+ * @group functional
+ */
 class CitizenActionManagerControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;

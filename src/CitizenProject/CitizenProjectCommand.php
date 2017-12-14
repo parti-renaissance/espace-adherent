@@ -80,6 +80,8 @@ class CitizenProjectCommand
 
     /**
      * @var string
+     *
+     * @Assert\Length(max=300)
      */
     public $assistanceContent;
 

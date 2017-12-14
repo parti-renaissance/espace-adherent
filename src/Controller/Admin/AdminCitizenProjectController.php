@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("/projets-citoyens")
+ * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
  */
 class AdminCitizenProjectController extends Controller
 {
@@ -25,7 +26,6 @@ class AdminCitizenProjectController extends Controller
      *
      * @Route("/{id}/approve", name="app_admin_citizenproject_approve")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
     public function approveAction(CitizenProject $citizenProject): Response
     {
@@ -44,7 +44,6 @@ class AdminCitizenProjectController extends Controller
      *
      * @Route("/{id}/refuse", name="app_admin_citizenproject_refuse")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
     public function refuseAction(CitizenProject $citizenProject): Response
     {
@@ -61,21 +60,18 @@ class AdminCitizenProjectController extends Controller
     /**
      * @Route("/{id}/members", name="app_admin_citizenproject_members")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
     public function membersAction(CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
         return $this->render('admin/citizen_project/members.html.twig', [
             'citizen_project' => $citizenProject,
-            'memberships' => $memberships = $manager->getCitizenProjectMemberships($citizenProject),
-            'administrators_count' => $memberships->countCitizenProjectAdministratorMemberships(),
+            'memberships' => $manager->getCitizenProjectMemberships($citizenProject),
         ]);
     }
 
     /**
-     * @Route("/{citizen_project}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
+     * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_CITIZEN_PROJECTS')")
      */
     public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege, CitizenProjectManager $manager): Response
     {
