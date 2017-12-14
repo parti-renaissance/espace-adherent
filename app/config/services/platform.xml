@@ -430,6 +430,10 @@
             </call>
 
             <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CitizenActionSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
                 <argument type="service" id="AppBundle\Search\CitizenProjectSearchResultsProvider"/>
             </call>
         </service>
@@ -441,6 +445,8 @@
         <service id="AppBundle\Search\EventSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.event"/>
         </service>
+
+        <service id="AppBundle\Search\CitizenActionSearchResultsProvider" parent="AppBundle\Search\EventSearchResultsProvider" public="false"/>
 
         <service id="AppBundle\Search\CitizenProjectSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.citizen_project"/>

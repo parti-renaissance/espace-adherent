@@ -377,7 +377,7 @@ class EventControllerTest extends MysqlWebTestCase
             $labels[] = $element->textContent;
         }
         $this->assertFalse(in_array('Catégorie masquée', $labels));
-        $this->assertSame(count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 1, $options->count());
+        $this->assertSame(count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 2, $options->count());
     }
 
     protected function setUp()
