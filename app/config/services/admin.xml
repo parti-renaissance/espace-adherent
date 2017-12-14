@@ -455,7 +455,9 @@
             <argument>AppBundle\Entity\CitizenProject</argument>
             <argument />
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager" />
+            <argument type="service" id="app.repository.citizen_project" />
             <argument type="service" id="app.repository.citizen_project_membership" />
+            <argument type="service" id="app.repository.adherent" />
         </service>
 
         <service id="app.admin.citizen_project_category" class="AppBundle\Admin\CitizenProjectCategoryAdmin">
