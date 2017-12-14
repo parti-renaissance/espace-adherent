@@ -31,11 +31,13 @@ class SearchParametersFilter
     const TYPE_COMMITTEES = 'committees';
     const TYPE_EVENTS = 'events';
     const TYPE_CITIZEN_PROJECTS = 'citizen_projects';
+    const TYPE_CITIZEN_ACTIONS = 'citizen_actions';
 
     const TYPES = [
         self::TYPE_COMMITTEES,
         self::TYPE_EVENTS,
         self::TYPE_CITIZEN_PROJECTS,
+        self::TYPE_CITIZEN_ACTIONS,
     ];
 
     const RADIUS_1 = 1;

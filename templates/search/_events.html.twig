@@ -21,6 +21,8 @@
                     {% endif %}
                     {% if event.type and event.isCitizenInitiative %}
                         <div class="tag tag--orange">Initiative citoyenne</div>
+                    {% elseif event.type and event.isCitizenAction %}
+                        <div class="tag tag--orange">Action citoyenne</div>
                     {% else %}
                         <div class="tag">{{ event.category }}</div>
                     {% endif %}

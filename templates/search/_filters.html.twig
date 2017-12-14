@@ -4,8 +4,9 @@
 
         {% if search.isTypeEvents() %}
             <div class="search__bar__options__types">
-                <select name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
+                <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
                     <option value="" selected="selected">Tous les événements</option>
+                    <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
                     {% for category in event_categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
@@ -27,7 +28,7 @@
             autour de
             {# this widget will be embedded in the ribbon text #}
             <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal">
-            <input type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
+            <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
         </div>
     </div>
 </div>
