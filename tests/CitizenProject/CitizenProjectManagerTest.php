@@ -171,7 +171,7 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->citizenProjectManager = new CitizenProjectManager($this->getManagerRegistry());
+        $this->citizenProjectManager = new CitizenProjectManager($this->getManagerRegistry(), $this->getStorage());
     }
 
     protected function tearDown()
