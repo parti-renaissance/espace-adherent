@@ -36,7 +36,7 @@ dependencies:
     override:
         - yarn install
         - composer install --no-interaction
-        - bin/console rabbitmq:setup-fabric
+        - bin/console rabbitmq:setup-fabric --env=test
 
 test:
     override:
