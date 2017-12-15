@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\Utils;
 
-use AppBundle\Committee\CommitteeUtils;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Utils\GroupUtils;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\SqliteWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
@@ -11,18 +11,18 @@ use Tests\AppBundle\TestHelperTrait;
 /**
  * @group functional
  */
-class CommitteeUtilsTest extends SqliteWebTestCase
+class GroupUtilsTest extends SqliteWebTestCase
 {
     use TestHelperTrait;
 
     public function testGetUuidsFromJson()
     {
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson(''));
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson('not valid JSON syntax'));
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson('[]'));
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson('{}'));
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson('"dfbb56f5-e7df-4fdc-9777-e8237cef4872"'));
-        $this->assertSame([], CommitteeUtils::getUuidsFromJson('["e7df-4fdc-9777-e8237cef4872"]'));
+        $this->assertSame([], GroupUtils::getUuidsFromJson(''));
+        $this->assertSame([], GroupUtils::getUuidsFromJson('not valid JSON syntax'));
+        $this->assertSame([], GroupUtils::getUuidsFromJson('[]'));
+        $this->assertSame([], GroupUtils::getUuidsFromJson('{}'));
+        $this->assertSame([], GroupUtils::getUuidsFromJson('"dfbb56f5-e7df-4fdc-9777-e8237cef4872"'));
+        $this->assertSame([], GroupUtils::getUuidsFromJson('["e7df-4fdc-9777-e8237cef4872"]'));
 
         $stringUuids = [
             'dfbb56f5-e7df-4fdc-9777-e8237cef4872',
@@ -34,34 +34,34 @@ class CommitteeUtilsTest extends SqliteWebTestCase
             return Uuid::fromString($item);
         }, $stringUuids);
 
-        $this->assertEquals($objectUuids, CommitteeUtils::getUuidsFromJson(json_encode($stringUuids)));
+        $this->assertEquals($objectUuids, GroupUtils::getUuidsFromJson(json_encode($stringUuids)));
     }
 
     public function testRemoveUnknownAdherents()
     {
         $adherents = $this->getAdherents();
 
-        $this->assertSame([], CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame([], GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID],
             []
         ));
-        $this->assertSame([], CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame([], GroupUtils::removeUnknownAdherents(
             [Uuid::fromString(LoadAdherentData::ADHERENT_1_UUID)],
             []
         ));
-        $this->assertSame([], CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame([], GroupUtils::removeUnknownAdherents(
             [],
             $adherents
         ));
-        $this->assertSame([$adherents[0]], CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame([$adherents[0]], GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID],
             $adherents
         ));
-        $this->assertSame($adherents, CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame($adherents, GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID, LoadAdherentData::ADHERENT_2_UUID],
             $adherents
         ));
-        $this->assertSame($adherents, CommitteeUtils::removeUnknownAdherents(
+        $this->assertSame($adherents, GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID, LoadAdherentData::ADHERENT_2_UUID, LoadAdherentData::ADHERENT_3_UUID],
             $adherents
         ));
@@ -71,7 +71,7 @@ class CommitteeUtilsTest extends SqliteWebTestCase
     {
         $this->expectException(\BadMethodCallException::class);
 
-        CommitteeUtils::removeUnknownAdherents(
+        GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID],
             ['this is not a collection of adherents']
         );
@@ -81,7 +81,7 @@ class CommitteeUtilsTest extends SqliteWebTestCase
     {
         $this->expectException(\BadMethodCallException::class);
 
-        CommitteeUtils::removeUnknownAdherents(
+        GroupUtils::removeUnknownAdherents(
             [LoadAdherentData::ADHERENT_1_UUID],
             'this is not an iterable value'
         );
@@ -90,7 +90,7 @@ class CommitteeUtilsTest extends SqliteWebTestCase
     public function testGetUuidsFromAdherents()
     {
         $adherents = $this->getAdherents();
-        $uuids = CommitteeUtils::getUuidsFromAdherents($adherents);
+        $uuids = GroupUtils::getUuidsFromAdherents($adherents);
 
         $this->assertCount(count($adherents), $uuids);
 
@@ -104,14 +104,14 @@ class CommitteeUtilsTest extends SqliteWebTestCase
     {
         $this->expectException(\BadMethodCallException::class);
 
-        CommitteeUtils::getUuidsFromAdherents(['this is not a collection of adherents']);
+        GroupUtils::getUuidsFromAdherents(['this is not a collection of adherents']);
     }
 
     public function testGetUuidsFromAdherentsBadCallIterable()
     {
         $this->expectException(\BadMethodCallException::class);
 
-        CommitteeUtils::getUuidsFromAdherents('this is not an iterable value');
+        GroupUtils::getUuidsFromAdherents('this is not an iterable value');
     }
 
     protected function setUp()

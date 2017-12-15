@@ -16,16 +16,24 @@
     <div class="citizen_project__card">
         <h3>{{ 'citizen_project.administrators_count'|transchoice(administrators|length) }}</h3>
 
-        <ul>
-            {% for administrator in administrators %}
-                <li class="text--body">
-                    <span class="card"
-                       title="{{ is_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
-                        {{ include('components/user.html.twig') }}
-                    </span>
-                </li>
-            {% endfor %}
-        </ul>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <ul>
+                {% for administrator in administrators %}
+                    <li class="text--body">
+                        <span class="card"
+                           title="{{ is_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
+                            {{ include('components/user.html.twig') }}
+                        </span>
+                        {% if not is_administrator %}
+                            <a href="{{ path('app_adherent_contact', {uuid: administrator.uuid, from: 'citizen_project', id: citizen_project.uuid.toString}) }}"
+                               class="link--no-decor text--blue text--normal text--summary">
+                                Contacter
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 
     <div class="citizen_project__card">
@@ -38,7 +46,7 @@
                     </li>
                 {% endfor %}
             </ul>
-            <a href="{{ path('app_citizen_project_members_list_show', {'slug': citizen_project.slug}) }}">Tous &gt;</a>
+            <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Tous &gt;</a>
         {% endif %}
     </div>
 

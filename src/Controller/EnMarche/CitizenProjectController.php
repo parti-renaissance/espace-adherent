@@ -183,7 +183,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}/acteurs", name="app_citizen_project_members_list_show")
+     * @Route("/{slug}/acteurs", name="app_citizen_project_list_actors")
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */

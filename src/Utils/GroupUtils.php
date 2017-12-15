@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace AppBundle\Utils;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\AdherentCollectionException;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeUtils
+class GroupUtils
 {
     /**
      * Parse a Json string to find uuids.
