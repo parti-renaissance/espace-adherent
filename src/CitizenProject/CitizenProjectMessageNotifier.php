@@ -10,6 +10,7 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
+use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -50,6 +51,19 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     public function onCitizenProjectCreation(CitizenProjectWasCreatedEvent $event): void
     {
         $this->sendCreatorConfirmationCreation($event->getCreator(), $event->getCitizenProject());
+    }
+
+    public function onCitizenProjectFollowerAdded(CitizenProjectFollowerAddedEvent $followerAddedEvent): void
+    {
+        if (!$hosts = $this->manager->getCitizenProjectAdministrators($followerAddedEvent->getCitizenProject())->toArray()) {
+            return;
+        }
+
+        $this->mailer->sendMessage(CitizenProjectNewFollowerMessage::create(
+            $followerAddedEvent->getCitizenProject(),
+            $hosts,
+            $followerAddedEvent->getNewFollower()
+        ));
     }
 
     public function sendAdherentNotificationCreation(Adherent $adherent, CitizenProject $citizenProject, Adherent $creator): void
@@ -99,6 +113,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         return [
             Events::CITIZEN_PROJECT_CREATED => ['onCitizenProjectCreation', -128],
             Events::CITIZEN_PROJECT_APPROVED => ['onCitizenProjectApprove', -128],
+            Events::CITIZEN_PROJECT_FOLLOWER_ADDED => ['onCitizenProjectFollowerAdded', -128],
         ];
     }
 }

@@ -199,4 +199,48 @@ class CitizenProjectController extends Controller
             'actors' => $citizenProjectManager->getCitizenProjectMemberships($citizenProject),
         ]);
     }
+
+    /**
+     * @Route("/{slug}/rejoindre", name="app_citizen_project_follow", condition="request.request.has('token')")
+     * @Method("POST")
+     * @Security("is_granted('FOLLOW_CITIZEN_PROJECT', citizenProject)")
+     */
+    public function followAction(Request $request, CitizenProject $citizenProject): Response
+    {
+        if (!$this->isCsrfTokenValid('citizen_project.follow', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to follow citizen project.');
+        }
+
+        $this->get('app.citizen_project.authority')->followCitizenProject($this->getUser(), $citizenProject);
+
+        return new JsonResponse([
+            'button' => [
+                'label' => 'Quitter ce projet citoyen',
+                'action' => 'quitter',
+                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.unfollow'),
+            ],
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/quitter", name="app_citizen_project_unfollow", condition="request.request.has('token')")
+     * @Method("POST")
+     * @Security("is_granted('UNFOLLOW_CITIZEN_PROJECT', citizenProject)")
+     */
+    public function unfollowAction(Request $request, CitizenProject $citizenProject): Response
+    {
+        if (!$this->isCsrfTokenValid('citizen_project.unfollow', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen project.');
+        }
+
+        $this->get(CitizenProjectManager::class)->unfollowCitizenProject($this->getUser(), $citizenProject);
+
+        return new JsonResponse([
+            'button' => [
+                'label' => 'Suivre ce projet citoyen',
+                'action' => 'rejoindre',
+                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.follow'),
+            ],
+        ]);
+    }
 }
