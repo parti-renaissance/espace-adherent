@@ -120,6 +120,25 @@ export default class ReqwestApiClient {
         });
     }
 
+    toggleCitizenProjectMembership(committeeSlug, action, token, callback) {
+        let request = this._reqwest({
+            url: '/projets-citoyens/'+committeeSlug+'/'+action,
+            type: 'html',
+            method: 'post',
+            data: {
+                'token': token
+            }
+        });
+
+        request.then((response) => {
+            callback(JSON.parse(response));
+        });
+
+        request.fail(() => {
+            callback(null);
+        });
+    }
+
     _createRequest(callback, parameters) {
         let request = this._reqwest(parameters);
 

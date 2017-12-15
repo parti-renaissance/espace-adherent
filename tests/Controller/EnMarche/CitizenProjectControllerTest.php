@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -265,6 +266,82 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
     }
 
+    public function testAnonymousUserIsNotAllowedToFollowCitizenProject()
+    {
+        $committeeUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertTrue($this->seeRegisterLink($crawler));
+    }
+
+    public function testAuthenticatedCitizenProjectAdministratorCanUnfollowCommittee()
+    {
+        // Login as administrator
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8'));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $unfollowButton = $crawler->filter('.citizen-project-unfollow');
+
+        // Button should be disabled for adminitrator
+        $this->assertNotNull($unfollowButton->attr('disabled'));
+        $this->assertSame('En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.', trim($crawler->filter('.citizen-project-follow--anonymous__link')->text()));
+    }
+
+    public function testAuthenticatedAdherentCanFollowCitizenProject()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        // Browse to the citizen project details page
+        $citizenProjectUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertTrue($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+
+        // Emulate POST request to follow the committee.
+        $token = $crawler->selectButton('Rejoindre ce projet citoyen')->attr('data-csrf-token');
+        $this->client->request(Request::METHOD_POST, $citizenProjectUrl.'/rejoindre', ['token' => $token]);
+
+        // Email sent to the host
+        $this->assertCountMails(1, CitizenProjectNewFollowerMessage::class, 'jacques.picard@en-marche.fr');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Refresh the committee details page
+        $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('3 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertTrue($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+
+        // Emulate POST request to unfollow the committee.
+        $token = $crawler->selectButton('Quitter ce projet citoyen')->attr('data-csrf-token');
+        $this->client->request(Request::METHOD_POST, $citizenProjectUrl.'/quitter', ['token' => $token]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Refresh the committee details page
+        $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertTrue($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+    }
+
     private function assertSeeComments(array $comments)
     {
         foreach ($comments as $position => $comment) {
@@ -294,6 +371,23 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         }
 
         return 1 === count($flash);
+    }
+
+    private function seeFollowLink(Crawler $crawler): bool
+    {
+        return 1 === count($crawler->filter('.citizen-project-follow'));
+    }
+
+    private function seeUnfollowLink(Crawler $crawler): bool
+    {
+        return 1 === count($crawler->filter('.citizen-project-unfollow'));
+    }
+
+    private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
+    {
+        $this->assertCount($nb, $crawler->filter('.citizen-project-follow--disabled'));
+
+        return 1 === count($crawler->filter('#citizen-project-register-link'));
     }
 
     protected function setUp()
