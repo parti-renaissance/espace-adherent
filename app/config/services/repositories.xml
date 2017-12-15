@@ -144,5 +144,9 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="AppBundle\Repository\ReportRepository" public="false">
+            <argument>AppBundle\Entity\Report</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
     </services>
 </container>
