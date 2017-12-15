@@ -34,7 +34,8 @@ class ReportManager
     {
         $reportFQCN = ReportType::getEntityFQCN($type);
 
-        // Get the FQCN
+        // By convention the subclass should call the doctrine attribute of the subject "subject". Like this we can get
+        // the FQCN of the property thanks to Doctrine metadata
         $subjectFQCN = $this->em->getClassMetadata($reportFQCN)->getAssociationTargetClass('subject');
 
         return $this->em->getRepository($subjectFQCN)->findOneBy(['uuid' => $uuid]);
