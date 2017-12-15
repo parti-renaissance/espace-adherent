@@ -18,9 +18,12 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
 {
@@ -31,9 +34,25 @@ class CitizenProjectManager
 
     private $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var Filesystem
+     */
+    private $storage;
+
+    /**
+     * @var Server
+     */
+    private $glide;
+
+    public function __construct(ManagerRegistry $registry, Filesystem $storage)
     {
         $this->registry = $registry;
+        $this->storage = $storage;
+    }
+
+    public function setGlide(Server $glide): void
+    {
+        $this->glide = $glide;
     }
 
     public function isPromotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
@@ -444,5 +463,16 @@ class CitizenProjectManager
     public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
     {
         return $this->getCitizenProjectRepository()->hasCitizenProjectInStatus($adherent, $status);
+    }
+
+    public function addImage(CitizenProject $citizenProject): void
+    {
+        // Save citizen project image to cloud storage
+        if ($citizenProject->getImage() instanceof UploadedFile) {
+            $pathImage = $citizenProject->getImagePath();
+            $this->storage->put($pathImage, file_get_contents($citizenProject->getImage()->getPathname()));
+            $this->glide->deleteCache($pathImage);
+            $citizenProject->setImageUploaded(true);
+        }
     }
 }

@@ -1,3 +1,4 @@
+<script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
 {{ form_errors(form) }}
 
 <div class="form__row" id="field-name">
@@ -33,6 +34,18 @@
             'placeholder': 'Choisissez une catégorie',
         }
     }) }}
+</div>
+
+<div class="form__row" id="field-image">
+    <p>Ajouter une image : <span>(Optionnel)</span></p>
+    {{ form_label(form.image, 'Veuillez sélectionner une image sur votre ordinateur.') }}<br />
+    {{ form_errors(form.image) }}
+    {{ form_widget(form.image) }}
+    <div>
+        <span>JPEG ou PNG - 50 Mo maximum</span>
+        <span>Au moins 1024x576 pixels - format 16:9</span>
+    </div>
+    <p>Choisissez une image sans texte, représentative de votre projet et dont vous détenez les droits.</p>
 </div>
 
 <div class="form__row" id="field-problem-description">

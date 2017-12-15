@@ -64,6 +64,7 @@
                 </service>
             </argument>
         </service>
+        <service id="League\Flysystem\Filesystem" alias="app.storage" />
 
         <!-- Medias -->
         <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false">
@@ -85,6 +86,7 @@
                 <argument key="max_image_size">4000000</argument>
             </argument>
         </service>
+        <service id="League\Glide\Server" alias="app.glide" />
 
     </services>
 </container>

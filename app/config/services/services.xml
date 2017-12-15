@@ -12,7 +12,12 @@
 			<tag name="controller.service_arguments" />
 		</prototype>
 
-		<service id="AppBundle\CitizenProject\CitizenProjectManager" />
+		<service id="AppBundle\CitizenProject\CitizenProjectManager">
+			<call method="setGlide">
+				<argument type="service" id="app.glide" />
+			</call>
+		</service>
+
 		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
 
 		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">

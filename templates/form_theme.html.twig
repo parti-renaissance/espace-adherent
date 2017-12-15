@@ -7,11 +7,13 @@
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) -%}
     {% endif %}
     {{- parent() -}}
+    {{- block('character_count') -}}
 {%- endblock form_widget_simple %}
 
 {% block textarea_widget -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) %}
     {{- parent() -}}
+    {{- block('character_count') -}}
 {%- endblock textarea_widget %}
 
 {% block button_widget -%}
@@ -122,3 +124,23 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block character_count -%}
+    {% if with_character_count is defined and attr.maxlength is defined %}
+        {% set maxlength = attr.maxlength %}
+        <span id="{{ id }}_counter" class="character-count">0/{{ maxlength }}</span>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                const $field = $('#{{ id }}');
+                const $counter = $('#{{ id }}_counter');
+                $counter.html($field.val().length  + '/{{ maxlength }}');
+                $field.keyup(function(event) {
+                    const $text_length = $field.val().length;
+                    $counter.html($text_length  + '/{{ maxlength }}');
+                })
+                .trigger('keyup');
+            });
+        </script>
+    {% endif %}
+{%- endblock character_count %}

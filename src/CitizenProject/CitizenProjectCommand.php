@@ -9,11 +9,13 @@ use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -56,8 +58,6 @@ class CitizenProjectCommand
 
     public $committeeSupports;
 
-    private $committees;
-
     public $assistanceNeeded = false;
 
     /**
@@ -68,7 +68,7 @@ class CitizenProjectCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(max=800)
+     * @AssertWysiwygLength(max=800)
      */
     public $proposedSolution;
 
@@ -84,6 +84,19 @@ class CitizenProjectCommand
     public $assistanceContent;
 
     public $skills;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     maxSize = "50M",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     minWidth = "1024",
+     *     minHeight = "576",
+     *     minRatio = 1.77,
+     * )
+     */
+    private $image;
 
     public function __construct(NullableAddress $address = null)
     {
@@ -248,5 +261,18 @@ class CitizenProjectCommand
     public function isCitizenProjectApproved(): bool
     {
         return $this->citizenProject && $this->citizenProject->isApproved();
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getImage(): ?UploadedFile
+    {
+        return $this->image;
+    }
+
+    public function setImage(?UploadedFile $image): void
+    {
+        $this->image = $image;
     }
 }

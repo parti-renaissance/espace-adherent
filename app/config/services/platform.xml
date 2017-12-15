@@ -244,12 +244,14 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.citizen_project.update_handler" class="AppBundle\CitizenProject\CitizenProjectUpdateCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">

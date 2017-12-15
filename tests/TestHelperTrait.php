@@ -62,6 +62,7 @@ use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use League\Flysystem\Filesystem;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -103,6 +104,11 @@ trait TestHelperTrait
     public function getManagerRegistry(): ManagerRegistry
     {
         return $this->container->get('doctrine');
+    }
+
+    public function getStorage(): Filesystem
+    {
+        return $this->container->get('app.storage');
     }
 
     public function getEntityManager($class): ObjectManager
