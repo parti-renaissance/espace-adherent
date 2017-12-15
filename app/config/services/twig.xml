@@ -12,6 +12,8 @@
             <argument>%adherent_unregistration_reasons%</argument>
         </service>
 
+        <service id="Twig\Extensions\IntlExtension" />
+
         <!-- Twig runtimes must be tagged -->
         <service id="AppBundle\Twig\AssetRuntime">
             <argument type="service" id="router" />
