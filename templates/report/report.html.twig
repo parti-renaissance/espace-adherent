@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div>
+            <header>
+                <div class="l__wrapper--narrow">
+                    <h1 class="text--center text--larger">
+                        Formulaire de signalement
+                    </h1>
+                </div>
+            </header>
+
+            <section class="l__wrapper--600">
+                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+                    {{ form_errors(form) }}
+
+                    <div class="form__row">
+                        {{ form_label(form.reasons, 'Merci de nous indiquer les raisons de votre signalement en choisissant une ou plusieurs réponses ci-dessous :') }}
+                    </div>
+
+
+                    <div class="form l__col">
+                        <div>
+                            {{ form_row(form.reasons) }}
+                        </div>
+
+                        <div>
+                            {{ form_errors(form.comment) }}
+                            {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
+                        </div>
+                    </div>
+
+                    <p class="text--body">
+                        Nos équipes se chargeront de traiter votre requête dans les plus brefs délais.
+                    </p>
+
+                    <div class="text--center">
+                        <button type="submit" class="btn btn--error">
+                            Envoyer mon signalement
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </section>
+    </div>
+{% endblock %}

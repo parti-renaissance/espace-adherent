@@ -26,6 +26,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertFalse($this->seeCommentSection());
+        $this->assertFalse($this->seeReportLink());
     }
 
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
@@ -41,12 +42,22 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
+    public function testAdherentCanSeeCitizenProject(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertTrue($this->seeReportLink());
+        $this->assertFalse($this->seeCommentSection());
+    }
+
     public function testAdministratorCanSeeUnapprovedCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeCommentSection());
+        $this->assertFalse($this->seeReportLink());
     }
 
     public function testAdministratorCanSeeACitizenProject(): void
@@ -59,6 +70,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
             ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
         ]);
+        $this->assertTrue($this->seeReportLink());
     }
 
     public function testFollowerCanSeeACitizenProject(): void
@@ -71,6 +83,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
             ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
         ]);
+        $this->assertTrue($this->seeReportLink());
     }
 
     /**
@@ -388,6 +401,17 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertCount($nb, $crawler->filter('.citizen-project-follow--disabled'));
 
         return 1 === count($crawler->filter('#citizen-project-register-link'));
+    }
+
+    private function seeReportLink(): bool
+    {
+        try {
+            $this->client->getCrawler()->selectLink('Signaler un abus')->link();
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function setUp()

@@ -407,6 +407,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
+
+            <argument />
+            <argument>AppBundle\Entity\Report</argument>
+            <argument />
+            <argument type="service" id="AppBundle\Repository\ReportRepository" />
+        </service>
+
         <!--
         ######################################################
         # CitizenInitiative
