@@ -18,6 +18,7 @@ final class Events
     public const CITIZEN_PROJECT_CREATED = 'citizen_project_created';
     public const CITIZEN_PROJECT_UPDATED = 'citizen_project_updated';
     public const CITIZEN_PROJECT_APPROVED = 'citizen_project_approved';
+    public const CITIZEN_PROJECT_FOLLOWER_ADDED = 'citizen_project_follower_added';
 
     private function __construct()
     {

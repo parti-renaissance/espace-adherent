@@ -2,6 +2,7 @@
 
 namespace AppBundle\CitizenProject;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,5 +39,15 @@ class CitizenProjectManagementAuthority
     public function preApprove(CitizenProject $project): void
     {
         $this->manager->preApproveCitizenProject($project);
+    }
+
+    public function followCitizenProject(Adherent $adherent, CitizenProject $citizenProject): void
+    {
+        $this->manager->followCitizenProject($adherent, $citizenProject);
+
+        $this->eventDispatcher->dispatch(
+            Events::CITIZEN_PROJECT_FOLLOWER_ADDED,
+            new CitizenProjectFollowerAddedEvent($citizenProject, $adherent)
+        );
     }
 }

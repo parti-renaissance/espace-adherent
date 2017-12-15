@@ -2,9 +2,11 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManager;
@@ -80,6 +82,43 @@ class CitizenProjectMessageNotifierTest extends TestCase
 
         $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
         $citizenProjectMessageNotifier->sendAdherentNotificationCreation($adherent, $citizenProject, $creator);
+    }
+
+    public function testSendAdminitratorNotificationWhenFollowerAdded()
+    {
+        $producer = $this->createMock(ProducerInterface::class);
+        $mailer = $this->createMock(MailerService::class);
+        $manager = $this->createManager();
+        $adherent = $this->createMock(Adherent::class);
+        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
+        $committeeManager = $this->createMock(CommitteeManager::class);
+        $router = $this->createMock(RouterInterface::class);
+        $administrator = $this->createAdministrator(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $manager->expects($this->once())->method('getCitizenProjectAdministrators')->willReturn(new AdherentCollection([$administrator]));
+        $mailer->expects($this->once())->method('sendMessage');
+
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
+        $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
+    }
+
+    public function testSendAdminitratorNotificationWhenFollowerAddedWithAdministratorsInCitizenProject()
+    {
+        $producer = $this->createMock(ProducerInterface::class);
+        $mailer = $this->createMock(MailerService::class);
+        $manager = $this->createManager();
+        $adherent = $this->createMock(Adherent::class);
+        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
+        $committeeManager = $this->createMock(CommitteeManager::class);
+        $router = $this->createMock(RouterInterface::class);
+
+        $manager->expects($this->once())->method('getCitizenProjectAdministrators')->willReturn(new AdherentCollection());
+        $mailer->expects($this->never())->method('sendMessage');
+
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
+        $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
 
     private function createCitizenProject(string $uuid, string $cityName): CitizenProject
