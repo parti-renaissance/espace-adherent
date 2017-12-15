@@ -70,6 +70,13 @@
         </section>
     {% else %}
         <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
+
+        {% if citizen_project.hasImageUploaded %}
+            <div class="search__results__picture">
+                <img style="max-width: 600px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+            </div>
+        {% endif %}
+
         <div class="text--body" id="citizen-project-description">
             {{ citizen_project.problemDescription }}
         </div>
