@@ -86,6 +86,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_CITIZEN_INITIATIVES',
                     'ROLE_ADMIN_CITIZEN_ACTIONS',
                     'ROLE_ADMIN_CITIZEN_PROJECTS',
+                    'ROLE_ADMIN_REPORTS',
                     'ROLE_ADMIN_PROCURATIONS',
                     'ROLE_ADMIN_DONATIONS',
                     'ROLE_ADMIN_MAILER',
