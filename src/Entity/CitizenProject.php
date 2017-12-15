@@ -376,6 +376,11 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         return sprintf('images/citizen_projects/%s.jpg', $this->getUuid());
     }
 
+    public function getAssetImagePath(): string
+    {
+        return sprintf('%s/%s', 'assets', $this->getImagePath());
+    }
+
     public function setUrlimage(string $url): void
     {
         $this->urlImage = $url;
@@ -519,16 +524,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
                 }
             }
         }
-    }
-
-    public function getCitizenProjectSkills(): array
-    {
-        // hardcode temporary to test the show view
-        return [
-            'Toutes les bonnes volontés',
-            'Expert web',
-            'Professeur de maths',
-        ];
     }
 
     public function setCreator(?Adherent $creator): void
