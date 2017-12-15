@@ -22,6 +22,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
@@ -30,6 +31,8 @@ class CitizenProjectManager
         CitizenProject::PENDING,
         CitizenProject::REFUSED,
     ];
+
+    private $registry;
 
     /**
      * @var Filesystem
@@ -41,14 +44,12 @@ class CitizenProjectManager
      */
     private $glide;
 
-    private $entityManager;
-
-    public function __construct(ObjectManager $entityManager, Filesystem $storage)
+    public function __construct(ManagerRegistry $registry, Filesystem $storage)
     {
-        $this->entityManager = $entityManager;
+        $this->registry = $registry;
         $this->storage = $storage;
     }
-    
+
     public function setGlide(Server $glide): void
     {
         $this->glide = $glide;
@@ -378,32 +379,32 @@ class CitizenProjectManager
 
     private function getManager(): ObjectManager
     {
-        return $this->entityManager->getManager();
+        return $this->registry->getManager();
     }
 
     private function getCitizenProjectRepository(): CitizenProjectRepository
     {
-        return $this->entityManager->getRepository(CitizenProject::class);
+        return $this->registry->getRepository(CitizenProject::class);
     }
 
     private function getCitizenProjectMembershipRepository(): CitizenProjectMembershipRepository
     {
-        return $this->entityManager->getRepository(CitizenProjectMembership::class);
+        return $this->registry->getRepository(CitizenProjectMembership::class);
     }
 
     private function getAdherentRepository(): AdherentRepository
     {
-        return $this->entityManager->getRepository(Adherent::class);
+        return $this->registry->getRepository(Adherent::class);
     }
 
     private function getCitizenProjectCommitteeSupportRepository(): CitizenProjectCommitteeSupportRepository
     {
-        return $this->entityManager->getRepository(CitizenProjectCommitteeSupport::class);
+        return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
     }
 
     private function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
     {
-        return $this->entityManager->getRepository(CitizenProjectComment::class);
+        return $this->registry->getRepository(CitizenProjectComment::class);
     }
 
     public function countApprovedCitizenProjects(): int
