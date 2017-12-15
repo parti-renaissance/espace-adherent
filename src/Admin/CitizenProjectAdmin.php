@@ -6,8 +6,10 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectSkill;
+use AppBundle\Form\CitizenActionCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -136,6 +138,9 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'class' => CitizenProjectSkill::class,
                     'label' => 'Compétences',
                     'multiple' => true,
+                ])
+                ->add('matchedSkills', null, [
+                    'label' => 'Compétences matchées',
                 ])
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
@@ -371,9 +376,6 @@ class CitizenProjectAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id', null, [
-                'label' => 'ID',
-            ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
@@ -392,6 +394,26 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('postAddress.cityName', null, [
                 'label' => 'Ville',
+            ])
+            ->add('skills', TextType::class, [
+                'label' => 'Compétences  recherchées',
+                'template' => 'admin/citizen_project/list_skills.html.twig',
+            ])
+            ->add('matchedSkills', null, [
+                'label' => 'Compétences matchées',
+            ])
+            ->add('nextActionDate', null, [
+                'label' => 'Date de la prochaine action',
+                'mapped' => false,
+                'query_builder' => function(CitizenActionRepository $er) {
+
+                    dump($er);
+                    die;
+                    return $er->createQueryBuilder('qb')
+                        ->leftjoin('qb.products', 'p')
+                        ->where('p.active = :act')
+                        ->setParameter('act', true);
+                },
             ])
             ->add('assistanceNeeded', null, [
                 'label' => 'Demande d\'accompagnement',

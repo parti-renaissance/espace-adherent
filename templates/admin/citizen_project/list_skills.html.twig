@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for skill in object.skills %}
+            <li>
+                {{ skill.name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

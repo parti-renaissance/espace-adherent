@@ -6,9 +6,11 @@ use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\CitizenProjectComment;
+use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\Committee;
@@ -143,6 +145,11 @@ class CitizenProjectManager
         return $this->getAdherentRepository()->findOneByUuid($citizenProject->getCreatedBy());
     }
 
+    public function getCitizenProjectNextAction(CitizenProject $citizenProject): ?CitizenAction
+    {
+        return $this->getCitizenActionRepository()->findNextCitizenActionForCitizenProject($citizenProject);
+    }
+
     /**
      * @param CitizenProject[] $citizenProjects
      */
@@ -160,6 +167,16 @@ class CitizenProjectManager
     {
         foreach ($citizenProjects as $citizenProject) {
             $citizenProject->setAdministrators($this->getCitizenProjectAdministrators($citizenProject));
+        }
+    }
+
+    /**
+     * @param CitizenProject[] $citizenProjects
+     */
+    public function injectCitizenProjectNextAction(array $citizenProjects): void
+    {
+        foreach ($citizenProjects as $citizenProject) {
+            $citizenProject->setNextAction($this->getCitizenProjectNextAction($citizenProject));
         }
     }
 
@@ -386,6 +403,11 @@ class CitizenProjectManager
     private function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
     {
         return $this->registry->getRepository(CitizenProjectComment::class);
+    }
+
+    private function getCitizenActionRepository(): CitizenActionRepository
+    {
+        return $this->registry->getRepository(CitizenAction::class);
     }
 
     public function countApprovedCitizenProjects(): int
