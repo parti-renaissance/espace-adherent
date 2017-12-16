@@ -6,9 +6,9 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class CreateCommitteeVoter implements VoterInterface
+class CreateCommitteeVoter extends Voter
 {
     private $manager;
 
@@ -17,33 +17,31 @@ class CreateCommitteeVoter implements VoterInterface
         $this->manager = $manager;
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    protected function supports($attribute, $subject)
+    {
+        return CommitteePermissions::CREATE === $attribute && null === $subject;
+    }
+
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $adherent = $token->getUser();
-        if (null !== $subject || !$adherent instanceof Adherent) {
-            return self::ACCESS_ABSTAIN;
-        }
 
-        if (!in_array(CommitteePermissions::CREATE, $attributes, true)) {
-            return self::ACCESS_ABSTAIN;
-        }
-
-        if ($adherent->isReferent()) {
-            return self::ACCESS_DENIED;
+        if (!$adherent instanceof Adherent || $adherent->isReferent()) {
+            return false;
         }
 
         if ($this->manager->isSupervisorOfAnyCommittee($adherent)) {
-            return self::ACCESS_DENIED;
+            return false;
         }
 
         if ($this->manager->isCommitteeHost($adherent)) {
-            return self::ACCESS_DENIED;
+            return false;
         }
 
         if ($this->manager->hasCommitteeInStatus($adherent, CommitteeManager::COMMITTEE_STATUS_NOT_ALLOWED_TO_CREATE_ANOTHER)) {
-            return self::ACCESS_DENIED;
+            return false;
         }
 
-        return self::ACCESS_GRANTED;
+        return true;
     }
 }
