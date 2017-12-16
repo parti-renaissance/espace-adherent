@@ -89,7 +89,6 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", fetch="EAGER", mappedBy="citizenProject", orphanRemoval=true,
      *      cascade={"persist"})
      *
-     * @Algolia\Attribute
      */
     private $committeeSupports;
 
