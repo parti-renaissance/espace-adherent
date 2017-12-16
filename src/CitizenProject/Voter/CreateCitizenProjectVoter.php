@@ -6,9 +6,9 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Entity\Adherent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class CreateCitizenProjectVoter implements VoterInterface
+class CreateCitizenProjectVoter extends Voter
 {
     private $manager;
 
@@ -17,30 +17,27 @@ class CreateCitizenProjectVoter implements VoterInterface
         $this->manager = $manager;
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    protected function supports($attribute, $subject)
+    {
+        return CitizenProjectPermissions::CREATE === $attribute && null === $subject;
+    }
+
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $adherent = $token->getUser();
 
-        if (null !== $subject || !$adherent instanceof Adherent) {
-            return self::ACCESS_ABSTAIN;
-        }
-
-        if (!in_array(CitizenProjectPermissions::CREATE, $attributes, true)) {
-            return self::ACCESS_ABSTAIN;
-        }
-
-        if ($adherent->isReferent()) {
-            return self::ACCESS_DENIED;
+        if (!$adherent instanceof Adherent || $adherent->isReferent()) {
+            return false;
         }
 
         if ($this->manager->isCitizenProjectAdministrator($adherent)) {
-            return self::ACCESS_DENIED;
+            return false;
         }
 
         if ($this->manager->hasCitizenProjectInStatus($adherent, CitizenProjectManager::STATUS_NOT_ALLOWED_TO_CREATE)) {
-            return self::ACCESS_DENIED;
+            return false;
         }
 
-        return self::ACCESS_GRANTED;
+        return true;
     }
 }
