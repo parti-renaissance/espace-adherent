@@ -36,7 +36,7 @@
         {% endif %}
     </div>
 
-    <div class="citizen_project__card">
+    <div class="citizen_project__card" id="followers">
         <h3>{{ 'citizen_project.followers_count'|transchoice(followers|length) }}</h3>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <ul>

@@ -2,6 +2,33 @@
 
 {% set is_administrator = is_administrator(citizen_project) %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            {% if is_granted('ROLE_ADHERENT') %}
+                var citizenProjectSlug = '{{ citizen_project.slug }}';
+                var toggleMembershipButton = dom('#citizen_project-toggle-membership');
+                var toggleMembershipLoader = dom('#citizen_project-follow-btn-loader');
+
+                toggleMembershipButton && on(toggleMembershipButton, 'click', function () {
+                    toggleMembershipLoader.style.display = 'inline';
+                    toggleMembershipButton.disabled = true;
+
+                    di.get('api').toggleCitizenProjectMembership(
+                        citizenProjectSlug,
+                        toggleMembershipButton.getAttribute('data-action'),
+                        toggleMembershipButton.getAttribute('data-csrf-token'),
+                        function (result) {
+                            window.location.reload();
+                        }
+                    );
+                });
+            {% endif %}
+        });
+
+    </script>
+{% endblock %}
 {% block content %}
     <main class="citizen_project">
         <header class="background--pink-light space--60-0">
@@ -18,20 +45,44 @@
                     <h2 class="text--small">
                         {% if citizen_project.isApproved %}
                             {% if not user_is_adherent %}
-                                <button type="button" class="btn btn--blue" disabled="disabled">Rejoindre ce projet</button>
+                                <button type="button"
+                                        class="btn btn--blue citizen-project-follow--disabled"
+                                        disabled="disabled">
+                                    Rejoindre ce projet
+                                </button>
 
-                                <a href="{{ path('app_adherent_login') }}">Connectez-vous</a>
+                                <a href="{{ path('app_adherent_login') }}" id="citizen-project-login-link">Connectez-vous</a>
                                 ou
-                                <a href="{{ path('app_membership_register') }}">adhérez</a>
+                                <a href="{{ path('app_membership_register') }}" id="citizen-project-register-link">adhérez</a>
                                 pour suivre ce projet citoyen
                                 <br />
                             {% elseif can_follow_citizen_project(citizen_project) %}
-                                <button type="button" class="btn btn--blue">Rejoindre ce projet</button>
+                                <button type="button"
+                                        id="citizen_project-toggle-membership"
+                                        class="btn btn--blue citizen-project-follow"
+                                        data-action="rejoindre"
+                                        data-csrf-token="{{ csrf_token('citizen_project.follow') }}">
+                                    <img src="{{ asset('images/loader-sm.gif') }}" id="citizen_project-follow-btn-loader" />
+                                    Rejoindre ce projet citoyen
+                                </button>
                             {% elseif can_unfollow_citizen_project(citizen_project) %}
-                                <button type="button" class="btn btn--blue">Quitter projet citoyen</button>
+                                <button type="button"
+                                        id="citizen_project-toggle-membership"
+                                        class="btn btn--blue citizen-project-unfollow"
+                                        data-action="quitter"
+                                        data-csrf-token="{{ csrf_token('citizen_project.unfollow') }}">
+                                    <img src="{{ asset('images/loader-sm.gif') }}" id="citizen_project-follow-btn-loader" />
+                                    Quitter ce projet citoyen
+                                </button>
                             {% elseif is_administrator %}
-                                <button type="button" class="btn btn--blue" disabled="disabled">Quitter projet citoyen</button>
-                                <p>En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.</p>
+                                <button type="button"
+                                        class="btn btn--blue citizen-project-unfollow"
+                                        disabled="disabled">
+                                    Quitter projet citoyen
+                                </button>
+                                <div class="citizen-project-follow--anonymous__link text--white">
+                                    En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.
+                                </div>
                             {% endif %}
 
                             <a href="#" class="link--blue--dark link--no-decor">Signaler un abus</a>
