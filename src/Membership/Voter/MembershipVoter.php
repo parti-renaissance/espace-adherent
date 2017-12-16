@@ -5,22 +5,27 @@ namespace AppBundle\Membership\Voter;
 use AppBundle\Membership\MembershipPermissions;
 use AppBundle\Entity\Adherent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class MembershipVoter implements VoterInterface
+class MembershipVoter extends Voter
 {
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    protected function supports($attribute, $subject)
+    {
+        return MembershipPermissions::UNREGISTER === $attribute && null === $subject;
+    }
+
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $adherent = $token->getUser();
 
-        if (null !== $subject || !$adherent instanceof Adherent) {
-            return self::ACCESS_ABSTAIN;
+        if (!$adherent instanceof Adherent) {
+            return false;
         }
 
-        if (!in_array(MembershipPermissions::UNREGISTER, $attributes, true)) {
-            return self::ACCESS_ABSTAIN;
+        if (!$adherent->isBasicAdherent()) {
+            return false;
         }
 
-        return $adherent->isBasicAdherent() ? self::ACCESS_GRANTED : self::ACCESS_DENIED;
+        return true;
     }
 }

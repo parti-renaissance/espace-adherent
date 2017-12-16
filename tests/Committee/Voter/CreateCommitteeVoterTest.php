@@ -108,13 +108,13 @@ class CreateCommitteeVoterTest extends AbstractCommitteeVoterTest
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, null, ['CREATE_FOOBAR']));
     }
 
-    public function testCreateCommitteePermissionWithUnsupportedAdherentIsAbstain()
+    public function testCreateCommitteePermissionWithUnsupportedAdherentIsDenied()
     {
         $this->committeeManager->expects($this->never())->method('isCommitteeHost');
 
         $token = $this->createAuthenticationToken(new User('foobar', 'barfoo'));
 
-        $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, null, ['CREATE_COMMITTEE']));
     }
 
     public function testCreateCommitteePermissionWithExplicitSubjectIsAbstain()
