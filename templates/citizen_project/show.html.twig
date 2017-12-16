@@ -99,6 +99,10 @@
                             <p>{{ comment.content }}</p>
                         </div>
                     {% endfor %}
+
+                    {% if can_create_citizen_action(citizen_project) %}
+                        <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">Créer une action citoyenne</a>
+                    {% endif %}
                 </div>
             {% endif %}
 
