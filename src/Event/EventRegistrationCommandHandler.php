@@ -43,14 +43,16 @@ class EventRegistrationCommandHandler
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
         if ($command->getEvent() instanceof CitizenAction) {
-            $calendarExportLink = $this->generateUrl('app_event_export_ical', [
+            $calendarExportLink = $this->generateUrl('app_citizen_action_export_ical', [
                 'slug' => $command->getEvent()->getSlug(),
             ]);
+
             $message = CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $calendarExportLink);
         } else {
             $eventLink = $this->generateUrl('app_event_show', [
                 'slug' => $command->getEvent()->getSlug(),
             ]);
+
             $message = EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink);
         }
 

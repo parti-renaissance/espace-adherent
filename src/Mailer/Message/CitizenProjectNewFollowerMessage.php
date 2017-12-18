@@ -47,7 +47,7 @@ final class CitizenProjectNewFollowerMessage extends Message
             'follower_firstname' => self::escape($newFollower->getFirstName()),
             'follower_lastname' => $newFollower->getLastNameInitial(),
             'follower_age' => $newFollower->getAge() ?? 'n/a',
-            'follower_city' => $newFollower->getCity() ?? 'n/a',
+            'follower_city' => $newFollower->getCityName() ?? 'n/a',
         ];
     }
 }

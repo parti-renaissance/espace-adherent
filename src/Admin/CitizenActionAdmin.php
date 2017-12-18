@@ -82,10 +82,8 @@ class CitizenActionAdmin extends AbstractAdmin
                 ->add('participantsCount', null, [
                     'label' => 'Nombre de participants',
                 ])
-                ->add('status', 'choice', [
+                ->add('status', null, [
                     'label' => 'Statut',
-                    'choices' => CitizenAction::STATUSES,
-                    'catalogue' => 'forms',
                 ])
             ->end()
             ->with('Organisateur', ['class' => 'col-md-5'])
@@ -252,7 +250,7 @@ class CitizenActionAdmin extends AbstractAdmin
                 'label' => 'Organisateur',
                 'template' => 'admin/citizen_action/list_organizer.html.twig',
             ])
-            ->add('description', null, [
+            ->add('description', 'html', [
                 'label' => 'Description',
             ])
             ->add('beginAt', null, [
