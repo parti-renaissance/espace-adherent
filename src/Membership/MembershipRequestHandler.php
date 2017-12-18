@@ -18,6 +18,7 @@ use AppBundle\CitizenAction\CitizenActionManager;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Report\ReportManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,6 +39,7 @@ class MembershipRequestHandler
     private $committeeFeedManager;
     private $activitySubscriptionManager;
     private $citizenProjectManager;
+    private $reportManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -53,7 +55,8 @@ class MembershipRequestHandler
         EventManager $eventManager,
         CommitteeFeedManager $committeeFeedManager,
         ActivitySubscriptionManager $activitySubscriptionManager,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        ReportManager $reportManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -69,6 +72,7 @@ class MembershipRequestHandler
         $this->eventManager = $eventManager;
         $this->activitySubscriptionManager = $activitySubscriptionManager;
         $this->citizenProjectManager = $citizenProjectManager;
+        $this->reportManager = $reportManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -124,6 +128,7 @@ class MembershipRequestHandler
         $this->committeeFeedManager->removeAuthorItems($adherent);
         $this->activitySubscriptionManager->removeAdherentActivities($adherent);
         $this->citizenProjectManager->removeAuthorItems($adherent);
+        $this->reportManager->anonymAuthorReports($adherent);
 
         if ($token) {
             $this->manager->remove($token);

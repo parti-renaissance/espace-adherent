@@ -80,6 +80,7 @@
             <argument type="service" id="app.committee.feed_manager"/>
             <argument type="service" id="app.activity_subscription.manager"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="AppBundle\Report\ReportManager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
