@@ -6,7 +6,6 @@ use AppBundle\CitizenProject\CitizenProjectCommentCommand;
 use AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
@@ -28,8 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenProjectController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/{slug}", name="app_citizen_project_show")
      * @Method("GET|POST")
@@ -37,8 +34,6 @@ class CitizenProjectController extends Controller
      */
     public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
-        $this->disableInProduction();
-
         $form = null;
 
         if ($this->isGranted(CitizenProjectPermissions::COMMENT, $citizenProject)) {
@@ -72,8 +67,6 @@ class CitizenProjectController extends Controller
      */
     public function helpAction(): Response
     {
-        $this->disableInProduction();
-
         return new Response();
     }
 
@@ -190,8 +183,6 @@ class CitizenProjectController extends Controller
      */
     public function listActorsAction(CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
-        $this->disableInProduction();
-
         return $this->render('citizen_project/list_actors.html.twig', [
             'citizen_project' => $citizenProject,
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),

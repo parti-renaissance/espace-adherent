@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenAction\CitizenActionManager;
 use AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Event\EventRegistrationCommand;
@@ -27,7 +26,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class CitizenActionController extends Controller
 {
     use EntityControllerTrait;
-    use CanaryControllerTrait;
 
     /**
      * @Route("/{slug}", name="app_citizen_action_show")
@@ -126,8 +124,6 @@ class CitizenActionController extends Controller
      */
     public function listParticipantsAction(CitizenAction $citizenAction, CitizenActionManager $citizenActionManager): Response
     {
-        $this->disableInProduction();
-
         $registrations = $citizenActionManager->populateRegistrationWithAdherentsInformations($citizenActionManager->getRegistrations($citizenAction));
 
         return $this->render('citizen_action/list_participants.html.twig', [
