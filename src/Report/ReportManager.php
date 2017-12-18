@@ -2,7 +2,9 @@
 
 namespace AppBundle\Report;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Report;
+use AppBundle\Repository\ReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ReportManager
@@ -39,5 +41,15 @@ class ReportManager
         $subjectFQCN = $this->em->getClassMetadata($reportFQCN)->getAssociationTargetClass('subject');
 
         return $this->em->getRepository($subjectFQCN)->findOneBy(['uuid' => $uuid]);
+    }
+
+    public function anonymAuthorReports(Adherent $adherent)
+    {
+        $this->getReportRepository()->anonymizeAuthorReports($adherent);
+    }
+
+    private function getReportRepository(): ReportRepository
+    {
+        return $this->em->getRepository(Report::class);
     }
 }

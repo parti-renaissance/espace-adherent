@@ -174,7 +174,8 @@ security:
 
         ROLE_ADMIN_REPORTS:
             - ROLE_APP_ADMIN_REPORT_APPROVE
-            - ROLE_APP_ADMIN_REPORT_ALL
+            - ROLE_APP_ADMIN_REPORT_VIEW
+            - ROLE_APP_ADMIN_REPORT_LIST
 
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
