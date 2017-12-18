@@ -85,7 +85,10 @@
                                 </div>
                             {% endif %}
 
-                            <a href="#" class="link--blue--dark link--no-decor">Signaler un abus</a>
+                            {% if is_granted('REPORT') %}
+                                <a href="{{ path('app_report', {type: 'citizen-project', uuid: citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="report-link link--blue--dark link--no-decor">Signaler un abus</a>
+                            {% endif %}
+
                             <a href="#" class="link--blue--dark link--no-decor">Inviter un amis</a>
                             <ul class="list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                                 <li class="head">Partagez</li>
