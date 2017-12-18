@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -39,8 +38,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdherentController extends Controller
 {
-    use CanaryControllerTrait;
-
     const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
@@ -181,8 +178,6 @@ class AdherentController extends Controller
      */
     public function createCitizenProjectAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CitizenProjectCommandType::class, $command);
         $form->handleRequest($request);
@@ -296,8 +291,6 @@ class AdherentController extends Controller
 
     public function listMyCitizenProjectsAction(CitizenProjectManager $manager): Response
     {
-        $this->disableInProduction();
-
         return $this->render('adherent/list_my_citizen_projects.html.twig', [
             'citizen_projects' => $manager->getAdherentCitizenProjects($this->getUser()),
         ]);

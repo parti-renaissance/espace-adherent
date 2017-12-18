@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
@@ -15,8 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/evenements", name="app_search_events")
      * @Method("GET")
@@ -74,8 +71,6 @@ class SearchController extends Controller
      */
     public function searchCitizenProjectsAction(Request $request)
     {
-        $this->disableInProduction();
-
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_PROJECTS);
 
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
