@@ -31,6 +31,7 @@ class CitizenProjectDatagrid implements DatagridInterface
 
             $this->manager->injectCitizenProjectAdministrators($results);
             $this->manager->injectCitizenProjectCreator($results);
+            $this->manager->injectCitizenProjectNextAction($results);
 
             $this->cachedResults = $results;
         }

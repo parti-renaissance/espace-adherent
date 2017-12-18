@@ -79,7 +79,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $assistanceContent;
 
@@ -108,6 +108,23 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     private $skills;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $matchedSkills = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $featured = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $adminComment;
+
+    /**
      * A cached list of the administrators (for admin).
      *
      * @var AdherentCollection|null
@@ -132,6 +149,11 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      * @var UploadedFile|null
      */
     private $image;
+
+    /**
+     * @var CitizenAction|null
+     */
+    private $nextAction;
 
     public function __construct(
         UuidInterface $uuid,
@@ -561,5 +583,45 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function setAdministrators(AdherentCollection $administrators): void
     {
         $this->administrators = $administrators;
+    }
+
+    public function getMatchedSkills(): bool
+    {
+        return $this->matchedSkills;
+    }
+
+    public function setMatchedSkills(bool $matchedSkills): void
+    {
+        $this->matchedSkills = $matchedSkills;
+    }
+
+    public function isFeatured(): bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): void
+    {
+        $this->featured = $featured;
+    }
+
+    public function getAdminComment(): ?string
+    {
+        return $this->adminComment;
+    }
+
+    public function setAdminComment(string $adminComment): void
+    {
+        $this->adminComment = $adminComment;
+    }
+
+    public function getNextAction(): ?CitizenAction
+    {
+        return $this->nextAction;
+    }
+
+    public function setNextAction(CitizenAction $citizenAction): void
+    {
+        $this->nextAction = $citizenAction;
     }
 }
