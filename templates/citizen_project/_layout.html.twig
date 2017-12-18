@@ -36,7 +36,7 @@
                 <div class="text--blue--dark citizen_project__header__titles">
                     <div class="text--uppercase text--small b__nudge--bottom-tiny">
                         <strong class="text--body">Projet citoyen</strong>
-                        <a href="#" class="btn btn--small btn--yellow btn--no-border">No coups de coeur</a>
+                        <a href="#" class="btn btn--small btn--yellow btn--no-border">Coup de cœur</a>
                         <a href="#" class="btn btn--small btn--yellow btn--no-border">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</a>
                     </div>
                     <h2 class="text--large">
@@ -86,8 +86,7 @@
                             {% endif %}
 
                             <a href="#" class="link--blue--dark link--no-decor">Signaler un abus</a>
-                            <a href="#" class="link--blue--dark link--no-decor">Inviter un amis</a>
-                            <ul class="list__links list__links--row list__links--svgs list__links--svgs--small text--white">
+                              <ul class="list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                                 <li class="head">Partagez</li>
                                 <li role="button" aria-label="Partagez sur Facebook"
                                     onclick="App.share('facebook', window.location.href, 'Rejoignez ce projet citoyen !')">
