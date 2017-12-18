@@ -1,15 +1,16 @@
 <?php
 
-namespace AppBundle\CitizenInitiative;
+namespace AppBundle\CitizenAction;
 
+use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenInitiativeRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CitizenInitiativeRegistrationCommandHandler
+class CitizenActionRegistrationCommandHandler
 {
     private $factory;
     private $manager;
@@ -46,11 +47,11 @@ class CitizenInitiativeRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $calendarExportLink = $this->generateUrl('app_event_export_ical', [
+        $citizenInitiativeCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, $calendarExportLink));
+        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeCalendarLink));
 
         // Subscribe to citizen initiative organizator activity
         if ($adherent = $command->getAdherent()) {
