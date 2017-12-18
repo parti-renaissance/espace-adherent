@@ -43,12 +43,14 @@ class CitizenActionCommandHandler
         return $action;
     }
 
-    public function handleUpdate(CitizenActionCommand $command, CitizenAction $action): void
+    public function handleUpdate(CitizenActionCommand $command, CitizenAction $action): CitizenAction
     {
         $this->factory->updateFromCitizenActionCommand($command, $action);
 
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::CITIZEN_ACTION_UPDATED, new CitizenActionEvent($action));
+
+        return $action;
     }
 }

@@ -3,14 +3,11 @@
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
-    <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(citizen_action_form.address) }}
-            {{ js.ckeditor('citizen_action_description') }}
         });
     </script>
 {% endblock %}
@@ -108,9 +105,7 @@
                         </a>
                     </div>
                 {% else %}
-                    <div class="form__row text--center b__nudge--top-40 b__nudge--bottom-huge">
-                        <button type="submit" class="btn btn--blue btn--medium">Je crée mon action citoyenne</button>
-                    </div>
+                    {% block citizen_action_submit_button %}{% endblock %}
                 {% endif %}
 
             {{ form_end(citizen_action_form) }}

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use AppBundle\Entity\CitizenAction;
 
 class CitizenActionRepository extends EventRepository
 {
@@ -22,5 +23,22 @@ class CitizenActionRepository extends EventRepository
             ->andWhere('e.published = :published')
             ->setParameter('published', true)
         ;
+    }
+
+    public function findOneCitizenActionBySlug(string $slug): ?CitizenAction
+    {
+        $query = $this
+            ->createQueryBuilder('e')
+            ->select('e', 'a', 'o')
+            ->leftJoin('e.category', 'a')
+            ->leftJoin('e.organizer', 'o')
+            ->where('e.slug = :slug')
+            ->andWhere('e.published = :published')
+            ->setParameter('slug', $slug)
+            ->setParameter('published', true)
+            ->getQuery()
+        ;
+
+        return $query->getOneOrNullResult();
     }
 }

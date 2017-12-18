@@ -1,26 +1,33 @@
 <?php
 
-namespace AppBundle\Event;
+namespace AppBundle\CitizenAction;
 
+use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
+use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Event\EventRegistrationFactory;
+use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class EventRegistrationCommandHandler
+class CitizenActionRegistrationCommandHandler
 {
     private $factory;
     private $manager;
+    private $activitySubscriptionManager;
     private $mailer;
     private $urlGenerator;
 
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
+        ActivitySubscriptionManager $activitySubscriptionManager,
         MailerService $mailer,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
+        $this->activitySubscriptionManager = $activitySubscriptionManager;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
@@ -39,11 +46,17 @@ class EventRegistrationCommandHandler
         }
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
-        $eventLink = $this->generateUrl('app_event_show', [
+
+        $citizenInitiativeCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
             'slug' => $command->getEvent()->getSlug(),
         ]);
-        $message = EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink);
-        $this->mailer->sendMessage($message);
+
+        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeCalendarLink));
+
+        // Subscribe to citizen initiative organizator activity
+        if ($adherent = $command->getAdherent()) {
+            $this->activitySubscriptionManager->subscribeToAdherentActivity($adherent, $command->getEvent()->getOrganizer());
+        }
     }
 
     private function generateUrl(string $route, array $params = []): string

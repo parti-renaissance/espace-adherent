@@ -3,6 +3,7 @@
 namespace AppBundle\Twig;
 
 use AppBundle\CitizenAction\CitizenActionPermissions;
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -18,5 +19,10 @@ class CitizenActionRuntime
     public function canCreateCitizenActionFor(CitizenProject $citizenProject): bool
     {
         return $this->authorizationChecker->isGranted(CitizenActionPermissions::CREATE, $citizenProject);
+    }
+
+    public function canRegisterOnCitizenAction(CitizenAction $citizenAction): bool
+    {
+        return $this->authorizationChecker->isGranted(CitizenActionPermissions::REGISTER, $citizenAction);
     }
 }

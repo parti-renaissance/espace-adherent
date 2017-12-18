@@ -371,12 +371,20 @@
         </service>
 
         <!-- CitizenActions -->
-        <service id="AppBundle\CitizenAction\CitizenActionManager">
-            <argument type="service" id="app.repository.citizen_action"/>
-        </service>
+        <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
 
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+
+        <service autoconfigure="true" id="AppBundle\CitizenAction\Voter\OrganizerCitizenActionVoter" />
+
+        <service id="AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler">
+            <argument type="service" id="app.event.registration_factory"/>
+            <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.activity_subscription.manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
 
         <!-- Referents -->

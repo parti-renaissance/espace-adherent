@@ -1,19 +1,81 @@
-{% extends 'events/show.html.twig' %}
+{% extends 'citizen_action/_layout.html.twig' %}
 
 {% block page_title citizen_action.name %}
-{% block canonical_url url('app_citizen_action_show', { slug: citizen_action.slug }) %}
+{% block canonical_url url('app_citizen_action_show', {'slug': citizen_action.slug}) %}
 
 {% block json_ld %}
-    {% set event = citizen_action %}
-    {{ parent() }}
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "{{ citizen_action.name }}",
+        "url": "{{ block('open_graph_url') }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
+        "description": "{{ citizen_action.description }}",
+        "funder": {
+            "@type": "Person",
+            "givenName": "Emmanuel",
+            "familyName": "Macron"
+        },
+        "parentOrganization": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "location": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ citizen_action.address }}",
+            "addressLocality": "{{ citizen_action.cityName }}",
+            "postalCode": "{{ citizen_action.postalCode }}",
+            "addressCountry": "{{ citizen_action.country }}"
+        }
+    }
+    </script>
 {% endblock %}
 
-{% block content %}
-    {% set event = citizen_action %}
-    {{ parent() }}
-{% endblock %}
+{% block citizen_action_content %}
+    {% if is_administrator %}
+        <nav>
+            <div>
+                <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
+                <ul class="list__links list__links--default list__links--row">
+                    <li>
+                        <a href="{{ path('app_citizen_action_manager_edit', {slug: citizen_action.slug, project_slug:citizen_action.citizenProject.slug}) }}" class="icon--with-text">
+                            <i class="fa fa-sliders"></i>
+                            Éditer l'action citoyenne
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endif %}
+        <section>
+            <h2 class="space--20-0 b__nudge--top-40">À venir</h2>
 
-{% block javascripts %}
-    {% set event = citizen_action %}
-    {{ parent() }}
+            <div id="members">
+                <h3>{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
+                <ul>
+                    {% for participant in participants|slice(0, 11) %}
+                        <li class="text--body">
+                            <span class="card" title="{{ app.user and app.user.uuid == participant.uuid ? 'Vous' : 'participant' }}">{{ include('components/user.html.twig') }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_citizen_action_list_participants', {slug: citizen_action.slug}) }}">Tous &gt;</a>
+                {% endif %}
+            </div>
+
+        </section>
+
+        <section>
+            <h3>A propos</h3>
+            <p>{{ citizen_action.description }}</p>
+        </section>
 {% endblock %}

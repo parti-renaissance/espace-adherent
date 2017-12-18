@@ -61,13 +61,13 @@ class CitizenAction extends BaseEvent
         CitizenActionCategory $category,
         string $description,
         PostAddress $address,
-        string $beginAt,
-        string $finishAt
+        \DateTimeInterface $beginAt,
+        \DateTimeInterface $finishAt
     ) {
         $this->setName($name);
         $this->category = $category;
-        $this->beginAt = new \DateTime($beginAt); // mutable for now due to Gedmo sluggable
-        $this->finishAt = new \DateTimeImmutable($finishAt);
+        $this->beginAt = $beginAt;
+        $this->finishAt = $finishAt;
         $this->description = $description;
 
         if (!$this->postAddress->equals($address)) {
