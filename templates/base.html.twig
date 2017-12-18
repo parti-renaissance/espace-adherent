@@ -157,15 +157,13 @@
                                         {% endset %}
                                         {{ adherent_committees }}
                                     </div>
-                                    {% if enable_canary %}
-                                        <div class="nav__user__menu__items citizen_projects">
-                                            <h3>Projets citoyens</h3>
-                                            {% set adherent_citizen_projects %}
-                                                {{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects')) }}
-                                            {% endset %}
-                                            {{ adherent_citizen_projects }}
-                                        </div>
-                                    {% endif %}
+                                    <div class="nav__user__menu__items citizen_projects">
+                                        <h3>Projets citoyens</h3>
+                                        {% set adherent_citizen_projects %}
+                                            {{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects')) }}
+                                        {% endset %}
+                                        {{ adherent_citizen_projects }}
+                                    </div>
                                     <ul class="nav__user__menu__account">
                                         <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
                                         <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
@@ -185,7 +183,7 @@
                                                 <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
                                             </li>
                                         {% endif %}
-                                        {% if enable_canary and is_granted('CREATE_CITIZEN_PROJECT') %}
+                                        {% if is_granted('CREATE_CITIZEN_PROJECT') %}
                                             <li class="text--small">
                                                 <a href="{{ path('app_adherent_create_citizen_project') }}">Créer un projet citoyen</a>
                                             </li>
@@ -277,13 +275,11 @@
                                 {{ adherent_committees }}
                                 <hr>
                             </div>
-                            {% if enable_canary %}
-                                <div class="text--medium-small">
-                                    <h3>Projets citoyens</h3>
-                                    {{ adherent_citizen_projects }}
-                                    <hr>
-                                </div>
-                            {% endif %}
+                            <div class="text--medium-small">
+                                <h3>Projets citoyens</h3>
+                                {{ adherent_citizen_projects }}
+                                <hr>
+                            </div>
                         {% endif %}
 
                         <ul class="list__links list__links--col list__links--no-decor list__links--nav">
@@ -303,7 +299,7 @@
                                         <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
                                     </li>
                                 {% endif %}
-                                {% if enable_canary and is_granted('CREATE_CITIZEN_PROJECT') %}
+                                {% if is_granted('CREATE_CITIZEN_PROJECT') %}
                                     <li class="text--small">
                                         <a href="{{ path('app_adherent_create_citizen_project') }}">Créer un projet citoyen</a>
                                     </li>
