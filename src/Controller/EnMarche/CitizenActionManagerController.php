@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/projets-citoyens/{project_slug}/actions")
  * @Entity("project", expr="repository.findOneApprovedBySlug(project_slug)")
- * @Entity("action", expr="repository.findOneBySlug(slug)")
+ * @Entity("action", expr="repository.findOneCitizenActionBySlug(slug)")
  */
 class CitizenActionManagerController extends Controller
 {

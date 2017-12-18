@@ -2,9 +2,7 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Entity\CitizenAction;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -42,21 +40,12 @@ class EventRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        if ($command->getEvent() instanceof CitizenAction) {
-            $calendarExportLink = $this->generateUrl('app_citizen_action_export_ical', [
-                'slug' => $command->getEvent()->getSlug(),
-            ]);
-
-            $message = CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $calendarExportLink);
-        } else {
+        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
+            $registration,
             $eventLink = $this->generateUrl('app_event_show', [
                 'slug' => $command->getEvent()->getSlug(),
-            ]);
-
-            $message = EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink);
-        }
-
-        $this->mailer->sendMessage($message);
+            ])
+        ));
     }
 
     private function generateUrl(string $route, array $params = []): string

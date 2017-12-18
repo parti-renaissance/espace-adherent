@@ -165,4 +165,21 @@ class EventRegistrationRepository extends EntityRepository
 
         return $qb->getQuery()->execute();
     }
+
+    public function findByEvent(BaseEvent $event): EventRegistrationCollection
+    {
+        return $this->createEventRegistrationCollection($this->findBy(['event' => $event]));
+    }
+
+    public function findByAdherentEmailAndEvent(string $adherentEmail, BaseEvent $event): ?EventRegistration
+    {
+        return $this
+            ->createQueryBuilder('er')
+            ->where('er.emailAddress = :email')
+            ->andWhere('er.event = :event')
+            ->setParameter('email', $adherentEmail)
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

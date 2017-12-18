@@ -67,6 +67,15 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
+    public function findByEmails(array $emails): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.emailAddress IN (:emails)')
+            ->setParameter('emails', $emails)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function loadUserByUsername($username)
     {
         $query = $this
