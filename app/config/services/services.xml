@@ -8,6 +8,8 @@
 
 		<prototype namespace="AppBundle\CitizenProject\Voter\" resource="../../../src/CitizenProject/Voter" />
 
+		<prototype namespace="AppBundle\CitizenAction\Voter\" resource="../../../src/CitizenAction/Voter/" />
+
 		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/" public="true">
 			<tag name="controller.service_arguments" />
 		</prototype>
