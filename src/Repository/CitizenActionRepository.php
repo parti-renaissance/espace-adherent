@@ -11,15 +11,34 @@ class CitizenActionRepository extends EventRepository
     public function findNextCitizenActionForCitizenProject(CitizenProject $citizenProject): ?CitizenAction
     {
         return $this
+            ->createNextActionsQueryBuilder($citizenProject)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findNextCitizenActionsForCitizenProject(CitizenProject $citizenProject, int $maxResults = 5): array
+    {
+        return $this
+            ->createNextActionsQueryBuilder($citizenProject)
+            ->setMaxResults($maxResults)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    protected function createNextActionsQueryBuilder(CitizenProject $citizenProject): QueryBuilder
+    {
+        return $this
             ->createQueryBuilder('action')
             ->where('action.citizenProject = :citizenProject')
             ->setParameter('citizenProject', $citizenProject)
             ->andWhere('action.beginAt > :now')
             ->setParameter('now', new \DateTime())
+            ->andWhere('action.status = :status')
+            ->setParameter('status', CitizenAction::STATUS_SCHEDULED)
             ->orderBy('action.beginAt', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
     }
 
