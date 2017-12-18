@@ -50,11 +50,11 @@
 
 <div class="form__new" id="field-problem-description">
     {{ form_errors(form.problem_description) }}
-    {{ form_label(form.problem_description, 'À quel problème local répond votre projet ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {'label_attr': { class: 'label__header--large' }}) }}
     {{ form_widget(form.problem_description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
+            'placeholder': 'Quelques lignes qui décrivent aux autres votre problématique',
         }
     }) }}
     <small>
@@ -66,11 +66,11 @@
 
 <div class="form__new" id="field-proposed-solution">
     {{ form_errors(form.proposed_solution) }}
-    {{ form_label(form.proposed_solution, 'Comment répondez-vous à ce problème ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.proposed_solution, 'Comment répondez-vous à cette problématique ?', {'label_attr': { class: 'label__header--large' }}) }}
     {{ form_widget(form.proposed_solution, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Décrivez en un court paragraphe la ou les solutions que vous envisagez.',
+            'placeholder': 'Un court paragraphe sur la ou les solutions que vous envisagez',
         }
     }) }}
 </div>
@@ -81,7 +81,7 @@
     {{ form_widget(form.required_means, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Indiquez votre calendrier prévisionnel : date de la première action envisagée, principales étapes de votre projet.',
+            'placeholder': 'Votre calendrier prévisionnel et les principales étapes de votre projet',
         }
     }) }}
 </div>
