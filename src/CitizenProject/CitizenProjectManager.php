@@ -169,6 +169,11 @@ class CitizenProjectManager
         return $this->getCitizenActionRepository()->findNextCitizenActionForCitizenProject($citizenProject);
     }
 
+    public function getCitizenProjectNextActions(CitizenProject $citizenProject, int $maxResults = 5): array
+    {
+        return $this->getCitizenActionRepository()->findNextCitizenActionsForCitizenProject($citizenProject, $maxResults);
+    }
+
     /**
      * @param CitizenProject[] $citizenProjects
      */
