@@ -57,7 +57,8 @@
             'placeholder': 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
         }
     }) }}
-    <small>Ex. "Les collégiens ont à effectuer un stage d'observation en classe de 3e ou de 4e
+    <small>
+        Ex. "Les collégiens ont à effectuer un stage d'observation en classe de 3e ou de 4e
         pour les aider à déterminer leur orientation professionnelle mais
         ils ont parfois du mal à trouver ce stage en dehors de leur réseau famillial."
     </small>
@@ -87,7 +88,7 @@
 
 <div class="form__new" id="field-skills">
     {{ form_errors(form.skills) }}
-    {{ form_label(form.skills_search, 'Ce projet à besoin de : (Optionnel)', {'label_attr': { class: 'label__header--large' }}) }}
+    <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div>
         {{ form_widget(form.skills_search, { attr: { style: 'margin-bottom: 10px', class: 'form--full' } }) }}
         {{ form_widget(form.skills, { attr: { class: 'citizen_initiative__skills' } }) }}
@@ -109,7 +110,7 @@
             {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
             {{ form_errors(form.address.city) }}
         </div>
-        
+
         <div class="register__form__country register__form--third" id="field-country">
             {{ form_widget(form.address.country) }}
             {{ form_errors(form.address.country) }}
