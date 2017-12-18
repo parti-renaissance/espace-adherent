@@ -23,8 +23,29 @@
                 border: 1px dashed #ddd;
                 background-color: white;
                 position: relative;
-                padding: 50px 20px;
-                font-size: 16px;
+                padding: 70px 20px;
+                @include text--default;
+            }
+
+            .label__header--image {
+                position: absolute;
+                margin-top: 30px;
+                display: block;
+                z-index: 2;
+                width: 100%;
+                text-align: center;
+                font-weight: bold;
+                color: $newblue;
+                @include text--medium-small;
+            }
+
+            .field-image-info {
+                position: absolute;
+                margin-top: -60px;
+                width: 100%;
+                text-align: center;
+                color: #888;
+                @include text--small;
             }
         }
 

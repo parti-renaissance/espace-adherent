@@ -482,7 +482,7 @@ $text--size-extra-large: 48px;
     &__links--nav {
         li {
             font-family: $font-gillsans;
-            font-size: $text--size-medium--small;
+            font-size: $text--size-default;
 
             h1 {
                 @include text--logo;

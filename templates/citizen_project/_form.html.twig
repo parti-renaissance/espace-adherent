@@ -38,12 +38,12 @@
 
 <div class="form__new" id="field-image">
     <label class="label__header--large">Ajouter une image : <span>(Optionnel)</span></label>
-    {{ form_label(form.image, 'Veuillez sélectionner une image sur votre ordinateur.') }}<br />
+    <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
     {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
-    <div>
-        <span>JPEG ou PNG - 50 Mo maximum</span>
-        <span>Au moins 1024x576 pixels - format 16:9</span>
+    <div class="field-image-info">
+        <div>JPEG ou PNG - 50 Mo maximum</div>
+        <div>Au moins 1024x576 pixels - format 16:9</div>
     </div>
     <small>Choisissez une image sans texte, représentative de votre projet et dont vous détenez les droits.</small>
 </div>
@@ -132,7 +132,7 @@
 {% if form.committees is defined %}
     <div class="form__new" id="field-committee">
         {{ form_errors(form.committees) }}
-        {{ form_label(form.committees_search, 'Vous avez déjà le soutient d\'un comité local ? Indiquez son nom : (Optionnel)', {'label_attr': { class: 'text--bold' }}) }}
+        {{ form_label(form.committees_search, 'Vous avez déjà le soutient d\'un comité local ? Indiquez son nom : (Optionnel)', {'label_attr': { class: 'label__header--large' }}) }}
         <div>
             {{ form_widget(form.committees_search, { attr: { style: 'margin-bottom: 10px', class: 'form--full' } }) }}
             {{ form_widget(form.committees, { attr: { class: 'citizen_initiative__skills' } }) }}
