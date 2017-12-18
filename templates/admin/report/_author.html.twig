@@ -1,7 +1,7 @@
 {% set author = object.author %}
 
 {% if author %}
-    <a href="{{ path('admin_app_adherent_show', {'id': author.id}) }}">
+    <a href="{{ path('admin_app_adherent_show', {id: author.id}) }}">
         {{ author.fullName }}
     </a>
     <br />
@@ -11,5 +11,5 @@
         {{ author.phone|phone_number_format }}
     {% endif %}
 {% else %}
-    {{ author.fullName }}
+    Anonyme (adhérent désadhéré)
 {% endif %}

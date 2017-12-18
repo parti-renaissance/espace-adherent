@@ -86,7 +86,7 @@
                             {% endif %}
 
                             {% if is_granted('REPORT') %}
-                                <a href="{{ path('app_report', {type:'citizen-project', uuid:citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="report-link link--blue--dark link--no-decor">Signaler un abus</a>
+                                <a href="{{ path('app_report', {type: 'citizen-project', uuid: citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="report-link link--blue--dark link--no-decor">Signaler un abus</a>
                             {% endif %}
 
                             <a href="#" class="link--blue--dark link--no-decor">Inviter un amis</a>

@@ -11,7 +11,7 @@
             </header>
 
             <section class="l__wrapper--600">
-                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+                {{ form_start(form, { attr: {class: 'b__nudge--top-40'}}) }}
                     {{ form_errors(form) }}
 
                     <div class="form__row">
@@ -26,7 +26,7 @@
 
                         <div>
                             {{ form_errors(form.comment) }}
-                            {{ form_widget(form.comment, { attr: {'class': 'form__textbox'} }) }}
+                            {{ form_widget(form.comment, {attr: {class: 'form__textbox'}}) }}
                         </div>
                     </div>
 
