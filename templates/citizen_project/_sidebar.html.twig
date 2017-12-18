@@ -61,12 +61,6 @@
         <h3 class="svg--black">Localisé autour de</h3>
 
         <span>{{ citizen_project.cityName }}</span>
-
-        {% if citizen_project.latitude and citizen_project.longitude %}
-            <img src="{{ path('map_url', { latitude: citizen_project.latitude, longitude: citizen_project.longitude }) }}"
-                 title="Carte d'accès au projet citoyen {{ citizen_project.name }}"
-                 alt="{{ citizen_project.cityName }}" />
-        {% endif %}
     </div>
 
     <div class="citizen_project__card" id="support-committee">

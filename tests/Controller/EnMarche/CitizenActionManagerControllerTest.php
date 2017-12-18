@@ -6,7 +6,6 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenActionCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenAction;
-use AppBundle\Mailer\Message\CitizenActionCreationConfirmationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -117,8 +116,6 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertInstanceOf(CitizenAction::class, $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenActionCreationConfirmationMessage::class, 'jacques.picard@en-marche.fr'));
     }
 
     protected function setUp()
