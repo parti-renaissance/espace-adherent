@@ -82,8 +82,33 @@
         </div>
 
         <section>
-            <h2 class="space--20-0 b__nudge--top-40">À venir</h2>
+            <div class="citizen-project-next-actions">
+                <h2 class="space--20-0 b__nudge--top-40">À venir</h2>
 
+                {% for action in citizen_actions %}
+                    <div class="citizen-project-action">
+                        <div class="citizen-project-action__date">
+                            {{ action.beginAt|date('d') }}
+                            <br>
+                            {{ action.beginAt|date('M') }}
+                        </div>
+
+                        <div class="citizen-project-action__description">
+                            {{ action.name }}
+                            <br>
+                            {{ action.participantsCount }} inscrit(s)
+                        </div>
+
+                        <div class="citizen-project-action__attend">
+                            <a href="{{ path('app_citizen_action_attend', {slug: action.slug}) }}">
+                                RSVP
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    Aucune action prévue pour le moment
+                {% endfor %}
+            </div>
             {% if can_see_comment_citizen_project(citizen_project) %}
                 <div class="citizen-project-comments">
                     <h2 class="space--20-0 b__nudge--top-40">Discussions</h2>
