@@ -57,6 +57,7 @@ class CitizenProjectController extends Controller
 
         return $this->render('citizen_project/show.html.twig', [
             'citizen_project' => $citizenProject,
+            'citizen_actions' => $citizenProjectManager->getCitizenProjectNextActions($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
             'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
