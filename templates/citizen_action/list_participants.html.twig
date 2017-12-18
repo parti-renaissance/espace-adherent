@@ -1,0 +1,50 @@
+{% extends 'citizen_action/_layout.html.twig' %}
+
+{% block page_title 'Particpants à l\'action citoyenne' %}
+
+{% block citizen_action_content %}
+    {% set is_host = is_administrator(citizen_action.citizenProject) %}
+    <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+        <div class="committee__main l__wrapper--main l__wrapper--main-left">
+            <a href="{{ path('app_citizen_action_show', {slug: citizen_action.slug}) }}"
+               class="back-to-list icon--with-text text--summary space--20-0">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à l'action citoyenne
+            </a>
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">
+                    Liste des participants
+                </h1>
+            </header>
+
+            <table class="committee__members__list" cellpadding="10">
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    {% if is_host %}
+                        <th>Age</th>
+                        <th>CP</th>
+                        <th>Ville</th>
+                        <th>Inscription</th>
+                    {% endif %}
+                </tr>
+                {% for participant in participants %}
+                    <tr>
+                        <td class="member-first-name">{{ participant.firstName|capitalize }}</td>
+                        <td class="member-last-name">
+                            {{ not is_host ? participant.lastNameInitial|upper : participant.lastName}}
+                        </td>
+                        {% if is_host %}
+                            <td class="member-age">{{ participant.age }}</td>
+                            <td class="member-postal-code">{{ participant.postalCode }}</td>
+                            <td class="member-city-name">{{ participant.cityName }}</td>
+                            <td class="member-subscription-date">
+                                {{- participant.createdAt|date('d/m/Y') -}}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

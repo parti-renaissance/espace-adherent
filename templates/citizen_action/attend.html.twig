@@ -1,0 +1,6 @@
+{% extends 'events/attend.html.twig' %}
+
+{% block content %}
+    {% set committee_event = citizen_action %}
+    {{ parent() }}
+{% endblock %}

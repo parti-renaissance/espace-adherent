@@ -87,6 +87,7 @@ citizen_project.actors_count: '%count% acteur|%count% acteurs'
 #
 citizen_action.creation.success: Votre action citoyenne a bien été crée.
 citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
+citizen_action.participants_count: '%count% incrit|%count% inscrits'
 
 #
 # Summary

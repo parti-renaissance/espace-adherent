@@ -36,4 +36,21 @@ class CitizenActionRepository extends EventRepository
             ->setParameter('published', true)
         ;
     }
+
+    public function findOneCitizenActionBySlug(string $slug): ?CitizenAction
+    {
+        $query = $this
+            ->createQueryBuilder('ca')
+            ->select('ca', 'c', 'o')
+            ->leftJoin('e.category', 'c')
+            ->leftJoin('e.organizer', 'o')
+            ->where('e.slug = :slug')
+            ->andWhere('e.published = :published')
+            ->setParameter('slug', $slug)
+            ->setParameter('published', true)
+            ->getQuery()
+        ;
+
+        return $query->getOneOrNullResult();
+    }
 }
