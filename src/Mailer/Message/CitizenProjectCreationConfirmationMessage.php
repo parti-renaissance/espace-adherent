@@ -15,13 +15,14 @@ class CitizenProjectCreationConfirmationMessage extends Message
             '244426',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Nous avons bien reçu votre demande de création de projet citoyen !'
+            'Nous avons bien reçu votre demande de création de projet citoyen !',
+            [
+                'target_firstname' => self::escape($adherent->getFirstName()),
+                'citizen_project_name' => self::escape($citizenProject->getName()),
+            ]
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
-
-        $message->setVar('target_firstname', self::escape($adherent->getFirstName()));
-        $message->setVar('citizen_project_name', self::escape($adherent->getFirstName()));
 
         return $message;
     }
