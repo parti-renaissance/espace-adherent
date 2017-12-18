@@ -379,10 +379,6 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
 
-        <service autoconfigure="true" id="AppBundle\CitizenAction\Voter\OrganizerCitizenActionVoter" />
-
-        <service autoconfigure="true" autowire="true" id="AppBundle\CitizenAction\Voter\CreateCitizenActionVoter" />
-
         <!-- Referents -->
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
             <argument type="service" id="router" />
