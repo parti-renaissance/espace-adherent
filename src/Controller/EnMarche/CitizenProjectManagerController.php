@@ -6,7 +6,6 @@ use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\CitizenProject\CitizenProjectContactActorsCommand;
 use AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\Form\CitizenProjectContactActorsType;
@@ -26,16 +25,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenProjectManagerController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/editer", name="app_citizen_project_manager_edit")
      * @Method("GET|POST")
      */
     public function editAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
-        $this->disableInProduction();
-
         $command = CitizenProjectCommand::createFromCitizenProject($citizenProject);
         $form = $this->createForm(CitizenProjectCommandType::class, $command);
         $form->handleRequest($request);
@@ -64,8 +59,6 @@ class CitizenProjectManagerController extends Controller
      */
     public function contactActorsAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
-        $this->disableInProduction();
-
         if (!$this->isCsrfTokenValid('citizen_project.contact_actors', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact actors.');
         }
