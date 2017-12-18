@@ -428,6 +428,7 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('committeeSupports', null, [
                 'label' => 'Comités en soutien',
+                'template' => 'admin/citizen_project/list_committee_supports.html.twig',
             ])
             ->add('featured', null, [
                 'label' => 'Coup de coeur',

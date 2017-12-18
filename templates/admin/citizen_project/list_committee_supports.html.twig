@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.committeeSupports|length %}
+        <ul>
+            {% for committeeSupport in object.committeeSupports %}
+                <li>
+                    {{ committeeSupport.committee.name }}
+                    [{{ committeeSupport.status }}]
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
