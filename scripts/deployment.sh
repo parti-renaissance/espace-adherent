@@ -12,7 +12,7 @@ sudo /opt/google-cloud-sdk/bin/kubectl set image pod/staging-migrate-tasks enmar
 sudo /opt/google-cloud-sdk/bin/kubectl get pod staging-migrate-tasks -o yaml | sudo /opt/google-cloud-sdk/bin/kubectl replace --force -f -
 
 # Deploy to staging
-declare -a images=("staging-app" "staging-worker-mailer-campaign" "staging-worker-mailer-transactional" "staging-worker-referent")
+declare -a images=("staging-app" "staging-worker-mailer-campaign" "staging-worker-mailer-transactional" "staging-worker-referent" "staging-notification-citizen")
 
 for image in "${images[@]}"
 do
