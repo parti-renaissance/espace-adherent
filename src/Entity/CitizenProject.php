@@ -155,6 +155,13 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
      */
     private $nextAction;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectReport", mappedBy="subject")
+     *
+     * @var Collection|CitizenProjectReport
+     */
+    private $reports;
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -173,7 +180,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
-        int $membersCount = 0
+        int $membersCount = 0,
+        array $reports = []
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTimeImmutable($approvedAt);
@@ -204,6 +212,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         $this->skills = new ArrayCollection();
         $this->committeeSupports = new ArrayCollection();
         $this->setCommitteesOnSupport($committees);
+        $this->reports = new ArrayCollection();
+        $this->setReports($reports);
     }
 
     public function getPostAddress(): NullablePostAddress
@@ -271,9 +281,19 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         });
     }
 
-    public function setCommitteeSupports(Collection $committeeSupports): void
+    public function setCommitteeSupports(iterable $committeeSupports): void
     {
-        $this->committeeSupports = $committeeSupports;
+        $this->committeeSupports = new ArrayCollection();
+        foreach ($committeeSupports as $committeeSupport) {
+            $this->addCommitteeSupport($committeeSupport);
+        }
+    }
+
+    public function addCommitteeSupport(CitizenProjectCommitteeSupport $committeeSupport): void
+    {
+        if (!$this->committeeSupports->contains($committeeSupport)) {
+            $this->committeeSupports->add($committeeSupport);
+        }
     }
 
     public function setCommitteesOnSupport(iterable $committees): void
@@ -618,5 +638,30 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function setNextAction(CitizenAction $citizenAction): void
     {
         $this->nextAction = $citizenAction;
+    }
+
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function setReports(iterable $reports): void
+    {
+        $this->reports = new ArrayCollection();
+        foreach ($reports as $report) {
+            $this->addReport($report);
+        }
+    }
+
+    public function addReport(CitizenProjectReport $citizenProjectReport): void
+    {
+        if (!$this->reports->contains($citizenProjectReport)) {
+            $this->reports->add($citizenProjectReport);
+        }
+    }
+
+    public function removeReport(CitizenProjectReport $citizenProjectReport): void
+    {
+        $this->reports->removeElement($citizenProjectReport);
     }
 }
