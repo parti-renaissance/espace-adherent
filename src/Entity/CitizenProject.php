@@ -478,7 +478,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         NullablePostAddress $address,
         PhoneNumber $phone,
         iterable $skills,
-        iterable $committees
+        iterable $committees,
+        ?UploadedFile $image
     ): void {
         $this->setName($name);
         $this->setSubtitle($subtitle);
@@ -489,6 +490,10 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         $this->setProposedSolution($proposedSolution);
         $this->setRequiredMeans($requiredMeans);
         $this->setSkills($skills);
+
+        if ($image instanceof UploadedFile) {
+            $this->setImage($image);
+        }
 
         if (null === $this->postAddress || !$this->postAddress->equals($address)) {
             $this->postAddress = $address;
