@@ -88,6 +88,8 @@ doctrine:
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
         server_version:   5.7
+        options:
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
 
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
