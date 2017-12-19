@@ -39,3 +39,16 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block page_title %}Espace Responsable Engagement Citoyen{% endblock %}
+
+{% block coordinator_area_header_description %}
+    <p class="text--center">
+        Cet espace vous permet d'apprécier les projets citoyens des
+        zones que vous gérez. Seule l’équipe du QG sera en mesure de
+        voir vos appréciations.
+    </p>
+    <p class="text--center">
+        Zones gérées : {{ app.user.coordinatorManagedAreaCodesAsString }}.
+    </p>
+{% endblock %}

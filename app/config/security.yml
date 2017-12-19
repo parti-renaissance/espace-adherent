@@ -211,9 +211,9 @@ security:
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
 
         ROLE_COORDINATOR_CITIZEN_PROJECT:
-            - ROLE_COORDINATOR
+            - ROLE_COORDINATOR_CITIZEN_PROJECT
         ROLE_COORDINATOR_COMMITTEE:
-            - ROLE_COORDINATOR
+            - ROLE_COORDINATOR_COMMITTEE
 
     access_decision_manager:
         strategy: unanimous
