@@ -145,11 +145,11 @@ ljfix: node_modules
 	$(RUN) yarn lint -- --fix
 
 phpcs:          ## Lint PHP code
-phpcs:
+phpcs: vendor
 	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v
 
 phpcsfix:       ## Lint and fix PHP code to follow the convention
-phpcsfix:
+phpcsfix: vendor
 	$(PHPCSFIXER) fix
 
 
