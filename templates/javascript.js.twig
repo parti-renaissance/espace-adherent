@@ -57,7 +57,7 @@ CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
 
 {% endmacro %}
 
-{% macro skills(idSkillsField, idSkillSearch, urlSearch) %}
+{% macro skills(idSkillsField, idSkillSearch, urlSearch, disabledSkillsIdsEnter) %}
 $(document).ready(function() {
     var skillList = $('{{ idSkillsField|raw }}');
     var removeSkill = function () {
@@ -89,14 +89,6 @@ $(document).ready(function() {
         }
     };
 
-    // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
-
     var input = $('{{ idSkillSearch|raw }}');
 
     // Add skill autocomplete
@@ -125,6 +117,15 @@ $(document).ready(function() {
         }
     });
 
+    // Prevent submitting form by pressing enter
+    var disabledElementsEnter = $('{{ disabledSkillsIdsEnter|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
     // Add skill by pressing button "Ajouter"
     $('#add_skill').click(function () {
         addSkill($('{{ idSkillSearch|raw }}'));
@@ -134,7 +135,7 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro citizenProjectSkills(idSkillsListField, idSkillSearchField ,urlSearch) %}
+{% macro citizenProjectSkills(idSkillsListField, idSkillSearchField ,urlSearch, disabledCitizenProjectIdsEnter) %}
 $(document).ready(function() {
     var skillList = $('{{ idSkillsListField|e('js') }}');
     var removeSkill = function () {
@@ -169,14 +170,6 @@ $(document).ready(function() {
             removeSkill();
         }
     };
-
-    // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
 
     var input = $('{{ idSkillSearchField|e('js') }}');
 
@@ -237,18 +230,20 @@ $(document).ready(function() {
         }
     });
 
-    removeSkill();
     // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
+    var disabledElementsEnter = $('{{ disabledCitizenProjectIdsEnter|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
     });
+
+    removeSkill();
 });
 {% endmacro %}
 
-{% macro committee(idCommitteesListField, idCommitteeSearchField ,urlSearch) %}
+{% macro committee(idCommitteesListField, idCommitteeSearchField ,urlSearch, disabledCommitteeEnterIds) %}
 $(document).ready(function() {
     var committeeList = $('{{ idCommitteesListField|raw }}');
     var removeCommittee = function () {
@@ -283,14 +278,6 @@ $(document).ready(function() {
             removeCommittee();
         }
     };
-
-    // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
 
     var input = $('{{ idCommitteeSearchField|raw }}');
 
@@ -340,13 +327,15 @@ $(document).ready(function() {
         }
     });
 
-    removeCommittee();
     // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
+    var disabledElementsEnter = $('{{ disabledCommitteeEnterIds|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
     });
+
+    removeCommittee();
 });
 {% endmacro %}

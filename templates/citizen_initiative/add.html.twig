@@ -13,7 +13,7 @@
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
             {{ js.ckeditor('citizen_initiative_description') }}
-            {{ js.skills('#citizen_initiative_skills', '#citizen_initiative_skill_search', path('app_citizen_initiative_skills_autocomplete')) }}
+            {{ js.skills('#citizen_initiative_skills', '#citizen_initiative_skill_search', path('app_citizen_initiative_skills_autocomplete'), '#citizen_initiative_skill_search') }}
         });
 
         $(document).ready(function() {
