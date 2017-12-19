@@ -69,10 +69,9 @@ a {
     &.link--newblue { // temporary until we update our color palette
         color: $newblue;
         border-color: transparent;
-        border-width: 3px;
 
         &:hover {
-            border-color: $pink;
+            border-color: $newblue;
         }
     }
 

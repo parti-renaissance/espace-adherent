@@ -23,29 +23,8 @@
                 border: 1px dashed #ddd;
                 background-color: white;
                 position: relative;
-                padding: 70px 20px;
-                @include text--default;
-            }
-
-            .label__header--image {
-                position: absolute;
-                margin-top: 30px;
-                display: block;
-                z-index: 2;
-                width: 100%;
-                text-align: center;
-                font-weight: bold;
-                color: $newblue;
-                @include text--medium-small;
-            }
-
-            .field-image-info {
-                position: absolute;
-                margin-top: -60px;
-                width: 100%;
-                text-align: center;
-                color: #888;
-                @include text--small;
+                padding: 50px 20px;
+                font-size: 16px;
             }
         }
 
@@ -61,6 +40,51 @@
             margin-top: 8px;
             color: $dark;
             display: block;
+        }
+    }
+}
+
+.citizen-project {
+    &__aside {
+        h3 {
+            @include text--medium-small;
+            font-family: $font-gillsans;
+            margin-bottom: 5px;
+        }
+    }
+
+    &__card {
+        margin-bottom: 30px;
+    }
+
+    &__skills {
+        li {
+            border-radius: 50px;
+            background-color: $gray--lighter;
+            color: $newblue;
+            display: inline-block;
+            @include text--small;
+            padding: 2px 10px;
+            margin-bottom: 5px;
+        }
+    }
+
+    &__menu {
+        margin: 40px 0;
+
+        li {
+            @include text--medium-small;
+            font-family: $font-roboto;
+
+            .active {
+                font-weight: bold;
+                color: $newblue;
+                border-bottom: 6px solid $newblue;
+            }
+
+            a {
+                border: 0;
+            }
         }
     }
 }

@@ -292,22 +292,6 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
-        $this->assertTrue($this->seeRegisterLink($crawler));
-    }
-
-    public function testAuthenticatedCitizenProjectAdministratorCanUnfollowCommittee()
-    {
-        // Login as administrator
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8'));
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $unfollowButton = $crawler->filter('.citizen-project-unfollow');
-
-        // Button should be disabled for adminitrator
-        $this->assertNotNull($unfollowButton->attr('disabled'));
-        $this->assertSame('En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.', trim($crawler->filter('.citizen-project-follow--anonymous__link')->text()));
     }
 
     public function testAuthenticatedAdherentCanFollowCitizenProject()
@@ -320,13 +304,13 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('2 acteurs', $crawler->filter('#followers > h3')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
 
         // Emulate POST request to follow the committee.
-        $token = $crawler->selectButton('Rejoindre ce projet citoyen')->attr('data-csrf-token');
+        $token = $crawler->selectButton('Rejoindre ce projet')->attr('data-csrf-token');
         $this->client->request(Request::METHOD_POST, $citizenProjectUrl.'/rejoindre', ['token' => $token]);
 
         // Email sent to the host
@@ -338,7 +322,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('3 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('3 acteurs', $crawler->filter('#followers > h3')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -353,7 +337,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('2 acteurs', $crawler->filter('#followers > h3')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -410,7 +394,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     private function seeReportLink(): bool
     {
         try {
-            $this->client->getCrawler()->selectLink('Signaler un abus')->link();
+            $this->client->getCrawler()->selectLink('Signaler')->link();
         } catch (\InvalidArgumentException $e) {
             return false;
         }

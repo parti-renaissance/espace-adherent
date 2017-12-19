@@ -39,7 +39,7 @@
     align-items: center;
     text-align: center;
     border-radius: 3px;
-    border: 0;
+    border: 1px solid transparent;
     padding: 18px 30px;
     font-weight: bold;
     background: white;
@@ -85,6 +85,16 @@
         color: black;
         background: $green-hover;
         border-color: $green-hover;
+    }
+}
+
+@mixin btn--orange {
+    background: $orange;
+    border-color: $orange;
+
+    &:hover {
+        background: #ec5844;
+        border-color: #ec5844;
     }
 }
 
@@ -361,6 +371,11 @@ button.btn {
         @include text--small;
     }
 
+    &--small {
+        padding: 10px 24px;
+        @include text--small;
+    }
+
     &--light {
         color: $dark;
         border: 1px solid $gray--light;
@@ -382,6 +397,32 @@ button.btn {
             background-color: $error;
             border-color: $error;
             color: white;
+        }
+    }
+
+    &--orange {
+        @include btn--orange;
+    }
+
+    &--pink {
+        color: white;
+        background-color: $pink;
+        border-color: $pink;
+
+        &:hover {
+            background-color: $pink-hover;
+            border-color: $pink-hover;
+        }
+    }
+
+    &--hollow {
+        color: black;
+        background-color: white;
+        border: 1px solid $gray;
+
+        &:hover {
+            color: black;
+            background-color: $gray--lighter;
         }
     }
 }

@@ -115,7 +115,7 @@
                         <a href="{{ path('app_search_events') }}">Événements</a>
                     </li>
                     <li class="text--medium-small" >
-                        <a href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
+                        <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
                     </li>
                     <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                         <a href="javascript:void(0)" class="je-cherche">
@@ -126,11 +126,11 @@
                 <div class="l__row">
                     {% if not campaign_expired and not user_is_adherent %}
                         <a href="{{ path('app_membership_register') }}"
-                           class="btn b__nudge--right-nano">
-                            J'adhère
+                           class="newbtn newbtn--hollow newbtn--small b__nudge--right-nano">
+                            Adhèrer
                         </a>
                     {% endif %}
-                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Je donne</a>
+                    <a href="{{ path('donation_index') }}" class="newbtn newbtn--small newbtn--pink b__nudge--right">Donner</a>
 
                     {% if not campaign_expired %}
                     <div class="nav__user">
@@ -251,8 +251,8 @@
                                     J'adhère
                                 </a>
                             {% endif %}
-                            <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right-larger">
-                                Je donne
+                            <a href="{{ path('donation_index') }}" class="newbtn btn--primary b__nudge--right-larger">
+                                Donner
                             </a>
                         </li>
                     {% endif %}
@@ -261,9 +261,9 @@
                     <input type="checkbox" id="nav-menu">
                     <label for="nav-menu">Menu de navigation</label>
                     <div class="nav__mobile--menu">
-                        <div class="l__row l__row--h-stretch">
+                        <div class="l__row l__row--h-stretch text--body">
                             <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}"
-                               class="icon--with-text text--medium-small">
+                               class="icon--with-text">
                                 {{ include('components/user.html.twig') }}
                                 {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
                             </a>
@@ -352,15 +352,17 @@
                                 <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
                                 <hr>
                             {% endif %}
-                            <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
+                            <li class="text--medium-small"><a href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                             <li class="text--medium-small">
                                 <a href="{{ path('page_campus') }}">Campus</a>
                             </li>
                             <li class="text--medium-small">
                                 <a href="{{ path('app_search_events') }}">Événements</a>
                             </li>
-                            <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a></li>
-                            <li><a class="text--medium-small" href="https://aide.en-marche.fr">Aide</a></li>
+                            <li class="text--medium-small">
+                                <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
+                            </li>
+                            <li class="text--medium-small"><a href="https://aide.en-marche.fr">Aide</a></li>
                             <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                                 <a href="javascript:void(0)" class="je-cherche icon--with-text">
                                     {{ include('components/search.html.twig') }}
@@ -488,14 +490,14 @@
                             </li>
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
-                            <li><h4><a href="{{ path('articles_list', {'category': 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
-                            <li><a href="{{ path('articles_list', {'category': 'tout'}) }}">Toute l'actualité</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'actualites'}) }}">Articles</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'videos'}) }}">Vidéos</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'discours'}) }}">Discours</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'medias'}) }}">Médias</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Communiqués</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'opinions'}) }}">Opinions</a></li>
+                            <li><h4><a href="{{ path('articles_list', {category: 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                            <li><a href="{{ path('articles_list', {category: 'tout'}) }}">Toute l'actualité</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'actualites'}) }}">Articles</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'videos'}) }}">Vidéos</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'discours'}) }}">Discours</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'medias'}) }}">Médias</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'communiques'}) }}">Communiqués</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'opinions'}) }}">Opinions</a></li>
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
                             {% if not campaign_expired %}
@@ -505,8 +507,8 @@
                             {% else %}
                                 <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>
                             {% endif %}
-                            <li><a href="{{ path('donation_index') }}">Je donne en ligne</a></li>
-                            <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Je donne par chèque</a></li>
+                            <li><a href="{{ path('donation_index') }}">Donner en ligne</a></li>
+                            <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Donner par chèque</a></li>
                             {% if not campaign_expired %}
                                 <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
                                 <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
@@ -535,7 +537,7 @@
                         <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
                             <li><a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a></li>
                             <li><a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">Écrivez-nous</a></li>
-                            <li><a href="{{ path('articles_list', {'category': 'communiques'}) }}">Presse</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'communiques'}) }}">Presse</a></li>
                             <li><a href="{{ path('page_jobs') }}">Nos offres</a></li>
                             <li><a href="{{ path('page_mentions_legales') }}">Mentions Légales</a></li>
                             <li><a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a></li>

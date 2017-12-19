@@ -1,23 +1,24 @@
-<aside class="citizen_project__aside l__wrapper--aside">
+<aside class="l__wrapper--aside citizen-project__aside text--body">
 
-    <div class="citizen_project__card">
-        <h3>Nous recherchons :</h3>
-        {% if citizen_project.skills|length > 0 %}
-        <ul>
-            {% for skill in citizen_project.skills  %}
-                <li>{{skill}}</li>
-            {% endfor %}
+    <div class="citizen-project__card b__nudge--top-40">
+        <h3>Nous recherchons</h3>
+        <ul class="citizen-project__skills">
+            <li>Toutes les bonnes volontés</li>
+            {% if citizen_project.skills|length > 0 %}
+                {% for skill in citizen_project.skills  %}
+                    <li>{{skill}}</li>
+                {% endfor %}
+            {% endif %}
         </ul>
-        {% else %}
-            <span>Aucune compétence.</span>
-        {% endif %}
     </div>
 
-    <div class="citizen_project__card">
-        <h3>{{ 'citizen_project.administrators_count'|transchoice(administrators|length) }}</h3>
+    <div class="citizen-project__card">
+        <h3>
+            {{ 'citizen_project.administrators_count'|transchoice(administrators|length) }}
+        </h3>
 
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <ul>
+            <ul class="l__row l__row--wrap">
                 {% for administrator in administrators %}
                     <li class="text--body">
                         <span class="card"
@@ -36,12 +37,14 @@
         {% endif %}
     </div>
 
-    <div class="citizen_project__card" id="followers">
-        <h3>{{ 'citizen_project.followers_count'|transchoice(followers|length) }}</h3>
+    <div class="citizen-project__card" id="followers">
+        <h3>
+            {{ 'citizen_project.followers_count'|transchoice(followers|length) }}
+        </h3>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <ul>
+            <ul class="l__row l__row--wrap">
                 {% for follower in followers|slice(0, 11) %}
-                    <li class="text--body">
+                    <li>
                         <span class="card" title="{{ not user_is_admin and app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
                     </li>
                 {% endfor %}
@@ -50,20 +53,19 @@
         {% endif %}
     </div>
 
-    <div class="citizen_project__card">
-        <h3 class="svg--black">Catégorie</h3>
+    <div class="citizen-project__card">
+        <h3 class="svg--black  text--medium-small">Catégorie</h3>
         <ul>
             {{ citizen_project.category.name }}
         </ul>
     </div>
 
-    <div class="citizen_project__card">
+    <div class="citizen-project__card">
         <h3 class="svg--black">Localisé autour de</h3>
-
         <span>{{ citizen_project.cityName }}</span>
     </div>
 
-    <div class="citizen_project__card" id="support-committee">
+    <div class="citizen-project__card" id="support-committee">
         <h3 class="svg--black">{{ 'citizen_project.committees'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</h3>
         <ul>
             {% for committeeSupport in citizen_project.approvedCommitteeSupports %}
@@ -76,7 +78,7 @@
             <form method="post" id="committee-confirm-support-form" class="form citizen-project-form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
                 {{ form_widget(form_committee_support) }}
                 <div>
-                    <button type="submit" id="committee-confirm-support" class="btn btn--blue">
+                    <button type="submit" id="committee-confirm-support" class="newbtn newbtn--hollow newbtn--smaller">
                         Notre comité souhaite aussi soutenir ce projet
                     </button>
                 </div>
