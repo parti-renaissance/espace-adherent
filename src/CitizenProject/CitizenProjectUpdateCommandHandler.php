@@ -47,7 +47,8 @@ class CitizenProjectUpdateCommandHandler
             $this->addressFactory->createFromNullableAddress($command->getAddress()),
             $command->phone,
             $command->getSkills(),
-            $command->getCommittees()
+            $command->getCommittees(),
+            $command->getImage()
         );
         $this->citizenProjectManager->addImage($citizenProject);
 

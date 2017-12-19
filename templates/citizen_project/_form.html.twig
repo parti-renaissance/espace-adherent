@@ -39,6 +39,11 @@
 <div class="form__new" id="field-image">
     <label class="label__header--large">Ajouter une image : <span>(Optionnel)</span></label>
     <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
+    {% if citizen_project is defined and citizen_project.hasImageUploaded %}
+        <div class="citizen_project_form__picture_preview">
+            <img style="max-width: 400px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+        </div>
+    {% endif %}
     {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
     <div class="field-image-info">

@@ -3,11 +3,11 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
+use AppBundle\CitizenProject\CitizenProjectUpdateCommand;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\NullablePostAddress;
-use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
 use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
@@ -50,21 +50,21 @@ class CitizenProjectCommandTest extends TestCase
         );
         $citizenProject->setSkills([$skill]);
 
-        $citizenProjectCommand = CitizenProjectCommand::createFromCitizenProject($citizenProject);
+        $citizenProjectUpdateCommand = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
 
-        $this->assertInstanceOf(CitizenProjectCommand::class, $citizenProjectCommand);
-        $this->assertSame($uuid, $citizenProjectCommand->getCitizenProjectUuid());
-        $this->assertSame($citizenProject, $citizenProjectCommand->getCitizenProject());
-        $this->assertSame($name, $citizenProjectCommand->name);
-        $this->assertSame($citizenProjectCategory, $citizenProjectCommand->getCategory());
-        $this->assertCount(1, $citizenProjectCommand->getCommitteeSupports()->toArray());
-        $this->assertSame($assistanceNeeded, $citizenProjectCommand->isAssistanceNeeded());
-        $this->assertSame($assistanceContent, $citizenProjectCommand->getAssistanceContent());
-        $this->assertSame($problemDescription, $citizenProjectCommand->getProblemDescription());
-        $this->assertSame($proposedSolution, $citizenProjectCommand->getProposedSolution());
-        $this->assertSame($requiredMeans, $citizenProjectCommand->getRequiredMeans());
+        $this->assertInstanceOf(CitizenProjectUpdateCommand::class, $citizenProjectUpdateCommand);
+        $this->assertSame($uuid, $citizenProjectUpdateCommand->getCitizenProjectUuid());
+        $this->assertSame($citizenProject, $citizenProjectUpdateCommand->getCitizenProject());
+        $this->assertSame($name, $citizenProjectUpdateCommand->name);
+        $this->assertSame($citizenProjectCategory, $citizenProjectUpdateCommand->getCategory());
+        $this->assertCount(1, $citizenProjectUpdateCommand->getCommitteeSupports()->toArray());
+        $this->assertSame($assistanceNeeded, $citizenProjectUpdateCommand->isAssistanceNeeded());
+        $this->assertSame($assistanceContent, $citizenProjectUpdateCommand->getAssistanceContent());
+        $this->assertSame($problemDescription, $citizenProjectUpdateCommand->getProblemDescription());
+        $this->assertSame($proposedSolution, $citizenProjectUpdateCommand->getProposedSolution());
+        $this->assertSame($requiredMeans, $citizenProjectUpdateCommand->getRequiredMeans());
         $this->assertInstanceOf(Collection::class, $citizenProject->getSkills());
-        $this->assertCount(1, $citizenProjectCommand->getSkills());
-        $this->assertInstanceOf(NullableAddress::class, $citizenProjectCommand->getAddress());
+        $this->assertCount(1, $citizenProjectUpdateCommand->getSkills());
+        $this->assertInstanceOf(NullableAddress::class, $citizenProjectUpdateCommand->getAddress());
     }
 }
