@@ -73,6 +73,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     private function sendCreatorApprove(CitizenProject $citizenProject): void
     {
+        $this->manager->injectCitizenProjectCreator([$citizenProject]);
         $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($citizenProject));
     }
 
@@ -91,15 +92,16 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     private function sendAskCommitteeSupport(CitizenProject $citizenProject): void
     {
+        $this->manager->injectCitizenProjectCreator([$citizenProject]);
         foreach ($citizenProject->getPendingCommitteeSupports() as $committeeSupport) {
-            if (!$committeeHost = $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee())) {
+            if (!$committeeSupervisor = $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee())) {
                 continue;
             }
 
             $this->mailer->sendMessage(
                 CitizenProjectRequestCommitteeSupportMessage::create(
                     $citizenProject,
-                    $committeeHost,
+                    $committeeSupervisor,
                     $this->router->generate('app_citizen_project_committee_support', [
                         'slug' => $citizenProject->getSlug(),
                     ])
