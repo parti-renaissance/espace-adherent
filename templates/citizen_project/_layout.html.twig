@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block banner '' %}
+
 {% set is_administrator = is_administrator(citizen_project) %}
 
 {% block javascripts %}
@@ -9,10 +11,8 @@
             {% if is_granted('ROLE_ADHERENT') %}
                 var citizenProjectSlug = '{{ citizen_project.slug }}';
                 var toggleMembershipButton = dom('#citizen_project-toggle-membership');
-                var toggleMembershipLoader = dom('#citizen_project-follow-btn-loader');
 
                 toggleMembershipButton && on(toggleMembershipButton, 'click', function () {
-                    toggleMembershipLoader.style.display = 'inline';
                     toggleMembershipButton.disabled = true;
 
                     di.get('api').toggleCitizenProjectMembership(
@@ -31,67 +31,47 @@
 {% endblock %}
 {% block content %}
     <main class="citizen_project">
-        <header class="background--pink-light space--60-0">
-            <div class="l__wrapper l__row l__row--h-stretch l__mobile--col">
-                <div class="text--blue--dark citizen_project__header__titles">
-                    <ul class="text--uppercase text--small b__nudge--bottom-tiny">
-                        <li class="text--body">Projet citoyen</li>
-                        <li class="">No coups de coeur</a>
-                        <li  class="">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
+        <header class="background--purple space--60-0">
+            <div class="l__wrapper l__col text--white">
+                <div class="b__nudge--bottom-larger">
+                    <ul class="text--small b__nudge--bottom-tiny list__links">
+                        <li class="text--body text--small text--uppercase">Projet citoyen</li>
+                        {% if citizen_project.approvedCommitteeSupports|length > 0 %}
+                            <li>{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
+                        {% endif %}
                     </ul>
-                    <h2 class="text--large">
-                        <span id="citizen-project-name" class="citizen_project__name">{{ citizen_project.name }} : {{ citizen_project.subtitle }}</span>
+                    <h2 class="text--larger" id="citizen-project-name">
+                        {{ citizen_project.name }}
                     </h2>
-                    <h2 class="text--small">
-                        {% if citizen_project.isApproved %}
+                    <div class="text--body b__nudge--top-5">{{ citizen_project.subtitle }}</div>
+                </div>
+                <div class="l__row l__row--h-stretch l__mobile--col">
+                    {% if citizen_project.isApproved %}
+                        <div class="l__row l__mobile--col">
                             {% if not user_is_adherent %}
-                                <button type="button"
-                                        class="btn btn--blue citizen-project-follow--disabled"
-                                        disabled="disabled">
+                                <a href="{{ path('app_adherent_login') }}" class="newbtn newbtn--orange b__nudge--right-large">
                                     Rejoindre ce projet
-                                </button>
-
-                                <a href="{{ path('app_adherent_login') }}" id="citizen-project-login-link">Connectez-vous</a>
-                                ou
-                                <a href="{{ path('app_membership_register') }}" id="citizen-project-register-link">adhérez</a>
-                                pour suivre ce projet citoyen
-                                <br />
+                                </a>
                             {% elseif can_follow_citizen_project(citizen_project) %}
                                 <button type="button"
                                         id="citizen_project-toggle-membership"
-                                        class="btn btn--blue citizen-project-follow"
+                                        class="newbtn newbtn--orange citizen-project-follow b__nudge--right-large"
                                         data-action="rejoindre"
                                         data-csrf-token="{{ csrf_token('citizen_project.follow') }}">
-                                    <img src="{{ asset('images/loader-sm.gif') }}" id="citizen_project-follow-btn-loader" />
-                                    Rejoindre ce projet citoyen
+                                    Rejoindre ce projet
                                 </button>
                             {% elseif can_unfollow_citizen_project(citizen_project) %}
                                 <button type="button"
                                         id="citizen_project-toggle-membership"
-                                        class="btn btn--blue citizen-project-unfollow"
+                                        class="newbtn newbtn--orange citizen-project-unfollow b__nudge--right-large"
                                         data-action="quitter"
                                         data-csrf-token="{{ csrf_token('citizen_project.unfollow') }}">
-                                    <img src="{{ asset('images/loader-sm.gif') }}" id="citizen_project-follow-btn-loader" />
                                     Quitter ce projet citoyen
                                 </button>
-                            {% elseif is_administrator %}
-                                <button type="button"
-                                        class="btn btn--blue citizen-project-unfollow"
-                                        disabled="disabled">
-                                    Quitter projet citoyen
-                                </button>
-                                <div class="citizen-project-follow--anonymous__link text--white">
-                                    En tant que porteur de projet citoyen, vous ne pouvez pas cesser de le suivre.
-                                </div>
                             {% endif %}
 
-                            {% if is_granted('REPORT') %}
-                                <a href="{{ path('app_report', {type: 'citizen-project', uuid: citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="report-link link--blue--dark link--no-decor">Signaler un abus</a>
-                            {% endif %}
-
-                            <a href="#" class="link--blue--dark link--no-decor">Inviter un amis</a>
-                            <ul class="list__links list__links--row list__links--svgs list__links--svgs--small text--white">
-                                <li class="head">Partagez</li>
+                            <ul class="list__links list__links--default list__links--row list__links--svgs list__links--svgs--small">
+                                <li>Partager</li>
                                 <li role="button" aria-label="Partagez sur Facebook"
                                     onclick="App.share('facebook', window.location.href, 'Rejoignez ce projet citoyen !')">
                                     <i class="fa fa-facebook-square"></i>
@@ -105,8 +85,13 @@
                                     <i class="fa fa-envelope-o"></i>
                                 </li>
                             </ul>
+
+                        </div>
+
+                        {% if is_granted('REPORT') %}
+                            <a href="{{ path('app_report', {type: 'citizen-project', uuid: citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="text--body link--white">Signaler</a>
                         {% endif %}
-                    </h2>
+                    {% endif %}
                 </div>
             </div>
         </header>

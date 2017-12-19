@@ -40,10 +40,10 @@
                     <li><a class="text--medium-small" href="https://legislatives.en-marche.fr/">Législatives</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
                     <li><a class="text--medium-small" href="{{ path('program_index') }}">Programme</a></li>
-                    <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a></li>
+                    <li><a class="text--medium-small" href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a></li>
                 </ul>
                 <div class="l__row">
-                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Je donne</a>
+                    <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Donner</a>
                     <div class="nav__user">
                         <a href="{{ path('app_adherent_login') }}" class="icon--with-text nav__user__name">
                             {{ include('components/user.html.twig') }}
@@ -76,7 +76,7 @@
                             <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                             <li><a class="text--medium-small" href="{{ path('program_index') }}">Programme</a></li>
                             <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
-                            <li><a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a></li>
+                            <li><a class="text--medium-small" href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a></li>
                         </ul>
                         <hr>
                         <ul class="list__links list__links--row b__nudge--bottom-small">

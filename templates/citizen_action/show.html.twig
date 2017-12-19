@@ -40,42 +40,37 @@
 {% endblock %}
 
 {% block citizen_action_content %}
-    {% if is_administrator %}
-        <nav>
-            <div>
-                <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
-                <ul class="list__links list__links--default list__links--row">
-                    <li>
-                        <a href="{{ path('app_citizen_action_manager_edit', {slug: citizen_action.slug, project_slug:citizen_action.citizenProject.slug}) }}" class="icon--with-text">
-                            <i class="fa fa-sliders"></i>
-                            Éditer l'action citoyenne
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    {% endif %}
-        <section>
-            <h2 class="space--20-0 b__nudge--top-40">À venir</h2>
-
+        <section class="b__nudge--top-40">
             <div id="members">
-                <h3>{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
+                {% if is_administrator %}
+                    <div class="b__nudge--bottom">
+                        <a href="{{ path('app_citizen_action_manager_edit', {slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug}) }}" class="text--body link--blue link--no-decor">
+                            Modifier cette action citoyenne
+                        </a>
+                    </div>
+                {% endif %}
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_citizen_action_list_participants', {slug: citizen_action.slug}) }}">
+                        <h3 class="text--medium">{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
+                    </a>
+                {% else %}
+                    <h3 class="text--medium">{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
+                {% endif %}
+
                 <ul>
                     {% for participant in participants|slice(0, 11) %}
                         <li class="text--body">
-                            <span class="card" title="{{ app.user and app.user.uuid == participant.uuid ? 'Vous' : 'participant' }}">{{ include('components/user.html.twig') }}</span>
+                            <span title="{{ app.user and app.user.uuid == participant.uuid ? 'Vous' : 'participant' }}">{{ include('components/user.html.twig') }}</span>
                         </li>
                     {% endfor %}
                 </ul>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_citizen_action_list_participants', {slug: citizen_action.slug}) }}">Tous &gt;</a>
-                {% endif %}
             </div>
 
         </section>
 
         <section>
-            <h3>A propos</h3>
-            <p>{{ citizen_action.description }}</p>
+            <h3 class="text--medium b__nudge--top">A propos</h3>
+            <p class="text--body text--dark">{{ citizen_action.description }}</p>
         </section>
 {% endblock %}

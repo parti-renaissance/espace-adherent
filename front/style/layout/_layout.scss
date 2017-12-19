@@ -270,6 +270,12 @@
 }
 
 .b {
+    &__flex {
+        &--1 {
+            flex: 1;
+        }
+    }
+
     &__border {
         &--top-bot {
             border-top: 1px solid $gray--light;
