@@ -8,6 +8,8 @@ common.zip_code: Code postal
 common.show_more: Voir plus
 common.show_less: Voir moins
 common.sector: Secteur
+pending: En attente
+approved: Approuvé
 
 #
 # Adherent
