@@ -9,14 +9,10 @@
             <th>Problème local adressé</th>
             <th>Réponse au problème</th>
             <th>Feuille de route</th>
-            <th>Compépetences matchées</th>
+            <th>Compétences matchées</th>
             <th>Contenu accompagnement</th>
             <th>Commentaire</th>
             <th>Statut</th>
-            {% if app.request.query.get('s') == constant('AppBundle\\Entity\\CitizenProject::APPROVED') %}
-                <th>Signalement</th>
-                <th>Résolution du signalement</th>
-            {% endif %}
         </tr>
     </thead>
     <tbody id="citizen-projects-list">
@@ -50,13 +46,13 @@
                 </td>
                 <td>{{ project.membersCount }}</td>
                 <td>
-                    {% if project.committee %}
-                        <a href="{{ path('app_committee_show', {slug: project.committee.slug}) }}">
-                            {{ project.committee.name }}
+                    {% for committeeSupport in project.committeeSupports %}
+                        <a href="{{ path('app_committee_show', {slug: committeeSupport.committee.slug}) }}">
+                            {{ committeeSupport.committee.name }} ({{ committeeSupport.pending ? 'En attente' : 'Approuvé' }})
                         </a>
                     {% else %}
                         ~
-                    {% endif %}
+                    {% endfor %}
                 </td>
                 <td>
                     {{ project.cityName }}<br/>
@@ -73,7 +69,7 @@
                     {{ project.requiredMeans|read_more(50, 'required-means' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
                 </td>
                 <td>
-                    ~
+                    {% if project.matchedSkills %}Oui{% else %}Non{% endif %}
                 </td>
                 <td>
                     {% if project.assistanceContent %}
@@ -93,7 +89,7 @@
                                 {% endfor %}
                             </ul>
                         {% endfor %}
-                        {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
+                        {{ form_widget(form.coordinatorComment, {attr: {class: 'form__field--textarea-120'}}) }}
                     {% else %}
                         {{ project.coordinatorComment|escape|read_more(100, 'comment' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
                     {% endif %}
@@ -101,31 +97,23 @@
                 <td>
                     {% if project.isPending %}
                         <span>
-                            {{ form_widget(form.accept, {'label': 'Pré-accepter', 'attr': { 'class': 'btn--success btn--success__icon' } }) }}
+                            {{ form_widget(form.accept, {label: 'Pré-accepter', attr: {class: 'btn--success btn--success__icon'}}) }}
                         </span>
                         <span>
-                            {{ form_widget(form.refuse, {'label': 'Pré-refuser', 'attr': { 'class': 'btn--error btn--error__icon' } }) }}
+                            {{ form_widget(form.refuse, {label: 'Pré-refuser', attr: {class: 'btn--error btn--error__icon'}}) }}
                         </span>
                     {% elseif project.isPreRefused %}
                         <span>
-                            {{ form_widget(form.accept, {'label': 'Pré-accepter', 'attr': { 'class': 'btn--success btn--success__icon' } }) }}
+                            {{ form_widget(form.accept, {label: 'Pré-accepter', attr: {class: 'btn--success btn--success__icon'}}) }}
                         </span>
                     {% elseif project.isPreApproved %}
                         <span>
-                            {{ form_widget(form.refuse, {'label': 'Pré-refuser', 'attr': { 'class': 'btn--error btn--error__icon' } }) }}
+                            {{ form_widget(form.refuse, {label: 'Pré-refuser', attr: {class: 'btn--error btn--error__icon'}}) }}
                         </span>
                     {% else %}
-                        {% include 'citizen_project/status.html.twig' with {'citizenProject': project} %}
+                        {% include 'citizen_project/status.html.twig' with {citizenProject: project} %}
                     {% endif %}
                 </td>
-                {% if project.isApproved %}
-                    <td>
-                        ~
-                    </td>
-                    <td>
-                        ~
-                    </td>
-                {% endif %}
             </tr>
             {% if not project.isApproved %}
                 {{ form_end(form) }}
