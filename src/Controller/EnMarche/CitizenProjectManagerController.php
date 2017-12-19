@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\CitizenProject\CitizenProjectContactActorsCommand;
 use AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\CitizenProject\CitizenProjectUpdateCommand;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\Form\CitizenProjectContactActorsType;
@@ -31,7 +31,7 @@ class CitizenProjectManagerController extends Controller
      */
     public function editAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
-        $command = CitizenProjectCommand::createFromCitizenProject($citizenProject);
+        $command = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
         $form = $this->createForm(CitizenProjectCommandType::class, $command);
         $form->handleRequest($request);
 

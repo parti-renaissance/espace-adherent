@@ -6,7 +6,6 @@ use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
 use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
@@ -106,31 +105,6 @@ class CitizenProjectCommand
         $this->skills = new ArrayCollection();
         $this->committeeSupports = new ArrayCollection();
         $this->committees = new ArrayCollection();
-    }
-
-    public static function createFromCitizenProject(CitizenProject $citizenProject): self
-    {
-        $address = $citizenProject->getPostAddress() ? NullableAddress::createFromAddress($citizenProject->getPostAddress()) : null;
-        $dto = new self($address);
-        $dto->name = $citizenProject->getName();
-        $dto->subtitle = $citizenProject->getSubtitle();
-        $dto->category = $citizenProject->getCategory();
-        $dto->phone = $citizenProject->getPhone();
-        $dto->committeeSupports = $citizenProject->getCommitteeSupports();
-        $dto->problemDescription = $citizenProject->getProblemDescription();
-        $dto->proposedSolution = $citizenProject->getProposedSolution();
-        $dto->requiredMeans = $citizenProject->getRequiredMeans();
-        $dto->assistanceNeeded = $citizenProject->isAssistanceNeeded();
-        $dto->assistanceContent = $citizenProject->getAssistanceContent();
-        $dto->citizenProject = $citizenProject;
-        $dto->skills = $citizenProject->getSkills();
-
-        /** @var CitizenProjectCommitteeSupport $committeeSupport */
-        foreach ($dto->committeeSupports as $committeeSupport) {
-            $dto->addCommittee($committeeSupport->getCommittee());
-        }
-
-        return $dto;
     }
 
     public function getCityName(): string
