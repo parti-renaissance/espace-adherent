@@ -117,6 +117,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--logo {
     @include text--bold;
+    font-family: $font-gillsans;
     font-size: $text--size-medium--large;
     font-style: italic;
     line-height: 0.9em;
@@ -481,7 +482,6 @@ $text--size-extra-large: 48px;
 
     &__links--nav {
         li {
-            font-family: $font-gillsans;
             font-size: $text--size-default;
 
             h1 {
