@@ -28,6 +28,11 @@ services:
         class: 'AppBundle\CitizenInitiative\CitizenInitiativeControllerSubscriber'
         public: false
 
+    # used for ignore check of departement for the period of testing CP only in 30 departments
+    app.citizen_project.controller_subscriber:
+        class: 'AppBundle\CitizenProject\CitizenProjectControllerSubscriber'
+        public: false
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'

@@ -28,6 +28,24 @@ use Symfony\Component\HttpFoundation\Response;
 class CitizenProjectController extends Controller
 {
     /**
+     * @Route("/aide", name="app_citizen_project_help")
+     * @Method("GET|POST")
+     */
+    public function helpAction(): Response
+    {
+        return new Response();
+    }
+
+    /**
+     * @Route("/fonctionnalite_disponible_des_janvier", name="app_citizen_project_not_available")
+     * @Method("GET")
+     */
+    public function showIfNotAuthorizedDepartementAction(): Response
+    {
+        return $this->render('citizen_project/not_available.html.twig');
+    }
+
+    /**
      * @Route("/{slug}", name="app_citizen_project_show")
      * @Method("GET|POST")
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
@@ -59,15 +77,6 @@ class CitizenProjectController extends Controller
             'comments' => $citizenProjectManager->getCitizenProjectComments($citizenProject),
             'form' => $form ? $form->createView() : null,
         ]);
-    }
-
-    /**
-     * @Route("/aide", name="app_citizen_project_help")
-     * @Method("GET|POST")
-     */
-    public function helpAction(): Response
-    {
-        return new Response();
     }
 
     /**
