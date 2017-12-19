@@ -3,9 +3,9 @@
 
 <div class="form__new" id="field-name">
     {{ form_errors(form.name) }}
-    {{ form_label(form.name, 'Donnez un titre à votre projet :', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.name, 'Donnez un titre à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_widget(form.name, {
-        'attr': {
+        attr: {
             'class': 'form--full',
             'placeholder': 'Le titre court et accrocheur de mon projet',
         }
@@ -15,7 +15,7 @@
 
 <div class="form__new" id="field-subtitle">
     {{ form_errors(form.subtitle) }}
-    {{ form_label(form.subtitle, 'Donnez un sous-titre à votre projet :', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_widget(form.subtitle, {
         'attr': {
             'class': 'form--full',
@@ -27,11 +27,11 @@
 
 <div class="form__new" id="field-category">
     {{ form_errors(form.category) }}
-    {{ form_label(form.category, 'Choisissez une catégorie :', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.category, 'Choisissez une catégorie :', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_widget(form.category, {
-        'attr': {
-            'class': 'form--full',
-            'placeholder': 'Choisissez une catégorie',
+        attr: {
+            class: 'form--full',
+            placeholder: 'Choisissez une catégorie',
         }
     }) }}
 </div>
@@ -55,7 +55,7 @@
 
 <div class="form__new" id="field-problem-description">
     {{ form_errors(form.problem_description) }}
-    {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_widget(form.problem_description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -71,7 +71,7 @@
 
 <div class="form__new" id="field-proposed-solution">
     {{ form_errors(form.proposed_solution) }}
-    {{ form_label(form.proposed_solution, 'Comment répondez-vous à cette problématique ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.proposed_solution, 'Comment répondez-vous à cette problématique ?', {label_attr: {class:'label__header--large'}}) }}
     {{ form_widget(form.proposed_solution, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -82,7 +82,7 @@
 
 <div class="form__new" id="field-required-means">
     {{ form_errors(form.required_means) }}
-    {{ form_label(form.required_means, 'Quelle est votre feuille de route ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.required_means, 'Quelle est votre feuille de route ?', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_widget(form.required_means, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -95,14 +95,14 @@
     {{ form_errors(form.skills) }}
     <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div>
-        {{ form_widget(form.skills_search, { attr: { style: 'margin-bottom: 10px', class: 'form--full' } }) }}
-        {{ form_widget(form.skills, { attr: { class: 'citizen_initiative__skills' } }) }}
+        {{ form_widget(form.skills_search, {attr: {style: 'margin-bottom: 10px', class: 'form--full'} }) }}
+        {{ form_widget(form.skills, {attr: {class: 'citizen_initiative__skills'} }) }}
     </div>
 </div>
 
 <div class="form__new" id="citizen-project-address">
     {{ form_errors(form.address) }}
-    {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {label_attr: {class: 'label__header--large'}}) }}
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="register__form__zip_code register__form--third" id="field-postal-code-city">
             {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
@@ -110,9 +110,9 @@
         </div>
 
         <div class="register__form__city register__form--third">
-            {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+            {{ form_widget(form.address.city, {attr: {class: 'register__form__city'}}) }}
             {{ form_errors(form.address.cityName) }}
-            {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+            {{ form_widget(form.address.cityName, {attr: {class: 'register__form__city_name', placeholder: 'Ville'} }) }}
             {{ form_errors(form.address.city) }}
         </div>
 
@@ -126,10 +126,10 @@
 {% if form.committees is defined %}
     <div class="form__new" id="field-committee">
         {{ form_errors(form.committees) }}
-        <label class="label__header--large">Vous avez déjà le soutient d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
+        <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
         <div>
-            {{ form_widget(form.committees_search, { attr: { class: 'form--full' } }) }}
-            {{ form_widget(form.committees, { attr: { class: 'citizen_initiative__skills' } }) }}
+            {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
+            {{ form_widget(form.committees, {attr: {class: 'citizen_initiative__skills'} }) }}
         </div>
     </div>
 {% endif %}
@@ -139,7 +139,7 @@
         {{ form_errors(form.assistance_needed) }}
         {{ form_widget(form.assistance_needed) }}
         <label for="{{ form.assistance_needed.vars.id }}">
-            Je solicite un accompagnement personalisé de l'équipe des projets citoyens
+            Je sollicite un accompagnement personalisé de l'équipe des projets citoyens
         </label>
     </div>
 </div>
@@ -160,7 +160,7 @@
             {{ form_widget(form.phone.country) }}
             {{ form_widget(form.phone.number, {attr: {placeholder: 'Téléphone' }}) }}
         </div>
-        <p>Nous vous contacterons sur ce numéro - il sera mis à disposition de nos équipe NON QG</p>
+        <p>Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.</p>
     </div>
     {{ form_errors(form.phone) }}
 </div>

@@ -29,10 +29,10 @@
                     Lancez votre projet citoyen !
                 </h1>
                 <p class="text--body">
-                    Ce projet visera à améliorer concrètement votre quotidien — en réunissant la force et les compétences de toutes et tous.
+                    Un projet vise à améliorer concrètement le quotidien des habitants de votre quartier, en réunissant la force et les compétences de toutes et tous.
                 </p>
                 <div class="text--summary">
-                    Tout projet citoyen doit adhérer à <a href="{{ path('app_citizen_project_help') }}">notre charte</a>.
+                    Tout projet citoyen doit adhérer à <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">notre charte</a>.
                     Des questions ? Consultez la <a href="{{ url_help_en_marche }}/category/702-projets-citoyens">FAQ</a>.
                 </div>
             </header>
@@ -52,7 +52,7 @@
                                 <div>
                                     {{ form_widget(form.cgu) }}
                                     {% block _form_cgu_label %}
-                                        <label for="citizen_project_cgu">Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et e-mail) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.</label>
+                                        <label for="citizen_project_cgu">Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et e-mail) aux Responsables locaux Engagement Citoyen.</label>
                                     {% endblock %}
                                 </div>
                                 {{ form_errors(form.cgu) }}
@@ -64,7 +64,7 @@
                                 <div>
                                     {{ form_widget(form.data_processing) }}
                                     {% block _form_data_processing_label %}
-                                        <label for="citizen_project_data_processing">J’adhère aux <a href="#" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="#" target="_blank">Charte des Projets Citoyens</a></label>
+                                        <label for="citizen_project_data_processing">J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank">Conditions Générales d’Utilisation des Projets Citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank">Charte des Projets Citoyens</a></label>
                                     {% endblock %}
                                 </div>
                                 {{ form_errors(form.data_processing) }}
@@ -82,7 +82,7 @@
                     <p class="text--gray text--summary text--small b__nudge--top">
                         Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par La République En Marche pour le référencement de Projets Citoyens et la mise en relation entre Adhérents et Utilisateurs du site <a href="https://en-marche.fr">https://en-marche.fr/</a>.
                         Elles sont conservées pendant toute la durée de référencement du Projet Citoyen, et au-delà de cette durée dès lors qu’une disposition légale ou règlementaire le prévoit. Ces données sont destinées aux services digitaux de La République En Marche, aux équipes locales de bénévoles de l’association et aux adhérents de La République En Marche désireux de participer à un Projet Citoyen.
-                        Conformément à la loi Informatique et Libertés, vous pouvez exercer vos droits d’opposition, d'accès, de rectification et de suppression des données vous concernant et d’opposition au traitement de données en adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse suivante : projetscitoyens@en-marche.fr.
+                        Conformément à la loi Informatique et Libertés, vous pouvez exercer vos droits d’opposition, d'accès, de rectification et de suppression des données vous concernant et d’opposition au traitement de données en adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse suivante : <a href="mailto:projetscitoyens@en-marche.fr">projetscitoyens@en-marche.fr</a>.
                     </p>
                 </div>
             </div>
