@@ -52,6 +52,36 @@ class CitizenProjectController extends Controller
      */
     public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
+        return $this->render('citizen_project/show.html.twig', [
+            'citizen_project' => $citizenProject,
+            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/a-venir", name="app_citizen_project_show_next_actions")
+     * @Method("GET|POST")
+     * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
+     */
+    public function showNextActionAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
+    {
+        return $this->render('citizen_project/show_next_actions.html.twig', [
+            'citizen_project' => $citizenProject,
+            'citizen_actions' => $citizenProjectManager->getCitizenProjectNextActions($citizenProject),
+            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/discussions", name="app_citizen_project_show_comments")
+     * @Method("GET|POST")
+     * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
+     */
+    public function showCommentsAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
+    {
         $form = null;
 
         if ($this->isGranted(CitizenProjectPermissions::COMMENT, $citizenProject)) {
@@ -64,11 +94,11 @@ class CitizenProjectController extends Controller
                 $this->get(CitizenProjectCommentCreationCommandHandler::class)->handle($commentCommand);
                 $this->addFlash('info', 'Ton commentaire a été ajoutée');
 
-                return $this->redirectToRoute('app_citizen_project_show', ['slug' => $citizenProject->getSlug()]);
+                return $this->redirectToRoute('app_citizen_project_show_comments', ['slug' => $citizenProject->getSlug()]);
             }
         }
 
-        return $this->render('citizen_project/show.html.twig', [
+        return $this->render('citizen_project/show_comments.html.twig', [
             'citizen_project' => $citizenProject,
             'citizen_actions' => $citizenProjectManager->getCitizenProjectNextActions($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
