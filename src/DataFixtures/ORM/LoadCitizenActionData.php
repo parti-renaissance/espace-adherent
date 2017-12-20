@@ -45,7 +45,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 20,
         ]);
         $actionCitoyenne1->setPublished(true);
-        $actionCitoyenne1->setWasPublished(true);
         $actionCitoyenne1->incrementParticipantsCount();
 
         $actionCitoyenne2 = $eventFactory->createCitizenActionFromArray([
@@ -61,7 +60,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 30,
         ]);
         $actionCitoyenne2->setPublished(false);
-        $actionCitoyenne2->setWasPublished(true);
         $actionCitoyenne2->incrementParticipantsCount();
 
         $actionCitoyenne3 = $eventFactory->createCitizenActionFromArray([
@@ -77,7 +75,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 20,
         ]);
         $actionCitoyenne3->setPublished(true);
-        $actionCitoyenne3->setWasPublished(true);
         $actionCitoyenne3->incrementParticipantsCount();
 
         $actionCitoyenne4 = $eventFactory->createCitizenActionFromArray([
@@ -93,7 +90,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 20,
         ]);
         $actionCitoyenne4->setPublished(true);
-        $actionCitoyenne4->setWasPublished(true);
         $actionCitoyenne4->incrementParticipantsCount();
 
         $actionCitoyenne5 = $eventFactory->createCitizenActionFromArray([
@@ -109,7 +105,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 10,
         ]);
         $actionCitoyenne5->setPublished(true);
-        $actionCitoyenne5->setWasPublished(true);
         $actionCitoyenne5->incrementParticipantsCount();
 
         $actionCitoyenne6 = $eventFactory->createCitizenActionFromArray([
@@ -125,7 +120,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 5,
         ]);
         $actionCitoyenne6->setPublished(true);
-        $actionCitoyenne6->setWasPublished(true);
         $actionCitoyenne6->cancel();
         $actionCitoyenne6->incrementParticipantsCount();
 
@@ -142,7 +136,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 10,
         ]);
         $actionCitoyenne7->setPublished(true);
-        $actionCitoyenne7->setWasPublished(true);
         $actionCitoyenne7->incrementParticipantsCount(10);
 
         $actionCitoyenne8 = $eventFactory->createCitizenActionFromArray([
@@ -171,7 +164,6 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 10,
         ]);
         $actionCitoyenne9->setPublished(true);
-        $actionCitoyenne9->setWasPublished(true);
         $actionCitoyenne9->incrementParticipantsCount(2);
 
         $manager->persist($actionCitoyenne1);

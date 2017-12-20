@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
+use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
@@ -19,8 +21,14 @@ class CitizenProjectFactoryTest extends TestCase
         $email = 'jean.dupont@example.com';
         $uuid = Adherent::createUuid($email);
         $name = 'Projet citoyen à Lyon 1er Lyon 1er';
-        $description = 'le projet citoyen à Lyon 1er';
+        $subtitle = 'le projet citoyen à Lyon 1er';
         $address = NullableAddress::createFromAddress(NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
+        $assistanceNeeded = false;
+        $assistanceContent = null;
+        $problemDescription = 'Problem description';
+        $proposedSolution = 'Proposed solution';
+        $requiredMeans = 'Required means';
+        $skill = $this->createMock(CitizenProjectSkill::class);
 
         $adherent = new Adherent(
             $uuid,
@@ -38,7 +46,14 @@ class CitizenProjectFactoryTest extends TestCase
         $command->setAddress($address);
         $command->setPhone((new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080901'));
         $command->name = $name;
-        $command->description = $description;
+        $command->subtitle = $subtitle;
+        $command->category = $this->createMock(CitizenProjectCategory::class);
+        $command->assistanceNeeded = $assistanceNeeded;
+        $command->assistanceContent = $assistanceContent;
+        $command->problemDescription = $problemDescription;
+        $command->proposedSolution = $proposedSolution;
+        $command->requiredMeans = $requiredMeans;
+        $command->setSkills([$skill]);
 
         $citizenProjectFactory = new CitizenProjectFactory();
         $citizenProject = $citizenProjectFactory->createFromCitizenProjectCreationCommand($command);
@@ -46,7 +61,13 @@ class CitizenProjectFactoryTest extends TestCase
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
         $this->assertSame($address->getAddress(), $citizenProject->getAddress());
         $this->assertSame($name, $citizenProject->getName());
-        $this->assertSame($description, $citizenProject->getDescription());
+        $this->assertSame($subtitle, $citizenProject->getSubtitle());
         $this->assertSame($adherent->getUuid()->toString(), $citizenProject->getCreatedBy());
+        $this->assertSame($assistanceNeeded, $citizenProject->isAssistanceNeeded());
+        $this->assertSame($assistanceContent, $citizenProject->getAssistanceContent());
+        $this->assertSame($problemDescription, $citizenProject->getProblemDescription());
+        $this->assertSame($proposedSolution, $citizenProject->getProposedSolution());
+        $this->assertSame($requiredMeans, $citizenProject->getRequiredMeans());
+        $this->assertSame([$skill], $citizenProject->getSkills()->toArray());
     }
 }

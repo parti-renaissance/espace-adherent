@@ -8,8 +8,10 @@ use AppBundle\Entity\ActivitySubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
@@ -35,7 +37,9 @@ use AppBundle\Repository\ActivitySubscriptionRepository;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenInitiativeRepository;
+use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -58,6 +62,7 @@ use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use League\Flysystem\Filesystem;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -101,6 +106,11 @@ trait TestHelperTrait
         return $this->container->get('doctrine');
     }
 
+    public function getStorage(): Filesystem
+    {
+        return $this->container->get('app.storage');
+    }
+
     public function getEntityManager($class): ObjectManager
     {
         return $this->getManagerRegistry()->getManagerForClass($class);
@@ -134,6 +144,16 @@ trait TestHelperTrait
     public function getCitizenProjectRepository(): CitizenProjectRepository
     {
         return $this->getRepository(CitizenProject::class);
+    }
+
+    public function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
+    {
+        return $this->getRepository(CitizenProjectComment::class);
+    }
+
+    public function getCitizenActionRepository(): CitizenActionRepository
+    {
+        return $this->getRepository(CitizenAction::class);
     }
 
     public function getEventRepository(): EventRepository

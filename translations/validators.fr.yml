@@ -28,6 +28,7 @@ common.country.not_blank: Cette valeur ne doit pas être vide.
 common.country.invalid: Ce pays n'est pas valide.
 
 common.postal_code.invalid: Cette valeur n'est pas un code postal français valide.
+common.postal_code.not_blank: Veuillez renseigner un code postal.
 common.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
 common.city.invalid_postal_code: Cette ville et ce code postal ne sont pas liés.
 common.address.max_length: L'adresse ne peut pas dépasser 150 caractères.
@@ -87,6 +88,8 @@ citizen_project.canonical_name.not_unique: Ce nom de projet citoyen est déjà u
 
 citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
 citizen_project.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
+
+citizen_project.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 
 #
 # Donation
@@ -205,3 +208,8 @@ interactive.friend_appreciations.min: Vous devez sélectionner au moins 1 valeur
 interactive.friend_appreciations.max: Vous devez sélectionner au maximum 2 valeurs.
 interactive.friend_cases.min: Vous devez sélectionner au moins 1 situation.
 interactive.friend_cases.max: Vous devez sélectionner au maximum 2 situations.
+
+#
+# Report
+#
+report.invalid_reasons: Afin de valider votre signalement, veuillez sélectionner au moins une raison.

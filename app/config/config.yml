@@ -71,6 +71,7 @@ twig:
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
+        url_help_en_marche:     "https://aide.en-marche.fr"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
@@ -87,6 +88,8 @@ doctrine:
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
         server_version:   5.7
+        options:
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
 
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
@@ -244,6 +247,10 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'enmarche_sync_user_create', type: direct }
             queue_options:    { name: 'enmarche_sync_user_create', durable: true }
 
+        project_citizen_creation_notification:
+            connection: default
+            exchange_options: { name: 'project_citizen_creation_notification', type: direct }
+
     consumers:
         mailer_campaign:
             connection:        default
@@ -264,4 +271,11 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'referent-message-dispatcher', type: direct }
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        project_citizen_creation_notification:
+            connection:        default
+            exchange_options:  { name: 'project_citizen_creation_notification', type: direct }
+            queue_options:     { name: 'project_citizen_creation_notification', durable: false }
+            callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }

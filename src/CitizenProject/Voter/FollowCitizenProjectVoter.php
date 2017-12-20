@@ -36,11 +36,26 @@ class FollowCitizenProjectVoter extends AbstractCitizenProjectVoter
             return $this->voteOnFollowCitizenProjectAttribute($adherent, $citizenProject);
         }
 
-        return true;
+        return $this->voteOnUnfollowCitizenProjectAttribute($adherent, $citizenProject);
     }
 
     private function voteOnFollowCitizenProjectAttribute(Adherent $adherent, CitizenProject $citizenProject): bool
     {
         return !$this->manager->isFollowingCitizenProject($adherent, $citizenProject);
+    }
+
+    private function voteOnUnfollowCitizenProjectAttribute(Adherent $adherent, CitizenProject $citizenProject): bool
+    {
+        // An adherent who isn't already following (or hosting) cannot unfollow (or leave) it
+        if (!$membership = $this->manager->getCitizenProjectMembership($adherent, $citizenProject)) {
+            return false;
+        }
+
+        // Administrator cannot unfollow (or leave)
+        if ($membership->isAdministrator()) {
+            return false;
+        }
+
+        return $membership->isFollower();
     }
 }

@@ -10,17 +10,23 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CitizenProjectUpdateCommandHandler
 {
     private $dispatcher;
+
     private $addressFactory;
+
     private $manager;
+
+    private $citizenProjectManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         ObjectManager $manager,
-        PostAddressFactory $addressFactory
+        PostAddressFactory $addressFactory,
+        CitizenProjectManager $citizenProjectManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->addressFactory = $addressFactory;
+        $this->citizenProjectManager = $citizenProjectManager;
     }
 
     public function handle(CitizenProjectCommand $command)
@@ -31,10 +37,20 @@ class CitizenProjectUpdateCommandHandler
 
         $citizenProject->update(
             $command->name,
-            $command->description,
+            $command->subtitle,
+            $command->category,
+            $command->assistanceNeeded,
+            $command->assistanceContent,
+            $command->problemDescription,
+            $command->proposedSolution,
+            $command->requiredMeans,
             $this->addressFactory->createFromNullableAddress($command->getAddress()),
-            $command->getPhone()
+            $command->phone,
+            $command->getSkills(),
+            $command->getCommittees(),
+            $command->getImage()
         );
+        $this->citizenProjectManager->addImage($citizenProject);
 
         $this->manager->persist($citizenProject);
         $this->manager->flush();

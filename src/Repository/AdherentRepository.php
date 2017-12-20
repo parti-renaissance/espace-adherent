@@ -3,15 +3,18 @@
 namespace AppBundle\Repository;
 
 use AppBundle\BoardMember\BoardMemberFilter;
+use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Referent\ManagedAreaUtils;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -64,6 +67,15 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
+    public function findByEmails(array $emails): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.emailAddress IN (:emails)')
+            ->setParameter('emails', $emails)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function loadUserByUsername($username)
     {
         $query = $this
@@ -74,7 +86,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->addSelect('cpm')
             ->addSelect('bm')
             ->leftJoin('a.procurationManagedArea', 'pma')
-            ->leftJoin('a.coordinatorManagedArea', 'cma')
+            ->leftJoin('a.coordinatorManagedAreas', 'cma')
             ->leftJoin('a.memberships', 'cm')
             ->leftJoin('a.citizenProjectMemberships', 'cpm')
             ->leftJoin('a.boardMember', 'bm')
@@ -291,6 +303,40 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
+    public function findByNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
+    {
+        $qb = $this->createNearbyQueryBuilder(
+                new Coordinates(
+                    $citizenProject->getLatitude(),
+                    $citizenProject->getLongitude()
+                )
+            );
+
+        $distance = $qb->expr()->orX();
+        $distance->add($this->getNearbyExpression().' <= :distance_max')
+            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :citizenProjectCreationEmailSubscriptionRadius');
+
+        $qb->andWhere($distance)
+            ->setParameter('distance_max', $radius)
+            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', AdherentEmailSubscription::DISTANCE_ALL);
+
+        $having = $qb->expr()->orX();
+        $having->add($this->getNearbyExpression().' <= n.citizenProjectCreationEmailSubscriptionRadius')
+            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification');
+        $qb->having($having)
+            ->setParameter('acceptAllNotification', AdherentEmailSubscription::DISTANCE_ALL);
+
+        if ($excludeSupervisor) {
+            $qb->andWhere('n.uuid != :uuid')
+                ->setParameter('uuid', $citizenProject->getCreatedBy());
+        }
+
+        $qb->setFirstResult($offset)
+            ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE);
+
+        return new Paginator($qb);
+    }
+
     public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
     {
         $qb = $this
@@ -308,7 +354,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         $qb = $this
             ->createQueryBuilder('a')
-            ->leftJoin('a.activitiySubscriptions', 's')
+            ->leftJoin('a.activitySubscriptions', 's')
             ->where('s.followedAdherent = :followed')
             ->andWhere('(s.unsubscribedAt IS NULL OR s.subscribedAt > s.unsubscribedAt)')
             ->setParameters([
@@ -349,7 +395,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
             ->leftJoin('a.procurationManagedArea', 'ap')
-            ->leftJoin('a.coordinatorManagedArea', 'ac')
+            ->leftJoin('a.coordinatorManagedAreas', 'ac')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
         ;

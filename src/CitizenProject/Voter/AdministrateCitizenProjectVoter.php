@@ -6,11 +6,8 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AdministrateCitizenProjectVoter extends Voter
+class AdministrateCitizenProjectVoter extends AbstractCitizenProjectVoter
 {
     private $manager;
 
@@ -24,25 +21,12 @@ class AdministrateCitizenProjectVoter extends Voter
         return CitizenProjectPermissions::ADMINISTRATE === $attribute && $subject instanceof CitizenProject;
     }
 
-    /**
-     * @param string         $attribute
-     * @param CitizenProject $citizenProject
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
-    protected function voteOnAttribute($attribute, $citizenProject, TokenInterface $token): bool
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, CitizenProject $citizenProject): bool
     {
-        if ($token instanceof AnonymousToken) {
-            return false;
+        if (!$citizenProject->isApproved()) {
+            return $adherent->getUuid()->toString() === $citizenProject->getCreatedBy();
         }
 
-        $administrator = $token->getUser();
-
-        if (!$administrator instanceof Adherent) {
-            return false;
-        }
-
-        return $this->manager->administrateCitizenProject($administrator, $citizenProject);
+        return $this->manager->administrateCitizenProject($adherent, $citizenProject);
     }
 }

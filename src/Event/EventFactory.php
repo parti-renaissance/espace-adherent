@@ -2,11 +2,14 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Address\Address;
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\CitizenAction\CitizenActionCommand;
 use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
 use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CitizenAction;
+use AppBundle\Entity\PostAddress;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
@@ -76,8 +79,7 @@ class EventFactory
 
     public function createCitizenActionFromArray(array $data): CitizenAction
     {
-        foreach (['uuid', 'organizer', 'citizen_project', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
-                     'capacity', ] as $key) {
+        foreach (['uuid', 'organizer', 'citizen_project', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at'] as $key) {
             if (!array_key_exists($key, $data)) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
             }
@@ -94,8 +96,7 @@ class EventFactory
             $data['description'],
             $data['address'],
             $data['begin_at'],
-            $data['finish_at'],
-            $data['capacity']
+            $data['finish_at']
         );
     }
 
@@ -107,7 +108,7 @@ class EventFactory
             $command->getName(),
             $command->getCategory(),
             $command->getDescription(),
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->createPostAddress($command->getAddress()),
             $command->getBeginAt(),
             $command->getFinishAt(),
             $command->isExpertAssistanceNeeded(),
@@ -134,7 +135,7 @@ class EventFactory
             $command->getName(),
             $command->getCategory(),
             $command->getDescription(),
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->createPostAddress($command->getAddress()),
             $command->getBeginAt()->format(DATE_ATOM),
             $command->getFinishAt()->format(DATE_ATOM),
             $command->getCapacity(),
@@ -148,7 +149,7 @@ class EventFactory
             $command->getName(),
             $command->getCategory(),
             $command->getDescription(),
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->createPostAddress($command->getAddress()),
             $command->getBeginAt()->format(DATE_ATOM),
             $command->getFinishAt()->format(DATE_ATOM),
             $command->getCapacity(),
@@ -164,7 +165,7 @@ class EventFactory
             $command->getName(),
             $command->getCategory(),
             $command->getDescription(),
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->createPostAddress($command->getAddress()),
             $command->getBeginAt(),
             $command->getFinishAt(),
             $command->isExpertAssistanceNeeded(),
@@ -177,5 +178,37 @@ class EventFactory
         );
 
         return $initiative;
+    }
+
+    public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction
+    {
+        return new CitizenAction(
+            $command->getUuid(),
+            $command->getAuthor(),
+            $command->getCitizenProject(),
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt()
+        );
+    }
+
+    public function updateFromCitizenActionCommand(CitizenActionCommand $command, CitizenAction $action): void
+    {
+        $action->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getBeginAt(),
+            $command->getFinishAt()
+        );
+    }
+
+    private function createPostAddress(Address $address): PostAddress
+    {
+        return $this->addressFactory->createFromAddress($address);
     }
 }

@@ -17,6 +17,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 47.3222,
             'lon' => 8.5438,
         ],
+        '8802 kilchberg, ch' => [
+            'lat' => 47.3222,
+            'lon' => 8.5438,
+        ],
         '6 rue neyret, 69001 lyon 1er, fr' => [
             'lat' => 45.7713288,
             'lon' => 4.8288758,
@@ -61,9 +65,21 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.866667,
             'lon' => 2.333333,
         ],
+        '44 rue des courcelles, 75008 paris, fr' => [
+            'lat' => 48.8761,
+            'lon' => 2.3082,
+        ],
         'paris 9e, france' => [
             'lat' => 48.8790183,
             'lon' => 2.3379062,
+        ],
+        '73100 grésy-sur-aix, fr' => [
+            'lat' => 45.7167,
+            'lon' => 5.95,
+        ],
+        '12 pilgerweg, 8802 kilchberg, ch' => [
+            'lat' => 47.321569,
+            'lon' => 8.549968799999988,
         ],
     ];
 

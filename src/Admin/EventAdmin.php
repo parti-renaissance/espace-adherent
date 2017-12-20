@@ -73,7 +73,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('status', 'choice', [
                     'label' => 'Statut',
-                    'choices' => array_combine(Event::STATUSES, Event::STATUSES),
+                    'choices' => Event::STATUSES,
                     'catalogue' => 'forms',
                 ])
                 ->add('published', null, [
@@ -130,7 +130,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
-                    'choices' => array_combine(Event::STATUSES, Event::STATUSES),
+                    'choices' => Event::STATUSES,
                     'choice_translation_domain' => 'forms',
                 ])
                 ->add('published', null, [

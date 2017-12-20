@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
+use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
@@ -38,6 +39,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 {
     const ENABLED = 'ENABLED';
     const DISABLED = 'DISABLED';
+    const DISABLED_CITIZEN_PROJECT_EMAIL = -1;
+    const CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE = 10;
 
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -126,6 +129,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $localHostEmailsSubscription = true;
 
     /**
+     * @ORM\Column(type="integer", options={"default"=10})
+     */
+    private $citizenProjectCreationEmailSubscriptionRadius = self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $comMobile = false;
@@ -148,11 +156,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $managedArea;
 
     /**
-     * @var CoordinatorManagedArea|null
+     * @var CoordinatorManagedArea[]|Collection
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $coordinatorManagedArea;
+    private $coordinatorManagedAreas;
 
     /**
      * @var ProcurationManagedArea|null
@@ -190,18 +198,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $committeeFeedItems;
 
     /**
-     * @var CitizenProjectFeedItem[]|Collection|iterable
-     *
-     * @ORM\OneToMany(targetEntity="CitizenProjectFeedItem", mappedBy="author", cascade={"remove"})
-     */
-    private $citizenProjectFeedItems;
-
-    /**
      * @var ActivitySubscription[]|Collection
      *
      * @ORM\OneToMany(targetEntity="ActivitySubscription", mappedBy="followingAdherent", cascade={"remove"})
      */
-    private $activitiySubscriptions;
+    private $activitySubscriptions;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
@@ -243,6 +244,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->comEmail = $comEmail;
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
+        $this->coordinatorManagedAreas = new ArrayCollection();
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -260,6 +262,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->isCoordinator()) {
             $roles[] = 'ROLE_COORDINATOR';
+        }
+
+        if ($this->isCoordinatorCitizenProjectSector()) {
+            $roles[] = 'ROLE_COORDINATOR_CITIZEN_PROJECT';
+        }
+
+        if ($this->isCoordinatorCommitteeSector()) {
+            $roles[] = 'ROLE_COORDINATOR_COMMITTEE';
         }
 
         if ($this->isSupervisor()) {
@@ -412,6 +422,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
         if ($this->localHostEmailsSubscription) {
             $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
+        }
+
+        if ($this->hasCitizenProjectCreationEmailSubscription()) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION;
         }
 
         return $subscriptions;
@@ -597,7 +611,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         $citizenProject->incrementMembersCount();
 
-        return CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
+        $memberShip = CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
+
+        $this->citizenProjectMemberships->add($memberShip);
+
+        return $memberShip;
     }
 
     public function getPostAddress(): PostAddress
@@ -666,16 +684,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setProcurationManagedArea(ProcurationManagedArea $procurationManagedArea = null): void
     {
         $this->procurationManagedArea = $procurationManagedArea;
-    }
-
-    public function getCoordinatorManagedArea(): ?CoordinatorManagedArea
-    {
-        return $this->coordinatorManagedArea;
-    }
-
-    public function setCoordinatorManagedArea(CoordinatorManagedArea $coordinatorManagedArea = null): void
-    {
-        $this->coordinatorManagedArea = $coordinatorManagedArea;
     }
 
     public function getBoardMember(): ?BoardMember
@@ -764,26 +772,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isCoordinator(): bool
     {
-        return $this->coordinatorManagedArea instanceof CoordinatorManagedArea && !empty($this->coordinatorManagedArea->getCodes());
+        return $this->coordinatorManagedAreas->count() && !empty($this->coordinatorManagedAreas->first()->getCodes());
     }
 
-    public function getCoordinatorManagedAreaCodesAsString(): ?string
+    public function isCoordinatorCitizenProjectSector(): bool
     {
-        if (!$this->coordinatorManagedArea) {
-            return '';
-        }
-
-        return $this->coordinatorManagedArea->getCodesAsString();
+        return $this->isCoordinator() && $this->coordinatorManagedAreas->filter(function (CoordinatorManagedArea $area) {
+            return CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR === $area->getSector();
+        })->count();
     }
 
-    public function setCoordinatorManagedAreaCodesAsString(string $codes = null): void
+    public function isCoordinatorCommitteeSector(): bool
     {
-        if (!$this->coordinatorManagedArea) {
-            $this->coordinatorManagedArea = new CoordinatorManagedArea();
-            $this->coordinatorManagedArea->setAdherent($this);
-        }
-
-        $this->coordinatorManagedArea->setCodesAsString((string) $codes);
+        return $this->isCoordinator() && $this->coordinatorManagedAreas->filter(function (CoordinatorManagedArea $area) {
+            return CoordinatorAreaSectors::COMMITTEE_SECTOR === $area->getSector();
+        })->count();
     }
 
     final public function getMemberships(): CommitteeMembershipCollection
@@ -879,7 +882,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getActivitySubscriptionTo(self $followed): ?ActivitySubscription
     {
-        foreach ($this->activitiySubscriptions as $subscription) {
+        foreach ($this->activitySubscriptions as $subscription) {
             if ($subscription->matches($this, $followed) && $subscription->isSubscribed()) {
                 return $subscription;
             }
@@ -937,11 +940,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->committeeFeedItems;
     }
 
-    public function getCitizenProjectFeedItems(): iterable
-    {
-        return $this->citizenProjectFeedItems;
-    }
-
     public function getTags(): Collection
     {
         return $this->tags;
@@ -964,5 +962,56 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function removeTag(AdherentTag $adherentTag): void
     {
         $this->tags->removeElement($adherentTag);
+    }
+
+    public function getCitizenProjectCreationEmailSubscriptionRadius(): int
+    {
+        return $this->citizenProjectCreationEmailSubscriptionRadius;
+    }
+
+    public function setCitizenProjectCreationEmailSubscriptionRadius(int $citizenProjectCreationEmailSubscriptionRadius): void
+    {
+        $this->citizenProjectCreationEmailSubscriptionRadius = $citizenProjectCreationEmailSubscriptionRadius;
+    }
+
+    public function hasCitizenProjectCreationEmailSubscription(): bool
+    {
+        return self::DISABLED_CITIZEN_PROJECT_EMAIL !== $this->getCitizenProjectCreationEmailSubscriptionRadius();
+    }
+
+    /**
+     * @return CoordinatorManagedArea[]|Collection
+     */
+    public function getCoordinatorManagedAreas(): Collection
+    {
+        return $this->coordinatorManagedAreas;
+    }
+
+    /**
+     * @param CoordinatorManagedArea[]|Collection $areas
+     */
+    public function setCoordinatorManagedAreas(Collection $areas): void
+    {
+        $this->coordinatorManagedAreas = $areas;
+    }
+
+    public function addCoordinatorManagedArea(CoordinatorManagedArea $area): void
+    {
+        if (!$this->coordinatorManagedAreas->contains($area)) {
+            $area->setAdherent($this);
+            $this->coordinatorManagedAreas->add($area);
+        }
+    }
+
+    public function removeCoordinatorManagedArea(CoordinatorManagedArea $area): void
+    {
+        $this->coordinatorManagedAreas->removeElement($area);
+    }
+
+    public function getCoordinatorManagedAreaCodesAsString(): string
+    {
+        return implode(', ', array_map(function (CoordinatorManagedArea $area) {
+            return $area->getCodesAsString();
+        }, $this->coordinatorManagedAreas->toArray()));
     }
 }

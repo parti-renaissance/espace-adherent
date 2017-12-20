@@ -40,11 +40,12 @@ class EventRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $eventLink = $this->generateUrl('app_event_show', [
-            'slug' => $command->getEvent()->getSlug(),
-        ]);
-
-        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration($registration, $eventLink));
+        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
+            $registration,
+            $eventLink = $this->generateUrl('app_event_show', [
+                'slug' => $command->getEvent()->getSlug(),
+            ])
+        ));
     }
 
     private function generateUrl(string $route, array $params = []): string

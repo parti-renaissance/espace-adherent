@@ -4,12 +4,13 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
-use AppBundle\Exception\CommitteeAlreadyTreatedException;
 use AppBundle\ValueObject\Link;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Sabre\DAV\Collection;
 
 /**
  * This entity represents a committee group.
@@ -29,12 +30,19 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee extends BaseGroup
+class Committee extends BaseGroup implements CoordinatorAreaInterface
 {
-    const PRE_APPROVED = 'PRE_APPROVED';
-    const PRE_REFUSED = 'PRE_REFUSED';
-
     use EntityPostAddressTrait;
+    use CoordinatorAreaTrait;
+
+    /**
+     * The group description.
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Algolia\Attribute
+     */
+    private $description;
 
     /**
      * The committee Facebook page URL.
@@ -65,18 +73,16 @@ class Committee extends BaseGroup
     private $adminComment;
 
     /**
-     * @var string
+     * @var CitizenProjectCommitteeSupport|Collection
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
      */
-    private $coordinatorComment;
+    private $citizenProjectSupports;
 
     /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
-
-    public $creator;
 
     public function __construct(
         UuidInterface $uuid,
@@ -89,7 +95,8 @@ class Committee extends BaseGroup
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
-        int $membersCount = 0
+        int $membersCount = 0,
+        array $citizenProjects = []
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTime($approvedAt);
@@ -111,6 +118,11 @@ class Committee extends BaseGroup
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
+        $this->citizenProjectSupports = new ArrayCollection();
+
+        foreach ($citizenProjects as $citizenProject) {
+            $this->addSupportOnCitizenProject($citizenProject);
+        }
     }
 
     public function getPostAddress(): PostAddress
@@ -148,6 +160,11 @@ class Committee extends BaseGroup
         return $committee;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function getFacebookPageUrl(): ?string
     {
         return $this->facebookPageUrl;
@@ -173,38 +190,6 @@ class Committee extends BaseGroup
         $this->adminComment = $adminComment;
     }
 
-    public function getCoordinatorComment(): ?string
-    {
-        return $this->coordinatorComment;
-    }
-
-    public function setCoordinatorComment(string $coordinatorComment = null): void
-    {
-        $this->coordinatorComment = $coordinatorComment;
-    }
-
-    public function isPreApproved(): bool
-    {
-        return self::PRE_APPROVED === $this->status;
-    }
-
-    public function isPreRefused(): bool
-    {
-        return self::PRE_REFUSED === $this->status;
-    }
-
-    /**
-     * Marks this committee as pre-approved.
-     */
-    public function preApproved()
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CommitteeAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_APPROVED;
-    }
-
     /**
      * Marks this committee as approved.
      *
@@ -219,18 +204,6 @@ class Committee extends BaseGroup
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
         $this->refusedAt = null;
-    }
-
-    /**
-     * Marks this committee as pre-refused.
-     */
-    public function preRefused()
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CommitteeAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_REFUSED;
     }
 
     public function setSocialNetworks(
@@ -256,16 +229,6 @@ class Committee extends BaseGroup
     public function setGooglePlusPageUrl($googlePlusPageUrl)
     {
         $this->googlePlusPageUrl = $googlePlusPageUrl;
-    }
-
-    public function setCreator(?Adherent $creator): void
-    {
-        $this->creator = $creator;
-    }
-
-    public function getCreator(): ?Adherent
-    {
-        return $this->creator;
     }
 
     /**
@@ -309,5 +272,39 @@ class Committee extends BaseGroup
     private function createLink(string $url, string $label): Link
     {
         return new Link($url, $label);
+    }
+
+    public function getCitizenProjectSupports(): Collection
+    {
+        return $this->citizenProjectSupports;
+    }
+
+    public function setSupportOnCitizenProjects(iterable $citizenProjects): void
+    {
+        foreach ($citizenProjects as $citizenProject) {
+            $this->addSupportOnCitizenProject($citizenProject);
+        }
+    }
+
+    public function addSupportOnCitizenProject(CitizenProject $citizenProject): void
+    {
+        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
+            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
+                return;
+            }
+        }
+
+        $this->citizenProjectSupports->add(new CitizenProjectCommitteeSupport($citizenProject, $this, CitizenProjectCommitteeSupport::APPROVED, 'now', 'now'));
+    }
+
+    public function removeSupportOnCitizenProject(CitizenProject $citizenProject): void
+    {
+        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
+            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
+                $this->citizenProjectSupports->removeElement($citizenProjectSupport);
+
+                return;
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Committee\Filter\CommitteeFilters;
+use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -440,12 +440,12 @@ class CommitteeManager
             }
 
             // Adherent can't be supervisor of multiple committees
-            if ($committeeSupervisor = $this->getMembershipRepository()->superviseCommittee($adherent)) {
+            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
                 throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($committeeMembership->getUuid(), $adherent->getEmailAddress());
             }
 
             // We can't add a supervisor if committee is not approuved
-            if ($committeeSupervisor = $this->getMembershipRepository()->superviseCommittee($adherent)) {
+            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
                 throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($committeeMembership->getUuid(), $committee->getName());
             }
         }
@@ -457,9 +457,9 @@ class CommitteeManager
         }
     }
 
-    public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilters &$filters): array
+    public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilter $filter): array
     {
-        $committees = $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filters);
+        $committees = $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filter);
 
         foreach ($committees as $committee) {
             $creator = $this->getCommitteeCreator($committee);
@@ -477,5 +477,10 @@ class CommitteeManager
     public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
     {
         return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
+    }
+
+    public function getCommitteeSupervisor(Committee $committee): ?Adherent
+    {
+        return $this->getMembershipRepository()->findSupervisor($committee->getUuid()->toString());
     }
 }

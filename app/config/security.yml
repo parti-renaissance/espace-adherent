@@ -111,6 +111,7 @@ security:
             - ROLE_APP_ADMIN_CITIZEN_PROJECT_VIEW
             - ROLE_APP_ADMIN_CITIZEN_PROJECT_EDIT
             - ROLE_APP_ADMIN_CITIZEN_PROJECT_DELETE
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_CATEGORY_ALL
 
         ROLE_ADMIN_EVENTS:
             - ROLE_APP_ADMIN_EVENT_EXPORT
@@ -134,6 +135,11 @@ security:
             - ROLE_APP_ADMIN_CITIZEN_INITIATIVE_ASKING_HELP_DELETE
 
         ROLE_ADMIN_CITIZEN_ACTIONS:
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_EXPORT
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_LIST
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_VIEW
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_EDIT
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_DELETE
             - ROLE_APP_ADMIN_CITIZEN_ACTION_CATEGORY_ALL
 
         ROLE_ADMIN_PROCURATIONS:
@@ -166,6 +172,11 @@ security:
         ROLE_ADMIN_BOARD_MEMBER_ROLES:
             - ROLE_APP_ADMIN_ROLE_ALL
 
+        ROLE_ADMIN_REPORTS:
+            - ROLE_APP_ADMIN_REPORT_APPROVE
+            - ROLE_APP_ADMIN_REPORT_VIEW
+            - ROLE_APP_ADMIN_REPORT_LIST
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -185,10 +196,11 @@ security:
             - ROLE_ADMIN_SUMMARY
             - ROLE_ADMIN_SKILLS
             - ROLE_ADMIN_COMMITTEES
-            - ROLE_ADMIN_CITIZEN_PROJECTS
             - ROLE_ADMIN_EVENTS
             - ROLE_ADMIN_CITIZEN_INITIATIVES
             - ROLE_ADMIN_CITIZEN_ACTIONS
+            - ROLE_ADMIN_CITIZEN_PROJECTS
+            - ROLE_ADMIN_REPORTS
             - ROLE_ADMIN_PROCURATIONS
             - ROLE_ADMIN_DONATIONS
             - ROLE_ADMIN_EMAIL
@@ -197,6 +209,11 @@ security:
             - ROLE_ADMIN_REFERENTS
             - ROLE_ADMIN_REFERENTS_AREAS
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
+
+        ROLE_COORDINATOR_CITIZEN_PROJECT:
+            - ROLE_COORDINATOR_CITIZEN_PROJECT
+        ROLE_COORDINATOR_COMMITTEE:
+            - ROLE_COORDINATOR_COMMITTEE
 
     access_decision_manager:
         strategy: unanimous
@@ -261,6 +278,7 @@ security:
         - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
+        - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }

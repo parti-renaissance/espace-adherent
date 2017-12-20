@@ -18,34 +18,39 @@ class CitizenProjectFactory
 
     public function createFromArray(array $data): CitizenProject
     {
-        foreach (['name', 'description', 'created_by'] as $key) {
+        foreach (['uuid', 'name', 'subtitle', 'category', 'address', 'problem_description', 'proposed_solution', 'required_means', 'created_by'] as $key) {
             if (empty($data[$key])) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
             }
-        }
-
-        $phone = null;
-        if (isset($data['phone'])) {
-            $phone = $this->createPhone($data['phone']);
         }
 
         $uuid = isset($data['uuid'])
             ? Uuid::fromString($data['uuid'])
             : CitizenProject::createUuid($data['name']);
 
-        $citizenProject = CitizenProject::createSimple(
-            $uuid,
-            $data['created_by'],
-            $data['name'],
-            $data['description'],
-            $data['address'] ?? null,
-            $phone,
-            $data['created_at'] ?? 'now'
-        );
-
-        if (isset($data['slug'])) {
-            $citizenProject->updateSlug($data['slug']);
+        $phone = null;
+        if (isset($data['phone'])) {
+            $phone = $this->createPhone($data['phone']);
         }
+
+        $citizenProject = new CitizenProject(
+            $uuid,
+            Uuid::fromString($data['created_by']),
+            $data['name'],
+            $data['subtitle'],
+            $data['category'],
+            $data['committee'] ?? [],
+            $data['assistance_needed'] ?? false,
+            $data['assistance_content'] ?? null,
+            $data['problem_description'],
+            $data['proposed_solution'],
+            $data['required_means'],
+            $phone,
+            $data['address'],
+            $data['slug'] ?? null,
+            $data['status'] ?? CitizenProject::PENDING,
+            $data['skills'] ?? null
+        );
 
         return $citizenProject;
     }
@@ -62,10 +67,20 @@ class CitizenProjectFactory
         $citizenProject = CitizenProject::createForAdherent(
             $command->getAdherent(),
             $command->name,
-            $command->description,
-            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null,
-            $command->getPhone()
+            $command->subtitle,
+            $command->category,
+            $command->getPhone(),
+            $command->assistanceNeeded,
+            $command->assistanceContent,
+            $command->problemDescription,
+            $command->proposedSolution,
+            $command->requiredMeans,
+            $command->getCommittees()->toArray(),
+            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
         );
+
+        $citizenProject->setSkills($command->getSkills());
+        $citizenProject->setImage($command->getImage());
 
         return $citizenProject;
     }

@@ -1,0 +1,123 @@
+<table class="datagrid__table" style="border-spacing: 0 1em;">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Organisateur</th>
+            <th>Membres</th>
+            <th>Comités en soutien</th>
+            <th>Lieu</th>
+            <th>Problème local adressé</th>
+            <th>Réponse au problème</th>
+            <th>Feuille de route</th>
+            <th>Compétences matchées</th>
+            <th>Contenu accompagnement</th>
+            <th>Commentaire</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody id="citizen-projects-list">
+        {% for project in results %}
+            {% if not project.isApproved %}
+                {% set form = forms[project.id] %}
+
+                {{ form_start(form) }}
+                    {{ form_errors(form) }}
+            {% endif %}
+            <tr class="coordinator__item space--20-0">
+                <td>
+                    {{ project.name }}
+                    <br/>
+                    {{ project.subTitle }}
+                    <br />
+                    Créé le {{ project.createdAt|date('d/m/Y H:i') }}
+                </td>
+                <td>
+                    {% if project.creator %}
+                        {{ project.creator }}
+                        <br/>
+                        <a href="email:{{ project.creator.emailAddress }}">{{ project.creator.emailAddress }}</a>
+                        {% if project.creator.phone %}
+                            <br/>
+                            {{ project.creator.phone|phone_number_format }}
+                        {% endif %}
+                    {% else %}
+                        ~
+                    {% endif %}
+                </td>
+                <td>{{ project.membersCount }}</td>
+                <td>
+                    {% for committeeSupport in project.committeeSupports %}
+                        <a href="{{ path('app_committee_show', {slug: committeeSupport.committee.slug}) }}">
+                            {{ committeeSupport.committee.name }} ({{ committeeSupport.pending ? 'En attente' : 'Approuvé' }})
+                        </a>
+                    {% else %}
+                        ~
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ project.cityName }}<br/>
+                    {{ project.postalCode }}<br/>
+                    {{ project.country }}
+                </td>
+                <td>
+                    {{ project.problemDescription|read_more(50, 'problem-description' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
+                </td>
+                <td>
+                    {{ project.proposedSolution|read_more(50, 'solution' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
+                </td>
+                <td>
+                    {{ project.requiredMeans|read_more(50, 'required-means' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
+                </td>
+                <td>
+                    {% if project.matchedSkills %}Oui{% else %}Non{% endif %}
+                </td>
+                <td>
+                    {% if project.assistanceContent %}
+                        {{ project.assistanceContent|read_more(50, 'assistance-content', 'common.show_more'|trans, 'common.show_less'|trans) }}
+                    {% else %}
+                        ~
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not project.isApproved %}
+                        {% for messages in app.flashes(["error_#{project.id}"]) %}
+                            <ul class="form form__errors">
+                                {% for message in messages %}
+                                    <li class="form__error">
+                                        {{ message }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                        {{ form_widget(form.coordinatorComment, {attr: {class: 'form__field--textarea-120'}}) }}
+                    {% else %}
+                        {{ project.coordinatorComment|escape|read_more(100, 'comment' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if project.isPending %}
+                        <span>
+                            {{ form_widget(form.accept, {label: 'Pré-accepter', attr: {class: 'btn--success btn--success__icon'}}) }}
+                        </span>
+                        <span>
+                            {{ form_widget(form.refuse, {label: 'Pré-refuser', attr: {class: 'btn--error btn--error__icon'}}) }}
+                        </span>
+                    {% elseif project.isPreRefused %}
+                        <span>
+                            {{ form_widget(form.accept, {label: 'Pré-accepter', attr: {class: 'btn--success btn--success__icon'}}) }}
+                        </span>
+                    {% elseif project.isPreApproved %}
+                        <span>
+                            {{ form_widget(form.refuse, {label: 'Pré-refuser', attr: {class: 'btn--error btn--error__icon'}}) }}
+                        </span>
+                    {% else %}
+                        {% include 'citizen_project/status.html.twig' with {citizenProject: project} %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% if not project.isApproved %}
+                {{ form_end(form) }}
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>

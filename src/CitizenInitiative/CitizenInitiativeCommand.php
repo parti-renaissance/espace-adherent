@@ -8,56 +8,15 @@ use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Entity\CoachingRequest;
 use AppBundle\Entity\SkillTrait;
+use AppBundle\Event\BaseEventCommand;
 use Doctrine\Common\Collections\ArrayCollection;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class CitizenInitiativeCommand
+class CitizenInitiativeCommand extends BaseEventCommand
 {
     use SkillTrait;
 
-    private $uuid;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(min=5, max=100)
-     */
-    private $name;
-
-    /**
-     * @Assert\NotNull
-     */
-    private $category;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(min=10)
-     */
-    private $description;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     */
-    private $beginAt;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     */
-    private $finishAt;
-
-    /**
-     * @var Address
-     *
-     * @Assert\NotBlank
-     * @Assert\Valid
-     */
-    private $address;
-
-    private $author;
     private $citizenInitiative;
 
     private $interests = [];
@@ -81,20 +40,18 @@ class CitizenInitiativeCommand
     private $place;
 
     public function __construct(
-        Adherent $author = null,
+        ?Adherent $author,
         UuidInterface $uuid = null,
         Address $address = null,
         int $capacity = null,
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
-        ?string $place = null
+        ?string $place = null,
+        CitizenInitiative $initiative = null
     ) {
-        $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->author = $author;
-        $this->address = $address ?: new Address();
+        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $initiative);
+
         $this->capacity = $capacity;
-        $this->beginAt = $beginAt ?: new \DateTime(date('Y-m-d 00:00:00'));
-        $this->finishAt = $finishAt ?: new \DateTime(date('Y-m-d 23:59:59'));
         $this->skills = new ArrayCollection();
         $this->place = $place;
     }
@@ -104,16 +61,15 @@ class CitizenInitiativeCommand
         $command = new self(
             $citizenInitiative->getOrganizer(),
             $citizenInitiative->getUuid(),
-            Address::createFromAddress($citizenInitiative->getPostAddressModel()),
+            self::getAddressModelFromEvent($citizenInitiative),
             $citizenInitiative->getCapacity(),
             $citizenInitiative->getBeginAt(),
             $citizenInitiative->getFinishAt(),
-            $citizenInitiative->getPlace()
+            $citizenInitiative->getPlace(),
+            $citizenInitiative
         );
 
-        $command->name = $citizenInitiative->getName();
         $command->category = $citizenInitiative->getCategory();
-        $command->description = $citizenInitiative->getDescription();
         $command->expertAssistanceNeeded = $citizenInitiative->isExpertAssistanceNeeded();
         $command->coachingRequested = $citizenInitiative->isCoachingRequested();
         $command->coachingRequest = $citizenInitiative->getCoachingRequest();
@@ -121,91 +77,6 @@ class CitizenInitiativeCommand
         $command->skills = $citizenInitiative->getSkills();
 
         return $command;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getCategory(): ?CitizenInitiativeCategory
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?CitizenInitiativeCategory $category = null): void
-    {
-        $this->category = $category;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function getBeginAt(): ?\DateTimeInterface
-    {
-        return $this->beginAt;
-    }
-
-    public function setBeginAt(\DateTime $beginAt): void
-    {
-        $this->beginAt = $beginAt;
-    }
-
-    public function getFinishAt(): ?\DateTimeInterface
-    {
-        return $this->finishAt;
-    }
-
-    public function setFinishAt(\DateTime $finishAt): void
-    {
-        $this->finishAt = $finishAt;
-    }
-
-    public function setAddress(Address $address): void
-    {
-        $this->address = $address;
-    }
-
-    public function getAddress(): ?Address
-    {
-        return $this->address;
-    }
-
-    public function getAuthor(): Adherent
-    {
-        return $this->author;
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public static function validateDateRange(self $command, ExecutionContextInterface $context): void
-    {
-        $beginAt = $command->getBeginAt();
-        $finishAt = $command->getFinishAt();
-
-        if (!$beginAt instanceof \DateTimeInterface || !$finishAt instanceof \DateTimeInterface) {
-            return;
-        }
-
-        if ($finishAt <= $beginAt) {
-            $context
-                ->buildViolation('citizen_initiative.invalid_date_range')
-                ->atPath('finishAt')
-                ->addViolation();
-        }
     }
 
     public function setCitizenInitiative(CitizenInitiative $citizenInitiative): void
@@ -216,11 +87,6 @@ class CitizenInitiativeCommand
     public function getCitizenInitiative(): ?CitizenInitiative
     {
         return $this->citizenInitiative;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
     }
 
     public function getInterests(): ?array
@@ -273,12 +139,8 @@ class CitizenInitiativeCommand
         return null !== $this->capacity ? (int) $this->capacity : null;
     }
 
-    public function setCapacity($capacity): void
+    public function setCapacity(?int $capacity): void
     {
-        if (null !== $capacity) {
-            $capacity = (string) $capacity;
-        }
-
         $this->capacity = $capacity;
     }
 
@@ -290,5 +152,10 @@ class CitizenInitiativeCommand
     public function setPlace(?string $place): void
     {
         $this->place = $place;
+    }
+
+    protected function getCategoryClass(): string
+    {
+        return CitizenInitiativeCategory::class;
     }
 }

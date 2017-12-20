@@ -3,17 +3,18 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <instanceof id="Twig\Extension\AbstractExtension" public="false">
-            <tag name="twig.extension" />
-        </instanceof>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <prototype namespace="AppBundle\Twig\" resource="../../../src/Twig" />
 
         <service id="AppBundle\Twig\AdherentExtension">
             <argument>%adherent_interests%</argument>
             <argument>%adherent_unregistration_reasons%</argument>
         </service>
 
-        <service id="AppBundle\Twig\AssetExtension" />
+        <service id="Twig\Extensions\IntlExtension" />
 
+        <!-- Twig runtimes must be tagged -->
         <service id="AppBundle\Twig\AssetRuntime">
             <argument type="service" id="router" />
             <argument type="service" id="twig.extension.assets" />
@@ -23,44 +24,29 @@
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\Base64Extension" />
-
-        <service id="AppBundle\Twig\CommitteeExtension" />
-
         <service id="AppBundle\Twig\CommitteeRuntime">
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="app.committee.manager"/>
-            <tag name="twig.runtime"/>
-        </service>
-
-        <service id="AppBundle\Twig\CitizenProjectExtension" />
-
-        <service id="AppBundle\Twig\CitizenProjectRuntime">
-            <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="app.citizen_project.manager"/>
-            <tag name="twig.runtime"/>
-        </service>
-
-        <service id="AppBundle\Twig\FormExtension" />
-
-        <service id="AppBundle\Twig\FormRuntime">
-            <argument type="service" id="form.factory"/>
-            <tag name="twig.runtime"/>
-        </service>
-
-        <service id="AppBundle\Twig\AppIntlExtension" />
-
-        <service id="Twig\Extensions\IntlExtension" />
-
-        <service id="AppBundle\Twig\MarkdownExtension" />
-
-        <service id="AppBundle\Twig\MarkdownRuntime">
-            <argument type="service" id="League\CommonMark\CommonMarkConverter" />
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\HomeBlockExtension">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+        <service id="AppBundle\Twig\CitizenProjectRuntime">
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\FormRuntime">
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\MarkdownRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\CitizenActionExtension" />
+
+        <service id="AppBundle\Twig\CitizenActionRuntime">
+            <argument type="service" id="security.authorization_checker"/>
+            <tag name="twig.runtime"/>
         </service>
 
     </services>

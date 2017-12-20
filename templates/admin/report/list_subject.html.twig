@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if value %}
+        {% set path = report_subject_admin_path(object) %}
+
+        {% if path %}
+            <a href="{{ path }}">
+                {{ value|render_relation_element(field_description) }}
+            </a>
+        {% else %}
+            {{ value|render_relation_element(field_description) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

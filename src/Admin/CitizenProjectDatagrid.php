@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\Entity\CitizenProject;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class CitizenProjectDatagrid implements DatagridInterface
@@ -25,11 +26,12 @@ class CitizenProjectDatagrid implements DatagridInterface
     public function getResults()
     {
         if (!$this->cachedResults) {
+            /* @var CitizenProject[] $results */
             $results = $this->decorated->getResults();
 
-            foreach ($results as $result) {
-                $result->administrators = $this->manager->getCitizenProjectAdministrators($result);
-            }
+            $this->manager->injectCitizenProjectAdministrators($results);
+            $this->manager->injectCitizenProjectCreator($results);
+            $this->manager->injectCitizenProjectNextAction($results);
 
             $this->cachedResults = $results;
         }

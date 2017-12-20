@@ -3,7 +3,6 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\BaseEvent;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

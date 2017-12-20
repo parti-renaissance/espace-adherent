@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
-use AppBundle\Committee\CommitteeUtils;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
@@ -13,6 +12,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ContactMembersType;
+use AppBundle\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -74,7 +74,7 @@ class CommitteeManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
 
             return $this->redirectToRoute('app_event_show', [
-                'slug' => (string) $command->getEvent()->getSlug(),
+                'slug' => $event->getSlug(),
             ]);
         }
 
@@ -112,8 +112,8 @@ class CommitteeManagerController extends Controller
 
         $committeeManager = $this->get('app.committee.manager');
 
-        $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('exports', ''));
-        $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
+        $uuids = GroupUtils::getUuidsFromJson($request->request->get('exports', ''));
+        $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
 
         return new Response(AdherentCsvSerializer::serialize($adherents ?? []), 200, [
             'Content-Type' => 'text/csv',
@@ -133,11 +133,11 @@ class CommitteeManagerController extends Controller
 
         $committeeManager = $this->get('app.committee.manager');
 
-        $uuids = CommitteeUtils::getUuidsFromJson($request->request->get('contacts', ''));
-        $adherents = CommitteeUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
+        $uuids = GroupUtils::getUuidsFromJson($request->request->get('contacts', ''));
+        $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
         $command = new CommitteeContactMembersCommand($adherents, $this->getUser());
 
-        $contacts = CommitteeUtils::getUuidsFromAdherents($adherents);
+        $contacts = GroupUtils::getUuidsFromAdherents($adherents);
 
         if (empty($contacts)) {
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.none'));
@@ -163,7 +163,7 @@ class CommitteeManagerController extends Controller
         return $this->render('committee/contact.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'contacts' => CommitteeUtils::getUuidsFromAdherents($adherents),
+            'contacts' => GroupUtils::getUuidsFromAdherents($adherents),
             'form' => $form->createView(),
         ]);
     }

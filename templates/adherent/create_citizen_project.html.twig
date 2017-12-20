@@ -1,63 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Je crée mon projet citoyen !' %}
+{% block page_title 'Lancez votre projet citoyen !' %}
+{% block banner '' %}
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
+            {{ js.simpleCkeditor('citizen_project_proposed_solution') }}
+            App.runCitizenProjectCreation();
+            {{ js.citizenProjectSkills('#citizen_project_skills', '#citizen_project_skills_search', path('app_citizen_project_skills_autocomplete'), '#citizen_project_skills_search') }}
+            {{ js.committee('#citizen_project_committees', '#citizen_project_committees_search', path('app_citizen_project_committee_autocomplete'), '#citizen_project_committees_search') }}
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="l__wrapper--medium b__nudge--bottom-huge">
-            <a href="{{ path('app_search_citizen_projects') }}" class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des projets citoyens</a>
-
-            <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
+    <main class="citizen-projects__create">
+        <section class="b__nudge--bottom-huge l__wrapper--600">
+            <header class="space--60-0">
                 <h1 class="b__nudge--bottom-small text--large">
-                    Je crée mon projet citoyen !
+                    Lancez votre projet citoyen !
                 </h1>
                 <p class="text--body">
-                    En créant votre projet citoyen, vous pourrez réunir des citoyens pour débattre et partager autour
-                    de sujets qui vous intéressent !
+                    Un projet vise à améliorer concrètement le quotidien des habitants de votre quartier, en réunissant la force et les compétences de toutes et tous.
                 </p>
-                <p class="text--body">
-                    Consultez la <a href="{{ path('app_citizen_project_help') }}">FAQ</a> pour en savoir plus.
-                </p>
+                <div class="text--summary">
+                    Tout projet citoyen doit adhérer à <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">notre charte</a>.
+                    Des questions ? Consultez la <a href="{{ url_help_en_marche }}/category/702-projets-citoyens">FAQ</a>.
+                </div>
             </header>
+            <div>
+                <div class="citizen-project__form">
+                    {{ form_start(form, {attr: {'id': 'create-citizen-project-form', 'class': 'form citizen-project-for'}}) }}
+                        {{ include('citizen_project/_form.html.twig') }}
 
-            <div class="citizen-project__form">
-                <form method="post" id="create-citizen-project-form" class="form citizen-project-form">
-                    {{ include('citizen_project/_form.html.twig') }}
-
-                    <div class="space--20-30">
-                        <h3>Rappel de vos informations personnelles</h3>
-
-                        <div class="form__row" id="field-personal-information">
-                            <strong>Nom</strong> : {{ app.user.lastName|upper }}<br/>
-                            <strong>Prénom</strong> : {{ app.user.firstName|capitalize }}<br/>
-                            <strong>Adresse e-mail</strong> : {{ app.user.emailAddress }}<br/>
+                        <div class="form__new" id="field-personal-phone">
+                            <label class="label__header--large">Vérifier mes informations</label>
+                            <div>Mon e-mail : {{ app.user.emailAddress }}</div>
+                            <a href="{{ path('app_adherent_profile') }}" class="link--blue">Modifier</a>
                         </div>
 
-                        <p class="wrong-personal-infos">
-                            Ces informations ne sont pas justes ?
-                            <a href="{{ path('app_adherent_profile') }}">Éditez-les</a>.
-                        </p>
-                    </div>
+                        {% if form.cgu is defined %}
+                            <div class="form__new form__new__checkbox">
+                                <div>
+                                    {{ form_widget(form.cgu) }}
+                                    {% block _form_cgu_label %}
+                                        <label for="citizen_project_cgu">Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et e-mail) aux Responsables locaux Engagement Citoyen.</label>
+                                    {% endblock %}
+                                </div>
+                                {{ form_errors(form.cgu) }}
+                            </div>
+                        {% endif %}
 
-                    <div class="text--center">
-                        <button type="submit" class="btn btn--blue btn--medium" id="create-my-citizen-project">
-                            Créer un projet citoyen
-                        </button>
-                    </div>
+                        {% if form.data_processing is defined %}
+                            <div class="form__new form__new__checkbox">
+                                <div>
+                                    {{ form_widget(form.data_processing) }}
+                                    {% block _form_data_processing_label %}
+                                        <label for="citizen_project_data_processing">J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank">Conditions Générales d’Utilisation des Projets Citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank">Charte des Projets Citoyens</a></label>
+                                    {% endblock %}
+                                </div>
+                                {{ form_errors(form.data_processing) }}
+                            </div>
+                        {% endif %}
 
-                    {{ form_rest(form) }}
-                </form>
+                        <div class="text--center">
+                            <button type="submit" class="newbtn" id="create-my-citizen-project">
+                                Proposer mon projet
+                                {{ include('components/arrow--right.html.twig') }}
+                            </button>
+                        </div>
+                        {{ form_widget(form._token) }}
+                    {{ form_end(form) }}
+                    <p class="text--gray text--summary text--small b__nudge--top">
+                        Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par La République En Marche pour le référencement de Projets Citoyens et la mise en relation entre Adhérents et Utilisateurs du site <a href="https://en-marche.fr">https://en-marche.fr/</a>.
+                        Elles sont conservées pendant toute la durée de référencement du Projet Citoyen, et au-delà de cette durée dès lors qu’une disposition légale ou règlementaire le prévoit. Ces données sont destinées aux services digitaux de La République En Marche, aux équipes locales de bénévoles de l’association et aux adhérents de La République En Marche désireux de participer à un Projet Citoyen.
+                        Conformément à la loi Informatique et Libertés, vous pouvez exercer vos droits d’opposition, d'accès, de rectification et de suppression des données vous concernant et d’opposition au traitement de données en adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse suivante : <a href="mailto:projetscitoyens@en-marche.fr">projetscitoyens@en-marche.fr</a>.
+                    </p>
+                </div>
             </div>
         </section>
     </main>

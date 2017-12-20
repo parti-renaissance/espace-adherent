@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/list__action.html.twig' %}
+
+{% block field %}
+    {{ parent() }}
+
+    {% if is_granted('ROLE_APP_ADMIN_REPORT_APPROVE') and not object.isResolved %}
+        <div class="btn-group">
+            <a href="{{ path('app_admin_report_resolve', {id: object.id, token: csrf_token('report.' ~ object.id)}) }}"
+               class="btn btn-sm btn-success view_link" title="Marquer comme résolu">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Marquer comme résolu
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

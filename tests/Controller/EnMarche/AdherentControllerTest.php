@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
@@ -392,13 +394,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
         $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
 
-        $this->assertCount(3, $subscriptions);
+        $this->assertCount(4, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -422,17 +425,21 @@ class AdherentControllerTest extends MysqlWebTestCase
                 'emails_subscriptions' => [
                     AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
                     AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                    false,
+                    false,
                 ],
             ],
         ]);
 
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/preferences-des-emails', $this->client);
 
+        $this->manager->clear();
         $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
         $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }
 
     public function testAnonymousUserCannotCreateCitizenProject()
@@ -440,25 +447,25 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
     }
 
     public function testAdherentCanCreateNewCitizenProject()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testCitizenProjectAdministratorCanCreateAnotherCitizenProject()
+    public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
+        $this->assertSame(0, $crawler->selectLink('Créer un projet citoyen')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testCreateCitizenProjectFailed()
@@ -467,76 +474,83 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $errors = $this->client->getCrawler()->filter('.form__errors');
+
+        $this->assertSame(6, $errors->count());
+
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
         );
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-problem-description > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-proposed-solution > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#field-required-means > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Le numéro de téléphone est obligatoire.',
+            $this->client->getCrawler()->filter('#citizen-project-phone > .form__errors > li')->text()
         );
 
         $data = [];
         $data['citizen_project']['name'] = 'P';
-        $data['citizen_project']['description'] = 'test';
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $data['citizen_project']['subtitle'] = 'test';
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 2 caractères.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
         );
         $this->assertSame(
-            'Votre texte de description est trop court. Il doit compter 5 caractères minimum.',
-            $this->client->getCrawler()->filter('#field-description > .form__errors > li')->text()
+            'Vous devez saisir au moins 5 caractères.',
+            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
         );
     }
 
     public function testCreateCitizenProjectSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
+
+        $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
 
         $data = [];
         $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['description'] = 'Mon premier projet citoyen';
-        $data['citizen_project']['address']['address'] = 'Pilgerweg 58';
-        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
+        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['category'] = $categoryValue;
+        $data['citizen_project']['problem_description'] = 'Le problème local.';
+        $data['citizen_project']['proposed_solution'] = 'Ma solution.';
+        $data['citizen_project']['required_means'] = 'Mes actions.';
         $data['citizen_project']['address']['postalCode'] = '8802';
+        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
         $data['citizen_project']['address']['country'] = 'CH';
         $data['citizen_project']['phone']['country'] = 'CH';
         $data['citizen_project']['phone']['number'] = '31 359 21 11';
+        $data['citizen_project']['assistance_needed'] = 1;
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
+
         $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
-    }
-
-    public function testCreateCitizenProjectWithoutAddressAndPhoneSuccessful()
-    {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $data = [];
-        $data['citizen_project']['name'] = 'Mon équipe';
-        $data['citizen_project']['description'] = 'Ma première équipe';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon équipe']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
     /**
@@ -787,8 +801,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
-
         $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
+
+        $this->assertCount(2, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
         $reasons = $this->client->getContainer()->getParameter('adherent_unregistration_reasons');
@@ -832,6 +847,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
+        $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
     }
 
     protected function setUp()
@@ -844,6 +860,8 @@ class AdherentControllerTest extends MysqlWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
+            LoadCitizenProjectData::class,
+            LoadCitizenProjectCommentData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();

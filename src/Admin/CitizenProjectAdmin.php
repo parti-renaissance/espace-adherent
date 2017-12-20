@@ -4,17 +4,23 @@ namespace AppBundle\Admin;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
+use AppBundle\Repository\CitizenProjectRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -29,16 +35,20 @@ class CitizenProjectAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    private $adherentRepository;
     private $manager;
     private $citizenProjectMembershipRepository;
+    private $citizenProjectRepository;
     private $cachedDatagrid;
 
-    public function __construct($code, $class, $baseControllerName, CitizenProjectManager $manager, CitizenProjectMembershipRepository $repository)
+    public function __construct($code, $class, $baseControllerName, CitizenProjectManager $manager, CitizenProjectRepository $repository, CitizenProjectMembershipRepository $membershipRepository, AdherentRepository $adherentRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->manager = $manager;
-        $this->citizenProjectMembershipRepository = $repository;
+        $this->adherentRepository = $adherentRepository;
+        $this->citizenProjectRepository = $repository;
+        $this->citizenProjectMembershipRepository = $membershipRepository;
     }
 
     /**
@@ -66,26 +76,20 @@ class CitizenProjectAdmin extends AbstractAdmin
         return parent::getTemplate($name);
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+    }
+
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Projet citoyen', array('class' => 'col-md-7'))
+            ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('description', TextareaType::class, [
-                    'filter_emojis' => true,
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
-                ])
                 ->add('slug', null, [
                     'label' => 'Slug',
-                ])
-                ->add('phone', null, [
-                    'label' => 'Téléphone',
-                    'template' => 'admin/adherent/show_phone.html.twig',
                 ])
                 ->add('status', null, [
                     'label' => 'Statut',
@@ -100,7 +104,7 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'label' => 'Date de refus',
                 ])
             ->end()
-            ->with('Adresse', array('class' => 'col-md-5'))
+            ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
                 ])
@@ -120,27 +124,56 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'label' => 'Longitude',
                 ])
             ->end()
+            ->with('Téléphone', ['class' => 'col-md-5'])
+                ->add('phone', null, [
+                    'label' => 'Téléphone',
+                    'template' => 'admin/adherent/show_phone.html.twig',
+                ])
+            ->end()
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Projet citoyen', array('class' => 'col-md-7'))
+            ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
-                ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
+                ->add('subtitle', null, [
+                    'label' => 'Sous-titre',
+                ])
+                ->add('category', null, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('problemDescription', null, [
+                    'label' => 'Description du problème',
+                ])
+                ->add('proposedSolution', null, [
+                    'label' => 'Solution du problème',
+                ])
+                ->add('skills', EntityType::class, [
+                    'class' => CitizenProjectSkill::class,
+                    'label' => 'Compétences',
+                    'multiple' => true,
+                ])
+                ->add('matchedSkills', null, [
+                    'label' => 'Compétences matchées',
+                ])
+                ->add('featured', null, [
+                    'label' => 'Coup de coeur',
+                ])
+                ->add('assistanceNeeded', null, [
+                    'label' => 'Demande d\'accompagnement',
+                ])
+                ->add('assistanceContent', null, [
+                    'label' => 'Description de l\'accompagnement',
+                ])
             ->end()
-            ->with('Localisation', array('class' => 'col-md-5'))
+            ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.latitude', null, [
                     'required' => false,
                     'empty_data' => null,
@@ -150,20 +183,39 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'required' => false,
                     'empty_data' => null,
                     'label' => 'Longitude',
-                    'help' => 'Pour modifier l\'adresse, impersonnifiez un administrateur de ce projet citoyen.',
+                    'help' => 'Pour modifier l\'adresse, impersonnifiez un organisateur de ce projet citoyen.',
+                ])
+            ->end()
+            ->with('Commentaire', array('class' => 'col-md-5'))
+                ->add('adminComment', TextareaType::class, [
+                    'label' => 'Commentaire sur le créateur',
+                    'attr' => ['rows' => 5],
+                    'required' => false,
+                ])
+                ->add('coordinatorComment', TextareaType::class, [
+                    'label' => 'Commentaire du REC sur le créateur',
+                    'attr' => ['rows' => 5],
+                    'disabled' => true,
+                    'required' => false,
                 ])
             ->end()
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $adherentRepository = $this->adherentRepository;
+        $citizenProjectRepository = $this->citizenProjectRepository;
         $citizenProjectMembershipRepository = $this->citizenProjectMembershipRepository;
 
         $datagridMapper
             ->add('id', null, [
                 'label' => 'ID',
-                'show_filter' => true,
             ])
             ->add('name', null, [
                 'label' => 'Nom',
@@ -171,74 +223,82 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
+                'show_filter' => true,
                 'field_type' => 'sonata_type_date_range_picker',
             ])
             ->add('administratorFirstName', CallbackFilter::class, [
-                'label' => 'Prénom de l\'administrateur',
-                'show_filter' => true,
+                'label' => 'Prénom de l\'organisateur/créateur',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectRepository, $citizenProjectMembershipRepository, $adherentRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorFirstName($value['value'])) {
+                    $creatorCitizenProjectUuids = $citizenProjectRepository->findCitizenProjectUuidByCreatorUuids($adherentRepository->findAdherentsUuidByFirstName($value['value']));
+                    $administratorCitizenProjectUuids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorFirstName($value['value']);
+                    if (!$creatorCitizenProjectUuids && !$administratorCitizenProjectUuids) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $citizenProjectUuids = array_unique(array_merge($creatorCitizenProjectUuids, $administratorCitizenProjectUuids));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $citizenProjectUuids));
 
                     return true;
                 },
             ])
             ->add('administratorLastName', CallbackFilter::class, [
-                'label' => 'Nom de l\'administrateur',
+                'label' => 'Nom de l\'organisateur/créateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectRepository, $citizenProjectMembershipRepository, $adherentRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorLastName($value['value'])) {
+                    $creatorCitizenProjectUuids = $citizenProjectRepository->findCitizenProjectUuidByCreatorUuids($adherentRepository->findAdherentsUuidByLastName($value['value']));
+                    $administratorCitizenProjectUuids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorLastName($value['value']);
+                    if (!$creatorCitizenProjectUuids && !$administratorCitizenProjectUuids) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $citizenProjectUuids = array_unique(array_merge($creatorCitizenProjectUuids, $administratorCitizenProjectUuids));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $citizenProjectUuids));
 
                     return true;
                 },
             ])
             ->add('administratorEmailAddress', CallbackFilter::class, [
-                'label' => 'Email de l\'administrateur',
+                'label' => 'Email de l\'organisateur/créateur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectMembershipRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectRepository, $citizenProjectMembershipRepository, $adherentRepository) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    if (!$ids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorEmailAddress($value['value'])) {
+                    $creatorCitizenProjectUuids = $citizenProjectRepository->findCitizenProjectUuidByCreatorUuids($adherentRepository->findAdherentsUuidByEmailAddress($value['value']));
+                    $administratorCitizenProjectUuids = $citizenProjectMembershipRepository->findCitizenProjectsUuidByAdministratorEmailAddress($value['value']);
+                    if (!$creatorCitizenProjectUuids && !$administratorCitizenProjectUuids) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $ids));
+                    $citizenProjectUuids = array_unique(array_merge($creatorCitizenProjectUuids, $administratorCitizenProjectUuids));
+                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $citizenProjectUuids));
 
                     return true;
                 },
             ])
             ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal',
-                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
@@ -253,6 +313,7 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
+                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
@@ -283,56 +344,94 @@ class CitizenProjectAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('status', null, [
+            ->add('assistanceNeeded', null, [
+                'label' => 'Demande d\'accompagnement',
+                'show_filter' => true,
+            ])
+            ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
+                    'multiple' => true,
                     'choices' => [
                         'En attente' => CitizenProject::PENDING,
+                        'Pré-accepté' => CitizenProject::PRE_APPROVED,
                         'Accepté' => CitizenProject::APPROVED,
+                        'Pré-refusé' => CitizenProject::PRE_REFUSED,
                         'Refusé' => CitizenProject::REFUSED,
                     ],
                 ],
             ])
+            ->add('skills', null, [
+                'label' => 'Compétences recherchées',
+            ], null, [
+                'multiple' => true,
+            ])
+            ->add('matchedSkills', null, [
+                'label' => 'Compétences matchées',
+            ])
+            ->add('featured', null, [
+                'label' => 'Coup de coeur',
+            ])
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id', null, [
-                'label' => 'ID',
-            ])
-            ->addIdentifier('name', null, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
-            ])
-            ->add('postAddress.postalCode', null, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', null, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', null, [
-                'label' => 'Pays',
-            ])
-            ->add('phone', null, [
-                'label' => 'Téléphone',
-                'template' => 'admin/adherent/list_phone.html.twig',
-            ])
-            ->add('membersCounts', null, [
-                'label' => 'Membres',
+                'template' => 'admin/citizen_project/list_name.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+            ])
+            ->add('creator', TextType::class, [
+                'label' => 'Créateur',
+                'template' => 'admin/citizen_project/list_creator.html.twig',
+            ])
             ->add('administrators', TextType::class, [
-                'label' => 'Administrateur(s)',
+                'label' => 'Organisateur(s)',
                 'template' => 'admin/citizen_project/list_administrators.html.twig',
+            ])
+            ->add('membersCounts', null, [
+                'label' => 'Membres',
+            ])
+            ->add('postAddress.cityName', null, [
+                'label' => 'Ville',
+            ])
+            ->add('skills', null, [
+                'label' => 'Compétences recherchées',
+            ])
+            ->add('matchedSkills', null, [
+                'label' => 'Comp. matchées',
+            ])
+            ->add('nextAction', null, [
+                'label' => 'Prochaine action',
+                'template' => 'admin/citizen_project/list_next_citizen_action.html.twig',
+            ])
+            ->add('assistanceNeeded', null, [
+                'label' => 'Demande d\'accomp.',
             ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
                 'template' => 'admin/citizen_project/list_status.html.twig',
+            ])
+            ->add('committeeSupports', null, [
+                'label' => 'Comités en soutien',
+                'template' => 'admin/citizen_project/list_committee_supports.html.twig',
+            ])
+            ->add('featured', null, [
+                'label' => 'Coup de coeur',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

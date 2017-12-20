@@ -1,20 +1,12 @@
-<ul class="search__bar__toggle">
-    {% set currentRoute = app.request.attributes.get('_route') %}
-    <li class="{{ currentRoute == 'app_search_events' ? 'active' }}">
-        <a href="{{ path('app_search_events') }}" class="link--no-decor">Événements</a>
-    </li>
-    <li class="{{ currentRoute == 'app_search_committees' ? 'active' }}">
-        <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
-    </li>
-</ul>
 <div class="search__bar space--30 text--white text--body">
     <div class="search__bar__options">
         <input class="search-box" name="{{ constant('PARAMETER_QUERY', search) }}" placeholder="Rechercher...">
 
-        {% if search_type is constant('TYPE_EVENTS', search) %}
+        {% if search.isTypeEvents() %}
             <div class="search__bar__options__types">
-                <select name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
+                <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
                     <option value="" selected="selected">Tous les événements</option>
+                    <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
                     {% for category in event_categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
@@ -27,7 +19,7 @@
             {# this widget will be embedded in the ribbon text #}
             <select name="{{ constant('PARAMETER_RADIUS', search) }}">
                 {% for option in constant('RADII', search) %}
-                    <option value="{{ option }}" {% if constant('AppBundle\\Search\\SearchParametersFilter::DEFAULT_RADIUS') == option %}selected="selected"{% endif %}>{{ option }} Km</option>
+                    <option value="{{ option }}" {% if constant('DEFAULT_RADIUS', search) == option %}selected="selected"{% endif %}>{{ option }} Km</option>
                 {% endfor %}
             </select>
         </div>
@@ -36,7 +28,7 @@
             autour de
             {# this widget will be embedded in the ribbon text #}
             <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal">
-            <input type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search_type }}"/>
+            <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
         </div>
     </div>
 </div>

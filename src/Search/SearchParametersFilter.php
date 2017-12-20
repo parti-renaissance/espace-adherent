@@ -30,10 +30,14 @@ class SearchParametersFilter
 
     const TYPE_COMMITTEES = 'committees';
     const TYPE_EVENTS = 'events';
+    const TYPE_CITIZEN_PROJECTS = 'citizen_projects';
+    const TYPE_CITIZEN_ACTIONS = 'citizen_actions';
 
     const TYPES = [
         self::TYPE_COMMITTEES,
         self::TYPE_EVENTS,
+        self::TYPE_CITIZEN_PROJECTS,
+        self::TYPE_CITIZEN_ACTIONS,
     ];
 
     const RADIUS_1 = 1;
@@ -83,7 +87,7 @@ class SearchParametersFilter
     public function handleRequest(Request $request): self
     {
         $this->setQuery((string) $request->query->get(self::PARAMETER_QUERY));
-        $this->setType($request->query->getAlpha(self::PARAMETER_TYPE));
+        $this->setType($request->query->get(self::PARAMETER_TYPE, ''));
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
         $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
@@ -195,5 +199,20 @@ class SearchParametersFilter
     public function setEventCategory(?string $eventCategory)
     {
         $this->eventCategory = $eventCategory;
+    }
+
+    public function isTypeCommittees(): bool
+    {
+        return self::TYPE_COMMITTEES === $this->getType();
+    }
+
+    public function isTypeEvents(): bool
+    {
+        return self::TYPE_EVENTS === $this->getType();
+    }
+
+    public function isTypeCitizenProjects(): bool
+    {
+        return self::TYPE_CITIZEN_PROJECTS === $this->getType();
     }
 }

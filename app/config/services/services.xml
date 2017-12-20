@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<services>
+		<defaults autowire="true" autoconfigure="true" public="false" />
+
+		<prototype namespace="AppBundle\CitizenProject\Voter\" resource="../../../src/CitizenProject/Voter" />
+		<prototype namespace="AppBundle\Report\Voter\" resource="../../../src/Report/Voter" />
+
+		<prototype namespace="AppBundle\CitizenAction\Voter\" resource="../../../src/CitizenAction/Voter/" />
+
+		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/" public="true">
+			<tag name="controller.service_arguments" />
+		</prototype>
+
+		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
+			<tag name="controller.service_arguments" />
+		</prototype>
+
+		<!-- CitizenProject -->
+		<service id="AppBundle\CitizenProject\CitizenProjectManager">
+			<call method="setGlide">
+				<argument type="service" id="app.glide" />
+			</call>
+		</service>
+		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
+		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">
+			<tag name="security.voter" priority="-1000"/>
+		</service>
+
+		<!-- Report -->
+		<service id="AppBundle\Report\ReportManager" />
+		<service id="AppBundle\Form\ReportCommandType"/>
+		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
+	</services>
+</container>

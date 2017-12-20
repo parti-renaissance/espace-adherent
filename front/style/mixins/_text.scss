@@ -1,7 +1,7 @@
 $text--size-smallest: 12px;
 $text--size-small: 14px;
 $text--size-default: 16px;
-$text--size-medium--small: 18px;
+$text--size-medium--small: 20px;
 $text--size-medium: 24px;
 $text--size-medium--large: 28px;
 $text--size-large: 34px;
@@ -34,7 +34,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--medium-small {
     font-size: $text--size-medium--small;
-    line-height: 25px;
+    line-height: 27px;
 }
 
 @mixin text--medium-small--bold {
@@ -117,6 +117,7 @@ $text--size-extra-large: 48px;
 
 @mixin text--logo {
     @include text--bold;
+    font-family: $font-gillsans;
     font-size: $text--size-medium--large;
     font-style: italic;
     line-height: 0.9em;
@@ -310,6 +311,10 @@ $text--size-extra-large: 48px;
         @include text--blue;
     }
 
+    &--blue--dark {
+        color: $blue--dark;
+    }
+
     &--green {
         color: $green;
     }
@@ -331,6 +336,9 @@ $text--size-extra-large: 48px;
     &--white {
         color: white;
         border-color: white;
+    }
+    &--blue--dark {
+        color: $blue--dark;
     }
 }
 
@@ -474,8 +482,7 @@ $text--size-extra-large: 48px;
 
     &__links--nav {
         li {
-            font-family: $font-gillsans;
-            font-size: $text--size-medium--small;
+            font-size: $text--size-default;
 
             h1 {
                 @include text--logo;

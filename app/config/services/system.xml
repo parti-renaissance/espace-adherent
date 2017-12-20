@@ -64,6 +64,22 @@
             <argument type="service" id="app.consumer.service_locator" />
         </service>
 
+        <service id="AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setCitizeProjectManager">
+                <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            </call>
+            <call method="setCitizenProjectRepository">
+                <argument type="service" id="app.repository.citizen_project"/>
+            </call>
+            <call method="setCitizenProjectMessageNotifier">
+                <argument type="service" id="app.citizen_project.citizen_project_message_notifier"/>
+            </call>
+            <call method="setProducer">
+                <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
+            </call>
+        </service>
+
         <!-- Redirections from old website -->
         <service id="app.legacy_redirections_subscriber" class="AppBundle\Redirection\LegacyRedirectionsSubscriber">
             <tag name="kernel.event_subscriber" />
@@ -250,5 +266,13 @@
             <argument type="service" id="app.repository.skill" />
             <tag name="form.type" />
         </service>
+
+        <!-- Migrations -->
+        <service id="AppBundle\Migration\CitizenProjectCategorySkillMigration">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service public="false" autoconfigure="true" autowire="true" id="AppBundle\Form\CitizenProjectCommandType"/>
+
     </services>
 </container>

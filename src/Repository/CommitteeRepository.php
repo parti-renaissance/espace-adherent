@@ -6,7 +6,7 @@ use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Committee\Filter\CommitteeFilters;
+use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -30,7 +30,8 @@ class CommitteeRepository extends EntityRepository
             ->where('c.status = :approved')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -178,9 +179,9 @@ class CommitteeRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilters &$filters): array
+    public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilter $filter): array
     {
-        if (!$coordinator->isCoordinator()) {
+        if (!$coordinator->isCoordinatorCommitteeSector()) {
             return [];
         }
 
@@ -189,31 +190,8 @@ class CommitteeRepository extends EntityRepository
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC');
 
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($coordinator->getCoordinatorManagedArea()->getCodes() as $key => $code) {
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'c.postAddress.country = \'FR\'',
-                        $qb->expr()->like('c.postAddress.postalCode', ':code'.$key)
-                    )
-                );
-
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq('c.postAddress.country', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        $qb->andWhere($codesFilter);
-
-        if ($filters) {
-            $filters->apply($qb, 'c');
-        }
+        $filter->setCoordinator($coordinator);
+        $filter->apply($qb, 'c');
 
         return $qb->getQuery()->getResult();
     }
@@ -314,5 +292,15 @@ class CommitteeRepository extends EntityRepository
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    public function findByPartialName(string $search, int $limit = 10): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.canonicalName LIKE :search')
+            ->setParameter('search', '%'.strtolower($search).'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -75,9 +75,12 @@
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.event.registration_manager"/>
             <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager"/>
+            <argument type="service" id="AppBundle\CitizenAction\CitizenActionManager"/>
             <argument type="service" id="AppBundle\Event\EventManager"/>
             <argument type="service" id="app.committee.feed_manager"/>
             <argument type="service" id="app.activity_subscription.manager"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="AppBundle\Report\ReportManager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -223,19 +226,10 @@
             <tag name="security.voter"/>
         </service>
 
-        <service id="app.voter.organizer_citizen_initiative_voter" class="AppBundle\CitizenInitiative\Voter\OrganizerCitizenInitiativeVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
-        <!-- Citizen projectss -->
-        <service id="app.citizen_project.manager" class="AppBundle\CitizenProject\CitizenProjectManager">
-            <argument type="service" id="doctrine"/>
-        </service>
-
+        <!-- Citizen projects -->
         <service id="app.citizen_project.authority" class="AppBundle\CitizenProject\CitizenProjectManagementAuthority">
-            <argument type="service" id="app.citizen_project.manager"/>
-            <argument type="service" id="router" />
-            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="app.citizen_project.factory" class="AppBundle\CitizenProject\CitizenProjectFactory">
@@ -251,38 +245,33 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.citizen_project.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <service id="app.voter.show_citizen_project_voter" class="AppBundle\CitizenProject\Voter\ShowCitizenProjectVoter" public="false">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="app.voter.administrate_citizen_project_voter" class="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter" public="false">
-            <argument type="service" id="app.citizen_project.manager"/>
-            <tag name="security.voter" priority="-1000"/>
-        </service>
-
-        <service id="app.voter.follow_citizen_project_voter" class="AppBundle\CitizenProject\Voter\FollowCitizenProjectVoter" public="false">
-            <argument type="service" id="app.citizen_project.manager"/>
-            <tag name="security.voter"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <service id="app.citizen_project.update_handler" class="AppBundle\CitizenProject\CitizenProjectUpdateCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+        </service>
+
+        <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
+            <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler">
+            <argument type="service" id="app.mailer.campaign" />
+        </service>
+
+        <service id="app.citizen_project.controller_subscriber" class="AppBundle\CitizenProject\CitizenProjectControllerSubscriber">
+            <argument type="service" id="router" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- Events -->
@@ -308,6 +297,7 @@
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
+        <service alias="app.event.registration_handler" id="AppBundle\Event\EventRegistrationCommandHandler" />
 
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
@@ -387,6 +377,19 @@
             <tag name="security.voter"/>
         </service>
 
+        <!-- CitizenActions -->
+        <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
+
+        <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler" />
+
+        <service id="AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler">
+            <argument type="service" id="app.event.registration_factory"/>
+            <argument type="service" id="app.event.registration_manager"/>
+            <argument type="service" id="app.activity_subscription.manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.routing.remote_url_generator"/>
+        </service>
+
         <!-- Referents -->
         <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
             <argument type="service" id="router" />
@@ -417,14 +420,46 @@
         </service>
 
         <!-- Search -->
-        <service id="app.search.search_results_filter" class="AppBundle\Search\SearchParametersFilter">
+        <service id="AppBundle\Search\SearchParametersFilter" shared="false">
             <argument type="service" id="app.geocoder"/>
             <argument type="service" id="cache.app"/>
+
+            <call method="setMaxResults">
+                <argument>%search_max_results%</argument>
+            </call>
         </service>
 
-        <service id="app.search.search_results_provider" class="AppBundle\Search\SearchResultsProvider">
+        <service id="AppBundle\Search\SearchResultsProvidersManager">
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CommitteeSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\EventSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CitizenActionSearchResultsProvider"/>
+            </call>
+
+            <call method="addProvider">
+                <argument type="service" id="AppBundle\Search\CitizenProjectSearchResultsProvider"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Search\CommitteeSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.committee"/>
+        </service>
+
+        <service id="AppBundle\Search\EventSearchResultsProvider" public="false">
             <argument type="service" id="app.repository.event"/>
+        </service>
+
+        <service id="AppBundle\Search\CitizenActionSearchResultsProvider" parent="AppBundle\Search\EventSearchResultsProvider" public="false"/>
+
+        <service id="AppBundle\Search\CitizenProjectSearchResultsProvider" public="false">
+            <argument type="service" id="app.repository.citizen_project"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
         <!-- Donation Frequency -->

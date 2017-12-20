@@ -55,15 +55,6 @@ abstract class BaseGroup implements GeoPointInterface
     protected $slug;
 
     /**
-     * The group description.
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Algolia\Attribute
-     */
-    protected $description;
-
-    /**
      * The group current status.
      *
      * @ORM\Column(length=20)
@@ -109,9 +100,8 @@ abstract class BaseGroup implements GeoPointInterface
         UuidInterface $uuid,
         UuidInterface $creator,
         string $name,
-        string $description,
-        PhoneNumber $phone = null,
         string $slug = null,
+        PhoneNumber $phone = null,
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
@@ -129,7 +119,6 @@ abstract class BaseGroup implements GeoPointInterface
         $this->createdBy = $creator;
         $this->setName($name);
         $this->slug = $slug;
-        $this->description = $description;
         $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
@@ -158,9 +147,14 @@ abstract class BaseGroup implements GeoPointInterface
         return $this->slug;
     }
 
-    public function getDescription(): string
+    public function setPhone(PhoneNumber $phone = null): void
     {
-        return $this->description;
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 
     public function isWaitingForApproval(): bool
@@ -232,16 +226,6 @@ abstract class BaseGroup implements GeoPointInterface
     public function isCreatedBy(UuidInterface $uuid): bool
     {
         return $this->createdBy && $this->createdBy->equals($uuid);
-    }
-
-    public function setPhone(PhoneNumber $phone = null): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
     }
 
     /**

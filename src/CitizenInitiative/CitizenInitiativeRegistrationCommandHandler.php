@@ -46,11 +46,11 @@ class CitizenInitiativeRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $citizenInitiativeLink = $this->generateUrl('app_citizen_initiative_show', [
+        $calendarExportLink = $this->generateUrl('app_event_export_ical', [
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeLink));
+        $this->mailer->sendMessage(CitizenInitiativeRegistrationConfirmationMessage::createFromRegistration($registration, $calendarExportLink));
 
         // Subscribe to citizen initiative organizator activity
         if ($adherent = $command->getAdherent()) {

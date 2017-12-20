@@ -12,7 +12,7 @@
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
         <script type="text/javascript">
-            {{ js.skills('#summary_skills', '#summary_skill_search', path('app_summary_manager_skills_autocomplete')) }}
+            {{ js.skills('#summary_skills', '#summary_skill_search', path('app_summary_manager_skills_autocomplete') , '#summary_skill_search') }}
         </script>
     {% endif %}
 {% endblock %}

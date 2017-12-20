@@ -5,6 +5,11 @@ common.gender.mister: Monsieur
 common.gender.miss: Madame
 common.email_address: Adresse email
 common.zip_code: Code postal
+common.show_more: Voir plus
+common.show_less: Voir moins
+common.sector: Secteur
+pending: En attente
+approved: Approuvé
 
 #
 # Adherent
@@ -73,8 +78,18 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 #
 # CitizenProject
 #
-citizen_project.creation.success: Votre projet citoyen est en attente de validation par l'équipe de LaREM. Vous en serez informé(e) par mail. Une fois validée, vous pourrez vous organiser les citoyens qui la réjoignent.
+citizen_project.creation.success: Votre projet citoyen est en attente de validation par nos équipes, qui vérifient qu'il entre bien en adéquation avec la Charte des Projets Citoyens.
 citizen_project.update.success: Les informations du projet citoyen ont été mises à jour avec succès.
+citizen_project.contact_actors.none: Vous n'avez sélectionné aucun acteur à contacter.
+citizen_project.contact_actors.success: Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.
+citizen_project.actors_count: '%count% acteur|%count% acteurs'
+
+#
+# CitizenAction
+#
+citizen_action.creation.success: Votre action citoyenne a bien été crée.
+citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
+citizen_action.participants_count: '%count% incrit|%count% inscrits'
 
 #
 # Summary
@@ -234,6 +249,22 @@ interactive.form.friend_email: E-mail de votre ami
 interactive.form.submit_send: Envoyer
 
 #
+# Citizen Project
+#
+citizen_project.administrators_count: "%count% porteur du projet|%count% porteurs du projet"
+citizen_project.followers_count: "%count% acteur|%count% acteurs"
+citizen_project.committees_count: "%count% comité en soutien|%count% comités en soutien"
+citizen_project.committees: Comité en soutien|Comités en soutien"
+
+#
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
+
+#
+# Coordinator
+#
+coordinator.sector.committee: Secteur - Comités
+coordinator.sector.citizen_project: Secteur - Projets citoyens
+coordinator.label.codes: Codes des zones gérées
+coordinator.placeholder.sector: Veuillez choisir un secteur

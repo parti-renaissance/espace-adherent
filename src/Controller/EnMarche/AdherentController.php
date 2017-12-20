@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -38,8 +38,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdherentController extends Controller
 {
-    use CanaryControllerTrait;
-
     const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
@@ -176,12 +174,10 @@ class AdherentController extends Controller
      *
      * @Route("/creer-mon-projet-citoyen", name="app_adherent_create_citizen_project")
      * @Method("GET|POST")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('CREATE_CITIZEN_PROJECT')")
      */
     public function createCitizenProjectAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CitizenProjectCommandType::class, $command);
         $form->handleRequest($request);
@@ -258,6 +254,12 @@ class AdherentController extends Controller
                     ]);
                 }
 
+                if ($from instanceof CitizenProject) {
+                    return $this->redirectToRoute('app_citizen_project_show', [
+                        'slug' => $from->getSlug(),
+                    ]);
+                }
+
                 if ($from instanceof Event) {
                     return $this->redirectToRoute('app_event_show', [
                         'slug' => $from->getSlug(),
@@ -284,6 +286,13 @@ class AdherentController extends Controller
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
+    public function listMyCitizenProjectsAction(CitizenProjectManager $manager): Response
+    {
+        return $this->render('adherent/list_my_citizen_projects.html.twig', [
+            'citizen_projects' => $manager->getAdherentCitizenProjects($this->getUser()),
         ]);
     }
 

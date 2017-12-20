@@ -5,10 +5,12 @@ $defaultTextColor : black;
 // Colors
 $pink: #FF3680;
 $pink-hover: #E53072;
+$pink-light: #F9BCBC;
 $green: #55F0B8;
 $green-hover: #4CD7A5;
 $blue: #01B2FB;
 $blue--light: rgba(0, 178, 251, 0.15);
+$blue--dark: #1C5BC9;
 $blue-hover: #009FE1;
 $newblue: #005be2; // temporary until we fully update our color palette
 $newblue--hover: #024fc1;
@@ -21,13 +23,14 @@ $success: $green;
 
 // Grays
 $darker: #222;
-$dark: #4a4a4a;
+$dark: #444;
 $gray--dark: #666;
 $gray--muted: #999;
 $black--half: rgba(0, 0, 0, .5);
 $gray: #BCBCBC;
 $gray--light: #E5E5E5;
 $gray--lighter: #F6F6F6;
+$gray--white: #FAFAFA;
 
 // Social Media
 $facebook: #3b5998;
@@ -185,6 +188,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--pink {
     background-color: $pink;
+}
+
+.background--pink-light {
+    background-color: $pink-light;
 }
 
 .background--yellow {

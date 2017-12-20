@@ -407,6 +407,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
+
+            <argument />
+            <argument>AppBundle\Entity\Report</argument>
+            <argument />
+            <argument type="service" id="AppBundle\Repository\ReportRepository" />
+        </service>
+
         <!--
         ######################################################
         # CitizenInitiative
@@ -454,8 +463,34 @@
             <argument />
             <argument>AppBundle\Entity\CitizenProject</argument>
             <argument />
-            <argument type="service" id="app.citizen_project.manager" />
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager" />
+            <argument type="service" id="app.repository.citizen_project" />
             <argument type="service" id="app.repository.citizen_project_membership" />
+            <argument type="service" id="app.repository.adherent" />
+        </service>
+
+        <service id="app.admin.citizen_project_category" class="AppBundle\Admin\CitizenProjectCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Catégories des projets" group="Projets citoyens" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenProjectCategory</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.citizen_action" class="AppBundle\Admin\CitizenActionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Actions citoyennes" group="Projets citoyens" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenAction</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.citizen_project_skill" class="AppBundle\Admin\CitizenProjectSkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Compétences" group="Projets citoyens" />
+
+            <argument />
+            <argument>AppBundle\Entity\CitizenProjectSkill</argument>
+            <argument />
         </service>
 
         <service id="app.admin.citizen_action_category" class="AppBundle\Admin\CitizenActionCategoryAdmin">
@@ -513,6 +548,10 @@
         <service id="app.form.data_transformer.referent_area_transformer" class="AppBundle\Form\DataTransformer\ReferentAreaTransformer">
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
+
+        <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer"/>
+
+        <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
 
     </services>
 </container>

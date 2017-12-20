@@ -26,7 +26,38 @@ CKEDITOR.replace('{{ element }}', {
 });
 {% endmacro %}
 
-{% macro skills(idSkillsField, idSkillSearch, urlSearch) %}
+{% macro simpleCkeditor(element, height) %}
+CKEDITOR.replace('{{ element }}', {
+    extraPlugins : 'confighelper',
+    removePlugins: 'elementspath',
+    height: {{ height|default(200) }},
+    resize_enabled: false,
+    toolbar: [
+        { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+        { name: 'paragraph', items: [ 'BulletedList' ] },
+        { name: 'links', items: [ 'Link', 'Unlink' ] }
+    ]
+});
+
+var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
+var text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+$('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+
+CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
+    this.document.on("keyup", function(event) {
+        text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+        $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+        if (text_length_{{ element }} > maxlength_{{ element }}) {
+            $('#{{ element }}_counter').addClass('form__error');
+        } else {
+            $('#{{ element }}_counter').removeClass('form__error');
+        }
+    });
+});
+
+{% endmacro %}
+
+{% macro skills(idSkillsField, idSkillSearch, urlSearch, disabledSkillsIdsEnter) %}
 $(document).ready(function() {
     var skillList = $('{{ idSkillsField|raw }}');
     var removeSkill = function () {
@@ -58,14 +89,6 @@ $(document).ready(function() {
         }
     };
 
-    // Prevent submitting form by pressing enter
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
-
     var input = $('{{ idSkillSearch|raw }}');
 
     // Add skill autocomplete
@@ -94,11 +117,225 @@ $(document).ready(function() {
         }
     });
 
+    // Prevent submitting form by pressing enter
+    var disabledElementsEnter = $('{{ disabledSkillsIdsEnter|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
     // Add skill by pressing button "Ajouter"
     $('#add_skill').click(function () {
         addSkill($('{{ idSkillSearch|raw }}'));
     });
 
     removeSkill();
+});
+{% endmacro %}
+
+{% macro citizenProjectSkills(idSkillsListField, idSkillSearchField ,urlSearch, disabledCitizenProjectIdsEnter) %}
+$(document).ready(function() {
+    var skillList = $('{{ idSkillsListField|e('js') }}');
+    var removeSkill = function () {
+        var btn = $('.skill-remove');
+
+        btn.unbind('click');
+        btn.click(function () {
+            $(this).parent().remove();
+        });
+    };
+
+    var addSkill = function (item) {
+        var skill = item.value,
+            label = item.label;
+
+        if (skill) {
+            var skillCount = 0;
+            $('.summary-skill > input[type=hidden]').each(function () {
+                skillCount = Math.max(this.id.replace(/[^0-9]/g, ''), skillCount);
+            });
+            skillCount++;
+
+            var newSkillWidget = skillList.attr('data-prototype'),
+                skillWidgetId = '#'+skillList.attr('id')+'_'+skillCount;
+            newSkillWidget = newSkillWidget.replace(/__name__/g, skillCount);
+
+            $(newSkillWidget).appendTo(skillList);
+            $(skillWidgetId).val(skill);
+            $(skillWidgetId).parent().find('.skill-value').text(' ' + label);
+
+            $('{{ idSkillSearchField|e('js') }}').val('');
+            removeSkill();
+        }
+    };
+
+    var input = $('{{ idSkillSearchField|e('js') }}');
+
+    // Add skill autocomplete
+    input.autocomplete({
+        source: function(request, response) {
+            var term = request.term.trim(),
+                categoryId = $('#citizen_project_category').val();
+            if (term.length > 0 && categoryId) {
+                var waitQueue;
+                function fetchResults() {
+                    // setTimeout avoids sending all HTTP request while the user is typing
+                    clearTimeout(waitQueue);
+                    waitQueue = setTimeout(function() {
+                        $.get("{{ urlSearch|e('js') }}?term=" + term+'&category='+categoryId, function(data) {
+                            var array = $.map(data, function(m) {
+                                return {
+                                    label: m.name,
+                                    value: m.id
+                                };
+                            });
+                            response(array);
+                        });
+                    }, 200);
+                }
+
+                fetchResults();
+
+            } else {
+                response([]);
+            }
+        },
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {
+            },
+        },
+        select: function (e, ui) {
+            addSkill(ui.item);
+
+            return false;
+        },
+        change: function (ev, ui) {
+            if (!ui.item) {
+                input.val('');
+            }
+
+            return false;
+        }
+    });
+
+    // Add skill by pressing Enter
+    input.keyup(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            addSkill($(this));
+        }
+    });
+
+    // Prevent submitting form by pressing enter
+    var disabledElementsEnter = $('{{ disabledCitizenProjectIdsEnter|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    removeSkill();
+});
+{% endmacro %}
+
+{% macro committee(idCommitteesListField, idCommitteeSearchField ,urlSearch, disabledCommitteeEnterIds) %}
+$(document).ready(function() {
+    var committeeList = $('{{ idCommitteesListField|raw }}');
+    var removeCommittee = function () {
+        var btn = $('.committee-remove');
+
+        btn.unbind('click');
+        btn.click(function () {
+            $(this).parent().remove();
+        });
+    };
+
+    var addCommittee = function (item) {
+        var committee = item.value,
+            label = item.label;
+
+        if (committee.length > 0) {
+            var committeeCount = 0;
+            $('.summary-committee > input[type=hidden]').each(function () {
+                committeeCount = Math.max(this.id.replace(/[^0-9]/g, ''), committeeCount);
+            });
+            committeeCount++;
+
+            var newCommitteeWidget = committeeList.attr('data-prototype'),
+                committeeWidgetId = '#'+committeeList.attr('id')+'_'+committeeCount;
+            newCommitteeWidget = newCommitteeWidget.replace(/__name__/g, committeeCount);
+
+            $(newCommitteeWidget).appendTo(committeeList);
+            $(committeeWidgetId).val(committee);
+            $(committeeWidgetId).parent().find('.committee-value').text(' ' + label);
+
+            $('{{ idCommitteeSearchField|raw }}').val('');
+            removeCommittee();
+        }
+    };
+
+    var input = $('{{ idCommitteeSearchField|raw }}');
+
+    // Add committee autocomplete
+    input.autocomplete({
+        source: function(request, response) {
+            var term = request.term.trim();
+            if (term.length > 0) {
+                $.get("{{ urlSearch|raw }}?term=" + term, function(data) {
+                    var array = $.map(data, function(m) {
+                        return {
+                            label: m.name,
+                            value: m.uuid
+                        };
+                    });
+                    response(array);
+                });
+            } else {
+                response([]);
+            }
+        },
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {
+            },
+        },
+        select: function (e, ui) {
+            addCommittee(ui.item);
+
+            return false;
+        },
+        change: function (ev, ui) {
+            if (!ui.item) {
+                input.val('');
+            }
+
+            return false;
+        }
+    });
+
+    // Add committee by pressing Enter
+    input.keyup(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            addCommittee($(this));
+        }
+    });
+
+    // Prevent submitting form by pressing enter
+    var disabledElementsEnter = $('{{ disabledCommitteeEnterIds|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    removeCommittee();
 });
 {% endmacro %}
