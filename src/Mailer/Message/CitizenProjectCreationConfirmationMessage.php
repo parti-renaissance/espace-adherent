@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class CitizenProjectCreationConfirmationMessage extends Message
 {
-    public static function create(Adherent $adherent, CitizenProject $citizenProject): self
+    public static function create(Adherent $adherent, CitizenProject $citizenProject, string $linkCreateCitizenAction): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -19,6 +19,7 @@ class CitizenProjectCreationConfirmationMessage extends Message
             [
                 'target_firstname' => self::escape($adherent->getFirstName()),
                 'citizen_project_name' => self::escape($citizenProject->getName()),
+                'link_create_action' => self::escape($linkCreateCitizenAction),
             ]
         );
 

@@ -59,7 +59,9 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
         $citizenProjectWasCreatedEvent->expects($this->once())->method('getCitizenProject')->willReturn($citizenProject);
         $citizenProjectWasCreatedEvent->expects($this->once())->method('getCreator')->willReturn($administrator);
-
+        $router->expects($this->once())->method('generate')->with('app_citizen_action_manager_create', [
+            'project_slug' => $citizenProject->getSlug(),
+        ])->willReturn('test');
         $mailer->expects($this->once())->method('sendMessage');
         $manager = $this->createManager($administrator);
 
