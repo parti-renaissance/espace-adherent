@@ -65,12 +65,14 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeReportLink());
+
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
         $this->assertTrue($this->seeCommentSection());
         $this->assertSeeComments([
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
             ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
         ]);
-        $this->assertTrue($this->seeReportLink());
     }
 
     public function testFollowerCanSeeACitizenProject(): void
@@ -78,12 +80,14 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeReportLink());
+
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
         $this->assertTrue($this->seeCommentSection());
         $this->assertSeeComments([
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
             ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
         ]);
-        $this->assertTrue($this->seeReportLink());
     }
 
     /**
@@ -93,7 +97,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testFollowerCanAddCommentToCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit(
             $this->client->getCrawler()->selectButton('Publier')->form([

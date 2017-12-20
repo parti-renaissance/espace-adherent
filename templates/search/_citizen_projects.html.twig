@@ -1,5 +1,5 @@
 {% for citizen_project in results %}
-    <a href="{{ path('app_citizen_project_show', {'slug': citizen_project.slug}) }}" class="search__citizen_project__box">
+    <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="search__citizen_project__box">
         <div class="search__results__meta">
             <h2 class="text--medium text--normal">
                 {{ citizen_project.name }}
