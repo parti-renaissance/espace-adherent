@@ -32,7 +32,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
-        $this->assertClientIsRedirectedTo('http://enmarche.dev/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
     }
 
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
