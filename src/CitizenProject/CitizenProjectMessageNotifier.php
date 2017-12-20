@@ -79,7 +79,13 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     private function sendCreatorConfirmationCreation(Adherent $creator, CitizenProject $citizenProject): void
     {
-        $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create($creator, $citizenProject));
+        $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
+            $creator,
+            $citizenProject,
+            $this->router->generate('app_citizen_action_manager_create', [
+                'project_slug' => $citizenProject->getSlug(),
+            ])
+        ));
     }
 
     private function scheduleCreationNotification(CitizenProject $citizenProject): void
