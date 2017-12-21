@@ -20,7 +20,6 @@
             <table class="committee__members__list" cellpadding="10">
                 <tr>
                     <th>Prénom</th>
-                    <th>Nom</th>
                     {% if is_host %}
                         <th>Age</th>
                         <th>CP</th>
@@ -31,9 +30,6 @@
                 {% for participant in participants %}
                     <tr>
                         <td class="member-first-name">{{ participant.firstName|capitalize }}</td>
-                        <td class="member-last-name">
-                            {{ not is_host ? participant.lastNameInitial|upper : participant.lastName}}
-                        </td>
                         {% if is_host %}
                             <td class="member-age">{{ participant.age }}</td>
                             <td class="member-postal-code">{{ participant.postalCode }}</td>
