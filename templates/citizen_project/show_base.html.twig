@@ -69,6 +69,18 @@
             </p>
         </section>
     {% else %}
+        <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
+
+        {% if citizen_project.hasImageUploaded %}
+            <div class="search__results__picture">
+                <img style="max-width: 600px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+            </div>
+        {% endif %}
+
+        <div class="text--body" id="citizen-project-description">
+            {{ citizen_project.problemDescription }}
+        </div>
+
         <div id="citizen-project-menu">
             {% set currentRoute = app.request.attributes.get('_route') %}
             <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}">À venir</a>
@@ -81,19 +93,7 @@
         </div>
 
         <section>
-            {% block citizen_project_show_content %}
-                <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
-
-                {% if citizen_project.hasImageUploaded %}
-                    <div class="search__results__picture">
-                        <img style="max-width: 600px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
-                    </div>
-                {% endif %}
-
-                <div class="text--body" id="citizen-project-description">
-                    {{ citizen_project.problemDescription }}
-                </div>
-            {% endblock %}
+            {% block citizen_project_show_content %}{% endblock %}
         </section>
     {% endif %}
 {% endblock %}

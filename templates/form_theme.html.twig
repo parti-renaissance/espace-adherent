@@ -109,8 +109,8 @@
     {% spaceless %}
         <div class="summary-skill">
             <span class="skill-remove">X</span>
-            <span class="skill-value">&nbsp;{% if value is not empty %}{{ value['name'] }}{% endif %}</span>
-            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value['id'] }}" {% endif %}/>
+            <span class="skill-value">&nbsp;{% if value is not empty and value.name is defined %}{{ value['name'] }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty and value.id is defined %}value="{{ value['id'] }}" {% endif %}/>
         </div>
     {% endspaceless %}
 {% endblock %}
@@ -119,8 +119,8 @@
     {% spaceless %}
         <div class="summary-committee">
             <span class="committee-remove">X</span>
-            <span class="committee-value">&nbsp;{% if value is not empty %}{{ value['name'] }}{% endif %}</span>
-            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value['uuid'] }}" {% endif %}/>
+            <span class="committee-value">&nbsp;{% if value is not empty and value.name is defined %}{{ value['name'] }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty and value.uuid is defined %}value="{{ value['uuid'] }}" {% endif %}/>
         </div>
     {% endspaceless %}
 {% endblock %}

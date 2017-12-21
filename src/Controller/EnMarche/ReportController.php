@@ -55,7 +55,9 @@ class ReportController extends AbstractController
             // see https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
             // So here we only redirect URL that matches one of our route
             try {
-                $this->container->get('router')->match($url);
+                $router = $this->container->get('router');
+                $router->setContext($router->getContext()->setMethod(Request::METHOD_GET));
+                $router->match($url);
             } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
                 $url = '/';
             }
