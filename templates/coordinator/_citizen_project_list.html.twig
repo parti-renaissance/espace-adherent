@@ -36,9 +36,9 @@
                         {{ project.creator }}
                         <br/>
                         <a href="email:{{ project.creator.emailAddress }}">{{ project.creator.emailAddress }}</a>
-                        {% if project.creator.phone %}
+                        {% if project.phone %}
                             <br/>
-                            {{ project.creator.phone|phone_number_format }}
+                            {{ project.phone|phone_number_format }}
                         {% endif %}
                     {% else %}
                         ~
