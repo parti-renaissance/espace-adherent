@@ -4,6 +4,7 @@
 {% block canonical_url url('app_citizen_project_show_comments', {slug: citizen_project.slug}) %}
 
 {% block citizen_project_show_content %}
+    {{ parent() }}
     {% if can_see_comment_citizen_project(citizen_project) %}
         <div class="citizen-project-comments">
             <h2 class="space--20-0 b__nudge--top-40">Discussions</h2>

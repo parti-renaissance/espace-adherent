@@ -47,31 +47,17 @@ class CitizenProjectController extends Controller
 
     /**
      * @Route("/{slug}", name="app_citizen_project_show")
-     * @Method("GET|POST")
+     * @Method("GET")
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
+    public function showAction(CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
         return $this->render('citizen_project/show.html.twig', [
-            'citizen_project' => $citizenProject,
-            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
-            'form_committee_support' => $this->createForm(FormType::class)->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{slug}/a-venir", name="app_citizen_project_show_next_actions")
-     * @Method("GET|POST")
-     * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
-     */
-    public function showNextActionAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
-    {
-        return $this->render('citizen_project/show_next_actions.html.twig', [
             'citizen_project' => $citizenProject,
             'citizen_actions' => $citizenProjectManager->getCitizenProjectNextActions($citizenProject),
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
             'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
         ]);
     }
 

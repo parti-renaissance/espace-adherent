@@ -71,8 +71,7 @@
     {% else %}
         <div id="citizen-project-menu">
             {% set currentRoute = app.request.attributes.get('_route') %}
-            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}">À propos</a>
-            <a href="{{ path('app_citizen_project_show_next_actions', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show_next_actions' ? 'active' }}">À venir</a>
+            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}">À venir</a>
             {% if can_see_comment_citizen_project(citizen_project) %}
                 <a href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show_comments' ? 'active' }}">Discussions</a>
                 {% if can_create_citizen_action(citizen_project) %}
@@ -82,7 +81,19 @@
         </div>
 
         <section>
-            {% block citizen_project_show_content %}{% endblock %}
+            {% block citizen_project_show_content %}
+                <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
+
+                {% if citizen_project.hasImageUploaded %}
+                    <div class="search__results__picture">
+                        <img style="max-width: 600px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+                    </div>
+                {% endif %}
+
+                <div class="text--body" id="citizen-project-description">
+                    {{ citizen_project.problemDescription }}
+                </div>
+            {% endblock %}
         </section>
     {% endif %}
 {% endblock %}
