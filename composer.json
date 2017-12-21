@@ -63,7 +63,8 @@
         "algolia/algolia-search-bundle": "^2.2",
         "geoip2/geoip2": "^2.4",
         "lullabot/amp": "^1.1",
-        "cocur/slugify": "^2.5"
+        "cocur/slugify": "^2.5",
+        "symfony/thanks": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -4,19 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6157fb29a831e4e15f9efd2bc0eff751",
+    "content-hash": "3aea770502485c8672ce2764ce3f89b8",
     "packages": [
         {
             "name": "algolia/algolia-search-bundle",
             "version": "2.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/algolia/AlgoliaSearchBundle.git",
+                "url": "https://github.com/algolia/search-bundle.git",
                 "reference": "c7aa15ec633b7033f0330409c3da6ec7fb8b9b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/AlgoliaSearchBundle/zipball/c7aa15ec633b7033f0330409c3da6ec7fb8b9b4e",
+                "url": "https://api.github.com/repos/algolia/search-bundle/zipball/c7aa15ec633b7033f0330409c3da6ec7fb8b9b4e",
                 "reference": "c7aa15ec633b7033f0330409c3da6ec7fb8b9b4e",
                 "shasum": ""
             },
@@ -5547,7 +5547,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-05-23T07:03:24+00:00"
+            "time": "2017-05-23 07:03:24"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -7091,6 +7091,48 @@
                 "framework"
             ],
             "time": "2017-11-16T18:15:01+00:00"
+        },
+        {
+            "name": "symfony/thanks",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/thanks.git",
+                "reference": "f3e567198cbac9dbec5baf9004f1e51fecc82c79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/thanks/zipball/f3e567198cbac9dbec5baf9004f1e51fecc82c79",
+                "reference": "f3e567198cbac9dbec5baf9004f1e51fecc82c79",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1",
+                "php": "^5.5.9|^7.0.8"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "class": "Symfony\\Thanks\\Thanks"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Thanks\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                }
+            ],
+            "time": "2017-12-20T21:36:05+00:00"
         },
         {
             "name": "tackk/cartographer",
