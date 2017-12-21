@@ -408,6 +408,7 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('postAddress.cityName', null, [
                 'label' => 'Ville',
+                'template' => 'admin/citizen_project/city.html.twig',
             ])
             ->add('skills', null, [
                 'label' => 'Compétences recherchées',
