@@ -1,37 +1,35 @@
 {% for citizen_project in results %}
-    <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="search__citizen_project__box">
-        <div class="search__results__meta">
-            <h2 class="text--medium text--normal">
-                {{ citizen_project.name }}
-            </h2>
-            <div class="text--body text--bold">{{ citizen_project.cityName }}</div>
-        </div>
-
+    <div class="search__citizen_project__box">
         {% if citizen_project.hasImageUploaded %}
-            <div class="search__results__picture">
-                <img style="max-width: 300px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+            <div class="search__citizen_project__image">
+                <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
             </div>
         {% endif %}
+        <div class="search__citizen_project__meta">
 
-        <p>{{ citizen_project.getProblemDescription }}</p>
+            <h2 class="text--medium-small">
+                {{ citizen_project.name }}
+            </h2>
+            <div class="text--gray b__nudge--top-5">{{ citizen_project.getProblemDescription }}</div>
 
-        <div class="search__results__creator">
-            <p>
-                <span class="card">{{ include('components/user.html.twig') }}</span>Par
-                    {{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}
-                </span>
-            </p>
+            <div class="text--small text--gray b__nudge--top">
+                    Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
+                    {{ citizen_project.cityName }}
+            </div>
+
+            <div class="text--gray text--small b__nudge--top-50">
+                {% if citizen_project.skills|length > 0 %}
+                Nous recherchons
+                    <ul class="search__citizen_project__skills">
+                        {% for skill in citizen_project.skills  %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
         </div>
-
-        Nous recherchons :
-        <div class="search__results__skills">
-            {% if citizen_project.skills|length > 0 %}
-                <ul>
-                    {% for skill in citizen_project.skills  %}
-                        <li>{{ skill }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </a>
+        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+           class="search__citizen_project__box__link"></a>
+    </div>
 {% endfor %}

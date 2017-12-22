@@ -5,21 +5,24 @@ $defaultTextColor : black;
 // Colors
 $pink: #FF3680;
 $pink-hover: #E53072;
-$pink-light: #F9BCBC;
 $green: #55F0B8;
 $green-hover: #4CD7A5;
 $blue: #01B2FB;
 $blue--light: rgba(0, 178, 251, 0.15);
 $blue--dark: #1C5BC9;
 $blue-hover: #009FE1;
-$newblue: #005be2; // temporary until we fully update our color palette
-$newblue--hover: #024fc1;
-$newgreen: #00e28c;
 $yellow: #edf861;
 $yellow-hover: #c4d02a;
 $orange: #ff7822;
 $error: #EE324A;
 $success: $green;
+
+// New Colors
+$newblue: #005be2;
+$newblue--hover: #024fc1;
+$newgreen: #00e28c;
+$purple: #7181FF;
+$orange: #ff6955;
 
 // Grays
 $darker: #222;
@@ -190,8 +193,8 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     background-color: $pink;
 }
 
-.background--pink-light {
-    background-color: $pink-light;
+.background--purple {
+    background-color: $purple;
 }
 
 .background--yellow {

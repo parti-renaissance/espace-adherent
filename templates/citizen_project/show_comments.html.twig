@@ -7,8 +7,6 @@
     {{ parent() }}
     {% if can_see_comment_citizen_project(citizen_project) %}
         <div class="citizen-project-comments">
-            <h2 class="space--20-0 b__nudge--top-40">Discussions</h2>
-
             {% if can_comment_citizen_project(citizen_project) %}
                 {{ form_start(form) }}
                     {{ form_errors(form.content) }}

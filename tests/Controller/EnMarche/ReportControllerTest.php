@@ -21,7 +21,7 @@ class ReportControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->isSuccessful($this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->selectLink('Signaler un abus')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Signaler')->link());
         $this->assertSame('http://'.$this->hosts['app'].'/report/citizen-project/aa364092-3999-4102-930c-f711ef971195?redirectUrl=/projets-citoyens/le-projet-citoyen-a-paris-8', $this->client->getCrawler()->getUri());
         $this->isSuccessful($this->client->getResponse());
 

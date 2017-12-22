@@ -246,6 +246,10 @@ $text--size-extra-large: 48px;
         color: $blue;
     }
 
+    &--dark {
+        color: $dark;
+    }
+
     &--inline {
         display: inline;
     }
@@ -282,6 +286,10 @@ $text--size-extra-large: 48px;
         letter-spacing: 2.5px;
     }
 
+    &--lowercase {
+        text-transform: lowercase;
+    }
+
     &--center {
         text-align: center;
     }
@@ -311,8 +319,16 @@ $text--size-extra-large: 48px;
         @include text--blue;
     }
 
+    &--orange {
+        color: $orange;
+    }
+
     &--blue--dark {
         color: $blue--dark;
+    }
+
+    &--blue--new {
+        color: $newblue;
     }
 
     &--green {
@@ -483,6 +499,7 @@ $text--size-extra-large: 48px;
     &__links--nav {
         li {
             font-size: $text--size-default;
+            letter-spacing: 0;
 
             h1 {
                 @include text--logo;

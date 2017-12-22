@@ -41,19 +41,12 @@
 
 {% block citizen_project_content %}
     {% if is_administrator %}
-        <nav>
-            <div>
-                <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
-                <ul class="list__links list__links--default list__links--row">
-                    <li>
-                        <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}" class="icon--with-text">
-                            <i class="fa fa-sliders"></i>
-                            Éditer le projet citoyen
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div class="b__nudge--top">
+            <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}"
+               class="text--body link--newblue">
+                Modifier ce projet
+            </a>
+        </div>
     {% endif %}
 
     {% if not citizen_project.isApproved %}
@@ -73,24 +66,30 @@
 
         {% if citizen_project.hasImageUploaded %}
             <div class="search__results__picture">
-                <img style="max-width: 600px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+                <img style="max-width: 100%" src="{{ asset(citizen_project.getAssetImagePath) }}" />
             </div>
         {% endif %}
 
-        <div class="text--body" id="citizen-project-description">
+        <div class="text--body text--dark" id="citizen-project-description">
             {{ citizen_project.problemDescription }}
         </div>
 
-        <div id="citizen-project-menu">
+        <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
             {% set currentRoute = app.request.attributes.get('_route') %}
-            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}">À venir</a>
+            <li>
+                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">À venir</a>
+            </li>
             {% if can_see_comment_citizen_project(citizen_project) %}
-                <a href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}" class="{{ currentRoute == 'app_citizen_project_show_comments' ? 'active' }}">Discussions</a>
+            <li>
+                <a href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">Discussions</a>
+            </li>
+            <li>
                 {% if can_create_citizen_action(citizen_project) %}
                     <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">Créer une action citoyenne</a>
                 {% endif %}
+            </li>
             {% endif %}
-        </div>
+        </ul>
 
         <section>
             {% block citizen_project_show_content %}{% endblock %}
