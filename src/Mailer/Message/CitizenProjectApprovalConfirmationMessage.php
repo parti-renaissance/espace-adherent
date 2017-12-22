@@ -14,13 +14,16 @@ final class CitizenProjectApprovalConfirmationMessage extends Message
             '244444',
             $citizenProject->getCreator() ? $citizenProject->getCreator()->getEmailAddress() : '',
             $citizenProject->getCreator() ? $citizenProject->getCreator()->getFullName() : '',
-            'Votre projet citoyen a été publié. À vous de jouer !'
+            'Votre projet citoyen a été publié. À vous de jouer !',
+            [
+                'citizen_project_name' => self::escape($citizenProject->getName()),
+            ],
+            [
+                'target_firstname' => self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getFirstName() : ''),
+            ]
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
-
-        $message->setVar('target_firstname', self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getFirstName() : ''));
-        $message->setVar('citizen_project_name', self::escape($citizenProject->getName()));
 
         return $message;
     }
