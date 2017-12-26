@@ -40,7 +40,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $adherent = $this->adherentRepository->findByEmail('carl999@example.fr');
+        $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
@@ -171,7 +171,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     public function testResetPasswordAction()
     {
         $client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();
 

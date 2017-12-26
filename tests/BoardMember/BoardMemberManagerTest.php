@@ -34,7 +34,7 @@ class BoardMemberManagerTest extends SqliteWebTestCase
     public function testSearchMembers()
     {
         $filter = BoardMemberFilter::createFromArray([]);
-        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
 
         $members = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 
@@ -46,7 +46,7 @@ class BoardMemberManagerTest extends SqliteWebTestCase
     public function testPaginateMembers()
     {
         $filter = BoardMemberFilter::createFromArray([]);
-        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
 
         $paginator = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 

@@ -114,7 +114,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->followRedirect();
 
-        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Paul', $adherent->getFirstName());
@@ -130,7 +130,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertInstanceOf(
             Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('paul@dupont.tld')
         );
 
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
@@ -198,7 +198,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findByEmail('paul@dupont.tld');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertNotNull($adherent->getLatitude());
         $this->assertNotNull($adherent->getLongitude());
@@ -317,7 +317,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
     public function testPinInterests()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
 
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
@@ -343,7 +343,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testPinInterestsPersistsInterestsForNonActivatedAdherent()
     {
         /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertEmpty($adherent->getInterests());
@@ -373,14 +373,14 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->manager->clear();
 
         /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
 
         $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
     }
 
     public function testChooseNearbyCommittee()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
@@ -404,7 +404,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
     public function testChooseNearbyCommitteePersistsMembershipForNonActivatedAdherent()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('michelle.dufour@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 

@@ -68,7 +68,7 @@ class UniqueMembershipValidator extends ConstraintValidator
 
     private function findAdherent(string $emailAddress): ?Adherent
     {
-        if ($adherent = $this->repository->findByEmail($emailAddress)) {
+        if ($adherent = $this->repository->findOneByEmail($emailAddress)) {
             return $adherent;
         }
 

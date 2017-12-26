@@ -50,7 +50,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
      *
      * @return Adherent|null
      */
-    public function findByEmail(string $email)
+    public function findOneByEmail(string $email): ?Adherent
     {
         return $this->findOneBy(['emailAddress' => $email]);
     }

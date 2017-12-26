@@ -19,6 +19,10 @@
 			<tag name="controller.service_arguments" />
 		</prototype>
 
+		<!-- Adherents -->
+		<service id="AppBundle\Membership\AdherentManager" />
+		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
+
 		<!-- CitizenProject -->
 		<service id="AppBundle\CitizenProject\CitizenProjectManager">
 			<call method="setGlide">

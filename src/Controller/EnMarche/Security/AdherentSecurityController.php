@@ -79,7 +79,7 @@ class AdherentSecurityController extends Controller
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
-            if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findByEmail($email)) {
+            if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByEmail($email)) {
                 $this->get('app.adherent_reset_password_handler')->handle($adherent);
             }
 
