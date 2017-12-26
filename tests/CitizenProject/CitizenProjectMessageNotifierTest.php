@@ -30,11 +30,6 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $committeeManager = $this->createMock(CommitteeManager::class);
         $router = $this->createMock(RouterInterface::class);
 
-        $producer->expects($this->once())->method('publish')->with(\GuzzleHttp\json_encode([
-            'uuid' => LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID,
-            'offset' => 0,
-        ]));
-
         $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
         $citizenProject->expects($this->once())->method('getPendingCommitteeSupports')->willReturn(new ArrayCollection());
 
