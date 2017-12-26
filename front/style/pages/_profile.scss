@@ -1,0 +1,136 @@
+.settings {
+    &__header {
+        &--outer {
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            @include gradient-container;
+
+            h1 {
+                display: inline;
+            }
+
+            &:before {
+                @include classic-gradient($filter--pink);
+            }
+        }
+
+        &--inner {
+            position: relative;
+        }
+    }
+
+    form {
+        border: 1px solid $gray--light;
+        padding: 40px;
+        margin-top: 20px;
+    }
+
+    &__main {
+        p, div {
+            font-family: $font-roboto;
+        }
+
+        h2 {
+            @include text--medium-large;
+            font-family: $font-gillsans;
+        }
+    }
+
+    &-menu {
+        @media (max-width: $tablet) {
+            width: 100%;
+            margin-bottom: 20px;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        ul {
+            li {
+                height: 50px;
+                display: flex;
+                align-items: center;
+                border: 1px solid $gray--light;
+                max-width: 225px;
+                box-sizing: border-box;
+                margin-top: -1px;
+
+                @media (max-width: $tablet) {
+                    border: 0;
+                    height: 30px;
+                    margin: 0 20px 0 0;
+                    align-items: flex-start;
+                }
+
+                a {
+                    display: block;
+                    border: 0;
+                    padding: 5px 20px;
+                    width: 100%;
+                    @include text--summary;
+
+                    @media (max-width: $tablet) {
+                        border: 0;
+                        padding: 0;
+                    }
+                }
+
+                &.active {
+                    border-left: 5px $blue solid;
+
+                    a {
+                        font-weight: bold;
+                    }
+
+                    @media (max-width: $tablet) {
+                        border-left: 0;
+                        border-bottom: 4px solid $blue;
+                    }
+                }
+            }
+
+            @media (max-width: $tablet) {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+    }
+
+    &__unsub {
+        margin-bottom: 100px;
+
+        header {
+            background-size: cover;
+            height: 270px;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 60px;
+            background-position: center;
+
+            @media (max-width: $mobile) {
+                background-position: 70%;
+            }
+
+            &.filtered-image:after {
+                @include classic-gradient($gradient);
+            }
+
+            div {
+                z-index: 1;
+            }
+        }
+
+        label {
+            @include text--default;
+        }
+
+        &__intro {
+            @include text--medium-small;
+            font-weight: bold;
+        }
+    }
+}

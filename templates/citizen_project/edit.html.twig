@@ -1,0 +1,75 @@
+{% extends 'citizen_project/_layout.html.twig' %}
+
+{% block page_title 'Modifier mon project citoyen' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+            {{ js.ckeditor('citizen_project_proposed_solution') }}
+            App.runCitizenProjectCreation();
+            {{ js.citizenProjectSkills('#citizen_project_skills', '#citizen_project_skills_search', path('app_citizen_project_skills_autocomplete'), '#citizen_project_skills_search') }}
+            {{ js.committee('#citizen_project_committees', '#citizen_project_committees_search', path('app_citizen_project_committee_autocomplete'), '#citizen_project_committees_search') }}
+        });
+    </script>
+{% endblock %}
+
+{% block citizen_project_content %}
+    <main>
+        <section class="l__wrapper--medium space--30-0">
+            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+               class="back-to-list icon--with-text text--summary">
+                {{ include('components/caret--left.html.twig') }}
+                Retour au projet citoyen</a>
+
+            {% if not citizen_project.isApproved %}
+                <div class="committee__waiting-for-approval">
+                    Votre project citoyen est en attente de validation par les équipes d'En Marche !
+                    Vous serez alerté(e) par e-mail quand nous l'aurons accepté.
+                </div>
+            {% endif %}
+
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">
+                    Modifier mon projet citoyen
+                </h1>
+            </header>
+            {{ form_start(form, {attr: {id: 'edit-citizen-project-form', class: 'form citizen-project-form'}}) }}
+                {{ include('citizen_project/_form.html.twig', {citizen_project: citizen_project}) }}
+                <div>
+                    {% if form.cgu is defined %}
+                        <div class="form__row">
+                            {{ form_widget(form.cgu) }}
+                            {% block _form_cgu_label %}
+                                <label class="form form__label" for="citizen_project_cgu"><span>Je consens au traitement de mes données dans le cadre des Projets Citoyens et à la communication de mes coordonnées (téléphone et email) aux Responsables locaux Engagement Citoyen et aux Adhérents désireux de participer au Projet.<sup>*</sup></span></label>
+                            {% endblock %}
+                            {{ form_errors(form.cgu) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.data_processing is defined %}
+                        <div class="form__row">
+                            {{ form_widget(form.data_processing) }}
+                            {% block _form_data_processing_label %}
+                                <label class="form form__label" for="citizen_project_data_processing"><span>J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank">Conditions Générales d’Utilisation des projets Citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank">Charte des Projets Citoyens</a><sup>*</sup></span></label>
+                            {% endblock %}
+                            {{ form_errors(form.data_processing) }}
+                        </div>
+                    {% endif %}
+                    <button type="submit" id="edit-citizen-project" class="btn btn--blue">
+                        Enregistrer
+                    </button>
+                    <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="btn">
+                        Annuler
+                    </a>
+                </div>
+                {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Participer à un événement' %}
+
+{% block content %}
+
+    <section class="l__wrapper">
+        <a href="{{ path("app_#{committee_event.type}_show", {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}"
+           class="previous-link icon--with-text text--summary">
+            {{ include('components/caret--left.html.twig') }}
+            Retour
+        </a>
+
+        {{ include('events/_event_header.html.twig') }}
+
+        <hr/>
+    </section>
+    <section class="l__wrapper--500 space--30-0 b__nudge--bottom-huge">
+        <div class="committee-event-registration">
+            <h2 class="b__nudge--bottom text--normal">Participer</h2>
+            {% if not is_granted('ROLE_ADHERENT') %}
+                <p>
+                    Avez-vous déjà un compte En Marche ?
+                    <a href="{{ path('app_adherent_login') }}">Connectez-vous</a>.
+                </p>
+            {% endif %}
+
+            <form action="{{ path("app_#{committee_event.type}_attend", {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
+                {{ form_errors(form) }}
+
+                <div class="form__row" id="field-first-name">
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Prénom',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row" id="field-postal-code">
+                    {{ form_errors(form.postalCode) }}
+                    {{ form_widget(form.postalCode, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Code postal',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row" id="field-email-address">
+                    {{ form_errors(form.emailAddress) }}
+                    {{ form_widget(form.emailAddress, {
+                        'attr': {
+                            'class': 'form--full',
+                            'placeholder': 'Adresse e-mail',
+                        }
+                    }) }}
+                </div>
+
+                <div class="form__row form__checkbox" id="field-newsletter-subscriber">
+                    {{ form_widget(form.newsletterSubscriber) }}
+                    {{ form_errors(form.newsletterSubscriber) }}
+                    <label for="{{ form.newsletterSubscriber.vars.id }}">
+                        J'accepte de recevoir les e-mails En Marche !
+                    </label>
+                </div>
+
+                <div class="text--center">
+                    {{ form_rest(form) }}
+                    <button type="submit" class="btn btn--blue" id="attend-committee-event">
+                        Je m'inscris
+                    </button>
+                    <a  href="{{ path('app_event_show', {'slug': committee_event.slug}) }}"
+                        class="btn">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </section>
+{% endblock %}

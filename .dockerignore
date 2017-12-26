@@ -16,6 +16,7 @@ prod.dockerfile
 tests
 var
 vendor
+scripts
 web/app_dev.php
 webpack.config.dev.js
 webpack.config.prod.js

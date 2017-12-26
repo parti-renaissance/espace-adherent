@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            var page = 1;
+            var limit = {{ search.maxResults }};
+            var moreButton = dom('#search-more');
+            var query = dom("[name='q']");
+            var radius = dom("[name='r']");
+            var city = dom("[name='c']");
+            var type = dom("[name='t']").value;
+            var eventCategory = dom("[name='ec']");
+
+            on(moreButton, 'click', function () {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, function (response) {
+                    if (response instanceof XMLHttpRequest) {
+                        hide(moreButton);
+                        return;
+                    }
+
+                    dom('#search-results').innerHTML = dom('#search-results').innerHTML + response;
+                });
+
+                page++;
+            });
+
+            // Allow to copy/paste and on each key press
+            on(query, 'keyup', fetchResults);
+            on(query, 'onchange', fetchResults);
+
+            on(radius, 'change', fetchResults);
+
+            // Allow to copy/paste and on each key press
+            on(city, 'keyup', fetchResults);
+            on(city, 'onchange', fetchResults);
+
+            // Category filter does not apply for committees
+            if (eventCategory) {
+                on(eventCategory, 'change', fetchResults);
+            } else {
+                var eventCategory = {value: null};
+            }
+
+            var waitQueue;
+            function fetchResults() {
+                if (eventCategory && eventCategory.value === '{{ constant("TYPE_CITIZEN_ACTIONS", search) }}') {
+                    type = '{{ constant("TYPE_CITIZEN_ACTIONS", search) }}';
+                } else {
+                    type = dom("[name='t']").value;
+                }
+                // setTimeout avoids sending all HTTP request while the user is typing
+                clearTimeout(waitQueue);
+                waitQueue = setTimeout(function() {
+                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
+                        if (response instanceof XMLHttpRequest) {
+                            hide(moreButton);
+                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
+
+                            return;
+                        }
+
+                        dom('#search-results').innerHTML = response;
+                    });
+                }, 200);
+            }
+
+            autocomplete = new google.maps.places.Autocomplete(city, {
+                types: ['(cities)'],
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'citizen_project/_layout.html.twig' %}
+
+{% block page_title citizen_project.name %}
+{% block canonical_url url('app_citizen_project_show', {slug: citizen_project.slug}) %}
+
+{% block json_ld %}
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "{{ citizen_project.name }}",
+        "url": "{{ block('open_graph_url') }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
+        "description": "{{ citizen_project.problemDescription }}",
+        "funder": {
+            "@type": "Person",
+            "givenName": "Emmanuel",
+            "familyName": "Macron"
+        },
+        "parentOrganization": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ homepage_url }}"
+        },
+        "location": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ citizen_project.address }}",
+            "addressLocality": "{{ citizen_project.cityName }}",
+            "postalCode": "{{ citizen_project.postalCode }}",
+            "addressCountry": "{{ citizen_project.country }}"
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block citizen_project_content %}
+    {% if is_administrator %}
+        <div class="b__nudge--top">
+            <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}"
+               class="text--body link--newblue">
+                Modifier ce projet
+            </a>
+        </div>
+    {% endif %}
+
+    {% if not citizen_project.isApproved %}
+        <section>
+            <div class="citizen_project__waiting-for-approval">
+                Votre projet citoyen est en attente de validation par les équipes d'En Marche !
+                Vous serez alerté(e) par e-mail quand nous l'aurons accepté.
+            </div>
+
+            <p>
+                Une fois que votre projet citoyen sera validé, vous pourrez contacter les adhérents suivants votre projet citoyen
+                sur cette page.
+            </p>
+        </section>
+    {% else %}
+        <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
+
+        {% if citizen_project.hasImageUploaded %}
+            <div class="search__results__picture">
+                <img style="max-width: 100%" src="{{ asset(citizen_project.getAssetImagePath) }}" />
+            </div>
+        {% endif %}
+
+        <div class="text--body text--dark" id="citizen-project-description">
+            {{ citizen_project.problemDescription }}
+        </div>
+
+        <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
+            {% set currentRoute = app.request.attributes.get('_route') %}
+            <li>
+                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">À venir</a>
+            </li>
+            {% if can_see_comment_citizen_project(citizen_project) %}
+            <li>
+                <a href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">Discussions</a>
+            </li>
+            <li>
+                {% if can_create_citizen_action(citizen_project) %}
+                    <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">Créer une action citoyenne</a>
+                {% endif %}
+            </li>
+            {% endif %}
+        </ul>
+
+        <section>
+            {% block citizen_project_show_content %}{% endblock %}
+        </section>
+    {% endif %}
+{% endblock %}

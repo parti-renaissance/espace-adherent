@@ -9,9 +9,9 @@ parameters:
     env(REDIS_HOST):            redis
 
     env(RABBITMQ_HOST):         rabbitmq
-    env(RABBITMQ_PORT):         ~
-    env(RABBITMQ_USER):         ~
-    env(RABBITMQ_PASSWORD):     ~
+    env(RABBITMQ_PORT):         5672
+    env(RABBITMQ_USER):         guest
+    env(RABBITMQ_PASSWORD):     guest
 
     env(SENTRY_DSN):            ~
     env(SENTRY_PUBLIC_DSN):     ~
@@ -51,12 +51,10 @@ parameters:
 
     env(LEGISLATIVES_PLATFORM): https://www.google.fr
 
-    enmarche_domain:            '%env(ENMARCHE_DOMAIN)%'
-    legislatives_domain:        '%env(LEGISLATIVES_DOMAIN)%'
-    env(ENMARCHE_DOMAIN):       en-marche.fr
-    env(LEGISLATIVES_DOMAIN):   legislatives-en-marche.fr
+    env(ENABLE_SILENCE_RULE):   'false'
 
-    env(DISABLE_AMERICA):       0
-    env(DISABLE_EUROPE):        0
+    env(SESSION_MAX_IDLE_TIME): 1800
 
-    env(ENABLE_HP_VIDEO):       0
+    env(APP_HOST): enmarche.dev
+    env(AMP_HOST): m.enmarche.dev
+    env(LEGISLATIVES_HOST): legislatives.enmarche.dev

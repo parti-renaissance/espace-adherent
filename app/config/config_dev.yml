@@ -9,18 +9,16 @@ parameters:
     timeline_max_messages: 10
 
 services:
-    app.mailjet.transport.transactional:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
-        arguments: ['@?logger']
+    app.mailer.transactional_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
         public: false
 
-    app.mailjet.transport.campaign:
-        class: 'AppBundle\Mailjet\Transport\MailjetNullTransport'
-        arguments: ['@?logger']
+    app.mailer.campaign_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
         public: false
 
     app.recaptcha.api_client:
-        class: 'AppBundle\Recaptcha\DummyRecaptchaApiClient'
+        class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
 framework:
@@ -39,7 +37,7 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: [!event]
+            channels: ["!event"]
         console:
             type:   console
-            channels: [!event, !doctrine]
+            channels: ["!event", "!doctrine"]

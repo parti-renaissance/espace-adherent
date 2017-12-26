@@ -1,0 +1,60 @@
+{% for committee in results %}
+
+    {% if committee.isPending %}
+        {% set form = forms[committee.id] %}
+
+        {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+    {% endif %}
+
+    <tr class="coordinator__item space--20-0">
+        <td>
+            {{ committee.creator.fullName }}
+            <br />
+            {{ committee.creator.emailAddress }}
+            {% if committee.creator.phone %}
+            <br />
+            {{ committee.creator.phone|phone_number_format }}
+            {% endif %}
+        </td>
+        <td>{{ committee.name }}</td>
+        <td>{{ committee.cityName }}</td>
+        <td>{{ committee.postalCode }}</td>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ committee.createdAt|date('d/m/Y H:i') }}
+        </td>
+        {% if committee.isPending %}
+            <td>
+                {% for messages in app.flashes(["error_#{committee.id}"]) %}
+                    <ul class="form form__errors">
+                        {% for message in messages %}
+                            <li class="form__error">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+                {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
+            </td>
+        {% else %}
+            <td>{{ committee.coordinatorComment|escape }}</td>
+        {% endif %}
+        {% if committee.isPending %}
+            <td>
+                <span>
+                    {{ form_widget(form.accept, {'label': 'Pré-accepter', 'attr': { 'class': 'btn--success btn--success__icon' } }) }}
+                </span>
+                <span>
+                    {{ form_widget(form.refuse, {'label': 'Pré-refuser', 'attr': { 'class': 'btn--error btn--error__icon' } }) }}
+                </span>
+            </td>
+        {% else %}
+            <td>{% include 'committee/status.html.twig' with {'committee': committee} %}</td>
+        {% endif %}
+    </tr>
+
+    {% if committee.isPending %}
+        {{ form_end(form) }}
+    {% endif %}
+{% endfor %}

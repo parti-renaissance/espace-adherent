@@ -1,0 +1,12 @@
+<h2 class="b__nudge--bottom">Mes centres d'intérêt</h2>
+
+{{ form_errors(summary_form.member_interests) }}
+
+<div class="l__row l__row--wrap l__tablet-col b__nudge--bottom-large">
+    {% for interest in summary_form.member_interests %}
+        <div class="form__checkbox form__checkbox--col">
+            {{ form_widget(interest) }}
+            {{ form_label(interest) }}
+        </div>
+    {% endfor %}
+</div>

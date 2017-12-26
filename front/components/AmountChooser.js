@@ -59,13 +59,13 @@ export default class AmountChooser extends React.Component {
                 <input type="hidden" name={this.props.name} value={state} />
 
                 {defaultAmounts.map(amount => (
-                        <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
-                                type="button"
-                                onClick={() => this.handleButtonClicked(amount)}
-                                key={`amount_${amount}`}>
-                            {amount}€
-                        </button>
-                    ))}
+                    <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
+                            type="button"
+                            onClick={() => this.handleButtonClicked(amount)}
+                            key={`amount_${amount}`}>
+                        {amount}€
+                    </button>
+                ))}
 
                 <div className="amount-chooser__other">
                     <input
@@ -87,11 +87,6 @@ export default class AmountChooser extends React.Component {
                         <span>Entrez un autre montant</span>
                         €
                     </label>
-                </div>
-
-                <div className="amount-chooser__monthly form__checkbox form__checkbox--large">
-                    <input type="checkbox" name="abonnement" id="donation-monthly"/>
-                    <label htmlFor="donation-monthly">Je veux donner chaque mois ce montant</label>
                 </div>
             </div>
         );

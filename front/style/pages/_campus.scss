@@ -1,0 +1,135 @@
+.campus {
+    h2 {
+        @include text--large;
+    }
+
+    p {
+        font-family: $font-roboto;
+        color: $black--half;
+    }
+
+    small {
+        @include text--small;
+    }
+
+    &__row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 120px 0;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+            padding: 60px 0;
+        }
+
+        &__inspiration {
+            padding: 0;
+            background: $gray--lighter;
+            border-bottom: 1px solid $gray--light;
+
+            &__graphic {
+                background-size: cover;
+                background-position: center;
+                height: 630px;
+                max-height: 57vw;
+                min-height: 300px;
+
+                @media (max-width: $mobile) {
+                    width: 100%;
+                }
+            }
+        }
+
+        &__learn {
+            @media (max-width: $mobile) {
+                padding: 0 0 120px;
+            }
+
+            &__graphic {
+                display: flex;
+                background-position: center;
+                align-items: center;
+                justify-content: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                height: 350px;
+                max-height: 57vw;
+                min-height: 300px;
+
+                @media (max-width: $mobile) {
+                    order: 2;
+                    width: 100%;
+                }
+            }
+
+            &__text {
+                @media (max-width: $mobile) {
+                    order: 1;
+                }
+            }
+        }
+
+        &__action {
+            position: relative;
+            background-color: $pink;
+            color: white;
+
+            p {
+                color: white;
+            }
+
+            @media (min-width: $tablet) {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: -40px;
+                    height: 500px;
+                    background-image: url('/images/campus/campus-computer.png'),
+                                      url('/images/campus/campus-notebook.png'),
+                                      url('/images/campus/campus-plane.png'),
+                                      url('/images/campus/campus-flag.png');
+                    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+                    background-size: 160px, 80px, 215px, 0;
+                    background-position: 85% 0%, 32% 1%, 5% 25%, 90% bottom;
+                }
+            }
+
+            @media (max-width: $mobile) {
+                padding: 0;
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+
+        > div {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &__text {
+        max-width: 400px;
+        padding: 0 40px;
+        position: relative;
+
+        @media (max-width: $mobile) {
+            padding: 50px 0;
+            width: 80%;
+        }
+
+        &--center {
+            max-width: 500px;
+        }
+    }
+}

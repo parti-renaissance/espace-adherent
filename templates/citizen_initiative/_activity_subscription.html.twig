@@ -1,0 +1,18 @@
+{%- if is_granted('ROLE_ADHERENT') -%}
+    <div id="activity_subscription" class="b__nudge--left-small">
+        <a class="btn btn--small btn--hollow" href="{{ path('app_citizen_initiative_activity_subscription', { slug: initiative.slug }) }}">{% if not app.user.isSubscribedTo(initiative.organizer) %}Suivre{% else %}Ne plus suivre{% endif %}</a>
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+        <script type="text/javascript">
+            $('#activity_subscription a').on('click', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url : $(this).attr('href')
+                }).done(function(html) {
+                    $('#activity_subscription').replaceWith(html);
+                });
+                return false;
+            });
+        </script>
+    </div>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;callback=initMap"></script>
+{%- endif -%}

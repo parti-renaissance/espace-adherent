@@ -1,0 +1,85 @@
+{% for event in results %}
+    {% if date is not defined or date != event.beginAt|date('Ymd') %}
+        {% set date = event.beginAt|date('Ymd') %}
+
+        <div class="text--body text--bold text--smallest text--uppercase b__nudge--bottom-medium b__nudge--top-large text--gray">
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'cccc d MMMM') }}
+        </div>
+
+    {% endif %}
+
+    <div class="search__results__row l__row l__row--h-stretch l__row--top">
+        <div class="search__results__date text--body text--bold text--smallest text--uppercase">
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'ccc d') }}<br/>
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}
+        </div>
+        <div class="search__results__info l__col l__col--v-stretch l__col--left">
+            <div class="search__results__meta">
+                <div class="search__results__tag">
+                    {% if event.isForLegislatives %}
+                        <div class="tag tag--orange">Législatives</div>
+                    {% endif %}
+                    {% if event.type and event.isCitizenInitiative %}
+                        <div class="tag tag--orange">Initiative citoyenne</div>
+                    {% elseif event.type and event.isCitizenAction %}
+                        <div class="tag tag--orange">Action citoyenne</div>
+                    {% else %}
+                        <div class="tag">{{ event.category }}</div>
+                    {% endif %}
+                </div>
+                <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
+                    <a class="link--no-decor"
+                       href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}">
+                      {{ event.name }}
+                    </a>
+                </h2>
+                <div class="text--body text--gray">
+                    Organisé par
+                    {% if event.type and event.isCitizenInitiative %}
+                        {% if event.organizer %}
+                            l'adhérent <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
+                        {% else %}
+                            un ancien adhérent
+                        {% endif %}
+                    {% elseif event.committee %}
+                        <span class="text--bold">{{ event.committee.name }}</span>
+                    {% elseif event.organizer and event.organizer.isReferent %}
+                        <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
+                    {% elseif event.organizer %}
+                        <span class="text--bold">{{ event.organizer.fullName }}</span>
+                    {% endif %}
+                    à {{ event.cityName }}
+                </div>
+            </div>
+
+            <div class="search__results__cta">
+                {% if event.finished %}
+                    <div class="text--body search__results__cta__text">
+                        Cet événement est terminé
+                    </div>
+                {% elseif event.cancelled %}
+                    <div class="text--body b__nudge--right">
+                        Cet événement est annulé
+                    </div>
+                {% elseif not event.full %}
+                    <a href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}"
+                       class="btn btn--blue" target="_blank" rel="noopener noreferrer">
+                        S'inscrire
+                    </a>
+                {% else %}
+                    <div class="text--body search__results__cta__text">
+                        Événement complet
+                    </div>
+                {% endif %}
+                <div class="text--body text--gray icon--with-text l__row--center">
+                    {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                </div>
+            </div>
+        </div>
+
+        <img class="search-map"
+             src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
+             title="Carte d'accès à l'événement {{ event.name }}"
+             alt="{{ event.inlineFormattedAddress }}" />
+    </div>
+{% endfor %}

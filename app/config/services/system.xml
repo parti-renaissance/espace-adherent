@@ -5,32 +5,155 @@
     <services>
 
         <!-- RabbitMQ -->
-        <service id="app.consumer.mailjet.referent" class="AppBundle\Consumer\ReferentMessageMailjetConsumer">
-            <argument type="service" id="service_container" />
+        <service id="app.consumer.service_locator" public="false">
+            <argument type="collection">
+                <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
+                <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
+                <argument key="app.mailer.campaign_client" type="service" id="app.mailer.campaign_client" />
+                <argument key="app.mailer.transactional_client" type="service" id="app.mailer.transactional_client" />
+                <argument key="manager" type="service" id="doctrine.orm.entity_manager" />
+                <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
+                <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
+                <argument key="app.repository.adherent" type="service" id="app.repository.adherent"/>
+                <argument key="app.repository.referent_managed_user" type="service" id="app.repository.referent_managed_user"/>
+            </argument>
+
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="AppBundle\Consumer\CampaignMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setEmailClient">
+                <argument type="service" id="app.mailer.campaign_client"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Consumer\TransactionalMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setEmailClient">
+                <argument type="service" id="app.mailer.transactional_client"/>
+            </call>
+        </service>
+
+        <service id="app.consumer.abstract_mailer_consumer" class="AppBundle\Consumer\AbstractMailerConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setEmailRepository">
+                <argument type="service" id="app.repository.email"/>
+            </call>
+        </service>
+
+        <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setMailer">
+                <argument type="service" id="app.mailer.campaign"/>
+            </call>
+            <call method="setReferentManagedUserRepository">
+                <argument type="service" id="app.repository.referent_managed_user"/>
+            </call>
+            <call method="setReferentMessageRepository">
+                <argument type="service" id="app.repository.referent_managed_users_message"/>
+            </call>
+        </service>
+
+        <service id="app_abstract_consumer" class="AppBundle\Consumer\AbstractConsumer" abstract="true">
+            <argument type="service" id="validator" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="app.consumer.service_locator" />
+        </service>
+
+        <service id="AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setCitizeProjectManager">
+                <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            </call>
+            <call method="setCitizenProjectRepository">
+                <argument type="service" id="app.repository.citizen_project"/>
+            </call>
+            <call method="setCitizenProjectMessageNotifier">
+                <argument type="service" id="app.citizen_project.citizen_project_message_notifier"/>
+            </call>
+            <call method="setProducer">
+                <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
+            </call>
         </service>
 
         <!-- Redirections from old website -->
-        <service id="app.feature_flag.redirections_subscriber" class="AppBundle\FeatureFlag\RedirectionSubscriber">
+        <service id="app.legacy_redirections_subscriber" class="AppBundle\Redirection\LegacyRedirectionsSubscriber">
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <!-- Campaign silence listener -->
-        <service id="app.feature_flag.campaign_silence_listener.geoip" class="GeoIp2\Database\Reader" public="false">
-            <argument>%kernel.root_dir%/data/GeoLite2-Country.mmdb</argument>
-        </service>
-
-        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\FeatureFlag\CampaignSilenceListener">
-            <argument type="service" id="app.feature_flag.campaign_silence_listener.geoip" />
-            <argument type="service" id="twig" />
-            <argument>%env(DISABLE_AMERICA)%</argument>
-            <argument>%env(DISABLE_EUROPE)%</argument>
-
+        <!-- Dynamic redirections subscriber -->
+        <service id="app.dynamic_redirections_subscriber" class="AppBundle\Redirection\Dynamic\RedirectionsSubscriber">
+            <call method="addHandler">
+                <argument type="service" id="app.dynamic_redirect_to_admin_panel_handler" />
+            </call>
+            <call method="addHandler">
+                <argument type="service" id="app.dynamic_redirect_to_remove_uuid_handler" />
+            </call>
+            <call method="addHandler">
+                <argument type="service" id="app.dynamic_redirect_to_route_handler" />
+            </call>
+            <call method="addHandler">
+                <argument type="service" id="app.dynamic_redirect_to_path_handler" />
+            </call>
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <!-- Dynamic redirections -->
-        <service id="app.dynamic_redirections_subscriber" class="AppBundle\Redirection\DynamicRedirectionsSubscriber">
+        <!-- Dynamic redirections provider configuration -->
+        <service id="app.dynamic_redirections_provider" class="AppBundle\Redirection\Dynamic\RedirectionsProvider" />
+
+        <!-- Dynamic redirections "to admin panel" handler -->
+        <service id="app.dynamic_redirect_to_admin_panel_handler" class="AppBundle\Redirection\Dynamic\RedirectToAdminPanelHandler">
+            <argument type="service" id="app.dynamic_redirections_provider" />
             <argument type="service" id="app.repository.redirection" />
+        </service>
+
+        <!-- Dynamic redirections "to remove uuid" handler-->
+        <service id="app.dynamic_redirect_to_remove_uuid_handler" class="AppBundle\Redirection\Dynamic\RedirectToRemoveUuidHandler">
+            <argument type="service" id="app.dynamic_redirections_provider" />
+            <argument type="service" id="router" />
+            <argument type="service" id="app.repository.event" />
+            <argument>%pattern_uuid%</argument>
+        </service>
+
+        <!-- Dynamic redirections "to route" handler-->
+        <service id="app.dynamic_redirect_to_route_handler" class="AppBundle\Redirection\Dynamic\RedirectToRouteHandler">
+            <argument type="service" id="app.dynamic_redirections_provider" />
+            <argument type="service" id="router" />
+            <argument type="service" id="app.repository.event" />
+            <argument type="service" id="app.repository.article" />
+            <argument type="service" id="app.repository.proposal" />
+            <argument type="service" id="app.repository.order_article" />
+        </service>
+
+        <!-- Dynamic redirections "to path" handler -->
+        <service id="app.dynamic_redirect_to_path_handler" class="AppBundle\Redirection\Dynamic\RedirectToPathHandler">
+            <argument type="service" id="app.dynamic_redirections_provider" />
+        </service>
+
+        <!-- Campaign silence -->
+        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\Campaign\CampaignSilenceSubscriber">
+            <argument type="service">
+                <service class="AppBundle\Campaign\CampaignSilenceProcessor">
+                    <argument type="service">
+                        <service class="GeoIp2\Database\Reader">
+                            <argument>%kernel.project_dir%/app/data/geolite2-countries.mmdb</argument>
+                        </service>
+                    </argument>
+                    <argument type="service">
+                        <service class="Symfony\Component\ExpressionLanguage\ExpressionLanguage">
+                            <argument type="service" id="cache.app" />
+                        </service>
+                    </argument>
+                    <argument type="service" id="cache.app" />
+                    <argument>%env(ENABLE_SILENCE_RULE)%</argument>
+                </service>
+            </argument>
+            <argument type="service" id="twig" />
+
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -56,6 +179,14 @@
             <tag name="kernel.event_listener" event="security.interactive_login" method="onSecurityInteractiveLogin" />
         </service>
 
+        <service id="AppBundle\Security\InactiveAdminListener">
+            <argument type="service" id="Psr\Container\ContainerInterface"/>
+            <argument>%env(SESSION_MAX_IDLE_TIME)%</argument>
+
+            <tag name="container.service_subscriber" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+
         <!-- Cache -->
         <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
             <argument/>
@@ -69,19 +200,6 @@
                     <argument type="service" id="snc_redis.default" />
                 </service>
             </argument>
-        </service>
-
-        <!-- Twig -->
-        <service id="app.twig.intl_extension" class="AppBundle\Twig\AppIntlExtension" public="false">
-            <tag name="twig.extension" />
-        </service>
-
-        <service id="twig.extension.intl" class="Twig_Extensions_Extension_Intl" public="false">
-            <tag name="twig.extension" />
-        </service>
-
-        <service id="app.twig.base64_extension" class="AppBundle\Twig\Base64Extension" public="false">
-            <tag name="twig.extension" />
         </service>
 
         <!-- Sentry -->
@@ -102,8 +220,17 @@
             </argument>
         </service>
 
-        <service id="app.logging.user_process" class="AppBundle\Logging\CurrentUserProcessor" public="false">
-            <argument type="service" id="service_container" />
+        <service id="app.logging.user_processor" class="AppBundle\Logging\CurrentUserProcessor" public="false">
+            <argument type="service">
+                <service>
+                    <argument type="collection">
+                        <argument key="security.token_storage" type="service" id="security.token_storage" />
+                        <argument key="security.authorization_checker" type="service" id="security.authorization_checker" />
+                    </argument>
+
+                    <tag name="container.service_locator" />
+                </service>
+            </argument>
 
             <tag name="monolog.processor" method="processRecord" />
         </service>
@@ -120,9 +247,27 @@
         </service>
 
         <!-- Form -->
-        <service id="app.form.text_type_extension" class="AppBundle\Form\TypeExtension\TextTypeExtension">
+        <service id="AppBundle\Form\TypeExtension\FormTypeExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
+        </service>
+
+        <service id="AppBundle\Form\TypeExtension\TextTypeExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\TextType" />
         </service>
+
+        <service id="AppBundle\Form\SummaryType">
+            <argument type="service" id="app.storage" />
+            <argument type="service" id="app.glide" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="AppBundle\Form\CitizenInitiativeType">
+            <argument type="service" id="app.repository.skill" />
+            <tag name="form.type" />
+        </service>
+
+        <service public="false" autoconfigure="true" autowire="true" id="AppBundle\Form\CitizenProjectCommandType"/>
 
     </services>
 </container>

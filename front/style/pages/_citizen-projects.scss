@@ -1,0 +1,90 @@
+.citizen-projects {
+    &__create {
+        background: $gray--white;
+
+        .form__new {
+            margin-bottom: 40px;
+
+            input,
+            textarea,
+            select {
+                padding: 17px 20px;
+                font-size: 20px;
+                line-height: 1.25;
+            }
+
+            select {
+                -webkit-appearance: none;
+                background: white no-repeat url('/images/icons/chevron-down.svg') right 15px center;
+                background-size: 34px;
+            }
+
+            input[type="file"] {
+                border: 1px dashed #ddd;
+                background-color: white;
+                position: relative;
+                padding: 50px 20px;
+                font-size: 16px;
+            }
+        }
+
+        .newbtn svg {
+            margin-left: 6px;
+            height: 32px;
+            width: 32px;
+        }
+
+        small {
+            font-family: $font-roboto;
+            @include text--small;
+            margin-top: 8px;
+            color: $dark;
+            display: block;
+        }
+    }
+}
+
+.citizen-project {
+    &__aside {
+        h3 {
+            @include text--medium-small;
+            font-family: $font-gillsans;
+            margin-bottom: 5px;
+        }
+    }
+
+    &__card {
+        margin-bottom: 30px;
+    }
+
+    &__skills {
+        li {
+            border-radius: 50px;
+            background-color: $gray--lighter;
+            color: $newblue;
+            display: inline-block;
+            @include text--small;
+            padding: 2px 10px;
+            margin-bottom: 5px;
+        }
+    }
+
+    &__menu {
+        margin: 40px 0;
+
+        li {
+            @include text--medium-small;
+            font-family: $font-roboto;
+
+            .active {
+                font-weight: bold;
+                color: $newblue;
+                border-bottom: 6px solid $newblue;
+            }
+
+            a {
+                border: 0;
+            }
+        }
+    }
+}

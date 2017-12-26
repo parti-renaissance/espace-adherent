@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.boardMember %}
+        {% for role in object.boardMember.roles %}
+                {{ role.name }}
+            {%- if not loop.last -%}, {%- endif -%}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+

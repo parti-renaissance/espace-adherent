@@ -50,9 +50,9 @@ class App {
         this._di.get('sharer').share(type, url, title);
     }
 
-    createAddressSelector(country, postalCode, city, cityName) {
+    createAddressSelector(country, postalCode, city, cityName, cityNameRequired) {
         const formFactory = this._di.get('address.form_factory');
-        const form = formFactory.createAddressForm(country, postalCode, city, cityName);
+        const form = formFactory.createAddressForm(country, postalCode, city, cityName, cityNameRequired);
 
         form.prepare();
         form.refresh();
@@ -113,37 +113,37 @@ class App {
     runRegistration() {
         System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
             module.default();
-        })
+        });
     }
 
     runProcurationThanks() {
         System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
             module.default();
-        })
+        });
     }
 
     runProcurationManagerRequests(queryString, totalCount, perPage) {
         System.import('pages/procuration_manager_requests').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
-        })
+        });
     }
 
     runProcurationManagerProposals(queryString, totalCount, perPage) {
         System.import('pages/procuration_manager_proposals').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
-        })
+        });
     }
 
     runSocialShare(urlAll, urlCategory) {
         System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);
-        })
+        });
     }
 
     runFacebookPictureChooser(urls) {
         System.import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
             module.default(urls, this.get('api'));
-        })
+        });
     }
 
     runLegislativesCandidatesList() {
@@ -155,6 +155,24 @@ class App {
     runLegislativesCandidatesMap() {
         System.import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
+        });
+    }
+
+    runReferentsList() {
+        System.import('pages/referents_list').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
+    runBoardMember() {
+        System.import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
+        });
+    }
+
+    runCitizenProjectCreation() {
+        System.import('pages/citizen_project_creation').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
         });
     }
 }

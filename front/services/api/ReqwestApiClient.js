@@ -17,9 +17,9 @@ export default class ReqwestApiClient {
         });
     }
 
-    getCommitteeTimelineFeed(committeeUuid, committeeSlug, offset, callback) {
+    getCommitteeTimelineFeed(committeeSlug, offset, callback) {
         this._createRequest(callback, {
-            url: '/comites/'+committeeUuid+'/'+committeeSlug+'/timeline?offset='+offset,
+            url: '/comites/'+committeeSlug+'/timeline?offset='+offset,
             type: 'html'
         });
     }
@@ -101,9 +101,28 @@ export default class ReqwestApiClient {
         });
     }
 
-    toggleCommitteeMembership(committeeUuid, committeeSlug, action, token, callback) {
+    toggleCommitteeMembership(committeeSlug, action, token, callback) {
         let request = this._reqwest({
-            url: '/comites/'+committeeUuid+'/'+committeeSlug+'/'+action,
+            url: '/comites/'+committeeSlug+'/'+action,
+            type: 'html',
+            method: 'post',
+            data: {
+                'token': token
+            }
+        });
+
+        request.then((response) => {
+            callback(JSON.parse(response));
+        });
+
+        request.fail(() => {
+            callback(null);
+        });
+    }
+
+    toggleCitizenProjectMembership(committeeSlug, action, token, callback) {
+        let request = this._reqwest({
+            url: '/projets-citoyens/'+committeeSlug+'/'+action,
             type: 'html',
             method: 'post',
             data: {
@@ -129,6 +148,25 @@ export default class ReqwestApiClient {
 
         request.fail(() => {
             callback(null);
+        });
+    }
+
+    deleteBoardMemberOnList(boardMemberId) {
+        return this._reqwest({
+            url: '/espace-membres-conseil/list/boardmember/' + boardMemberId,
+            type: 'json',
+            method: 'delete',
+        });
+    }
+
+    addBoardMemberToList(boardMemberId) {
+        return this._reqwest({
+            url: '/espace-membres-conseil/list/boardmember',
+            type: 'json',
+            method: 'post',
+            data: {
+                'boardMemberId': boardMemberId,
+            }
         });
     }
 }

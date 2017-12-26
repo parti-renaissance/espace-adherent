@@ -30,11 +30,12 @@
             <argument type="service" id="lexik_paybox.request_handler" />
             <argument type="service" id="router" />
             <argument type="service" id="sonata.core.slugify.cocur" />
+            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 
         <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="request_stack" />
 
             <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
@@ -43,7 +44,8 @@
         <service id="app.donation.transaction_callback_handler" class="AppBundle\Donation\TransactionCallbackHandler">
             <argument type="service" id="router" />
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
+            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 
         <!-- Newsletter -->
@@ -51,20 +53,20 @@
 
         <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="request_stack" />
         </service>
 
         <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="router" />
         </service>
 
         <!-- Invitation -->
         <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.campaign" />
+            <argument type="service" id="app.mailer.campaign" />
         </service>
 
         <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
@@ -88,12 +90,12 @@
 
         <service id="app.procuration.process_handler" class="AppBundle\Procuration\ProcurationProcessHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
         <service id="app.procuration.reminder_handler" class="AppBundle\Procuration\ProcurationReminderHandler">
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
@@ -104,14 +106,14 @@
         <!-- Je Marche -->
          <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailjet.client.transactional" />
+            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Ton Macron -->
          <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
              <argument type="service" id="app.ton_macron.message_body_builder"/>
              <argument type="service" id="doctrine.orm.entity_manager"/>
-             <argument type="service" id="app.mailjet.client.campaign"/>
+             <argument type="service" id="app.mailer.campaign"/>
              <argument type="service" id="state_machine.ton_macron_invitation"/>
          </service>
 
@@ -121,6 +123,21 @@
         </service>
 
         <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
+
+        <!-- Interactives -->
+        <service id="app.interactive.purchasing_power_processor_handler" class="AppBundle\Interactive\PurchasingPowerProcessorHandler">
+            <argument type="service" id="app.purchasing_power.message_body_builder"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="state_machine.purchasing_power"/>
+        </service>
+
+        <service id="app.purchasing_power.message_body_builder" class="AppBundle\Interactive\PurchasingPowerMessageBodyBuilder">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="app.repository.purchasing_power_choice_repository"/>
+        </service>
+
+        <service id="app.purchasing_power.serializer" class="AppBundle\Interactive\PurchasingPowerSerializer" />
 
         <!-- Facebook filters -->
         <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">
@@ -141,6 +158,21 @@
             <argument type="service" id="app.facebook.api" />
             <argument type="service" id="filesystem" />
             <argument>%kernel.cache_dir%</argument>
+        </service>
+
+        <!-- Summary -->
+        <service id="AppBundle\Summary\SummaryFactory">
+            <argument type="service" id="cocur_slugify" />
+        </service>
+
+        <service id="AppBundle\Summary\SummaryManager">
+            <argument type="service" id="AppBundle\Summary\SummaryFactory" />
+            <argument type="service" id="app.repository.summary" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="app.storage" />
+            <argument type="service" id="app.glide" />
+            <argument>%kernel.secret%</argument>
         </service>
 
     </services>

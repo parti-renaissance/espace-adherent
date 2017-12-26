@@ -1,0 +1,70 @@
+.referent {
+    &__filters {
+        background: $gray--lighter;
+        padding: 10px;
+        margin: 20px 0 50px 0;
+
+        &__title {
+            margin: 0;
+            padding: 15px 15px 0 15px;
+            font-size: 24px;
+        }
+
+        &__subtitle {
+            margin: 20px 0 10px 0;
+            font-family: $font-roboto;
+            font-weight: bold;
+        }
+
+        &__form {
+            padding: 10px 15px;
+        }
+
+        .form__row {
+            margin-bottom: 0;
+        }
+
+        &__count {
+            text-align: center;
+            margin: 10px 0 50px 0;
+        }
+
+        &__buttons {
+            text-align: center;
+
+            a, button {
+                vertical-align: top;
+                margin: 0 5px;
+            }
+        }
+    }
+
+    &__btn-create-event {
+        float: right;
+        margin: -8px 0 0 0;
+    }
+
+    .datagrid__table {
+        font-family: $font-roboto;
+        font-size: 14px;
+    }
+
+    &__item {
+        td {
+            padding: 10px 0;
+        }
+
+        &__metadata {
+            margin-left: 10px;
+            color: $gray--muted;
+        }
+
+        &--host {
+            background: #fffad3;
+
+            &:hover {
+                background: #f4efcb !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{% extends 'citizen_initiative/show.html.twig' %}
+
+{% block main_section %}
+    {% set event = initiative %}
+    <p>L'organisateur recherche ce type de compétences :</p>
+    <ul>
+    {% for skill in event.skills %}
+        <li>{{ skill }}</li>
+    {% endfor %}
+    </ul>
+
+    <p>Contactez l'organisateur si vous pensez pouvoir aider !</p>
+{% endblock %}

@@ -1,0 +1,5 @@
+<ul>
+    {% for reason in object.reasons %}
+        <li>{{ reason|trans({}, 'reports') }}</li>
+    {% endfor %}
+</ul>

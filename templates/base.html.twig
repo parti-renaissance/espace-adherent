@@ -1,0 +1,580 @@
+{% set homepage_url = url('homepage')|trim('/') %}
+
+{% set campaign_expired = app.request.attributes.get('_campaign_expired') %}
+
+{% set default_sharer = homepage_url ~ asset('images/default_sharer.jpg') %}
+{% set default_sharer_width = 1905 %}
+{% set default_sharer_height = 1000 %}
+
+{% set user_is_adherent = is_granted('ROLE_ADHERENT') %}
+{% set user_is_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
+
+<!DOCTYPE html>
+<!--
+ ______         __  __                _            _
+|  ____|       |  \/  |              | |          | |
+| |__   _ __   | \  / | __ _ _ __ ___| |__   ___  | |
+|  __| | '_ \  | |\/| |/ _` | '__/ __| '_ \ / _ \ | |
+| |____| | | | | |  | | (_| | | | (__| | | |  __/ |_|
+|______|_| |_| |_|  |_|\__,_|_|  \___|_| |_|\___| (_)
+
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+        <meta name="referrer" content="origin">
+        {% block meta %}
+            <meta property="og:type" content="{% block open_graph_type 'website' %}" />
+        {% endblock %}
+
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
+        <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
+        <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}?v2" sizes="16x16" />
+        <link rel="manifest" href="{{ asset('manifest.json') }}?v2" />
+        <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <title>{% block title %}{% block page_title '' %} | {% block app_title 'En Marche !' %}{% endblock %}</title>
+
+        <link rel="canonical" href="{% block canonical_url homepage_url %}" />
+        <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
+        {% block amp_link '' %}
+
+        <meta property="og:site_name" content="En Marche !" />
+        <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
+        <meta property="og:title" content="{% block open_graph_title block('title') %}" />
+        <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
+        <meta property="og:image" content="{% block open_graph_image default_sharer %}" />
+        <meta property="og:image:width" content="{% block open_graph_image_width default_sharer_width %}" />
+        <meta property="og:image:height" content="{% block open_graph_image_height default_sharer_height %}" />
+        {% block open_graph '' %}
+
+        <meta property="fb:pages" content="543099962534877" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ block('open_graph_title') }}" />
+        <meta name="twitter:description" content="{% block meta_twitter_description block('meta_description') %}" />
+        <meta name="twitter:image:src" content="{{ block('open_graph_image')|raw }}" />
+
+        {% block meta_rss %}
+            <link rel="alternate" type="application/rss+xml" title="En Marche !" href="{{ url('articles_feed') }}" />
+        {% endblock %}
+
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
+        <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
+        {% block stylesheets '' %}
+
+        {% block json_ld %}
+        <script type="application/ld+json">
+            {
+                "@context": "http://schema.org",
+                "@type": "WebSite",
+                "url": "{{ block('open_graph_url') }}",
+                "name": "{{ block('title') }}",
+                "image": "{{ block('open_graph_image')|raw }}",
+                "description": "{{ block('meta_description') }}",
+                "funder": {
+                    "@type": "Person",
+                    "givenName": "Emmanuel",
+                    "familyName": "Macron",
+                    "jobTitle": "President of France"
+                }
+            }
+        </script>
+        {% endblock %}
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
+
+        {% block final_stylesheets '' %}
+    </head>
+    <body>
+        {% for message in app.flashes('info') %}
+            <div class="flash" id="notice-flashes">
+                <div class="flash__inner">{{ message|trans }}</div>
+            </div>
+        {% endfor %}
+
+        {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('AppBundle\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
+
+        {% block header %}
+        <header>
+            <!--  Header / Navigation Desktop -->
+            <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-small-laptop">
+                <ul class="list__links list__links--row list__links--no-decor list__links--nav">
+                    <li><h1><a href="{{ path('homepage') }}">En Marche !</a></h1></li>
+                    <li class="text--medium-small">
+                        <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
+                    </li>
+                    <li class="text--medium-small">
+                        <a href="{{ path('page_campus') }}">Campus</a>
+                    </li>
+                    <li class="text--medium-small">
+                        <a href="{{ path('app_search_events') }}">Événements</a>
+                    </li>
+                    <li class="text--medium-small" >
+                        <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
+                    </li>
+                    <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                        <a href="javascript:void(0)" class="je-cherche">
+                            {{ include('components/search.html.twig') }}
+                        </a>
+                    </li>
+                </ul>
+                <div class="l__row">
+                    {% if not campaign_expired and not user_is_adherent %}
+                        <a href="{{ path('app_membership_register') }}"
+                           class="newbtn newbtn--hollow newbtn--small b__nudge--right-nano">
+                            Adhérer
+                        </a>
+                    {% endif %}
+                    <a href="{{ path('donation_index') }}" class="newbtn newbtn--small newbtn--pink b__nudge--right">Donner</a>
+
+                    {% if not campaign_expired %}
+                    <div class="nav__user">
+                        {% if user_is_admin %}
+                            <a href="{{ path('sonata_admin_dashboard') }}" class="icon--with-text nav__user__name">
+                                Administration
+                            </a>
+                        {% else %}
+                            <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}" class="icon--with-text nav__user__name">
+                                {{ include('components/user.html.twig') }}
+                                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                            </a>
+                            {% if user_is_adherent %}
+                                <div class="nav__user__caret">
+                                    <span class="nav__user__caret--outer"></span>
+                                    <span class="nav__user__caret--inner"></span>
+                                </div>
+                                <div class="nav__user__menu">
+                                    <div class="nav__user__menu__items committees">
+                                        <h3>Comités</h3>
+                                        {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
+                                        {% set adherent_committees %}
+                                            {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
+                                        {% endset %}
+                                        {{ adherent_committees }}
+                                    </div>
+                                    <div class="nav__user__menu__items citizen_projects">
+                                        <h3>Projets citoyens</h3>
+                                        {% set adherent_citizen_projects %}
+                                            {{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects')) }}
+                                        {% endset %}
+                                        {{ adherent_citizen_projects }}
+                                    </div>
+                                    <ul class="nav__user__menu__account">
+                                        <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
+                                        <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
+                                        <li><a href="{{ path('app_search_citizen_projects') }}">Tous les projets citoyens</a></li>
+                                        <li><a href="{{ path('map_events') }}">La carte des événements</a></li>
+                                        <li><a href="{{ path('map_committees') }}">La carte des comités</a></li>
+                                        <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
+                                        <li class="nav__user__menu__separator"></li>
+                                        <li class="text--small">
+                                            <a class="text--pink" href="{{ path('app_summary_manager_index') }}">Mon profil En Marche</a>
+                                        </li>
+                                        {% if is_granted('CREATE_COMMITTEE') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('CREATE_CITIZEN_PROJECT') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_adherent_create_citizen_project') }}">Créer un projet citoyen</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_REFERENT') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_referent_users') }}">Espace référent</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_COORDINATOR') %}
+                                            <li class="text--small">
+                                                {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
+                                                    <a href="{{ path('app_coordinator_citizen_project', { 's': constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                                                {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+                                                    <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace coordinateur régional</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_PROCURATION_MANAGER') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank">
+                                                    Espace candidat aux législatives
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        <li class="text--small">
+                                            <a href="{{ path('app_adherent_events') }}">Mes événements</a>
+                                        </li>
+                                        <li class="text--small">
+                                            <a href="{{ path('app_adherent_profile') }}">Mon compte</a>
+                                        </li>
+                                        <li class="text--small">
+                                            <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
+                                        </li>
+                                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                            <li class="text--small">
+                                                <a href="{{ path('app_admin_impersonation_exit') }}">
+                                                    Quitter l'impersonnification
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </nav>
+            <!--  Header / Navigation Mobile-->
+            <nav class="gtm__navigation__mobile l__wrapper l__hide--above-small-laptop space--20-0">
+                <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
+                    <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
+                    {% if not campaign_expired %}
+                        <li class="l__row">
+                            {% if not user_is_adherent %}
+                                <a href="{{ path('app_membership_register') }}"
+                                   class="btn b__nudge--right-nano l__hide--on-mobile">
+                                    J'adhère
+                                </a>
+                            {% endif %}
+                            <a href="{{ path('donation_index') }}" class="newbtn btn--primary b__nudge--right-larger">
+                                Donner
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="nav__mobile">
+                    <input type="checkbox" id="nav-menu">
+                    <label for="nav-menu">Menu de navigation</label>
+                    <div class="nav__mobile--menu">
+                        <div class="l__row l__row--h-stretch text--body">
+                            <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}"
+                               class="icon--with-text">
+                                {{ include('components/user.html.twig') }}
+                                {{ user_is_adherent ? app.user.fullName : 'Espace perso' }}
+                            </a>
+                        </div>
+                        <hr>
+                        {% if user_is_adherent %}
+                            <div class="text--medium-small">
+                                <h3>Comités</h3>
+                                {{ adherent_committees }}
+                                <hr>
+                            </div>
+                            <div class="text--medium-small">
+                                <h3>Projets citoyens</h3>
+                                {{ adherent_citizen_projects }}
+                                <hr>
+                            </div>
+                        {% endif %}
+
+                        <ul class="list__links list__links--col list__links--no-decor list__links--nav">
+                            {% if user_is_adherent %}
+                                <li><a href="{{ path('app_search_events') }}">Tous les événements</a></li>
+                                <li><a href="{{ path('app_search_committees') }}">Tous les comités</a></li>
+                                <li><a href="{{ path('app_search_citizen_projects') }}">Tous les projets citoyens</a></li>
+                                <li><a href="{{ path('map_events') }}">La carte des événements</a></li>
+                                <li><a href="{{ path('map_committees') }}">La carte des comités</a></li>
+                                <li><a href="{{ path('app_documents_index') }}">Documents</a></li>
+                                <li class="nav__user__menu__separator"></li>
+                                {% if is_granted('CREATE_COMMITTEE') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('CREATE_CITIZEN_PROJECT') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_adherent_create_citizen_project') }}">Créer un projet citoyen</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_REFERENT') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_referent_users') }}">Espace référent</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_COORDINATOR') %}
+                                    <li class="text--small">
+                                        {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
+                                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                                        {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+                                            <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace coordinateur régional</a>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_PROCURATION_MANAGER') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank">
+                                            Espace candidat aux législatives
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="text--small">
+                                    <a href="{{ path('app_adherent_events') }}">Mes événements</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_adherent_profile') }}">Mon compte</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="{{ path('app_summary_manager_index') }}" target="_blank" rel="noopener noreferrer">Mon profil En Marche</a>
+                                </li>
+                                <li class="text--small">
+                                    <a href="https://aide.en-marche.fr/" target="_blank" rel="noopener noreferrer">Aide</a>
+                                </li>
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                    <li class="text--small">
+                                        <a href="{{ path('app_admin_impersonation_exit') }}">
+                                            Quitter l'impersonnification
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
+                                <hr>
+                            {% endif %}
+                            <li class="text--medium-small"><a href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
+                            <li class="text--medium-small">
+                                <a href="{{ path('page_campus') }}">Campus</a>
+                            </li>
+                            <li class="text--medium-small">
+                                <a href="{{ path('app_search_events') }}">Événements</a>
+                            </li>
+                            <li class="text--medium-small">
+                                <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
+                            </li>
+                            <li class="text--medium-small"><a href="https://aide.en-marche.fr">Aide</a></li>
+                            <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                                <a href="javascript:void(0)" class="je-cherche icon--with-text">
+                                    {{ include('components/search.html.twig') }}
+                                    Rechercher
+                                </a>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="list__links list__links--row b__nudge--bottom-small">
+                            <li class="head">Suivez La République En Marche !</li>
+                        </ul>
+                        <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__row--wrap">
+                            <li>
+                                <a href="https://www.facebook.com/EnMarche" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-facebook-square"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-linkedin-square"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://medium.com/@enmarchefr" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-medium"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-youtube-square"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.snapchat.com/add/enmarchefr" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-snapchat-ghost"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {% endblock %}
+
+        {% block content '' %}
+
+        {% block footer %}
+            <footer class="background--lighter space--30-0">
+                <div class="l__wrapper">
+                    <div class="l__row l__row--h-stretch b__nudge--bottom-large l__tablet--col l__mobile--col-center">
+                        <a href="{{ path('homepage') }}" class="link--no-decor">
+                            {{ include('components/logo-mini-em.html.twig') }}
+                        </a>
+                        <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
+                            <li class="head">Suivez La République En Marche !</li>
+                            <li><a href="https://www.facebook.com/EnMarche/" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-square"></i></a></li>
+                            <li><a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-square"></i></a></li>
+                            <li><a href="https://medium.com/@enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-medium"></i></a></li>
+                            <li><a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square"></i></a></li>
+                            <li><a href="https://www.snapchat.com/add/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-snapchat-ghost"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="l__row l__row--h-stretch l__row--top b__nudge--bottom-large l__row--wrap l__mobile--col">
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li>
+                                <h4>
+                                    <a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a>
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('legislatives_homepage') }}" target="_blank" rel="noopener noreferrer">
+                                    Nos députés
+                                </a>
+                            </li>
+                            {% if not campaign_expired %}
+                                <li>
+                                    <a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('map_committees') }}">La carte des comités</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('map_events') }}">La carte des événements</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('page_elles_marchent') }}">Elles Marchent</a>
+                            </li>
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li>
+                                <h4>
+                                    <a href="{{ path('page_campus') }}" class="text--bold text--medium-small">Campus</a>
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_campus') }}">Toutes les ressources</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('page_mooc') }}">Le MOOC</a>
+                            </li>
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li><h4><a href="{{ path('articles_list', {category: 'tout'}) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                            <li><a href="{{ path('articles_list', {category: 'tout'}) }}">Toute l'actualité</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'actualites'}) }}">Articles</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'videos'}) }}">Vidéos</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'discours'}) }}">Discours</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'medias'}) }}">Médias</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'communiques'}) }}">Communiqués</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'opinions'}) }}">Opinions</a></li>
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            {% if not campaign_expired %}
+                                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
+                                <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
+                                <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
+                            {% else %}
+                                <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>
+                            {% endif %}
+                            <li><a href="{{ path('donation_index') }}">Donner en ligne</a></li>
+                            <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Donner par chèque</a></li>
+                            {% if not campaign_expired %}
+                                <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
+                                <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
+                                <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
+                                <li>
+                                    <a href="{{ path(user_is_adherent ? 'app_adherent_profile' : 'app_adherent_login') }}">
+                                        Connexion
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                            <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
+                            <li><a href="https://boutique.en-marche.fr" target="_blank" rel="noopener noreferrer">La Boutique</a></li>
+                            <li><a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a></li>
+                            <li><a href="https://lesjam.fr/" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
+                        </ul>
+                        <ul class="list__links list__links--col list__links--no-decor">
+                        </ul>
+                    </div>
+                    <div class="l__row l__row--h-stretch l__tablet--col">
+                        <div class="donate-mail">
+                            Vous pouvez envoyer vos dons en
+                            <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="text--bold" target="_blank" rel="noopener noreferrer">téléchargeant ce bulletin</a>.
+                        </div>
+                        <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
+                            <li><a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a></li>
+                            <li><a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">Écrivez-nous</a></li>
+                            <li><a href="{{ path('articles_list', {category: 'communiques'}) }}">Presse</a></li>
+                            <li><a href="{{ path('page_jobs') }}">Nos offres</a></li>
+                            <li><a href="{{ path('page_mentions_legales') }}">Mentions Légales</a></li>
+                            <li><a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a></li>
+                            <li>En Marche &copy;</li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
+
+        <div id="search-overlay">
+            <div class="g-search__header l__wrapper l__row l__row--h-stretch">
+                <div class="text--logo"><a href="/">En Marche !</a></div>
+                <a href="javascript:void(0)" id="je-ferme-la-recherche"
+                   class="l__row l__row--center text--body link--no-decor icon--with-text--reversed btn__icon">
+                    <span>Fermer la recherche</span>
+                    {{ include('components/close.html.twig') }}
+                </a>
+            </div>
+
+            <div id="search-engine"></div>
+        </div>
+
+        <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
+
+        {% block javascripts '' %}
+
+        <script type="text/javascript">
+            on(window, 'load', function() {
+                Kernel.boot(
+                    '{{ app.debug ? 'debug' : assets_hash }}',
+                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    '{{ app.environment }}',
+                    {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
+                    {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
+                    '{{ algolia_blacklist|base64_encode }}'
+                );
+            });
+        </script>
+
+        {{ include('non.li.html.twig') }}
+
+        {% block final_javascripts '' %}
+    </body>
+</html>

@@ -1,0 +1,62 @@
+{% extends 'coordinator/_layout.html.twig' %}
+
+{% set coordinator_path = 'app_coordinator_committees' %}
+
+{% set pages = [
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PENDING'),
+        'label': 'Comités en attente'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PRE_APPROVED'),
+        'label': 'Comités pré-validés'
+    },
+    {
+        'route': coordinator_path,
+        'status': constant('AppBundle\\Entity\\Committee::PRE_REFUSED'),
+        'label': 'Comités pré-refusés'
+    }
+] %}
+
+{% block coordinator_area_header_description %}
+    <p class="text--center">
+        L’espace coordinateur vous permet d'apprécier les comités des
+        zones que vous gérez. Seule l’équipe du QG sera en mesure de
+        voir vos appréciations.
+    </p>
+    <p class="text--center">
+        Zones gérées : {{ app.user.coordinatorManagedAreaCodesAsString }}.
+    </p>
+{% endblock %}
+
+{% block coordinator_content %}
+
+    {% if results|length %}
+        <div class="datagrid text--summary">
+            <div class="b__nudge--bottom-larger">
+                <table class="datagrid__table" style="border-spacing: 0 1em;">
+                    <thead>
+                    <tr>
+                        <th>Créateur</th>
+                        <th>Comité</th>
+                        <th>Ville</th>
+                        <th>Code postal</th>
+                        <th>Date de création</th>
+                        <th>Commentaire</th>
+                        <th>Statut</th>
+                    </tr>
+                    </thead>
+                    <tbody id="committee-list">
+                        {{ include('coordinator/_committee_list.html.twig') }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="text--body text--center">
+            Aucun comité ne répond à ce filtre
+        </div>
+    {% endif %}
+{% endblock %}

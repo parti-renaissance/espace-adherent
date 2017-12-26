@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block footer '' %}
+
+{% block page_title 'S\'inscrire à la newsletter' %}
+{% block canonical_url url('newsletter_subscription') %}
+
+{% block content %}
+
+    <main>
+        <section>
+            <div class="newsletter-page">
+                <h2 class="text--large b__nudge--top-large text--center l__wrapper--slim">
+                    Je m'inscris à la newsletter
+                </h2>
+                <p class="text--body l__wrapper--medium b__nudge--top b__nudge--bottom-large">
+                    Quelques secondes suffisent pour s'inscrire gratuitement à notre newsletter. Vous recevrez les informations concernant l'actualité du mouvement, nos dernières actions mais aussi des vidéos et des articles que nous préparons pour vous.<br />
+                    Notre objectif ? Faciliter, valoriser l'engagement citoyen ! Mais aussi vous informer et créer du lien.<br />
+                    N'attendez plus. Inscrivez-vous !
+                </p>
+
+                <div class="newsletter-page__form l__wrapper--500">
+                    {{ form_start(form) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="form__row">
+                        {{ form_label(form.email, 'Votre adresse e-mail') }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.postalCode, 'Votre code postal') }}
+                        {{ form_errors(form.postalCode) }}
+                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="l__row l__row--center b__nudge--top">
+                        <button type="submit" class="btn btn--blue">
+                            Je m'inscris
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <div class="referent__filters">
+        <h3 class="referent__filters__title" id="send-message">
+            Envoyer un message
+        </h3>
+
+        <div class="referent__filters__form">
+            <form method="get" action="{{ path('app_referent_users') }}#send-message">
+                <div class="referent__filters__subtitle">
+                    Envoyer un message aux ...
+                </div>
+                <div class="l__row l__row--top l__mobile--col">
+                    <div class="l__col--grow-1 b__nudge--right">
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_newsletter"
+                                   name="{{ constant('PARAMETER_INCLUDE_NEWSLETTER', filter) }}"
+                                    {{ filter.includeNewsletter ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_newsletter">
+                                Marcheurs abonnés à la newsletter
+                            </label>
+                        </div>
+
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_adherents_no_committee"
+                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE', filter) }}"
+                                    {{ filter.includeAdherentsNoCommittee ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_adherents_no_committee">
+                                Adhérents ne faisant partie d'aucun comité
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="l__col--grow-1 b__nudge--right">
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_supervisors"
+                                   name="{{ constant('PARAMETER_INCLUDE_SUPERVISORS', filter) }}"
+                                    {{ filter.includeSupervisors ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_supervisors">
+                                Animateurs de comités locaux
+                            </label>
+                        </div>
+
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_hosts"
+                                   name="{{ constant('PARAMETER_INCLUDE_HOSTS', filter) }}"
+                                    {{ filter.includeHosts ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_hosts">
+                                Co-animateurs de comités locaux
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="l__col--grow-1 b__nudge--right">
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
+                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
+                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_adherents_in_committee">
+                                Adhérents faisant partie d'au moins un comité (hors animateurs)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="referent__filters__subtitle">
+                    Et filtrer par ...
+                </div>
+
+                <div class="b__nudge--bottom">
+                    <label class="form form__label">
+                        Code postal, numéro de département ou code pays (laisser vide pour ne pas filtrer)<br />
+                        <input type="text"
+                               name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
+                               value="{{ filter.queryAreaCode }}"
+                               placeholder="Saisissez un ou plusieurs départements/code postaux, séparés par des virgules (exemple : &quot;35420, 12, 75&quot;)"
+                               class="form form__field form--full" />
+                    </label>
+                </div>
+
+                <div class="b__nudge--bottom">
+                    <label class="form form__label">
+                        Nom de la ville (laisser vide pour ne pas filtrer)<br />
+                        <input type="text"
+                               name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
+                               value="{{ filter.queryCity }}"
+                               placeholder="Saisissez une ou plusieurs villes, séparées par des virgules (exemple : &quot;Lyon, Paris 8e&quot;)"
+                               class="form form__field form--full" />
+                    </label>
+                </div>
+
+                <div class="b__nudge--bottom">
+                    <label class="form form__label">
+                        Identifiant de marcheur (laisser vide pour ne pas filtrer)<br />
+                        <input type="text"
+                               name="{{ constant('PARAMETER_QUERY_ID', filter) }}"
+                               value="{{ filter.queryId }}"
+                               placeholder="Saisissez un ou plusieurs identifiants de marcheur, séparés par des virgules (exemple : &quot;365002, 130249&quot;)"
+                               class="form form__field form--full" />
+                    </label>
+                </div>
+
+                <div class="referent__filters__buttons">
+                    {% if has_filter %}
+                    <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
+                        Réinitialiser le filtre
+                    </a>
+                    {% endif %}
+                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
+                        Filtrer pour envoyer un message
+                    </button>
+                </div>
+
+                <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
+                <input type="hidden" name="c" value="{{ 'now'|date('His') }}" />
+            </form>
+        </div>
+    </div>
+
+    {% if has_filter %}
+        <div class="referent__filters__count">
+            <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvés</div>
+
+            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn btn--primary b__nudge--top-10">
+                Leur envoyer un message
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="text--center">
+        {% block pager %}
+            {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+            {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+
+            {% if filter.offset > 0 %}
+                <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
+                    Première
+                </a>
+                <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="btn btn--small">
+                    Précédente
+                </a>
+            {% endif %}
+
+            <span class="btn btn--small btn--no-border">
+                    Page {{ current_page }} / {{ last_page }}
+                </span>
+
+            {% if filter.offset + constant('PER_PAGE', filter) < results_count %}
+                <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="btn btn--small">
+                    Suivante
+                </a>
+                <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
+                    Dernière
+                </a>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            <table class="datagrid__table">
+                <thead>
+                <tr>
+                    <th style="width: 85px;">ID</th>
+                    <th style="width: 100px;">Code postal</th>
+                    <th class="datagrid__table__col--left">Informations</th>
+                    <th style="width: 300px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
+                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Inscription</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in results %}
+                    <tr class="referent__item referent__item--{{ user.styleType }}">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.postalCode }}</td>
+                        <td class="datagrid__table__col--left">
+                            {% if user.type == constant('TYPE_NEWSLETTER', user) %}
+                                Abonné newsletter
+                            {% else %}
+                                <strong>
+                                    {{ user.firstName|slice(0, 1)|upper ~ user.firstName|slice(1) }}
+                                    {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
+                                </strong>
+                                <small class="referent__item__metadata">
+                                    {{ user.age }} ans, {{ user.city }}, {{ user.country }},
+                                    {{ user.isMailSubscriber ? 'abonné(e) aux mails' : 'non abonné(e) aux mails' }}
+                                </small>
+                                <br />
+                                <small>
+                                    {{ user.isCommitteeSupervisor ? 'Animateur local' : user.isCommitteeHost ? 'Co-animateur local' : '' }}
+                                </small>
+                            {% endif %}
+                        </td>
+                        <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
+                            {{ user.committees|e|join('<br />')|raw }}
+                        </td>
+                        <td class="datagrid__table__col--hide-mobile">
+                            {{ user.createdAt|date('d/m/Y H:i') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr />
+
+        <div class="text--center">
+            {{ block('pager') }}
+        </div>
+    </div>
+{% endblock %}

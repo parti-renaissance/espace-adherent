@@ -1,0 +1,215 @@
+#
+# Symfony
+#
+'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Vous devez saisir au maximum {{ limit }} caractère.|Vous devez saisir au maximum {{ limit }} caractères.'
+
+'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'Vous devez saisir au moins {{ limit }} caractère.|Vous devez saisir au moins {{ limit }} caractères.'
+
+'This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.': 'Vous devez saisir exactement {{ limit }} caractère.|Vous devez saisir exactement {{ limit }} caractères.'
+
+#
+# Common
+#
+common.gender.invalid_choice: Ce gentilé n'est pas valide.
+
+common.first_name.not_blank: Cette valeur ne doit pas être vide.
+common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
+common.first_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+
+common.last_name.not_blank: Cette valeur ne doit pas être vide.
+common.last_name.min_length: Votre prénom doit comporter au moins 2 caractères.
+common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+
+common.email.not_blank: Cette valeur ne doit pas être vide.
+common.email.invalid: Ceci n'est pas une adresse e-mail valide.
+common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
+
+common.country.not_blank: Cette valeur ne doit pas être vide.
+common.country.invalid: Ce pays n'est pas valide.
+
+common.postal_code.invalid: Cette valeur n'est pas un code postal français valide.
+common.postal_code.not_blank: Veuillez renseigner un code postal.
+common.city.invalid: Cette valeur n'est pas un identifiant valide de ville française.
+common.city.invalid_postal_code: Cette ville et ce code postal ne sont pas liés.
+common.address.max_length: L'adresse ne peut pas dépasser 150 caractères.
+common.address.required: L'adresse est obligatoire.
+common.address.not_geocodable: Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.
+
+common.phone_number.required: Le numéro de téléphone est obligatoire.
+common.phone_number.invalid: Ce numéro de téléphone est invalide.
+
+common.conditions.not_accepted: Vous devez accepter la charte.
+
+common.recaptcha.invalid_message: Vous avez été détecté en tant que robot, pourriez-vous réessayer ?
+
+common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
+
+#
+# Adherent
+#
+adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
+
+adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
+
+adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8 caractères.
+
+adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valide.
+
+adherent.wrong_password: Le mot de passe est invalide.
+
+adherent.contact.min_length: Le message doit contenir au moins {{ limit }} caractères.
+adherent.contact.max_length: Le message doit contenir moins de {{ limit }} caractères.
+
+adherent.unregistration.reasons: Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.
+
+#
+# Committee
+#
+committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
+
+committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
+
+committee.must_accept_contacting_terms: Vous devez accepter d'être contacté(e) par la plateforme En Marche !
+
+committee.event.invalid_category: Le type d'événement sélectionné n'est pas valide.
+committee.event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
+committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
+
+committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
+committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
+
+committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+
+#
+# CitizenProject
+#
+citizen_project.canonical_name.not_unique: Ce nom de projet citoyen est déjà utilisé.
+
+citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
+citizen_project.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
+
+citizen_project.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+
+#
+# Donation
+#
+donation.amount.not_blank: Cette valeur ne doit pas être vide.
+donation.amount.greater_than_0: La valeur minimale d'un don est de 0.01 €.
+donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
+
+#
+# Newsletter
+#
+neswletter.already_registered: Vous êtes déjà inscrit à la newsletter d'En Marche.
+
+neswletter.email.not_blank: Cette valeur est requise.
+neswletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
+
+neswletter.postalCode.invalid: Ce code postal n'est pas valide.
+
+newsletter.guests.min: Merci de saisir au moins une adresse e-mail.
+
+#
+# Invitation
+#
+invitation.message.not_blank: Vous devez entrer un message d'invitation.
+invitation.email.was_invited_recently: Cette personne a déjà été invitée récemment, mais merci de votre proposition !
+
+#
+# Referent
+#
+referent.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
+
+#
+# Je Marche
+#
+jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.
+jemarche.not_conviced.greater_than_or_equal_0: Vous devez entrer un nombre entier positif supérieur ou égal à zéro.
+jemarche.not_conviced.less_than_or_equal_65000: Vous devez entrer un nombre entier positif inférieur ou égal à 65 000.
+jemarche.postal_code.not_blank: Vous devez entrer un code postal.
+jemarche.postal_code.invalid: Ce code postal n'est pas valide.
+
+#
+# Procuration
+#
+procuration.last_name.not_blank: Votre nom de naissance est requis.
+procuration.last_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
+procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+
+procuration.first_names.not_blank: Cette valeur ne doit pas être vide.
+procuration.first_names.min_length: Votre prénom doit comporter au moins 2 caractères.
+procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
+
+procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
+
+procuration.reason.not_blank: Vous devez spécifier une raison.
+procuration.reason.invalid: Cette raison n'est pas valide.
+
+procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
+
+procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
+
+#
+# Event
+#
+event.full: L'événement est complet.
+event.invitation.message.max_length: Le message contient {{ limit }} caractères mais ne doit pas excéder 200.
+event.invitation.guests.min: Merci de saisir au moins une adresse e-mail.
+
+#
+# Ton Macron
+#
+ton_macron.invitation.friend_interests.count: Vous devez sélectionner 2 intérêts.
+ton_macron.invitation.self_reasons.count: Vous devez sélectionner 2 raisons.
+
+#
+# Legislatives
+#
+legislative_district_zone.area_code.unique: Ce code de circonscription existe déjà.
+legislative_district_zone.area_code.invalid: Le code de la circonscription doit être une suite de 4 chiffres commençant par 0 ou 1.
+legislative_district_zone.area_type.invalid: Le type de circonscription choisi est invalide.
+
+legislative_candidate.slug.invalid: L'identifiant d'URL ne peut contenir que des lettres minuscules, des chiffres et des tirets.
+legislative_candidate.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
+legislative_candidate.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+legislative_candidate.district_number.invalid: Le numéro de circonscription doit être un nombre entier positif.
+legislative_candidate.latitude.invalid: Cette valeur n'est pas une latitude valide.
+legislative_candidate.longitude.invalid: Cette valeur n'est pas une longitude valide.
+legislative_candidate.carreer.invalid: Cette carrière est invalide.
+
+legislative_campaign_contact_message.role.invalid: Le role que vous occupez dans la campagne est invalide.
+legislative_campaign_contact_message.recipient.invalid: Le service auquel vous souhaitez adresser ce message est invalide.
+
+#
+# Summary
+#
+summary.spanable_item.length.invalid: L'événement doit être en cours ou avoir une date de fin.
+summary.mission_type_wishes: Vous devez cocher au minimum 1 élément.
+
+#
+# CitizenInitiative
+#
+citizen_initiative.invalid_category: Le type d'événement sélectionné n'est pas valide.
+citizen_initiative.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
+citizen_initiative.invalid_capacity: La capacité doit être un nombre entier valide.
+
+#
+# Board Member
+#
+board_member.area.invalid_choice: Cette région n'est pas valide.
+
+#
+# Interactive
+#
+interactive.friend_appreciations.min: Vous devez sélectionner au moins 1 valeur.
+interactive.friend_appreciations.max: Vous devez sélectionner au maximum 2 valeurs.
+interactive.friend_cases.min: Vous devez sélectionner au moins 1 situation.
+interactive.friend_cases.max: Vous devez sélectionner au maximum 2 situations.
+
+#
+# Report
+#
+report.invalid_reasons: Afin de valider votre signalement, veuillez sélectionner au moins une raison.

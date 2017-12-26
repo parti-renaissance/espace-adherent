@@ -1,0 +1,105 @@
+<li class="card card--{{ loop.index }} card--{{ loop.index }}--{{ block.type }} l__col--bottom">
+    {% if block.type == 'video' %}
+        <div class="csv card--small card--small__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
+            {% if block.media and block.media.video %}
+                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
+            {% else %}
+                <a href="{{ block.link }}" class="background-container">
+                    <div class="background card__background progressive-background"
+                         data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                         data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                         style="background-color: #000000;">
+                        <i class="play-icon"></i>
+                    </div>
+                </a>
+            {% endif %}
+            <a href="{{ block.link }}" class="headline link--no-decor">
+                <h2>{{ block.title }}</h2>
+            </a>
+            <div class="share">
+                Partagez
+                <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                    <i class="fa fa-facebook-square"></i>
+                </span>
+                <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                    <i class="fa fa-twitter"></i>
+                </span>
+            </div>
+        </div>
+        <div class="cmv card--medium card--medium__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
+            {% if block.media and block.media.video %}
+                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
+            {% else %}
+                <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
+                   data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                   data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                   style="background-color: #000000;">
+                    <div class="background">
+                        <div class="content">
+                            <div class="headline-row">
+                                <i class="play"></i>
+                                <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                    {{ block.title }}
+                                </h2>
+                            </div>
+                            <div class="share">
+                                Partagez
+                                <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </span>
+                                <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                                        <i class="fa fa-twitter"></i>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="cs card--small {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
+            {% if block.media and block.media.video %}
+                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
+            {% else %}
+                <a href="{{ block.link }}" class="background-container">
+                    <div class="background card__background progressive-background"
+                         data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                         data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                         style="background-color: #000000;">
+                    </div>
+                </a>
+            {% endif %}
+            <a href="{{ block.link }}" class="headline link--no-decor">
+                <h2>{{ block.title }}</h2>
+            </a>
+            <div class="share">
+                Partagez
+                <span role="button" onclick="App.share('facebook', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                        <i class="fa fa-facebook-square"></i>
+                    </span>
+                <span role="button" onclick="App.share('twitter', '{{ block.link }}', '{{ block.title|escape('js') }}')">
+                        <i class="fa fa-twitter"></i>
+                    </span>
+            </div>
+        </div>
+        <div class="cm card--medium {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
+            {% if block.media and block.media.video %}
+                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
+            {% else %}
+                <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
+                   data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
+                   data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                   style="background-color: #000000;">
+                    <div class="background">
+                        <div class="content">
+                            <h2 class="headline link--no-decor b__nudge--bottom-medium">
+                                {{ block.title }}
+                            </h2>
+                            <div class="btn btn--no-border">En savoir plus</div>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</li>

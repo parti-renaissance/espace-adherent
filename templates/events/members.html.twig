@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title event.name %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        Kernel.onLoad(function() {
+            var allCheckbox = dom('#members-check-all');
+            var selectionCheckboxes = document.getElementsByName('members[]');
+            var contactButton = dom('#members-contact-button');
+            var contactSelection = dom('#members-contact-selection');
+            var exportButton = dom('#members-export-button');
+            var exportSelection = dom('#members-export-selection');
+
+            // Bind the 'select all' checkbox
+            on(allCheckbox, 'change', function() {
+                if (allCheckbox.checked) {
+                    toggleCheckboxs(true);
+                    toggleButtons(true);
+                } else {
+                    toggleCheckboxs(false);
+                    toggleButtons(false);
+                }
+            });
+
+            // Bind each 'selection' checkbox
+            selectionCheckboxes.forEach(function(element) {
+                on(element, 'change', function() {
+                    var all = true;
+
+                    // Default behaviour
+                    toggleButtons(false);
+                    allCheckbox.checked = false;
+
+                    selectionCheckboxes.forEach(function (element) {
+                        if (element.checked) {
+                            // Enable button if at least one selection checkbox is checked
+                            toggleButtons(true);
+                        } else {
+                            all = false;
+                        }
+                    });
+
+                    // When all selection checkbox are checked, also check the 'select all' checkbox
+                    if (all) {
+                        allCheckbox.checked = true;
+                    }
+                });
+            });
+
+            // Toggle action buttons
+            function toggleButtons(value) {
+                contactButton.disabled = !value;
+                exportButton.disabled = !value;
+            }
+
+            // Toggle each 'selection' checkbox
+            function toggleCheckboxs(value) {
+                selectionCheckboxes.forEach(function (element) {
+                    element.checked = value;
+                });
+            }
+
+            // Bind the export button (build a Json list of members to export)
+            on(exportButton, 'click', function () {
+                var members = [];
+
+                selectionCheckboxes.forEach(function(element) {
+                    if (element.checked) {
+                        members.push(element.value);
+                    }
+                });
+
+                exportSelection.value = JSON.stringify(members);
+            });
+
+            // Bind the export button (build a Json list of members to export)
+            on(contactButton, 'click', function () {
+                var members = [];
+
+                selectionCheckboxes.forEach(function(element) {
+                    if (element.checked) {
+                        members.push(element.value);
+                    }
+                });
+
+                contactSelection.value = JSON.stringify(members);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
+    <main class="committee__event__create">
+        <section class="commitee__event l__wrapper">
+            <div class="committee__event__header">
+                <div class="committee__event__header__titles">
+                    <h1 class="committee-event-name text--large text--white b__nudge--bottom-small">
+                        {{- event.name -}}
+                    </h1>
+                    <div class="committee-event-organizer text--body text--white">
+                        {% if event.isCitizenInitiative %}
+                            <span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span>
+                        {% else %}
+                            Organisé par <span class="text--bold">{{ event.organizer }}</span>
+                            {% if committee is defined and committee %}
+                                du comité
+                                <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
+                                {{- committee.name -}}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="committee__event__header__cta">
+                    {% if event.cancelled %}
+                        <button class="btn btn--no-border btn--full btn--text-blue btn--disabled" disabled="disabled">
+                            Je veux participer
+                        </button>
+                        <div class="text--white text--center">
+                            L'événement à été annulé
+                        </div>
+                    {% else %}
+                        <a class="btn btn--no-border btn--full" href="{{ path("app_#{event.type}_attend", {slug: event.slug}) }}">Je veux participer</a>
+                    {% endif %}
+                    <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
+                        {{ include('components/participants.html.twig') }}
+                        {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                    </div>
+                    <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
+                        <li class="head">Partagez</li>
+                        <li role="button" aria-label="Partagez sur Facebook"
+                            class=""
+                            onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}')">
+                            <i class="fa fa-facebook-square"></i>
+                        </li>
+                        <li role="button" aria-label="Partagez via Twitter"
+                            class=""
+                            onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }} :')">
+                            <i class="fa fa-twitter"></i>
+                        </li>
+                        <li role="button" aria-label="Partagez via email"
+                            class=""
+                            onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ event.cityName }} le {{ event.beginAt|date('d/m') }}: ')">
+                            <i class="fa fa-envelope-o"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à l'événement
+            </a>
+        </section>
+        <section class="l__wrapper--slim space--30-0 text--body">
+            <div class="b__nudge--bottom-huge">
+                <h2 class="b__nudge--bottom-small text--medium">
+                    Gérer les participants
+                </h2>
+                <div class="committee__members__nav">
+                    <div>
+                        <form method="post" action="{{ path("app_#{event.type}_contact_members", {'slug': event.slug}) }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
+                            <input type="hidden" name="contacts" value="" id="members-contact-selection" />
+                            <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
+                        </form>
+                        <form method="post" action="{{ path("app_#{event.type}_export_members", {'slug': event.slug}) }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('event.export_members') }}" id="members-export-token" />
+                            <input type="hidden" name="exports" value="" id="members-export-selection" />
+                            <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
+                        </form>
+                    </div>
+                </div>
+                <table class="committee__members__list" cellpadding="10">
+                    <tr>
+                        <th><input type="checkbox" id="members-check-all" /></th>
+                        <th>Prénom</th>
+                        <th>Code postal</th>
+                        <th>Date d'inscription</th>
+                    </tr>
+                    {% for registration in registrations %}
+                        <tr>
+                            <td><input type="checkbox" name="members[]" value="{{ registration.uuid }}" /></td>
+                            <td>{{ registration.firstName }}</td>
+                            <td>{{ registration.postalCode }}</td>
+                            <td>{{ registration.createdAt|date('d/m/Y à H:i') }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock %}

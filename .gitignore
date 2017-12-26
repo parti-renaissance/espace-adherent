@@ -2,6 +2,7 @@
 /app/config/assets_version.yml
 /app/data/images/
 /app/data/dumped_referents_users
+/templates/amp/style.css.twig
 /build/
 /node_modules/
 /var/
@@ -16,3 +17,4 @@
 /supervisord.log
 /supervisord.pid
 /yarn-error.log
+/.php_cs

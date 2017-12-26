@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+ ______         __  __                _            _
+|  ____|       |  \/  |              | |          | |
+| |__   _ __   | \  / | __ _ _ __ ___| |__   ___  | |
+|  __| | '_ \  | |\/| |/ _` | '__/ __| '_ \ / _ \ | |
+| |____| | | | | |  | | (_| | | | (__| | | |  __/ |_|
+|______|_| |_| |_|  |_|\__,_|_|  \___|_| |_|\___| (_)
+
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}?v2" sizes="16x16" />
+    <link rel="manifest" href="{{ asset('manifest.json') }}?v2" />
+    <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <title>Espace candidat aux législatives | En Marche !</title>
+
+    <link rel="canonical" href="{{ url('app_legislative_candidates_platform')|raw }}" />
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        .frame__holder {
+            position: relative;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            top: 0;
+            height: 100%;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+        iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="frame__holder">
+        <iframe src="{{ legislatives_platform }}"></iframe>
+    </div>
+</body>
+</html>

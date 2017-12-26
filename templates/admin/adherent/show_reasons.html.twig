@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    <ul>
+        {% for reason in object.reasons %}
+            <li>{{ unregistration_reasons_label(reason) }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

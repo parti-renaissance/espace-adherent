@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+
+{% set is_administrator = is_administrator(citizen_action.citizenProject) %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <main class="citizen_action">
+        <header class="background--purple space--60-0">
+            <div class="l__wrapper text--white">
+                <div class="b__nudge--bottom-larger">
+                    <div class="text--uppercase text--small b__nudge--bottom-tiny">
+                        {{- citizen_action.beginAt|date('j M')|capitalize -}}
+                    </div>
+                    <h1 class="citizen-action-name text--large text--white b__nudge--bottom-small text--breakword">
+                        {{- citizen_action.name -}}
+                    </h1>
+                    {% if citizen_action.organizer %}
+                        <div class="citizen-action-organizer text--body text--white">
+                            Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_action.organizer.fullName : citizen_action.organizer.partialName }}</span>
+                            {% if citizen_action.citizenProject is defined %}
+                                de l'initiative citoyenne
+                                <a class="link--white" href="{{ path('app_citizen_project_show', {slug: citizen_action.citizenProject.slug}) }}">
+                                    {{- citizen_action.citizenProject.name -}}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="citizen-action-organizer text--body text--white">
+                            Organisé par un ancien adhérent
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="text--body l__row">
+                    {% set isFull = citizen_action.full %}
+                    <div class="b__nudge--right">
+                        {% if citizen_action.finished %}
+                            Cette action citoyenne est terminée
+                        {% elseif citizen_action.cancelled %}
+                            L'action citoyenne a été annulée
+                        {% elseif citizen_action.full %}
+                            L'action citoyenne est complète
+                        {% elseif can_register_citizen_action(citizen_action) %}
+                            <a class="newbtn newbtn--orange" href="{{ path("app_citizen_action_attend", {slug: citizen_action.slug}) }}">S'inscrire</a>
+                        {% else %}
+                            Vous êtes inscrit à cette action citoyenne
+                        {% endif %}
+                    </div>
+
+                    {% set event_url = url('app_citizen_action_show', {slug: citizen_action.slug}) %}
+                    <ul class="list__links list__links--row list__links--default list__links--svgs list__links--svgs--small">
+                        <li class="text--body">Partager</li>
+                        <li role="button" aria-label="Partager sur Facebook"
+                            onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }}')">
+                            <i class="fa fa-facebook-square"></i>
+                        </li>
+                        <li role="button" aria-label="Partager via Twitter"
+                            onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }} :')">
+                            <i class="fa fa-twitter"></i>
+                        </li>
+                        <li role="button" aria-label="Partager via email"
+                            onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }}: ')">
+                            <i class="fa fa-envelope-o"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+            <div class="l__wrapper--main l__wrapper--main-left">
+                {% block citizen_action_content %}{% endblock %}
+            </div>
+
+            {% block citizen_action_sidebar %}
+                {{ include('citizen_action/_sidebar.html.twig') }}
+            {% endblock %}
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,34 @@
+<div class="search__bar space--30 text--white text--body">
+    <div class="search__bar__options">
+        <input class="search-box" name="{{ constant('PARAMETER_QUERY', search) }}" placeholder="Rechercher...">
+
+        {% if search.isTypeEvents() %}
+            <div class="search__bar__options__types">
+                <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
+                    <option value="" selected="selected">Tous les événements</option>
+                    <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
+                    {% for category in event_categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+
+        <div>
+            dans un rayon de
+            {# this widget will be embedded in the ribbon text #}
+            <select name="{{ constant('PARAMETER_RADIUS', search) }}">
+                {% for option in constant('RADII', search) %}
+                    <option value="{{ option }}" {% if constant('DEFAULT_RADIUS', search) == option %}selected="selected"{% endif %}>{{ option }} Km</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            autour de
+            {# this widget will be embedded in the ribbon text #}
+            <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal">
+            <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
+        </div>
+    </div>
+</div>

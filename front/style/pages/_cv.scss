@@ -1,0 +1,281 @@
+.cv {
+    &__header {
+        margin-bottom: -41px;
+
+        &__photo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include text--body;
+            margin: 0 auto;
+            top: -110px;
+            position: relative;
+            height: 210px;
+            width: 210px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background-image: url('/images/user.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+            background-color: $gray--lighter;
+
+            &--modify {
+                top: -105px;
+                position: relative;
+                // display: flex;
+                // justify-content: center;
+            }
+        }
+
+        &--modify {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        &__about {
+            top: -110px;
+            position: relative;
+        }
+
+        &__contact {
+            top: -61px;
+            position: relative;
+
+            &--modify {
+                top: -58px;
+                position: relative;
+                display: flex;
+                justify-content: center;
+            }
+
+            div {
+                margin-right: 20px;
+                font-size: $text--size-medium;
+
+                a {
+                    border: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &__manage {
+            background: $darker;
+            color: white;
+            padding: 20px 0;
+            margin-top: -26px;
+            text-align: center;
+
+            div {
+                @include text--body;
+            }
+
+            a {
+                margin-right: 20px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    &__work-status--modify {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 20px;
+
+        > a {
+            @include link--white;
+        }
+    }
+
+    &__training,
+    &__experience {
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid $gray--light;
+
+        &:last-child {
+            border: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    &__skills,
+    &__interests {
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        li {
+            background: $blue;
+            color: white;
+            @include text--body;
+            padding: 5px 10px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__languages,
+    &__training--options,
+    &__experience--options {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 5px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > a {
+            margin: 0 15px;
+        }
+
+        button {
+            border: 0;
+            letter-spacing: 0;
+            text-transform: capitalize;
+            padding: 0;
+            border-bottom: 1px solid black;
+            font-size: $text--size-default;
+            line-height: 24px;
+
+            &:hover {
+                background: white;
+                color: black;
+                @include hover(black);
+            }
+        }
+    }
+
+    &__training--options,
+    &__experience--options
+     {
+        margin-top: 10px;
+
+        > a {
+            margin-left: 0;
+        }
+    }
+}
+
+.cv__form {
+    form > div {
+        margin-bottom: 20px;
+    }
+
+    form > div > label {
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    select {
+        display: block;
+        width: 100%;
+    }
+
+    #job_experience_started_at select,
+    #job_experience_ended_at select,
+    #training_started_at select,
+    #training_ended_at select {
+        display: inline;
+        width: 48%;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        height: 120px;
+        padding: 10px 15px;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-left: 20px;
+        margin-right: 7px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    button {
+        margin: 20px 0;
+    }
+
+    .summary-skill {
+        padding: 5px 0;
+    }
+
+    #summary_skills {
+        margin: 15px 0 10px;
+    }
+
+    .skill-remove:hover {
+        cursor: pointer;
+        @include hover(black);
+    }
+
+    #summary_member_interests,
+    #summary_mission_type_wishes  {
+        input {
+            margin-left: 0;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0 10px;
+            text-align: left;
+        }
+
+        label:before {
+            content: '';
+            border: 1px solid $gray;
+            transition: all .2s;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            @include form__checkbox--large;
+        }
+
+        label:after {
+            content: '';
+            display: block;
+        }
+
+        label:before:hover {
+            label:before {
+                background: $gray--lighter;
+            }
+        }
+
+        input[type="checkbox"] {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+
+            &:checked + label:before {
+                border-color: $blue;
+                background: $blue;
+                content: $checkbox__mark;
+            }
+        }
+    }
+}

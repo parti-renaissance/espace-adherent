@@ -1,36 +1,98 @@
-lexik_paybox:
-    resource: "@LexikPayboxBundle/Resources/config/routing.yml"
-    prefix:   "/don"
+#
+# Health
+#
+app_health:
+    host:     "%app_host%"
+    resource: "@AppBundle/Controller/HealthController.php"
+    type:     "annotation"
 
+#
+# Assets
+#
+app_assets:
+    resource: "@AppBundle/Controller/AssetsController.php"
+    type:     "annotation"
+
+#
+# API
+#
+app_api:
+    host:     "%app_host%"
+    resource: "@AppBundle/Controller/Api"
+    type:     "annotation"
+    prefix:   "/api"
+
+#
+# Admin panel
+#
 admin_dashboard:
+    host:     "%app_host%"
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix:   "/admin"
 
 admin_crud:
+    host:     "%app_host%"
     resource: .
     type:     sonata_admin
     prefix:   "/admin"
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     "annotation"
-    host:     "%enmarche_domain%"
-
 app_admin:
+    host:     "%app_host%"
     resource: "@AppBundle/Controller/Admin"
     type:     "annotation"
     prefix:   "/admin"
-    host:     "%enmarche_domain%"
 
+#
+# En Marche app
+#
+lexik_paybox:
+    host:     "%app_host%"
+    resource: "@LexikPayboxBundle/Resources/config/routing.yml"
+    prefix:   "/don"
+
+# This route must be loaded first to prevent another route to match his path
+map_events:
+    host:    "%app_host%"
+    path:    /evenements/la-carte
+    methods: GET
+    defaults: { _controller: 'AppBundle:EnMarche/Map:events' }
+
+app_enmarche:
+    host:     "%app_host%"
+    resource: "@AppBundle/Controller/EnMarche"
+    type:     "annotation"
+
+#
+# AMP pages
+#
+app_enmarche_amp:
+    host:     "%amp_host%"
+    resource: "@AppBundle/Controller/Amp"
+    type:     "annotation"
+
+#
+# Legislatives app
+#
 app_legislatives:
+    host:     "%legislatives_host%"
     resource: "@AppBundle/Controller/Legislatives"
     type:     "annotation"
-    host:     "%legislatives_domain%"
 
-app_health:
-    resource: "@AppBundle/Controller/HealthController.php"
-    type:     "annotation"
+#
+# Legacy
+#
+app_desintox:
+    host: "%app_host%"
+    path: /emmanuel-macron/desintox/{slug}
+    defaults:
+        slug: ~
+        _controller: FrameworkBundle:Redirect:redirect
+        route: ~
 
-app_assets:
-    resource: "@AppBundle/Controller/AssetsController.php"
+#
+# Redirections
+#
+app_redirecting:
+    host:     "%app_host%"
+    resource: "@AppBundle/Controller/RedirectingController.php"
     type:     "annotation"

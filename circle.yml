@@ -2,7 +2,7 @@ machine:
     node:
         version: 4.5.0
     php:
-        version: 7.1.0
+        version: 7.1.6
     environment:
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
@@ -10,8 +10,17 @@ machine:
         DATABASE_USER: ubuntu
         DATABASE_PASSWORD: ''
         DATABASE_NAME: circle_test
+        RABBITMQ_HOST: 'localhost'
+        RABBITMQ_PORT: '5672'
+        RABBITMQ_USER: 'guest'
+        RABBITMQ_PASSWORD: 'guest'
+    hosts:
+        enmarche.dev: 127.0.0.1
+        m.enmarche.dev: 127.0.0.1
+        legislatives.enmarche.dev: 127.0.0.1
     services:
         - docker
+        - rabbitmq-server
 
 dependencies:
     cache_directories:
@@ -23,41 +32,57 @@ dependencies:
             if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
               curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
             fi
-        - echo "memory_limit = 1024M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
+        - echo "memory_limit = 2048M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
     override:
         - yarn install
         - composer install --no-interaction
+        - bin/console rabbitmq:setup-fabric --env=test
 
 test:
     override:
-        - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --exclude-group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml && yarn lint && yarn test && yarn run build-prod ;; 1) mkdir -p $CIRCLE_TEST_REPORTS/phpunit && ./vendor/bin/phpunit --group functional --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
-              parallel: true
+        # Lint and test JS
+        - yarn lint
+        - yarn test
+
+        # Lint PHP
+        - make phpcs
+
+        # Prepare PHP tests
+        - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users:
+            parallel: true
+        - ./bin/console doctrine:schema:create --env=test_sqlite:
+            parallel: true
+        - ./bin/console doctrine:schema:drop --force --env=test_mysql:
+            parallel: true
+        - ./bin/console doctrine:schema:create --env=test_mysql:
+            parallel: true
+        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit:
+            parallel: true
+
+        # PHP unit and functional tests
+        - yarn run build-amp
+        - case $CIRCLE_NODE_INDEX in 0) ./vendor/bin/phpunit --group $GROUP1 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 1) ./vendor/bin/phpunit --group $GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 2) ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
+            parallel: true
+            environment:
+                GROUP1: adherent,amp,article,boardMember,citizenInitiative,citizenInitiativeManager,citizenProject,referent,summary
+                GROUP2: committee,committeeManager,coordinator,documents,donation,eventManager,explainer,facebook,home,invitation,legislatives,jeMarche,map,membership
+
+        # Try to build production JS
+        - yarn run build-prod
 
 deployment:
-    staging:
+    master:
         branch: master
         owner: EnMarche
         commands:
-            # Check packages security
-            - bin/console security:check
+            # Builds and pushes image to registry
+            - ./scripts/build.sh stable
+    staging:
+        branch: staging
+        owner: EnMarche
+        commands:
+            # Builds and pushes image to registry
+            - ./scripts/build.sh latest
 
-            # Google Cloud authentication
-            - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json && cp ${HOME}/gcloud-service-key.json gcloud-service-key.json
-            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-            - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-            - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
-
-            # Build the image
-            - yarn run build-prod
-            - docker build -t enmarche-common -f prod.common.dockerfile .
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 -f prod.app.dockerfile .
-            - docker build -t eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1 -f prod.worker-mailjet.dockerfile .
-
-            # Push the images to Google Cloud
-            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-            - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/worker-mailjet:$CIRCLE_SHA1
-
-            # Deploy to staging
-            - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-            - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD_CLUSTER --project $GCLOUD_PROJECT --zone europe-west1-d
-            - sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-app enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+            # Deploys image and migrates database
+            - ./scripts/deployment.sh

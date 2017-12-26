@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'En Marche !' %}
+
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper">
+            <div class="l__row l__tablet--col l__row--v-stretch">
+                {% if blocks[0].media and blocks[0].media.video %}
+                    {% include 'video.html.twig' with {'block': blocks[0], 'width': 1200 } %}
+                {% else %}
+                    <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
+                       style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
+                        <div class="background">
+                            <div class="content">
+                                {% if blocks[0].hasDisplayTitles %}
+                                    <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
+                                    <div class="text--body">{{ blocks[0].subtitle }}</div>
+                                {% endif %}
+                                <div class="btn btn--no-border">Découvrir</div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
+                        <a href="{{ blocks[0].link }}" class="background-container">
+                            <div class="background card__background"
+                                 style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
+                        </a>
+                        {% if blocks[0].hasDisplayTitles %}
+                            <a class="content" href="{{ blocks[0].link }}">
+                                <h2>{{ blocks[0].title }}</h2>
+                                <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <a href="{{ blocks[1].link }}" class="topstory-side card card--large-secondary l__col l__col--bottom space--30 card__background"
+                     style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
+                    <div class="background">
+                        <div class="content">
+                            <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
+                            <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
+                            <div class="btn btn--no-border">Voir</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {% if not campaign_expired %}
+                <div class="content b__nudge--top">
+                    <article class="l__row l__row--v-stretch l__tablet--col">
+                        <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
+                            {% if blocks[9].media and blocks[9].media.video %}
+                                {% include 'video.html.twig' with {'block': blocks[9], 'width': 550 } %}
+                            {% else %}
+                                <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
+                                <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
+                                    {{ blocks[9].titleCta }}
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
+                            {% if  blocks[10].media and blocks[10].media.video %}
+                                {% include 'video.html.twig' with {'block': blocks[10], 'width': 550 } %}
+                            {% else %}
+                                <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
+                                <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
+                                    {{ blocks[10].titleCta }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="newsletter background--light space--20-30">
+                    <div class="text--small text--center text--body space--10-0">
+                        <div class="b__nudge--bottom">
+                            La campagne du second tour des élections législatives est terminée.
+                            <br />
+                            Certains services du site sont donc temporairement indisponibles.
+                            <br />
+                            Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
+                        </div>
+                        <a href="{{ path('article_view', {'categorySlug': 'actualites', 'articleSlug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
+                            En savoir plus sur le silence républicain
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="newsletter l__row l__row--h-stretch background--light space--20-30 l__row--wrap l__tablet--col b__nudge--top">
+                <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
+                <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
+                    {{ form_widget(newsletter_form.email, {
+                        'attr': {
+                            'aria-label': 'Entrez votre adresse email',
+                            'title': 'common.email_address',
+                            'placeholder': 'common.email_address',
+                            'class': 'form__email'
+                        }
+                    }) }}
+                    {{ form_widget(newsletter_form.postalCode, {
+                        'attr': {
+                            'aria-label': 'Entrez votre code postal',
+                            'title': 'common.zip_code',
+                            'placeholder': 'common.zip_code',
+                            'class': 'form__zipcode'
+                        }
+                    }) }}
+
+                    <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
+                </form>
+            </div>
+
+            <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-mobile space--35-15">
+                <li class="head">Suivez La République En Marche !</li>
+                <li>
+                    <a href="https://www.facebook.com/EnMarche" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-facebook-square"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-linkedin-square"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://medium.com/@enmarchefr" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-medium"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-youtube-square"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.snapchat.com/add/enmarchefr" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-snapchat-ghost"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="l__wrapper space--5-20 l__row l__row--center l__hide--on-tablet">
+                <div class="icon--with-text text--uppercase text--bold b__nudge--right">
+                    {{ include('components/lightening-bolt.html.twig') }}
+                    En Direct
+                </div>
+
+                <ul class="list__links list__links--row">
+                    {% for live_link in live_links %}
+                        <li><a href="{{ live_link.link }}">{{ live_link.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+
+        <section class="l__wrapper b__nudge--bottom-larger">
+            <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
+                {% for block in blocks|slice(2,6) %}
+                {{ include('home/articles.html.twig') }}
+                {% endfor %}
+            </ul>
+            <div class="l__row l__row--center b__nudge--bottom-large">
+                <a href="{{ path('articles_list', {'category': 'actualites'}) }}" class="btn">
+                    Plus d'actualités
+                </a>
+            </div>
+        </section>
+
+        {% if blocks|length >= 9 %}
+        <section class="l__wrapper b__nudge--bottom-large">
+            {% if blocks[8].media and blocks[8].media.video %}
+                {% include 'video.html.twig' with {'block': blocks[8], 'width': 1150 } %}
+            {% else %}
+            <div class="proteger l__col l__col--center progressive-background"
+                 data-sd="{{ media_asset(blocks[8].media, {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ media_asset(blocks[8].media, {'w': 1800, 'q': 70}) }}"
+                 data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35))"
+                 style="background-color: #000000;">
+                <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">{{ blocks[8].title }}</h2>
+                <a href="{{ blocks[8].link }}" class="btn btn--no-border">En savoir plus</a>
+            </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        {% if not campaign_expired %}
+            <section class="background--blue space--60-0">
+                <div class="l__wrapper--500 text--center b__nudge--bottom-larger">
+                    <h3 class="text--white text--uppercase-wide text--normal b__nudge--bottom-small">Le Mouvement</h3>
+                    <div class="text--white text--large text--bold">« Tout commence par la rénovation de l’engagement politique. »</div>
+                </div>
+                <div class="l__wrapper--medium">
+                    <ul class="l__row l__row--h-stretch-around boxes">
+                        <li class="box">
+                            <div>
+                                <h2 class="text--medium text--normal">En Marche ! est un mouvement ouvert à tous, sans exception.</h2>
+                                <p class="text--summary">La plupart de nos adhérents s'engagent pour la première fois. Mais quelle que soit votre histoire, quelles que soient vos origines politiques nous vous invitons à en réinventer les codes avec nous. L'adhésion est gratuite.</p>
+                            </div>
+                            <a href="{{ path('app_membership_register') }}" class="btn btn--blue">Adhérer</a>
+                        </li>
+                        <li class="box">
+                            <div>
+                                <h2 class="text--medium text--normal">Des comités locaux partout en France, près de chez vous !</h2>
+                                <p class="text--summary">Ils rassemblent des parcours et des sensibilités variés. Le but ? Que chacun(e) puisse s’engager selon son envie et ses disponibilités, sans obligation. Vous pouvez même créer le vôtre !</p>
+                            </div>
+                            <a href="{{ path('app_search_committees') }}" class="btn btn--blue">Rejoindre un comité</a>
+                        </li>
+                        <li class="box">
+                            <div>
+                                <h2 class="text--medium text--normal">Des centaines d’événements gratuits chaque semaine.</h2>
+                                <p class="text--summary">Ateliers de réflexion sur le programme ou actions de terrain à la rencontre de ses concitoyens, les événements vous permettent d'agir très concrètement pour notre projet.</p>
+                            </div>
+                            <a href="{{ path('app_search_events') }}" class="btn btn--blue">Participer</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="donate donate--home progressive-background"
+                     data-sd="{{ static_asset('je-marche.jpg', {'w': 300, 'q': 20}) }}"
+                     data-hd="{{ static_asset('je-marche.jpg', {'w': 2000, 'q': 70}) }}"
+                     data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0))"
+                     style="background-color: #aa6b49;">
+                <div class="l__wrapper space--45-5 l__row l__row--h-stretch l__mobile--col">
+                    <div class="donate__text text--white">
+                        <h2 class="text--large">
+                            Notre révolution démocratique a <span class="text--on-pink">besoin de vous !</span>
+                        </h2>
+                        <p class="text--body b__nudge--top-large">
+                            L'indépendance d'EM!, c'est aussi son indépendance financière. Grâce aux dons, et uniquement grâce à eux, nous avons réussi à lancer un mouvement inédit.
+                            <br/>
+                            Cette liberté, c'est notre ADN. Contribuez.
+                        </p>
+                    </div>
+
+                    {{ include('donation/_quick_form.html.twig') }}
+                </div>
+            </section>
+        {% endif %}
+    </main>
+{% endblock %}

@@ -1,0 +1,58 @@
+<aside class="committee__aside l__wrapper--aside">
+    <div class="committee__card b__nudge--top-large text--medium-small text--uppercase icon--with-text">
+        {{ include('components/participants.html.twig') }}
+        <span class="committee-members">{{ 'committee.members_count'|transchoice(committee.membersCount) }}</span>
+    </div>
+    <div class="committee__card">
+        <h5>À propos</h5>
+        <div class="text--body" id="committee-description">{{ committee.description }}</div>
+    </div>
+    <div class="committee__card">
+        <h5 class="icon--with-text">
+            {{ include('components/admin.html.twig') }}
+            Administration
+        </h5>
+        <ul class="committee__hosts">
+            {% for host in committee_hosts %}
+                <li class="committee-host text--body text--bold">
+                    {{ host }}
+                    {% if is_host and app.user.equals(host) %}
+                        (vous)
+                    {% else %}
+                        <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
+                           class="link--no-decor text--blue text--normal text--summary">
+                            Contacter
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="committee__card">
+        <h5 class="icon--with-text svg--black">
+            {{ include('components/location-pin.html.twig') }}
+            Localisation
+        </h5>
+
+        {% if committee.latitude and committee.longitude %}
+        <img src="{{ path('map_url', { latitude: committee.latitude, longitude: committee.longitude }) }}"
+             title="Carte d'accès au comité {{ committee.name }}"
+             alt="{{ committee.inlineFormattedAddress }}" />
+        {% endif %}
+
+        <div class="text--summary">{{ committee.inlineFormattedAddress }}</div>
+    </div>
+
+    {% if committee.socialNetworksLinks|length > 0 %}
+    <div class="committee__card">
+        <h5>Suivez notre comité</h5>
+        {% for key, link in committee.socialNetworksLinks %}
+            <a href="{{ link.url }}" target="_blank" class="committee__social--{{ key }} btn btn--{{key}} icon--with-text b__nudge--bottom-tiny">
+                <i class="fa fa--auto fa-{{key}} text--medium"></i>
+                {{- link.label -}}
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</aside>

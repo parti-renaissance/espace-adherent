@@ -13,7 +13,7 @@ parameters:
     timeline_max_messages:       30
     search_max_results:          30
     enable_canary:               "%env(ENABLE_CANARY)%"
-    procurations_reply_to_email: 'procurations@en-marche.fr'
+    procurations_reply_to_email: 'archiveprocurations@en-marche.fr'
     transactional_sender_email:  'contact@en-marche.fr'
     transactional_sender_name:   'En Marche !'
     campaign_sender_email:       'jemarche@en-marche.fr'
@@ -21,9 +21,14 @@ parameters:
     feed_ttl:                    60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email: 'campagne.legislatives@en-marche.fr'
+    algolia.application_id:      '%env(ALGOLIA_APP_ID)%'
+    algolia.api_key:             '%env(ALGOLIA_BACK_API_KEY)%'
+    app_host:                    '%env(APP_HOST)%'
+    amp_host:                    '%env(AMP_HOST)%'
+    legislatives_host:           '%env(LEGISLATIVES_HOST)%'
 
 framework:
-    translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }
     secret:          "%env(SECRET)%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -51,6 +56,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    paths:
+        '%kernel.project_dir%/templates/TwigBundle': Twig
+        '%kernel.project_dir%/templates': ~
     globals:
         assets_hash:            "%assets_hash%"
         sentry_dsn:             "%env(SENTRY_PUBLIC_DSN)%"
@@ -63,7 +71,7 @@ twig:
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
-        enable_hp_video:        "%env(ENABLE_HP_VIDEO)%"
+        url_help_en_marche:     "https://aide.en-marche.fr"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
@@ -80,6 +88,8 @@ doctrine:
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
         server_version:   5.7
+        options:
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
 
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
@@ -88,7 +98,15 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        auto_mapping: false
+        mappings:
+            AppBundle:
+                mapping: true
+                type: annotation
+                dir: 'Entity'
+                alias: 'AppBundle'
+                prefix: 'AppBundle\Entity'
+                is_bundle: true
 
         filters:
             softdeleteable:
@@ -101,6 +119,12 @@ doctrine:
                 cos: DoctrineExtensions\Query\Mysql\Cos
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
+            string_functions:
+                json_contains: AppBundle\Query\Mysql\JsonContains
+                find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
+
+        hydrators:
+            EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
 
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/migrations"
@@ -193,22 +217,65 @@ old_sound_rabbit_mq:
     connections:
         default:
             host: "%env(RABBITMQ_HOST)%"
+            port: "%env(RABBITMQ_PORT)%"
+            user: "%env(RABBITMQ_USER)%"
+            password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
             lazy: false
-            connection_timeout: 86400
-            read_write_timeout: 86400
-            heartbeat: 0
+            connection_timeout: 10
+            read_write_timeout: 10
+            heartbeat: 5
 
     producers:
-        mailjet_referent:
+        mailer_campaign:
             connection:       default
-            exchange_options: { name: 'mailjet-referent', type: direct }
-            class:            AppBundle\Producer\Mailjet\ReferentMessageMailjetProducer
+            exchange_options: { name: 'mailer-delayed-campaign', type: direct }
+            class:            AppBundle\Producer\MailerProducer
+
+        mailer_transactional:
+            connection:       default
+            exchange_options: { name: 'mailer-delayed-transactional', type: direct }
+            class:            AppBundle\Producer\MailerProducer
+
+        referent_message_dispatcher:
+            connection:       default
+            exchange_options: { name: 'referent-message-dispatcher', type: direct }
+            class:            AppBundle\Producer\ReferentMessageDispatcherProducer
+
+        enmarche_sync_user_create:
+            connection: default
+            exchange_options: { name: 'enmarche_sync_user_create', type: direct }
+            queue_options:    { name: 'enmarche_sync_user_create', durable: true }
+
+        project_citizen_creation_notification:
+            connection: default
+            exchange_options: { name: 'project_citizen_creation_notification', type: direct }
 
     consumers:
-        mailjet_referent:
+        mailer_campaign:
             connection:        default
-            exchange_options:  { name: 'mailjet-referent', type: direct }
-            queue_options:     { name: 'mailjet-referent', durable: false }
-            callback:          app.consumer.mailjet.referent
+            exchange_options:  { name: 'mailer-delayed-campaign', type: direct }
+            queue_options:     { name: 'mailer-delayed-campaign', durable: false }
+            callback:          AppBundle\Consumer\CampaignMailerConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        mailer_transactional:
+            connection:        default
+            exchange_options:  { name: 'mailer-delayed-transactional', type: direct }
+            queue_options:     { name: 'mailer-delayed-transactional', durable: false }
+            callback:          AppBundle\Consumer\TransactionalMailerConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        referent_message_dispatcher:
+            connection:        default
+            exchange_options:  { name: 'referent-message-dispatcher', type: direct }
+            queue_options:     { name: 'referent-message-dispatcher', durable: false }
+            callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        project_citizen_creation_notification:
+            connection:        default
+            exchange_options:  { name: 'project_citizen_creation_notification', type: direct }
+            queue_options:     { name: 'project_citizen_creation_notification', durable: false }
+            callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }

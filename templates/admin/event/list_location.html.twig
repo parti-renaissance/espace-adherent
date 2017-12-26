@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {{ object.address }}<br />
+    {{ object.postalCode }} {{ object.cityName }}<br />
+    {{ object.countryName }}
+{% endblock %}

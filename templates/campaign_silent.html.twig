@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Ce service sera de retour bientôt' %}
+
+{% block content %}
+<main>
+    <section class="content">
+        <header class="space--60-0 l__wrapper--slim">
+            <h1 class="b__nudge--bottom-small">
+                Ce service est indisponible.
+            </h1>
+        </header>
+
+        <article class="l__wrapper--slim b__nudge--bottom-huge">
+            <div class="b__nudge--bottom">
+                La campagne du second tour des élections législatives est terminée.
+                <br />
+                Certains services du site sont donc temporairement indisponibles.
+                <br />
+                Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
+            </div>
+            <a href="{{ path('article_view', {'categorySlug': 'actualites', 'articleSlug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
+                En savoir plus sur le silence républicain
+            </a>
+        </article>
+    </section>
+</main>
+{% endblock %}

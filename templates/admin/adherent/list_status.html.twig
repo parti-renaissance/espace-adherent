@@ -1,0 +1,40 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.hasAdvancedPrivileges %}
+        {% if object.isReferent %}
+            <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
+        {% endif %}
+
+        {% if object.isCoordinator %}
+            <span class="label label-primary" style="padding: 2px;">Coordinateur</span><br/>
+        {% endif %}
+
+        {% if object.isLegislativeCandidate %}
+            <span class="label label-primary" style="padding: 2px;">Candidat législatives</span><br/>
+        {% endif %}
+
+        {% if object.isProcurationManager %}
+            <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
+        {% endif %}
+
+        {% if object.isHostOnly %}
+            <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
+        {% endif %}
+
+        {% if object.isSupervisor %}
+            <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
+        {% endif %}
+
+        {% if object.isAdministrator %}
+            <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Administrateur</span><br/>
+        {% endif %}
+
+        {% if object.isBoardMember %}
+            <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
+        {% endif %}
+
+    {% else %}
+        <span class="label label-default">Adhérent</span>
+    {% endif %}
+{% endblock %}

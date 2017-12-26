@@ -19,8 +19,23 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.committee_feed_item" class="AppBundle\Repository\CommitteeFeedItemRepository" public="false">
+            <argument>AppBundle\Entity\CommitteeFeedItem</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.event" class="AppBundle\Repository\EventRepository" public="false">
             <argument>AppBundle\Entity\Event</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.citizen_initiative" class="AppBundle\Repository\CitizenInitiativeRepository" public="false">
+            <argument>AppBundle\Entity\CitizenInitiative</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" public="false">
+            <argument>AppBundle\Entity\CitizenAction</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
@@ -29,13 +44,18 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.mailjet_email" class="AppBundle\Repository\MailjetEmailRepository" public="false">
-            <argument>AppBundle\Entity\MailjetEmail</argument>
+        <service id="app.repository.email" class="AppBundle\Repository\EmailRepository" public="false">
+            <argument>AppBundle\Entity\Email</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
         <service id="app.repository.ton_macron_choice" class="AppBundle\Repository\TonMacronChoiceRepository" public="false">
             <argument>AppBundle\Entity\TonMacronChoice</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.purchasing_power_choice_repository" class="AppBundle\Repository\PurchasingPowerChoiceRepository" public="false">
+            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
@@ -64,5 +84,69 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.summary" class="AppBundle\Repository\SummaryRepository" public="false">
+            <argument>AppBundle\Entity\Summary</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.skill" class="AppBundle\Repository\SkillRepository" public="false">
+            <argument>AppBundle\Entity\Skill</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.activity_subscription" class="AppBundle\Repository\ActivitySubscriptionRepository" public="false">
+            <argument>AppBundle\Entity\ActivitySubscription</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.article" class="AppBundle\Repository\ArticleRepository" public="false">
+            <argument>AppBundle\Entity\Article</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.proposal" class="AppBundle\Repository\ProposalRepository" public="false">
+            <argument>AppBundle\Entity\Proposal</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.order_article" class="AppBundle\Repository\OrderArticleRepository" public="false">
+            <argument>AppBundle\Entity\OrderArticle</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.citizen_project" class="AppBundle\Repository\CitizenProjectRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProject</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.citizen_project_membership" class="AppBundle\Repository\CitizenProjectMembershipRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProjectMembership</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.referent_managed_user" class="AppBundle\Repository\Projection\ReferentManagedUserRepository" public="false">
+            <argument>AppBundle\Entity\Projection\ReferentManagedUser</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.referent_managed_users_message" class="AppBundle\Repository\ReferentManagedUsersMessageRepository" public="false">
+            <argument>AppBundle\Entity\ReferentManagedUsersMessage</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="app.repository.board_member_role" class="AppBundle\Repository\BoardMember\RoleRepository" public="false">
+            <argument>AppBundle\Entity\BoardMember\Role</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="AppBundle\Repository\CitizenProjectSkillRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProjectSkill</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
+        <service id="AppBundle\Repository\ReportRepository" public="false">
+            <argument>AppBundle\Entity\Report</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
     </services>
 </container>

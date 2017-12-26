@@ -1,0 +1,254 @@
+.content .elles-marchent {
+    margin-bottom: 100px;
+    
+    a {
+        color: white !important;
+    }
+
+    &__header {
+        background-position: center 25%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @include gradient-container;
+
+        header {
+            position: relative;
+        }
+
+        &:before {
+            @include classic-gradient($filter);
+        }
+    }
+
+    &__videos {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+
+        li {
+            @include gradient-container;
+            width: 32%;
+            height: 300px;
+            list-style: none;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-size: 200%;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+
+            > a {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                z-index: 2;
+                border: 0;
+            }
+
+            &:before {
+                content: $play-icon;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                position: relative;
+            }
+
+            &:after {
+                @include classic-gradient($filter);
+            }
+
+            &.info {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @include text--extra-large;
+                font-family: $font-gillsans;
+                font-style: italic;
+                font-weight: bold;
+                line-height: 32px;
+
+                span {
+                    display: block;
+                    padding-left: 33px;
+                }
+
+                &:before,
+                &:after {
+                    content: none;
+                }
+            }
+
+            &.no-video {
+                background-size: cover !important;
+                background-position: center;
+
+                &:before,
+                &:after {
+                    content: none;
+                }
+            }
+        }
+    }
+
+    &__learn {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+
+        li {
+            width: 32%;
+            list-style: none;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            position: relative;
+
+            .videos {
+                @include gradient-container;
+                height: 300px;
+                background-size: 200%;
+                background-position: center 30%;
+                background-repeat: no-repeat;
+
+                &:before {
+                    content: $play-icon;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    position: relative;
+                }
+
+                &:after {
+                    @include classic-gradient($filter);
+                }
+            }
+
+            > a {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                z-index: 2;
+                border: 0;
+            }
+        }
+    }
+
+    &__demarches {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0;
+
+        li {
+            width: 30%;
+
+            h3 {
+                text-align: center;
+            }
+
+            p {
+                @include text--summary;
+            }
+
+            @media (max-width: $mobile) {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+    &__photos {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        li {
+            @include gradient-container;
+            width: 32%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            border: 1px solid $gray--light;
+            margin-bottom: 20px;
+            padding: 30px;
+            box-sizing: border-box;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+
+            > div {
+                z-index: 1;
+            }
+
+            &:after {
+                @include classic-gradient($gradient);
+            }
+
+            &:last-child {
+                width: 66%;
+                background: $blue;
+                align-items: center;
+
+                &:after {
+                    content: none;
+                }
+
+                a {
+                    color: white;
+                    border-color: white;
+                }
+            }
+        }
+    }
+
+    &__videos li,
+    &__learn li {
+        transition: all 0.2s;
+
+        .videos {
+            transition: all 0.2s;
+        }
+
+        &:hover .videos,
+        &:hover {
+            background-size: 220%;
+        }
+    }
+
+    @media (max-width: $tablet) {
+        &__videos,
+        &__learn {
+            li {
+                width: 48%;
+            }
+        }
+
+        &__photos {
+            li {
+                width: 48%;
+
+                &:last-child {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $mobile) {
+        &__photos,
+        &__videos,
+        &__learn {
+            li {
+                width: 100%;
+            }
+        }
+    }
+}

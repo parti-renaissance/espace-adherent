@@ -2,9 +2,11 @@ FIG=docker-compose
 RUN=$(FIG) run --rm app
 EXEC=$(FIG) exec app
 CONSOLE=bin/console
+PHPCSFIXER?=docker run --rm -it -v "$$(pwd):/srv" -u "$$(id -u):$$(id -g)" blazarecki/php-cs-fixer php -d memory_limit=1024m /usr/local/bin/php-cs-fixer
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt lj build up perm deps cc
+.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
+.PHONY: lj build up perm deps cc phpcs phpcsfix
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -15,7 +17,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:          ## Install and start the project
-start: build up app/config/parameters.yml db web/built perm
+start: build up app/config/parameters.yml db web/built assets-amp perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -32,6 +34,7 @@ clear: perm
 	-$(EXEC) $(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
 	rm -rf web/built
+	rm var/.php_cs.cache
 
 clean:          ## Clear and remove dependencies
 clean: clear
@@ -39,7 +42,8 @@ clean: clear
 
 cc:             ## Clear the cache in dev env
 cc:
-	$(RUN) $(CONSOLE) cache:clear
+	$(RUN) $(CONSOLE) cache:clear --no-warmup
+	$(RUN) $(CONSOLE) cache:warmup
 
 
 ##
@@ -87,6 +91,10 @@ assets-prod:    ## Build the production version of the assets
 assets-prod: node_modules
 	$(RUN) yarn build-prod
 
+assets-amp:     ## Build the production version of the AMP CSS
+assets-amp: node_modules
+	$(RUN) yarn build-amp
+
 
 ##
 ## Tests
@@ -97,18 +105,27 @@ test: tu tf tj
 
 tu:             ## Run the PHP unit tests
 tu: vendor
-	$(RUN) vendor/bin/phpunit --exclude-group functional
+	$(EXEC) vendor/bin/phpunit --exclude-group functional || true
 
 tf:             ## Run the PHP functional tests
-tf: vendor
-	$(RUN) vendor/bin/phpunit --group functional
+tf: tfp
+	$(EXEC) vendor/bin/phpunit --group functional || true
+
+tfp:            ## Prepare the PHP functional tests
+tfp: vendor assets-amp
+	$(EXEC) rm -rf var/cache/test var/cache/test_sqlite var/cache/test_mysql /tmp/data.db app/data/dumped_referents_users || true
+	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_sqlite || true
+	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
+	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:schema:drop --force --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
 tj: node_modules
-	$(RUN) yarn test
+	$(EXEC) yarn test
 
-lint:           ## Run lint on Twig, YAML and Javascript files
-lint: ls ly lt lj
+lint:           ## Run lint on Twig, YAML, PHP and Javascript files
+lint: ls ly lt lj phpcs
 
 ls:             ## Lint Symfony (Twig and YAML) files
 ls: ly lt
@@ -117,7 +134,7 @@ ly:
 	$(RUN) $(CONSOLE) lint:yaml app/config
 
 lt:
-	$(RUN) $(CONSOLE) lint:twig app/Resources
+	$(RUN) $(CONSOLE) lint:twig templates
 
 lj:             ## Lint the Javascript to follow the convention
 lj: node_modules
@@ -126,6 +143,14 @@ lj: node_modules
 ljfix:          ## Lint and try to fix the Javascript to follow the convention
 ljfix: node_modules
 	$(RUN) yarn lint -- --fix
+
+phpcs:          ## Lint PHP code
+phpcs: vendor
+	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v
+
+phpcsfix:       ## Lint and fix PHP code to follow the convention
+phpcsfix: vendor
+	$(PHPCSFIXER) fix
 
 
 ##
@@ -148,7 +173,7 @@ up:
 	$(FIG) up -d
 
 perm:
-	-$(EXEC) chmod 777 -R var
+	-$(EXEC) chmod -R 777 var
 
 # Rules from files
 

@@ -1,0 +1,236 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'En 5 semaines, passez de l’intention à l’action' %}
+{% block meta_description 'Le MOOC « Agir près de chez moi » dure 5 semaines. Vous allez rencontrer des gens, vous allez apprendre, vous allez réfléchir, mais surtout vous allez faire.' %}
+{% block canonical_url url('page_mooc') %}
+
+{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('pages-sharers/mooc.jpg', {'q': 70}))|raw %}
+
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block content %}
+    <main class="mooc">
+        <header class="hero hero--simple">
+            <h1>
+                En 5 semaines, passez de l’intention à l’action
+            </h1>
+            <p class="text--gray">
+                Le MOOC "Agir près de chez moi" dure 5 semaines. Il est ouvert à tous gratuitement, adhérent comme non-adhérent.
+                <i class="text--small">
+                    Les MOOCs "Massive Open Online Courses" sont des formations en ligne ouvertes à tous.
+                </i>
+            </p>
+            <div class="text--body b__nudge--bottom text--center">
+                <iframe width="375" height="211"
+                        src="https://www.youtube.com/embed/gt6Q_UIF9_s?rel=0&amp;showinfo=0"
+                        frameborder="0" allowfullscreen></iframe>
+            </div>
+            <a href="https://auth.en-marche.fr/oauth/v2/auth?response_type=code&client_id=cadfecad-4b9a-4e29-b9ce-514222f8d028&redirect_uri=https://360l.en-marche.fr/auth&scope=&state="
+               class="btn btn--blue"
+               target="_blank">S'inscrire au MOOC</a>
+        </header>
+
+        <section class="mooc__schedule">
+            <div class="l__wrapper text--center l__row l__col">
+                <h2>
+                    Ce que vous apprendrez en 5 semaines
+                </h2>
+                <p class="text--body b__nudge--bottom-large b__nudge--top-5">
+                    Cela vous mobilisera environ 1h par semaine.
+                </p>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 1</p>
+                    <h3>
+                        Comprendre qui fait quoi sur mon territoire et identifier les acteurs en place.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p class="mooc__week__title">Semaine 2</p>
+                    <h3>
+                        Identifier les problèmes de mon territoire sur lesquels j’ai envie de m’investir.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 3</p>
+                    <h3>
+                        Trouver le projet local pour répondre au problème sur lequel je veux agir.
+                    </h3>
+                </div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left">
+                    <p class="mooc__week__title">Semaine 4</p>
+                    <h3>
+                        Définir mon plan d'action et poser la première pierre de mon projet.
+                    </h3>
+                </div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right"></div>
+            </div>
+            <div class="mooc__week">
+                <div class="mooc__week--left"></div>
+                <div class="mooc__week--dot">
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="mooc__week--right">
+                    <p class="mooc__week__title">Semaine 5</p>
+                    <h3>
+                        Donner un cadre à mon projet sur la durée et explorer l'univers des suites possibles !
+                    </h3>
+                </div>
+            </div>
+            <div class="l__wrapper--500 text--center b__nudge--top">
+                <img src="{{ asset('images/emojis/trophy.svg') }}" width="120" />
+                <p class="mooc__week__title">
+                    Certificat officiel de la République En Marche !
+                </p>
+                <h3>
+                    Les meilleurs projets seront accompagnés par le mouvement et
+                    promus au niveau national.
+                </h3>
+            </div>
+        </section>
+
+        <section class="mooc__testimonials space--60-0 background--lighter">
+            <h2>Ils l'ont fait !</h2>
+            <p class="l__wrapper--slim text--body b__nudge--bottom-large text--center text--gray">
+                Quelques centaines d'adhérents tirés au sort nous ont aidé à créer ce premier MOOC en participant à une session pilote. Voici quelques témoignages.
+            </p>
+            <div class="carousel-container l__wrapper">
+                <div class="l__wrapper--slim carousel carousel--translate">
+                    <input class="carousel__activator" type="radio" name="carousel" id="sylvie" checked="checked"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="eric"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="helene"/>
+                    <input class="carousel__activator" type="radio" name="carousel" id="monique"/>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="monique"></label>
+                        <label class="carousel__control carousel__control--forward" for="eric"></label>
+                    </div>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="sylvie"></label>
+                        <label class="carousel__control carousel__control--forward" for="helene"></label>
+                    </div>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="eric"></label>
+                        <label class="carousel__control carousel__control--forward" for="monique"></label>
+                    </div>
+                    <div class="carousel__controls">
+                        <label class="carousel__control carousel__control--backward" for="helene"></label>
+                        <label class="carousel__control carousel__control--forward" for="sylvie"></label>
+                    </div>
+                    <div class="carousel__track">
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Instructif, constructif, convivial et surtout accessible à tous. Les conseils et exercices sont judicieux et très utiles pour tous ceux et celles qui souhaitent mettre en oeuvre un projet citoyen. Du coup, je compte prochainement assister pour la
+                                première fois au conseil municipal de ma commune. C'est simple pourtant et je n'en avais jamais eu l'idée. Formation à faire sans modération ! "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Sylvie, Essonne
+                            </div>
+                            <div class="mooc__testimonials__pic b__nudge--top-5">
+                                <img src="{{ asset('images/campus/testimonials/sylvie.jpg') }}"
+                                     width="65" height="65"
+                                     alt="Photo de Sylvie"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Le rythme et le contenu des parcours est très enthousiasmant, ils apportent de nombreuses informations et permettent de se situer du niveau local au niveau national afin de trouver les actions les plus approprié à mener. C'est plaisant de voir que chacun peut en fonction de ces envie et possibilités jouer un rôle et participer à son échelle à la vie de notre pays et avoir un réel impact. "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Jean-frédéric, Pyrénées Orientales
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/eric.jpg') }}" alt="Photo de Éric"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Ce MOOC est un guide - compagnon : il nous dit comment faire, c’est facile ! Les vidéos montrent que partout des gens agissent et on réalise qu’on peut faire comme eux ! Alors on se lance 🙂 Merci à l’équipe pour ces bons moments !!! "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Hélène, Yvelines
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/helene.jpg') }}" alt="Photo de Hélène"/>
+                            </div>
+                        </div>
+                        <div class="carousel__slide">
+                            <div class="mooc__testimonials__text">
+                                " Je trouve intéressant la progression des séquences, la qualité des reportages vidéos, les sujets traités et l’accompagnement qui nous est donné pour nous projeter dans une action. "
+                            </div>
+                            <div class="mooc__testimonials__name">
+                                Monique, Var
+                            </div>
+                            <div class="mooc__testimonials__pic">
+                                <img src="{{ asset('images/campus/testimonials/monique.jpg') }}" alt="Photo de Monique"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel__indicators">
+                        <label class="carousel__indicator" for="sylvie"></label>
+                        <label class="carousel__indicator" for="eric"></label>
+                        <label class="carousel__indicator" for="helene"></label>
+                        <label class="carousel__indicator" for="monique"></label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mooc__cta">
+            <h2 class=" b__nudge--bottom-large">
+                Alors, qu’attendez-vous ? Rejoignez-nous ! C’est gratuit !
+            </h2>
+            <a href="https://auth.en-marche.fr/oauth/v2/auth?response_type=code&client_id=cadfecad-4b9a-4e29-b9ce-514222f8d028&redirect_uri=https://360l.en-marche.fr/auth&scope=&state="
+               class="btn btn--blue"
+               target="_blank">S'inscrire au MOOC</a>
+        </section>
+
+        <section class="text--center l__wrapper--600">
+            <div class="text--body text--medium-small space--60-0">
+                Besoin d'aide ? Consultez <a href="https://aide.en-marche.fr/category/681-mooc">la FAQ</a>
+                ou envoyez-nous un e-mail à <a href="mailto:mooc@en-marche.fr">mooc@en-marche.fr</a>.
+            </div>
+        </section>
+
+        <section class="mooc__partner">
+            <div>
+                Créé en partenariat avec
+                <a target="_blank" class="link--no-decor" href="https://360learning.com?utm_source=enmarche&utm_medium=landinginscription&utm_campaign=enmarche_LI&utm_term=earned">
+                    <img src="{{ asset('images/360-learning-logo.svg') }}" width="160" />
+                </a>
+            </div>
+            <p class="l__wrapper--600">
+                360Learning est une plateforme de formation en ligne qui permet à n'importe qui de créer ses propres contenus de formation. <a href="https://360learning.com?utm_source=enmarche&utm_medium=landinginscription&utm_campaign=enmarche_LI&utm_term=earned" target="_blank">En savoir plus</a>.
+            </p>
+        </section>
+
+    </main>
+{% endblock %}

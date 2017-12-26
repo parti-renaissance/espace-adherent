@@ -1,0 +1,31 @@
+{% extends 'citizen_project/show_base.html.twig' %}
+
+{% block citizen_project_show_content %}
+    {{ parent() }}
+    <div class="citizen-project-next-actions">
+        {% for action in citizen_actions %}
+            <ul class="text--body l__row l__row--h-stretch b__nudge--bottom">
+                <li class="text--orange text--bold text--center text--medium-small b__nudge--right">
+                    {{ action.beginAt|date('d') }}
+                    <br/>
+                    {{ action.beginAt|date('M') }}
+                </li>
+
+                <li class="b__flex--1">
+                    <a href="{{ path('app_citizen_action_show', {slug: action.slug}) }}"
+                       class="text--bold text--medium-small link--no-decor">{{ action.name }}</a>
+                    <div class="text--small text--gray">{{ action.participantsCount }} inscrit(s)</div>
+                </li>
+
+                <li>
+                    <a class="newbtn newbtn--small"
+                       href="{{ path('app_citizen_action_attend', {slug: action.slug}) }}">
+                        RSVP
+                    </a>
+                </li>
+            </ul>
+        {% else %}
+            <div class="text--body text--dark">Aucune action prévue pour le moment.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

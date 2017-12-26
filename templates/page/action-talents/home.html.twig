@@ -1,0 +1,19 @@
+{% extends 'page/action-talents/layout.html.twig' %}
+
+{% block page_title 'Action talents' %}
+{% block canonical_url url('page_action_talents') %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
+
+{% block action_talents_content %}
+    <div class="space--20-0">
+        {{ page.content|markdown }}
+    </div>
+
+    <div class="b__nudge--bottom-huge">
+        <div class="action pink">
+            <p class="white">Vous vous y retrouvez ?</p>
+            <a href="{{ path('page_action_talents_apply') }}" class="white">Candidater</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,125 @@
+.register {
+    &__header {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    &__form {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+
+        form {
+            width: 100%;
+        }
+
+        &__row {
+            width: 100%;
+            background: yellow;
+        }
+
+        &--full,
+        &--mid,
+        &--third {
+            margin: 5px 0;
+
+            input,
+            select {
+                width: 100%;
+                margin: 0;
+            }
+        }
+
+        &--mid {
+            width: 49%;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+        }
+
+        &--third {
+            width: 32%;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+        }
+
+        &__phone {
+            margin: 5px 0;
+
+            select,
+            input {
+                width: 49%;
+                margin-right: 0;
+            }
+
+            select {
+                font-size: $text--size-smallest;
+            }
+        }
+
+        &__gender {
+            display: flex;
+
+            label {
+                margin: 0 20px 0 0;
+            }
+        }
+
+        &__conditions {
+            margin-left: 25px;
+            margin-top: -22px;
+        }
+
+        #membership-address {
+            display: flex;
+            flex-direction: column;
+
+            .form__errors {
+                order: 3;
+                margin-bottom: 10px;
+                margin-top: -5px;
+            }
+        }
+    }
+
+    &__interests {
+        &__buttons {
+            width: 100%;
+            max-width: 370px;
+            margin: 0 auto;
+
+            @media (max-width: $mobile) {
+                button {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    &__comites {
+        margin-bottom: 120px;
+
+        &__list {
+            flex-grow: 1;
+        }
+
+        &__follow {
+            max-width: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 20px;
+
+            @media (max-width: $mobile) {
+                justify-content: flex-start;
+                max-width: 100%;
+            }
+        }
+    }
+}

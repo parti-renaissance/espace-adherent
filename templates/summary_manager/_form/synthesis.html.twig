@@ -1,0 +1,46 @@
+<h2 class="b__nudge--bottom">Mes ambitions chez En Marche</h2>
+
+<div class="form__row">
+    {{ form_row(summary_form.current_profession, { label: 'Mon métier principal' }) }}
+</div>
+
+<div class="form__row">
+    {{ form_row(summary_form.current_position, { label: 'Ma situation' }) }}
+</div>
+
+{{ form_label(summary_form.contribution_wish, 'Comment je souhaite contribuer à En Marche') }}
+{{ form_errors(summary_form.contribution_wish) }}
+<div class="l__row l__row--wrap l__tablet-col b__nudge--bottom-large">
+    {% for wish in summary_form.contribution_wish %}
+        <div class="form__radio-button form__checkbox--col">
+            {{ form_widget(wish) }}
+            {{ form_label(wish) }}
+        </div>
+    {% endfor %}
+</div>
+
+{{ form_label(summary_form.availabilities, 'Mes disponibilités en temps') }}
+{{ form_errors(summary_form.availabilities) }}
+<div class="l__row l__row--wrap l__tablet-col b__nudge--bottom-large">
+    {% for availability in summary_form.availabilities %}
+        <div class="form__checkbox form__checkbox--col">
+            {{ form_widget(availability) }}
+            {{ form_label(availability) }}
+        </div>
+    {% endfor %}
+</div>
+
+{{ form_label(summary_form.job_locations, 'Je veux travailler') }}
+{{ form_errors(summary_form.job_locations) }}
+<div class="l__row l__row--wrap l__tablet-col b__nudge--bottom-large">
+    {% for location in summary_form.job_locations %}
+        <div class="form__checkbox form__checkbox--col">
+            {{ form_widget(location) }}
+            {{ form_label(location) }}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="form__row">
+    {{ form_row(summary_form.professional_synopsis, { label: 'Je décris mon profil et mes motivations' }) }}
+</div>

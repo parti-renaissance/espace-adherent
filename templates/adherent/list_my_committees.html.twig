@@ -1,0 +1,18 @@
+{% if committees|length < 1 %}
+    <div class="text--center">
+        <div class="text--body b__nudge--bottom-small">Rejoignez un comité<br>En Marche !</div>
+        <a class="btn btn--blue form--full" href="{{ path('app_search_committees') }}">Trouver un comité</a>
+    </div>
+{% else %}
+    <ul>
+        {% for committee in committees %}
+            {# using the Adherent::isHostOf() method instead of a voter below prevents unneeded SQL queries #}
+            <li class="bullet {{ app.user.hostOf(committee) ? 'bullet--own' : '' }}">
+                <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
+                   title="{{ committee.name }}">
+                    {{- committee.name -}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

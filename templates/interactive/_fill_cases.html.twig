@@ -1,0 +1,33 @@
+<section class="interactive__content space--60-0 l__wrapper--500">
+    <div>
+        <ul class="tonmacron__steps">
+            <li></li>
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        {{ form_start(interactive_form) }}
+        {{ form_errors(interactive_form) }}
+
+            <h5 class="interactive__title text--medium text--center">
+                Quelle(s) situation(s) s'applique(nt) le plus à {{ interactive.friendFirstName }} ? (max 2)
+            </h5>
+
+            <div class="form">
+                {% for checkbox in interactive_form.friendCases %}
+                    <div class="form__checkbox">
+                        {{ form_widget(checkbox) }}
+                        {{ form_label(checkbox) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text--center b__nudge--top-large">
+                <a href="{{ path('app_purchasing_power_restart') }}" class="btn">Recommencer</a>
+                {{ form_widget(interactive_form.fill_cases, {'attr': {'class': 'btn btn--blue'}}) }}
+            </div>
+
+        {{ form_end(interactive_form) }}
+    </div>
+</section>

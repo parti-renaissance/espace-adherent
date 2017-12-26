@@ -1,0 +1,191 @@
+.mooc {
+    h2 {
+        @include text--large;
+        max-width: 430px;
+        text-align: center;
+    }
+
+    h3 {
+        @include text--medium;
+        margin-top: 7px;
+    }
+
+    iframe {
+        max-width: 100%;
+    }
+
+    .hero p i {
+        margin-top: 5px;
+        display: block;
+    }
+
+    &__testimonials {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &__text {
+            font-weight: bold;
+            font-style: italic;
+            @include wrapper;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        &__name {
+            font-family: $font-roboto;
+            @include text--uppercase;
+            @include text--smallest;
+            color: $pink;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .carousel__control {
+            border-color: $pink;
+        }
+
+        .carousel__indicator {
+            display: none;
+        }
+
+        &__pic {
+            img {
+                border-radius: 50px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    }
+
+    &__schedule {
+        background: $pink;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 60px 0;
+        position: relative;
+
+        @media (min-width: $tablet) {
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: -50px;
+                height: 900px;
+                background-image: url('/images/campus/campus-plane.png'),
+                                  url('/images/campus/campus-notebook.png');
+                background-repeat: no-repeat, no-repeat;
+                background-size: 120px, 145px;
+                background-position: 80% 0, 20% 20%;
+            }
+        }
+    }
+
+    &__week {
+        @include wrapper--slim;
+        display: flex;
+        margin-top: 10px;
+
+        &__title {
+            color: $yellow;
+            text-transform: uppercase;
+            @include text--small;
+            letter-spacing: 2px;
+        }
+
+        &--left {
+            flex: 3;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        &--dot {
+            flex: .7;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+
+            > i:first-child {
+                border: 10px solid $yellow;
+                background: transparent;
+                width: 45px;
+                height: 45px;
+                display: inline-block;
+                border-radius: 50%;
+                box-sizing: border-box;
+            }
+
+            > i:nth-child(2) {
+                width: 7px;
+                min-height: 100px;
+                background: rgba($yellow, 0.5);
+                flex: 1;
+                margin-top: 10px;
+            }
+        }
+
+        &:last-child {
+            .mooc__week--dot i:nth-child(2) {
+                display: none;
+            }
+        }
+
+        &--right {
+            flex: 3;
+            padding: 0 15px;
+        }
+
+        @media (max-width: $mobile) {
+            &:nth-child(odd) {
+                .mooc__week--right {
+                    display: none;
+                }
+                .mooc__week--left {
+                    order: 2;
+                    text-align: left;
+                }
+            }
+
+            &:nth-child(even) {
+                .mooc__week--left {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 60px 0;
+    }
+
+    &__partner {
+        border-top: 1px solid $gray--light;
+        color: $gray--muted;
+        padding: 60px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: $font-roboto;
+
+        > div {
+            @include text--medium-small;
+            margin-bottom: 10px;
+        }
+
+        > p {
+            @include text--small;
+            text-align: center;
+        }
+    }
+}

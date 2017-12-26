@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title event.name %}
+{% block canonical_url url('app_event_show', {'slug': event.slug}) %}
+
+{% block json_ld %}
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Event",
+        "name": "{{ event.name }}",
+        "url": "{{ block('open_graph_url') }}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ block('open_graph_image')|raw }}",
+            "contentUrl": "{{ block('open_graph_image')|raw }}",
+            "width": {{ block('open_graph_image_width') }},
+            "height": {{ block('open_graph_image_height') }}
+        },
+        "description": "{{ event.description }}",
+        "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
+        "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
+        "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
+        {% if event.organizer %}
+        "organizer": {
+            {% if committee is defined and committee %}
+            "@type": "Organization",
+            "name": "{{ committee.name }}",
+            "url": "{{ url('app_committee_show', {'slug': committee.slug}) }}"
+            {% else %}
+            "@type": "Person",
+            "givenName": "{{ event.organizer.firstName }}",
+            "familyName": "{{ event.organizer.lastName }}"
+            {% endif %}
+        },
+        {% endif %}
+        "funder": {
+            "@type": "Person",
+            "givenName": "Emmanuel",
+            "familyName": "Macron"
+        },
+        "sponsor": {
+            "@type": "Organization",
+            "name": "En Marche !",
+            "url": "{{ url('homepage') }}"
+        },
+        "location": {
+            "@type": "PostalAddress",
+            "name": "{{ event.inlineFormattedAddress }}",
+            "streetAddress": "{{ event.address }}",
+            "addressLocality": "{{ event.cityName }}",
+            "postalCode": "{{ event.postalCode }}",
+            "addressCountry": "{{ event.country }}"
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <script type="text/javascript">
+        var map = null;
+        function initMap() {
+            var point = {
+                lat: {{ event.latitude }},
+                lng: {{ event.longitude }}
+            };
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: point,
+                zoom: 15
+            });
+
+            var marker = new google.maps.Marker({
+                position: point,
+                map: map,
+                title: '{{ event.name|e('js') }}'
+            });
+        }
+        initMap();
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
+    <main>
+        <section class="commitee__event l__wrapper">
+            <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à la liste des événements
+            </a>
+
+            {{ include('events/_header.html.twig') }}
+
+            <div class="b__nudge--top-10 text--body text--small">
+                {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
+                    {% if event.active %}
+                        <a class="b__nudge--right-small"
+                           href="{{ path("app_#{event.type}_edit", {'slug': event.slug}) }}">
+                            Modifier l'événement
+                        </a>
+                        <a class="b__nudge--right-small"
+                           href="{{ path("app_#{event.type}_cancel", {'slug': event.slug}) }}">
+                            Annuler l'événement
+                        </a>
+                    {% endif %}
+                    <a href="{{ path("app_#{event.type}_members", {'slug': event.slug}) }}">
+                        Gérer les participants
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="committee__event__schedule text--summary">
+                <ul>
+                    <li class="b__nudge--bottom-tiny">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        <span class="committee-event-date">
+                            {{- event.beginAt|localizeddate('full', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') -}}
+                        </span>
+                    </li>
+                    <li>
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        <span class="committee-event-address">
+                            {{- event.inlineFormattedAddress -}}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="l__wrapper--slim space--30-0 text--body">
+            <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
+                {% if app.request.get('_route') != 'app_citizen_initiative_expert_assistance' %}
+                    <li class="text--bold">À propos</li>
+                {% else %}
+                    <li>
+                        <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}">
+                            À propos
+                        </a>
+                    </li>
+                {% endif %}
+                {% if event.isCitizenInitiative %}
+                    {% if app.request.get('_route') == 'app_citizen_initiative_expert_assistance' %}
+                        <li class="text--bold">Compétences recherchées</li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path("app_#{event.type}_expert_assistance", {'slug': event.slug}) }}">
+                                Compétences recherchées
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                {% if event.active %}
+                    <li>
+                        <a href="{{ path("app_#{event.type}_invite", {'slug': event.slug}) }}">
+                            Inviter des amis
+                        </a>
+                    </li>
+                {% endif %}
+                {% if event.organizer %}
+                <li>
+                    <a href="{{ path('app_adherent_contact', {'uuid': event.organizer.uuid, 'from': 'event', 'id': event.uuid.toString}) }}">
+                        Contact
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="committee-event-description text--with-bullet b__nudge--bottom-huge l__wrapper--slim">
+                {%- block main_section -%}
+                    {{- event.description|raw -}}
+                {%- endblock -%}
+            </div>
+        </section>
+        <section class="l__wrapper">
+            <div class="committee__event__map" id="map"></div>
+        </section>
+    </main>
+{% endblock %}

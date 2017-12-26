@@ -5,16 +5,15 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "AppBundle\\": "src/"
         },
         "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
+            "app/AppKernel.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\AppBundle\\": "tests/"
         }
     },
     "require": {
@@ -62,14 +61,17 @@
         "facebook/graph-sdk": "^5.4",
         "imagine/imagine": "^0.6.3",
         "algolia/algolia-search-bundle": "^2.2",
-        "geoip2/geoip2": "^2.4"
+        "geoip2/geoip2": "^2.4",
+        "lullabot/amp": "^1.1",
+        "cocur/slugify": "^2.5",
+        "symfony/thanks": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^6.2",
         "fabpot/goutte": "^3.2",
-        "liip/functional-test-bundle": "^1.7"
+        "liip/functional-test-bundle": "^1.8"
     },
     "scripts": {
         "symfony-scripts": [

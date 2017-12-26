@@ -59,8 +59,8 @@ export default class MapFactory {
 
     addMarker(map, options) {
         options.map = map;
-        options.icon = '/images/marker-icon.png';
-        
+        options.icon = '/images/icons/marker-icon.png';
+
         return new google.maps.Marker(options);
     }
 }

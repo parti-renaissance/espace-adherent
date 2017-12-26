@@ -64,6 +64,7 @@ Il ne comporte AUCUNE GARANTIE, dans la mesure de ce que permet la loi.
 > **Note**: si vous utilisez Windows, nous vous recommandons très fortement d'utiliser la console Linux intgrée à
 > Windows 10 (https://msdn.microsoft.com/fr-fr/commandline/wsl/install_guide) ou d'utiliser un émulateur de ligne de
 > commande pour pouvoir utiliser `make` qui vous facilitera grandement le travail.
+**Note**: Pour les utilisateurs de Windows, vous pouvez utiliser [l'équivalent Windows de make](http://gnuwin32.sourceforge.net/packages/make.htm)
 
 Si Docker, docker-compose et make fonctionnent correctement, vous êtes prêt à préparer le projet pour développer.
 
@@ -137,22 +138,27 @@ Cela risque de prendre un peu de temps.
 
 ## 1.1.3 Accéder au site local
 
-Une fois le projet installé, renseignez le nom de domaine choisi pour l'application locale,
-par exemple `enmarche.dev`, dans le fichier `app/config/parameters.yml` :
-
-```
-env(ENMARCHE_DOMAIN): enmarche.dev
-```
-
-Puis, dans votre fichier `/etc/hosts` :
+Dans votre fichier `/etc/hosts` :
 
 ```
 127.0.0.1       enmarche.dev
+127.0.0.1       m.enmarche.dev
+127.0.0.1       legislatives.enmarche.dev
+```
+
+Voici par defaut les noms de domaine pour les differentes applications, configurés dans `app/config/parameters.yml`.
+
+```
+env(APP_HOST): enmarche.dev
+env(AMP_HOST): m.enmarche.dev
+env(LEGISLATIVES_HOST): legislatives.enmarche.dev
 ```
 
 Le projet devrait être accessible sur
 [http://enmarche.dev:8000](http://enmarche.dev:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
 machine virtuelle de votre instance Docker).
+
+Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.dev:8000](http://enmarche.dev:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)`, `env(AMP_HOST)` et `env(LEGISLATIVES_HOST)`.
 
 ### 1.1.3.1 Accéder à l'espace d'administration
 

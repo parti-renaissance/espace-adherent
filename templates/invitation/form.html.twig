@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Inviter une connaissance' %}
+{% block canonical_url url('invitation_form') %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <main>
+        <section class="l__wrapper--500">
+            <div class="invitation-page">
+                <h2>J'invite une connaissance à rejoindre En Marche !</h2>
+
+                <div class="invitation-page__form">
+                    {{ form_start(form) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="form__row">
+                        {{ form_label(form.lastName, 'Votre nom') }}
+                        {{ form_errors(form.lastName) }}
+                        {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.firstName, 'Votre prénom') }}
+                        {{ form_errors(form.firstName) }}
+                        {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter') }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.message, 'Message d\'invitation') }}
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message, { 'attr': { 'class': 'form--full form__field--textarea-120' } }) }}
+                    </div>
+
+                    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                    {% if recaptcha_public_key is not empty %}
+                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+                    {% endif %}
+
+                    {{ form_widget(form.submit, { 'label': 'Envoyer l\'invitation' }) }}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+    </main>
+
+<main>
+    <section class="l__wrapper">
+        {{ form(form) }}
+    </section>
+</main>
+
+{% endblock %}

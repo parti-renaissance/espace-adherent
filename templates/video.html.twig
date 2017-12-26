@@ -1,0 +1,12 @@
+<div class="video__banner"
+{%- if width is defined or height is defined -%}
+    style="{%- if width is defined %}width:{{ width }}px;{% endif -%}
+            {%- if height is defined %}height:{{ height }}px;{% endif -%}"
+{%- endif -%}>
+    <video {% if block.videoControls %}controls{% endif %}
+        {%- if block.videoAutoplayLoop %} autoplay loop{% endif -%}
+        {%- if block.link %} onclick="location.href='{{ block.link }}';"{% endif -%} class="cursor--pointer" />
+        <source src="{{ media_asset(block.media) }}" type="{{ block.media.mimeType }}">
+        Votre navigateur ne prend pas en charge la balise "video".
+    </video>
+</div>

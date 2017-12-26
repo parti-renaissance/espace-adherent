@@ -1,0 +1,47 @@
+<div class="text--body text--with-bullet">{{ item.content|raw }}</div>
+
+<div class="committee-event">
+    {% if item.event.latitude and item.event.longitude %}
+    <div class="committee-event-map">
+        <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"
+             title="Carte d'accès à l'événement {{ item.event.name }}"
+             alt="{{ item.event.inlineFormattedAddress }}"
+             width="200"
+             height="200" />
+    </div>
+    {% endif %}
+    <div class="committee-event-details">
+        <div>
+            <h4 class="text--medium text--normal b__nudge--bottom-tiny">
+                <a href="{{ path("app_#{item.event.type}_show", {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
+                   class="link--no-decor text--breakword" target="_blank" rel="noopener noreferrer">
+                    {{ item.event.name }}
+                </a>
+            </h4>
+            <span class="committee-event-date text--body">
+                {{ item.event.beginAt|localizeddate('long', 'none') }} à
+                {{ item.event.beginAt|localizeddate('none', 'short') }}
+            </span>
+        </div>
+        <ul class="l__row l__row--h-stretch">
+            <li>
+                {% if item.event.finished %}
+                    Cet événement est terminé
+                {% elseif item.event.cancelled %}
+                    Cet événement est annulé
+                {% elseif not item.event.full %}
+                    <a href="{{ path("app_#{item.event.type}_show", {uuid: item.event.uuid.toString, slug: item.event.slug}) }}"
+                       class="btn btn--blue committee-event-more" target="_blank" rel="noopener noreferrer">En savoir plus</a>
+                {% else %}
+                    Cet événement est complet
+                {% endif %}
+            </li>
+            <li class="icon--with-text text--body">
+                {{ include('components/participants.html.twig') }}
+                <span class="committee-event-attendees">
+                    {{ item.event.participantsCount }} {{ 'capacity'|transchoice(item.event.participantsCount)  }}
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

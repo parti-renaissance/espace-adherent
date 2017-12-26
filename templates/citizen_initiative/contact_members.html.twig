@@ -1,0 +1,13 @@
+{% extends 'events/contact_members.html.twig' %}
+
+{% block page_title initiative.name %}
+
+{% block javascripts %}
+    {% set event = initiative %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set event = initiative %}
+    {{ parent() }}
+{% endblock %}
