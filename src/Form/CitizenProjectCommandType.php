@@ -3,7 +3,6 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenProject\CitizenProjectCommand;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer;
@@ -31,11 +30,18 @@ class CitizenProjectCommandType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $command = $builder->getData();
+
+        if (!$command instanceof CitizenProjectCommand) {
+            throw new InvalidConfigurationException('A pre set data is required in '.__CLASS__);
+        }
+
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 30],
+                'disabled' => $command->isCitizenProjectApproved(),
             ])
             ->add('subtitle', TextType::class, [
                 'filter_emojis' => true,
@@ -100,6 +106,22 @@ class CitizenProjectCommandType extends AbstractType
                     'placeholder' => 'Ajouter des compétences',
                 ],
             ])
+            ->add('committees', CollectionType::class, [
+                'required' => false,
+                'entry_type' => TextType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('committees_search', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'filter_emojis' => true,
+                'attr' => [
+                    'placeholder' => 'Ajouter le comité local',
+                ],
+            ])
             ->add('cgu', CheckboxType::class, [
                 'mapped' => false,
             ])
@@ -109,41 +131,8 @@ class CitizenProjectCommandType extends AbstractType
         ;
 
         $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
+        $builder->get('committees')->addModelTransformer($this->committeeTransformer);
         $builder->get('address')->remove('address');
-
-        $command = $builder->getData();
-
-        if (!$command instanceof CitizenProjectCommand) {
-            throw new InvalidConfigurationException('A pre set data is required in '.__CLASS__);
-        }
-
-        $citizenProject = $command->getCitizenProject();
-
-        if (!$citizenProject instanceof CitizenProject || !$citizenProject->isApproved()) {
-            $builder
-                ->add('committees', CollectionType::class, [
-                    'required' => false,
-                    'entry_type' => TextType::class,
-                    'entry_options' => ['label' => false],
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ])
-                ->add('committees_search', TextType::class, [
-                    'mapped' => false,
-                    'required' => false,
-                    'filter_emojis' => true,
-                    'attr' => [
-                        'placeholder' => 'Ajouter le comité local',
-                    ],
-                ]);
-
-            $builder->get('committees')->addModelTransformer($this->committeeTransformer);
-        }
-
-        if ($command instanceof CitizenProjectCommand && $command->isCitizenProjectApproved()) {
-            $builder->get('name')->setDisabled(true);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

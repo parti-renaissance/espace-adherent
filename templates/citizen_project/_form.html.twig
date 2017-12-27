@@ -123,16 +123,14 @@
     </div>
 </div>
 
-{% if form.committees is defined %}
-    <div class="form__new" id="field-committee">
-        {{ form_errors(form.committees) }}
-        <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
-        <div>
-            {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
-            {{ form_widget(form.committees, {attr: {class: 'citizen_initiative__skills'} }) }}
-        </div>
+<div class="form__new" id="field-committee">
+    {{ form_errors(form.committees) }}
+    <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
+    <div>
+        {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
+        {{ form_widget(form.committees, {attr: {class: 'citizen_initiative__skills'} }) }}
     </div>
-{% endif %}
+</div>
 
 <div class="form__new form__new__checkbox" id="field-assistance-needed">
     <div>
