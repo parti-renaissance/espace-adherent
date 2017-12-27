@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class ProcurationManagerController extends Controller
 {
     /**
-     * @Route("", name="app_procuration_manager_index")
+     * @Route(name="app_procuration_manager_index")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response
@@ -33,28 +33,29 @@ class ProcurationManagerController extends Controller
         try {
             $filters = ProcurationRequestFilters::fromQueryString($request);
         } catch (ProcurationException $e) {
-            throw new BadRequestHttpException('Unexpected procuration request type in the query string.', $e);
+            throw new BadRequestHttpException('Unexpected procuration request in the query string.', $e);
         }
 
+        $user = $this->getUser();
         $manager = $this->get('app.procuration.manager');
 
         return $this->render('procuration_manager/requests.html.twig', [
-            'requests' => $manager->getProcurationRequests($this->getUser(), $filters),
-            'total_count' => $manager->countProcurationRequests($this->getUser(), $filters),
+            'requests' => $manager->getProcurationRequests($user, $filters),
+            'total_count' => $manager->countProcurationRequests($user, $filters),
             'filters' => $filters,
         ]);
     }
 
     /**
-     * @Route("/plus", name="app_procuration_manager_requests_list")
+     * @Route("/plus", name="app_procuration_manager_requests_list", condition="request.isXmlHttpRequest()")
      * @Method("GET")
      */
     public function requestsMoreAction(Request $request): Response
     {
         try {
-            $filters = $filters = ProcurationRequestFilters::fromQueryString($request);
+            $filters = ProcurationRequestFilters::fromQueryString($request);
         } catch (ProcurationException $e) {
-            throw new BadRequestHttpException('Unexpected procuration request type in the query string.', $e);
+            throw new BadRequestHttpException('Unexpected procuration request in the query string.', $e);
         }
 
         if (!$requests = $this->get('app.procuration.manager')->getProcurationRequests($this->getUser(), $filters)) {
@@ -78,17 +79,18 @@ class ProcurationManagerController extends Controller
             throw new BadRequestHttpException('Unexpected procuration proxy proposal filters in the query string.', $e);
         }
 
+        $user = $this->getUser();
         $manager = $this->get('app.procuration.manager');
 
         return $this->render('procuration_manager/proposals.html.twig', [
-            'proxies' => $manager->getProcurationProxyProposals($this->getUser(), $filters),
-            'total_count' => $manager->countProcurationProxyProposals($this->getUser(), $filters),
+            'proxies' => $manager->getProcurationProxyProposals($user, $filters),
+            'total_count' => $manager->countProcurationProxyProposals($user, $filters),
             'filters' => $filters,
         ]);
     }
 
     /**
-     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list")
+     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list", condition="request.isXmlHttpRequest()")
      * @Method("GET")
      */
     public function proposalsMoreAction(Request $request): Response
@@ -121,7 +123,7 @@ class ProcurationManagerController extends Controller
         $manager = $this->get('app.procuration.manager');
 
         if (!$proxy = $manager->getProcurationProxyProposal($id, $this->getUser())) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException(sprintf('No proposal found for id %d.', $id));
         }
 
         if ('desactiver' === $action) {
@@ -146,14 +148,14 @@ class ProcurationManagerController extends Controller
     public function requestAction(int $id): Response
     {
         $manager = $this->get('app.procuration.manager');
+
         if (!$request = $manager->getProcurationRequest($id, $this->getUser())) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException(sprintf('No procuration request found for id %d.', $id));
         }
 
         return $this->render('procuration_manager/request.html.twig', [
             'request' => $request,
             'matchingProxies' => $manager->getMatchingProcurationProxies($request),
-            'csrfToken' => $this->get('security.csrf.token_manager')->getToken('request_action'),
         ]);
     }
 
@@ -168,12 +170,12 @@ class ProcurationManagerController extends Controller
     public function requestTransformAction(int $id, string $action, string $token): Response
     {
         if (!$this->isCsrfTokenValid('request_action', $token)) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('Invalid token.');
         }
 
         $manager = $this->get('app.procuration.manager');
         if (!$request = $manager->getProcurationRequest($id, $this->getUser())) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException(sprintf('No request found for id %d.', $id));
         }
 
         if ('traiter' === $action) {
@@ -184,7 +186,7 @@ class ProcurationManagerController extends Controller
             $this->addFlash('info', $this->get('translator')->trans('procuration_manager.unprocess.success'));
         }
 
-        return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+        return $this->redirectToRoute('app_procuration_manager_request', ['id' => $id]);
     }
 
     /**
@@ -201,15 +203,16 @@ class ProcurationManagerController extends Controller
         $manager = $this->getDoctrine()->getManager();
 
         if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException(sprintf('User is not allowed to managed the request with id %d.', $request->getId()));
         }
 
         if ($proxy->isDisabled() || !$request->isProxyMatching($proxy)) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('No proxy for this request.');
         }
 
-        $form = $this->createForm(FormType::class);
-        $form->handleRequest($sfRequest);
+        $form = $this->createForm(FormType::class)
+            ->handleRequest($sfRequest)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -250,13 +253,13 @@ class ProcurationManagerController extends Controller
     public function requestDessociateAction(Request $sfRequest, ProcurationRequest $request): Response
     {
         if (!$request->hasFoundProxy()) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('This request already has a proxy.');
         }
 
         $manager = $this->getDoctrine()->getManager();
 
         if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('Request is not managed by the current user.');
         }
 
         $form = $this->createForm(FormType::class);
