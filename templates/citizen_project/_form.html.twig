@@ -43,6 +43,10 @@
         <div class="citizen_project_form__picture_preview">
             <img style="max-width: 400px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
         </div>
+        <div class="form__new form__new__checkbox">
+            {{ form_widget(form.remove_image) }}
+            {{ form_label(form.remove_image, 'Supprimer l\'image') }}
+        </div>
     {% endif %}
     {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
