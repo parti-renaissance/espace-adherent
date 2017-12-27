@@ -751,6 +751,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
     }
 
+    public function canBeProxy(): bool
+    {
+        return $this->isReferent() || $this->isProcurationManager();
+    }
+
     public function getProcurationManagedAreaCodesAsString(): ?string
     {
         if (!$this->procurationManagedArea) {
