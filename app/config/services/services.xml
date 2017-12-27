@@ -30,6 +30,9 @@
 			<tag name="security.voter" priority="-1000"/>
 		</service>
 
+		<!-- Procuration -->
+		<service id="AppBundle\Procuration\ProcurationRequestSession" />
+
 		<!-- Report -->
 		<service id="AppBundle\Report\ReportManager" />
 		<service id="AppBundle\Form\ReportCommandType"/>
