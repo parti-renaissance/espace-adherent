@@ -45,7 +45,7 @@
             <ul class="l__row l__row--wrap">
                 {% for follower in followers|slice(0, 11) %}
                     <li>
-                        <span class="card" title="{{ not user_is_admin and app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
+                        <span class="card" title="{{ not has_role_admin and app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
                     </li>
                 {% endfor %}
             </ul>

@@ -28,7 +28,6 @@ use Tests\AppBundle\MysqlWebTestCase;
 /**
  * @group functional
  * @group adherent
- * @group rebase
  */
 class AdherentControllerTest extends MysqlWebTestCase
 {
@@ -55,8 +54,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->click($crawler->selectLink('Mes activités')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes événements')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -337,17 +335,18 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentCanCreateNewCitizenProject()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
+
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $this->assertSame(1, $crawler->selectLink('Créer un projet citoyen')->count());
+        $this->assertSame(0, $crawler->selectLink('Créer un projet citoyen')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -428,31 +427,13 @@ class AdherentControllerTest extends MysqlWebTestCase
         $data['citizen_project']['phone']['number'] = '31 359 21 11';
         $data['citizen_project']['assistance_needed'] = 1;
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer un projet citoyen')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
         $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
 
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'michel.vasseur@example.ch'));
-    }
-
-    public function testCreateCitizenProjectWithoutAddressAndPhoneSuccessful()
-    {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $data = [];
-        $data['citizen_project']['name'] = 'Mon équipe';
-        $data['citizen_project']['description'] = 'Ma première équipe';
-
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
     /**
@@ -751,7 +732,6 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-        $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
     }
 
     protected function setUp()

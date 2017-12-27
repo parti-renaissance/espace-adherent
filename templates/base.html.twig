@@ -101,13 +101,6 @@
 
         {% block header %}
         <header>
-            {% set adherent_committees = '' %}
-            {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
-            {% if is_granted('ROLE_ADHERENT') %}
-                {% set adherent_committees %}
-                    {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
-                {% endset %}
-            {% endif %}
             <!--  Header / Navigation Mobile-->
             {{ include('components/_nav_desktop.html.twig') }}
             <!--  Header / Navigation Mobile-->

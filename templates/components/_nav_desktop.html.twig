@@ -30,7 +30,7 @@
 
         {% if not campaign_expired %}
             <div class="nav__user">
-                {% if is_granted('ROLE_ADMIN_DASHBOARD') %}
+                {% if has_role_admin %}
                     <a href="{{ path('sonata_admin_dashboard') }}" class="icon--with-text nav__user__name">
                         Administration
                     </a>
@@ -116,9 +116,6 @@
                                 <li class="text--small">
                                     <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
                                 </li>
-                                <li>
-                                    <a class="text--gray" href="{{ path('logout') }}">Déconnexion</a>
-                                </li>
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                     <li class="text--small">
                                         <a href="{{ path('app_admin_impersonation_exit') }}">
@@ -126,7 +123,7 @@
                                         </a>
                                     </li>
                                 {% endif %}
-                                <li class="text--small"><a href="{{ path('auth_logout') }}">Déconnexion</a></li>
+                                <li class="text--small"><a href="{{ path('logout') }}">Déconnexion</a></li>
                             </ul>
                         </div>
                     {% endif %}

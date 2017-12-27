@@ -32,7 +32,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
@@ -121,9 +121,9 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedToAuth();
 
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion?term=pa', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
@@ -142,7 +142,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testCommitteeSupportCitizenProject()
     {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
         /** @var CitizenProject $citizenProject */
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID);
@@ -296,7 +296,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testAuthenticatedAdherentCanFollowCitizenProject()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         // Browse to the citizen project details page
         $citizenProjectUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');

@@ -1,15 +1,15 @@
 {% if not campaign_expired %}
     <div class="nav__user">
-        {% if is_granted('ROLE_ADMIN_DASHBOARD') %}
+        {% if has_role_admin %}
             <a href="{{ path('sonata_admin_dashboard') }}" class="icon--with-text text--medium-small nav__user__name">
                 Administration
             </a>
         {% else %}
             <a href="{{ path('app_user_profile') }}" class="icon--with-text text--medium-small nav__user__name">
                 {{ include('components/user.html.twig') }}
-                {{ is_granted('ROLE_USER') ? app.user.fullName : 'Espace perso' }}
+                {{ has_role_user ? app.user.fullName : 'Espace perso' }}
             </a>
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_ADHERENT') %}
                 <div class="nav__user__caret">
                     <span class="nav__user__caret--outer"></span>
                     <span class="nav__user__caret--inner"></span>
