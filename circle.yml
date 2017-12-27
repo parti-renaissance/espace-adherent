@@ -45,7 +45,7 @@ test:
         - yarn test
 
         # Lint PHP
-        - make phpcs
+        - php -d memory_limit=1024m vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
 
         # Prepare PHP tests
         - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users:

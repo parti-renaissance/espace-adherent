@@ -71,7 +71,8 @@
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "^6.2",
         "fabpot/goutte": "^3.2",
-        "liip/functional-test-bundle": "^1.8"
+        "liip/functional-test-bundle": "^1.8",
+        "friendsofphp/php-cs-fixer": "^2.7"
     },
     "scripts": {
         "symfony-scripts": [

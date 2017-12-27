@@ -2,11 +2,11 @@ FIG=docker-compose
 RUN=$(FIG) run --rm app
 EXEC=$(FIG) exec app
 CONSOLE=bin/console
-PHPCSFIXER?=docker run --rm -it -v "$$(pwd):/srv" -u "$$(id -u):$$(id -g)" blazarecki/php-cs-fixer php -d memory_limit=1024m /usr/local/bin/php-cs-fixer
+PHPCSFIXER?=$(RUN) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
-.PHONY: lj build up perm deps cc phpcs phpcsfix
+.PHONY: lj build up perm deps cc phpcs phpcsfix tty
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -45,6 +45,9 @@ cc:
 	$(RUN) $(CONSOLE) cache:clear --no-warmup
 	$(RUN) $(CONSOLE) cache:warmup
 
+tty:            ## Run app container in interactive mode
+tty:
+	$(RUN) /bin/bash
 
 ##
 ## Database
