@@ -523,30 +523,28 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
             $this->phone = $phone;
         }
 
-        if ($this->isPending()) {
-            $committeeIdsSubmit = [];
-            $committeeIdsAlreadySupport = [];
-            foreach ($committees as $committee) {
-                $committeeIdsSubmit[] = $committee->getId();
+        $committeeIdsSubmit = [];
+        $committeeIdsAlreadySupport = [];
+        foreach ($committees as $committee) {
+            $committeeIdsSubmit[] = $committee->getId();
+        }
+
+        foreach ($this->getCommitteeSupports() as $committeeSupport) {
+            $committeeIdsAlreadySupport[] = $committeeSupport->getCommittee()->getId();
+        }
+
+        $committeeIdsToBeDissociate = array_diff($committeeIdsAlreadySupport, $committeeIdsSubmit);
+        $committeeIdsToBeAssociate = array_diff($committeeIdsSubmit, $committeeIdsAlreadySupport);
+
+        foreach ($this->getCommitteeSupports() as $committeeSupport) {
+            if (in_array($committeeSupport->getCommittee()->getId(), $committeeIdsToBeDissociate)) {
+                $this->removeCommitteeSupport($committeeSupport->getCommittee());
             }
+        }
 
-            foreach ($this->getCommitteeSupports() as $committeeSupport) {
-                $committeeIdsAlreadySupport[] = $committeeSupport->getCommittee()->getId();
-            }
-
-            $committeeIdsToBeDissociate = array_diff($committeeIdsAlreadySupport, $committeeIdsSubmit);
-            $committeeIdsToBeAssociate = array_diff($committeeIdsSubmit, $committeeIdsAlreadySupport);
-
-            foreach ($this->getCommitteeSupports() as $committeeSupport) {
-                if (in_array($committeeSupport->getCommittee()->getId(), $committeeIdsToBeDissociate)) {
-                    $this->removeCommitteeSupport($committeeSupport->getCommittee());
-                }
-            }
-
-            foreach ($committees as $committee) {
-                if (in_array($committee->getId(), $committeeIdsToBeAssociate)) {
-                    $this->addCommitteeOnSupport($committee);
-                }
+        foreach ($committees as $committee) {
+            if (in_array($committee->getId(), $committeeIdsToBeAssociate)) {
+                $this->addCommitteeOnSupport($committee);
             }
         }
     }
