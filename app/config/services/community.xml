@@ -77,10 +77,6 @@
         </service>
 
         <!-- Procuration -->
-        <service id="app.procuration.request_flow" class="AppBundle\Procuration\ProcurationRequestFlow">
-            <argument type="service" id="session" />
-        </service>
-
         <service id="app.procuration.factory" class="AppBundle\Procuration\ProcurationFactory" />
 
         <service id="app.procuration.proxy_message_factory" class="AppBundle\Procuration\ProcurationProxyMessageFactory" public="false">

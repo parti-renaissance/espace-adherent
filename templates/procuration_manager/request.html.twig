@@ -12,17 +12,17 @@
         <span id="request-title">Demande de procuration n°{{ request.id }}</span>
 
         {% if request.hasFoundProxy %}
-            <a href="{{ path('app_procuration_manager_request_deassociate', {'id': request.id}) }}"
+            <a href="{{ path('app_procuration_manager_request_deassociate', {id: request.id}) }}"
                class="btn btn--small procuration-manager__request__process" id="request-deassociate">
                 Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
             </a>
         {% elseif request.processed %}
-            <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'detraiter', 'token': csrfToken}) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: 'detraiter', token: csrf_token('request_action')}) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "En attente"
             </a>
         {% else %}
-            <a href="{{ path('app_procuration_manager_request_transform', {'id': request.id, 'action': 'traiter', 'token': csrfToken}) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: 'traiter', token: csrf_token('request_action')}) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "Traitée manuellement"
             </a>
@@ -96,8 +96,8 @@
             </div>
             <div class="profile-value">
                 {{ include('procuration_manager/_ballots.html.twig', {
-                    'legislative_first_round': request.electionLegislativeFirstRound,
-                    'legislative_second_round': request.electionLegislativeSecondRound,
+                    legislative_first_round: request.electionLegislativeFirstRound,
+                    legislative_second_round: request.electionLegislativeSecondRound,
                 }, with_context=false) }}
             </div>
 
@@ -190,8 +190,8 @@
                     </div>
                     <div class="profile-value">
                         {{ include('procuration_manager/_ballots.html.twig', {
-                            'legislative_first_round': request.foundProxy.electionLegislativeFirstRound,
-                            'legislative_second_round': request.foundProxy.electionLegislativeSecondRound,
+                            legislative_first_round: request.foundProxy.electionLegislativeFirstRound,
+                            legislative_second_round: request.foundProxy.electionLegislativeSecondRound,
                         }, with_context=false) }}
                     </div>
                 {% endif %}
@@ -254,8 +254,8 @@
                                     <br />
                                     <em>Disponibilités :</em><br />
                                     {{ include('procuration_manager/_ballots.html.twig', {
-                                        'legislative_first_round': proxy.electionLegislativeFirstRound,
-                                        'legislative_second_round': proxy.electionLegislativeSecondRound,
+                                        legislative_first_round: proxy.electionLegislativeFirstRound,
+                                        legislative_second_round: proxy.electionLegislativeSecondRound,
                                     }, with_context=false) }}
                                 </td>
                                 <td class="datagrid__table__col--left">
@@ -269,7 +269,7 @@
                                     {{ proxy.address }}, {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_procuration_manager_request_associate', {'id': request.id, 'proxyId': proxy.id}) }}"
+                                    <a href="{{ path('app_procuration_manager_request_associate', {id: request.id, proxyId: proxy.id}) }}"
                                        id="associate-link-{{ proxy.id }}">
                                         Associer
                                     </a>
