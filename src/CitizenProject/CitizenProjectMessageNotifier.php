@@ -43,7 +43,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     public function onCitizenProjectApprove(CitizenProjectWasApprovedEvent $event): void
     {
-        $this->scheduleCreationNotification($event->getCitizenProject());
         $this->sendCreatorApprove($event->getCitizenProject());
         $this->sendAskCommitteeSupport($event->getCitizenProject());
     }
@@ -86,14 +85,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                 'project_slug' => $citizenProject->getSlug(),
             ])
         ));
-    }
-
-    private function scheduleCreationNotification(CitizenProject $citizenProject): void
-    {
-        $this->creationNotificationProducer->publish(\GuzzleHttp\json_encode([
-            'uuid' => $citizenProject->getUuid()->toString(),
-            'offset' => 0,
-        ]));
     }
 
     private function sendAskCommitteeSupport(CitizenProject $citizenProject): void
